@@ -9,7 +9,6 @@ namespace TrakHound_Server_Core
 {
     public partial class Server
     {
-
         private void SendPluginData(string id, string message)
         {
             foreach (Device_Server device in Devices)
@@ -17,6 +16,5 @@ namespace TrakHound_Server_Core
                 device.SendPluginsData(id, message);
             }
         }
-
     }
 }

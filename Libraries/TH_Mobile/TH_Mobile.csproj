@@ -57,6 +57,7 @@
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UpdateData.cs" />
+    <Compile Include="UpdateQueue.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\Plugins\TH_Status\TH_Status.csproj">

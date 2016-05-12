@@ -36,7 +36,6 @@ namespace TrakHound_Server_Core
         public Database_Settings UserDatabaseSettings { get; set; }
 
 
-
         public void Login()
         {
             UserConfiguration userConfig = null;

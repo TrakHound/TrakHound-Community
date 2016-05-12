@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 
 using TH_Configuration;
 using TH_InstanceTable;
@@ -81,7 +80,6 @@ namespace TH_GeneratedData.SnapshotData
                 return new Type[] { typeof(ConfigurationPage.Page) };
             }
         }
-
 
 
         private Configuration configuration;

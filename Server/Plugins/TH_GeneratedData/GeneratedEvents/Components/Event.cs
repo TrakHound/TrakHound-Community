@@ -189,7 +189,6 @@ namespace TH_GeneratedData.GeneratedEvents
             }
 
             // Get CaptureItems
-            //ReturnValue.CaptureItems.Clear();
             foreach (CaptureItem item in CaptureItems)
             {
                 var i = ReturnValue.CaptureItems.Find(x => x.id == item.id);

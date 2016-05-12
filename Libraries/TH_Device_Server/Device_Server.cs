@@ -124,14 +124,17 @@ namespace TH_Device_Server
             bool dbsuccess = true;
             string msg = null;
 
-            foreach (Database_Configuration db_config in config.Databases_Server.Databases)
+            if (Global.Plugins.Count > 0)
             {
-                if (!Global.Ping(db_config, out msg))
+                foreach (Database_Configuration db_config in config.Databases_Server.Databases)
                 {
-                    dbsuccess = false;
-                    break;
+                    if (!Global.Ping(db_config, out msg))
+                    {
+                        dbsuccess = false;
+                        break;
+                    }
                 }
-            }
+            }           
 
             var status = new DatabaseConnectionStatus();
             status.Connected = dbsuccess;

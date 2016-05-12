@@ -1,8 +1,12 @@
-﻿using System;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 
 using TH_Configuration;
 using TH_Database.Tables;
-//using TH_Global;
 using TH_Plugins;
 
 using TH_MTConnect.Streams;
@@ -15,10 +19,10 @@ namespace TH_MTConnect.Plugin
         // agent.mtconnect.org/current?path=//*[@id='p2' or @id='x2']
 
 
-        private Int64 lastSequenceSampled = -1;
-        private Int64 agentInstanceId = -1;
-        private Int64 lastInstanceId = -1;
-        private const Int64 MaxSampleCount = 10000;
+        private long lastSequenceSampled = -1;
+        private long agentInstanceId = -1;
+        private long lastInstanceId = -1;
+        private const long MaxSampleCount = 10000;
         private bool startFromFirst = false;
 
         private ReturnData GetSample(Header_Streams header, AgentConfiguration ac, Configuration config)
@@ -73,10 +77,9 @@ namespace TH_MTConnect.Plugin
         }
 
 
-
-        private Int64 GetLastSequenceFromMySQL(Configuration config)
+        private long GetLastSequenceFromMySQL(Configuration config)
         {
-            Int64 Result = -1;
+            long result = -1;
 
             string tablePrefix;
             if (config.DatabaseId != null) tablePrefix = config.DatabaseId + "_";
@@ -85,15 +88,15 @@ namespace TH_MTConnect.Plugin
             Variables.VariableData vd = Variables.Get(config.Databases_Server, "last_sequence_sampled", tablePrefix);
             if (vd != null)
             {
-                Int64.TryParse(vd.Value, out Result);
+                long.TryParse(vd.Value, out result);
             }
 
-            return Result;
+            return result;
         }
 
-        private Int64 GetAgentInstanceIdFromMySQL(Configuration config)
+        private long GetAgentInstanceIdFromMySQL(Configuration config)
         {
-            Int64 Result = -1;
+            long result = -1;
 
             string tablePrefix;
             if (config.DatabaseId != null) tablePrefix = config.DatabaseId + "_";
@@ -102,10 +105,10 @@ namespace TH_MTConnect.Plugin
             Variables.VariableData vd = Variables.Get(config.Databases_Server, "agent_instanceid", tablePrefix);
             if (vd != null)
             {
-                Int64.TryParse(vd.Value, out Result);
+                long.TryParse(vd.Value, out result);
             }
 
-            return Result;
+            return result;
         }
 
         private void UpdateAgentInstanceID(Header_Streams header, Configuration config)
@@ -124,8 +127,8 @@ namespace TH_MTConnect.Plugin
 
         private class SampleInfo
         {
-            public Int64 From { get; set; }
-            public Int64 Count { get; set; }
+            public long From { get; set; }
+            public long Count { get; set; }
         }
 
         private SampleInfo GetSampleInfo(Header_Streams header, Configuration config)
@@ -133,7 +136,7 @@ namespace TH_MTConnect.Plugin
             var result = new SampleInfo();
 
             //Get Sequence Number to use -----------------------
-            Int64 first = header.FirstSequence;
+            long first = header.FirstSequence;
             if (TH_Global.Variables.SIMULATION_MODE)
             {
                 Console.WriteLine("Sample Simulation Enabled");
@@ -163,10 +166,10 @@ namespace TH_MTConnect.Plugin
             result.From = first;
 
             // Get Last Sequence Number available from Header
-            Int64 last = header.LastSequence;
+            long last = header.LastSequence;
 
             // Calculate Sample count
-            Int64 sampleCount = last - first;
+            long sampleCount = last - first;
             if (sampleCount > MaxSampleCount)
             {
                 sampleCount = MaxSampleCount;

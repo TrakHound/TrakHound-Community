@@ -3,11 +3,22 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+using TH_Configuration;
 
 namespace TH_Mobile
 {
     public class UpdateData
     {
+        public UpdateData(Configuration config)
+        {
+            UniqueId = config.UniqueId;
+            DatabaseId = config.DatabaseId;
+        }
+
+        public string UniqueId;
+
+        public string UserId { get; set; }
+        public string DatabaseId { get; set; }
 
         public bool Connected { get; set; }
         public string Status { get; set; }
@@ -24,6 +35,5 @@ namespace TH_Mobile
         public double Oee { get; set; }
         public double Availability { get; set; }
         public double Performance { get; set; }
-
     }
 }

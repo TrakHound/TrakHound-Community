@@ -19,13 +19,12 @@ namespace TH_Mobile
 
     public class Plugin : IServerPlugin
     {
-
-        public string Name { get { return "TH_Mobile"; } }
+        public static UpdateQueue queue = new UpdateQueue();
 
 
         private Configuration configuration;
 
-        private string username;
+        private string userId;
 
         private UpdateData updateData;
 
@@ -33,16 +32,18 @@ namespace TH_Mobile
         private bool deviceAvailable;
 
 
+        public string Name { get { return "TH_Mobile"; } }
+
         public void Initialize(Configuration config)
         {
             configuration = config;
 
-            StartQueue();
+            updateData = new UpdateData(config);
         }
 
         public void GetSentData(EventData data)
         {
-            if (data != null)
+            if (data != null && updateData != null)
             {
                 switch (data.Id.ToLower())
                 {
@@ -51,9 +52,11 @@ namespace TH_Mobile
 
                         if (data.Data01 != null && configuration != null)
                         {
-                            username = data.Data01.ToString();
+                            userId = data.Data01.ToString();
 
-                            Database.CreateTable(username, configuration);
+                            updateData.UserId = userId;
+
+                            Database.CreateTable(userId, configuration);
                         }
 
                         break;
@@ -61,10 +64,8 @@ namespace TH_Mobile
                     // Update Database Connection Status
                     case "databasestatus":
 
-                        if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(username))
+                        if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
                         {
-                            if (updateData == null) updateData = new UpdateData();
-
                             databaseConnected = (bool)data.Data02;
 
                             bool prev = updateData.Connected;
@@ -72,7 +73,7 @@ namespace TH_Mobile
                             if (databaseConnected && deviceAvailable) updateData.Connected = true;
                             else updateData.Connected = false;
 
-                            if (updateData.Connected != prev) queueChanged = true;
+                            if (updateData.Connected != prev) queue.Add(updateData);
                         }
 
                         break;
@@ -80,10 +81,8 @@ namespace TH_Mobile
                     // Update Device Availability (MTConnect) Status
                     case "deviceavailability":
 
-                        if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(username))
+                        if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
                         {
-                            if (updateData == null) updateData = new UpdateData();
-
                             deviceAvailable = (bool)data.Data02;
 
                             bool prev = updateData.Connected;
@@ -91,7 +90,7 @@ namespace TH_Mobile
                             if (databaseConnected && deviceAvailable) updateData.Connected = true;
                             else updateData.Connected = false;
 
-                            if (updateData.Connected != prev) queueChanged = true;
+                            if (updateData.Connected != prev) queue.Add(updateData);
                         }
 
                         break;
@@ -99,10 +98,8 @@ namespace TH_Mobile
                     // Get Snapshot Data
                     case "snapshottable":
 
-                        if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(username))
+                        if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
                         {
-                            if (updateData == null) updateData = new UpdateData();
-
                             bool alert = DataTable_Functions.GetBooleanTableValue(data.Data02, "NAME", "Alert", "VALUE");
                             bool idle = DataTable_Functions.GetBooleanTableValue(data.Data02, "NAME", "Idle", "VALUE");
                             bool production = DataTable_Functions.GetBooleanTableValue(data.Data02, "NAME", "Production", "VALUE");
@@ -121,7 +118,7 @@ namespace TH_Mobile
                                 updateData.ProductionStatusTimer = Convert.ToInt32((end - start).TotalSeconds);
                             }
 
-                            queueChanged = true;
+                            queue.Add(updateData);
                         }
 
                         break;
@@ -129,22 +126,22 @@ namespace TH_Mobile
                     // Get Status Data
                     case "status_data":
 
-                        if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(username))
+                        if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
                         {
                             var infos = (List<StatusInfo>)data.Data02;
                             StatusInfo info = null;
 
                             // Controller Mode
                             info = infos.Find(x => x.Type == "CONTROLLER_MODE");
-                            if (info != null && updateData.ControllerMode != info.Value1) updateData.ControllerMode = info.Value1; queueChanged = true;
+                            if (info != null && updateData.ControllerMode != info.Value1) updateData.ControllerMode = info.Value1; queue.Add(updateData);
 
                             // Emergency Stop
                             info = infos.Find(x => x.Type == "EMERGENCY_STOP");
-                            if (info != null && updateData.EmergencyStop != info.Value1) updateData.EmergencyStop = info.Value1; queueChanged = true;
+                            if (info != null && updateData.EmergencyStop != info.Value1) updateData.EmergencyStop = info.Value1; queue.Add(updateData);
 
                             // Execution Mode
                             info = infos.Find(x => x.Type == "EXECUTION");
-                            if (info != null && updateData.ExecutionMode != info.Value1) updateData.ExecutionMode = info.Value1; queueChanged = true;
+                            if (info != null && updateData.ExecutionMode != info.Value1) updateData.ExecutionMode = info.Value1; queue.Add(updateData);
 
                             // System status
                             info = infos.Find(x => x.Type == "SYSTEM");
@@ -153,7 +150,7 @@ namespace TH_Mobile
                                 updateData.SystemMessage = info.Value1;
                                 updateData.SystemStatus = info.Value2;
 
-                                queueChanged = true;
+                                queue.Add(updateData);
                             }
                         }
 
@@ -162,10 +159,8 @@ namespace TH_Mobile
                     // Get Snapshot Data
                     case "oee_shifts":
 
-                        if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(username))
+                        if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
                         {
-                            if (updateData == null) updateData = new UpdateData();
-
                             var table = data.Data02 as DataTable;
                             if (table != null)
                             {
@@ -185,7 +180,7 @@ namespace TH_Mobile
                                 if (updateData.Oee != oee)
                                 {
                                     updateData.Oee = oee;
-                                    queueChanged = true;
+                                    queue.Add(updateData);
                                 }
 
                                 // Availability
@@ -193,7 +188,7 @@ namespace TH_Mobile
                                 if (updateData.Availability != availability)
                                 {
                                     updateData.Availability = availability;
-                                    queueChanged = true;
+                                    queue.Add(updateData);
                                 }
 
                                 // Performance
@@ -201,7 +196,7 @@ namespace TH_Mobile
                                 if (updateData.Performance != performance)
                                 {
                                     updateData.Performance = performance;
-                                    queueChanged = true;
+                                    queue.Add(updateData);
                                 }
                             }
                         }
@@ -210,39 +205,7 @@ namespace TH_Mobile
                 }
             }
         }
-
-
-        System.Timers.Timer queueTimer;
-
-        private bool queueChanged = false;
-
-        private void StartQueue()
-        {
-            if (queueTimer != null) queueTimer.Enabled = false;
-
-            queueTimer = new System.Timers.Timer();
-            queueTimer.Interval = 2000;
-            queueTimer.Elapsed += QueueTimer_Elapsed;
-            queueTimer.Enabled = true;
-        }
-
-        private void QueueTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            ProcessQueue();
-        }
-
-        private void ProcessQueue()
-        {
-            if (queueChanged) Database.Update(username, configuration, updateData);
-            queueChanged = false;
-        }
-
-        private void StopQueue()
-        {
-            if (queueTimer != null) queueTimer.Enabled = false;
-            queueTimer = null;
-        }
-
+        
 
         public event SendData_Handler SendData;
 
@@ -252,17 +215,14 @@ namespace TH_Mobile
 
         public void Closing()
         {
-            StopQueue();
-
             if (updateData != null)
             {
                 updateData.Connected = false;
-                Database.Update(username, configuration, updateData);
+                queue.Add(updateData);
             }
         }
 
         public Type[] ConfigurationPageTypes { get { return null; } }
-
     }
 
 }

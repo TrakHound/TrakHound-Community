@@ -3,14 +3,7 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Xml;
-
-using TH_InstanceTable;
 
 namespace TH_GeneratedData.GeneratedEvents
 {

@@ -3,6 +3,7 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Threading;
 
@@ -40,30 +41,13 @@ namespace TH_Mobile
             }
         }
 
-        public static void Update(string userId, Configuration config, UpdateData updateData)
+        public static void Update(List<UpdateData> updateDatas)
         {
-            if (!string.IsNullOrEmpty(userId) && config != null)
+            var json = JSON.FromList<UpdateData>(updateDatas);
+            if (json != null)
             {
                 var values = new NameValueCollection();
-                values["user_id"] = userId;
-                values["database_id"] = config.DatabaseId;
-
-                values["unique_id"] = config.UniqueId;
-                values["connected"] = updateData.Connected.ToString();
-
-                values["status"] = updateData.Status;
-                values["production_status"] = updateData.ProductionStatus;
-                values["production_status_timer"] = updateData.ProductionStatusTimer.ToString();
-
-                values["controller_mode"] = updateData.ControllerMode;
-                values["emergency_stop"] = updateData.EmergencyStop;
-                values["execution_mode"] = updateData.ExecutionMode;
-                values["system_status"] = updateData.SystemStatus;
-                values["system_message"] = updateData.SystemMessage;
-
-                values["oee"] = updateData.Oee.ToString("N2");
-                values["oee_availability"] = updateData.Availability.ToString("N2");
-                values["oee_performance"] = updateData.Performance.ToString("N2");
+                values["data"] = json;
 
                 string url = PHP_URL + "update/";
 

@@ -49,30 +49,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ConfigurationPage\Controls\CaptureItem.xaml.cs">
-      <DependentUpon>CaptureItem.xaml</DependentUpon>
-    </None>
-    <None Include="ConfigurationPage\Controls\Default.xaml.cs">
-      <DependentUpon>Default.xaml</DependentUpon>
-    </None>
-    <None Include="ConfigurationPage\Controls\Event.xaml.cs">
-      <DependentUpon>Event.xaml</DependentUpon>
-    </None>
-    <None Include="ConfigurationPage\Controls\EventButton.xaml.cs">
-      <DependentUpon>EventButton.xaml</DependentUpon>
-    </None>
-    <None Include="ConfigurationPage\Controls\Snapshot_Item.xaml.cs">
-      <DependentUpon>Snapshot_Item.xaml</DependentUpon>
-    </None>
-    <None Include="ConfigurationPage\Controls\Trigger.xaml.cs">
-      <DependentUpon>Trigger.xaml</DependentUpon>
-    </None>
-    <None Include="ConfigurationPage\Controls\Value.xaml.cs">
-      <DependentUpon>Value.xaml</DependentUpon>
-    </None>
-    <None Include="ConfigurationPage\Page.xaml.cs">
-      <DependentUpon>Page.xaml</DependentUpon>
-    </None>
     <Compile Include="GeneratedEvents\ConfigurationPage\Controls\CaptureItem.xaml.cs">
       <DependentUpon>CaptureItem.xaml</DependentUpon>
     </Compile>
@@ -99,12 +75,8 @@
     <Compile Include="SnapshotData\ConfigurationPage\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
-    <None Include="Configurations\GeneratedDataConfiguration.cs" />
-    <None Include="Configurations\GeneratedEventsConfiguration.cs" />
     <Compile Include="GeneratedEvents\Configuration.cs" />
     <Compile Include="SnapshotData\Configuration.cs" />
-    <None Include="Database\GeneratedEvents.cs" />
-    <None Include="Database\Snapshots.cs" />
     <Compile Include="GeneratedEvents\GeneratedEvent.cs" />
     <Compile Include="GeneratedEvents\Components\CaptureItem.cs" />
     <Compile Include="GeneratedEvents\Components\Event.cs" />
@@ -112,7 +84,6 @@
     <Compile Include="GeneratedEvents\Components\Return.cs" />
     <Compile Include="GeneratedEvents\Components\Trigger.cs" />
     <Compile Include="GeneratedEvents\Components\Value.cs" />
-    <None Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -184,38 +155,6 @@
     <Resource Include="Resources\X_01.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ConfigurationPage\Controls\CaptureItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Include="ConfigurationPage\Controls\Default.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Include="ConfigurationPage\Controls\Event.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Include="ConfigurationPage\Controls\EventButton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Include="ConfigurationPage\Controls\Snapshot_Item.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Include="ConfigurationPage\Controls\Trigger.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Include="ConfigurationPage\Controls\Value.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Include="ConfigurationPage\Page.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </None>
     <Page Include="GeneratedEvents\ConfigurationPage\Controls\CaptureItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

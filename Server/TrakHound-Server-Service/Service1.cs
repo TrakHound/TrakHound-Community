@@ -17,13 +17,13 @@ namespace TrakHound_Server_Service
     public partial class Service1 : ServiceBase
     {
   
-        Server server;
+        private Server server;
 
         public Service1()
         {
             InitializeComponent();
 
-            TH_Global.FileLocations.CreateAllDirectories();
+            FileLocations.CreateAllDirectories();
 
             TH_Database.DatabasePluginReader.ReadPlugins();
 
@@ -32,7 +32,7 @@ namespace TrakHound_Server_Service
             server = new Server();
             server.Login();
 
-            string path = TH_Global.FileLocations.AppData + @"\nigolresu";
+            string path = FileLocations.AppData + @"\nigolresu";
             if (File.Exists(path))
             {
                 string dir = Path.GetDirectoryName(path);

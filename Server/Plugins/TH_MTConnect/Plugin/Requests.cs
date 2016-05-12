@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 
 using TH_Configuration;
 using TH_Database.Tables;
@@ -27,7 +32,7 @@ namespace TH_MTConnect.Plugin
                     lastSequenceSampled = GetLastSequenceFromMySQL(config);
                     agentInstanceId = GetAgentInstanceIdFromMySQL(config);
 
-                    var ac = Plugin.AgentConfiguration.Get(config);
+                    var ac = AgentConfiguration.Get(config);
                     if (ac != null)
                     {
                         requestTimer = new System.Timers.Timer();
