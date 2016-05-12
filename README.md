@@ -1,62 +1,52 @@
-![TrakHound Logo] (http://feenux.com/github/images/header_02.png)
+<!--
+  Title: TrakHound
+  Description: Open Source MDC Software Package using MTConnect
+  Author: Feenux LLC
+  -->
+  
+![TrakHound Logo] (http://feenux.com/github/v2/images/headers/header_01.png)
 
 <p align="center">
   <a href="http://www.trakhound.org/">www.TrakHound.org</a>
 </p>
 
 ##About
-TrakHound is an Open Source software package designed to retrieve and store data from CNC and other PLC driven equipment. Data is retrieved using <a href="http://mtconnect.org">MTConnect®</a> and data is stored in a database. 
+TrakHound is an Open Source MDC software package designed to retrieve and store data from CNC and other PLC driven industrial equipment. Data is retrieved using <a href="http://mtconnect.org">MTConnect®</a>, processed, and then stored in a database. 
 
-Setup is easy using the built in Device Manager page. Devices can be added from our Device Catalog which contains preconfigured devices and all that is needed is to enter in the MTConnect Agent and database information. Users can also share their devices using the Device Catalog so each configuration can be improved upon by the community. The Device Manager has all of the tools to fully configure each device. Some pages are specific to the Server or Client applications so depending on which application the Device Manager is opened in, the options may vary.
+Machine Data Collection (MDC) software is used to evaluate shop productivity and identify problem areas. TrakHound provides free dashboards to view current machine status and basic production data so shop supervisors can quickly see which machines are operating normally and which ones are in need of attention. This transparency allows for a smoother workflow through your shop with reduced downtime. 
 
-##Client
-TrakHound Client is a Windows application and is used to view the data that was processed and stored by the server. The client's core only manages the pages, updates, etc. and all of the data related pages are plugins. Preinstalled plugins include Dashboard, Device Compare, Table Manager, and Status Data. These provide the tools necessary to monitor current basic device / production data.
+Setup is easy using the built in Device Manager where a user can search their entire network for MTConnect compatible machines and then those machines get cross-referenced with our Device Catalog to find the best matched Device Configuration. Once matched, a list of machines on the network will be shown and the user can simply select which ones to monitor. Device Configurations are fully customizable by the user.
 
-Plugins for further analysis of the data such as reporting, graphing, alerts, etc. can be downloaded from our web site.
+ <table style="width:100%">
+ 
+  <tr>
+    <td><img src="http://www.feenux.com/github/v2/images/screenshots/Dashboard_01.png"/></td>
+    <td><img src="http://www.feenux.com/github/v2/images/screenshots/Dashboard_02.png"/></td>
+    <td><img src="http://www.feenux.com/github/v2/images/screenshots/Dashboard_03.png"/></td>
+  </tr>
+  
+  <tr>
+    <td><img src="http://www.feenux.com/github/v2/images/screenshots/DeviceManager_01.png"/></td>
+    <td><img src="http://www.feenux.com/github/v2/images/screenshots/DeviceManager_02.png"/></td>
+    <td><img src="http://www.feenux.com/github/v2/images/screenshots/DeviceManager_05.png"/></td>
+  </tr>
+  
+</table> 
 
-<br>
+##How it Works
 
-<div align="center">
-  <div>
-    <a href="http://feenux.com/github/images/client_dashboard_01.png"><img width="400" src="http://feenux.com/github/images/client_dashboard_01_sm.png"/></a>
-    &nbsp;&nbsp;
-    <a href="http://feenux.com/github/images/client_tablemanager_01.png"><img width="400" src="http://feenux.com/github/images/client_tablemanager_01_sm.png"/></a>
-  </div>
-</div>
+TrakHound works by reading data using the MTConnect communications protocol. This data is then processed and stored in a database. The default database is SQLite where data is stored on the PC that TrakHound is installed on. Other databases can be used for remote storage and currently MySQL and SQL Server are supported.
 
-<br>
+####Basic Setup
+Below is a diagram showing how a basic setup works. This shows two machines communicating directly with one PC and all data is stored on that PC. This is a good starting point for most users and can be used in scenarios where only one user needs to view data.
+![Basic Communications Setup] (http://feenux.com/github/v2/images/diagrams/overview_basic_01.png)
 
-<div align="center">
-  <div>
-    <a href="http://feenux.com/github/images/client_devicemanager_01.png"><img width="400" src="http://feenux.com/github/images/client_devicemanager_01_sm.png"/></a>
-    &nbsp;&nbsp;
-    <a href="http://feenux.com/github/images/client_plugins_01.png"><img width="400" src="http://feenux.com/github/images/client_plugins_01_sm.png"/></a>
-  </div>
-</div>
+####Standalone Server Setup
+Below is a diagram showing how a standalone server setup works. This shows two machines communicating with a standalone server with TrakHound Server installed. The server then stores the data in a separate database that can be accessed by PC's on the network. Multiple PC's can then view data using TrakHound while reading directly from the database.
+![Standalone Communications Setup] (http://feenux.com/github/v2/images/diagrams/overview_standalone_01.png)
 
-
-##Server
-TrakHound Server is used to collect, process, and store the data from each device. The data collection is built in but the processing of the data is left up to plugins. Server plugins receive the Probe, Current, and Sample data and can also send data between each other. Preinstalled plugins include Instance Table, Generated Data, Shifts, Cycles, and OEE. Data is stored in a database which is also controlled by plugins. Preinstalled is a MySQL database plugin but any other SQL type of database can be developed. Data can also be stored in multiple databases for redundancy or other uses.
-
-The Server is ran as a Windows application and is controlled by a System Tray Icon menu. The menu contains options to Login / Logout, Start / Stop server, open the Device Manager for configuring the server, and a Console. 
-
-<br>
-
-<div align="center">
-  <div>
-    <img src="http://feenux.com/github/images/server_menu_01.png"/>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <img src="http://feenux.com/github/images/server_menu_02.png"/>
-  </div>
-</div>
-
-<br><br>
-
-Important messages are displayed as Windows Notifications and others are written to the Console and stored in log files.
-
-![TrakHound Server Notification] (http://feenux.com/github/images/server_notification_01.png)
-
-![TrakHound Server Console] (http://feenux.com/github/images/server_console_01.png)
+##Licensing
+TrakHound is licensed under the GPLv3 software license. For more information please contact us at info@TrakHound.org.
 
 ##Contributions
 TrakHound welcomes any comments, reccomendations, pull requests, or any other type of contributions! Please fork and contribute back at any time as this project was created as a tool for the community. If you have any questions please contact us at info@TrakHound.org.
