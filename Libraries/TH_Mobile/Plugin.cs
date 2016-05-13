@@ -156,48 +156,44 @@ namespace TH_Mobile
 
                         break;
 
-                    // Get Snapshot Data
-                    case "oee_shifts":
+                    // Get OEE Value
+                    case "oee_shift_oee":
 
                         if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
                         {
-                            var table = data.Data02 as DataTable;
-                            if (table != null)
+                            double val = (double)data.Data02;
+                            if (updateData.Oee != val)
                             {
-                                var oees = new List<double>();
-                                var availabilities = new List<double>();
-                                var performances = new List<double>();
+                                updateData.Oee = Math.Round(val, 2);
+                                queue.Add(updateData);
+                            }
+                        }
 
-                                foreach (DataRow row in table.Rows)
-                                {
-                                    oees.Add(DataTable_Functions.GetDoubleFromRow("OEE", row));
-                                    availabilities.Add(DataTable_Functions.GetDoubleFromRow("AVAILABILITY", row));
-                                    performances.Add(DataTable_Functions.GetDoubleFromRow("PERFORMANCE", row));
-                                }
+                        break;
 
-                                // OEE
-                                double oee = oees.Average();
-                                if (updateData.Oee != oee)
-                                {
-                                    updateData.Oee = oee;
-                                    queue.Add(updateData);
-                                }
+                    case "oee_shift_availability":
 
-                                // Availability
-                                double availability = availabilities.Average();
-                                if (updateData.Availability != availability)
-                                {
-                                    updateData.Availability = availability;
-                                    queue.Add(updateData);
-                                }
+                        if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
+                        {
+                            double val = (double)data.Data02;
+                            if (updateData.Availability != val)
+                            {
+                                updateData.Availability = Math.Round(val, 2);
+                                queue.Add(updateData);
+                            }
+                        }
 
-                                // Performance
-                                double performance = performances.Average();
-                                if (updateData.Performance != performance)
-                                {
-                                    updateData.Performance = performance;
-                                    queue.Add(updateData);
-                                }
+                        break;
+
+                    case "oee_shift_performance":
+
+                        if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
+                        {
+                            double val = (double)data.Data02;
+                            if (updateData.Performance != val)
+                            {
+                                updateData.Performance = Math.Round(val, 2);
+                                queue.Add(updateData);
                             }
                         }
 

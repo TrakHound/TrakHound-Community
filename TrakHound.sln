@@ -127,6 +127,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrakHound-Server-Controller
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrakHound-Server-Login", "Server\TrakHound-Server-Login\TrakHound-Server-Login.csproj", "{00EA8291-3359-4BFB-ADA3-BA7B70B312BC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrakHound-Server-DeviceManager", "Server\TrakHound-Server-DeviceManager\TrakHound-Server-DeviceManager.csproj", "{0EB86538-7605-4BFB-8535-BDAAFEDFBF21}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -433,6 +435,12 @@ Global
 		{00EA8291-3359-4BFB-ADA3-BA7B70B312BC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{00EA8291-3359-4BFB-ADA3-BA7B70B312BC}.Server|Any CPU.ActiveCfg = Release|Any CPU
 		{00EA8291-3359-4BFB-ADA3-BA7B70B312BC}.Server|Any CPU.Build.0 = Release|Any CPU
+		{0EB86538-7605-4BFB-8535-BDAAFEDFBF21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EB86538-7605-4BFB-8535-BDAAFEDFBF21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EB86538-7605-4BFB-8535-BDAAFEDFBF21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EB86538-7605-4BFB-8535-BDAAFEDFBF21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EB86538-7605-4BFB-8535-BDAAFEDFBF21}.Server|Any CPU.ActiveCfg = Release|Any CPU
+		{0EB86538-7605-4BFB-8535-BDAAFEDFBF21}.Server|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -494,5 +502,6 @@ Global
 		{5D79B992-FA0E-4252-BA30-420F2C2954C0} = {CB7734FD-9E6C-479C-A91A-40385CBF9A67}
 		{4A4ECF29-E132-4A1B-AA77-2BE437D270F0} = {FC5BAEDE-7CDF-4883-96CA-8A279A632F01}
 		{00EA8291-3359-4BFB-ADA3-BA7B70B312BC} = {FC5BAEDE-7CDF-4883-96CA-8A279A632F01}
+		{0EB86538-7605-4BFB-8535-BDAAFEDFBF21} = {FC5BAEDE-7CDF-4883-96CA-8A279A632F01}
 	EndGlobalSection
 EndGlobal

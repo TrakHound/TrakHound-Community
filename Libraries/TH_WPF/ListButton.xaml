@@ -44,6 +44,7 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+            
 
             <!--Selection Indicator-->
             <Rectangle >
@@ -97,9 +98,12 @@
                 <Rectangle.Style>
                     <Style TargetType="Rectangle">
                         <Setter Property="Fill" Value="{Binding Foreground}"/>
-                        <Setter Property="Visibility" Value="Visible"/>
+                        <Setter Property="Visibility" Value="Collapsed"/>
                         <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
                         <Style.Triggers>
+                            <DataTrigger Binding="{Binding ButtonContent}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
                             <DataTrigger Binding="{Binding ShowImage}" Value="false">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
@@ -113,8 +117,11 @@
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Foreground" Value="{Binding Foreground}"/>
-                        <Setter Property="Visibility" Value="Visible"/>
+                        <Setter Property="Visibility" Value="Collapsed"/>
                         <Style.Triggers>
+                            <DataTrigger Binding="{Binding ButtonContent}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
                             <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>

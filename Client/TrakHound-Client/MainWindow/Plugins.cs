@@ -503,28 +503,6 @@ namespace TrakHound_Client
                 }
             }
         }
-        //private void Plugin_ShowRequested(EventData data)
-        //{
-        //    if (data != null && data.Id != null && data.Data02 != null)
-        //    {
-        //        if (data.Id.ToLower() == "show")
-        //        {
-        //            if (typeof(IClientPlugin).IsAssignableFrom(data.Data02.GetType()))
-        //            {
-        //                var plugin = (IClientPlugin)data.Data02;
-
-        //                string title = plugin.Title;
-        //                ImageSource img = plugin.Image;
-        //                string tag = null;
-
-        //                if (data.Data03 != null) title = data.Data03.ToString();
-        //                if (data.Data04 != null) tag = data.Data04.ToString();
-
-        //                AddTab(plugin, title, img, tag);
-        //            }
-        //        }
-        //    }
-        //}
 
         /// <summary>
         /// Plugin has been signaled to be unloaded

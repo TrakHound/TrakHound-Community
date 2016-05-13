@@ -30,21 +30,19 @@ namespace TH_Device_Server
 
         public void Start()
         {
-            if (Configuration.Databases_Server.Databases.Count > 0)
-            {
-                Logger.Log("Device Server Started :: " + Configuration.Description.Description + " [" + Configuration.Description.Device_ID + "]", Logger.LogLineType.Notification);
-
-                Initialize(Configuration);
-
-                connectionTimer = new System.Timers.Timer();
-                connectionTimer.Interval = 100;
-                connectionTimer.Elapsed += ConnectionTimer_Elapsed;
-                connectionTimer.Enabled = true;
-            }
-            else
+            if (Configuration.Databases_Server.Databases.Count == 0)
             {
                 Logger.Log("No Server Databases Configured", Logger.LogLineType.Warning);
             }
+
+            Logger.Log("Device Server Started :: " + Configuration.Description.Description + " [" + Configuration.Description.Device_ID + "]", Logger.LogLineType.Notification);
+
+            Initialize(Configuration);
+
+            connectionTimer = new System.Timers.Timer();
+            connectionTimer.Interval = 100;
+            connectionTimer.Elapsed += ConnectionTimer_Elapsed;
+            connectionTimer.Enabled = true;
         }
 
         public void Stop()

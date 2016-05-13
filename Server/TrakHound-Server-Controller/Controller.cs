@@ -34,6 +34,8 @@ namespace TrakHound_Server_Controller
         private ToolStripMenuItem mLogin;
         private ToolStripMenuItem mLogout;
 
+        private ToolStripMenuItem mMobileId;
+
         private ToolStripMenuItem mStartService;
         private ToolStripMenuItem mStopService;
 
@@ -45,6 +47,10 @@ namespace TrakHound_Server_Controller
         void mLogin_Click(object sender, EventArgs e) { Login(); }
 
         void mLogout_Click(object sender, EventArgs e) { Logout(); }
+
+
+        private void mMobileId_Click(object sender, EventArgs e) { ShowMobileId(); }
+
 
         void mStartService_Click(object sender, EventArgs e) { }
 
@@ -72,6 +78,7 @@ namespace TrakHound_Server_Controller
 
             mLogin = new ToolStripMenuItem();
             mLogout = new ToolStripMenuItem();
+            mMobileId = new ToolStripMenuItem();
             mStartService = new ToolStripMenuItem();
             mStopService = new ToolStripMenuItem();
 
@@ -83,6 +90,10 @@ namespace TrakHound_Server_Controller
             mLogout.Click += mLogout_Click;
             mContextMenu.Items.Add(mLogout);
             mLogout.Enabled = false;
+
+            mMobileId.Text = "Show Mobile ID";
+            mMobileId.Click += mMobileId_Click;
+            mContextMenu.Items.Add(mMobileId);
 
             //var seperator = new ToolStripSeparator();
             //mContextMenu.Items.Add(seperator);
@@ -210,6 +221,24 @@ namespace TrakHound_Server_Controller
             }
 
             firstLoad = false;
+        }
+
+
+        private const string LOCAL_USER_ID = "local_user_id";
+
+        private void ShowMobileId()
+        {
+            string localUserId = Registry_Functions.GetValue(LOCAL_USER_ID);
+            if (localUserId == null)
+            {
+                // Generate new random Local User ID if not already set in Registry
+                // (Should only need to be set once)
+                localUserId = String_Functions.RandomString(10);
+
+                Registry_Functions.SetKey(LOCAL_USER_ID, localUserId);
+            }
+
+            MessageBox.Show("Your Mobile ID is: " + localUserId);
         }
 
         #endregion

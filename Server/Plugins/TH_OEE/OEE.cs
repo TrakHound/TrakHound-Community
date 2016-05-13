@@ -231,6 +231,10 @@ namespace TH_OEE
             Database.ShiftBased.UpdateRows(config, oeeDatas);
 
             SendShiftsTable(oeeDatas);
+
+            SendShiftOee(shiftOeeData.Oee);
+            SendShiftAvailability(shiftOeeData.Availability);
+            SendShiftPerformance(shiftOeeData.Performance);
         }
 
 
@@ -373,6 +377,33 @@ namespace TH_OEE
             edata.Id = "oee_cycles";
             edata.Data01 = config;
             edata.Data02 = dt;
+            if (SendData != null) SendData(edata);
+        }
+
+        void SendShiftOee(double val)
+        {
+            var edata = new EventData();
+            edata.Id = "oee_shift_oee";
+            edata.Data01 = config;
+            edata.Data02 = val;
+            if (SendData != null) SendData(edata);
+        }
+
+        void SendShiftAvailability(double val)
+        {
+            var edata = new EventData();
+            edata.Id = "oee_shift_availability";
+            edata.Data01 = config;
+            edata.Data02 = val;
+            if (SendData != null) SendData(edata);
+        }
+
+        void SendShiftPerformance(double val)
+        {
+            var edata = new EventData();
+            edata.Id = "oee_shift_performance";
+            edata.Data01 = config;
+            edata.Data02 = val;
             if (SendData != null) SendData(edata);
         }
 
