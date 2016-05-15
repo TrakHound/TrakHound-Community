@@ -21,14 +21,12 @@ namespace TH_Mobile
             Start();
         }
 
-
         public void Add(UpdateData updateData)
         {
             int index = updateDatas.FindIndex(x => x.UniqueId == updateData.UniqueId);
             if (index >= 0) updateDatas[index] = updateData;
             else updateDatas.Add(updateData);
         }
-
 
         private void Start()
         {

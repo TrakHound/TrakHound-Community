@@ -35,5 +35,10 @@ namespace TH_Mobile
         public double Oee { get; set; }
         public double Availability { get; set; }
         public double Performance { get; set; }
+
+        public int TotalSeconds { get; set; }
+        public int ProductionSeconds { get; set; }
+        public int IdleSeconds { get; set; }
+        public int AlertSeconds { get; set; }
     }
 }

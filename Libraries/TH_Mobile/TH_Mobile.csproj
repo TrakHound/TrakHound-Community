@@ -60,6 +60,10 @@
     <Compile Include="UpdateQueue.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Server\Plugins\TH_ShiftTable\TH_ShiftTable.csproj">
+      <Project>{21996c58-2404-42e4-a2d7-bec46aef6357}</Project>
+      <Name>TH_ShiftTable</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Server\Plugins\TH_Status\TH_Status.csproj">
       <Project>{4e167a2b-4229-444c-9b35-0ed814791fe1}</Project>
       <Name>TH_Status</Name>

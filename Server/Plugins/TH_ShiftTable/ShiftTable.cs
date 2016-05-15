@@ -37,13 +37,10 @@ namespace TH_ShiftTable
             if (sc != null)
             {
                 config.CustomClasses.Add(sc);
-
                 configuration = config;
 
                 CreateShiftSegmentsTable(sc.shifts);
                 CreateTable();
-
-                rowInfos = GetExistingValues();
             }
         }
 
@@ -77,7 +74,7 @@ namespace TH_ShiftTable
             var infos = new List<TH_Database.Tables.Variables.VariableData>();
 
             // Update shift_current in "Variables" table
-            CurrentShiftInfo shiftInfo = CurrentShiftInfo.Get(configuration, returnData.Header.CreationTime);
+            var shiftInfo = CurrentShiftInfo.Get(configuration, returnData.Header.CreationTime);
             if (shiftInfo != null)
             {
                 infos.Add(new TH_Database.Tables.Variables.VariableData("shift_name", shiftInfo.name, timestamp));
@@ -114,6 +111,8 @@ namespace TH_ShiftTable
             }
 
             TH_Database.Tables.Variables.Update(configuration.Databases_Server, infos.ToArray(), tablePrefix);
+
+            rowInfos = GetExistingValues(shiftInfo);
 
 
             var data = new EventData();
@@ -280,11 +279,11 @@ namespace TH_ShiftTable
         }
 
         
-        List<ShiftRowInfo> GetExistingValues()
+        List<ShiftRowInfo> GetExistingValues(CurrentShiftInfo info)
         {
             var Result = new List<ShiftRowInfo>();
 
-            DataTable dt = Table.Get(configuration.Databases_Server, GetTableName(TableNames.Shifts));
+            DataTable dt = Table.Get(configuration.Databases_Server, GetTableName(TableNames.Shifts), "WHERE date='" + info.date + "'");
             if (dt != null)
             {
                 foreach (DataRow row in dt.Rows)

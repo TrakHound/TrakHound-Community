@@ -48,7 +48,7 @@ namespace TrakHound_Client.Controls
         public ImageSource TabImage { get; set; }
 
 
-        ObservableCollection<ListButton> pages;
+        private ObservableCollection<ListButton> pages;
         public ObservableCollection<ListButton> Pages
         {
             get

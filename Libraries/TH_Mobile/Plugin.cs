@@ -12,6 +12,7 @@ using TH_Configuration;
 using TH_Global.Functions;
 using TH_Plugins;
 using TH_Plugins.Server;
+using TH_ShiftTable;
 using TH_Status;
 
 namespace TH_Mobile
@@ -193,6 +194,50 @@ namespace TH_Mobile
                             if (updateData.Performance != val)
                             {
                                 updateData.Performance = Math.Round(val, 2);
+                                queue.Add(updateData);
+                            }
+                        }
+
+                        break;
+
+                    case "shifttable_shiftrowinfos":
+
+                        if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
+                        {
+                            var infos = (List<ShiftRowInfo>)data.Data02;
+
+                            int total = 0;
+                            int production = 0;
+                            int idle = 0;
+                            int alert = 0;
+
+                            foreach (var info in infos)
+                            {
+                                total += info.totalTime;
+
+                                // Production
+                                var item = info.genEventRowInfos.Find(x => x.columnName.ToLower() == "production__true");
+                                if (item != null) production += item.seconds;
+
+                                // Idle
+                                item = info.genEventRowInfos.Find(x => x.columnName.ToLower() == "idle__true");
+                                if (item != null) idle += item.seconds;
+
+                                // Alert
+                                item = info.genEventRowInfos.Find(x => x.columnName.ToLower() == "alert__true");
+                                if (item != null) alert += item.seconds;
+                            }
+
+                            if (updateData.TotalSeconds != total ||
+                                updateData.ProductionSeconds != production ||
+                                updateData.IdleSeconds != idle ||
+                                updateData.AlertSeconds != alert)
+                            {
+                                updateData.TotalSeconds = total;
+                                updateData.ProductionSeconds = production;
+                                updateData.IdleSeconds = idle;
+                                updateData.AlertSeconds = alert;
+
                                 queue.Add(updateData);
                             }
                         }
