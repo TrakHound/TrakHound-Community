@@ -16,6 +16,25 @@ namespace TH_Global.Shifts
             Id = id;
         }
 
+        public static ShiftId Get(string date, string shift, string segment = null)
+        {
+            DateTime d = DateTime.MinValue;
+            DateTime.TryParse(date, out d);
+
+            int s1 = -1;
+            int.TryParse(shift, out s1);
+
+            int s2 = 0;
+            if (segment != null) int.TryParse(segment, out s2);
+
+            if (d > DateTime.MinValue && s1 >= 0)
+            {
+                return new ShiftId(d.ToString("yyyyMMdd") + "_" + s1.ToString("00") + "_" + s2.ToString("00"));
+            }
+
+            return null;
+        }
+
         public string Id { get; set; }
 
         public string Date

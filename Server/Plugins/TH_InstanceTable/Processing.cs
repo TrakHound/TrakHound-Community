@@ -287,7 +287,15 @@ namespace TH_InstanceTable
                     var value = new InstanceData.DataItemValue();
                     value.Id = item.DataItemId;
                     //value.Value = item.Value;
-                    value.Value = item.CDATA;
+                    //value.Value = item.CDATA;
+
+                    if (item.Category == TH_MTConnect.Streams.DataItemCategory.CONDITION)
+                    {
+                        value.Value = item.Value;
+                    }
+                    else value.Value = item.CDATA;
+
+
                     data.Values.Add(value);
                     usedVariables.Add(value.Id);
                 }
@@ -329,7 +337,14 @@ namespace TH_InstanceTable
             {
                 var instanceData = new InstanceVariableData();
                 instanceData.Id = item.DataItemId;
-                instanceData.Value = item.Value;
+                //instanceData.Value = item.Value;
+
+                if (item.Category == TH_MTConnect.Streams.DataItemCategory.CONDITION)
+                {
+                    instanceData.Value = item.Value;
+                }
+                else instanceData.Value = item.CDATA;
+
                 instanceData.Timestamp = item.Timestamp;
                 instanceData.Sequence = item.Sequence;
 

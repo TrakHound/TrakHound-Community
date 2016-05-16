@@ -4,7 +4,9 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
+using System.Data;
 
+using TH_Global.Functions;
 using TH_Global.Shifts;
 
 namespace TH_OEE
@@ -122,6 +124,90 @@ namespace TH_OEE
             }
 
             return result;
+        }
+
+        public static OEEData FromCycleDataTable(DataTable dt, string shiftId, string cycleId, string cycleInstanceId)
+        {
+            OEEData result = null;
+
+            var match = dt.Select("shift_id='" + shiftId + "' AND cycle_id='" + cycleId + "' AND cycle_instance_id='" + cycleInstanceId + "'");
+            if (match != null && match.Length > 0)
+            {
+                DataRow row = match[0];
+
+                result = new OEEData();
+                result.ShiftId = new ShiftId(shiftId);
+                result.ConstantQuality = 1;
+                result.CycleId = cycleId;
+                result.CycleInstanceId = cycleInstanceId;
+                result.PlannedProductionTime = DataTable_Functions.GetDoubleFromRow("planned_production_time", row);
+                result.OperatingTime = DataTable_Functions.GetDoubleFromRow("operating_time", row);
+                result.IdealOperatingTime = DataTable_Functions.GetDoubleFromRow("ideal_operating_time", row);
+            }
+
+            return result;
+        }
+
+        public static OEEData FromCycleDataRow(DataRow row)
+        {
+            string shiftId = DataTable_Functions.GetRowValue("shift_id", row);
+            string cycleId = DataTable_Functions.GetRowValue("cycle_id", row);
+            string cycleInstanceId = DataTable_Functions.GetRowValue("cycle_instance_id", row);
+
+            if (shiftId != null && cycleId != null && cycleInstanceId != null)
+            {
+                var result = new OEEData();
+                result.ShiftId = new ShiftId(shiftId);
+                result.ConstantQuality = 1;
+                result.CycleId = cycleId;
+                result.CycleInstanceId = cycleInstanceId;
+                result.PlannedProductionTime = DataTable_Functions.GetDoubleFromRow("planned_production_time", row);
+                result.OperatingTime = DataTable_Functions.GetDoubleFromRow("operating_time", row);
+                result.IdealOperatingTime = DataTable_Functions.GetDoubleFromRow("ideal_operating_time", row);
+
+                return result;
+            }
+
+            return null;
+        }
+
+        public static OEEData FromSegmentDataRow(DataRow row)
+        {
+            string shiftId = DataTable_Functions.GetRowValue("shift_id", row);
+
+            if (shiftId != null)
+            {
+                var result = new OEEData();
+                result.ShiftId = new ShiftId(shiftId);
+                result.ConstantQuality = 1;
+                result.PlannedProductionTime = DataTable_Functions.GetDoubleFromRow("planned_production_time", row);
+                result.OperatingTime = DataTable_Functions.GetDoubleFromRow("operating_time", row);
+                result.IdealOperatingTime = DataTable_Functions.GetDoubleFromRow("ideal_operating_time", row);
+
+                return result;
+            }
+
+            return null;
+        }
+
+        public static OEEData FromShiftDataRow(DataRow row)
+        {
+            string date = DataTable_Functions.GetRowValue("date", row);
+            string shift = DataTable_Functions.GetRowValue("shift", row);
+
+            if (date != null && shift != null)
+            {
+                var result = new OEEData();
+                result.ShiftId = ShiftId.Get(date, shift);
+                result.ConstantQuality = 1;
+                result.PlannedProductionTime = DataTable_Functions.GetDoubleFromRow("planned_production_time", row);
+                result.OperatingTime = DataTable_Functions.GetDoubleFromRow("operating_time", row);
+                result.IdealOperatingTime = DataTable_Functions.GetDoubleFromRow("ideal_operating_time", row);
+
+                return result;
+            }
+
+            return null;
         }
 
         public override string ToString()

@@ -61,6 +61,8 @@ namespace TH_ShiftTable
             }
         }
 
+        private CurrentShiftInfo currentShiftInfo;
+
         public void Update_CurrentShiftInfo(TH_MTConnect.Streams.ReturnData returnData)
         {
             currentData = returnData;
@@ -111,6 +113,8 @@ namespace TH_ShiftTable
             }
 
             TH_Database.Tables.Variables.Update(configuration.Databases_Server, infos.ToArray(), tablePrefix);
+
+            currentShiftInfo = shiftInfo;
 
             rowInfos = GetExistingValues(shiftInfo);
 
@@ -202,8 +206,6 @@ namespace TH_ShiftTable
             }
         }
 
-
-        //public string TableName = TableNames.Shifts;
         string[] primaryKey = { "ID" };
 
         List<string> ShiftTableColumns;
@@ -294,7 +296,7 @@ namespace TH_ShiftTable
 
                     DateTime date = DateTime.MinValue;
                     DateTime.TryParse(row["date"].ToString(), out date);
-                    sri.date = new ShiftDate(date);
+                    sri.date = new ShiftDate(date, false);
 
                     sri.shift = row["shift"].ToString();
 
@@ -305,25 +307,25 @@ namespace TH_ShiftTable
                     // get start time -----------------------------------------
                     date = DateTime.MinValue;
                     DateTime.TryParse(row["start"].ToString(), out date);
-                    sri.start = new ShiftTime(date);
+                    sri.start = new ShiftTime(date, false);
                     // --------------------------------------------------------
 
                     // get end time -------------------------------------------
                     date = DateTime.MinValue;
                     DateTime.TryParse(row["end"].ToString(), out date);
-                    sri.end = new ShiftTime(date);
+                    sri.end = new ShiftTime(date, false);
                     // --------------------------------------------------------
 
                     // get start time utc -------------------------------------
                     date = DateTime.MinValue;
                     DateTime.TryParse(row["start_utc"].ToString(), out date);
-                    sri.start = new ShiftTime(date);
+                    sri.start_utc = new ShiftTime(date, false);
                     // --------------------------------------------------------
 
                     // get end time utc ---------------------------------------
                     date = DateTime.MinValue;
                     DateTime.TryParse(row["end_utc"].ToString(), out date);
-                    sri.end = new ShiftTime(date);
+                    sri.end_utc = new ShiftTime(date, false);
                     // --------------------------------------------------------
 
                     sri.type = row["type"].ToString();
@@ -428,7 +430,7 @@ namespace TH_ShiftTable
             UpdateShiftRows(changedInfos);
 
             // Send List of Shift Info to other Plugins
-            SendShiftRowInfos(changedInfos);
+            SendShiftRowInfos(rowInfos);
         }
 
         // Returns list of CHANGED ShiftRowInfo objects and updates rowInfos
@@ -460,6 +462,8 @@ namespace TH_ShiftTable
                             emptyGeri.columnName = column;
                             info.genEventRowInfos.Add(emptyGeri);
                         }
+
+                        rowInfos.Add(info);
                     }
 
                     info.totalTime = newInfo.totalTime;
@@ -481,12 +485,78 @@ namespace TH_ShiftTable
                         }
                     }
 
+                    // Remove old rowInfos items (not in current ShiftDate)
+                    if (currentShiftInfo != null)
+                    {
+                        rowInfos.RemoveAll(x => x.date.ToString() != currentShiftInfo.date);
+                    }
+
                     result.Add(info);
-                    rowInfos.Add(info);
                 }
             }
 
             return result;
+        }
+        //List<ShiftRowInfo> UpdateRowInfos(List<ShiftRowInfo> newInfos)
+        //{
+        //    var result = new List<ShiftRowInfo>();
+
+        //    foreach (ShiftRowInfo newInfo in newInfos)
+        //    {
+        //        if (rowInfos != null)
+        //        {
+        //            ShiftRowInfo info = rowInfos.Find(x => x.date == newInfo.date && x.shift == newInfo.shift && x.segmentId == newInfo.segmentId);
+        //            if (info == null)
+        //            {
+        //                info = new ShiftRowInfo();
+        //                info.id = newInfo.id;
+        //                info.date = newInfo.date;
+        //                info.shift = newInfo.shift;
+        //                info.segmentId = newInfo.segmentId;
+        //                info.start = newInfo.start;
+        //                info.end = newInfo.end;
+        //                info.start_utc = newInfo.start_utc;
+        //                info.end_utc = newInfo.end_utc;
+        //                info.type = newInfo.type;
+
+        //                foreach (string column in GenEventColumns)
+        //                {
+        //                    var emptyGeri = new GenEventRowInfo();
+        //                    emptyGeri.columnName = column;
+        //                    info.genEventRowInfos.Add(emptyGeri);
+        //                }
+        //            }
+
+        //            info.totalTime = newInfo.totalTime;
+
+        //            // Update GenEventRowInfos
+        //            foreach (GenEventRowInfo geri in newInfo.genEventRowInfos)
+        //            {
+        //                GenEventRowInfo originalGeri = info.genEventRowInfos.Find(x => x.columnName == geri.columnName);
+        //                if (originalGeri != null)
+        //                {
+        //                    originalGeri.seconds += geri.seconds;
+        //                }
+        //                else
+        //                {
+        //                    var newGeri = new GenEventRowInfo();
+        //                    newGeri.columnName = geri.columnName;
+        //                    newGeri.seconds += geri.seconds;
+        //                    info.genEventRowInfos.Add(newGeri);
+        //                }
+        //            }
+
+        //            result.Add(info);
+        //            rowInfos.Add(info);
+        //        }
+        //    }
+
+        //    return result;
+        //}
+
+        void RemoveOldRowInfos(List<ShiftRowInfo> infos, CurrentShiftInfo shiftInfo)
+        {
+            infos.RemoveAll(x => x.date.ToString() != shiftInfo.date);
         }
 
         // Used to hold previous rowinfos

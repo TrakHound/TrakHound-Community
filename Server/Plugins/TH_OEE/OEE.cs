@@ -94,11 +94,18 @@ namespace TH_OEE
             {
                 if (cycleOeeData == null)
                 {
-                    cycleOeeData = new OEEData();
-                    cycleOeeData.ConstantQuality = 1; // Change when Quality (TH_Parts) is implemented
-                    cycleOeeData.ShiftId = new ShiftId(cycle.ShiftId.Id);
-                    cycleOeeData.CycleId = cycle.CycleId;
-                    cycleOeeData.CycleInstanceId = cycle.InstanceId;
+                    // Get previous row from database
+                    cycleOeeData = Database.CycleBased.GetPrevious(config, cycle.ShiftId, cycle.CycleId, cycle.InstanceId);
+
+                    // If not row found in database then just create a new one
+                    if (cycleOeeData == null)
+                    {
+                        cycleOeeData = new OEEData();
+                        cycleOeeData.ConstantQuality = 1; // Change when Quality (TH_Parts) is implemented
+                        cycleOeeData.ShiftId = new ShiftId(cycle.ShiftId.Id);
+                        cycleOeeData.CycleId = cycle.CycleId;
+                        cycleOeeData.CycleInstanceId = cycle.InstanceId;
+                    }
 
                     previousCycleCycleDuration = 0;
                 }
@@ -169,11 +176,18 @@ namespace TH_OEE
             {
                 if (shiftOeeData == null)
                 {
-                    shiftOeeData = new OEEData();
-                    shiftOeeData.ConstantQuality = 1; // Change when Quality (TH_Parts) is implemented
-                    shiftOeeData.ShiftId = new ShiftId(cycle.ShiftId.Id);
-                    shiftOeeData.CycleId = cycle.CycleId;
-                    shiftOeeData.CycleInstanceId = cycle.InstanceId;
+                    // Get previous row from database
+                    shiftOeeData = Database.ShiftBased.GetPrevious(config, cycle.ShiftId);
+                    
+                    // If not row found in database then just create a new one
+                    if (shiftOeeData == null)
+                    {
+                        shiftOeeData = new OEEData();
+                        shiftOeeData.ConstantQuality = 1; // Change when Quality (TH_Parts) is implemented
+                        shiftOeeData.ShiftId = new ShiftId(cycle.ShiftId.Id);
+                        shiftOeeData.CycleId = cycle.CycleId;
+                        shiftOeeData.CycleInstanceId = cycle.InstanceId;
+                    }
 
                     previousShiftCycleDuration = 0;
                 }
@@ -249,13 +263,28 @@ namespace TH_OEE
             {
                 if (segmentOeeData == null)
                 {
-                    segmentOeeData = new OEEData();
-                    segmentOeeData.ConstantQuality = 1; // Change when Quality (TH_Parts) is implemented
-                    segmentOeeData.ShiftId = new ShiftId(cycle.ShiftId.Id);
-                    segmentOeeData.CycleId = cycle.CycleId;
-                    segmentOeeData.CycleInstanceId = cycle.InstanceId;
+                    // Get previous row from database
+                    segmentOeeData = Database.SegmentBased.GetPrevious(config, cycle.ShiftId);
+
+                    // If not row found in database then just create a new one
+                    if (segmentOeeData == null)
+                    {
+                        segmentOeeData = new OEEData();
+                        segmentOeeData.ConstantQuality = 1; // Change when Quality (TH_Parts) is implemented
+                        segmentOeeData.ShiftId = new ShiftId(cycle.ShiftId.Id);
+                        segmentOeeData.CycleId = cycle.CycleId;
+                        segmentOeeData.CycleInstanceId = cycle.InstanceId;
+                    }
 
                     previousSegmentCycleDuration = 0;
+
+                    //segmentOeeData = new OEEData();
+                    //segmentOeeData.ConstantQuality = 1; // Change when Quality (TH_Parts) is implemented
+                    //segmentOeeData.ShiftId = new ShiftId(cycle.ShiftId.Id);
+                    //segmentOeeData.CycleId = cycle.CycleId;
+                    //segmentOeeData.CycleInstanceId = cycle.InstanceId;
+
+                    //previousSegmentCycleDuration = 0;
                 }
 
                 // Get (or create) the OEEInfo for each cycle

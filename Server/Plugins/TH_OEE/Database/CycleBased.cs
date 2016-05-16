@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using TH_Configuration;
 using TH_Database;
 using TH_Global;
+using TH_Global.Shifts;
 using TH_Plugins.Database;
 
 namespace TH_OEE.Database
@@ -49,6 +50,17 @@ namespace TH_OEE.Database
             ColumnDefinition[] ColArray = columns.ToArray();
 
             Table.Create(config.Databases_Server, Global.GetTableName(TABLENAME, config.DatabaseId), ColArray, primaryKey);
+        }
+
+        public static OEEData GetPrevious(Configuration config, ShiftId shiftId, string cycleId, string cycleInstanceId)
+        {
+            var dt = Table.Get(config.Databases_Server, Global.GetTableName(TABLENAME, config.DatabaseId), "WHERE shift_id='" + shiftId + "' AND cycle_id='" + cycleId + "' AND cycle_instance_id='" + cycleInstanceId + "'");
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                return OEEData.FromCycleDataRow(dt.Rows[0]);
+            }
+
+            return null;
         }
 
         public static void UpdateRows(Configuration config, List<OEEData> datas)
