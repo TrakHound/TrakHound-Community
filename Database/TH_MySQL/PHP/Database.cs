@@ -34,7 +34,7 @@ namespace TH_MySQL.PHP
 
             string url = "http://" + config.PHP_Server + PHP_Directory + "/Create_Database.php";
 
-            if (HTTP.SendData(url, values) == "true") Result = true;
+            if (HTTP.POST(url, values) == "true") Result = true;
 
             return Result;
 
@@ -58,7 +58,7 @@ namespace TH_MySQL.PHP
 
             string url = "http://" + config.PHP_Server + PHP_Directory + "/Create_Database.php";
 
-            if (HTTP.SendData(url, values) == "true") Result = true;
+            if (HTTP.POST(url, values) == "true") Result = true;
 
             return Result;
 

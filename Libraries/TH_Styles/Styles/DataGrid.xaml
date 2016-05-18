@@ -28,7 +28,7 @@
 
     <Style TargetType="DataGridColumnHeader">
         <Setter Property="MinHeight" Value="30"/>
-        <Setter Property="Background" Value="#eee"/>
+        <Setter Property="Background" Value="#F8F8F8"/>
         <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Template">
@@ -37,7 +37,8 @@
                     <Border Name="bd"
                                 Background="{TemplateBinding Background}"
                                 Margin="0,0,0,0"
-                                BorderThickness="0,0,0,0"    
+                                BorderBrush="{StaticResource Shade_Normal}"
+                                BorderThickness="0,0,1,0"    
                                 >
                         <Grid>
                             <!--Content-->

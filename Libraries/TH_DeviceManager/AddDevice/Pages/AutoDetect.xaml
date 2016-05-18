@@ -282,11 +282,11 @@
 
             </Grid>
 
-            <!--Number Of Devices Already Added-->
+            <!--Statistics-->
             <StackPanel Orientation="Horizontal">
 
-                <!--Number Of Devices-->
-                <TextBlock Text="{Binding DevicesAlreadyAdded}" Foreground="{StaticResource Foreground_Normal}" FontWeight="Bold" FontSize="12pt" VerticalAlignment="Center" Margin="0,0,10,0">
+                <!--Number Of Devices Already Added-->
+                <TextBlock Foreground="{StaticResource Foreground_Normal}" VerticalAlignment="Center">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
                             <Setter Property="Visibility" Value="Visible"/>
@@ -297,10 +297,64 @@
                             </Style.Triggers>
                         </Style>
                     </TextBlock.Style>
+                    
+                    <Run Text="{Binding DevicesAlreadyAdded}" FontWeight="Bold" FontSize="12pt"/>
+
+                    <Run FontSize="8pt">
+                        <Run.Style>
+                            <Style TargetType="Run">
+                                <Setter Property="Text" Value="Devices Already Added"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DevicesAlreadyAdded}" Value="1">
+                                        <Setter Property="Text" Value="Device Already Added"/>
+                                    </DataTrigger>
+                                </Style.Triggers>                               
+                            </Style>
+                        </Run.Style>
+                    </Run>
+                    
                 </TextBlock>
 
+                <Rectangle Width="1" Fill="{StaticResource Foreground_Normal}" Margin="10,0"/>
+
+                <!--Number of Network Nodes Found-->
+                <TextBlock Foreground="{StaticResource Foreground_Normal}" VerticalAlignment="Center">
+                    
+                    <Run Text="{Binding NetworkNodesFound}" FontWeight="Bold" FontSize="12pt"/>
+
+                    <Run FontSize="8pt">
+                        <Run.Style>
+                            <Style TargetType="Run">
+                                <Setter Property="Text" Value="Network Nodes Found"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding NetworkNodesFound}" Value="1">
+                                        <Setter Property="Text" Value="Network Node Found"/>
+                                    </DataTrigger>
+                                </Style.Triggers>                               
+                            </Style>
+                        </Run.Style>
+                    </Run>
+
+                </TextBlock>
+
+
+
+                <!--Number Of Devices-->
+                <!--<TextBlock Text="{Binding DevicesAlreadyAdded}" Foreground="{StaticResource Foreground_Normal}" FontWeight="Bold" FontSize="12pt" VerticalAlignment="Center" Margin="0,0,10,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DevicesAlreadyAdded}" Value="0">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>-->
+
                 <!--Text-->
-                <TextBlock Foreground="{StaticResource Foreground_Normal}" FontSize="8pt" VerticalAlignment="Center">
+                <!--<TextBlock Foreground="{StaticResource Foreground_Normal}"  VerticalAlignment="Center">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
                             <Setter Property="Visibility" Value="Visible"/>
@@ -315,7 +369,7 @@
                             </Style.Triggers>
                         </Style>
                     </TextBlock.Style>
-                </TextBlock>
+                </TextBlock>-->
 
             </StackPanel>
 

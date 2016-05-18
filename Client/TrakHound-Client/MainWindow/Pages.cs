@@ -105,6 +105,11 @@ namespace TrakHound_Client
             var tab = (TabHeader)sender;
             if (TabHeaders.Contains(tab)) TabHeaders.Remove(tab);
 
+            tab.Clicked -= TabHeader_Clicked;
+            tab.CloseClicked -= TabHeader_CloseClicked;
+            tab.Opened -= TabHeader_Opened;
+            tab.Closed -= TabHeader_Closed;
+
             SetTabWidths();
         }
 
@@ -472,6 +477,11 @@ namespace TrakHound_Client
 
         private void DeviceListPage_PageClosed()
         {
+            deviceListPage.PageClosed -= DeviceListPage_PageClosed;
+            deviceListPage.AddDeviceSelected -= DeviceManager_DeviceList_AddDeviceSelected;
+            deviceListPage.EditSelected -= DeviceManager_DeviceList_DeviceEditSelected;
+            deviceListPage.EditTableSelected -= DeviceManager_DeviceList_DeviceEditTableSelected;
+
             deviceListPage = null;
         }
 
@@ -511,7 +521,14 @@ namespace TrakHound_Client
             }
         }
 
-        private void AddDevicePage_PageClosed() { addDevicePage = null; }
+        private void AddDevicePage_PageClosed()
+        {
+            addDevicePage.DeviceListSelected -= DeviceManager_AddDevice_DeviceListSelected;
+            addDevicePage.EditTableSelected -= DeviceManager_AddDevice_EditTableSelected;
+            addDevicePage.PageClosed -= AddDevicePage_PageClosed;
+
+            addDevicePage = null;
+        }
 
         public void DeviceManager_AddDevice_Open()
         {

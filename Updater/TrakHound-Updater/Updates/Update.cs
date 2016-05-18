@@ -126,7 +126,7 @@ namespace TrakHound_Updater
 
                     string url = info.VerificationUrl;
 
-                    string responseString = TH_Global.Web.HTTP.SendData(url, values);
+                    string responseString = TH_Global.Web.HTTP.POST(url, values);
                     if (responseString != null)
                     {
                         return ProcessVerificationResponse(responseString);

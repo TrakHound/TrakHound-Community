@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
-using System.Net;
-using System.Web;
-using System.Net.Mail;
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
+using System.Collections.Specialized;
 using System.IO;
+using System.Net;
+using System.Text;
 
 namespace TH_Global.Web
 {
@@ -234,76 +233,76 @@ namespace TH_Global.Web
         /// <param name="url"></param>
         /// <param name="nvc"></param>
         /// <returns></returns>
-        public static string SendData(string url, NameValueCollection nvc)
-        {
+        //public static string SendData(string url, NameValueCollection nvc)
+        //{
 
-            string result = null;
+        //    string result = null;
 
-            int attempts = 0;
-            bool success = false;
-            string message = null;
+        //    int attempts = 0;
+        //    bool success = false;
+        //    string message = null;
 
-            // Try to send data for number of connectionAttempts
-            while (attempts < CONNECTION_ATTEMPTS && !success)
-            {
-                attempts += 1;
+        //    // Try to send data for number of connectionAttempts
+        //    while (attempts < CONNECTION_ATTEMPTS && !success)
+        //    {
+        //        attempts += 1;
 
-                try
-                {
-                    // Create POST data string
-                    StringBuilder postData = new StringBuilder();
-                    for (int x = 0; x <= nvc.AllKeys.Length - 1; x++)
-                    {
-                        string key = nvc.AllKeys[x];
-                        string vals = "";
-                        foreach (string value in nvc.GetValues(key))
-                        {
-                            vals += value;
-                        }
-                        postData.Append(EncodePostString(key));
-                        postData.Append("=");
-                        postData.Append(EncodePostString(vals));
+        //        try
+        //        {
+        //            // Create POST data string
+        //            StringBuilder postData = new StringBuilder();
+        //            for (int x = 0; x <= nvc.AllKeys.Length - 1; x++)
+        //            {
+        //                string key = nvc.AllKeys[x];
+        //                string vals = "";
+        //                foreach (string value in nvc.GetValues(key))
+        //                {
+        //                    vals += value;
+        //                }
+        //                postData.Append(EncodePostString(key));
+        //                postData.Append("=");
+        //                postData.Append(EncodePostString(vals));
 
-                        if (x < nvc.AllKeys.Length) postData.Append("&");
-                    }
+        //                if (x < nvc.AllKeys.Length) postData.Append("&");
+        //            }
 
-                    // Convert POST data to byte array
-                    ASCIIEncoding ascii = new ASCIIEncoding();
-                    byte[] postBytes = ascii.GetBytes(postData.ToString());
+        //            // Convert POST data to byte array
+        //            ASCIIEncoding ascii = new ASCIIEncoding();
+        //            byte[] postBytes = ascii.GetBytes(postData.ToString());
 
-                    // Create HTTP request and define Header info
-                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                    request.Timeout = TIMEOUT;
-                    request.Method = "POST";
-                    request.ContentType = "application/x-www-form-urlencoded";
-                    request.ContentLength = postBytes.Length;
-                    request.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)";
+        //            // Create HTTP request and define Header info
+        //            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+        //            request.Timeout = TIMEOUT;
+        //            request.Method = "POST";
+        //            request.ContentType = "application/x-www-form-urlencoded";
+        //            request.ContentLength = postBytes.Length;
+        //            request.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)";
 
-                    // Add POST data to request stream
-                    Stream postStream = request.GetRequestStream();
-                    postStream.Write(postBytes, 0, postBytes.Length);
-                    postStream.Flush();
-                    postStream.Close();
+        //            // Add POST data to request stream
+        //            Stream postStream = request.GetRequestStream();
+        //            postStream.Write(postBytes, 0, postBytes.Length);
+        //            postStream.Flush();
+        //            postStream.Close();
 
-                    // Get HTTP resonse and return as string
-                    using (var response = (HttpWebResponse)request.GetResponse())
-                    using (var s = response.GetResponseStream())
-                    using (var reader = new StreamReader(s))
-                    {
-                        result = reader.ReadToEnd();
-                        success = true;
-                    }
-                }
-                catch (WebException wex) { message = wex.Message; }
-                catch (Exception ex) { message = ex.Message; }
+        //            // Get HTTP resonse and return as string
+        //            using (var response = (HttpWebResponse)request.GetResponse())
+        //            using (var s = response.GetResponseStream())
+        //            using (var reader = new StreamReader(s))
+        //            {
+        //                result = reader.ReadToEnd();
+        //                success = true;
+        //            }
+        //        }
+        //        catch (WebException wex) { message = wex.Message; }
+        //        catch (Exception ex) { message = ex.Message; }
 
-                if (!success) System.Threading.Thread.Sleep(1000);
-            }
+        //        if (!success) System.Threading.Thread.Sleep(1000);
+        //    }
 
-            if (!success) Logger.Log("Send :: " + attempts.ToString() + " Attempts :: URL = " + url + " :: " + message);
+        //    if (!success) Logger.Log("Send :: " + attempts.ToString() + " Attempts :: URL = " + url + " :: " + message);
 
-            return result;
-        }
+        //    return result;
+        //}
 
         public class HeaderData
         {
@@ -339,6 +338,7 @@ namespace TH_Global.Web
             public HeaderData[] Headers { get; set; }
             public string UserAgent { get; set; }
             public NetworkCredential Credential { get; set; }
+            public ProxySettings ProxySettings { get; set; }
             public int Timeout { get; set; }
             public int MaxAttempts { get; set; }
             public bool GetResponse { get; set; }
@@ -348,7 +348,14 @@ namespace TH_Global.Web
 
         public static string POST(HTTPInfo info)
         {
-            return SendData("POST", info.Url, info.Data, info.Headers, info.UserAgent, info.Credential, info.Timeout, info.MaxAttempts);
+            return SendData("POST", info.Url, info.Data, info.Headers, info.UserAgent, info.Credential, info.ProxySettings, info.Timeout, info.MaxAttempts, info.GetResponse);
+        }
+
+        public static string POST(string url, NameValueCollection postValues)
+        {
+            var postBytes = CreatePostBytes(postValues);
+
+            return SendData("POST", url, postBytes);
         }
 
         public static string POST(string url, byte[] postBytes)
@@ -380,6 +387,13 @@ namespace TH_Global.Web
             return SendData("PUT", url);
         }
 
+        public static string PUT(string url, NameValueCollection postValues)
+        {
+            var postBytes = CreatePostBytes(postValues);
+
+            return SendData("PUT", url, postBytes);
+        }
+
         public static string PUT(string url, byte[] postBytes)
         {
             return SendData("PUT", url, postBytes);
@@ -403,6 +417,11 @@ namespace TH_Global.Web
         #endregion
 
         #region "GET"
+
+        public static string GET(HTTPInfo info)
+        {
+            return SendData("GET", info.Url, info.Data, info.Headers, info.UserAgent, info.Credential, info.ProxySettings, info.Timeout, info.MaxAttempts, info.GetResponse);
+        }
 
         public static string GET(string url)
         {
@@ -430,7 +449,9 @@ namespace TH_Global.Web
         private static string SendData(string method, string url,
             byte[] sendBytes = null, HeaderData[] headers = null,
             string userAgent = null, NetworkCredential credential = null,
-            int timeout = TIMEOUT, int maxAttempts = CONNECTION_ATTEMPTS, bool getResonse = true)
+            ProxySettings proxySettings = null,
+            int timeout = TIMEOUT, int maxAttempts = CONNECTION_ATTEMPTS,
+            bool getResponse = true)
         {
             string result = null;
 
@@ -447,6 +468,7 @@ namespace TH_Global.Web
                 {
                     // Create HTTP request and define Header info
                     var request = (HttpWebRequest)WebRequest.Create(url);
+
                     request.Timeout = timeout;
                     request.ReadWriteTimeout = timeout;
                     request.ContentType = "application/x-www-form-urlencoded";
@@ -475,20 +497,36 @@ namespace TH_Global.Web
                         request.PreAuthenticate = true;
                     }
 
+                    // Get Default System Proxy (Windows Internet Settings -> Proxy Settings)
+                    var proxy = WebRequest.GetSystemWebProxy();
+
+                    // Get Custom Proxy Settings from Argument (overwrite default proxy settings)
+                    if (proxySettings != null)
+                    {
+                        if (proxySettings.Address != null && proxySettings.Port > 0)
+                        {
+                            var customProxy = new WebProxy(proxySettings.Address, proxySettings.Port);
+                            customProxy.BypassProxyOnLocal = false;
+                            proxy = customProxy;
+                        }
+                    }
+
+                    request.Proxy = proxy;
+
                     // Add POST data to request stream
                     if (sendBytes != null)
                     {
                         request.ContentLength = sendBytes.Length;
 
-                        Stream postStream = request.GetRequestStream();
-                        postStream.WriteTimeout = timeout;
-                        postStream.Write(sendBytes, 0, sendBytes.Length);
-                        postStream.Flush();
-                        postStream.Close();
+                        using (Stream postStream = request.GetRequestStream())
+                        {
+                            postStream.WriteTimeout = timeout;
+                            postStream.Write(sendBytes, 0, sendBytes.Length);
+                        }
                     }
                     else request.ContentLength = 0;
 
-                    if (getResonse)
+                    if (getResponse)
                     {
                         // Get HTTP resonse and return as string
                         using (var response = (HttpWebResponse)request.GetResponse())

@@ -61,7 +61,7 @@ namespace TH_UserManagement.Management.Remote
             string url = "https://www.feenux.com/php/users/login.php";
 
 
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             DataTable dt = JSON.ToTable(responseString);
             if (dt != null) if (dt.Rows.Count > 0) Result = dt.Rows[0];
@@ -80,7 +80,7 @@ namespace TH_UserManagement.Management.Remote
             string url = "https://www.feenux.com/php/users/login.php";
 
 
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             DataTable dt = JSON.ToTable(responseString);
             if (dt != null) if (dt.Rows.Count > 0) Result = dt.Rows[0];
@@ -125,7 +125,7 @@ namespace TH_UserManagement.Management.Remote
 
                 string url = "https://www.feenux.com/php/users/createuser.php";
 
-                string responseString = HTTP.SendData(url, values);
+                string responseString = HTTP.POST(url, values);
                 if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
             }
 
@@ -143,7 +143,7 @@ namespace TH_UserManagement.Management.Remote
             string url = "https://www.feenux.com/php/users/verifyusername.php";
 
 
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
             if (responseString != null)
             {
                 string output = responseString.Trim();
@@ -184,7 +184,7 @@ namespace TH_UserManagement.Management.Remote
             string url = "https://www.feenux.com/php/users/updatelastlogin.php";
 
 
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
 
@@ -204,7 +204,7 @@ namespace TH_UserManagement.Management.Remote
 
             string url = "https://www.feenux.com/php/users/updateimageurl.php";
 
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
 
@@ -230,7 +230,7 @@ namespace TH_UserManagement.Management.Remote
                 string url = "https://www.feenux.com/php/users/setrememberme.php";
 
 
-                string responseString = HTTP.SendData(url, values);
+                string responseString = HTTP.POST(url, values);
 
                 if (responseString != null) if (responseString.Trim() != "")
                     {
@@ -282,7 +282,7 @@ namespace TH_UserManagement.Management.Remote
                             string url = "https://www.feenux.com/php/users/getrememberme.php";
 
 
-                            string responseString = HTTP.SendData(url, values);
+                            string responseString = HTTP.POST(url, values);
 
                             DataTable dt = JSON.ToTable(responseString);
                             if (dt != null) if (dt.Rows.Count > 0) result = LoginSuccess(dt.Rows[0]);
@@ -311,7 +311,7 @@ namespace TH_UserManagement.Management.Remote
 
                     string url = "https://www.feenux.com/php/users/clearrememberme.php";
 
-                    string responseString = HTTP.SendData(url, values);
+                    string responseString = HTTP.POST(url, values);
 
                     if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
                 }

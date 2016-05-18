@@ -39,7 +39,7 @@ namespace TH_MySQL.PHP
 
             string url = "http://" + config.PHP_Server + PHP_Directory + "/Send.php";
 
-            if (HTTP.SendData(url, values) == "true") Result = true;
+            if (HTTP.POST(url, values) == "true") Result = true;
 
             return Result;
 
@@ -67,7 +67,7 @@ namespace TH_MySQL.PHP
 
             string url = "http://" + config.PHP_Server + PHP_Directory + "/Send.php";
 
-            if (HTTP.SendData(url, values) == "true") Result = true;
+            if (HTTP.POST(url, values) == "true") Result = true;
 
             return Result;
 
@@ -166,7 +166,7 @@ namespace TH_MySQL.PHP
 
             string url = "http://" + config.PHP_Server + PHP_Directory + "/Send.php";
 
-            if (HTTP.SendData(url, values) == "true") Result = true;
+            if (HTTP.POST(url, values) == "true") Result = true;
 
             return Result;
 
@@ -194,7 +194,7 @@ namespace TH_MySQL.PHP
             string url = "http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php";
 
 
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             DataTable dt = JSON.ToTable(responseString);
             if (dt != null) if (dt.Rows.Count > 0) Result = dt.Rows[0];
@@ -224,7 +224,7 @@ namespace TH_MySQL.PHP
             string url = "http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php";
 
 
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             DataTable dt = JSON.ToTable(responseString);
             if (dt != null) if (dt.Rows.Count > 0) Result = dt.Rows[0];
@@ -255,7 +255,7 @@ namespace TH_MySQL.PHP
             string url = "http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php";
 
 
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             DataTable dt = JSON.ToTable(responseString);
             if (dt != null) if (dt.Rows.Count > 0) if (dt.Rows[0][0].ToString() == "1") Result = true;

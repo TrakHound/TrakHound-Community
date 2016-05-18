@@ -44,6 +44,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceProcess" />
@@ -80,16 +81,25 @@
     <Compile Include="Logger.cs" />
     <Compile Include="IPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Security.cs" />
     <Compile Include="States.cs" />
     <Compile Include="TableNames.cs" />
     <Compile Include="TrakHound\Shifts.cs" />
+    <Compile Include="TrakHound\Users\UserConfiguration.cs" />
+    <Compile Include="TrakHound\Users\UserLoginFile.cs" />
+    <Compile Include="TrakHound\Users\UserManagement.cs" />
     <Compile Include="Updates\AppInfo.cs" />
     <Compile Include="Updates\UpdateConfiguration.cs" />
     <Compile Include="Variables.cs" />
     <Compile Include="Web\Download.cs" />
     <Compile Include="Web\HTTP.cs" />
     <Compile Include="Web\JSON.cs" />
+    <Compile Include="Web\ProxySettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="LICENSE.txt">
@@ -97,8 +107,14 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -88,7 +88,7 @@ namespace TH_MySQL.PHP
 
             string url = "http://" + config.PHP_Server + PHP_Directory + "/create_table.php";
 
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             if (responseString.Trim() == "true") Result = true;
 
@@ -171,7 +171,7 @@ namespace TH_MySQL.PHP
 
             string url = "http://" + config.PHP_Server + PHP_Directory + "/replace_table.php";
 
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             if (responseString.Trim() == "true") Result = true;
 
@@ -202,7 +202,7 @@ namespace TH_MySQL.PHP
             string url = "http://" + config.PHP_Server + PHP_Directory + "/Send.php";
 
 
-            if (HTTP.SendData(url, values) == "true") Result = true;
+            if (HTTP.POST(url, values) == "true") Result = true;
 
             return Result;
 
@@ -237,7 +237,7 @@ namespace TH_MySQL.PHP
             string url = "http://" + config.PHP_Server + PHP_Directory + "/Send.php";
 
 
-            if (HTTP.SendData(url, values) == "true") Result = true;
+            if (HTTP.POST(url, values) == "true") Result = true;
 
             return Result;
 
@@ -266,7 +266,7 @@ namespace TH_MySQL.PHP
             string url = "http://" + config.PHP_Server + PHP_Directory + "/Send.php";
 
 
-            if (HTTP.SendData(url, values) == "true") Result = true;
+            if (HTTP.POST(url, values) == "true") Result = true;
 
             return Result;
 
@@ -294,7 +294,7 @@ namespace TH_MySQL.PHP
             string url = "http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php";
 
 
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             DataTable dt = JSON.ToTable(responseString);
             if (dt != null) foreach (DataRow Row in dt.Rows) Result.Add(Row[0].ToString()); 
@@ -324,7 +324,7 @@ namespace TH_MySQL.PHP
             string url = "http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php";
 
 
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             DataTable dt = JSON.ToTable(responseString);
             if (dt != null) foreach (DataRow Row in dt.Rows) Result.Add(Row[0].ToString()); 
@@ -354,7 +354,7 @@ namespace TH_MySQL.PHP
             string url = "http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php";
 
 
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             DataTable dt = JSON.ToTable(responseString);
             if (dt != null)
@@ -391,7 +391,7 @@ namespace TH_MySQL.PHP
             string url = "http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php";
 
 
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             DataTable dt = JSON.ToTable(responseString);
             if (dt != null)
@@ -428,7 +428,7 @@ namespace TH_MySQL.PHP
             string url = "http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php";
 
 
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             Result = JSON.ToTable(responseString);
 
@@ -457,7 +457,7 @@ namespace TH_MySQL.PHP
             string url = "http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php";
 
 
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             Result = JSON.ToTable(responseString);
 
@@ -486,7 +486,7 @@ namespace TH_MySQL.PHP
             string url = "http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php";
 
 
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             Result = JSON.ToTable(responseString);
 
@@ -516,7 +516,7 @@ namespace TH_MySQL.PHP
             string url = "http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php";
 
 
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             Result = JSON.ToTable(responseString);
 
@@ -552,7 +552,7 @@ namespace TH_MySQL.PHP
             string url = "http://" + config.PHP_Server + PHP_Directory + "/get_tables.php";
 
 
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             if (responseString != null)
             {
@@ -622,7 +622,7 @@ namespace TH_MySQL.PHP
             string url = "http://" + config.PHP_Server + PHP_Directory + "/get_tables.php";
 
 
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             if (responseString != null)
             {
@@ -700,7 +700,7 @@ namespace TH_MySQL.PHP
             string url = "http://" + config.PHP_Server + PHP_Directory + "/get_tables.php";
 
 
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             if (responseString != null)
             {

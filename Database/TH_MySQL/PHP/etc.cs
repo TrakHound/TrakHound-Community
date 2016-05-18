@@ -34,7 +34,7 @@ namespace TH_MySQL.PHP
 
             string url = "http://" + config.PHP_Server + PHP_Directory + "/ping_database.php";
 
-            if (HTTP.SendData(url, values) == "true")
+            if (HTTP.POST(url, values) == "true")
             {
                 msg = "MySQL PHP Successfully connected to : " + config.Database + " @ " + config.Server + ":" + config.Port.ToString();
                 result = true;
@@ -69,7 +69,7 @@ namespace TH_MySQL.PHP
 
             string url = "http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php";
 
-            Result = HTTP.SendData(url, values);
+            Result = HTTP.POST(url, values);
 
             return Result;
 
@@ -96,7 +96,7 @@ namespace TH_MySQL.PHP
 
             string url = "http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php";
 
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             DataTable dt = JSON.ToTable(responseString);
             if (dt != null) if (dt.Rows.Count > 0) Result = dt.Rows[0][column];
@@ -127,7 +127,7 @@ namespace TH_MySQL.PHP
 
             string url = "http://" + config.PHP_Server + PHP_Directory + "/mysql_retrieve.php";
 
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             Result = JSON.ToTable(responseString);
 

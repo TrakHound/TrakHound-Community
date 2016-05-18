@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
-//using TH_MTConnect.Components;
-//using TH_MTConnect.Streams;
-//using TH_Status;
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
 
-using TH_GitHub;
+using System;
 
-using TH_Global.Functions;
-
-using TH_Configuration;
-using TH_Mobile;
-using TH_MTConnect;
-
+using TH_Global.TrakHound.Users;
 
 namespace TestConsole
 {
@@ -22,6 +14,30 @@ namespace TestConsole
 
         static void Main(string[] args)
         {
+            var stpw = new System.Diagnostics.Stopwatch();
+            stpw.Start();
+
+
+            //var userConfig = UserManagement.BasicLogin("exampleuser", "ethan123");
+            //if (userConfig != null) { }
+
+            //string senderId = UserManagement.SenderId.Get();
+            //var userConfig = UserManagement.CreateTokenLogin("exampleuser", "ethan123", senderId, "TrakHound Test Console");
+            //UserManagement.Token.Save(userConfig);
+
+            string token = UserManagement.Token.Get();
+            var userConfig = UserManagement.TokenLogin(token);
+
+            stpw.Stop();
+            Console.WriteLine(stpw.ElapsedMilliseconds + "ms");
+
+            if (userConfig != null) Console.WriteLine(userConfig.Username);
+            else Console.WriteLine("Login Failed");
+
+            Console.ReadLine();
+
+
+
 
             //var config = new Configuration();
             //config.UniqueId = Configuration.GenerateUniqueID();
@@ -48,29 +64,29 @@ namespace TestConsole
             //    }
             //}
 
-            TH_Database.DatabasePluginReader.ReadPlugins();
+            //TH_Database.DatabasePluginReader.ReadPlugins();
 
-            while (true)
-            {
-                var configs = TH_Configuration.Configuration.ReadAll(@"C:\TrakHound\Devices\");
-                foreach (var config in configs)
-                {
-                    if (config.ServerEnabled)
-                    {
-                        TH_Database.Global.Initialize(config.Databases_Server);
+            //while (true)
+            //{
+            //    var configs = TH_Configuration.Configuration.ReadAll(@"C:\TrakHound\Devices\");
+            //    foreach (var config in configs)
+            //    {
+            //        if (config.ServerEnabled)
+            //        {
+            //            TH_Database.Global.Initialize(config.Databases_Server);
 
-                        string msg = "";
-                        bool ping = TH_Database.Global.Ping(config.Databases_Server.Databases[0], out msg);
+            //            string msg = "";
+            //            bool ping = TH_Database.Global.Ping(config.Databases_Server.Databases[0], out msg);
 
-                        Console.WriteLine(ping.ToString() + " :: " + msg);
-                    }
-                }
+            //            Console.WriteLine(ping.ToString() + " :: " + msg);
+            //        }
+            //    }
 
-                System.Threading.Thread.Sleep(5000);
-            }
+            //    System.Threading.Thread.Sleep(5000);
+            //}
             
 
-            Console.ReadLine();
+            //Console.ReadLine();
 
 
 

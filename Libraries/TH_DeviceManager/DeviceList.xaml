@@ -49,7 +49,8 @@
         <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
             <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
             <Setter Property="BorderThickness" Value="0,1,0,0" />
-            <Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu_Multiple}"/>
+            <!--<Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu_Multiple}"/>-->
+            <Setter Property="Background" Value="{StaticResource Window_Background}"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="true">
                     <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
@@ -59,10 +60,11 @@
                     <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
                     <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
                 </Trigger>
-                <!--<DataTrigger Binding="{Binding SelectedItems.Count, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}" Value="1">
-                    <Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu_Single}"/>
-                </DataTrigger>-->
             </Style.Triggers>
+        </Style>
+
+        <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
+            <Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu_Multiple}"/>
         </Style>
 
         <Style TargetType="th_wpf:Button">
@@ -241,6 +243,8 @@
                   AutoGenerateColumns="False"
                   VerticalScrollBarVisibility="Disabled"
                   SelectionChanged="Devices_DG_SelectionChanged"
+                  HeadersVisibility="Column"
+                  SelectionMode="Extended"
                   >
                     <DataGrid.Style>
                         <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
@@ -290,8 +294,6 @@
                         <DataGridTextColumn Header="Model" Binding="{Binding Description.Model}"/>
                         <DataGridTextColumn Header="Serial" Binding="{Binding Description.Serial}"/>
                         <DataGridTextColumn Header="Device ID" Binding="{Binding Description.Device_ID}"/>
-
-                        <!--<DataGridTextColumn Header="Index" Binding="{Binding Index}"/>-->
 
                     </DataGrid.Columns>
 

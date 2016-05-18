@@ -144,7 +144,7 @@ namespace TH_UserManagement.Management
             if (userConfig.username != null) values["username"] = userConfig.username.ToLower();
 
             string url = "https://www.feenux.com/php/configurations/getownedsharedconfigurations.php";
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             if (responseString != null)
             {
@@ -217,7 +217,7 @@ namespace TH_UserManagement.Management
 
                 string url = "https://www.feenux.com/php/configurations/updateshareddownloads.php";
 
-                string responseString = HTTP.SendData(url, values);
+                string responseString = HTTP.POST(url, values);
 
                 if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
 

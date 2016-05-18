@@ -251,5 +251,43 @@ namespace TH_Global.Functions
             catch (Exception ex) { Logger.Log("DeleteKey() :: Exception :: " + ex.Message, Logger.LogLineType.Debug); }
         }
 
+
+
+
+        //public static string GetProductId()
+        //{
+        //    string result = null;
+
+        //    try
+        //    {
+        //        // Open LOCAL_MACHINE/Software Key
+        //        RegistryKey key = Registry.LocalMachine.OpenSubKey(ROOT_KEY);
+
+        //        // Create/Open LOCAL_MACHINE/Software/TrakHound Key
+        //        if (key != null) key = key.OpenSubKey("Microsoft");
+
+        //        // Try looking for 64 bit version in WOW6432Node key
+        //        if (key == null)
+        //        {
+        //            key = Registry.LocalMachine.OpenSubKey(ROOT_KEY);
+        //            if (key != null) key = key.OpenSubKey(WOW64_KEY);
+        //            if (key != null) key = key.OpenSubKey(APP_KEY);
+        //        }
+
+        //        // Open LOCAL_MACHINE/Software/TrakHound/[groupName] Key
+        //        if (groupName != null && key != null) key = key.OpenSubKey(groupName);
+
+        //        // Read value for [keyName] to [keyValue]
+        //        if (key != null)
+        //        {
+        //            var val = key.GetValue(keyName);
+        //            if (val != null) result = val.ToString();
+        //        }
+        //    }
+        //    catch (Exception ex) { Logger.Log("GetValue() :: Exception :: keyName = " + keyName + " :: groupName = " + groupName + " :: " + ex.Message, Logger.LogLineType.Debug); }
+
+        //    return result;
+        //}
+
     }
 }

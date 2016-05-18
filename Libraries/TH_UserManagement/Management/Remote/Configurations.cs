@@ -79,7 +79,7 @@ namespace TH_UserManagement.Management.Remote
             values["username"] = userConfig.username;
 
             string url = "https://www.feenux.com/php/configurations/getconfigurations.php";
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             if (responseString != null)
             {
@@ -111,7 +111,7 @@ namespace TH_UserManagement.Management.Remote
             if (userConfig.username != null) values["username"] = userConfig.username.ToLower();
 
             string url = PHPFilePath + "getconfigurationslist.php";
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             if (responseString != null)
             {
@@ -162,7 +162,7 @@ namespace TH_UserManagement.Management.Remote
             if (userConfig.username != null) values["username"] = userConfig.username.ToLower();
 
             string url = "https://www.feenux.com/php/configurations/getdeviceinfolist.php";
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             if (responseString != null)
             {
@@ -205,7 +205,7 @@ namespace TH_UserManagement.Management.Remote
             string url = "https://www.feenux.com/php/configurations/getconfigurationtable.php";
 
 
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             Result = JSON.ToTable(responseString);
 
@@ -272,7 +272,7 @@ namespace TH_UserManagement.Management.Remote
                 string url = "https://www.feenux.com/php/configurations/updateconfigurationtable.php";
 
 
-                string responseString = HTTP.SendData(url, values);
+                string responseString = HTTP.POST(url, values);
 
                 if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
             }
@@ -366,7 +366,7 @@ namespace TH_UserManagement.Management.Remote
                 string url = "https://www.feenux.com/php/configurations/updateconfigurationtable.php";
 
 
-                string responseString = HTTP.SendData(url, postValues);
+                string responseString = HTTP.POST(url, postValues);
 
                 if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
 
@@ -397,7 +397,7 @@ namespace TH_UserManagement.Management.Remote
                 string url = "https://www.feenux.com/php/configurations/updateconfigurationtable.php";
 
 
-                string responseString = HTTP.SendData(url, values);
+                string responseString = HTTP.POST(url, values);
 
                 if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
 
@@ -427,7 +427,7 @@ namespace TH_UserManagement.Management.Remote
 
                 string url = "https://www.feenux.com/php/configurations/updateconfigurationtable.php";
 
-                string responseString = HTTP.SendData(url, values);
+                string responseString = HTTP.POST(url, values);
 
                 if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
 
@@ -447,7 +447,7 @@ namespace TH_UserManagement.Management.Remote
             string url = "https://www.feenux.com/php/configurations/createconfigurationtable.php";
 
 
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
             if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
 
             return result;
@@ -486,7 +486,7 @@ namespace TH_UserManagement.Management.Remote
             string url = "https://www.feenux.com/php/configurations/createconfigurationtable.php";
 
 
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
 
@@ -555,7 +555,7 @@ namespace TH_UserManagement.Management.Remote
             string url = "https://www.feenux.com/php/configurations/removeconfigurationtable.php";
 
 
-            string responseString = HTTP.SendData(url, values);
+            string responseString = HTTP.POST(url, values);
 
             if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
 

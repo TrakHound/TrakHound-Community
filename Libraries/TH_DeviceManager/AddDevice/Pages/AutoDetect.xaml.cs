@@ -93,6 +93,18 @@ namespace TH_DeviceManager.AddDevice.Pages
         public static readonly DependencyProperty DevicesNotAddedProperty =
             DependencyProperty.Register("DevicesNotAdded", typeof(int), typeof(AutoDetect), new PropertyMetadata(0));
 
+        /// <summary>
+        /// Number of Network Nodes found using Ping
+        /// </summary>
+        public int NetworkNodesFound
+        {
+            get { return (int)GetValue(NetworkNodesFoundProperty); }
+            set { SetValue(NetworkNodesFoundProperty, value); }
+        }
+
+        public static readonly DependencyProperty NetworkNodesFoundProperty =
+            DependencyProperty.Register("NetworkNodesFound", typeof(int), typeof(AutoDetect), new PropertyMetadata(0));
+
         #endregion
 
         const System.Windows.Threading.DispatcherPriority PRIORITY_BACKGROUND = System.Windows.Threading.DispatcherPriority.Background;
@@ -126,6 +138,7 @@ namespace TH_DeviceManager.AddDevice.Pages
                 catalogInfos.Clear();
                 DevicesAlreadyAdded = 0;
                 DevicesNotAdded = 0;
+                NetworkNodesFound = 0;
 
                 //Dispatcher.BeginInvoke(new Action(() =>
                 //{
@@ -176,6 +189,9 @@ namespace TH_DeviceManager.AddDevice.Pages
 
         private void FindNodes()
         {
+            portCount = 0;
+            returnedPorts = 0;
+
             pingFinished = false;
 
             var pingNodes = new Network_Functions.PingNodes();
@@ -186,7 +202,8 @@ namespace TH_DeviceManager.AddDevice.Pages
 
         private void PingNodes_PingSuccessful(System.Net.NetworkInformation.PingReply reply)
         {
-            //ThreadPool.QueueUserWorkItem(new WaitCallback(RunProbe), reply.Address);
+            Dispatcher.BeginInvoke(new Action(() => { NetworkNodesFound++; }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+            
             RunProbe(reply.Address);
         }
 
@@ -209,11 +226,9 @@ namespace TH_DeviceManager.AddDevice.Pages
         {
             var ip = (IPAddress)o;
 
-            //var ports = new int[] { 5000, 5001, 5002, 5003, 5004, 5005, 5006, 5007, 5008, 5009, 5010 };
             var ports = CreatePortArray(5000, 20);
 
-            portCount = ports.Length;
-            returnedPorts = 0;
+            portCount += ports.Length;
 
             foreach (var port in ports)
             {
@@ -222,7 +237,6 @@ namespace TH_DeviceManager.AddDevice.Pages
                 info.Port = port;
 
                 ThreadPool.QueueUserWorkItem(new WaitCallback(RunProbeOnPort), info);
-                //RunProbeOnPort(info);
             } 
         }
 
@@ -246,7 +260,7 @@ namespace TH_DeviceManager.AddDevice.Pages
                 {
                     foreach (var device in probe.Devices)
                     {
-                        this.Dispatcher.BeginInvoke(new Action<IPAddress, int, Device>(AddDeviceInfo), PRIORITY_BACKGROUND, new object[] { info.Address, info.Port, device });
+                        Dispatcher.BeginInvoke(new Action<IPAddress, int, Device>(AddDeviceInfo), PRIORITY_BACKGROUND, new object[] { info.Address, info.Port, device });
                     }
                 }
 
@@ -330,6 +344,41 @@ namespace TH_DeviceManager.AddDevice.Pages
             }
 
             return result;
+        }
+
+        private class GetDeviceInfoImageInfo
+        {
+            public DeviceInfo DeviceInfo { get; set; }
+            public System.Drawing.Image Image { get; set; }
+        }
+
+        private void GetDeviceInfoImage(DeviceInfo info, System.Drawing.Image img)
+        {
+            if (img != null)
+            {
+                var getInfo = new GetDeviceInfoImageInfo();
+                getInfo.DeviceInfo = info;
+                getInfo.Image = img;
+
+                ThreadPool.QueueUserWorkItem(new WaitCallback(GetDeviceInfoImage_Worker), getInfo);
+            }
+        }
+
+        private void GetDeviceInfoImage_Worker(object o)
+        {
+            if (o != null)
+            {
+                var info = (GetDeviceInfoImageInfo)o;
+
+                var src = GetSourceFromImage(info.Image);
+
+                if (src != null) Dispatcher.BeginInvoke(new Action<DeviceInfo, ImageSource>(GetDeviceInfoImage_GUI), UI_Functions.PRIORITY_BACKGROUND, new object[] { info.DeviceInfo, src });
+            }
+        }
+
+        private void GetDeviceInfoImage_GUI(DeviceInfo info, ImageSource src)
+        {
+            info.Image = src;
         }
 
         private ImageSource GetSourceFromImage(System.Drawing.Image img)
@@ -625,16 +674,22 @@ namespace TH_DeviceManager.AddDevice.Pages
         private void UpdateDescriptionConfiguration(DeviceInfo info, Configuration config)
         {
             // Save Device Description
-            config.Description.Description = info.Device.Description.CDATA.Trim();
-            XML_Functions.SetInnerText(config.ConfigurationXML, "/Description/Description", info.Device.Description.CDATA.Trim());
+            string val = info.Device.Description.CDATA;
+            if (val != null) val.Trim();
+            config.Description.Description = val;
+            XML_Functions.SetInnerText(config.ConfigurationXML, "/Description/Description", val);
 
             // Save Serial Number
-            config.Description.Serial = info.Device.Description.SerialNumber.Trim();
-            XML_Functions.SetInnerText(config.ConfigurationXML, "/Description/Serial", info.Device.Description.SerialNumber.Trim());
+            val = info.Device.Description.SerialNumber;
+            if (val != null) val.Trim();
+            config.Description.Serial = val;
+            XML_Functions.SetInnerText(config.ConfigurationXML, "/Description/Serial", val);
 
             // Save Manufacturer
-            config.Description.Manufacturer = info.Device.Description.Manufacturer.Trim();
-            XML_Functions.SetInnerText(config.ConfigurationXML, "/Description/Manufacturer", info.Device.Description.Manufacturer.Trim());
+            val = info.Device.Description.Manufacturer;
+            if (val != null) val.Trim();
+            config.Description.Manufacturer = val;
+            XML_Functions.SetInnerText(config.ConfigurationXML, "/Description/Manufacturer", val);
         }
 
         private bool SaveLocalConfigurationToUser(Configuration config)
