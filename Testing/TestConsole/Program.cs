@@ -21,12 +21,12 @@ namespace TestConsole
             //var userConfig = UserManagement.BasicLogin("exampleuser", "ethan123");
             //if (userConfig != null) { }
 
-            //string senderId = UserManagement.SenderId.Get();
-            //var userConfig = UserManagement.CreateTokenLogin("exampleuser", "ethan123", senderId, "TrakHound Test Console");
-            //UserManagement.Token.Save(userConfig);
+            string senderId = UserManagement.SenderId.Get();
+            var userConfig = UserManagement.CreateTokenLogin("exampleuser", "ethan123", senderId, "TrakHound Test Console");
+            UserManagement.Token.Save(userConfig);
 
-            string token = UserManagement.Token.Get();
-            var userConfig = UserManagement.TokenLogin(token);
+            //string token = UserManagement.Token.Get();
+            //var userConfig = UserManagement.TokenLogin(token);
 
             stpw.Stop();
             Console.WriteLine(stpw.ElapsedMilliseconds + "ms");

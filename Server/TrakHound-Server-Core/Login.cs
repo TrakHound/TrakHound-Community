@@ -3,10 +3,12 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+using System.IO;
+
 using TH_Configuration;
 using TH_Global;
 using TH_Global.Functions;
-using TH_UserManagement.Management;
+using TH_Global.TrakHound.Users;
 
 namespace TrakHound_Server_Core
 {
@@ -25,15 +27,15 @@ namespace TrakHound_Server_Core
             }
         }
 
-        void SendCurrentUserChanged(UserConfiguration userConfig)
-        {
-            if (CurrentUserChanged != null) CurrentUserChanged(userConfig);  
-        }
+        public Database_Settings UserDatabaseSettings { get; set; }
 
         public delegate void CurrentUserChanged_Handler(UserConfiguration userConfig);
         public event CurrentUserChanged_Handler CurrentUserChanged;
 
-        public Database_Settings UserDatabaseSettings { get; set; }
+        void SendCurrentUserChanged(UserConfiguration userConfig)
+        {
+            if (CurrentUserChanged != null) CurrentUserChanged(userConfig);  
+        }
 
 
         public void Login()
@@ -43,7 +45,7 @@ namespace TrakHound_Server_Core
             UserLoginFile.LoginData loginData = UserLoginFile.Read();
             if (loginData != null)
             {
-                userConfig = Users.LoginWithHash(loginData.Username, loginData.Password);
+                userConfig = UserManagement.TokenLogin(loginData.Token);
             }
 
             CurrentUser = userConfig;
@@ -53,7 +55,7 @@ namespace TrakHound_Server_Core
         {
             CurrentUser = userConfig;
 
-            Logger.Log(String_Functions.UppercaseFirst(userConfig.username) + " Logged in Successfully");
+            Logger.Log(String_Functions.UppercaseFirst(userConfig.Username) + " Logged in Successfully");
         }
 
         public void Logout()
@@ -62,6 +64,7 @@ namespace TrakHound_Server_Core
             CurrentUser = null;
         }
 
+        #region "Local User ID"
 
         private const string LOCAL_USER_ID = "local_user_id";
 
@@ -79,5 +82,29 @@ namespace TrakHound_Server_Core
 
             return localUserId;
         }
+
+        #endregion
+
+        #region "UserLoginFileMonitor"
+
+        private void UserLoginFileMonitor_Start()
+        {
+            string dir = FileLocations.AppData;
+            string filename = "nigolresu";
+
+            var watcher = new FileSystemWatcher(dir, filename);
+            watcher.Changed += UserLoginFileMonitor_Changed;
+            watcher.Created += UserLoginFileMonitor_Changed;
+            watcher.Deleted += UserLoginFileMonitor_Changed;
+            watcher.EnableRaisingEvents = true;
+        }
+
+        private void UserLoginFileMonitor_Changed(object sender, FileSystemEventArgs e)
+        {
+            if (IsRunnning) Login();
+        }
+
+        #endregion
+
     }
 }

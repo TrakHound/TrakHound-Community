@@ -87,36 +87,34 @@ namespace Server_Test_Console
 
         private void Init()
         {
-            FileLocations.CreateAllDirectories();
+            //FileLocations.CreateAllDirectories();
 
-            TH_Database.DatabasePluginReader.ReadPlugins();
+            //TH_Database.DatabasePluginReader.ReadPlugins();
 
-            TH_UserManagement.Management.UserManagementSettings.ReadConfiguration();
+            //TH_UserManagement.Management.UserManagementSettings.ReadConfiguration();
 
             server = new Server();
-            //server.Stopped += Server_Stopped;
             server.Login();
 
-            string path = TH_Global.FileLocations.AppData + @"\nigolresu";
-            if (File.Exists(path))
-            {
-                string dir = Path.GetDirectoryName(path);
-
-                var watcher = new FileSystemWatcher(dir);
-                watcher.Changed += FileSystemWatcher_UserLogin_Changed;
-                watcher.Created += FileSystemWatcher_UserLogin_Changed;
-                watcher.Deleted += FileSystemWatcher_UserLogin_Changed;
-                watcher.EnableRaisingEvents = true;
-            }
+            //UserLoginFileMonitor_Start();
 
             server.Start();
         }
 
-
-        private void FileSystemWatcher_UserLogin_Changed(object sender, FileSystemEventArgs e)
+        private void UserLoginFileMonitor_Start()
         {
-            Console.WriteLine("UserLogin File Changed!");
+            string dir = FileLocations.AppData;
+            string filename = "nigolresu";
 
+            var watcher = new FileSystemWatcher(dir, filename);
+            watcher.Changed += UserLoginFileMonitor_Changed;
+            watcher.Created += UserLoginFileMonitor_Changed;
+            watcher.Deleted += UserLoginFileMonitor_Changed;
+            watcher.EnableRaisingEvents = true;
+        }
+
+        private void UserLoginFileMonitor_Changed(object sender, FileSystemEventArgs e)
+        {
             if (server != null) server.Login();
         }
 

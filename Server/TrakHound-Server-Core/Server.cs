@@ -5,6 +5,7 @@
 
 using TH_Device_Server;
 using TH_Global;
+using TH_Global.TrakHound.Users;
 
 namespace TrakHound_Server_Core
 {
@@ -13,17 +14,29 @@ namespace TrakHound_Server_Core
         public Server()
         {
             Logger.AppicationName = "TrakHound-Server";
+
+            FileLocations.CreateAllDirectories();
+
+            TH_Database.DatabasePluginReader.ReadPlugins();
+
+            //UserManagementSettings.ReadConfiguration();
+
+            UserLoginFileMonitor_Start();
         }
 
         public delegate void StatusChanged_Handler();
         public event StatusChanged_Handler Started;
         public event StatusChanged_Handler Stopped;
 
+        public bool IsRunnning;
+
         public void Start()
         {
             PrintHeader();
 
             LoadDevices();
+
+            IsRunnning = true;
 
             if (Started != null) Started();
         }
@@ -37,6 +50,8 @@ namespace TrakHound_Server_Core
 
             DevicesMonitor_Stop();
             if (devicesmonitor_THREAD != null) devicesmonitor_THREAD.Abort();
+
+            IsRunnning = false;
 
             if (Stopped != null) Stopped();
         }

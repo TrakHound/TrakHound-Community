@@ -54,6 +54,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database.cs" />
+    <Compile Include="Data\ControllerInfo.cs" />
+    <Compile Include="Data\DescriptionInfo.cs" />
+    <Compile Include="Data\OeeInfo.cs" />
+    <Compile Include="Data\StatusInfo.cs" />
+    <Compile Include="Data\TimersInfo.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UpdateData.cs" />

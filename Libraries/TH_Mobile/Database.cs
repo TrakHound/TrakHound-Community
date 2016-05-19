@@ -16,31 +16,6 @@ namespace TH_Mobile
     {
         private const string PHP_URL = "https://www.feenux.com/trakhound/api/mobile/";
 
-        public static void CreateTable(string userId, Configuration config)
-        {
-            if (!string.IsNullOrEmpty(userId) && config != null)
-            {
-                var values = new NameValueCollection();
-                values["user_id"] = userId;
-                values["database_id"] = config.DatabaseId;
-
-                values["unique_id"] = config.UniqueId;
-                values["description"] = config.Description.Description;
-                values["device_id"] = config.Description.Device_ID;
-                values["manufacturer"] = config.Description.Manufacturer;
-                values["model"] = config.Description.Model;
-                values["serial"] = config.Description.Serial;
-                values["controller"] = config.Description.Controller;
-                values["logo_url"] = config.FileLocations.Manufacturer_Logo_Path;
-                values["image_url"] = config.FileLocations.Image_Path;
-
-                string url = PHP_URL + "create/";
-
-                var info = new SendDataInfo(url, values);
-                ThreadPool.QueueUserWorkItem(new WaitCallback(SendData), info);
-            }
-        }
-
         public static void Update(List<UpdateData> updateDatas)
         {
             var json = JSON.FromList<UpdateData>(updateDatas);
@@ -49,7 +24,7 @@ namespace TH_Mobile
                 var values = new NameValueCollection();
                 values["data"] = json;
 
-                string url = PHP_URL + "update/";
+                string url = PHP_URL + "update/index2.php";
 
                 var info = new SendDataInfo(url, values);
                 ThreadPool.QueueUserWorkItem(new WaitCallback(SendData), info);

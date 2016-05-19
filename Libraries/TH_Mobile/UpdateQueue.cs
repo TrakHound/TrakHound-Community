@@ -10,7 +10,6 @@ namespace TH_Mobile
 {
     public class UpdateQueue
     {
-
         private static List<UpdateData> updateDatas = new List<UpdateData>();
 
         private System.Timers.Timer queueTimer;
@@ -24,7 +23,47 @@ namespace TH_Mobile
         public void Add(UpdateData updateData)
         {
             int index = updateDatas.FindIndex(x => x.UniqueId == updateData.UniqueId);
-            if (index >= 0) updateDatas[index] = updateData;
+            if (index >= 0)
+            {
+                var data = updateDatas[index];
+
+                // Set Description Info
+                if (data.Description.Equals(updateData.Description))
+                {
+                    data.Description = updateData.Description;
+                    data.Description.Changed = true;
+                }
+
+                // Set Status Info
+                if (data.Status.Equals(updateData.Status))
+                {
+                    data.Status = updateData.Status;
+                    data.Status.Changed = true;
+                }
+
+                // Set Controller Info
+                if (data.Controller.Equals(updateData.Controller))
+                {
+                    data.Controller = updateData.Controller;
+                    data.Controller.Changed = true;
+                }
+
+                // Set Oee Info
+                if (data.Oee.Equals(updateData.Oee))
+                {
+                    data.Oee = updateData.Oee;
+                    data.Oee.Changed = true;
+                }
+
+                // Set Timers Info
+                if (data.Timers.Equals(updateData.Timers))
+                {
+                    data.Timers = updateData.Timers;
+                    data.Timers.Changed = true;
+                }
+
+                updateDatas[index] = data;
+            }
             else updateDatas.Add(updateData);
         }
 
@@ -55,7 +94,11 @@ namespace TH_Mobile
             if (updateDatas.Count > 0)
             {
                 Database.Update(updateDatas.ToList());
-                updateDatas.Clear();
+
+                foreach (var updateData in updateDatas)
+                {
+                    updateData.Reset();
+                }
             }
         }
 

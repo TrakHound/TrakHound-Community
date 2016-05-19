@@ -5,8 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 
 using TH_Configuration;
 using TH_Global.Functions;
@@ -40,6 +38,7 @@ namespace TH_Mobile
             configuration = config;
 
             updateData = new UpdateData(config);
+            queue.Add(updateData);
         }
 
         public void GetSentData(EventData data)
@@ -49,200 +48,196 @@ namespace TH_Mobile
                 switch (data.Id.ToLower())
                 {
                     // Server User Changed
-                    case "userlogin":
-
-                        if (data.Data01 != null && configuration != null)
-                        {
-                            userId = data.Data01.ToString();
-
-                            updateData.UserId = userId;
-
-                            Database.CreateTable(userId, configuration);
-                        }
-
-                        break;
+                    case "userlogin": UpdateUserLogin(data); break;
 
                     // Update Database Connection Status
-                    case "databasestatus":
-
-                        if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
-                        {
-                            databaseConnected = (bool)data.Data02;
-
-                            bool prev = updateData.Connected;
-
-                            if (databaseConnected && deviceAvailable) updateData.Connected = true;
-                            else updateData.Connected = false;
-
-                            if (updateData.Connected != prev) queue.Add(updateData);
-                        }
-
-                        break;
+                    case "databasestatus": UpdateDatabaseStatus(data); break;
 
                     // Update Device Availability (MTConnect) Status
-                    case "deviceavailability":
-
-                        if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
-                        {
-                            deviceAvailable = (bool)data.Data02;
-
-                            bool prev = updateData.Connected;
-
-                            if (databaseConnected && deviceAvailable) updateData.Connected = true;
-                            else updateData.Connected = false;
-
-                            if (updateData.Connected != prev) queue.Add(updateData);
-                        }
-
-                        break;
+                    case "deviceavailability": UpdateDeviceAvailability(data); break;
 
                     // Get Snapshot Data
-                    case "snapshottable":
-
-                        if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
-                        {
-                            bool alert = DataTable_Functions.GetBooleanTableValue(data.Data02, "NAME", "Alert", "VALUE");
-                            bool idle = DataTable_Functions.GetBooleanTableValue(data.Data02, "NAME", "Idle", "VALUE");
-                            bool production = DataTable_Functions.GetBooleanTableValue(data.Data02, "NAME", "Production", "VALUE");
-
-                            if (alert) updateData.Status = "Alert";
-                            else if (idle) updateData.Status = "Idle";
-                            else if (production) updateData.Status = "Production";
-
-                            updateData.ProductionStatus = DataTable_Functions.GetTableValue(data.Data02, "NAME", "Production Status", "VALUE");
-
-                            DateTime start = DataTable_Functions.GetDateTimeTableValue(data.Data02, "NAME", "Production Status", "PREVIOUS_TIMESTAMP");
-                            DateTime end = DataTable_Functions.GetDateTimeTableValue(data.Data02, "NAME", "Production Status", "TIMESTAMP");
-
-                            if (start > DateTime.MinValue && end > DateTime.MinValue)
-                            {
-                                updateData.ProductionStatusTimer = Convert.ToInt32((end - start).TotalSeconds);
-                            }
-
-                            queue.Add(updateData);
-                        }
-
-                        break;
+                    case "snapshottable": UpdateSnapshots(data); break;
 
                     // Get Status Data
-                    case "status_data":
-
-                        if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
-                        {
-                            var infos = (List<StatusInfo>)data.Data02;
-                            StatusInfo info = null;
-
-                            // Controller Mode
-                            info = infos.Find(x => x.Type == "CONTROLLER_MODE");
-                            if (info != null && updateData.ControllerMode != info.Value1) updateData.ControllerMode = info.Value1; queue.Add(updateData);
-
-                            // Emergency Stop
-                            info = infos.Find(x => x.Type == "EMERGENCY_STOP");
-                            if (info != null && updateData.EmergencyStop != info.Value1) updateData.EmergencyStop = info.Value1; queue.Add(updateData);
-
-                            // Execution Mode
-                            info = infos.Find(x => x.Type == "EXECUTION");
-                            if (info != null && updateData.ExecutionMode != info.Value1) updateData.ExecutionMode = info.Value1; queue.Add(updateData);
-
-                            // System status
-                            info = infos.Find(x => x.Type == "SYSTEM");
-                            if (info != null && updateData.SystemMessage != info.Value1 && updateData.SystemStatus != info.Value2)
-                            {
-                                updateData.SystemMessage = info.Value1;
-                                updateData.SystemStatus = info.Value2;
-
-                                queue.Add(updateData);
-                            }
-                        }
-
-                        break;
+                    case "status_data": UpdateStatus(data); break;
 
                     // Get OEE Value
-                    case "oee_shift_oee":
+                    case "oee_shift_oee": UpdateOee(data); break;
 
-                        if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
-                        {
-                            double val = (double)data.Data02;
-                            if (updateData.Oee != val)
-                            {
-                                updateData.Oee = Math.Round(val, 2);
-                                queue.Add(updateData);
-                            }
-                        }
+                    // Get OEE Availability Value
+                    case "oee_shift_availability": UpdateOeeAvailability(data); break;
 
-                        break;
+                    // Get OEE Performance Value
+                    case "oee_shift_performance": UpdateOeePeformance(data); break;
 
-                    case "oee_shift_availability":
+                    // Get Status Timers from Shifts Table
+                    case "shifttable_shiftrowinfos": UpdateStatusTimers(data); break;
+                }
+            }
+        }
 
-                        if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
-                        {
-                            double val = (double)data.Data02;
-                            if (updateData.Availability != val)
-                            {
-                                updateData.Availability = Math.Round(val, 2);
-                                queue.Add(updateData);
-                            }
-                        }
+        private void UpdateUserLogin(EventData data)
+        {
+            if (data.Data01 != null && configuration != null)
+            {
+                userId = data.Data01.ToString();
 
-                        break;
+                updateData.UserId = userId;
+            }
+        }
 
-                    case "oee_shift_performance":
+        private void UpdateDatabaseStatus(EventData data)
+        {
+            if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
+            {
+                databaseConnected = (bool)data.Data02;
 
-                        if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
-                        {
-                            double val = (double)data.Data02;
-                            if (updateData.Performance != val)
-                            {
-                                updateData.Performance = Math.Round(val, 2);
-                                queue.Add(updateData);
-                            }
-                        }
+                int prev = updateData.Status.Connected;
 
-                        break;
+                if (databaseConnected && deviceAvailable) updateData.Status.Connected = 1;
+                else updateData.Status.Connected = 0;
+            }
+        }
 
-                    case "shifttable_shiftrowinfos":
+        private void UpdateDeviceAvailability(EventData data)
+        {
+            if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
+            {
+                deviceAvailable = (bool)data.Data02;
 
-                        if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
-                        {
-                            var infos = (List<ShiftRowInfo>)data.Data02;
+                int prev = updateData.Status.Connected;
 
-                            int total = 0;
-                            int production = 0;
-                            int idle = 0;
-                            int alert = 0;
+                if (databaseConnected && deviceAvailable) updateData.Status.Connected = 1;
+                else updateData.Status.Connected = 0;
+            }
+        }
 
-                            foreach (var info in infos)
-                            {
-                                total += info.totalTime;
+        private void UpdateSnapshots(EventData data)
+        {
+            if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
+            {
+                bool alert = DataTable_Functions.GetBooleanTableValue(data.Data02, "NAME", "Alert", "VALUE");
+                bool idle = DataTable_Functions.GetBooleanTableValue(data.Data02, "NAME", "Idle", "VALUE");
+                bool production = DataTable_Functions.GetBooleanTableValue(data.Data02, "NAME", "Production", "VALUE");
 
-                                // Production
-                                var item = info.genEventRowInfos.Find(x => x.columnName.ToLower() == "production__true");
-                                if (item != null) production += item.seconds;
+                if (alert) updateData.Status.Status = 0;
+                else if (idle) updateData.Status.Status = 1;
+                else if (production) updateData.Status.Status = 2;
 
-                                // Idle
-                                item = info.genEventRowInfos.Find(x => x.columnName.ToLower() == "idle__true");
-                                if (item != null) idle += item.seconds;
+                updateData.Status.ProductionStatus = DataTable_Functions.GetTableValue(data.Data02, "NAME", "Production Status", "VALUE");
 
-                                // Alert
-                                item = info.genEventRowInfos.Find(x => x.columnName.ToLower() == "alert__true");
-                                if (item != null) alert += item.seconds;
-                            }
+                DateTime start = DataTable_Functions.GetDateTimeTableValue(data.Data02, "NAME", "Production Status", "PREVIOUS_TIMESTAMP");
+                DateTime end = DataTable_Functions.GetDateTimeTableValue(data.Data02, "NAME", "Production Status", "TIMESTAMP");
 
-                            if (updateData.TotalSeconds != total ||
-                                updateData.ProductionSeconds != production ||
-                                updateData.IdleSeconds != idle ||
-                                updateData.AlertSeconds != alert)
-                            {
-                                updateData.TotalSeconds = total;
-                                updateData.ProductionSeconds = production;
-                                updateData.IdleSeconds = idle;
-                                updateData.AlertSeconds = alert;
+                if (start > DateTime.MinValue && end > DateTime.MinValue)
+                {
+                    updateData.Status.ProductionStatusTimer = Convert.ToInt32((end - start).TotalSeconds);
+                }
+            }
+        }
 
-                                queue.Add(updateData);
-                            }
-                        }
+        private void UpdateStatus(EventData data)
+        {
+            if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
+            {
+                var infos = (List<StatusInfo>)data.Data02;
+                StatusInfo info = null;
 
-                        break;
+                // Controller Mode
+                info = infos.Find(x => x.Type == "CONTROLLER_MODE");
+                updateData.Controller.ControllerMode = info.Value1;
+
+                // Emergency Stop
+                info = infos.Find(x => x.Type == "EMERGENCY_STOP");
+                updateData.Controller.EmergencyStop = info.Value1;
+
+                // Execution Mode
+                info = infos.Find(x => x.Type == "EXECUTION");
+                updateData.Controller.ExecutionMode = info.Value1;
+
+                // System status
+                info = infos.Find(x => x.Type == "SYSTEM");
+                updateData.Controller.SystemMessage = info.Value1;
+                updateData.Controller.SystemStatus = info.Value2;
+            }
+        }
+
+        private void UpdateOee(EventData data)
+        {
+            if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
+            {
+                double val = (double)data.Data02;
+                if (updateData.Oee.Oee != val)
+                {
+                    updateData.Oee.Oee = Math.Round(val, 2);
+                }
+            }
+        }
+
+        private void UpdateOeeAvailability(EventData data)
+        {
+            if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
+            {
+                double val = (double)data.Data02;
+                if (updateData.Oee.Availability != val)
+                {
+                    updateData.Oee.Availability = Math.Round(val, 2);
+                }
+            }
+        }
+
+        private void UpdateOeePeformance(EventData data)
+        {
+            if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
+            {
+                double val = (double)data.Data02;
+                if (updateData.Oee.Performance != val)
+                {
+                    updateData.Oee.Performance = Math.Round(val, 2);
+                }
+            }
+        }
+
+        private void UpdateStatusTimers(EventData data)
+        {
+            if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
+            {
+                var infos = (List<ShiftRowInfo>)data.Data02;
+
+                int total = 0;
+                int production = 0;
+                int idle = 0;
+                int alert = 0;
+
+                foreach (var info in infos)
+                {
+                    total += info.totalTime;
+
+                    // Production
+                    var item = info.genEventRowInfos.Find(x => x.columnName.ToLower() == "production__true");
+                    if (item != null) production += item.seconds;
+
+                    // Idle
+                    item = info.genEventRowInfos.Find(x => x.columnName.ToLower() == "idle__true");
+                    if (item != null) idle += item.seconds;
+
+                    // Alert
+                    item = info.genEventRowInfos.Find(x => x.columnName.ToLower() == "alert__true");
+                    if (item != null) alert += item.seconds;
+                }
+
+                if (updateData.Timers.Total != total ||
+                    updateData.Timers.Production != production ||
+                    updateData.Timers.Idle != idle ||
+                    updateData.Timers.Alert != alert)
+                {
+                    updateData.Timers.Total = total;
+                    updateData.Timers.Production = production;
+                    updateData.Timers.Idle = idle;
+                    updateData.Timers.Alert = alert;
+
+                    queue.Add(updateData);
                 }
             }
         }
@@ -254,14 +249,7 @@ namespace TH_Mobile
 
         public event Status_Handler ErrorOccurred;
 
-        public void Closing()
-        {
-            if (updateData != null)
-            {
-                updateData.Connected = false;
-                queue.Add(updateData);
-            }
-        }
+        public void Closing() { }
 
         public Type[] ConfigurationPageTypes { get { return null; } }
     }

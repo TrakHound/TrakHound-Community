@@ -331,6 +331,7 @@ namespace TH_Global.Web
                 UserAgent = null;
                 Timeout = 5000;
                 MaxAttempts = 3;
+                GetResponse = true;
             }
 
             public string Url { get; set; }

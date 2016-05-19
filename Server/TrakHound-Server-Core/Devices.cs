@@ -14,7 +14,7 @@ using TH_Configuration;
 using TH_Database;
 using TH_Device_Server;
 using TH_Global;
-using TH_UserManagement.Management;
+using TH_Global.TrakHound.Users;
 
 namespace TrakHound_Server_Core
 {
@@ -50,7 +50,7 @@ namespace TrakHound_Server_Core
         private void UpdateLoginInformation(Device_Server server)
         {
             // Send User Login info
-            if (CurrentUser != null) server.SendPluginsData("UserLogin", CurrentUser.username);
+            if (CurrentUser != null) server.SendPluginsData("UserLogin", CurrentUser.Username);
             else server.SendPluginsData("UserLogin", GetLoginRegistyKey());
         }
 
@@ -94,14 +94,14 @@ namespace TrakHound_Server_Core
         {
             List<Configuration> configs = null;
 
-            if (CurrentUser != null)
-            {
-                configs = Configurations.GetConfigurationsListForUser(CurrentUser);
-            }
-            else
-            {
+            //if (CurrentUser != null)
+            //{
+            //    configs = Configurations.GetConfigurationsListForUser(CurrentUser);
+            //}
+            //else
+            //{
                 configs = Configuration.ReadAll(FileLocations.Devices).ToList();
-            }
+            //}
 
             if (configs != null)
             {

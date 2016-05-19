@@ -4,6 +4,7 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using TH_Configuration;
+using TH_Mobile.Data;
 
 namespace TH_Mobile
 {
@@ -12,33 +13,35 @@ namespace TH_Mobile
         public UpdateData(Configuration config)
         {
             UniqueId = config.UniqueId;
-            DatabaseId = config.DatabaseId;
+
+            Description = new DescriptionInfo(config);
+            Status = new StatusInfo();
+            Controller = new ControllerInfo();
+            Oee = new OeeInfo();
+            Timers = new TimersInfo();
         }
 
-        public string UniqueId;
-
         public string UserId { get; set; }
-        public string DatabaseId { get; set; }
+        public string UniqueId { get; set; }
 
-        public bool Connected { get; set; }
-        public string Status { get; set; }
+        public DescriptionInfo Description { get; set; }
 
-        public string ProductionStatus { get; set; }
-        public int ProductionStatusTimer { get; set; }
+        public StatusInfo Status { get; set; }
 
-        public string ControllerMode { get; set; }
-        public string EmergencyStop { get; set; }
-        public string ExecutionMode { get; set; }
-        public string SystemStatus { get; set; }
-        public string SystemMessage { get; set; }
+        public ControllerInfo Controller { get; set; }
 
-        public double Oee { get; set; }
-        public double Availability { get; set; }
-        public double Performance { get; set; }
+        public OeeInfo Oee { get; set; }
 
-        public int TotalSeconds { get; set; }
-        public int ProductionSeconds { get; set; }
-        public int IdleSeconds { get; set; }
-        public int AlertSeconds { get; set; }
+        public TimersInfo Timers { get; set; }
+
+        public void Reset()
+        {
+            Description.Changed = false;
+            Status.Changed = false;
+            Controller.Changed = false;
+            Oee.Changed = false;
+            Timers.Changed = false;
+        }
+
     }
 }
