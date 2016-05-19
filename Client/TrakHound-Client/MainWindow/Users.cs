@@ -9,6 +9,7 @@ using System.Windows.Media;
 
 using TH_Configuration;
 using TH_Global.Functions;
+//using TH_Global.TrakHound.Users;
 using TH_UserManagement.Management;
 
 namespace TrakHound_Client
@@ -105,7 +106,7 @@ namespace TrakHound_Client
             }
         }
 
-        private UserLoginFile.LoginData serverLoginData;
+        private TH_Global.TrakHound.Users.UserLoginFile.LoginData serverLoginData;
 
         private void Users_Initialize()
         {
@@ -126,7 +127,7 @@ namespace TrakHound_Client
             bool serverRunning = Service_Functions.IsServiceRunning("TrakHound Server");
             if (serverRunning)
             {
-                serverLoginData = UserLoginFile.Read();
+                serverLoginData = TH_Global.TrakHound.Users.UserLoginFile.Read();
                 if (serverLoginData != null)
                 {
                     if (userConfig == null) ServerUser_Ask_Logout();
@@ -168,12 +169,12 @@ namespace TrakHound_Client
 
         private void ServerUser_Login(UserConfiguration userConfig)
         {
-            UserLoginFile.Create(userConfig);
+            TH_Global.TrakHound.Users.UserLoginFile.Create(userConfig);
         }
 
         private void ServerUser_Logout()
         {
-            UserLoginFile.Remove();
+            TH_Global.TrakHound.Users.UserLoginFile.Remove();
         }
 
     }

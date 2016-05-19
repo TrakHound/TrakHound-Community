@@ -16,6 +16,7 @@
         xmlns:notifications="clr-namespace:TrakHound_Client.Notifications"
         
         xmlns:menus_main="clr-namespace:TrakHound_Client.Menus.Main"
+        xmlns:menus_login="clr-namespace:TrakHound_Client.Menus.Login"
         xmlns:menus_plugins="clr-namespace:TrakHound_Client.Menus.Plugins"
         
         xmlns:user="clr-namespace:TH_UserManagement;assembly=TH_UserManagement"
@@ -386,7 +387,7 @@
                             />
 
         <!--Login Menu-->
-        <user:Menu x:Name="LoginMenu" Margin="0,35,47,0" Shown="False" 
+        <menus_login:Menu x:Name="LoginMenu" Margin="0,35,47,0" Shown="False" 
                            CurrentUserChanged="LoginMenu_CurrentUserChanged" 
                            ShownChanged="LoginMenu_ShownChanged" 
                            MyAccountClicked="LoginMenu_MyAccountClicked"

@@ -111,11 +111,17 @@
     <Compile Include="MainWindow\Users.cs" />
     <Compile Include="MainWindow\Welcome Message.cs" />
     <Compile Include="MainWindow\Window.cs" />
+    <Compile Include="Menus\Login\Menu.xaml.cs">
+      <DependentUpon>Menu.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\About\Information\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\About\License\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Account\MyAccountPage.xaml.cs">
+      <DependentUpon>MyAccountPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\BugReport.xaml.cs">
       <DependentUpon>BugReport.xaml</DependentUpon>
@@ -199,6 +205,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Menus\Login\Menu.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\About\Information\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -206,6 +216,10 @@
     <Page Include="Pages\About\License\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Account\MyAccountPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\BugReport.xaml">
       <SubType>Designer</SubType>

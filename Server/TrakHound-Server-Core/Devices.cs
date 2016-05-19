@@ -50,7 +50,7 @@ namespace TrakHound_Server_Core
         private void UpdateLoginInformation(Device_Server server)
         {
             // Send User Login info
-            if (CurrentUser != null) server.SendPluginsData("UserLogin", CurrentUser.Username);
+            if (CurrentUser != null) server.SendPluginsData("UserLogin", CurrentUser.Id);
             else server.SendPluginsData("UserLogin", GetLoginRegistyKey());
         }
 

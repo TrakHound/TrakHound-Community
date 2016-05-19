@@ -101,22 +101,22 @@ namespace Server_Test_Console
             server.Start();
         }
 
-        private void UserLoginFileMonitor_Start()
-        {
-            string dir = FileLocations.AppData;
-            string filename = "nigolresu";
+        //private void UserLoginFileMonitor_Start()
+        //{
+        //    string dir = FileLocations.AppData;
+        //    string filename = "nigolresu";
 
-            var watcher = new FileSystemWatcher(dir, filename);
-            watcher.Changed += UserLoginFileMonitor_Changed;
-            watcher.Created += UserLoginFileMonitor_Changed;
-            watcher.Deleted += UserLoginFileMonitor_Changed;
-            watcher.EnableRaisingEvents = true;
-        }
+        //    var watcher = new FileSystemWatcher(dir, filename);
+        //    watcher.Changed += UserLoginFileMonitor_Changed;
+        //    watcher.Created += UserLoginFileMonitor_Changed;
+        //    watcher.Deleted += UserLoginFileMonitor_Changed;
+        //    watcher.EnableRaisingEvents = true;
+        //}
 
-        private void UserLoginFileMonitor_Changed(object sender, FileSystemEventArgs e)
-        {
-            if (server != null) server.Login();
-        }
+        //private void UserLoginFileMonitor_Changed(object sender, FileSystemEventArgs e)
+        //{
+        //    if (server != null) server.Login();
+        //}
 
     }
 }

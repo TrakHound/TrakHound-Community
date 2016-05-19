@@ -594,13 +594,13 @@ namespace TrakHound_Client
 
         public PageManager accountManager;
 
-        TH_UserManagement.MyAccountPage accountpage;
+        Pages.Account.Page accountpage;
 
         void AccountManager_Initialize()
         {
             if (accountManager == null)
             {
-                accountpage = new TH_UserManagement.MyAccountPage();
+                accountpage = new Pages.Account.Page();
                 accountpage.LoadUserConfiguration(CurrentUser);
                 accountpage.UserChanged += accountpage_UserChanged;
 

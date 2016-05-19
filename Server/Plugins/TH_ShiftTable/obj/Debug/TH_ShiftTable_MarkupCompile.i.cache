@@ -16,5 +16,5 @@ DEBUG;TRACE
 221006884634
 ConfigurationPage\Controls\BreakListItem.xaml;ConfigurationPage\Controls\ShiftListItem.xaml;ConfigurationPage\Page.xaml;
 
-True
+False
 

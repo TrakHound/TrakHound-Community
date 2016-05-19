@@ -15,6 +15,7 @@ namespace TH_Global.TrakHound.Users
     /// </summary>
     public class UserConfiguration
     {
+        public string Id { get; set; }
         public string Username { get; set; }
 
         public string FirstName { get; set; }
