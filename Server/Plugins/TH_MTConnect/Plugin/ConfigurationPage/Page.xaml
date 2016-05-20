@@ -83,6 +83,131 @@
                         </th_wpf:TextBox.HelpText>
                     </th_wpf:TextBox>
 
+                    <!--Test Connection-->
+                    <Grid Margin="0,0,0,20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!--Buttton-->
+                        <th_wpf:Button Text="Test Connection" Clicked="TestConnection_Clicked" Height="35" HorizontalAlignment="Left" VerticalAlignment="Center">
+                            <th_wpf:Button.Style>
+                                <Style TargetType="th_wpf:Button">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                    <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+                                    <Setter Property="Height" Value="35"/>
+                                    <Setter Property="FontSize" Value="14"/>
+                                    <Setter Property="Padding" Value="10,5"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                                        </Trigger>
+                                        <DataTrigger Binding="{Binding Loading}" Value="true">
+                                            <Setter Property="Visibility" Value="Hidden"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </th_wpf:Button.Style>
+                        </th_wpf:Button>
+
+                        <!--Loading Animation-->
+                        <Grid Grid.Column="1" VerticalAlignment="Center" Margin="20,0,0,0">
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="Opacity" Value="0.0"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ConnectionTestLoading}" Value="true">
+                                            <DataTrigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="Opacity" From="0" To="1" >
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseIn"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.EnterActions>
+                                            <DataTrigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="Opacity" From="1" To="0" >
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseIn"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.ExitActions>
+                                        </DataTrigger>
+                                        <Trigger Property="Opacity" Value="0">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+
+                            <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="35" Height="35" Foreground="{StaticResource Accent_Normal}" />
+
+                            <th_wpf:Button Image="/TH_MTConnect;component/Resources/X_01.png" Clicked="TestConnectionCancel_Clicked" ToolTip="Cancel">
+                                <th_wpf:Button.Style>
+                                    <Style TargetType="th_wpf:Button">
+                                        <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Height" Value="20"/>
+                                        <Setter Property="Width" Value="20"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="true">
+                                                <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </th_wpf:Button.Style>
+                            </th_wpf:Button>
+
+                        </Grid>
+
+                        <!--Result Icon-->
+                        <Grid Grid.Column="1" Margin="20,0,0,0" Width="35" Height="30">
+                            <Grid.Resources>
+                                <ImageBrush x:Key="IMG_Check" Stretch="Uniform" ImageSource="/TH_MTConnect;component/Resources/CheckMark_01.png" />
+                                <ImageBrush x:Key="IMG_Warning" Stretch="Uniform" ImageSource="/TH_MTConnect;component/Resources/Warning_01.png" />
+                            </Grid.Resources>
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="OpacityMask" Value="{StaticResource IMG_Warning}" />
+                                    <Setter Property="Background" Value="Red"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ConnectionTestResult}" Value="1">
+                                            <Setter Property="OpacityMask" Value="{StaticResource IMG_Check}" />
+                                            <Setter Property="Background" Value="Green"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ConnectionTestResult}" Value="0">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                        </Grid>
+
+                        <TextBlock Grid.Column="2" Text="{Binding ConnectionTestResultText}" FontSize="12" TextWrapping="Wrap" VerticalAlignment="Center" Margin="20,0,0,0">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="Red"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ConnectionTestResult}" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                    </Grid>
+
                     <!--Heartbeat-->
                     <StackPanel>
 
@@ -283,27 +408,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <!--Buttton-->
-                    <th_wpf:Button Text="Test Connection" Clicked="TestConnection_Clicked" Height="35" HorizontalAlignment="Center" VerticalAlignment="Top">
-                        <th_wpf:Button.Style>
-                            <Style TargetType="th_wpf:Button">
-                                <Setter Property="Visibility" Value="Visible"/>
-                                <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                                <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
-                                <Setter Property="Height" Value="35"/>
-                                <Setter Property="FontSize" Value="14"/>
-                                <Setter Property="Padding" Value="10,5"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="true">
-                                        <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                                    </Trigger>
-                                    <DataTrigger Binding="{Binding Loading}" Value="true">
-                                        <Setter Property="Visibility" Value="Hidden"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </th_wpf:Button.Style>
-                    </th_wpf:Button>
+                    
 
                     <StackPanel Grid.Row="1">
 

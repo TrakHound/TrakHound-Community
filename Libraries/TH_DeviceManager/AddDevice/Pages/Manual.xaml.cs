@@ -310,10 +310,14 @@ namespace TH_DeviceManager.AddDevice.Pages
 
         private void FilterCatalog()
         {
-            string search = search_TXT.Text.ToLower();
+            // string search = search_TXT.Text.ToLower();
+            string search = search_TXT.Text;
 
-            if (search != String.Empty)
+            //if (search != String.Empty)
+            if (!string.IsNullOrEmpty(search))
             {
+                search = search.ToLower();
+
                 string[] searchList = search.Split(' ');
 
                 var filterList = new List<CatalogInfo>();
@@ -332,18 +336,17 @@ namespace TH_DeviceManager.AddDevice.Pages
 
                     foreach (var item in items)
                     {
-                        if (filterList.Find(x => x.Item.list_id == item.Item.list_id) == null) filterList.Add(item);
+                        //if (filterList.Find(x => x.Item.list_id == item.Item.list_id) == null) filterList.Add(item);
+                        if (!filterList.Exists(x => x.Item.list_id == item.Item.list_id)) filterList.Add(item);
                     }
                 }
 
                 AddCatalogItems(filterList);
-
             }
             else
             {
                 AddCatalogItems(catalogInfos);
             }
-
         }
 
         static bool TestFilter(string s, string test)

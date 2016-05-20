@@ -207,7 +207,7 @@ namespace TH_Cycles.ConfigurationPage
                 if (!CollectedItems.ToList().Exists(x => x.Id == newItem.Id)) CollectedItems.Add(newItem);
             }
 
-            foreach (var item in CollectedItems)
+            foreach (var item in CollectedItems.ToList())
             {
                 if (!newItems.Exists(x => x.Id == item.Id)) CollectedItems.Remove(item);
             }

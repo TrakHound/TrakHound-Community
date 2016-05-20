@@ -14,6 +14,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Net;
+using System.Net.NetworkInformation;
 
 using TH_Global.Functions;
 using TH_MTConnect.Components;
@@ -98,6 +100,9 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
             else ProxySettings.IsExpanded = false;
 
             MTCDeviceList.Clear();
+
+            ConnectionTestResult = 0;
+            ConnectionTestResultText = null;
 
             Loading = false;
         }
@@ -207,8 +212,6 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
             TestConnection();
         }
 
-        #region "Connection"
-
         public bool ConnectionTestLoading
         {
             get { return (bool)GetValue(ConnectionTestLoadingProperty); }
@@ -218,201 +221,266 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
         public static readonly DependencyProperty ConnectionTestLoadingProperty =
             DependencyProperty.Register("ConnectionTestLoading", typeof(bool), typeof(Page), new PropertyMetadata(false));
 
-        void TestConnection()
+
+        public int ConnectionTestResult
         {
-            ConnectionTestLoading = true;
+            get { return (int)GetValue(ConnectionTestResultProperty); }
+            set { SetValue(ConnectionTestResultProperty, value); }
+        }
 
-            string ip = null;
-            int port = -1;
+        public static readonly DependencyProperty ConnectionTestResultProperty =
+            DependencyProperty.Register("ConnectionTestResult", typeof(int), typeof(Page), new PropertyMetadata(0));
 
-            if (Address != null)
+
+        public string ConnectionTestResultText
+        {
+            get { return (string)GetValue(ConnectionTestResultTextProperty); }
+            set { SetValue(ConnectionTestResultTextProperty, value); }
+        }
+
+        public static readonly DependencyProperty ConnectionTestResultTextProperty =
+            DependencyProperty.Register("ConnectionTestResultText", typeof(string), typeof(Page), new PropertyMetadata(null));
+        
+
+        private class TestConnectionInfo
+        {
+            public string Address { get; set; }
+            public int Port { get; set; }
+            public string DeviceName { get; set; }
+        }
+
+        private Thread testConnectionThread;
+
+        private void TestConnection()
+        {
+            var info = new TestConnectionInfo();
+            info.Address = Address;
+            int port = 0;
+            if (int.TryParse(Port, out port)) { }
+            else port = 80;
+            info.Port = port;
+            info.DeviceName = DeviceName;
+
+            if (!string.IsNullOrEmpty(info.Address) && port > 0 && !string.IsNullOrEmpty(info.DeviceName))
             {
-                // Get IP Address or URL
-                ip = Address;
-                if (ip.Length > 7)
-                {
-                    if (ip != String.Empty) if (ip.Substring(0, 7).ToLower() == "http://") ip = ip.Substring(7);
-                }
+                ConnectionTestLoading = true;
+                ConnectionTestResult = 0;
+                ConnectionTestResultText = null;
 
-                // Get Port
-                if (Port != null)
-                {
-                    int.TryParse(Port, out port);
-                }
+                if (testConnectionThread != null) testConnectionThread.Abort();
 
-                // Proxy Settings
-                HTTP.ProxySettings proxy = null;                
-                if (ProxyPort != null)
-                {
-                    int proxyPort = -1;
-                    if (int.TryParse(ProxyPort, out proxyPort))
-                    {
-                        proxy = new TH_MTConnect.HTTP.ProxySettings();
-                        proxy.Address = ProxyAddress;
-                        proxy.Port = proxyPort;
-                    }
-                }
-
-                tryPortIndex = 0;
-
-                MTCDeviceList.Clear();
-                MessageList.Clear();
-                ClearAgentInfo();
-
-                RunProbe(ip, proxy, port, DeviceName);
-            }
-        }
-
-        class Probe_Info
-        {
-            public string address;
-            public int port;
-            public string deviceName;
-            public HTTP.ProxySettings proxy;
-        }
-
-        Thread testConnectedThread;
-
-        void RunProbe(string address, TH_MTConnect.HTTP.ProxySettings proxy, int port, string deviceName)
-        {
-            var info = new Probe_Info();
-            info.address = address;
-            info.port = port;
-            info.deviceName = deviceName;
-            info.proxy = proxy;
-
-            if (testConnectedThread != null) testConnectedThread.Abort();
-
-            testConnectedThread = new Thread(new ParameterizedThreadStart(RunProbe_Worker));
-            testConnectedThread.Start(info);
-
-            //ThreadPool.QueueUserWorkItem(new WaitCallback(RunProbe_Worker), info);
-        }
-
-        void RunProbe_Worker(object o)
-        {
-            if (o != null)
-            {
-                var info = o as Probe_Info;
-                if (info != null)
-                {
-                    //string url = HTTP.GetUrl(info.address, info.port, info.deviceName);
-
-                    //ReturnData returnData = Requests.Get(url, info.proxy, 2000, 1);
-
-                    RunProbe(info);
-
-                    
-                }
-            }
-
-            //this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), priority, new object[] { false });
-        }
-
-        void RunProbe(Probe_Info info)
-        {
-            string url = HTTP.GetUrl(info.address, info.port, info.deviceName) + "probe";
-
-            ReturnData returnData = Requests.Get(url, info.proxy, 2000, 1);
-            if (returnData != null)
-            {
-                // Update port
-                if (info.port > 0)
-                {
-                    this.Dispatcher.BeginInvoke(new Action<int>(UpdatePort), new object[] { info.port });
-                }
-
-                this.Dispatcher.BeginInvoke(new Action<ReturnData>(AddDevices), priority, new object[] { returnData });
-
-                this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), priority, new object[] { false });
-
-                //this.Dispatcher.BeginInvoke(new Action<string, int>(GetAgentInfo), priority, new object[] { info.address, info.port });
+                testConnectionThread = new Thread(new ParameterizedThreadStart(TestConnection_Worker));
+                testConnectionThread.Start(info);
             }
             else
             {
-                this.Dispatcher.BeginInvoke(new Action<string>(AddMessage), new object[] { info.address + ":" + info.port.ToString() });
-
-                // Run Probe again using other ports
-                if (tryPortIndex < tryPorts.Length - 1)
-                {
-                    //RunProbe(info.address, info.proxy, tryPorts[tryPortIndex], info.deviceName);
-                    info.port = tryPorts[tryPortIndex];
-                    RunProbe(info);
-                    tryPortIndex += 1;
-                }
-                else this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), priority, new object[] { false });
+                ConnectionTestResult = -1;
+                ConnectionTestResultText = "Incorrect Information. Be sure to enter in the IP Address, Port, and Device Name and Try Again.";
             }
         }
 
-        //void RunProbe(string url, int port, string deviceName)
-        //{
-        //    // Run a Probe request
-        //    Probe probe = new Probe();
-
-        //    probe.Address = url;
-        //    probe.Port = port;
-        //    probe.DeviceName = deviceName;
-
-        //    probe.ProbeFinished += probe_ProbeFinished;
-        //    probe.ProbeError += probe_ProbeError;
-        //    probe.Start();
-        //}
-
-        //void probe_ProbeFinished(ReturnData returnData, Probe sender)
-        //{
-        //    // Update port
-        //    if (sender.Port > 0)
-        //    {
-        //        this.Dispatcher.BeginInvoke(new Action<int>(UpdatePort), new object[] { sender.Port });
-        //    }
-
-        //    this.Dispatcher.BeginInvoke(new Action<ReturnData>(AddDevices), priority, new object[] { returnData });
-
-        //    this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), priority, new object[] { false });
-        //}
-
-        void UpdateConnectionTestLoading(bool loading)
+        private void TestConnection_Worker(object o)
         {
-            ConnectionTestLoading = loading;
+            if (o != null)
+            {
+                var info = (TestConnectionInfo)o;
 
-            var data = new EventData();
-            data.Data01 = Address;
+                var returnInfo = new TestConnectionReturnInfo();
 
-            int port = 5000;
-            int.TryParse(Port, out port);
-            data.Data02 = port;
+                var ping = new Ping();
+                var pingReply = ping.Send(info.Address);
 
-            data.Data03 = DeviceName;
-            data.Id = "EditPage_RequestProbe";
+                if (pingReply.Status == IPStatus.Success)
+                {
+                    string url = HTTP.GetUrl(info.Address, info.Port, info.DeviceName) + "probe";
 
-            if (SendData != null) SendData(data);
+                    ReturnData returnData = Requests.Get(url, 5000, 1);
+
+                    if (returnData != null)
+                    {
+                        returnInfo.Success = true;
+                        returnInfo.Message = "MTConnect Probe Successful @ " + url;
+                    }
+                    else returnInfo.Message = "MTConnect Probe Failed @ " + url;
+                }
+                else returnInfo.Message = "IP Not Reachable @ " + info.Address;
+
+                Dispatcher.BeginInvoke(new Action<TestConnectionReturnInfo>(TestConnection_GUI), UI_Functions.PRIORITY_BACKGROUND, new object[] { returnInfo });
+            }
         }
 
-        int[] tryPorts = new int[] { 5000, 5001, 5002, 5003, 5004, 5005 };
-        int tryPortIndex;
+        private class TestConnectionReturnInfo
+        {
+            public bool Success { get; set; }
+            public string Message { get; set; }
+        }
 
-        //void probe_ProbeError(Probe.ErrorData errorData)
+        private void TestConnection_GUI(TestConnectionReturnInfo info)
+        {
+            if (info.Success) ConnectionTestResult = 1;
+            else ConnectionTestResult = -1;
+
+            ConnectionTestResultText = info.Message;
+            ConnectionTestLoading = false;
+        }
+
+        private void TestConnectionCancel_Clicked(TH_WPF.Button bt)
+        {
+            if (testConnectionThread != null) testConnectionThread.Abort();
+
+            ConnectionTestLoading = false;
+        }
+        
+        //class Probe_Info
         //{
-        //    Logger.Log("Probe Error :: " + errorData.message);
+        //    public string address;
+        //    public int port;
+        //    public string deviceName;
+        //    public HTTP.ProxySettings proxy;
+        //}
 
-        //    //this.Dispatcher.BeginInvoke(new Action<string>(AddMessage), new object[] { errorData.probe.URL });
+        //Thread testConnectedThread;
 
-        //    if (errorData.probe != null)
+        //void RunProbe(string address, TH_MTConnect.HTTP.ProxySettings proxy, int port, string deviceName)
+        //{
+        //    var info = new Probe_Info();
+        //    info.address = address;
+        //    info.port = port;
+        //    info.deviceName = deviceName;
+        //    info.proxy = proxy;
+
+        //    if (testConnectedThread != null) testConnectedThread.Abort();
+
+        //    testConnectedThread = new Thread(new ParameterizedThreadStart(RunProbe_Worker));
+        //    testConnectedThread.Start(info);
+
+        //    //ThreadPool.QueueUserWorkItem(new WaitCallback(RunProbe_Worker), info);
+        //}
+
+        //void RunProbe_Worker(object o)
+        //{
+        //    if (o != null)
         //    {
+        //        var info = o as Probe_Info;
+        //        if (info != null)
+        //        {
+        //            //string url = HTTP.GetUrl(info.address, info.port, info.deviceName);
+
+        //            //ReturnData returnData = Requests.Get(url, info.proxy, 2000, 1);
+
+        //            RunProbe(info);
+
+                    
+        //        }
+        //    }
+
+        //    //this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), priority, new object[] { false });
+        //}
+
+        //void RunProbe(Probe_Info info)
+        //{
+        //    string url = HTTP.GetUrl(info.address, info.port, info.deviceName) + "probe";
+
+        //    ReturnData returnData = Requests.Get(url, info.proxy, 2000, 1);
+        //    if (returnData != null)
+        //    {
+        //        // Update port
+        //        if (info.port > 0)
+        //        {
+        //            this.Dispatcher.BeginInvoke(new Action<int>(UpdatePort), new object[] { info.port });
+        //        }
+
+        //        this.Dispatcher.BeginInvoke(new Action<ReturnData>(AddDevices), priority, new object[] { returnData });
+
+        //        this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), priority, new object[] { false });
+
+        //        //this.Dispatcher.BeginInvoke(new Action<string, int>(GetAgentInfo), priority, new object[] { info.address, info.port });
+        //    }
+        //    else
+        //    {
+        //        this.Dispatcher.BeginInvoke(new Action<string>(AddMessage), new object[] { info.address + ":" + info.port.ToString() });
+
         //        // Run Probe again using other ports
         //        if (tryPortIndex < tryPorts.Length - 1)
         //        {
-        //            RunProbe(errorData.probe.Address, tryPorts[tryPortIndex], errorData.probe.DeviceName);
+        //            //RunProbe(info.address, info.proxy, tryPorts[tryPortIndex], info.deviceName);
+        //            info.port = tryPorts[tryPortIndex];
+        //            RunProbe(info);
         //            tryPortIndex += 1;
         //        }
         //        else this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), priority, new object[] { false });
-
-        //        errorData.probe.Stop();
         //    }
-        //    else this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), priority, new object[] { false });
         //}
 
-        #endregion
+        ////void RunProbe(string url, int port, string deviceName)
+        ////{
+        ////    // Run a Probe request
+        ////    Probe probe = new Probe();
+
+        ////    probe.Address = url;
+        ////    probe.Port = port;
+        ////    probe.DeviceName = deviceName;
+
+        ////    probe.ProbeFinished += probe_ProbeFinished;
+        ////    probe.ProbeError += probe_ProbeError;
+        ////    probe.Start();
+        ////}
+
+        ////void probe_ProbeFinished(ReturnData returnData, Probe sender)
+        ////{
+        ////    // Update port
+        ////    if (sender.Port > 0)
+        ////    {
+        ////        this.Dispatcher.BeginInvoke(new Action<int>(UpdatePort), new object[] { sender.Port });
+        ////    }
+
+        ////    this.Dispatcher.BeginInvoke(new Action<ReturnData>(AddDevices), priority, new object[] { returnData });
+
+        ////    this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), priority, new object[] { false });
+        ////}
+
+        //void UpdateConnectionTestLoading(bool loading)
+        //{
+        //    ConnectionTestLoading = loading;
+
+        //    var data = new EventData();
+        //    data.Data01 = Address;
+
+        //    int port = 5000;
+        //    int.TryParse(Port, out port);
+        //    data.Data02 = port;
+
+        //    data.Data03 = DeviceName;
+        //    data.Id = "EditPage_RequestProbe";
+
+        //    if (SendData != null) SendData(data);
+        //}
+
+        //int[] tryPorts = new int[] { 5000, 5001, 5002, 5003, 5004, 5005 };
+        //int tryPortIndex;
+
+        ////void probe_ProbeError(Probe.ErrorData errorData)
+        ////{
+        ////    Logger.Log("Probe Error :: " + errorData.message);
+
+        ////    //this.Dispatcher.BeginInvoke(new Action<string>(AddMessage), new object[] { errorData.probe.URL });
+
+        ////    if (errorData.probe != null)
+        ////    {
+        ////        // Run Probe again using other ports
+        ////        if (tryPortIndex < tryPorts.Length - 1)
+        ////        {
+        ////            RunProbe(errorData.probe.Address, tryPorts[tryPortIndex], errorData.probe.DeviceName);
+        ////            tryPortIndex += 1;
+        ////        }
+        ////        else this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), priority, new object[] { false });
+
+        ////        errorData.probe.Stop();
+        ////    }
+        ////    else this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), priority, new object[] { false });
+        ////}
+
+        //#endregion
 
         #region "Message List"
 

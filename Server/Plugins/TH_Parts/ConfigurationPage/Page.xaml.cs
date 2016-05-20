@@ -191,13 +191,13 @@ namespace TH_Parts.ConfigurationPage
                     // Add each Value
                     foreach (var value in e.Event.values)
                     {
-                        GeneratedEventValues.Add(value.result.value);
+                        if (value.result != null) GeneratedEventValues.Add(value.result.value);
                     }
 
                     // Add Default Value
                     if (e.Event.Default != null)
                     {
-                        GeneratedEventValues.Add(e.Event.Default.value);
+                        if (e.Event.Default != null) GeneratedEventValues.Add(e.Event.Default.value);
                     }
                 }
             }

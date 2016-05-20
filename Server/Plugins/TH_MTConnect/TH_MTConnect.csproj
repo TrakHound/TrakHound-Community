@@ -93,6 +93,9 @@
     <Content Include="LICENSE.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\Warning_01.png" />
+    <Resource Include="Resources\CheckMark_01.png" />
+    <Resource Include="Resources\X_01.png" />
     <Resource Include="Resources\MTConnect_01.png" />
     <Resource Include="Resources\EventDataValues.xml" />
   </ItemGroup>
