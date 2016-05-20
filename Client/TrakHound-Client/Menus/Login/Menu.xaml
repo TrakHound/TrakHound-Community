@@ -467,7 +467,7 @@
                     </Grid>
 
                     <!--Seperator-->
-                    <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Foreground_Light}"/>
+                    <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Shade_Normal}"/>
 
                     <!--Bottom Bar-->
                     <Grid Grid.Row="2" Height="59" Background="{StaticResource Window_Background_Dark}">

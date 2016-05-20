@@ -17,7 +17,7 @@
              d:DesignWidth="600"
              >
 
-    <Grid Background="{StaticResource Accent_Normal}">
+    <Grid Background="{StaticResource Window_Background_Accent_Gradient}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="120"/>
             <ColumnDefinition Width="*"/>
@@ -78,7 +78,7 @@
 
         </StackPanel>
 
-        <Border Grid.Column="1" BorderBrush="{StaticResource Accent_Dark}" BorderThickness="1">
+        <Border Grid.Column="1" BorderBrush="{StaticResource Accent_Dark}" BorderThickness="1,0,0,0">
 
             <Grid Background="{StaticResource Window_Background}" >
 

@@ -1,10 +1,13 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Threading;
 
 using TH_DeviceManager;
 using TH_Global;
+using TH_Global.Functions;
 using TH_Global.TrakHound.Users;
 using TH_WPF;
 
@@ -19,6 +22,8 @@ namespace TrakHound_Server_DeviceManager
         {
             InitializeComponent();
             DataContext = this;
+
+            TH_Database.DatabasePluginReader.ReadPlugins();
 
             deviceManager = new DeviceManager();
             deviceManager.LoadDevices();
@@ -92,8 +97,20 @@ namespace TrakHound_Server_DeviceManager
             set { SetValue(PageContentProperty, value); }
         }
 
+
         public static readonly DependencyProperty PageContentProperty =
             DependencyProperty.Register("PageContent", typeof(IPage), typeof(MainWindow), new PropertyMetadata(null));
+
+
+        public bool LoggingIn
+        {
+            get { return (bool)GetValue(LoggingInProperty); }
+            set { SetValue(LoggingInProperty, value); }
+        }
+
+        public static readonly DependencyProperty LoggingInProperty =
+            DependencyProperty.Register("LoggingIn", typeof(bool), typeof(MainWindow), new PropertyMetadata(true));
+
 
         public void AddPage(IPage page, string title = null, string image = null)
         {
@@ -168,31 +185,61 @@ namespace TrakHound_Server_DeviceManager
 
         private void StartLoginMonitor()
         {
-            string path = FileLocations.AppData + @"\nigolresu";
-            if (File.Exists(path))
-            {
-                string dir = Path.GetDirectoryName(path);
+            string dir = FileLocations.AppData;
+            string filename = "nigolresu";
 
-                var watcher = new FileSystemWatcher(dir);
-                watcher.Changed += FileSystemWatcher_UserLogin_Changed;
-                watcher.Created += FileSystemWatcher_UserLogin_Changed;
-                watcher.Deleted += FileSystemWatcher_UserLogin_Changed;
-                watcher.EnableRaisingEvents = true;
-            }
+            var watcher = new FileSystemWatcher(dir, filename);
+            watcher.Changed += UserLoginFileMonitor_Changed;
+            watcher.Created += UserLoginFileMonitor_Changed;
+            watcher.Deleted += UserLoginFileMonitor_Changed;
+            watcher.EnableRaisingEvents = true;
+
+
+            //string path = FileLocations.AppData + @"\nigolresu";
+            //if (File.Exists(path))
+            //{
+
+            //    //string dir = Path.GetDirectoryName(path);
+
+            //    //var watcher = new FileSystemWatcher(dir);
+            //    //watcher.Changed += FileSystemWatcher_UserLogin_Changed;
+            //    //watcher.Created += FileSystemWatcher_UserLogin_Changed;
+            //    //watcher.Deleted += FileSystemWatcher_UserLogin_Changed;
+            //    //watcher.EnableRaisingEvents = true;
+            //}
         }
 
-        private void FileSystemWatcher_UserLogin_Changed(object sender, FileSystemEventArgs e)
+        private void UserLoginFileMonitor_Changed(object sender, FileSystemEventArgs e)
         {
             Login();
         }
 
         private void Login()
         {
+            LoggingIn = true;
+
+            ThreadPool.QueueUserWorkItem(new WaitCallback(Login_Worker));
+        }
+
+        private void Login_Worker(object o)
+        {
             UserLoginFile.LoginData loginData = UserLoginFile.Read();
             if (loginData != null)
             {
-                deviceManager.CurrentUser = UserManagement.TokenLogin(loginData.Token);
+                if (deviceManager.CurrentUser != null)
+                {
+                    if (deviceManager.CurrentUser.Username != loginData.Username) deviceManager.CurrentUser = UserManagement.TokenLogin(loginData.Token);
+                }
+                else deviceManager.CurrentUser = UserManagement.TokenLogin(loginData.Token);
             }
+            else deviceManager.CurrentUser = null;
+
+            Dispatcher.BeginInvoke(new Action(Login_GUI), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+        }
+
+        private void Login_GUI()
+        {
+            LoggingIn = false;
         }
     }
 }

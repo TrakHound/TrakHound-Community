@@ -121,8 +121,10 @@ F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\bin\Debug\WPFToolkit.pdb
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\PageManager.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\TabManager.baml
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Menus\Login\Menu.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\About\Information\Page.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\About\License\Page.baml
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Account\MyAccountPage.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Windows\Fullscreen.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\Developer Console\PopUp.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Menus\Plugins\PluginItem.baml
@@ -140,8 +142,10 @@ F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Windows\Splash.b
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\App.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\PageManager.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\TabManager.g.cs
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Menus\Login\Menu.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\About\Information\Page.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\About\License\Page.g.cs
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Account\MyAccountPage.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Windows\BugReport.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Windows\Fullscreen.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\Developer Console\PopUp.g.cs
@@ -187,7 +191,3 @@ F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound_Client
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.exe
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.pdb
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Menus\Login\Menu.baml
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Account\MyAccountPage.baml
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Menus\Login\Menu.g.cs
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Account\MyAccountPage.g.cs

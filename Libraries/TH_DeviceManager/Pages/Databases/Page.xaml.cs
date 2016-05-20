@@ -530,7 +530,13 @@ namespace TH_DeviceManager.Pages.Databases
 
         private void UpdateDatabaseConfiguration(DataTable dt)
         {
-            DataTable_Functions.UpdateTableValue(dt, "address", "/DatabaseId", "value", Configuration.GenerateDatabaseId());
+            string databaseId = DatabaseId;
+            if (string.IsNullOrEmpty(databaseId))
+            {
+                databaseId = Configuration.GenerateDatabaseId();           
+            }
+
+            DataTable_Functions.UpdateTableValue(dt, "address", "/DatabaseId", "value", databaseId);
 
             AddDatabaseConfiguration("/Databases_Client", dt);
             AddDatabaseConfiguration("/Databases_Server", dt);

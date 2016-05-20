@@ -106,7 +106,7 @@ namespace TrakHound_Client
             }
         }
 
-        private TH_Global.TrakHound.Users.UserLoginFile.LoginData serverLoginData;
+        private UserLoginFile.LoginData serverLoginData;
 
         private void Users_Initialize()
         {
@@ -127,7 +127,7 @@ namespace TrakHound_Client
             bool serverRunning = Service_Functions.IsServiceRunning("TrakHound Server");
             if (serverRunning)
             {
-                serverLoginData = TH_Global.TrakHound.Users.UserLoginFile.Read();
+                serverLoginData = UserLoginFile.Read();
                 if (serverLoginData != null)
                 {
                     if (userConfig == null) ServerUser_Ask_Logout();
@@ -142,8 +142,7 @@ namespace TrakHound_Client
             {
                 if (userConfig != null) ServerUser_Login(userConfig);
                 else ServerUser_Logout();
-            }
-            
+            }          
 
             CurrentUser = userConfig;
         }
@@ -169,12 +168,12 @@ namespace TrakHound_Client
 
         private void ServerUser_Login(UserConfiguration userConfig)
         {
-            TH_Global.TrakHound.Users.UserLoginFile.Create(userConfig);
+            UserLoginFile.Create(userConfig);
         }
 
         private void ServerUser_Logout()
         {
-            TH_Global.TrakHound.Users.UserLoginFile.Remove();
+            UserLoginFile.Remove();
         }
 
     }
