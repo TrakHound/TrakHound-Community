@@ -138,7 +138,7 @@
         <ContentControl Grid.Column="1" Content="{Binding ButtonContent}"/>
 
         <!--Gloss Effect-->
-        <Border Grid.ColumnSpan="3" IsHitTestVisible="False">
+        <!--<Border Grid.ColumnSpan="3" IsHitTestVisible="False">
             <Border.Style>
                 <Style TargetType="Border">
                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -179,7 +179,7 @@
                     </Border.Background>
                 </Border>
 
-                <!--<Border Grid.Row="1" IsHitTestVisible="False">
+                --><!--<Border Grid.Row="1" IsHitTestVisible="False">
                     <Border.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#00ffffff" Offset="0"/>
@@ -197,11 +197,11 @@
                             <GradientStop Color="#08000000" Offset="1"/>
                         </LinearGradientBrush>
                     </Border.Background>
-                </Border>-->
+                </Border>--><!--
 
             </Grid>
 
-        </Border>
+        </Border>-->
 
 
         <!--Gloss Effect-->

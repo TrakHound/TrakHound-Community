@@ -51,21 +51,20 @@
                     <Rectangle.Style>
                         <Style TargetType="Rectangle">
                             <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                            <Setter Property="Fill" Value="{StaticResource Shade_Normal}"/>
+                            <Setter Property="Fill" Value="{StaticResource Shade_Dark}"/>
                         </Style>
                     </Rectangle.Style>
                 </Rectangle>
 
-                <TextBlock Grid.Column="1" Margin="0,0,0,0" Text="Sign in to TrakHound to access your saved devices" FontSize="10pt" Foreground="{StaticResource Shade_Dark}" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="1" Margin="0,0,0,0" Text="Sign in to TrakHound to access your saved devices" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" TextWrapping="Wrap" VerticalAlignment="Center"/>
 
             </Grid>
-
 
             <!--Username-->
             <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
                 <Border.Style>
                     <Style TargetType="Border">
-                        <Setter Property="BorderBrush" Value="{StaticResource Shade_Dark}"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource Foreground_Light}"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsFocused, ElementName=username_TXT}" Value="true">
                                 <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
@@ -101,7 +100,7 @@
             <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
                 <Border.Style>
                     <Style TargetType="Border">
-                        <Setter Property="BorderBrush" Value="{StaticResource Shade_Dark}"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource Foreground_Light}"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsFocused, ElementName=password_TXT}" Value="true">
                                 <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
@@ -235,7 +234,7 @@
         </Grid>
 
         <!--Seperator-->
-        <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Shade_Normal}"/>
+        <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Foreground_Light}"/>
 
         <!--Bottom Bar-->
         <Grid Grid.Row="2" Height="59" Background="{StaticResource Window_Background_Dark}">

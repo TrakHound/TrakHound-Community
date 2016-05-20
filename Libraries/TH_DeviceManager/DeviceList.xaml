@@ -93,14 +93,15 @@
         <!--Tool Bar-->
         <Border Grid.Row="0" Background="{StaticResource Accent_Normal}">
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
                 <StackPanel.Resources>
                     <Style TargetType="th_wpf:Button">
                         <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
                         <Setter Property="Background" Value="Transparent"/>
                         <Setter Property="FontSize" Value="12"/>
                         <Setter Property="Height" Value="30"/>
-                        <Setter Property="Margin" Value="1,0"/>
+                        <Setter Property="Margin" Value="1,2"/>
+                        <Setter Property="Padding" Value="5"/>
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
                                 <Setter Property="Background" Value="#33ffffff"/>

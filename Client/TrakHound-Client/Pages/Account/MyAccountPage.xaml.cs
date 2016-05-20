@@ -124,7 +124,8 @@ namespace TrakHound_Client.Pages.Account
 
                 SetDependencyProperty(Page.ZipCodeProperty, userConfig.Zipcode);
 
-                if (this.IsLoaded) LoadProfileImage(userConfig);
+                //if (this.IsLoaded) LoadProfileImage(userConfig);
+                LoadProfileImage(userConfig);
             }
             else
             {
@@ -555,7 +556,7 @@ namespace TrakHound_Client.Pages.Account
                 {
                     if (profileImageFilename != null)
                     {
-                        UploadProfileImage(profileImageFilename);
+                        userConfig = UploadProfileImage(userConfig, profileImageFilename);
                     }
                 }
 
@@ -602,7 +603,7 @@ namespace TrakHound_Client.Pages.Account
                 {
                     if (profileImageFilename != null)
                     {
-                        UploadProfileImage(profileImageFilename);
+                        userConfig = UploadProfileImage(userConfig, profileImageFilename);
                     }
                 }
 
@@ -828,7 +829,7 @@ namespace TrakHound_Client.Pages.Account
         public static readonly DependencyProperty ProfileImageLoadingProperty =
             DependencyProperty.Register("ProfileImageLoading", typeof(bool), typeof(Page), new PropertyMetadata(false));
 
-        Thread profileimage_THREAD;
+        //Thread profileimage_THREAD;
 
         void LoadProfileImage(UserConfiguration userConfig)
         {
@@ -836,38 +837,37 @@ namespace TrakHound_Client.Pages.Account
             ProfileImageSet = false;
             ProfileImage = null;
 
+            ThreadPool.QueueUserWorkItem(new WaitCallback(LoadProfileImage_Worker), userConfig);
 
-            if (profileimage_THREAD != null) profileimage_THREAD.Abort();
+            //if (profileimage_THREAD != null) profileimage_THREAD.Abort();
 
-            profileimage_THREAD = new Thread(new ParameterizedThreadStart(LoadProfileImage_Worker));
-            profileimage_THREAD.Start(userConfig);
+            //profileimage_THREAD = new Thread(new ParameterizedThreadStart(LoadProfileImage_Worker));
+            //profileimage_THREAD.Start(userConfig);
         }
 
         void LoadProfileImage_Worker(object o)
         {
             if (o != null)
             {
-                UserConfiguration userConfig = (UserConfiguration)o;
+                var userConfig = (UserConfiguration)o;
 
                 if (userConfig != null && !string.IsNullOrEmpty(userConfig.ImageUrl))
                 {
-                    System.Drawing.Image img = UserManagement.ProfileImage.Get(userConfig.ImageUrl);
+                    var img = UserManagement.ProfileImage.Get(userConfig.ImageUrl);
                     if (img != null)
                     {
                         System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
 
                         IntPtr bmpPt = bmp.GetHbitmap();
                         BitmapSource bmpSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-
                         bmpSource = Image_Functions.SetImageSize(bmpSource, 200, 200);
-
                         bmpSource.Freeze();
 
-                        this.Dispatcher.BeginInvoke(new Action<BitmapSource>(LoadProfileImage_GUI), priority, new object[] { bmpSource });
+                        Dispatcher.BeginInvoke(new Action<BitmapSource>(LoadProfileImage_GUI), priority, new object[] { bmpSource });
                     }
                 }
 
-                this.Dispatcher.BeginInvoke(new Action(LoadProfileImage_Finished), priority, new object[] { });
+                Dispatcher.BeginInvoke(new Action(LoadProfileImage_Finished), priority, new object[] { });
             }
         }
 
@@ -897,7 +897,7 @@ namespace TrakHound_Client.Pages.Account
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!profileImageLoaded && CurrentUser != null) LoadProfileImage(CurrentUser);
+            //if (!profileImageLoaded && CurrentUser != null) LoadProfileImage(CurrentUser);
         }
 
 
@@ -926,9 +926,9 @@ namespace TrakHound_Client.Pages.Account
             }
         }
 
-        bool UploadProfileImage(string path)
+        UserConfiguration UploadProfileImage(UserConfiguration userConfig, string path)
         {
-            bool result = false;
+            UserConfiguration result = null;
 
             if (path != null)
             {
@@ -947,7 +947,7 @@ namespace TrakHound_Client.Pages.Account
 
                     img.Save(localPath);
 
-                    result = UploadProfileImage(newFilename, localPath);
+                    result = UserManagement.ProfileImage.Set(userConfig.SessionToken, localPath);
                 }
             }
 
@@ -1075,18 +1075,18 @@ namespace TrakHound_Client.Pages.Account
             return result;
         }
 
-        public static bool UploadProfileImage(string filename, string localpath)
-        {
-            bool result = false;
+        //public static bool UploadProfileImage(string filename, string localpath)
+        //{
+        //    bool result = false;
 
-            NameValueCollection nvc = new NameValueCollection();
-            if (HTTP.UploadFile("https://www.feenux.com/php/users/uploadprofileimage.php", localpath, "file", "image/jpeg", nvc))
-            {
-                result = true;
-            }
+        //    NameValueCollection nvc = new NameValueCollection();
+        //    if (HTTP.UploadFile("https://www.feenux.com/php/users/uploadprofileimage.php", localpath, "file", "image/jpeg", nvc))
+        //    {
+        //        result = true;
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
 
         #endregion

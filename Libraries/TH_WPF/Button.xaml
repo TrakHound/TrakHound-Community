@@ -192,7 +192,7 @@
             </Border>
 
             <!--Gloss Effect-->
-            <Border Grid.ColumnSpan="3" IsHitTestVisible="False" FocusManager.IsFocusScope="False">
+            <!--<Border Grid.ColumnSpan="3" IsHitTestVisible="False" FocusManager.IsFocusScope="False">
                 <Border.Style>
                     <Style TargetType="Border">
                         <Setter Property="Visibility" Value="Visible"/>
@@ -235,7 +235,7 @@
 
                 </Grid>
 
-            </Border>
+            </Border>-->
 
         </Grid>
 

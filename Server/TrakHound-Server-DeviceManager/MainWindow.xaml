@@ -9,68 +9,36 @@
         xmlns:devicemanager="clr-namespace:TH_DeviceManager;assembly=TH_DeviceManager"
         
         mc:Ignorable="d"
-        Title="Device Manager" Height="600" Width="800" WindowStartupLocation="CenterScreen" WindowState="Maximized" Icon="Resources/TrakHound.ico">
+        Title="Device Manager" Height="600" Width="1000" WindowStartupLocation="CenterScreen" WindowState="Maximized" Icon="Resources/TrakHound.ico">
     
     <Grid Margin="0,10,0,0">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition MinWidth="150" Width="auto"/>
+            <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <!--Page List-->
-        <Border Grid.Column="0" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="0,0,1,0">
+        <Border Grid.Column="0" BorderBrush="{StaticResource Accent_Dark}" BorderThickness="0,0,1,0" Background="{StaticResource Window_Background_Accent_Gradient}">
 
             <ScrollViewer VerticalScrollBarVisibility="auto" >
 
-                <ItemsControl ItemsSource="{Binding Pages}" Margin="0">
+                <ItemsControl ItemsSource="{Binding Pages}" Margin="0,20,0,40">
                     <ItemsControl.Resources>
                         <Style TargetType="th_wpf:ListButton">
-                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                            <Setter Property="Foreground" Value="#fff"/>
                             <Setter Property="Background" Value="Transparent"/>
                             <Setter Property="MinWidth" Value="150"/>
-
-                            <!--<Setter Property="ButtonContent">
-                                <Setter.Value>
-                                    <Grid Background="Red">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="40"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        
-                                        --><!--Page Image--><!--
-                                        <Grid Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" FocusManager.IsFocusScope="False">
-                                            <Grid.Resources>
-                                                <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding Image, RelativeSource={RelativeSource Self}, Mode=OneWay}" />
-                                            </Grid.Resources>
-                                            <Grid.Style>
-                                                <Style TargetType="Grid">
-                                                    <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                                    <Setter Property="Background" Value="{Binding Foreground}"/>
-                                                </Style>
-                                            </Grid.Style>
-                                        </Grid>
-                                        
-                                        --><!--Page Title--><!--
-                                        <TextBlock Text="{Binding Title, RelativeSource={RelativeSource Self}}"/>
-                                        
-                                        --><!--Close Button--><!--
-                                        <th_wpf:Button DataObject="{Binding }" Clicked="ClosePage_Clicked" Image="Resources/X_01.png" Width="30" Height="30" Foreground="{StaticResource Accent_Normal}" VerticalAlignment="Top">
-                                            <th_wpf:Button.Style>
-                                                <Style TargetType="th_wpf:Button">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Title, RelativeSource={RelativeSource Self}}" Value="Device List">
-                                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </th_wpf:Button.Style>
-                                        </th_wpf:Button>
-
-                                    </Grid>
-                                </Setter.Value>
-                            </Setter>-->
-                            
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="true">
+                                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                            <!--<Setter Property="Foreground" Value="{StaticResource Foreground_Normal_Opposite}"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="MinWidth" Value="150"/>
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="true">
                                     <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
@@ -78,7 +46,7 @@
                                 <Trigger Property="IsSelected" Value="true">
                                     <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
                                 </Trigger>
-                            </Style.Triggers>
+                            </Style.Triggers>-->
                         </Style>
                     </ItemsControl.Resources>
                 </ItemsControl>

@@ -165,21 +165,26 @@ namespace TH_Global.TrakHound.Users
         public static class ProfileImage
         {
 
-            public static bool Set(string token, string filename)
+            public static UserConfiguration Set(string token, string path)
             {
-                bool result = false;
+                UserConfiguration result = null;
 
                 if (!string.IsNullOrEmpty(token))
                 {
-                    string url = "https://www.feenux.com/trakhound/api/profile_image/set/?";
+                    string url = "https://www.feenux.com/trakhound/api/profile_image/set/";
                     string senderId = SenderId.Get();
 
-                    url += "sender_id=" + SenderId.Get();
-                    url += "&token=" + token;
-                    url += "&filename=" + filename;
+                    var postDatas = new NameValueCollection();
+                    postDatas["token"] = token;
+                    postDatas["sender_id"] = SenderId.Get();
 
-                    string response = HTTP.GET(url);
-                    if (!string.IsNullOrEmpty(response)) result = true;
+                    string response = HTTP.UploadFile(url, path, "file", "image/jpeg", postDatas);
+                    if (response != null)
+                    {
+                        result = UserConfiguration.Get(response);
+
+                        return result;
+                    }
                 }
 
                 return result;
@@ -196,7 +201,7 @@ namespace TH_Global.TrakHound.Users
                     // Look for file in local cache
                     if (File.Exists(localPath))
                     {
-                        result = Image_Functions.GetImageFromFile(filename);
+                        result = Image_Functions.GetImageFromFile(localPath);
                     }
                     // If not in local cache (already downloaded) then download it
                     else
@@ -213,7 +218,7 @@ namespace TH_Global.TrakHound.Users
                             {
                                 try
                                 {
-                                    byte[] data = webClient.DownloadData("https://www.feenux.com/trakhound/users/files/" + filename);
+                                    byte[] data = webClient.DownloadData("https://www.feenux.com/trakhound/files/profile_images/" + filename);
 
                                     using (MemoryStream mem = new MemoryStream(data))
                                     {

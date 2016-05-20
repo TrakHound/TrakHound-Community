@@ -619,18 +619,18 @@ namespace TrakHound_Client.Menus.Login
 
                 if (userConfig != null && !string.IsNullOrEmpty(userConfig.ImageUrl))
                 {
-                    string url = "https://www.feenux.com/trakhound/users/files/" + userConfig.ImageUrl;
+                    //string url = "https://www.feenux.com/trakhound/users/files/" + userConfig.ImageUrl;
+                    string url = "https://www.feenux.com/trakhound/files/profile_images/" + userConfig.ImageUrl;
 
-                    System.Drawing.Image img = TH_Global.Web.Download.Image(url);
+                    //System.Drawing.Image img = TH_Global.Web.Download.Image(url);
+                    var img = UserManagement.ProfileImage.Get(userConfig.ImageUrl);
                     if (img != null)
                     {
                         System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
 
                         IntPtr bmpPt = bmp.GetHbitmap();
                         BitmapSource bmpSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-
                         bmpSource = Image_Functions.SetImageSize(bmpSource, 120, 120);
-
                         bmpSource.Freeze();
 
                         this.Dispatcher.BeginInvoke(new Action<BitmapSource>(LoadProfileImage_GUI), priority, new object[] { bmpSource });
@@ -702,29 +702,33 @@ namespace TrakHound_Client.Menus.Login
                 string imagePath = OpenImageBrowse();
                 if (imagePath != null)
                 {
-                    // Crop and Resize image
-                    System.Drawing.Image img = ProcessImage(imagePath);
-                    if (img != null)
-                    {
-                        string filename = String_Functions.RandomString(20);
 
-                        string tempdir = FileLocations.TrakHound + @"\temp";
-                        if (!Directory.Exists(tempdir)) Directory.CreateDirectory(tempdir);
+                    CurrentUser = UploadProfileImage(CurrentUser, imagePath);
 
-                        string localPath = tempdir + @"\" + filename;
 
-                        img.Save(localPath);
+                    //// Crop and Resize image
+                    //System.Drawing.Image img = ProcessImage(imagePath);
+                    //if (img != null)
+                    //{
+                    //    string filename = String_Functions.RandomString(20);
 
-                        if (UploadProfileImage(filename, localPath))
-                        {
-                            UserManagement.ProfileImage.Set(CurrentUser.SessionToken, filename);
-                            //Users.UpdateImageURL(filename, CurrentUser);
+                    //    string tempdir = FileLocations.TrakHound + @"\temp";
+                    //    if (!Directory.Exists(tempdir)) Directory.CreateDirectory(tempdir);
 
-                            LoadProfileImage(CurrentUser);
+                    //    string localPath = tempdir + @"\" + filename;
 
-                            CurrentUser = CurrentUser;
-                        }
-                    }
+                    //    img.Save(localPath);
+
+                    //    //if (UploadProfileImage(filename, localPath))
+                    //    //{
+                    //    //    UserManagement.ProfileImage.Set(CurrentUser.SessionToken, filename);
+                    //    //    //Users.UpdateImageURL(filename, CurrentUser);
+
+                    //    //    LoadProfileImage(CurrentUser);
+
+                    //    //    CurrentUser = CurrentUser;
+                    //    //}
+                    //}
                 }
             }
         }
@@ -764,18 +768,44 @@ namespace TrakHound_Client.Menus.Login
             return result;
         }
 
-        public static bool UploadProfileImage(string filename, string localpath)
+        public static UserConfiguration UploadProfileImage(UserConfiguration userConfig, string path)
         {
-            bool result = false;
+            UserConfiguration result = null;
 
-            NameValueCollection nvc = new NameValueCollection();
-            if (HTTP.UploadFile("https://www.feenux.com/php/users/uploadprofileimage.php", localpath, "file", "image/jpeg", nvc))
+            if (!string.IsNullOrEmpty(path))
             {
-                result = true;
+                // Crop and Resize image
+                System.Drawing.Image img = ProcessImage(path);
+                if (img != null)
+                {
+                    string filename = String_Functions.RandomString(20);
+
+                    string tempdir = FileLocations.TrakHound + @"\temp";
+                    if (!Directory.Exists(tempdir)) Directory.CreateDirectory(tempdir);
+
+                    string localPath = tempdir + @"\" + filename;
+
+                    img.Save(localPath);
+
+                    result = UserManagement.ProfileImage.Set(userConfig.SessionToken, localPath);
+                }
             }
 
             return result;
         }
+
+        //public static bool UploadProfileImage(string filename, string localpath)
+        //{
+        //    bool result = false;
+
+        //    NameValueCollection nvc = new NameValueCollection();
+        //    if (HTTP.UploadFile("https://www.feenux.com/php/users/uploadprofileimage.php", localpath, "file", "image/jpeg", nvc))
+        //    {
+        //        result = true;
+        //    }
+
+        //    return result;
+        //}
 
         #endregion
 

@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 using TH_Configuration;
 using TH_Global.Functions;
-using TH_UserManagement.Management;
+using TH_Global.TrakHound.Users;
 
 namespace TrakHound_Server_Login
 {
@@ -120,7 +120,7 @@ namespace TrakHound_Server_Login
 
         #region "Login"
 
-        RememberMeType rememberMeType { get { return RememberMeType.Server; } }
+        //RememberMeType rememberMeType { get { return RememberMeType.Server; } }
 
         public bool RememberMe
         {
@@ -146,9 +146,9 @@ namespace TrakHound_Server_Login
 
         class Login_Info
         {
-            public string username { get; set; }
-            public string password { get; set; }
-            public bool rememberMe { get; set; }
+            public string Username { get; set; }
+            public string Password { get; set; }
+            public bool RememberMe { get; set; }
         }
 
         Thread login_THREAD;
@@ -160,9 +160,9 @@ namespace TrakHound_Server_Login
             LoginError = false;
 
             Login_Info info = new Login_Info();
-            info.username = username;
-            info.password = password;
-            info.rememberMe = RememberMe;
+            info.Username = username;
+            info.Password = password;
+            info.RememberMe = RememberMe;
 
             if (login_THREAD != null) login_THREAD.Abort();
 
@@ -176,10 +176,10 @@ namespace TrakHound_Server_Login
             {
                 Login_Info info = (Login_Info)o;
 
-                // Login
-                UserConfiguration userConfig = Users.Login(info.username, info.password);
+                var userConfig = UserManagement.CreateTokenLogin(info.Username, info.Password, "TrakHound Server Login");
 
                 if (userConfig != null) UserLoginFile.Create(userConfig);
+                else UserLoginFile.Remove();
 
                 this.Dispatcher.BeginInvoke(new Action<UserConfiguration>(Login_Finished), priority, new object[] { userConfig });
             }

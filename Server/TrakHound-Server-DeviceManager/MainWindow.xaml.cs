@@ -23,6 +23,8 @@ namespace TrakHound_Server_DeviceManager
             deviceManager = new DeviceManager();
             deviceManager.LoadDevices();
 
+            Login();
+
             StartLoginMonitor();
 
             DeviceList_Initialize();
@@ -63,6 +65,7 @@ namespace TrakHound_Server_DeviceManager
         private void DeviceList_EditSelected(TH_Configuration.Configuration config)
         {
             var editPage = new EditPage(config);
+            editPage.DeviceManager = deviceManager;
             AddPage(editPage, "Edit Device - " + config.Description.Description);
         }
 

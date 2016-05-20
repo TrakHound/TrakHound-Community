@@ -61,10 +61,10 @@ namespace TH_UserManagement.Management.Remote
                     else if (ImageFormat.Tiff.Equals(img.RawFormat)) contentFormat = "image/tiff";
 
                     NameValueCollection nvc = new NameValueCollection();
-                    if (HTTP.UploadFile("https://www.feenux.com/php/configurations/uploadimage.php", localpath, "file", contentFormat, nvc))
-                    {
-                        result = true;
-                    }
+                    //if (HTTP.UploadFile("https://www.feenux.com/php/configurations/uploadimage.php", localpath, "file", contentFormat, nvc))
+                    //{
+                    //    result = true;
+                    //}
                 }
             }
 
@@ -171,10 +171,10 @@ namespace TH_UserManagement.Management.Remote
             bool result = false;
 
             NameValueCollection nvc = new NameValueCollection();
-            if (HTTP.UploadFile("https://www.feenux.com/php/users/uploadprofileimage.php", localpath, "file", "image/jpeg", nvc))
-            {
-                result = true;
-            }
+            //if (HTTP.UploadFile("https://www.feenux.com/php/users/uploadprofileimage.php", localpath, "file", "image/jpeg", nvc))
+            //{
+            //    result = true;
+            //}
 
             return result;
         }

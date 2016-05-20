@@ -17,9 +17,9 @@ namespace TH_Global.Web
 
         const int TIMEOUT = 10000;
 
-        public static bool UploadFile(string url, string file, string paramName, string contentType, NameValueCollection nvc)
+        public static string UploadFile(string url, string file, string paramName, string contentType, NameValueCollection nvc)
         {
-            bool result = false;
+            string result = null;
 
             string boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x");
             byte[] boundarybytes = System.Text.Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");
@@ -75,9 +75,9 @@ namespace TH_Global.Web
                     wresp = wr.GetResponse();
                     Stream stream2 = wresp.GetResponseStream();
                     StreamReader reader2 = new StreamReader(stream2);
-                    Logger.Log(string.Format("File uploaded, server response is: {0}", reader2.ReadToEnd()));
+                    //Logger.Log(string.Format("File uploaded, server response is: {0}", reader2.ReadToEnd()));
 
-                    result = true;
+                    result = reader2.ReadToEnd();
 
                     success = true;
                 }

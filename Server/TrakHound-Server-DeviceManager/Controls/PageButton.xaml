@@ -30,18 +30,18 @@
                 <Grid.Style>
                     <Style TargetType="Grid">
                         <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                        <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+                        <Setter Property="Background" Value="#fff"/>
                     </Style>
                 </Grid.Style>
             </Grid>
 
             <!--Page Title-->
-            <TextBlock Grid.Column="1" Text="{Binding Title}" Foreground="{StaticResource Accent_Normal}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12"/>
+            <TextBlock Grid.Column="1" Text="{Binding Title}" Foreground="#fff" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" TextWrapping="Wrap"/>
 
         </Grid>
 
         <!--Close Button-->
-        <th_wpf:Button Grid.Column="1" Clicked="CloseButton_Clicked" Width="20" Height="20" Margin="10,0,0,0" Foreground="{StaticResource Accent_Normal}" VerticalAlignment="Top" Image="/TrakHound-Server-DeviceManager;component/Resources/X_01.png">
+        <th_wpf:Button Grid.Column="1" Clicked="CloseButton_Clicked" Width="20" Height="20" Margin="10,0,0,0" Foreground="#fff" VerticalAlignment="Top" Image="/TrakHound-Server-DeviceManager;component/Resources/X_01.png">
             <th_wpf:Button.Style>
                 <Style TargetType="th_wpf:Button">
                     <Setter Property="Background" Value="Transparent"/>
