@@ -9,8 +9,8 @@ using System.Windows.Media;
 
 using TH_Configuration;
 using TH_Global.Functions;
-//using TH_Global.TrakHound.Users;
-using TH_UserManagement.Management;
+using TH_Global.TrakHound.Users;
+//using TH_UserManagement.Management;
 
 namespace TrakHound_Client
 {
@@ -89,7 +89,7 @@ namespace TrakHound_Client
 
                 if (_currentuser != null)
                 {
-                    CurrentUsername = String_Functions.UppercaseFirst(_currentuser.username);
+                    CurrentUsername = String_Functions.UppercaseFirst(_currentuser.Username);
                     LoggedIn = true;
                 }
                 else
@@ -110,9 +110,9 @@ namespace TrakHound_Client
 
         private void Users_Initialize()
         {
-            UserManagementSettings.ReadConfiguration();
+            //UserManagementSettings.ReadConfiguration();
 
-            LoginMenu.rememberMeType = RememberMeType.Client;
+            //LoginMenu.rememberMeType = RememberMeType.Client;
             LoginMenu.LoadRememberMe();
         }
 
@@ -131,7 +131,7 @@ namespace TrakHound_Client
                 if (serverLoginData != null)
                 {
                     if (userConfig == null) ServerUser_Ask_Logout();
-                    else if (serverLoginData.Username.ToLower() != userConfig.username.ToLower())
+                    else if (serverLoginData.Username.ToLower() != userConfig.Username.ToLower())
                     {
                         ServerUser_Ask_Change(userConfig);
                     }

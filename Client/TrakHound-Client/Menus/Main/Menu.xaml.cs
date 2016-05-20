@@ -10,7 +10,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
-using TH_UserManagement.Management;
+using TH_Global.TrakHound.Users;
+//using TH_UserManagement.Management;
 
 namespace TrakHound_Client.Menus.Main
 {
@@ -79,7 +80,6 @@ namespace TrakHound_Client.Menus.Main
         public event ShownChanged_Handler ShownChanged;
 
         public delegate void Clicked_Handler();
-
 
         #region "Menu Items"
 

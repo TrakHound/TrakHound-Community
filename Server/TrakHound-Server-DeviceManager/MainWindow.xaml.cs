@@ -5,7 +5,7 @@ using System.Windows;
 
 using TH_DeviceManager;
 using TH_Global;
-using TH_UserManagement.Management;
+using TH_Global.TrakHound.Users;
 using TH_WPF;
 
 namespace TrakHound_Server_DeviceManager
@@ -188,7 +188,7 @@ namespace TrakHound_Server_DeviceManager
             UserLoginFile.LoginData loginData = UserLoginFile.Read();
             if (loginData != null)
             {
-                deviceManager.CurrentUser = Users.LoginWithHash(loginData.Username, loginData.Password);
+                deviceManager.CurrentUser = UserManagement.TokenLogin(loginData.Token);
             }
         }
     }

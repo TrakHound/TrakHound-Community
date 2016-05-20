@@ -132,7 +132,9 @@ namespace TH_DeviceManager.AddDevice.Pages
             {
                 if (ParentPage.DeviceManager.CurrentUser != null)
                 {
-                    result = Configurations.AddConfigurationToUser(ParentPage.DeviceManager.CurrentUser, config);
+                    var userConfig = UserConfiguration.FromNewUserConfiguration(ParentPage.DeviceManager.CurrentUser);
+
+                    result = Configurations.AddConfigurationToUser(userConfig, config);
                 }
                 // If not logged in Read from File in 'C:\TrakHound\'
                 else

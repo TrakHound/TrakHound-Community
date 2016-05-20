@@ -52,11 +52,11 @@ namespace TH_StatusTable
                         {
                             if (bmpSource.PixelWidth > bmpSource.PixelHeight)
                             {
-                                bmpSource = TH_WPF.Image_Functions.SetImageSize(bmpSource, 180);
+                                bmpSource = Image_Functions.SetImageSize(bmpSource, 180);
                             }
                             else
                             {
-                                bmpSource = TH_WPF.Image_Functions.SetImageSize(bmpSource, 0, 80);
+                                bmpSource = Image_Functions.SetImageSize(bmpSource, 0, 80);
                             }
 
                             bmpSource.Freeze();

@@ -457,11 +457,11 @@ namespace TH_DeviceManager.Pages.Description
                         {
                             if (result.PixelWidth > result.PixelHeight)
                             {
-                                result = TH_WPF.Image_Functions.SetImageSize(result, 180);
+                                result = Image_Functions.SetImageSize(result, 180);
                             }
                             else
                             {
-                                result = TH_WPF.Image_Functions.SetImageSize(result, 0, 80);
+                                result = Image_Functions.SetImageSize(result, 0, 80);
                             }
 
                             result.Freeze();
@@ -669,11 +669,11 @@ namespace TH_DeviceManager.Pages.Description
                         {
                             if (result.PixelWidth > result.PixelHeight)
                             {
-                                result = TH_WPF.Image_Functions.SetImageSize(result, 180);
+                                result = Image_Functions.SetImageSize(result, 180);
                             }
                             else
                             {
-                                result = TH_WPF.Image_Functions.SetImageSize(result, 0, 180);
+                                result = Image_Functions.SetImageSize(result, 0, 180);
                             }
 
                             result.Freeze();

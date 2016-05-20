@@ -128,5 +128,17 @@ namespace TrakHound_Client.Properties {
                 this["Github_Username"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LoginRememberToken {
+            get {
+                return ((string)(this["LoginRememberToken"]));
+            }
+            set {
+                this["LoginRememberToken"] = value;
+            }
+        }
     }
 }

@@ -16,7 +16,8 @@ using System.Windows.Media.Animation;
 using TH_Configuration;
 using TH_DeviceManager;
 using TH_Global;
-using TH_UserManagement.Management;
+using TH_Global.TrakHound.Users;
+//using TH_UserManagement.Management;
 
 using TrakHound_Client.Controls;
 

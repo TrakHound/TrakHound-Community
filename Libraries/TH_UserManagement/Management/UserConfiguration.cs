@@ -35,6 +35,15 @@ namespace TH_UserManagement.Management
         public int user_level { get; set; }
         public int plan_type { get; set; }
 
+        public static UserConfiguration FromNewUserConfiguration(TH_Global.TrakHound.Users.UserConfiguration userConfig)
+        {
+            var result = new UserConfiguration();
+
+            result.username = userConfig.Username;
+
+            return result;
+        }
+
         public static UserConfiguration GetFromDataRow(DataRow row)
         {
             UserConfiguration result = new UserConfiguration();

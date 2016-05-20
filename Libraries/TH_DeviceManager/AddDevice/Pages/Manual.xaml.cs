@@ -252,11 +252,11 @@ namespace TH_DeviceManager.AddDevice.Pages
 
                 if (bmpSource.PixelWidth > bmpSource.PixelHeight)
                 {
-                    bitmap = TH_WPF.Image_Functions.SetImageSize(bmpSource, width);
+                    bitmap = Image_Functions.SetImageSize(bmpSource, width);
                 }
                 else
                 {
-                    bitmap = TH_WPF.Image_Functions.SetImageSize(bmpSource, 0, height);
+                    bitmap = Image_Functions.SetImageSize(bmpSource, 0, height);
                 }
             }
 
@@ -267,7 +267,7 @@ namespace TH_DeviceManager.AddDevice.Pages
         {
             if (ParentPage.DeviceManager.CurrentUser != null)
             {
-                if (ParentPage.DeviceManager.CurrentUser.username.ToLower() == info.Item.author.ToLower()) return true;
+                if (ParentPage.DeviceManager.CurrentUser.Username.ToLower() == info.Item.author.ToLower()) return true;
             }
             return false;
         }
@@ -419,7 +419,9 @@ namespace TH_DeviceManager.AddDevice.Pages
                                     // Save to the Devices directory (ex. C:\TrakHound\Devices\)
                                     if (ParentPage.DeviceManager.CurrentUser != null)
                                     {
-                                        item.Success = Configurations.AddConfigurationToUser(ParentPage.DeviceManager.CurrentUser, config);
+                                        var userConfig = UserConfiguration.FromNewUserConfiguration(ParentPage.DeviceManager.CurrentUser);
+
+                                        item.Success = Configurations.AddConfigurationToUser(userConfig, config);
                                         item.Configuration.TableName = config.TableName;
                                     }
                                     else

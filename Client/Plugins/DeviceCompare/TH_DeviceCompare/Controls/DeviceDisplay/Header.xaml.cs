@@ -426,11 +426,11 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
                         {
                             if (result.PixelWidth > result.PixelHeight)
                             {
-                                result = TH_WPF.Image_Functions.SetImageSize(result, 180);
+                                result = Image_Functions.SetImageSize(result, 180);
                             }
                             else
                             {
-                                result = TH_WPF.Image_Functions.SetImageSize(result, 0, 80);
+                                result = Image_Functions.SetImageSize(result, 0, 80);
                             }
 
                             result.Freeze();
@@ -495,11 +495,11 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
                         {
                             if (result.PixelWidth > result.PixelHeight)
                             {
-                                result = TH_WPF.Image_Functions.SetImageSize(result, 250);
+                                result = Image_Functions.SetImageSize(result, 250);
                             }
                             else
                             {
-                                result = TH_WPF.Image_Functions.SetImageSize(result, 0, 250);
+                                result = Image_Functions.SetImageSize(result, 0, 250);
                             }
 
                             result.Freeze();

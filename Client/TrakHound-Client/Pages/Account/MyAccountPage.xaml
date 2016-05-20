@@ -157,7 +157,7 @@
                             <!--Choose your username-->
                             <StackPanel Margin="0,20,0,10">
                                 <TextBlock Text="Username" Foreground="{StaticResource Foreground_Light}" FontSize="10pt" Margin="0,0,0,5"/>
-                                <TextBlock Text="{Binding Username}" FontSize="14pt" Foreground="{StaticResource Accent_Normal}"/>
+                                <TextBlock Text="{Binding UsernameDisplay}" FontSize="14pt" Foreground="{StaticResource Accent_Normal}"/>
                             </StackPanel>
 
                             <!--Password-->
@@ -431,7 +431,7 @@
                                                     <Setter Property="Background" Value="{StaticResource Accent_Dark}"/>
                                                 </Trigger>
                                                 <DataTrigger Binding="{Binding ShowChangePassword}" Value="true">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Setter Property="IsEnabled" Value="false"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
                                                     <Setter Property="IsEnabled" Value="false"/>

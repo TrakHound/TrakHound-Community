@@ -76,5 +76,10 @@ namespace TH_Global.Web
             return JsonConvert.SerializeObject(data);
         }
 
+        public static string FromObject(object data)
+        {
+            return JsonConvert.SerializeObject(data);
+        }
+
     }
 }

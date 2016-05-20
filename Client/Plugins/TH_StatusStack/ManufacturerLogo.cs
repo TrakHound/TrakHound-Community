@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
+using TH_Global.Functions;
 using TH_UserManagement.Management;
 
 namespace TH_StatusStack
@@ -51,11 +52,11 @@ namespace TH_StatusStack
                         {
                             if (bmpSource.PixelWidth > bmpSource.PixelHeight)
                             {
-                                bmpSource = TH_WPF.Image_Functions.SetImageSize(bmpSource, 180);
+                                bmpSource = Image_Functions.SetImageSize(bmpSource, 180);
                             }
                             else
                             {
-                                bmpSource = TH_WPF.Image_Functions.SetImageSize(bmpSource, 0, 80);
+                                bmpSource = Image_Functions.SetImageSize(bmpSource, 0, 80);
                             }
 
                             bmpSource.Freeze();

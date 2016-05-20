@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using System.Threading;
 
 using TH_Configuration;
+using TH_Global.Functions;
 using TH_UserManagement.Management;
 
 namespace TH_DevicePage.Controls
@@ -122,11 +123,11 @@ namespace TH_DevicePage.Controls
                         {
                             if (result.PixelWidth > result.PixelHeight)
                             {
-                                result = TH_WPF.Image_Functions.SetImageSize(result, 250);
+                                result = Image_Functions.SetImageSize(result, 250);
                             }
                             else
                             {
-                                result = TH_WPF.Image_Functions.SetImageSize(result, 0, 75);
+                                result = Image_Functions.SetImageSize(result, 0, 75);
                             }
 
                             result.Freeze();
@@ -188,11 +189,11 @@ namespace TH_DevicePage.Controls
                         {
                             if (result.PixelWidth > result.PixelHeight)
                             {
-                                result = TH_WPF.Image_Functions.SetImageSize(result, 150);
+                                result = Image_Functions.SetImageSize(result, 150);
                             }
                             else
                             {
-                                result = TH_WPF.Image_Functions.SetImageSize(result, 0, 150);
+                                result = Image_Functions.SetImageSize(result, 0, 150);
                             }
 
                             result.Freeze();

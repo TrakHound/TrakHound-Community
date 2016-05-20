@@ -8,11 +8,13 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using System.Collections.Specialized;
 
 using TH_Global;
 using TH_Global.Functions;
-//using TH_Global.TrakHound.Users;
-using TH_UserManagement.Management;
+using TH_Global.TrakHound.Users;
+using TH_Global.Web;
+//using TH_UserManagement.Management;
 using TH_WPF;
 
 
@@ -100,25 +102,27 @@ namespace TrakHound_Client.Pages.Account
 
             if (userConfig != null)
             {
-                SetDependencyProperty(FirstNameProperty, String_Functions.UppercaseFirst(userConfig.first_name));
-                SetDependencyProperty(LastNameProperty, String_Functions.UppercaseFirst(userConfig.last_name));
+                SetDependencyProperty(UsernameVerifiedProperty, true);
 
-                SetDependencyProperty(UsernameProperty, String_Functions.UppercaseFirst(userConfig.username));
-                SetDependencyProperty(EmailProperty, userConfig.email);
+                SetDependencyProperty(FirstNameProperty, String_Functions.UppercaseFirst(userConfig.FirstName));
+                SetDependencyProperty(LastNameProperty, String_Functions.UppercaseFirst(userConfig.LastName));
 
-                SetDependencyProperty(CompanyProperty, String_Functions.UppercaseFirst(userConfig.company));
-                SetDependencyProperty(PhoneProperty, userConfig.phone);
-                SetDependencyProperty(Address1Property, userConfig.address1);
-                SetDependencyProperty(Address2Property, userConfig.address2);
-                SetDependencyProperty(CityProperty, userConfig.city);
+                SetDependencyProperty(UsernameDisplayProperty, String_Functions.UppercaseFirst(userConfig.Username));
+                SetDependencyProperty(EmailProperty, userConfig.Email);
 
-                int country = CountryList.ToList().FindIndex(x => x == String_Functions.UppercaseFirst(userConfig.country));
+                SetDependencyProperty(CompanyProperty, String_Functions.UppercaseFirst(userConfig.Company));
+                SetDependencyProperty(PhoneProperty, userConfig.Phone);
+                SetDependencyProperty(Address1Property, userConfig.Address1);
+                SetDependencyProperty(Address2Property, userConfig.Address2);
+                SetDependencyProperty(CityProperty, userConfig.City);
+
+                int country = CountryList.ToList().FindIndex(x => x == String_Functions.UppercaseFirst(userConfig.Country));
                 if (country >= 0) country_COMBO.SelectedIndex = country;
 
-                int state = CountryList.ToList().FindIndex(x => x == String_Functions.UppercaseFirst(userConfig.state));
+                int state = CountryList.ToList().FindIndex(x => x == String_Functions.UppercaseFirst(userConfig.State));
                 if (state >= 0) state_COMBO.SelectedIndex = state;
 
-                SetDependencyProperty(Page.ZipCodeProperty, userConfig.zipcode);
+                SetDependencyProperty(Page.ZipCodeProperty, userConfig.Zipcode);
 
                 if (this.IsLoaded) LoadProfileImage(userConfig);
             }
@@ -152,7 +156,7 @@ namespace TrakHound_Client.Pages.Account
                 Image = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/AddUser_01.png"));
             }
 
-            if (UserManagementSettings.Database != null) Title = Title + " (Local)";
+            //if (UserManagementSettings.Database != null) Title = Title + " (Local)";
         }
 
         public void CleanForm()
@@ -216,6 +220,18 @@ namespace TrakHound_Client.Pages.Account
 
         public static readonly DependencyProperty UsernameProperty =
             DependencyProperty.Register("Username", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+        public string UsernameDisplay
+        {
+            get { return (string)GetValue(UsernameDisplayProperty); }
+            set { SetValue(UsernameDisplayProperty, value); }
+        }
+
+        public static readonly DependencyProperty UsernameDisplayProperty =
+            DependencyProperty.Register("UsernameDisplay", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
 
 
         public string Company
@@ -407,104 +423,204 @@ namespace TrakHound_Client.Pages.Account
 
         private void Apply_Clicked(TH_WPF.Button bt)
         {
-            UpdateUser(CreateUserConfiguration());
+            if (CurrentUser != null) EditUser(NewEditUserInfo());
+            else CreateUser(NewCreateUserInfo());
         }
 
-        UserConfiguration CreateUserConfiguration()
+        CreateUserInfo NewCreateUserInfo()
         {
-            // Create new UserConfiguration object with new data
-            UserConfiguration userConfig = new UserConfiguration();
+            var info = new CreateUserInfo();
 
-            userConfig.first_name = FirstName;
-            userConfig.last_name = LastName;
+            info.FirstName = FirstName;
+            info.LastName = LastName;
 
-            userConfig.username = Username;
+            info.Username = Username;
+            info.Password = password_TXT.PasswordText;
 
-            userConfig.company = Company;
+            info.Company = Company;
 
-            userConfig.email = Email;
-            userConfig.phone = Phone;
+            info.Email = Email;
+            info.Phone = Phone;
 
-            userConfig.address1 = Address1;
-            userConfig.address2 = Address2;
-            userConfig.city = City;
+            info.Address1 = Address1;
+            info.Address2 = Address2;
+            info.City = City;
 
-            if (country_COMBO.SelectedItem != null) userConfig.country = country_COMBO.SelectedItem.ToString();
-            if (state_COMBO.SelectedItem != null) userConfig.state = state_COMBO.SelectedItem.ToString();
+            if (country_COMBO.SelectedItem != null) info.Country = country_COMBO.SelectedItem.ToString();
+            if (state_COMBO.SelectedItem != null) info.State = state_COMBO.SelectedItem.ToString();
 
-            userConfig.zipcode = ZipCode;
+            info.Zipcode = ZipCode;
 
-            return userConfig;
+            return info;
         }
 
-
-        class UpdateUser_Info
+        EditUserInfo NewEditUserInfo()
         {
-            public UserConfiguration userConfig { get; set; }
-            public string password { get; set; }
+            var info = new EditUserInfo();
+
+            info.SessionToken = CurrentUser.SessionToken;
+
+            info.FirstName = FirstName;
+            info.LastName = LastName;
+
+            if (ShowChangePassword) info.Password = password_TXT.PasswordText;
+
+            info.Company = Company;
+
+            info.Email = Email;
+            info.Phone = Phone;
+
+            info.Address1 = Address1;
+            info.Address2 = Address2;
+            info.City = City;
+
+            if (country_COMBO.SelectedItem != null) info.Country = country_COMBO.SelectedItem.ToString();
+            if (state_COMBO.SelectedItem != null) info.State = state_COMBO.SelectedItem.ToString();
+
+            info.Zipcode = ZipCode;
+
+            return info;
         }
+
+        //UserConfiguration CreateUserConfiguration()
+        //{
+        //    // Create new UserConfiguration object with new data
+        //    UserConfiguration userConfig = new UserConfiguration();
+
+        //    userConfig.FirstName = FirstName;
+        //    userConfig.LastName = LastName;
+
+        //    userConfig.Username = Username;
+
+        //    userConfig.Company = Company;
+
+        //    userConfig.Email = Email;
+        //    userConfig.Phone = Phone;
+
+        //    userConfig.Address1 = Address1;
+        //    userConfig.Address2 = Address2;
+        //    userConfig.City = City;
+
+        //    if (country_COMBO.SelectedItem != null) userConfig.Country = country_COMBO.SelectedItem.ToString();
+        //    if (state_COMBO.SelectedItem != null) userConfig.State = state_COMBO.SelectedItem.ToString();
+
+        //    userConfig.Zipcode = ZipCode;
+
+        //    return userConfig;
+        //}
+
+
+        //class UpdateUser_Info
+        //{
+        //    public UserConfiguration userConfig { get; set; }
+        //    public string password { get; set; }
+        //}
+
+        //class UpdateUser_Return
+        //{
+        //    public bool success { get; set; }
+        //    public UserConfiguration userConfig { get; set; }
+        //}
+
+        //class UpdateUser_Info
+        //{
+        //    public CreateUserInfo Info { get; set; }
+        //}
 
         class UpdateUser_Return
         {
-            public bool success { get; set; }
-            public UserConfiguration userConfig { get; set; }
+            public bool Success { get; set; }
+            public UserConfiguration Info { get; set; }
         }
 
-        Thread updateuser_THREAD;
-
-        void UpdateUser(UserConfiguration userConfig)
+        void CreateUser(CreateUserInfo info)
         {
-            UpdateUser_Info info = new UpdateUser_Info();
-            info.userConfig = userConfig;
-            info.password = password_TXT.PasswordText;
-
             Saving = true;
 
-            if (updateuser_THREAD != null) updateuser_THREAD.Abort();
-
-            updateuser_THREAD = new Thread(new ParameterizedThreadStart(UpdateUser_Worker));
-            updateuser_THREAD.Start(info);
+            ThreadPool.QueueUserWorkItem(new WaitCallback(CreateUser_Worker), info);
         }
 
-        void UpdateUser_Worker(object o)
+        void CreateUser_Worker(object o)
         {
-            UpdateUser_Return result = new UpdateUser_Return();
+            var result = new UpdateUser_Return();
 
             if (o != null)
             {
-                UpdateUser_Info info = (UpdateUser_Info)o;
+                var info = (CreateUserInfo)o;
 
-                if (info.userConfig != null)
+                var userConfig = UserManagement.CreateUser(info, "TrakHound Client Create User");
+
+                // Upload Profile Image
+                if (userConfig != null && profileImageChanged)
                 {
-                    bool success = Users.CreateUser(info.userConfig, info.password);
-
-                    // Upload Profile Image
-                    if (success && profileImageChanged)
+                    if (profileImageFilename != null)
                     {
-                        if (profileImage != null)
-                        {
-                            success = UploadProfileImage(profileImage);
-                        }
-                        if (success) success = Users.UpdateImageURL(profileImageFilename, info.userConfig);
+                        UploadProfileImage(profileImageFilename);
                     }
-                             
-                    result.success = success;
-                    result.userConfig = info.userConfig;
                 }
+
+                result.Info = userConfig;
             }
 
-            this.Dispatcher.BeginInvoke(new Action<UpdateUser_Return>(UpdateUser_GUI), priority, new object[] { result });
+            Dispatcher.BeginInvoke(new Action<UpdateUser_Return>(CreateUser_GUI), priority, new object[] { result });
         }
 
-        void UpdateUser_GUI(UpdateUser_Return result)
+        void CreateUser_GUI(UpdateUser_Return result)
         {
-            if (result.success)
+            if (result.Info != null)
             {
-                if (UserChanged != null) UserChanged(result.userConfig);
+                if (UserChanged != null) UserChanged(result.Info);
             }
             else
             {
                 TH_WPF.MessageBox.Show("Error during User Creation! Try Again.");
+            }
+
+            Saving = false;
+        }
+
+
+        void EditUser(EditUserInfo info)
+        {
+            Saving = true;
+
+            ThreadPool.QueueUserWorkItem(new WaitCallback(EditUser_Worker), info);
+        }
+
+        void EditUser_Worker(object o)
+        {
+            var result = new UpdateUser_Return();
+
+            if (o != null)
+            {
+                var info = (EditUserInfo)o;
+
+                var userConfig = UserManagement.EditUser(info, "TrakHound Client Edit User");
+
+                // Upload Profile Image
+                if (userConfig != null && profileImageChanged)
+                {
+                    if (profileImageFilename != null)
+                    {
+                        UploadProfileImage(profileImageFilename);
+                    }
+                }
+
+                result.Info = userConfig;
+            }
+
+            Dispatcher.BeginInvoke(new Action<UpdateUser_Return>(EditUser_GUI), priority, new object[] { result });
+        }
+
+        void EditUser_GUI(UpdateUser_Return result)
+        {
+            if (result.Info != null)
+            {
+                if (UserChanged != null) UserChanged(result.Info);
+            }
+            else
+            {
+                TH_WPF.MessageBox.Show("Error during User Edit! Try Again.");
             }
 
             Saving = false;
@@ -536,27 +652,34 @@ namespace TrakHound_Client.Pages.Account
 
         System.Timers.Timer username_TIMER;
 
+        string previousUsernameText = null;
+
         private void username_TXT_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (username_TIMER != null) username_TIMER.Enabled = false;
+            if (Username != previousUsernameText)
+            {
+                if (username_TIMER != null) username_TIMER.Enabled = false;
 
-            username_TIMER = new System.Timers.Timer();
-            username_TIMER.Interval = 500;
-            username_TIMER.Elapsed += username_TIMER_Elapsed;
-            username_TIMER.Enabled = true;
+                username_TIMER = new System.Timers.Timer();
+                username_TIMER.Interval = 500;
+                username_TIMER.Elapsed += username_TIMER_Elapsed;
+                username_TIMER.Enabled = true;
+
+                previousUsernameText = Username;
+            }
         }
 
         void username_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             username_TIMER.Enabled = false;
 
-            this.Dispatcher.BeginInvoke(new Action(VerifyUsername));
+            Dispatcher.BeginInvoke(new Action(VerifyUsername));
         }
 
         void VerifyUsername()
         {
             // If no userconfiguration database configuration found then use default TrakHound User Database
-            VerifyUsernameReturn usernameReturn = TH_UserManagement.Management.Users.VerifyUsername(Username);
+            var usernameReturn = TH_UserManagement.Management.Users.VerifyUsername(Username);
             if (usernameReturn != null)
             {
                 UsernameVerified = usernameReturn.available;
@@ -639,8 +762,8 @@ namespace TrakHound_Client.Pages.Account
         {
             System.Security.SecureString pwd = password_TXT.SecurePassword;
 
-            if (!Security_Functions.VerifyPasswordMinimum(pwd)) PasswordShort = true;
-            else if (!Security_Functions.VerifyPasswordMaximum(pwd)) PasswordLong = true;
+            if (!TH_UserManagement.Management.Security_Functions.VerifyPasswordMinimum(pwd)) PasswordShort = true;
+            else if (!TH_UserManagement.Management.Security_Functions.VerifyPasswordMaximum(pwd)) PasswordLong = true;
         }
 
         System.Timers.Timer confirmpassword_TIMER;
@@ -726,9 +849,9 @@ namespace TrakHound_Client.Pages.Account
             {
                 UserConfiguration userConfig = (UserConfiguration)o;
 
-                if (userConfig != null)
+                if (userConfig != null && !string.IsNullOrEmpty(userConfig.ImageUrl))
                 {
-                    System.Drawing.Image img = ProfileImages.GetProfileImage(userConfig);
+                    System.Drawing.Image img = UserManagement.ProfileImage.Get(userConfig.ImageUrl);
                     if (img != null)
                     {
                         System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
@@ -736,7 +859,7 @@ namespace TrakHound_Client.Pages.Account
                         IntPtr bmpPt = bmp.GetHbitmap();
                         BitmapSource bmpSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
 
-                        bmpSource = TH_WPF.Image_Functions.SetImageSize(bmpSource, 200, 200);
+                        bmpSource = Image_Functions.SetImageSize(bmpSource, 200, 200);
 
                         bmpSource.Freeze();
 
@@ -781,11 +904,11 @@ namespace TrakHound_Client.Pages.Account
         void SetProfileImage()
         {
             // Show OpenFileDialog for selecting new Profile Image
-            string imagePath = ProfileImages.OpenImageBrowse();
+            string imagePath = OpenImageBrowse();
             if (imagePath != null)
             {
                 // Crop and Resize image
-                System.Drawing.Image img = ProfileImages.ProcessImage(imagePath);
+                System.Drawing.Image img = ProcessImage(imagePath);
                 if (img != null)
                 {
                     profileImageFilename = imagePath;
@@ -803,14 +926,14 @@ namespace TrakHound_Client.Pages.Account
             }
         }
 
-        bool UploadProfileImage(System.Drawing.Image profileImg)
+        bool UploadProfileImage(string path)
         {
             bool result = false;
 
-            if (profileImage != null)
+            if (path != null)
             {
                 // Crop and Resize image
-                System.Drawing.Image img = ProfileImages.ProcessImage(profileImg);
+                System.Drawing.Image img = ProcessImage(path);
                 if (img != null)
                 {
                     string newFilename = String_Functions.RandomString(20);
@@ -824,12 +947,40 @@ namespace TrakHound_Client.Pages.Account
 
                     img.Save(localPath);
 
-                    result = ProfileImages.UploadProfileImage(newFilename, localPath);
+                    result = UploadProfileImage(newFilename, localPath);
                 }
             }
 
             return result;
         }
+
+        //bool UploadProfileImage(System.Drawing.Image profileImg)
+        //{
+        //    bool result = false;
+
+        //    if (profileImg != null)
+        //    {
+        //        // Crop and Resize image
+        //        System.Drawing.Image img = ProcessImage(profileImg);
+        //        if (img != null)
+        //        {
+        //            string newFilename = String_Functions.RandomString(20);
+
+        //            profileImageFilename = newFilename;
+
+        //            string tempdir = FileLocations.TrakHound + @"\temp";
+        //            if (!Directory.Exists(tempdir)) Directory.CreateDirectory(tempdir);
+
+        //            string localPath = tempdir + @"\" + newFilename;
+
+        //            img.Save(localPath);
+
+        //            result = UploadProfileImage(newFilename, localPath);
+        //        }
+        //    }
+
+        //    return result;
+        //}
 
         void ClearProfileImage()
         {
@@ -852,6 +1003,91 @@ namespace TrakHound_Client.Pages.Account
 
             ClearProfileImage();
         }
+
+        //void ChangeProfileImage()
+        //{
+        //    if (LoggedIn && CurrentUser != null)
+        //    {
+
+        //        // Show OpenFileDialog for selecting new Profile Image
+        //        string imagePath = OpenImageBrowse();
+        //        if (imagePath != null)
+        //        {
+        //            // Crop and Resize image
+        //            System.Drawing.Image img = ProcessImage(imagePath);
+        //            if (img != null)
+        //            {
+        //                string filename = String_Functions.RandomString(20);
+
+        //                string tempdir = FileLocations.TrakHound + @"\temp";
+        //                if (!Directory.Exists(tempdir)) Directory.CreateDirectory(tempdir);
+
+        //                string localPath = tempdir + @"\" + filename;
+
+        //                img.Save(localPath);
+
+        //                if (UploadProfileImage(filename, localPath))
+        //                {
+        //                    UserManagement.SetProfileImage(CurrentUser.ImageUrl, filename);
+        //                    //Users.UpdateImageURL(filename, CurrentUser);
+
+        //                    LoadProfileImage(CurrentUser);
+
+        //                    CurrentUser = CurrentUser;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+
+        public static string OpenImageBrowse()
+        {
+            string result = null;
+
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+            dlg.InitialDirectory = FileLocations.TrakHound;
+            dlg.Multiselect = false;
+            dlg.Title = "Browse for Profile Image";
+            dlg.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
+
+            Nullable<bool> dialogResult = dlg.ShowDialog();
+
+            if (dialogResult == true)
+            {
+                if (dlg.FileName != null) result = dlg.FileName;
+            }
+
+            return result;
+        }
+
+        public static System.Drawing.Image ProcessImage(string path)
+        {
+            System.Drawing.Image result = null;
+
+            if (File.Exists(path))
+            {
+                System.Drawing.Image img = Image_Functions.CropImageToCenter(System.Drawing.Image.FromFile(path));
+
+                result = Image_Functions.SetImageSize(img, 200, 200);
+            }
+
+            return result;
+        }
+
+        public static bool UploadProfileImage(string filename, string localpath)
+        {
+            bool result = false;
+
+            NameValueCollection nvc = new NameValueCollection();
+            if (HTTP.UploadFile("https://www.feenux.com/php/users/uploadprofileimage.php", localpath, "file", "image/jpeg", nvc))
+            {
+                result = true;
+            }
+
+            return result;
+        }
+
 
         #endregion
 

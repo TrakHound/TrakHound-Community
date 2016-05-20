@@ -396,11 +396,11 @@ namespace TH_DeviceManager.AddDevice.Pages
 
                 if (bmpSource.PixelWidth > bmpSource.PixelHeight)
                 {
-                    bitmap = TH_WPF.Image_Functions.SetImageSize(bmpSource, 100);
+                    bitmap = Image_Functions.SetImageSize(bmpSource, 100);
                 }
                 else
                 {
-                    bitmap = TH_WPF.Image_Functions.SetImageSize(bmpSource, 0, 40);
+                    bitmap = Image_Functions.SetImageSize(bmpSource, 0, 40);
                 }
             }
 
@@ -588,7 +588,9 @@ namespace TH_DeviceManager.AddDevice.Pages
                                     // Add page to user (or save to disk if local)
                                     if (ParentPage.DeviceManager.CurrentUser != null)
                                     {
-                                        result.Success = Configurations.AddConfigurationToUser(ParentPage.DeviceManager.CurrentUser, config);
+                                        var userConfig = UserConfiguration.FromNewUserConfiguration(ParentPage.DeviceManager.CurrentUser);
+
+                                        result.Success = Configurations.AddConfigurationToUser(userConfig, config);
 
                                         result.Configuration.TableName = config.TableName;
                                     }

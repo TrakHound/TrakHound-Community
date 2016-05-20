@@ -7,11 +7,14 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using System.Collections.Specialized;
 
 using TH_Configuration;
 using TH_Global;
 using TH_Global.Functions;
-using TH_UserManagement.Management;
+using TH_Global.TrakHound.Users;
+using TH_Global.Web;
+//using TH_UserManagement.Management;
 using TH_WPF;
 
 namespace TrakHound_Client.Menus.Login
@@ -31,16 +34,16 @@ namespace TrakHound_Client.Menus.Login
             Shown = false;
         }
 
-        public UserManagementSettings userManagementSettings;
+        //public UserManagementSettings userManagementSettings;
 
-        Database_Settings userDatabaseSettings;
+        Database_Settings _userDatabaseSettings;
         public Database_Settings UserDatabaseSettings
         {
             get { return (Database_Settings)GetValue(UserDatabaseSettingsProperty); }
             set 
             { 
                 SetValue(UserDatabaseSettingsProperty, value);
-                userDatabaseSettings = value;
+                _userDatabaseSettings = value;
             }
         }
 
@@ -339,12 +342,12 @@ namespace TrakHound_Client.Menus.Login
         {
             if (userConfig != null)
             {
-                Fullname = String_Functions.UppercaseFirst(userConfig.first_name) + " " + String_Functions.UppercaseFirst(userConfig.last_name);
-                Firstname = String_Functions.UppercaseFirst(userConfig.first_name);
-                Lastname = String_Functions.UppercaseFirst(userConfig.last_name);
+                Fullname = String_Functions.UppercaseFirst(userConfig.FirstName) + " " + String_Functions.UppercaseFirst(userConfig.LastName);
+                Firstname = String_Functions.UppercaseFirst(userConfig.FirstName);
+                Lastname = String_Functions.UppercaseFirst(userConfig.LastName);
 
-                Username = String_Functions.UppercaseFirst(userConfig.username);
-                EmailAddress = userConfig.email;
+                Username = String_Functions.UppercaseFirst(userConfig.Username);
+                EmailAddress = userConfig.Email;
 
                 username_TXT.Clear();
                 password_TXT.Clear();
@@ -409,9 +412,23 @@ namespace TrakHound_Client.Menus.Login
             {
                 Login_Info info = (Login_Info)o;
 
-                UserConfiguration userConfig = Users.Login(info.username, info.password);
+                UserConfiguration userConfig = null;
 
-                if (userConfig != null && info.rememberMe) TH_UserManagement.Management.RememberMe.Set(userConfig, rememberMeType);
+                if (info.rememberMe)
+                {
+                    userConfig = UserManagement.CreateTokenLogin(info.username, info.password, "TrakHound Client Login");
+                    if (userConfig != null)
+                    {
+                        Properties.Settings.Default.LoginRememberToken = userConfig.Token;
+                        Properties.Settings.Default.Save();
+                    }
+                }
+                else
+                {
+                    userConfig = UserManagement.BasicLogin(info.username, info.password, "TrakHound Client Login");
+                }
+
+                //if (userConfig != null && info.rememberMe) TH_UserManagement.Management.RememberMe.Set(userConfig, rememberMeType);
 
                 this.Dispatcher.BeginInvoke(new Action<UserConfiguration>(Login_Finished), priority, new object[] { userConfig });
             }
@@ -445,7 +462,12 @@ namespace TrakHound_Client.Menus.Login
 
         void Logout_Worker()
         {
-            TH_UserManagement.Management.RememberMe.Clear(rememberMeType);
+            UserManagement.Logout();
+
+            Properties.Settings.Default.LoginRememberToken = null;
+            Properties.Settings.Default.Save();
+
+            //TH_UserManagement.Management.RememberMe.Clear(rememberMeType);
 
             this.Dispatcher.BeginInvoke(new Action(Logout_Finished), priority, new object[] { });
         }
@@ -474,7 +496,7 @@ namespace TrakHound_Client.Menus.Login
 
         #region "Remember Me"
 
-        public RememberMeType rememberMeType { get; set; }
+        //public RememberMeType rememberMeType { get; set; }
 
         public bool RememberMe
         {
@@ -497,30 +519,43 @@ namespace TrakHound_Client.Menus.Login
         }
 
 
-        Thread rememberme_THREAD;
+        //Thread rememberme_THREAD;
 
         public void LoadRememberMe()
         {
-            Loading = true;
-            LoadingMessage = "Logging in..";
+            string token = Properties.Settings.Default.LoginRememberToken;
+            if (!string.IsNullOrEmpty(token))
+            {
+                Loading = true;
+                LoadingMessage = "Logging in..";
 
-            LoginError = false;
-            ProfileImage = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01.png"));
+                LoginError = false;
+                ProfileImage = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01.png"));
 
-            if (rememberme_THREAD != null) rememberme_THREAD.Abort();
+                ThreadPool.QueueUserWorkItem(new WaitCallback(LoadRememberMe_Worker), token);
 
-            rememberme_THREAD = new Thread(new ThreadStart(LoadRememberMe_Worker));
-            rememberme_THREAD.Start();
+                //if (rememberme_THREAD != null) rememberme_THREAD.Abort();
+
+                //rememberme_THREAD = new Thread(new ThreadStart(LoadRememberMe_Worker));
+                //rememberme_THREAD.Start();
+            }
         }
 
-        void LoadRememberMe_Worker()
+        void LoadRememberMe_Worker(object o)
         {
-            UserConfiguration RememberUser = TH_UserManagement.Management.RememberMe.Get(rememberMeType);
+            if (o != null)
+            {
+                string token = o.ToString();
 
-            if (RememberUser != null) TH_UserManagement.Management.RememberMe.Set(RememberUser, rememberMeType);
-            else TH_UserManagement.Management.RememberMe.Clear(rememberMeType);
+                UserConfiguration userConfig = UserManagement.TokenLogin(token, "TrakHound Client Login");
 
-            this.Dispatcher.BeginInvoke(new Action<UserConfiguration>(LoadRememberMe_Finished), priority, new object[] { RememberUser });
+                //UserConfiguration RememberUser = TH_UserManagement.Management.RememberMe.Get(rememberMeType);
+
+                //if (RememberUser != null) TH_UserManagement.Management.RememberMe.Set(RememberUser, rememberMeType);
+                //else TH_UserManagement.Management.RememberMe.Clear(rememberMeType);
+
+                this.Dispatcher.BeginInvoke(new Action<UserConfiguration>(LoadRememberMe_Finished), priority, new object[] { userConfig });
+            }
         }
 
         void LoadRememberMe_Finished(UserConfiguration userConfig)
@@ -582,9 +617,11 @@ namespace TrakHound_Client.Menus.Login
             {
                 UserConfiguration userConfig = (UserConfiguration)o;
 
-                if (userConfig != null)
+                if (userConfig != null && !string.IsNullOrEmpty(userConfig.ImageUrl))
                 {
-                    System.Drawing.Image img = ProfileImages.GetProfileImage(userConfig);
+                    string url = "https://www.feenux.com/trakhound/users/files/" + userConfig.ImageUrl;
+
+                    System.Drawing.Image img = TH_Global.Web.Download.Image(url);
                     if (img != null)
                     {
                         System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
@@ -592,7 +629,7 @@ namespace TrakHound_Client.Menus.Login
                         IntPtr bmpPt = bmp.GetHbitmap();
                         BitmapSource bmpSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
 
-                        bmpSource = TH_WPF.Image_Functions.SetImageSize(bmpSource, 120, 120);
+                        bmpSource = Image_Functions.SetImageSize(bmpSource, 120, 120);
 
                         bmpSource.Freeze();
 
@@ -662,11 +699,11 @@ namespace TrakHound_Client.Menus.Login
             {
 
                 // Show OpenFileDialog for selecting new Profile Image
-                string imagePath = ProfileImages.OpenImageBrowse();
+                string imagePath = OpenImageBrowse();
                 if (imagePath != null)
                 {
                     // Crop and Resize image
-                    System.Drawing.Image img = ProfileImages.ProcessImage(imagePath);
+                    System.Drawing.Image img = ProcessImage(imagePath);
                     if (img != null)
                     {
                         string filename = String_Functions.RandomString(20);
@@ -678,9 +715,10 @@ namespace TrakHound_Client.Menus.Login
 
                         img.Save(localPath);
 
-                        if (ProfileImages.UploadProfileImage(filename, localPath))
+                        if (UploadProfileImage(filename, localPath))
                         {
-                            Users.UpdateImageURL(filename, CurrentUser);
+                            UserManagement.ProfileImage.Set(CurrentUser.SessionToken, filename);
+                            //Users.UpdateImageURL(filename, CurrentUser);
 
                             LoadProfileImage(CurrentUser);
 
@@ -689,6 +727,54 @@ namespace TrakHound_Client.Menus.Login
                     }
                 }
             }
+        }
+
+        public static string OpenImageBrowse()
+        {
+            string result = null;
+
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+            dlg.InitialDirectory = FileLocations.TrakHound;
+            dlg.Multiselect = false;
+            dlg.Title = "Browse for Profile Image";
+            dlg.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
+
+            Nullable<bool> dialogResult = dlg.ShowDialog();
+
+            if (dialogResult == true)
+            {
+                if (dlg.FileName != null) result = dlg.FileName;
+            }
+
+            return result;
+        }
+
+        public static System.Drawing.Image ProcessImage(string path)
+        {
+            System.Drawing.Image result = null;
+
+            if (File.Exists(path))
+            {
+                System.Drawing.Image img = Image_Functions.CropImageToCenter(System.Drawing.Image.FromFile(path));
+
+                result = Image_Functions.SetImageSize(img, 200, 200);
+            }
+
+            return result;
+        }
+
+        public static bool UploadProfileImage(string filename, string localpath)
+        {
+            bool result = false;
+
+            NameValueCollection nvc = new NameValueCollection();
+            if (HTTP.UploadFile("https://www.feenux.com/php/users/uploadprofileimage.php", localpath, "file", "image/jpeg", nvc))
+            {
+                result = true;
+            }
+
+            return result;
         }
 
         #endregion

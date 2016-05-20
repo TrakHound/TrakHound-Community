@@ -89,7 +89,10 @@
     <Compile Include="Security.cs" />
     <Compile Include="States.cs" />
     <Compile Include="TableNames.cs" />
+    <Compile Include="TrakHound\Images.cs" />
     <Compile Include="TrakHound\Shifts.cs" />
+    <Compile Include="TrakHound\Users\CreateUserInfo.cs" />
+    <Compile Include="TrakHound\Users\EditUserInfo.cs" />
     <Compile Include="TrakHound\Users\UserConfiguration.cs" />
     <Compile Include="TrakHound\Users\UserLoginFile.cs" />
     <Compile Include="TrakHound\Users\UserManagement.cs" />

@@ -250,7 +250,7 @@ namespace TH_DeviceManager
                         XmlDocument backupXml = Converter.TableToXML(dt);
                         if (backupXml != null)
                         {
-                            string temp_filename = DeviceManager.CurrentUser.username + String_Functions.RandomString(20) + ".xml";
+                            string temp_filename = DeviceManager.CurrentUser.Username + String_Functions.RandomString(20) + ".xml";
 
                             FileLocations.CreateTempDirectory();
 

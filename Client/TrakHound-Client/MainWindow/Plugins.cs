@@ -10,9 +10,10 @@ using System.Linq;
 using System.Windows.Media;
 
 using TH_Configuration;
+using TH_Global.TrakHound.Users;
 using TH_Plugins;
 using TH_Plugins.Client;
-using TH_UserManagement.Management;
+//using TH_UserManagement.Management;
 using TH_WPF;
 
 using TH_Global;

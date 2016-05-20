@@ -14,6 +14,7 @@ using System.Xml;
 using TH_Configuration;
 using TH_Global;
 using TH_Global.Functions;
+//using TH_Global.TrakHound.Users;
 using TH_UserManagement.Management;
 
 namespace TH_DeviceManager
@@ -24,11 +25,11 @@ namespace TH_DeviceManager
     public class DeviceManager
     {
 
-        UserConfiguration currentuser;
+        TH_Global.TrakHound.Users.UserConfiguration currentuser;
         /// <summary>
         /// Sets the current UserConfiguration object representing the user that is logged in
         /// </summary>
-        public UserConfiguration CurrentUser
+        public TH_Global.TrakHound.Users.UserConfiguration CurrentUser
         {
             get { return currentuser; }
             set
@@ -207,7 +208,9 @@ namespace TH_DeviceManager
 
         private List<Configuration> LoadDevices_Added()
         {
-            var result = Configurations.GetConfigurationsListForUser(currentuser);
+            var userConfig = UserConfiguration.FromNewUserConfiguration(currentuser);
+
+            var result = Configurations.GetConfigurationsListForUser(userConfig);
             if (result != null)
             {
                 result = result.OrderBy(x => x.Index).ToList();
@@ -231,7 +234,9 @@ namespace TH_DeviceManager
 
         private List<Configuration> LoadDevices_Shared()
         {
-            var result = Shared.GetOwnedSharedConfigurations(currentuser);
+            var userConfig = UserConfiguration.FromNewUserConfiguration(currentuser);
+
+            var result = Shared.GetOwnedSharedConfigurations(userConfig);
             if (result != null)
             {
                 result = result.OrderBy(x => x.Description.Manufacturer).
