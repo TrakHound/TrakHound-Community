@@ -5,22 +5,18 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-
-using System.Data;
-using System.Xml;
-using System.Reflection;
 
 using TH_Configuration;
 using TH_Database;
-using TH_Database.Tables;
 using TH_GeneratedData.GeneratedEvents;
 using TH_Global;
+using TH_Global.Shifts;
 using TH_Plugins;
-using TH_Plugins.Server;
 using TH_Plugins.Database;
+using TH_Plugins.Server;
 
 namespace TH_ShiftTable
 {
@@ -225,7 +221,7 @@ namespace TH_ShiftTable
             columns.Add(new ColumnDefinition("START_UTC", DataType.LargeText));
             columns.Add(new ColumnDefinition("END_UTC", DataType.LargeText));
             columns.Add(new ColumnDefinition("TYPE", DataType.LargeText));
-            columns.Add(new ColumnDefinition("TOTALTIME", DataType.Long));
+            columns.Add(new ColumnDefinition("TOTALTIME", DataType.Double));
 
             GenEventColumns = new List<string>();
 
@@ -235,7 +231,7 @@ namespace TH_ShiftTable
             {
                 GenEventColumns.Add(columnName);
 
-                columns.Add(new ColumnDefinition(columnName, DataType.Long));
+                columns.Add(new ColumnDefinition(columnName, DataType.Double));
             }
 
             ColumnDefinition[] ColArray = columns.ToArray();
@@ -292,47 +288,47 @@ namespace TH_ShiftTable
                 {
                     ShiftRowInfo sri = new ShiftRowInfo();
 
-                    sri.id = row["id"].ToString();
+                    sri.Id = new ShiftId(row["id"].ToString());
 
                     DateTime date = DateTime.MinValue;
                     DateTime.TryParse(row["date"].ToString(), out date);
-                    sri.date = new ShiftDate(date, false);
+                    sri.Date = new ShiftDate(date, false);
 
-                    sri.shift = row["shift"].ToString();
+                    sri.Shift = row["shift"].ToString();
 
                     int segmentid = -1;
                     int.TryParse(row["segmentid"].ToString(), out segmentid);
-                    sri.segmentId = segmentid;
+                    sri.SegmentId = segmentid;
 
                     // get start time -----------------------------------------
                     date = DateTime.MinValue;
                     DateTime.TryParse(row["start"].ToString(), out date);
-                    sri.start = new ShiftTime(date, false);
+                    sri.Start = new ShiftTime(date, false);
                     // --------------------------------------------------------
 
                     // get end time -------------------------------------------
                     date = DateTime.MinValue;
                     DateTime.TryParse(row["end"].ToString(), out date);
-                    sri.end = new ShiftTime(date, false);
+                    sri.End = new ShiftTime(date, false);
                     // --------------------------------------------------------
 
                     // get start time utc -------------------------------------
                     date = DateTime.MinValue;
                     DateTime.TryParse(row["start_utc"].ToString(), out date);
-                    sri.start_utc = new ShiftTime(date, false);
+                    sri.StartUtc = new ShiftTime(date, false);
                     // --------------------------------------------------------
 
                     // get end time utc ---------------------------------------
                     date = DateTime.MinValue;
                     DateTime.TryParse(row["end_utc"].ToString(), out date);
-                    sri.end_utc = new ShiftTime(date, false);
+                    sri.EndUtc = new ShiftTime(date, false);
                     // --------------------------------------------------------
 
-                    sri.type = row["type"].ToString();
+                    sri.Type = row["type"].ToString();
 
-                    int totalTime = -1;
-                    int.TryParse(row["totaltime"].ToString(), out totalTime);
-                    sri.totalTime = totalTime;
+                    double totalTime = -1;
+                    double.TryParse(row["totaltime"].ToString(), out totalTime);
+                    sri.TotalTime = totalTime;
 
                     // Get all of the rest of the columns as GenEventRowInfos
                     List<object> values = row.ItemArray.ToList();
@@ -340,14 +336,33 @@ namespace TH_ShiftTable
                     {
                         for (int x = 9; x <= values.Count - 1; x++)
                         {
-                            GenEventRowInfo geri = new GenEventRowInfo();
-                            geri.columnName = row.Table.Columns[x].ColumnName;
+                            var columnNameInfo = ColumnNameInfo.Get(row.Table.Columns[x].ColumnName);
+                            if (columnNameInfo != null)
+                            {
+                                var geri = new GenEventRowInfo();
 
-                            int seconds = -1;
-                            int.TryParse(values[x].ToString(), out seconds);
-                            geri.seconds = seconds;
+                                geri.ColumnName = row.Table.Columns[x].ColumnName;
+                                geri.EventName = columnNameInfo.EventName;
+                                geri.EventValue = columnNameInfo.EventValue;
 
-                            sri.genEventRowInfos.Add(geri);
+                                double seconds = -1;
+                                double.TryParse(values[x].ToString(), out seconds);
+                                geri.Seconds = seconds;
+
+                                sri.GenEventRowInfos.Add(geri);
+                            }
+
+
+                            //var geri = new GenEventRowInfo();
+                            //geri.ColumnName = row.Table.Columns[x].ColumnName;
+
+
+
+                            //int seconds = -1;
+                            //int.TryParse(values[x].ToString(), out seconds);
+                            //geri.Seconds = seconds;
+
+                            //sri.GenEventRowInfos.Add(geri);
                         }
                     }
 
@@ -360,9 +375,9 @@ namespace TH_ShiftTable
 
         public void UpdateShiftRows(List<ShiftRowInfo> infos)
         {
-            List<List<object>> rowValues = new List<List<object>>();
+            var rowValues = new List<List<object>>();
 
-            List<string> columns = new List<string>();
+            var columns = new List<string>();
             columns.Add("id");
             columns.Add("date");
             columns.Add("shift");
@@ -377,33 +392,33 @@ namespace TH_ShiftTable
 
             columns.Add("totaltime");
 
-            foreach (ShiftRowInfo info in infos)
+            foreach (var info in infos)
             {
                 List<object> values = new List<object>();
 
-                values.Add(info.id);
-                values.Add(info.date.ToString());
-                values.Add(info.shift);
-                values.Add(info.segmentId);
-                values.Add(info.start.ToString());
-                values.Add(info.end.ToString());
-                values.Add(info.start_utc.ToString());
-                values.Add(info.end_utc.ToString());
-                values.Add(info.type);
+                values.Add(info.Id);
+                values.Add(info.Date.ToString());
+                values.Add(info.Shift);
+                values.Add(info.SegmentId);
+                values.Add(info.Start.ToString());
+                values.Add(info.End.ToString());
+                values.Add(info.StartUtc.ToString());
+                values.Add(info.EndUtc.ToString());
+                values.Add(info.Type);
 
                 foreach (string column in GenEventColumns)
                 {
-                    GenEventRowInfo geri = info.genEventRowInfos.Find(x => x.columnName.ToUpper() == column.ToUpper());
-                    if (geri != null) values.Add(geri.seconds);
+                    GenEventRowInfo geri = info.GenEventRowInfos.Find(x => x.ColumnName.ToUpper() == column.ToUpper());
+                    if (geri != null) values.Add(geri.Seconds);
                     else values.Add(0);
                 }
 
-                values.Add(info.totalTime);
+                values.Add(info.TotalTime);
 
                 rowValues.Add(values);
             }
 
-            Row.Insert(configuration.Databases_Server, GetTableName(TableNames.Shifts), columns.ToArray(), rowValues, primaryKey, true);
+            if (rowValues.Count > 0) Row.Insert(configuration.Databases_Server, GetTableName(TableNames.Shifts), columns.ToArray(), rowValues, primaryKey, true);
         }
 
         private string GetTableName(string table)
@@ -442,53 +457,73 @@ namespace TH_ShiftTable
             {
                 if (rowInfos != null)
                 {
-                    ShiftRowInfo info = rowInfos.Find(x => x.date == newInfo.date && x.shift == newInfo.shift && x.segmentId == newInfo.segmentId);
+                    ShiftRowInfo info = rowInfos.Find(
+                        x => x.Date == newInfo.Date &&
+                        x.Shift == newInfo.Shift &&
+                        x.SegmentId == newInfo.SegmentId);
+
                     if (info == null)
                     {
                         info = new ShiftRowInfo();
-                        info.id = newInfo.id;
-                        info.date = newInfo.date;
-                        info.shift = newInfo.shift;
-                        info.segmentId = newInfo.segmentId;
-                        info.start = newInfo.start;
-                        info.end = newInfo.end;
-                        info.start_utc = newInfo.start_utc;
-                        info.end_utc = newInfo.end_utc;
-                        info.type = newInfo.type;
+                        info.Id = newInfo.Id;
+                        info.Date = newInfo.Date;
+                        info.Shift = newInfo.Shift;
+                        info.SegmentId = newInfo.SegmentId;
+                        info.Start = newInfo.Start;
+                        info.End = newInfo.End;
+                        info.StartUtc = newInfo.StartUtc;
+                        info.EndUtc = newInfo.EndUtc;
+                        info.Type = newInfo.Type;
 
                         foreach (string column in GenEventColumns)
                         {
-                            var emptyGeri = new GenEventRowInfo();
-                            emptyGeri.columnName = column;
-                            info.genEventRowInfos.Add(emptyGeri);
+                            var columnNameInfo = ColumnNameInfo.Get(column);
+                            if (columnNameInfo != null)
+                            {
+                                var emptyGeri = new GenEventRowInfo();
+
+                                emptyGeri.ColumnName = column;
+                                emptyGeri.EventName = columnNameInfo.EventName;
+                                emptyGeri.EventValue = columnNameInfo.EventValue;
+                                info.GenEventRowInfos.Add(emptyGeri);
+                            }
                         }
 
                         rowInfos.Add(info);
                     }
 
-                    info.totalTime = newInfo.totalTime;
+                    //info.totalTime = newInfo.totalTime;
+                    info.TotalTime += newInfo.TotalTime;
 
                     // Update GenEventRowInfos
-                    foreach (GenEventRowInfo geri in newInfo.genEventRowInfos)
+                    foreach (var geri in newInfo.GenEventRowInfos)
                     {
-                        GenEventRowInfo originalGeri = info.genEventRowInfos.Find(x => x.columnName == geri.columnName);
+                        var originalGeri = info.GenEventRowInfos.Find(x => x.ColumnName == geri.ColumnName);
                         if (originalGeri != null)
                         {
-                            originalGeri.seconds += geri.seconds;
+                            originalGeri.Seconds += geri.Seconds;
                         }
                         else
                         {
                             var newGeri = new GenEventRowInfo();
-                            newGeri.columnName = geri.columnName;
-                            newGeri.seconds += geri.seconds;
-                            info.genEventRowInfos.Add(newGeri);
+                            newGeri.ColumnName = geri.ColumnName;
+                            newGeri.EventName = geri.EventName;
+                            newGeri.EventValue = geri.EventValue;
+                            newGeri.EventNumValue = geri.EventNumValue;
+                            newGeri.Seconds += geri.Seconds;
+                            info.GenEventRowInfos.Add(newGeri);
                         }
+
+
+                        //Console.WriteLine("Shifts :: " + info.TotalTime + " : " + info.GenEventRowInfos.Find(x => x.ColumnName.ToLower() == "production_status__full_production").Seconds);
+
                     }
+
 
                     // Remove old rowInfos items (not in current ShiftDate)
                     if (currentShiftInfo != null)
                     {
-                        rowInfos.RemoveAll(x => x.date.ToString() != currentShiftInfo.date);
+                        rowInfos.RemoveAll(x => x.Date.ToString() != currentShiftInfo.date);
                     }
 
                     result.Add(info);
@@ -554,9 +589,57 @@ namespace TH_ShiftTable
         //    return result;
         //}
 
+
+        private class ColumnNameInfo
+        {
+            public string EventName { get; set; }
+            public string EventValue { get; set; }
+
+            public static ColumnNameInfo Get(string columnName)
+            {
+                if (columnName.Contains("__"))
+                {
+                    int index = columnName.IndexOf("__");
+                    if (index >= 0)
+                    {
+                        var result = new ColumnNameInfo();
+
+                        string eventName = columnName.Substring(0, index);
+                        string eventValue = columnName.Substring(index + 2);
+
+                        result.EventName = GetUnderscoreDelimitedValue(eventName);
+                        result.EventValue = GetUnderscoreDelimitedValue(eventValue);
+
+                        return result;
+                    }
+                }
+
+                return null;
+            }
+
+            private static string GetUnderscoreDelimitedValue(string val)
+            {
+                string[] words = val.Split('_');
+                if (words != null && words.Length > 0)
+                {
+                    var builder = new StringBuilder();
+
+                    for (var i = 0; i < words.Length; i++)
+                    {
+                        builder.Append(TH_Global.Functions.String_Functions.UppercaseFirst(words[i]));
+                        if (i < words.Length - 1) builder.Append(" ");
+                    }
+
+                    return builder.ToString();
+                }
+
+                return TH_Global.Functions.String_Functions.UppercaseFirst(val);
+            }
+        }
+
         void RemoveOldRowInfos(List<ShiftRowInfo> infos, CurrentShiftInfo shiftInfo)
         {
-            infos.RemoveAll(x => x.date.ToString() != shiftInfo.date);
+            infos.RemoveAll(x => x.Date.ToString() != shiftInfo.date);
         }
 
         // Used to hold previous rowinfos

@@ -5,21 +5,28 @@
 
 using System;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 
 using TH_Global;
 using TH_Global.Functions;
-using TH_UserManagement.Management;
+using TH_Global.TrakHound.Users;
 
 namespace TrakHound_Server_Controller
 {
     public class Controller : ApplicationContext
     {
+        private SynchronizationContext uiThreadContext;
+
         public Controller()
         {
+            uiThreadContext = new WindowsFormsSynchronizationContext();
+
             CreateMenu();
 
-            ReadUser();
+            uiThreadContext.Post(new SendOrPostCallback(ReadUser), null);
+
+            //ReadUser();
 
             StartLoginFileMonitor();
         }
@@ -144,22 +151,21 @@ namespace TrakHound_Server_Controller
 
         private void StartLoginFileMonitor()
         {
-            string path = FileLocations.AppData + @"\nigolresu";
-            if (File.Exists(path))
-            {
-                string dir = Path.GetDirectoryName(path);
+            string dir = FileLocations.AppData;
+            string filename = "nigolresu";
 
-                var watcher = new FileSystemWatcher(dir);
-                watcher.Changed += FileSystemWatcher_UserLogin_Changed;
-                watcher.Created += FileSystemWatcher_UserLogin_Changed;
-                watcher.Deleted += FileSystemWatcher_UserLogin_Changed;
-                watcher.EnableRaisingEvents = true;
-            }
+            var watcher = new FileSystemWatcher(dir, filename);
+            watcher.Changed += UserLoginFileMonitor_Changed;
+            watcher.Created += UserLoginFileMonitor_Changed;
+            watcher.Deleted += UserLoginFileMonitor_Changed;
+            watcher.EnableRaisingEvents = true;
         }
 
-        private void FileSystemWatcher_UserLogin_Changed(object sender, FileSystemEventArgs e)
+        private void UserLoginFileMonitor_Changed(object sender, FileSystemEventArgs e)
         {
-            ReadUser();
+            uiThreadContext.Post(new SendOrPostCallback(ReadUser), null);
+
+            //ReadUser();
         }
 
         private void Login()
@@ -183,45 +189,79 @@ namespace TrakHound_Server_Controller
         {
             UserLoginFile.Remove();
 
-            ReadUser();
+            uiThreadContext.Post(new SendOrPostCallback(ReadUser), null);
+
+            //ReadUser();
         }
 
         bool firstLoad = true;
 
-        private void ReadUser()
+        private void ReadUser(object o)
         {
-            UserLoginFile.LoginData loginData = UserLoginFile.Read();
+                var loginData = UserLoginFile.Read();
 
-            if (loginData != null)
-            {
-                mUsernameLBL.Text = String_Functions.UppercaseFirst(loginData.Username);
-                mLoggedIn.Visible = true;
-                seperator1.Visible = true;
+                //this.BeginInvoke(new MethodInvoker(delegate
+                //{
+                //    this.lblElapsedTime.Text = elapsedTime.ToString();
 
-                mLogin.Enabled = false;
-                mLogout.Enabled = true;
+                //    if (ElapsedCounter % 2 == 0)
+                //        this.lblValue.Text = "hello world";
+                //    else
+                //        this.lblValue.Text = "hello";
+                //});
 
-                mNotifyIcon.BalloonTipIcon = ToolTipIcon.Info;
-                mNotifyIcon.BalloonTipTitle = "TrakHound Server";
-                mNotifyIcon.BalloonTipText = String_Functions.UppercaseFirst(loginData.Username) + " Logged in Successfully!";
-                mNotifyIcon.ShowBalloonTip(3000);
-            }
-            else if (!firstLoad)
-            {
-                mLoggedIn.Visible = false;
-                seperator1.Visible = false;
+                if (loginData != null)
+                {
+                    mUsernameLBL.Text = String_Functions.UppercaseFirst(loginData.Username);
+                    mLoggedIn.Visible = true;
+                    seperator1.Visible = true;
 
-                mLogin.Enabled = true;
-                mLogout.Enabled = false;
+                    mLogin.Enabled = false;
+                    mLogout.Enabled = true;
 
-                mNotifyIcon.BalloonTipIcon = ToolTipIcon.Info;
-                mNotifyIcon.BalloonTipTitle = "TrakHound Server";
-                mNotifyIcon.BalloonTipText = "User Logged Out";
-                mNotifyIcon.ShowBalloonTip(3000);
-            }
+                    mNotifyIcon.BalloonTipIcon = ToolTipIcon.Info;
+                    mNotifyIcon.BalloonTipTitle = "TrakHound Server";
+                    mNotifyIcon.BalloonTipText = String_Functions.UppercaseFirst(loginData.Username) + " Logged in Successfully!";
+                    mNotifyIcon.ShowBalloonTip(3000);
+                }
+                else if (!firstLoad)
+                {
+                    mLoggedIn.Visible = false;
+                    seperator1.Visible = false;
+
+                    mLogin.Enabled = true;
+                    mLogout.Enabled = false;
+
+                    mNotifyIcon.BalloonTipIcon = ToolTipIcon.Info;
+                    mNotifyIcon.BalloonTipTitle = "TrakHound Server";
+                    mNotifyIcon.BalloonTipText = "User Logged Out";
+                    mNotifyIcon.ShowBalloonTip(3000);
+                }
 
             firstLoad = false;
+
         }
+
+        //private delegate void SetControlPropertyThreadSafeDelegate(Control control, string propertyName, object propertyValue);
+
+        //public static void SetControlPropertyThreadSafe(Control control, string propertyName, object propertyValue)
+        //{
+        //    if (control.InvokeRequired)
+        //    {
+        //        control.Invoke(new SetControlPropertyThreadSafeDelegate
+        //        (SetControlPropertyThreadSafe),
+        //        new object[] { control, propertyName, propertyValue });
+        //    }
+        //    else
+        //    {
+        //        control.GetType().InvokeMember(
+        //            propertyName,
+        //            BindingFlags.SetProperty,
+        //            null,
+        //            control,
+        //            new object[] { propertyValue });
+        //    }
+        //}
 
 
         private const string LOCAL_USER_ID = "local_user_id";

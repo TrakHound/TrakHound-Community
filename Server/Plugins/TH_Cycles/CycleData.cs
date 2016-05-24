@@ -21,6 +21,8 @@ namespace TH_Cycles
 
         public string CycleId { get; set; }
         public string InstanceId { get; set; }
+        public ShiftId ShiftId { get; set; }
+
         public string Name { get; set; }
         public string Event { get; set; }
 
@@ -44,8 +46,6 @@ namespace TH_Cycles
 
         public DateTime StartTimeUtc { get; set; }
         public DateTime StopTimeUtc { get; set; }
-
-        public ShiftId ShiftId { get; set; }
 
         public TimeSpan Duration
         {

@@ -101,7 +101,8 @@ namespace TrakHound_Server_Core
 
         private void UserLoginFileMonitor_Changed(object sender, FileSystemEventArgs e)
         {
-            if (IsRunnning) Login();
+            //if (IsRunnning) Login();
+            Login();
         }
 
         #endregion

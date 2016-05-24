@@ -46,6 +46,7 @@ namespace TH_MTConnect.Streams
         {
             ReturnData result = null;
 
+            //string response = HTTP.GetData(url, proxySettings, timeout, maxattempts);
             string response = HTTP.GetData(url, proxySettings, timeout, maxattempts);
             if (response != null)
             {

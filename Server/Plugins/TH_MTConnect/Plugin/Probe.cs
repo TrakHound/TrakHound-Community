@@ -3,6 +3,8 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+using System;
+
 using TH_Configuration;
 using TH_Global;
 using TH_Plugins;
@@ -27,16 +29,18 @@ namespace TH_MTConnect.Plugin
             proxy.Address = config.ProxyAddress;
             proxy.Port = config.ProxyPort;
 
+            DateTime requestTimestamp = DateTime.Now;
+
             string url = HTTP.GetUrl(address, port, deviceName) + "probe";
 
             result = Requests.Get(url, proxy);
             if (result != null)
             {
-                Logger.Log("Probe Successful : " + url);
+                Logger.Log("Probe Successful : " + url + " @ " + requestTimestamp.ToString("o"));
             }
             else
             {
-                Logger.Log("Probe Error : " + url);
+                Logger.Log("Probe Error : " + url + " @ " + requestTimestamp.ToString("o"));
             }
 
             return result;

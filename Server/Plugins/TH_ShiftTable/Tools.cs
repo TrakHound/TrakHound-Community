@@ -82,8 +82,8 @@ namespace TH_ShiftTable
 
             DateTime current = currentData.Header.CreationTime.ToLocalTime();
 
-            DateTime start = Tools.GetDateTimeFromShiftTime(info.start, info.date, info.start.dayOffset);
-            DateTime end = Tools.GetDateTimeFromShiftTime(info.end, info.date, info.end.dayOffset);
+            DateTime start = Tools.GetDateTimeFromShiftTime(info.Start, info.Date, info.Start.dayOffset);
+            DateTime end = Tools.GetDateTimeFromShiftTime(info.End, info.Date, info.End.dayOffset);
 
             if (end < start) end = end.AddDays(1);
 

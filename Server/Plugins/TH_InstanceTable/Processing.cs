@@ -29,6 +29,7 @@ namespace TH_InstanceTable
         // After ProcessInstances()
         private InstanceData PreviousInstanceData_new;
 
+        private List<InstanceData> bufferedInstanceDatas = new List<InstanceData>();
 
         public void Update_Probe(TH_MTConnect.Components.ReturnData returnData)
         {
@@ -51,10 +52,36 @@ namespace TH_InstanceTable
                 cid.CurrentData = returnData;
                 cid.Data = instanceData;
 
+                var instanceDatas = new List<InstanceData>();
+                if (bufferedInstanceDatas != null && bufferedInstanceDatas.Count > 0)
+                {
+                    instanceDatas.AddRange(bufferedInstanceDatas);
+                }
+                //else instanceDatas.Add(instanceData);
+
+                // Clear the send buffer
+                bufferedInstanceDatas.Clear();
+                bufferedInstanceDatas.Add(instanceData);
+
                 SendCurrentInstanceData(configuration, cid);
-                SendInstanceData(configuration, new List<InstanceData>() { instanceData });
+                SendInstanceData(configuration, instanceDatas);
+                //SendInstanceData(configuration, new List<InstanceData>() { instanceDatas });
             }
         }
+
+        public void Update_Sample(TH_MTConnect.Streams.ReturnData returnData)
+        {
+            List<InstanceData> instanceDatas = ProcessInstances(currentData, returnData);
+
+            bufferedInstanceDatas.AddRange(instanceDatas);
+
+            if (AddDatabases) AddRowsToDatabase(columnNames, instanceDatas);
+
+            PreviousInstanceData_old = PreviousInstanceData_new;
+
+            //SendInstanceData(configuration, instanceDatas);
+        }
+
 
         private void SendInstanceData(Configuration config, List<InstanceData> instanceDatas)
         {
@@ -74,17 +101,6 @@ namespace TH_InstanceTable
             data.Data02 = instanceData;
 
             if (SendData != null) SendData(data);    
-        }
-
-        public void Update_Sample(TH_MTConnect.Streams.ReturnData returnData)
-        {
-            List<InstanceData> instanceDatas = ProcessInstances(currentData, returnData);
-
-            if (AddDatabases) AddRowsToDatabase(columnNames, instanceDatas);
-
-            PreviousInstanceData_old = PreviousInstanceData_new;
-
-            SendInstanceData(configuration, instanceDatas);
         }
 
 
@@ -266,7 +282,7 @@ namespace TH_InstanceTable
         public static InstanceData ProcessInstance(TH_MTConnect.Streams.ReturnData currentData)
         {
             var result = new InstanceData(); ;
-            result.Timestamp = currentData.Header.CreationTime;
+            result.Timestamp = currentData.Header.CreationTime; // Agent.MTConnect.org only outputs to the nearest second (not fractional seconds), check if issue with Open Source Agent
             result.AgentInstanceId = currentData.Header.InstanceId;
             result.Sequence = currentData.Header.LastSequence;
 
@@ -300,32 +316,6 @@ namespace TH_InstanceTable
                     usedVariables.Add(value.Id);
                 }
             }
-
-            //// Set Events
-            //foreach (var event_DI in dataItems.Events)
-            //{
-            //    if (!usedVariables.Contains(event_DI.DataItemId))
-            //    {
-            //        var value = new InstanceData.DataItemValue();
-            //        value.Id = event_DI.DataItemId;
-            //        value.Value = event_DI.CDATA;
-            //        data.Values.Add(value);
-            //        usedVariables.Add(value.Id);
-            //    }
-            //}
-
-            //// Set Samples
-            //foreach (var sample_DI in dataItems.Samples)
-            //{
-            //    if (!usedVariables.Contains(sample_DI.DataItemId))
-            //    {
-            //        var value = new InstanceData.DataItemValue();
-            //        value.Id = sample_DI.DataItemId;
-            //        value.Value = sample_DI.CDATA;
-            //        data.Values.Add(value);
-            //        usedVariables.Add(value.Id);
-            //    }
-            //}
         }
 
         List<InstanceVariableData> GetVariableDataFromDataItemCollection(List<TH_MTConnect.Streams.DataItem> dataItems)
@@ -350,43 +340,7 @@ namespace TH_InstanceTable
 
                 Result.Add(instanceData);
             }
-
-            // Get Conditions
-            //foreach (var item in dataItems.FindAll(x => x.Category == TH_MTConnect.Streams.DataItemCategory.CONDITION))
-            //{
-            //    var instanceData = new InstanceVariableData();
-            //    instanceData.Id = condition_DI.DataItemId;
-            //    instanceData.Value = condition_DI.Value;
-            //    instanceData.Timestamp = condition_DI.Timestamp;
-            //    instanceData.Sequence = condition_DI.Sequence;
-
-            //    Result.Add(instanceData);
-            //}
-
-            //// Get Events
-            //foreach (var item in dataItems.FindAll(x => x.Category == TH_MTConnect.Streams.DataItemCategory.CONDITION))
-            //{
-            //    var instanceData = new InstanceVariableData();
-            //    instanceData.Id = event_DI.DataItemId;
-            //    instanceData.Value = event_DI.CDATA;
-            //    instanceData.Timestamp = event_DI.Timestamp;
-            //    instanceData.Sequence = event_DI.Sequence;
-
-            //    Result.Add(instanceData);
-            //}
-
-            //// Get Samples
-            //foreach (var item in dataItems.FindAll(x => x.Category == TH_MTConnect.Streams.DataItemCategory.CONDITION))
-            //{
-            //    var instanceData = new InstanceVariableData();
-            //    instanceData.Id = sample_DI.DataItemId;
-            //    instanceData.Value = sample_DI.CDATA;
-            //    instanceData.Timestamp = sample_DI.Timestamp;
-            //    instanceData.Sequence = sample_DI.Sequence;
-
-            //    Result.Add(instanceData);
-            //}
-
+            
             // Sort List by timestamp ASC
             Result.Sort((x, y) => x.Timestamp.Second.CompareTo(y.Timestamp.Second));
 

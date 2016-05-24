@@ -49,8 +49,6 @@ namespace TH_Cycles
         {
             if (data != null)
             {
-                List<CycleData> cycles = null;
-
                 switch (data.Id.ToLower())
                 {                  
                     // InstanceTable data after Sample received
@@ -58,24 +56,13 @@ namespace TH_Cycles
 
                         var instanceDatas = (List<InstanceData>)data.Data02;
 
-                        cycles = ProcessCycles(instanceDatas);
+                        List<CycleData> cycles = ProcessCycles(instanceDatas);
+                        if (cycles != null && cycles.Count > 0)
+                        {
+                            AddCycleRows(cycles);
 
-                        SendCycleData(cycles);
-
-                        break;
-
-
-                    // InstanceData object after current received
-                    case "currentinstancedata":
-
-                        var currentInstanceData = (CurrentInstanceData)data.Data02;
-
-                        var list = new List<InstanceData>();
-                        list.Add(currentInstanceData.Data);
-
-                        cycles = ProcessCycles(list);
-
-                        SendCycleData(cycles);
+                            SendCycleData(cycles);
+                        }
 
                         break;
                 }
@@ -108,8 +95,7 @@ namespace TH_Cycles
 
         #region "Database"
 
-        //string[] cyclePrimaryKey = null; 
-        string[] cyclePrimaryKey = new string[] { "CYCLE_ID", "INSTANCE_ID" };
+        string[] cyclePrimaryKey = new string[] { "CYCLE_ID", "INSTANCE_ID", "SHIFT_ID" };
 
         void CreateCycleTable()
         {
@@ -117,6 +103,8 @@ namespace TH_Cycles
 
             columns.Add(new ColumnDefinition("CYCLE_ID", DataType.LargeText, false, true));
             columns.Add(new ColumnDefinition("INSTANCE_ID", DataType.LargeText, false, true));
+            columns.Add(new ColumnDefinition("SHIFT_ID", DataType.MediumText));
+
             columns.Add(new ColumnDefinition("NAME", DataType.LargeText, false, true));
             columns.Add(new ColumnDefinition("EVENT", DataType.LargeText));
 
@@ -125,8 +113,6 @@ namespace TH_Cycles
 
             columns.Add(new ColumnDefinition("START_TIME_UTC", DataType.DateTime));
             columns.Add(new ColumnDefinition("STOP_TIME_UTC", DataType.DateTime));
-
-            columns.Add(new ColumnDefinition("SHIFT_ID", DataType.MediumText));
 
             columns.Add(new ColumnDefinition("DURATION", DataType.Double));
 
@@ -137,7 +123,7 @@ namespace TH_Cycles
             Table.Create(configuration.Databases_Server, Global.GetTableName(TableNames.Cycles, configuration.DatabaseId), ColArray, cyclePrimaryKey);
         }
 
-        List<ColumnDefinition> GetOverrideColumns()
+        private List<ColumnDefinition> GetOverrideColumns()
         {
             var result = new List<ColumnDefinition>();
 
@@ -170,13 +156,13 @@ namespace TH_Cycles
                 List<string> columns = new List<string>();
                 columns.Add("cycle_id");
                 columns.Add("instance_id");
+                columns.Add("shift_id");
                 columns.Add("name");
                 columns.Add("event");
                 columns.Add("start_time");
                 columns.Add("stop_time");
                 columns.Add("start_time_utc");
                 columns.Add("stop_time_utc");
-                columns.Add("shift_id");
                 columns.Add("duration");
 
                 // Add Override Column Names
@@ -194,13 +180,13 @@ namespace TH_Cycles
 
                     values.Add(cycle.CycleId);
                     values.Add(cycle.InstanceId);
+                    values.Add(cycle.ShiftId.Id);
                     values.Add(cycle.Name);
                     values.Add(cycle.Event);
                     values.Add(cycle.StartTime);
                     values.Add(cycle.StopTime);
                     values.Add(cycle.StartTimeUtc);
                     values.Add(cycle.StopTimeUtc);
-                    values.Add(cycle.ShiftId.Id);
                     values.Add(cycle.Duration.TotalSeconds);
 
                     // Add Override Values
@@ -217,54 +203,6 @@ namespace TH_Cycles
                 Row.Insert(configuration.Databases_Server, Global.GetTableName(TableNames.Cycles, configuration.DatabaseId), columns.ToArray(), rowValues, cyclePrimaryKey, true);
             }
         }
-
-        //void AddCycleRow(CycleData cycle)
-        //{
-        //    var cc = CycleConfiguration.Get(configuration);
-        //    if (cc != null)
-        //    {
-        //        List<string> columns = new List<string>();
-        //        columns.Add("cycle_id");
-        //        columns.Add("instance_id");
-        //        columns.Add("name");
-        //        columns.Add("event");
-        //        columns.Add("start_time");
-        //        columns.Add("stop_time");
-        //        columns.Add("start_time_utc");
-        //        columns.Add("stop_time_utc");
-        //        columns.Add("shift_id");
-        //        columns.Add("duration");
-
-        //        // Add Override Column Names
-        //        foreach (var ovr in cc.OverrideLinks)
-        //        {
-        //            var columnName = FormatColumnName(ovr).ToLower();
-        //            columns.Add(columnName);
-        //        }
-
-        //        List<object> values = new List<object>();
-
-        //        values.Add(cycle.CycleId);
-        //        values.Add(cycle.InstanceId);
-        //        values.Add(cycle.Name);
-        //        values.Add(cycle.Event);
-        //        values.Add(cycle.StartTime);
-        //        values.Add(cycle.StopTime);
-        //        values.Add(cycle.StartTimeUtc);
-        //        values.Add(cycle.StopTimeUtc);
-        //        values.Add(cycle.ShiftId);
-        //        values.Add(cycle.Duration.TotalSeconds);
-
-        //        // Add Override Values
-        //        foreach (var ovr in cycle.CycleOverrides)
-        //        {
-        //            values.Add(ovr.Value);
-        //        }
-
-        //        Row.Insert(configuration.Databases_Server, cycleTableName, columns.ToArray(), values.ToArray(), cyclePrimaryKey, true);
-
-        //    }
-        //}
 
         string[] setupPrimaryKey = { "Cycle_Id" };
 
@@ -311,7 +249,6 @@ namespace TH_Cycles
             rowValues.Add(values);
 
             Row.Insert(configuration.Databases_Server, Global.GetTableName(TableNames.Cycles_Setup, configuration.DatabaseId), columns.ToArray(), rowValues, setupPrimaryKey, true);
-
         }
 
         #endregion
@@ -321,8 +258,8 @@ namespace TH_Cycles
         // Local variables
         CycleData cycleData;
         DateTime lastTimestamp = DateTime.MinValue;
-
-        List<CycleData> ProcessCycles(List<InstanceData> data)
+        
+        private List<CycleData> ProcessCycles(List<InstanceData> data)
         {
             var result = new List<CycleData>();
 
@@ -345,15 +282,11 @@ namespace TH_Cycles
                                 {
                                     var latestData = orderedData.FindAll(x => x.Timestamp > lastTimestamp);
 
-                                    var dbCycles = new List<CycleData>();
-
                                     foreach (var instanceData in latestData)
                                     {
-                                        dbCycles.AddRange(ProcessCycleEvent(ref result, cycleEvent, instanceData, cc));
+                                        result = ProcessCycleEvent(cycleEvent, instanceData, cc);
                                         lastTimestamp = instanceData.Timestamp;
                                     }
-
-                                    AddCycleRows(dbCycles);
                                 }
                             }
                         } 
@@ -364,88 +297,6 @@ namespace TH_Cycles
             return result;
         }
 
-        //private void ProcessCycleEvent(ref List<CycleData> cycles, Event cycleEvent, InstanceData instanceData, CycleConfiguration cc)
-        //{
-        //    // Search for cycle name link in InstanceData
-        //    var instanceValue = instanceData.Values.Find(x => x.Id == cc.CycleNameLink);
-        //    if (instanceValue != null)
-        //    {
-        //        List<CycleOverride> cycleOverrides = new List<CycleOverride>();
-
-        //        // Get CycleOverride values from InstanceData
-        //        foreach (var ovr in cc.OverrideLinks)
-        //        {
-        //            var cycleOverride = GetOverrideFromInstanceData(ovr, instanceData);
-        //            if (cycleOverride != null) cycleOverrides.Add(cycleOverride);
-        //        }
-
-        //        // Process Cycle Event using instanceData
-        //        var eventReturn = cycleEvent.Process(instanceData);
-        //        if (eventReturn != null)
-        //        {
-        //            // Get the name of the cycle
-        //            string cycleName = instanceValue.Value;
-
-        //            // Get the name of the cycleEvent (cycleEvent.Value)
-        //            string cycleEventValue = eventReturn.Value;
-
-        //            // Get ShiftId from Timestamp
-        //            var shiftId = TH_ShiftTable.CurrentShiftInfo.Get(configuration, instanceData.Timestamp);
-
-        //            CycleData cycle = cycleData;
-
-        //            //CycleData cycle = null;
-
-        //            // Check if new cycle is needed
-        //            if (cycle != null &&
-        //                (cycle.ShiftId.Id == shiftId.id &&
-        //                cycle.Name == cycleName &&
-        //                 cycle.Event == cycleEventValue &&
-        //                 CompareOverrideLists(cycle.CycleOverrides, cycleOverrides)
-        //                ))
-        //            {
-        //                //Use current stored cycle
-        //                UpdateCycleData(cycle, instanceData);
-        //            }
-        //            else // Needs new cycle
-        //            {
-        //                // Fill in previous cycle info then create new one to use
-        //                if (cycle != null)
-        //                {
-        //                    ProcessPreviousCycle(cycle, instanceData);
-
-        //                    if (cycle.Name != cycleName || cycleEventValue == cc.StoppedEventValue)
-        //                    {
-        //                        cycle = CreateCycleData(cycleName);
-        //                    }
-        //                }
-        //                else // No previous cycleData exists so create new one
-        //                {
-        //                    cycle = CreateCycleData(cycleName);
-        //                }
-
-        //                cycle.CycleOverrides = cycleOverrides.ToList();
-
-        //                //Update Cycle
-        //                UpdateCycleDataEvent(cycle, eventReturn.Value, instanceData, cc);
-        //                UpdateCycleData(cycle, instanceData);
-        //            }
-
-        //            cycleData = cycle.Copy();
-
-        //            if (!cycles.Exists(x => x.CycleId == cycle.CycleId && x.InstanceId == cycle.InstanceId))
-        //            {
-        //                cycles.Add(cycle);
-        //            }
-
-        //            //result = cycleData;
-        //        }
-        //    }
-
-        //    //return result;
-        //}
-
-
         /// <summary>
         /// Updates the list passed in args and return a list of CycleData(s) to update in the Database
         /// </summary>
@@ -454,7 +305,7 @@ namespace TH_Cycles
         /// <param name="instanceData"></param>
         /// <param name="cc"></param>
         /// <returns></returns>
-        List<CycleData> ProcessCycleEvent(ref List<CycleData> cycles, Event cycleEvent, InstanceData instanceData, CycleConfiguration cc)
+        private List<CycleData> ProcessCycleEvent(Event cycleEvent, InstanceData instanceData, CycleConfiguration cc)
         {
             var result = new List<CycleData>();
 
@@ -488,6 +339,7 @@ namespace TH_Cycles
                     if (cycleData != null) startShiftInfo = TH_ShiftTable.CurrentShiftInfo.Get(configuration, cycleData.StartTime);
                     if (instanceData != null) endShiftInfo = TH_ShiftTable.CurrentShiftInfo.Get(configuration, instanceData.Timestamp);
 
+
                     CycleData cycle = cycleData;
 
                     // Check if new cycle is needed
@@ -498,13 +350,12 @@ namespace TH_Cycles
                          CompareOverrideLists(cycle.CycleOverrides, cycleOverrides)
                         ))
                     {
-                        //Use current stored cycle
+                        // Use current stored cycle
                         UpdateCycleData(cycle, instanceData);
+                        result.Add(cycle.Copy());
                     }
                     else
                     {
-                        bool newCycle = false;
-
                         if (cycle != null)
                         {
                             // If a different shift then split the times
@@ -512,64 +363,52 @@ namespace TH_Cycles
                             {
                                 cycle.StopTime = startShiftInfo.segmentEnd;
                                 cycle.StopTimeUtc = startShiftInfo.segmentEndUTC;
-                                cycles.Add(cycle.Copy());
-
                                 result.Add(cycle.Copy());
 
+                                // Set new Shift ID and StartTimes for next shift segment (keep same cycle instance ID)
+                                SetCycleShiftId(cycle, instanceData);
                                 cycle.StartTime = startShiftInfo.segmentEnd;
                                 cycle.StartTimeUtc = startShiftInfo.segmentEndUTC;
                             }
 
-                            //Set Stop Time
+                            // Set Stop Time
                             cycle.StopTime = instanceData.Timestamp.ToLocalTime();
                             cycle.StopTimeUtc = instanceData.Timestamp;
-
                             result.Add(cycle.Copy());
-                            
+
                             if (cycle.Name != cycleName || cycleEventValue == cc.StoppedEventValue)
                             {
                                 cycle = CreateCycleData(cycleName);
-                                newCycle = true;
                             }
                         }
-                        else
+                        else // No previous Cycle so create one (usually when server is first started
                         {
                             cycle = CreateCycleData(cycleName);
-                            newCycle = true;
                         }
 
                         cycle.CycleOverrides = cycleOverrides.ToList();
 
-                        //Update Cycle
+                        // Update Cycle
                         UpdateCycleDataEvent(cycle, eventReturn.Value, instanceData, cc);
                         UpdateCycleData(cycle, instanceData);
-
-                        if (newCycle) result.Add(cycle.Copy());
+                        result.Add(cycle.Copy());
                     }
 
                     cycleData = cycle.Copy();
-                    cycles.Add(cycle);
                 }
             }
 
             return result;
         }
-
-        private static string GetShiftId(TH_ShiftTable.CurrentShiftInfo info)
-        {
-            if (info != null) return info.id;
-            return null;
-        }
-
-        //CycleData ProcessCycleEvent(Event cycleEvent, InstanceData instanceData, CycleConfiguration cc)
+        //private List<CycleData> ProcessCycleEvent(ref List<CycleData> cycles, Event cycleEvent, InstanceData instanceData, CycleConfiguration cc)
         //{
-        //    CycleData result = null;
+        //    var result = new List<CycleData>();
 
         //    // Search for cycle name link in InstanceData
         //    var instanceValue = instanceData.Values.Find(x => x.Id == cc.CycleNameLink);
         //    if (instanceValue != null)
         //    {
-        //        List<CycleOverride> cycleOverrides = new List<CycleOverride>();
+        //        var cycleOverrides = new List<CycleOverride>();
 
         //        // Get CycleOverride values from InstanceData
         //        foreach (var ovr in cc.OverrideLinks)
@@ -588,58 +427,85 @@ namespace TH_Cycles
         //            // Get the name of the cycleEvent (cycleEvent.Value)
         //            string cycleEventValue = eventReturn.Value;
 
+        //            TH_ShiftTable.CurrentShiftInfo startShiftInfo = null;
+        //            TH_ShiftTable.CurrentShiftInfo endShiftInfo = null;
+
         //            // Get ShiftId from Timestamp
-        //            var shiftId = TH_ShiftTable.CurrentShiftInfo.Get(configuration, instanceData.Timestamp);
+        //            if (cycleData != null) startShiftInfo = TH_ShiftTable.CurrentShiftInfo.Get(configuration, cycleData.StartTime);
+        //            if (instanceData != null) endShiftInfo = TH_ShiftTable.CurrentShiftInfo.Get(configuration, instanceData.Timestamp);
+
 
         //            CycleData cycle = cycleData;
 
         //            // Check if new cycle is needed
         //            if (cycle != null &&
-        //                (cycle.ShiftId.Id == shiftId.id &&
-        //                cycle.Name == cycleName &&
+        //                (cycle.ShiftId.Id == GetShiftId(endShiftInfo) &&
+        //                 cycle.Name == cycleName &&
         //                 cycle.Event == cycleEventValue &&
         //                 CompareOverrideLists(cycle.CycleOverrides, cycleOverrides)
         //                ))
         //            {
         //                //Use current stored cycle
         //                UpdateCycleData(cycle, instanceData);
+        //                cycles.Add(cycle.Copy());
+        //                result.Add(cycle.Copy());
         //            }
         //            else
         //            {
         //                if (cycle != null)
         //                {
-        //                    //Set Stop Time
-        //                    //cycle.StopTime = instanceData.Timestamp.ToLocalTime();
-        //                    //cycle.StopTimeUtc = instanceData.Timestamp;
+        //                    // If a different shift then split the times
+        //                    if (GetShiftId(startShiftInfo) != GetShiftId(endShiftInfo))
+        //                    {
+        //                        cycle.StopTime = startShiftInfo.segmentEnd;
+        //                        cycle.StopTimeUtc = startShiftInfo.segmentEndUTC;
+        //                        cycles.Add(cycle.Copy());
+        //                        result.Add(cycle.Copy());
 
+        //                        // Set new Shift ID and StartTimes for next shift segment (keep same cycle instance ID)
+        //                        SetCycleShiftId(cycle, instanceData);
+        //                        cycle.StartTime = startShiftInfo.segmentEnd;
+        //                        cycle.StartTimeUtc = startShiftInfo.segmentEndUTC;
+        //                    }
 
-        //                    ProcessPreviousCycle(cycle, instanceData);
+        //                    // Set Stop Time
+        //                    cycle.StopTime = instanceData.Timestamp.ToLocalTime();
+        //                    cycle.StopTimeUtc = instanceData.Timestamp;
+        //                    cycles.Add(cycle.Copy());
+        //                    result.Add(cycle.Copy());
 
-                            
         //                    if (cycle.Name != cycleName || cycleEventValue == cc.StoppedEventValue)
         //                    {
         //                        cycle = CreateCycleData(cycleName);
         //                    }
         //                }
-        //                else
+        //                else // No previous Cycle so create one (usually when server is first started
         //                {
         //                    cycle = CreateCycleData(cycleName);
         //                }
 
         //                cycle.CycleOverrides = cycleOverrides.ToList();
 
-        //                //Update Cycle
+        //                // Update Cycle
         //                UpdateCycleDataEvent(cycle, eventReturn.Value, instanceData, cc);
         //                UpdateCycleData(cycle, instanceData);
+        //                cycles.Add(cycle.Copy());
+        //                result.Add(cycle.Copy());
         //            }
 
         //            cycleData = cycle.Copy();
-        //            result = cycleData;
         //        }
         //    }
 
         //    return result;
         //}
+
+        
+        private static string GetShiftId(TH_ShiftTable.CurrentShiftInfo info)
+        {
+            if (info != null) return info.id;
+            return null;
+        }
 
         private static bool CompareOverrideLists(List<CycleOverride> l1, List<CycleOverride> l2)
         {
@@ -682,7 +548,7 @@ namespace TH_Cycles
             return result;
         }
 
-        CycleData CreateCycleData(string name)
+        private CycleData CreateCycleData(string name)
         {
             var result = new CycleData();
             result.CycleId = String_Functions.RandomString(80);
@@ -698,8 +564,8 @@ namespace TH_Cycles
             cycle.InstanceId = String_Functions.RandomString(20);
 
             // Set Production Type
-            var productionType = cc.ProductionTypes.Find(x => x.Item1 == eventValue);
-            if (productionType != null) cycle.ProductionType = productionType.Item2;
+            var productionType = cc.ProductionTypes.Find(x => x.EventValue == eventValue);
+            if (productionType != null) cycle.ProductionType = productionType.ProductionType;
             else cycle.ProductionType = CycleData.CycleProductionType.UNCATEGORIZED;
 
             // Set/Reset Times & Duration
@@ -711,26 +577,9 @@ namespace TH_Cycles
             // Set to local variable
             cycleData = cycle;
         }
-
-        //void ProcessPreviousCycle(CycleData cycle, InstanceData data)
-        //{
-        //    // Set Stop Time
-        //    cycle.StopTime = data.Timestamp.ToLocalTime();
-        //    cycle.StopTimeUtc = data.Timestamp;
-
-        //    // Add to database
-        //    //AddCycleRow(cycle);
-
-        //    // Set Shift Segment ID
-        //    SetCycleShiftId(cycle, data);
-        //}
-
+        
         void UpdateCycleData(CycleData cycle, InstanceData data)
         {
-            //// Set Start Times
-            //cycle.StartTime = data.Timestamp.ToLocalTime();
-            //cycle.StartTimeUtc = data.Timestamp;
-
             // Set Stop Time
             cycle.StopTime = data.Timestamp.ToLocalTime();
             cycle.StopTimeUtc = data.Timestamp;

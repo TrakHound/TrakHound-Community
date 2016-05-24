@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Threading;
 
-using TH_Configuration;
 using TH_Global.Web;
 
 namespace TH_Mobile
@@ -24,7 +23,7 @@ namespace TH_Mobile
                 var values = new NameValueCollection();
                 values["data"] = json;
 
-                string url = PHP_URL + "update/index2.php";
+                string url = PHP_URL + "update/";
 
                 var info = new SendDataInfo(url, values);
                 ThreadPool.QueueUserWorkItem(new WaitCallback(SendData), info);

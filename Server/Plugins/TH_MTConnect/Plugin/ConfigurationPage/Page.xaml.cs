@@ -287,11 +287,11 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
 
                 var returnInfo = new TestConnectionReturnInfo();
 
-                var ping = new Ping();
-                var pingReply = ping.Send(info.Address);
+                //var ping = new Ping();
+                //var pingReply = ping.Send(info.Address);
 
-                if (pingReply.Status == IPStatus.Success)
-                {
+                //if (pingReply.Status == IPStatus.Success)
+                //{
                     string url = HTTP.GetUrl(info.Address, info.Port, info.DeviceName) + "probe";
 
                     ReturnData returnData = Requests.Get(url, 5000, 1);
@@ -302,8 +302,8 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
                         returnInfo.Message = "MTConnect Probe Successful @ " + url;
                     }
                     else returnInfo.Message = "MTConnect Probe Failed @ " + url;
-                }
-                else returnInfo.Message = "IP Not Reachable @ " + info.Address;
+                //}
+                //else returnInfo.Message = "IP Not Reachable @ " + info.Address;
 
                 Dispatcher.BeginInvoke(new Action<TestConnectionReturnInfo>(TestConnection_GUI), UI_Functions.PRIORITY_BACKGROUND, new object[] { returnInfo });
             }

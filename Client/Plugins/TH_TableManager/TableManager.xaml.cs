@@ -5,33 +5,18 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-using System.Threading;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Data;
 
 using TH_Configuration;
-using TH_Database;
-using TH_Global;
 using TH_Global.Functions;
 using TH_Plugins;
-using TH_Plugins.Client;
 using TH_WPF;
-
-using TH_TableManager.Controls;
 
 namespace TH_TableManager
 {
@@ -156,7 +141,7 @@ namespace TH_TableManager
 
         void LoadTableList_Worker(object o)
         {
-            Configuration config = (Configuration)o;
+            var config = (Configuration)o;
 
             string[] tableNames = TH_Database.Table.List(config.Databases_Client);
 
@@ -173,10 +158,10 @@ namespace TH_TableManager
                 tableNames = list.ToArray();
             }
 
-            this.Dispatcher.BeginInvoke(new Action<string[]>(LoadTableList_Finished), Priority, new object[] { tableNames });
+            this.Dispatcher.BeginInvoke(new Action<Configuration, string[]>(LoadTableList_Finished), Priority, new object[] { config, tableNames });
         }
 
-        void LoadTableList_Finished(string[] tableNames)
+        void LoadTableList_Finished(Configuration config, string[] tableNames)
         {
             TableList.Clear();
 
@@ -184,8 +169,9 @@ namespace TH_TableManager
             {
                 foreach (string tableName in tableNames)
                 {
-                    TH_WPF.ListButton lb = new TH_WPF.ListButton();
-                    lb.Text = tableName;
+                    var lb = new ListButton();
+                    lb.Text = FormatTableName(tableName, config.DatabaseId);
+                    lb.DataObject = tableName;
                     lb.Selected += lb_Table_Selected;
                     lb.MultiSelected += TableList_MultiSelected;
                     lb.MultiUnselected += TableList_MultiUnselected;
@@ -195,6 +181,16 @@ namespace TH_TableManager
                 if (tableNames.Length > 0) TableListShown = true;
             }
 
+        }
+
+        private string FormatTableName(string tablename, string databaseId)
+        {
+            if (!string.IsNullOrEmpty(databaseId))
+            {
+                return tablename.Substring(databaseId.Length + 1);
+            }
+
+            return tablename;
         }
 
 
@@ -233,23 +229,25 @@ namespace TH_TableManager
             TableList.Add(lb);
         }
 
-        void lb_Table_Selected(TH_WPF.ListButton LB)
+        void lb_Table_Selected(ListButton LB)
         {
             SelectedTables.Clear();
             SelectedTables.Add(LB);
 
-            foreach (TH_WPF.ListButton olb in TableList.OfType<TH_WPF.ListButton>()) if (olb != LB) olb.IsSelected = false;
+            foreach (var olb in TableList.OfType<ListButton>()) if (olb != LB) olb.IsSelected = false;
             LB.IsSelected = true;
 
-            Int64 page = 0;
+            long page = 0;
 
             TableIsSelected = true;
             TableInfoShown = false;
             SelectedTableName = null;
             TableRowCount = null;
 
-            this.Dispatcher.BeginInvoke(new Action<string, Configuration>(LoadInfo), Priority, new object[] { LB.Text, SelectedDevice });
-            this.Dispatcher.BeginInvoke(new Action<string, Int64, Configuration>(LoadTable), Priority, new object[] { LB.Text, page, SelectedDevice });
+            string tablename = LB.DataObject.ToString();
+
+            Dispatcher.BeginInvoke(new Action<string, Configuration>(LoadInfo), Priority, new object[] { tablename, SelectedDevice });
+            Dispatcher.BeginInvoke(new Action<string, long, Configuration>(LoadTable), Priority, new object[] { tablename, page, SelectedDevice });
         }
 
         #endregion
@@ -316,9 +314,9 @@ namespace TH_TableManager
 
         class LoadTableParameters
         {
-            public string tablename { get; set; }
-            public Int64 page { get; set; }
-            public Configuration config { get; set; }
+            public string Tablename { get; set; }
+            public long Page { get; set; }
+            public Configuration Config { get; set; }
         }
 
         #region "Table Info"
@@ -378,9 +376,9 @@ namespace TH_TableManager
         {
             SelectedTableName = tableName;
 
-            LoadTableParameters ltp = new LoadTableParameters();
-            ltp.tablename = tableName;
-            ltp.config = config;
+            var ltp = new LoadTableParameters();
+            ltp.Tablename = tableName;
+            ltp.Config = config;
 
             if (Info_WORKER != null) Info_WORKER.Abort();
 
@@ -390,16 +388,16 @@ namespace TH_TableManager
 
         void LoadInfo_Worker(object loadTableParameters)
         {
-            LoadTableParameters ltp = (LoadTableParameters)loadTableParameters;
+            var ltp = (LoadTableParameters)loadTableParameters;
 
-            Int64 rowCount = TH_Database.Table.GetRowCount(ltp.config.Databases_Client, ltp.tablename);
+            long rowCount = TH_Database.Table.GetRowCount(ltp.Config.Databases_Client, ltp.Tablename);
 
-            Int64 tablesize = TH_Database.Table.GetSize(ltp.config.Databases_Client, ltp.tablename);
+            long tablesize = TH_Database.Table.GetSize(ltp.Config.Databases_Client, ltp.Tablename);
 
-            this.Dispatcher.BeginInvoke(new Action<Int64, Int64>(LoadInfo_Finished), Priority, new object[] { rowCount, tablesize });
+            this.Dispatcher.BeginInvoke(new Action<long, long>(LoadInfo_Finished), Priority, new object[] { rowCount, tablesize });
         }
 
-        void LoadInfo_Finished(Int64 rowCount, Int64 tablesize)
+        void LoadInfo_Finished(long rowCount, long tablesize)
         {
             TableInfoShown = true;
 
@@ -422,7 +420,7 @@ namespace TH_TableManager
             LoadInfo(SelectedTableName, SelectedDevice);
         }
 
-        Int64 RowCount;
+        long RowCount;
 
         #endregion
 
@@ -470,7 +468,7 @@ namespace TH_TableManager
 
         LoadTableParameters selectedTableParameters;
 
-        void LoadTable(string tableName, Int64 page, Configuration config)
+        void LoadTable(string tableName, long page, Configuration config)
         {
             TableDataView = null;
             LoadingRowDisplay = false;
@@ -479,10 +477,10 @@ namespace TH_TableManager
 
             LoadTableRowLimit();
 
-            LoadTableParameters ltp = new LoadTableParameters();
-            ltp.tablename = tableName;
-            ltp.page = page;
-            ltp.config = config;
+            var ltp = new LoadTableParameters();
+            ltp.Tablename = tableName;
+            ltp.Page = page;
+            ltp.Config = config;
 
             selectedTableParameters = ltp;
 
@@ -513,19 +511,19 @@ namespace TH_TableManager
 
         void LoadTable_Worker(object loadTableParameters)
         {
-            LoadTableParameters ltp = (LoadTableParameters)loadTableParameters;
+            var ltp = (LoadTableParameters)loadTableParameters;
 
             // Row Limit
             int limit = rowLimits[Properties.Settings.Default.RowDisplayIndex];
 
             // Calculate Offset based on selected page
             //string offset = "";
-            Int64 page = Math.Max(0, ltp.page - 1);
+            Int64 page = Math.Max(0, ltp.Page - 1);
             Int64 offset = page * limit;
             //offset = " OFFSET " + o.ToString();
                 
             // Get MySQL table
-            DataTable dt = TH_Database.Table.Get(ltp.config.Databases_Client, ltp.tablename, limit, offset);
+            DataTable dt = TH_Database.Table.Get(ltp.Config.Databases_Client, ltp.Tablename, limit, offset);
 
             this.Dispatcher.BeginInvoke(new Action<DataTable>(LoadTable_Finished), Priority, new object[] { dt });
         }
@@ -534,13 +532,13 @@ namespace TH_TableManager
         {
             if (dt != null)
             {
-                DataTable table = new DataTable();
+                var table = new DataTable();
                 table.TableName = dt.TableName;
 
                 // Add Columns to DataView
                 foreach (DataColumn column in dt.Columns)
                 {
-                    DataColumn col = new DataColumn();
+                    var col = new DataColumn();
                     col.ColumnName = column.ColumnName;
                     col.DataType = column.DataType;
                     table.Columns.Add(col);
@@ -723,7 +721,7 @@ namespace TH_TableManager
                 rowLimitIndex = cb.SelectedIndex;
                 SaveTableRowLimit(rowLimitIndex);
 
-                if (selectedTableParameters != null) selectedTableParameters.page = 1;
+                if (selectedTableParameters != null) selectedTableParameters.Page = 1;
                 selectedPage = 1;
 
                 LoadTable();

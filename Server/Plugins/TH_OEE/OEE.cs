@@ -7,12 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text;
 
 using TH_Configuration;
 using TH_Cycles;
 using TH_Global.Shifts;
 using TH_Plugins;
 using TH_Plugins.Server;
+using TH_ShiftTable;
 
 namespace TH_OEE
 {
@@ -214,7 +216,7 @@ namespace TH_OEE
                 }
 
                 // Set increment
-                double inc = cycle.Duration.TotalSeconds - previousShiftCycleDuration; ;
+                double inc = cycle.Duration.TotalSeconds - previousShiftCycleDuration;
                 if (inc < 0) inc = cycle.Duration.TotalSeconds;
                 previousShiftCycleDuration = cycle.Duration.TotalSeconds;
 
@@ -255,6 +257,28 @@ namespace TH_OEE
         OEEData segmentOeeData;
         double previousSegmentCycleDuration;
 
+        private static string GetUnderscoreDelimitedValue(string val)
+        {
+            if (val == null) return null;
+
+            string[] words = val.Split('_');
+            if (words != null && words.Length > 0)
+            {
+                var builder = new StringBuilder();
+
+                for (var i = 0; i < words.Length; i++)
+                {
+                    builder.Append(TH_Global.Functions.String_Functions.UppercaseFirst(words[i]));
+                    if (i < words.Length - 1) builder.Append(" ");
+                }
+
+                return builder.ToString();
+            }
+
+            return TH_Global.Functions.String_Functions.UppercaseFirst(val);
+        }
+
+
         private void ProcessSegments(List<CycleData> cycles)
         {
             var oeeDatas = new List<OEEData>();
@@ -266,7 +290,7 @@ namespace TH_OEE
                     // Get previous row from database
                     segmentOeeData = Database.SegmentBased.GetPrevious(config, cycle.ShiftId);
 
-                    // If not row found in database then just create a new one
+                    // If no row found in database then just create a new one
                     if (segmentOeeData == null)
                     {
                         segmentOeeData = new OEEData();
@@ -277,14 +301,6 @@ namespace TH_OEE
                     }
 
                     previousSegmentCycleDuration = 0;
-
-                    //segmentOeeData = new OEEData();
-                    //segmentOeeData.ConstantQuality = 1; // Change when Quality (TH_Parts) is implemented
-                    //segmentOeeData.ShiftId = new ShiftId(cycle.ShiftId.Id);
-                    //segmentOeeData.CycleId = cycle.CycleId;
-                    //segmentOeeData.CycleInstanceId = cycle.InstanceId;
-
-                    //previousSegmentCycleDuration = 0;
                 }
 
                 // Get (or create) the OEEInfo for each cycle

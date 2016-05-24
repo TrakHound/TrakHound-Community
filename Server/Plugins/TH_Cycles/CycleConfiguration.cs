@@ -17,7 +17,8 @@ namespace TH_Cycles
         public CycleConfiguration()
         {
             OverrideLinks = new List<string>();
-            ProductionTypes = new List<Tuple<string, CycleData.CycleProductionType>>();
+            //ProductionTypes = new List<Tuple<string, CycleData.CycleProductionType>>();
+            ProductionTypes = new List<ProductionTypeItem>();
         }
 
         public string CycleEventName { get; set; }
@@ -26,7 +27,14 @@ namespace TH_Cycles
 
         public List<string> OverrideLinks { get; set; }
 
-        public List<Tuple<string, CycleData.CycleProductionType>> ProductionTypes { get; set; }
+        public class ProductionTypeItem
+        {
+            public string EventValue { get; set; }
+            public CycleData.CycleProductionType ProductionType { get; set; }
+        }
+
+        //public List<Tuple<string, CycleData.CycleProductionType>> ProductionTypes { get; set; }
+        public List<ProductionTypeItem> ProductionTypes { get; set; }
 
         public string CycleNameLink { get; set; }
 
@@ -57,7 +65,10 @@ namespace TH_Cycles
                                         CycleData.CycleProductionType type;
                                         Enum.TryParse(productionTypeChild.Attributes["type"].Value.ToString(), out type);
 
-                                        var typeItem = new Tuple<string, CycleData.CycleProductionType>(name, type);
+                                        //var typeItem = new Tuple<string, CycleData.CycleProductionType>(name, type);
+                                        var typeItem = new ProductionTypeItem();
+                                        typeItem.EventValue = name;
+                                        typeItem.ProductionType = type;
 
                                         result.ProductionTypes.Add(typeItem);
                                     }

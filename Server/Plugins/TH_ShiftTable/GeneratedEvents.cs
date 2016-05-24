@@ -36,16 +36,21 @@ namespace TH_ShiftTable
 
         public List<CaptureItem> CaptureItems;
 
+        public new string ToString()
+        {
+            return eventName + " = " + eventValue + " : " + duration.ToString() + " : " + start_timestamp.ToString("o") + " - " + end_timestamp.ToString("o") + " :: " + segment.beginTime + " - " + segment.endTime;
+        }
+
         public static List<GenEventShiftItem> Get(Configuration config, List<GeneratedEvent> genEventItems)
         {
-            List<GenEventShiftItem> Result = new List<GenEventShiftItem>();
+            var result = new List<GenEventShiftItem>();
 
-            ShiftConfiguration sc = ShiftConfiguration.Get(config);
+            var sc = ShiftConfiguration.Get(config);
             if (sc != null)
             {
                 List<ListInfo> nameInfos = GetListByName(genEventItems);
 
-                PreviousData previousData = previousItems.Find(x => x.Id == config.UniqueId);
+                var previousData = previousItems.Find(x => x.Id == config.UniqueId);
                 if (previousData == null)
                 {
                     previousData = new PreviousData();
@@ -53,13 +58,18 @@ namespace TH_ShiftTable
                     previousItems.Add(previousData);
                 }
 
-                foreach (ListInfo nameInfo in nameInfos)
-                {
-                    GeneratedEvent previousItem = previousData.PreviousItems.Find(x => x.EventName.ToLower() == nameInfo.title.ToLower());
 
-                    for (int i = 0; i <= nameInfo.genEventItems.Count - 1; i++)
+                foreach (var nameInfo in nameInfos)
+                {
+                    GeneratedEvent previousItem = previousData.PreviousItems.Find(x => x.EventName.ToLower() == nameInfo.EventName.ToLower());
+
+                    var sortedItems = nameInfo.GenEventItems.OrderBy(x => x.Timestamp).ToList();
+
+                    //for (int i = 0; i <= nameInfo.genEventItems.Count - 1; i++)
+                    for (int i = 0; i <= sortedItems.Count - 1; i++)
                     {
-                        var item = nameInfo.genEventItems[i];
+                        //var item = nameInfo.genEventItems[i];
+                        var item = sortedItems[i];
 
                         if (previousItem != null)
                         {
@@ -67,8 +77,12 @@ namespace TH_ShiftTable
                             if (item.Timestamp > previousItem.Timestamp)
                             {
                                 List<GenEventShiftItem> items = GetItems(sc, previousItem, item);
-                                Result.AddRange(items);
+                                result.AddRange(items);
                                 previousItem = item;
+                            }
+                            else
+                            {
+                                Console.WriteLine(item.Timestamp.ToString("o") + " :: " + previousItem.Timestamp.ToString("o"));
                             }
                         }
                         else
@@ -77,14 +91,13 @@ namespace TH_ShiftTable
                             previousItem = item;
                         }
 
-                        int prevIndex = previousData.PreviousItems.FindIndex(x => x.EventName.ToLower() == nameInfo.title.ToLower());
+                        int prevIndex = previousData.PreviousItems.FindIndex(x => x.EventName.ToLower() == nameInfo.EventName.ToLower());
                         if (prevIndex >= 0) previousData.PreviousItems[prevIndex] = previousItem;
                     }
                 }
             }
 
-            return Result;
-
+            return result;
         }
 
         // Used to hold information between Samples
@@ -103,15 +116,16 @@ namespace TH_ShiftTable
 
         class ListInfo
         {
-            public ListInfo() { genEventItems = new List<GeneratedEvent>(); }
+            public ListInfo() { GenEventItems = new List<GeneratedEvent>(); }
 
-            public string title { get; set; }
-            public List<GeneratedEvent> genEventItems { get; set; }
+            //public string Title { get; set; }
+            public string EventName { get; set; }
+            public List<GeneratedEvent> GenEventItems { get; set; }
         }
 
         static List<GenEventShiftItem> GetItems(ShiftConfiguration stc, GeneratedEvent item1, GeneratedEvent item2)
         {
-            List<GenEventShiftItem> Result = new List<GenEventShiftItem>();
+            var result = new List<GenEventShiftItem>();
 
             ShiftDate date1 = new ShiftDate(item1.Timestamp);
             ShiftDate date2 = new ShiftDate(item2.Timestamp);
@@ -125,16 +139,20 @@ namespace TH_ShiftTable
 
                 foreach (Shift shift in stc.shifts)
                 {
-                    Result.AddRange(GetItemsDuringShift(item1, item2, date, shift));
+                    result.AddRange(GetItemsDuringShift(item1, item2, date, shift));
                 }
             }
 
-            return Result;
+
+            // Debug $$$
+            //foreach (var item in result) Console.WriteLine(item.eventName + " = " + item.eventValue + " : " + item.duration.ToString() + " : " + item1.Timestamp.ToString("o") + " - " + item2.Timestamp.ToString("o") + " :: " + item.segment.beginTime + " - " + item.segment.endTime);
+
+            return result;
         }
 
         static List<ListInfo> GetListByName(List<GeneratedEvent> genEventItems)
         {
-            List<ListInfo> Result = new List<ListInfo>();
+            var result = new List<ListInfo>();
 
             // Get a list of all of the distinct (by Event Name) genEventItems
             IEnumerable<string> distinctNames = genEventItems.Select(x => x.EventName).Distinct();
@@ -142,31 +160,32 @@ namespace TH_ShiftTable
             // Loop through the distinct event names  
             foreach (string distinctName in distinctNames.ToList())
             {
-                ListInfo info = new ListInfo();
-                info.title = distinctName;
-                info.genEventItems = genEventItems.FindAll(x => x.EventName.ToLower() == distinctName.ToLower());
-                Result.Add(info);
+                var info = new ListInfo();
+                info.EventName = distinctName;
+
+                info.GenEventItems = genEventItems.FindAll(x => x.EventName.ToLower() == distinctName.ToLower());
+                result.Add(info);
             }
 
-            return Result;
+            return result;
         }
 
         static List<GenEventShiftItem> GetItemsDuringShift(GeneratedEvent item1, GeneratedEvent item2, ShiftDate date, Shift shift)
         {
-            List<GenEventShiftItem> Result = new List<GenEventShiftItem>();
+            var result = new List<GenEventShiftItem>();
 
             foreach (Segment segment in shift.segments)
             {
                 GenEventShiftItem gesi = GetItemDuringSegment(item1, item2, date, segment);
-                if (gesi != null) Result.Add(gesi);
+                if (gesi != null) result.Add(gesi);
             }
 
-            return Result;
+            return result;
         }
 
         static GenEventShiftItem GetItemDuringSegment(GeneratedEvent item1, GeneratedEvent item2, ShiftDate date, Segment segment)
         {
-            GenEventShiftItem Result = null;
+            GenEventShiftItem result = null;
 
             // -1 = Timestamp does not fall within segment          
             //  0 = Timestamps span entire segment
@@ -177,7 +196,7 @@ namespace TH_ShiftTable
 
             if (type >= 0)
             {
-                GenEventShiftItem gesi = new GenEventShiftItem();
+                var gesi = new GenEventShiftItem();
                 gesi.eventName = item1.EventName;
                 gesi.eventValue = item1.Value;
                 gesi.eventNumVal = item1.Numval;
@@ -188,7 +207,7 @@ namespace TH_ShiftTable
                 gesi.CaptureItems = item1.CaptureItems;
 
                 // Get Times for segment and convert timestamps to Local
-                SegmentShiftTimes sst = SegmentShiftTimes.Get(item1.Timestamp, item2.Timestamp, date, segment);
+                var sst = SegmentShiftTimes.Get(item1.Timestamp, item2.Timestamp, date, segment);
 
                 if (segment.beginTime.dayOffset == segment.endTime.dayOffset) gesi.shiftDate = date - segment.endTime.dayOffset;
                 else gesi.shiftDate = date;
@@ -221,10 +240,10 @@ namespace TH_ShiftTable
                 TimeSpan duration = gesi.end_timestamp - gesi.start_timestamp;
                 gesi.duration = duration;
 
-                Result = gesi;
+                result = gesi;
             }
 
-            return Result;
+            return result;
         }
 
         static int GetItemDuringSegmentType(GeneratedEvent item1, GeneratedEvent item2, Segment segment, ShiftDate date)

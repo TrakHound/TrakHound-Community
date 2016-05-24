@@ -6,8 +6,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 using TH_Configuration;
+using TH_Global.Shifts;
 
 namespace TH_ShiftTable
 {
@@ -15,41 +17,44 @@ namespace TH_ShiftTable
     {
         public ShiftRowInfo()
         {
-            genEventRowInfos = new List<GenEventRowInfo>();
+            GenEventRowInfos = new List<GenEventRowInfo>();
         }
 
-        public string id { get; set; }
+        //public string Id { get; set; }
+        public ShiftId Id { get; set; }
 
-        public ShiftDate date { get; set; }
-        public string shift { get; set; }
+        public ShiftDate Date { get; set; }
+        public string Shift { get; set; }
 
-        public int segmentId { get; set; }
+        public int SegmentId { get; set; }
 
-        public ShiftTime start { get; set; }
-        public ShiftTime end { get; set; }
+        public ShiftTime Start { get; set; }
+        public ShiftTime End { get; set; }
 
-        public ShiftTime start_utc { get; set; }
-        public ShiftTime end_utc { get; set; }
+        public ShiftTime StartUtc { get; set; }
+        public ShiftTime EndUtc { get; set; }
 
-        public string type { get; set; }
+        public string Type { get; set; }
 
-        public int totalTime { get; set; }
+        public double TotalTime { get; set; }
 
-        public List<GenEventRowInfo> genEventRowInfos { get; set; }
+        public List<GenEventRowInfo> GenEventRowInfos { get; set; }
 
         public ShiftRowInfo Copy()
         {
             ShiftRowInfo Result = new ShiftRowInfo();
-            Result.id = id;
-            Result.date = date;
-            Result.shift = shift;
-            Result.segmentId = segmentId;
-            Result.start = start;
-            Result.end = end;
-            Result.start_utc = start_utc;
-            Result.end_utc = end_utc;
-            Result.type = type;
-            Result.genEventRowInfos = genEventRowInfos;
+
+            Result.Id = Id;
+            Result.Date = Date;
+            Result.Shift = Shift;
+            Result.SegmentId = SegmentId;
+            Result.Start = Start;
+            Result.End = End;
+            Result.StartUtc = StartUtc;
+            Result.EndUtc = EndUtc;
+            Result.Type = Type;
+            Result.GenEventRowInfos = GenEventRowInfos;
+
             return Result;
         }
 
@@ -73,22 +78,27 @@ namespace TH_ShiftTable
                     foreach (Segment segment in segments)
                     {
                         var sri = new ShiftRowInfo();
-                        sri.id = Tools.GetShiftId(shiftDate, segment);
-                        sri.date = shiftDate;
-                        sri.shift = shiftName;
-                        sri.segmentId = segment.id;
+                        //sri.Id = Tools.GetShiftId(shiftDate, segment);
+                        sri.Id = new ShiftId(Tools.GetShiftId(shiftDate, segment));
+                        sri.Date = shiftDate;
+                        sri.Shift = shiftName;
+                        sri.SegmentId = segment.id;
 
-                        sri.start = segment.beginTime;
-                        sri.end = segment.endTime;
+                        sri.Start = segment.beginTime;
+                        sri.End = segment.endTime;
 
-                        sri.start_utc = segment.beginTime.ToUTC();
-                        sri.end_utc = segment.endTime.ToUTC();
+                        sri.StartUtc = segment.beginTime.ToUTC();
+                        sri.EndUtc = segment.endTime.ToUTC();
 
-                        sri.type = segment.type;
+                        sri.Type = segment.type;
 
-                        sri.totalTime = Tools.GetTotalShiftSeconds(sri, currentData);
 
-                        if (sri.totalTime > 0 && sc != null)
+                        //sri.totalTime = Tools.GetTotalShiftSeconds(sri, currentData);
+                        //double totalCalculatedTime = Tools.GetTotalShiftSeconds(sri, currentData);
+                        double totalTime = 0;
+
+                        //if (sri.totalTime > 0 && sc != null)
+                        if (sc != null)
                         {
                             IEnumerable<string> eventNames = genEventShiftItems.Select(x => x.eventName).Distinct();
                             foreach (string eventName in eventNames.ToList())
@@ -98,12 +108,14 @@ namespace TH_ShiftTable
                                         x.segment == segment &&
                                         x.eventName == eventName));
 
+                                totalTime = 0;
+
                                 IEnumerable<string> eventValues = sameNames.Select(x => x.eventValue).Distinct();
                                 foreach (string eventValue in eventValues.ToList())
                                 {
                                     TimeSpan duration = TimeSpan.Zero;
 
-                                    // Get list of GenEventShiftItem objects that satisfy all of the filters
+                                    // Get list of GenEventShiftItem objects for this Event
                                     List<GenEventShiftItem> items = sameNames.FindAll(x => x.eventValue == eventValue);
                                     if (items != null)
                                     {
@@ -115,15 +127,23 @@ namespace TH_ShiftTable
                                             eventNumVal = item.eventNumVal;
                                         }
 
-                                        GenEventRowInfo geri = new GenEventRowInfo();
-                                        geri.columnName = Tools.FormatColumnName(eventName, eventNumVal, eventValue);
-                                        geri.seconds = Convert.ToInt32(duration.TotalSeconds);
+                                        var geri = new GenEventRowInfo();
+                                        geri.ColumnName = Tools.FormatColumnName(eventName, eventNumVal, eventValue);
+                                        geri.EventName = FormatEventName(eventName);
+                                        geri.EventValue = eventValue;
+                                        geri.EventNumValue = eventNumVal;
+                                        geri.Seconds = duration.TotalSeconds;
 
-                                        sri.genEventRowInfos.Add(geri);
+                                        totalTime += geri.Seconds;
+
+                                        sri.GenEventRowInfos.Add(geri);
                                     }
                                 }
                             }
                         }
+
+                        //sri.TotalTime = Math.Min(totalCalculatedTime, totalFoundTime);
+                        sri.TotalTime = totalTime;
 
                         result.Add(sri);
                     }
@@ -132,11 +152,35 @@ namespace TH_ShiftTable
 
             return result;
         }
+
+        private static string FormatEventName(string eventName)
+        {
+            string[] words = eventName.Split('_');
+            if (words != null && words.Length > 0)
+            {
+                var builder = new StringBuilder();
+
+                for (var i = 0; i < words.Length; i++)
+                {
+                    builder.Append(TH_Global.Functions.String_Functions.UppercaseFirst(words[i]));
+                    if (i < words.Length - 1) builder.Append(" ");
+                }
+
+                return builder.ToString();
+            }
+
+            return eventName;
+        }
     }
 
+    
     public class GenEventRowInfo
     {
-        public string columnName { get; set; }
-        public int seconds { get; set; }
+        public string EventName { get; set; }
+        public string EventValue { get; set; }
+        public int EventNumValue { get; set; }
+
+        public string ColumnName { get; set; }
+        public double Seconds { get; set; }
     }
 }

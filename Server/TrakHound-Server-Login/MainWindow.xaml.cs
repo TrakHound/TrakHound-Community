@@ -151,7 +151,7 @@ namespace TrakHound_Server_Login
             public bool RememberMe { get; set; }
         }
 
-        Thread login_THREAD;
+        //Thread login_THREAD;
 
         public void LoginUser(string username, string password)
         {
@@ -164,10 +164,12 @@ namespace TrakHound_Server_Login
             info.Password = password;
             info.RememberMe = RememberMe;
 
-            if (login_THREAD != null) login_THREAD.Abort();
+            ThreadPool.QueueUserWorkItem(new WaitCallback(Login_Worker), info);
 
-            login_THREAD = new Thread(new ParameterizedThreadStart(Login_Worker));
-            login_THREAD.Start(info);
+            //if (login_THREAD != null) login_THREAD.Abort();
+
+            //login_THREAD = new Thread(new ParameterizedThreadStart(Login_Worker));
+            //login_THREAD.Start(info);
         }
 
         void Login_Worker(object o)
@@ -181,7 +183,7 @@ namespace TrakHound_Server_Login
                 if (userConfig != null) UserLoginFile.Create(userConfig);
                 else UserLoginFile.Remove();
 
-                this.Dispatcher.BeginInvoke(new Action<UserConfiguration>(Login_Finished), priority, new object[] { userConfig });
+                Dispatcher.BeginInvoke(new Action<UserConfiguration>(Login_Finished), priority, new object[] { userConfig });
             }
         }
 

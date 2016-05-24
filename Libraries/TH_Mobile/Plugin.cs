@@ -205,26 +205,26 @@ namespace TH_Mobile
             {
                 var infos = (List<ShiftRowInfo>)data.Data02;
 
-                int total = 0;
-                int production = 0;
-                int idle = 0;
-                int alert = 0;
+                double total = 0;
+                double production = 0;
+                double idle = 0;
+                double alert = 0;
 
                 foreach (var info in infos)
                 {
-                    total += info.totalTime;
+                    total += info.TotalTime;
 
                     // Production
-                    var item = info.genEventRowInfos.Find(x => x.columnName.ToLower() == "production__true");
-                    if (item != null) production += item.seconds;
+                    var item = info.GenEventRowInfos.Find(x => x.ColumnName.ToLower() == "production__true");
+                    if (item != null) production += item.Seconds;
 
                     // Idle
-                    item = info.genEventRowInfos.Find(x => x.columnName.ToLower() == "idle__true");
-                    if (item != null) idle += item.seconds;
+                    item = info.GenEventRowInfos.Find(x => x.ColumnName.ToLower() == "idle__true");
+                    if (item != null) idle += item.Seconds;
 
                     // Alert
-                    item = info.genEventRowInfos.Find(x => x.columnName.ToLower() == "alert__true");
-                    if (item != null) alert += item.seconds;
+                    item = info.GenEventRowInfos.Find(x => x.ColumnName.ToLower() == "alert__true");
+                    if (item != null) alert += item.Seconds;
                 }
 
                 if (updateData.Timers.Total != total ||

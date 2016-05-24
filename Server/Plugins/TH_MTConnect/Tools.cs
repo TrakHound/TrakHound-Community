@@ -257,7 +257,6 @@ namespace TH_MTConnect
         public static string GetData(string url, ProxySettings proxySettings = null, int timeout = 10000, int maxAttempts = 3)
         //public static string GetData(string url, int timeout = 10000, int maxAttempts = 3)
         {
-
             string result = null;
 
             int attempts = 0;
@@ -274,6 +273,7 @@ namespace TH_MTConnect
                     // Create HTTP request and define Header info
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                     request.Timeout = timeout;
+                    request.ReadWriteTimeout = timeout;
 
                     // PR 01222016 - Added Proxy settings
                     // Get Default System Proxy (Windows Internet Settings -> Proxy Settings)

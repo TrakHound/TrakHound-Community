@@ -88,7 +88,10 @@ namespace TH_WPF
         }
 
         public static readonly DependencyProperty MaximumProperty =
-            DependencyProperty.Register("Maximum", typeof(double), typeof(TimeProgress), new PropertyMetadata(1d, new PropertyChangedCallback(Value_PropertyChanged)));
+    DependencyProperty.Register("Maximum", typeof(double), typeof(TimeProgress), new PropertyMetadata(1d));
+
+        //public static readonly DependencyProperty MaximumProperty =
+        //    DependencyProperty.Register("Maximum", typeof(double), typeof(TimeProgress), new PropertyMetadata(1d, new PropertyChangedCallback(Value_PropertyChanged)));
 
 
         private static void Value_PropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
@@ -105,15 +108,20 @@ namespace TH_WPF
                 Percentage = percentage.ToString("P1");
 
                 Time = TimeSpan.FromSeconds(Value).ToString(@"hh\:mm\:ss");
+
+                BarValue = Value;
+                BarMaximum = Maximum;
+
+                TH_Global.Logger.Log("BarValue = " + BarValue.ToString("N2") + " :: Maximum = " + BarMaximum.ToString("N2"));
             }
             else
             {
                 Percentage = "0.0%";
                 Time = "00:00:00";
-            }
 
-            BarValue = Value;
-            BarMaximum = Maximum;
+                BarValue = 0;
+                BarMaximum = 1;
+            }
         }
 
         #region "Bar Properties"

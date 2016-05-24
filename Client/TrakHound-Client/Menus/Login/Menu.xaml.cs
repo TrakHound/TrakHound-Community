@@ -249,7 +249,7 @@ namespace TrakHound_Client.Menus.Login
         #region "Animations"
 
         const double LoggedInHeight = 215;
-        const double LoggedOutHeight = 295;
+        const double LoggedOutHeight = 250;
 
         void HideMenu()
         {
@@ -352,7 +352,7 @@ namespace TrakHound_Client.Menus.Login
                 username_TXT.Clear();
                 password_TXT.Clear();
 
-                rememberme_CHK.IsChecked = false;
+                //rememberme_CHK.IsChecked = false;
 
                 LoadProfileImage(userConfig);
                 LoggedIn = true;
@@ -505,7 +505,7 @@ namespace TrakHound_Client.Menus.Login
         }
 
         public static readonly DependencyProperty RememberMeProperty =
-            DependencyProperty.Register("RememberMe", typeof(bool), typeof(Menu), new PropertyMetadata(false));
+            DependencyProperty.Register("RememberMe", typeof(bool), typeof(Menu), new PropertyMetadata(true));
 
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
@@ -538,7 +538,8 @@ namespace TrakHound_Client.Menus.Login
 
                 //rememberme_THREAD = new Thread(new ThreadStart(LoadRememberMe_Worker));
                 //rememberme_THREAD.Start();
-            }
+
+            } else LoadUserConfiguration(null);
         }
 
         void LoadRememberMe_Worker(object o)

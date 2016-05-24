@@ -96,29 +96,33 @@ namespace TrakHound_Server_Console
 
         private void Init()
         {
-            FileLocations.CreateAllDirectories();
-
-            TH_Database.DatabasePluginReader.ReadPlugins();
-
-            TH_UserManagement.Management.UserManagementSettings.ReadConfiguration();
-
             server = new Server();
-            //server.Stopped += Server_Stopped;
             server.Login();
-
-            string path = TH_Global.FileLocations.AppData + @"\nigolresu";
-            if (File.Exists(path))
-            {
-                string dir = Path.GetDirectoryName(path);
-
-                var watcher = new FileSystemWatcher(dir);
-                watcher.Changed += FileSystemWatcher_UserLogin_Changed;
-                watcher.Created += FileSystemWatcher_UserLogin_Changed;
-                watcher.Deleted += FileSystemWatcher_UserLogin_Changed;
-                watcher.EnableRaisingEvents = true;
-            }
-
             server.Start();
+
+            //FileLocations.CreateAllDirectories();
+
+            //TH_Database.DatabasePluginReader.ReadPlugins();
+
+            //TH_UserManagement.Management.UserManagementSettings.ReadConfiguration();
+
+            //server = new Server();
+            ////server.Stopped += Server_Stopped;
+            //server.Login();
+
+            //string path = TH_Global.FileLocations.AppData + @"\nigolresu";
+            //if (File.Exists(path))
+            //{
+            //    string dir = Path.GetDirectoryName(path);
+
+            //    var watcher = new FileSystemWatcher(dir);
+            //    watcher.Changed += FileSystemWatcher_UserLogin_Changed;
+            //    watcher.Created += FileSystemWatcher_UserLogin_Changed;
+            //    watcher.Deleted += FileSystemWatcher_UserLogin_Changed;
+            //    watcher.EnableRaisingEvents = true;
+            //}
+
+            //server.Start();
         }
 
         public static void RestartServerService()
@@ -127,12 +131,12 @@ namespace TrakHound_Server_Console
             if (serverServiceWasRunning) StartServerService();
         }
 
-        private void FileSystemWatcher_UserLogin_Changed(object sender, FileSystemEventArgs e)
-        {
-            Console.WriteLine("UserLogin File Changed!");
+        //private void FileSystemWatcher_UserLogin_Changed(object sender, FileSystemEventArgs e)
+        //{
+        //    Console.WriteLine("UserLogin File Changed!");
 
-            if (server != null) server.Login();
-        }
+        //    if (server != null) server.Login();
+        //}
 
         public static bool StartServerService()
         {

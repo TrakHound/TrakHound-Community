@@ -30,7 +30,7 @@
     <Grid x:Name="Root_GRID">
         <Grid.Style>
             <Style TargetType="Grid">
-                <Setter Property="Height" Value="240"/>
+                <Setter Property="Height" Value="250"/>
                 <Setter Property="Width" Value="315"/>
                 <Setter Property="Opacity" Value="0.0"/>
                 <Style.Triggers>
@@ -258,7 +258,7 @@
                             </Border>
 
                             <!--Remember Me Enabled Text and Checkbox-->
-                            <Grid Margin="10,0">
+                            <!--<Grid Margin="10,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="*"/>
@@ -268,7 +268,7 @@
 
                                 <CheckBox x:Name="rememberme_CHK" Grid.Column="1" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Height="40"/>
 
-                            </Grid>
+                            </Grid>-->
 
                         </StackPanel>
 

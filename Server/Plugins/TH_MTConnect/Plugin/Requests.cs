@@ -46,9 +46,11 @@ namespace TH_MTConnect.Plugin
 
         private void RequestTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            requestTimer.Enabled = false;
+            var timer = (System.Timers.Timer)sender;
+
+            timer.Enabled = false;
             RunRequests(configuration);
-            if (requestTimer != null) requestTimer.Enabled = true;
+            timer.Enabled = true;
         }
 
         private void RunRequests(Configuration config)
@@ -67,10 +69,15 @@ namespace TH_MTConnect.Plugin
                 if (probeData != null)
                 {
                     // Run a Current request and get the returned data
+                    Console.WriteLine("Retrieving Current");
                     currentData = GetCurrent(ac);
                     if (currentData != null)
                     {
+                        // Send the Current data to other plugins
+                        SendCurrentData(currentData, config);
+
                         // Run a Sample request and get the returned data
+                        Console.WriteLine("Retrieving Current");
                         var sampleData = GetSample(currentData.Header, ac, config);
 
                         // Send the Sample data to other plugins
@@ -79,9 +86,6 @@ namespace TH_MTConnect.Plugin
                         // Update the 'device_available' variable in the Variables table
                         bool available = GetAvailability(currentData);
                         UpdateAvailability(available, config);
-
-                        // Send the Current data to other plugins
-                        SendCurrentData(currentData, config);
                     }
                     else
                     {
@@ -99,6 +103,8 @@ namespace TH_MTConnect.Plugin
         private void Stop()
         {
             started = false;
+
+            TH_Global.Logger.Log("MTConnect Requests Stopped");
 
             if (requestTimer != null) requestTimer.Enabled = false;
             requestTimer = null;

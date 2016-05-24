@@ -15,6 +15,7 @@ using TH_Database;
 using TH_Device_Server;
 using TH_Global;
 using TH_Global.TrakHound.Users;
+using TH_UserManagement.Management;
 
 namespace TrakHound_Server_Core
 {
@@ -94,14 +95,15 @@ namespace TrakHound_Server_Core
         {
             List<Configuration> configs = null;
 
-            //if (CurrentUser != null)
-            //{
-            //    configs = Configurations.GetConfigurationsListForUser(CurrentUser);
-            //}
-            //else
-            //{
+            if (CurrentUser != null)
+            {
+                var userConfig = TH_UserManagement.Management.UserConfiguration.FromNewUserConfiguration(CurrentUser);
+                configs = Configurations.GetConfigurationsListForUser(userConfig);
+            }
+            else
+            {
                 configs = Configuration.ReadAll(FileLocations.Devices).ToList();
-            //}
+            }
 
             if (configs != null)
             {

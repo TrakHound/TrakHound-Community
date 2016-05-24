@@ -45,16 +45,18 @@ namespace TH_MTConnect.Plugin
             {
                 if (info.Count > 0)
                 {
+                    DateTime requestTimestamp = DateTime.Now;
+
                     string url = HTTP.GetUrl(address, port, deviceName) + "sample?from=" + info.From.ToString() + "&count=" + info.Count.ToString();
 
                     result = Requests.Get(url, proxy);
                     if (result != null)
                     {
-                        TH_Global.Logger.Log("Sample Successful : " + url);
+                        TH_Global.Logger.Log("Sample Successful : " + url + " @ " + requestTimestamp.ToString("o"));
                     }
                     else
                     {
-                        TH_Global.Logger.Log("Sample Error : " + url);
+                        TH_Global.Logger.Log("Sample Error : " + url + " @ " + requestTimestamp.ToString("o"));
                     }
                 }
                 else TH_Global.Logger.Log("Sample Skipped");

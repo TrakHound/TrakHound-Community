@@ -124,25 +124,29 @@ namespace TrakHound_Client
 
         private void Login(UserConfiguration userConfig)
         {
-            bool serverRunning = Service_Functions.IsServiceRunning("TrakHound Server");
-            if (serverRunning)
-            {
-                serverLoginData = UserLoginFile.Read();
-                if (serverLoginData != null)
-                {
-                    if (userConfig == null) ServerUser_Ask_Logout();
-                    else if (serverLoginData.Username.ToLower() != userConfig.Username.ToLower())
-                    {
-                        ServerUser_Ask_Change(userConfig);
-                    }
-                }
-                else if (userConfig != null) ServerUser_Ask_Login(userConfig);
-            }
-            else
-            {
-                if (userConfig != null) ServerUser_Login(userConfig);
-                else ServerUser_Logout();
-            }          
+            if (userConfig != null) UserLoginFile.Create(userConfig);
+            else UserLoginFile.Remove();
+
+
+            //bool serverRunning = Service_Functions.IsServiceRunning("TrakHound Server");
+            //if (serverRunning)
+            //{
+            //    serverLoginData = UserLoginFile.Read();
+            //    if (serverLoginData != null)
+            //    {
+            //        if (userConfig == null) ServerUser_Ask_Logout();
+            //        else if (serverLoginData.Username.ToLower() != userConfig.Username.ToLower())
+            //        {
+            //            ServerUser_Ask_Change(userConfig);
+            //        }
+            //    }
+            //    else if (userConfig != null) ServerUser_Ask_Login(userConfig);
+            //}
+            //else
+            //{
+            //    if (userConfig != null) ServerUser_Login(userConfig);
+            //    else ServerUser_Logout();
+            //}          
 
             CurrentUser = userConfig;
         }

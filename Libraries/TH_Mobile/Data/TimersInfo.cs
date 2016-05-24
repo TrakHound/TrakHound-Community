@@ -12,10 +12,10 @@ namespace TH_Mobile.Data
         [NonSerialized]
         public bool Changed;
 
-        public int Total { get; set; }
-        public int Production { get; set; }
-        public int Idle { get; set; }
-        public int Alert { get; set; }
+        public double Total { get; set; }
+        public double Production { get; set; }
+        public double Idle { get; set; }
+        public double Alert { get; set; }
 
         public bool EqualTo(TimersInfo info)
         {

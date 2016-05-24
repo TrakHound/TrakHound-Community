@@ -402,25 +402,23 @@
                 </StackPanel>
 
                 <!--Connection Test-->
-                <Grid Grid.Column="1" Width="400" HorizontalAlignment="Left">
+                <!--<Grid Grid.Column="1" Width="400" HorizontalAlignment="Left">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    
-
                     <StackPanel Grid.Row="1">
 
-                        <!--Device List-->
+                        --><!--Device List--><!--
                         <ItemsControl ItemsSource="{Binding MTCDeviceList}" Margin="20" HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
-                        <!--Message List-->
+                        --><!--Message List--><!--
                         <ItemsControl ItemsSource="{Binding MessageList}" Margin="20" HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
                     </StackPanel>
 
-                    <!--Loading Animation-->
+                    --><!--Loading Animation--><!--
                     <Grid Grid.RowSpan="2">
                         <Grid.Style>
                             <Style TargetType="Grid">
@@ -492,7 +490,7 @@
 
                     </Grid>
 
-                </Grid>
+                </Grid>-->
 
             </Grid>
 

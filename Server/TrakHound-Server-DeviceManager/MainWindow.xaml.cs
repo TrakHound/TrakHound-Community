@@ -216,7 +216,9 @@ namespace TrakHound_Server_DeviceManager
 
         private void Login()
         {
-            LoggingIn = true;
+            Dispatcher.BeginInvoke(new Action(() => { LoggingIn = true; }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+
+            //LoggingIn = true;
 
             ThreadPool.QueueUserWorkItem(new WaitCallback(Login_Worker));
         }
@@ -230,7 +232,7 @@ namespace TrakHound_Server_DeviceManager
                 {
                     if (deviceManager.CurrentUser.Username != loginData.Username) deviceManager.CurrentUser = UserManagement.TokenLogin(loginData.Token);
                 }
-                else deviceManager.CurrentUser = UserManagement.TokenLogin(loginData.Token);
+                else deviceManager.CurrentUser = UserManagement.TokenLogin(loginData.Token, "TrakHound Server Device Manager");
             }
             else deviceManager.CurrentUser = null;
 
