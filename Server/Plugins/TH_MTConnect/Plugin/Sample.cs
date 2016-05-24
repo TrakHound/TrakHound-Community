@@ -59,7 +59,7 @@ namespace TH_MTConnect.Plugin
                         TH_Global.Logger.Log("Sample Error : " + url + " @ " + requestTimestamp.ToString("o"));
                     }
                 }
-                else TH_Global.Logger.Log("Sample Skipped");
+                else TH_Global.Logger.Log("No New Data :: Sample Skipped");
             }
 
             return result;

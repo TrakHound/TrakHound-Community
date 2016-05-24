@@ -69,7 +69,6 @@ namespace TH_MTConnect.Plugin
                 if (probeData != null)
                 {
                     // Run a Current request and get the returned data
-                    Console.WriteLine("Retrieving Current");
                     currentData = GetCurrent(ac);
                     if (currentData != null)
                     {
@@ -77,7 +76,6 @@ namespace TH_MTConnect.Plugin
                         SendCurrentData(currentData, config);
 
                         // Run a Sample request and get the returned data
-                        Console.WriteLine("Retrieving Current");
                         var sampleData = GetSample(currentData.Header, ac, config);
 
                         // Send the Sample data to other plugins

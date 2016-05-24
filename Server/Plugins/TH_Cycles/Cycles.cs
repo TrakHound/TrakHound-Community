@@ -284,7 +284,7 @@ namespace TH_Cycles
 
                                     foreach (var instanceData in latestData)
                                     {
-                                        result = ProcessCycleEvent(cycleEvent, instanceData, cc);
+                                        result.AddRange(ProcessCycleEvent(cycleEvent, instanceData, cc));
                                         lastTimestamp = instanceData.Timestamp;
                                     }
                                 }
@@ -400,6 +400,7 @@ namespace TH_Cycles
 
             return result;
         }
+
         //private List<CycleData> ProcessCycleEvent(ref List<CycleData> cycles, Event cycleEvent, InstanceData instanceData, CycleConfiguration cc)
         //{
         //    var result = new List<CycleData>();

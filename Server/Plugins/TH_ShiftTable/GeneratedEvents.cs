@@ -80,10 +80,6 @@ namespace TH_ShiftTable
                                 result.AddRange(items);
                                 previousItem = item;
                             }
-                            else
-                            {
-                                Console.WriteLine(item.Timestamp.ToString("o") + " :: " + previousItem.Timestamp.ToString("o"));
-                            }
                         }
                         else
                         {

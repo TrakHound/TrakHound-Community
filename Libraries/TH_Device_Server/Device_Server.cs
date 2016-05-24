@@ -92,9 +92,6 @@ namespace TH_Device_Server
             // Send Database Connection Status to plugins
             SendDatabaseStatus(status.Connected, Configuration);
 
-            // $$ DEBUG $$
-            Console.WriteLine("Database Connection : " + status.Connected);
-
             if (!status.Connected)
             {
                 // Increase the interval by 25% until interval == interval_max
