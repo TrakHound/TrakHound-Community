@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using MTConnect.Application.Streams;
+
 using TH_Configuration;
 using TH_Global.Shifts;
 
@@ -58,7 +60,7 @@ namespace TH_ShiftTable
             return Result;
         }
 
-        public static List<ShiftRowInfo> Get(Configuration config, List<GenEventShiftItem> genEventShiftItems, TH_MTConnect.Streams.ReturnData currentData)
+        public static List<ShiftRowInfo> Get(Configuration config, List<GenEventShiftItem> genEventShiftItems, ReturnData currentData)
         {
             var result = new List<ShiftRowInfo>();
 

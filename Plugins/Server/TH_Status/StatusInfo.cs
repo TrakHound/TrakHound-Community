@@ -6,8 +6,8 @@
 using System;
 using System.Collections.Generic;
 
-using TH_MTConnect.Components;
-using TH_MTConnect.Streams;
+using MTConnect.Application.Components;
+using MTConnect.Application.Streams;
 
 namespace TH_Status
 {
@@ -27,7 +27,7 @@ namespace TH_Status
 
         public DateTime Timestamp { get; set; }
 
-        public TH_MTConnect.Components.DataItemCategory Category { get; set; }
+        public MTConnect.Application.Components.DataItemCategory Category { get; set; }
         public string Id { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
@@ -38,7 +38,7 @@ namespace TH_Status
 
         #region "Get (Probe)"
 
-        public static List<StatusInfo> GetList(TH_MTConnect.Components.ReturnData probe)
+        public static List<StatusInfo> GetList(MTConnect.Application.Components.ReturnData probe)
         {
             var result = new List<StatusInfo>();
 
@@ -82,7 +82,7 @@ namespace TH_Status
             return result;
         }
 
-        private static StatusInfo ProcessDataItem(TH_MTConnect.Components.DataItem item)
+        private static StatusInfo ProcessDataItem(MTConnect.Application.Components.DataItem item)
         {
             var info = new StatusInfo();
             info.InfoType = StatusInfoType.MTConnect_Data_Item;
@@ -101,7 +101,7 @@ namespace TH_Status
 
         #region "Process (Current)"
 
-        public static void ProcessList(TH_MTConnect.Streams.ReturnData current, List<StatusInfo> infos)
+        public static void ProcessList(MTConnect.Application.Streams.ReturnData current, List<StatusInfo> infos)
         {
             if (current.DeviceStreams != null && current.DeviceStreams.Count > 0)
             {
@@ -121,14 +121,14 @@ namespace TH_Status
             foreach (var item in componentStream.DataItems) ProcessDataItem(item, infos);
         }
 
-        private static void ProcessDataItem(TH_MTConnect.Streams.DataItem item, List<StatusInfo> infos)
+        private static void ProcessDataItem(MTConnect.Application.Streams.DataItem item, List<StatusInfo> infos)
         {
             var info = infos.Find(x => x.Id == item.DataItemId);
             if (info != null)
             {
                 info.Timestamp = item.Timestamp;
                 info.Value1 = item.CDATA;
-                if (info.Category == TH_MTConnect.Components.DataItemCategory.CONDITION)
+                if (info.Category == MTConnect.Application.Components.DataItemCategory.CONDITION)
                 {
                     info.Value2 = item.Value;
                 }

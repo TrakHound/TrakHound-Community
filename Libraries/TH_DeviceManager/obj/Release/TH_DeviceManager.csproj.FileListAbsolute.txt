@@ -11,13 +11,11 @@ F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Release\TH_Configuration.dll
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Release\TH_Database.dll
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Release\TH_Global.dll
-F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Release\TH_MTConnect.dll
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Release\TH_Plugins.dll
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Release\TH_Styles.dll
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Release\TH_UserManagement.dll
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Release\TH_WPF.dll
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Release\Newtonsoft.Json.dll
-F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Release\TH_MTConnect.pdb
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Release\TH_Database.pdb
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Release\TH_Plugins.pdb
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Release\TH_Styles.pdb
@@ -55,3 +53,5 @@ F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\Release\TH_DeviceManager.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\Release\TH_DeviceManager.dll
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\Release\TH_DeviceManager.pdb
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Release\MTConnect.NET.dll
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Release\MTConnect.NET.pdb

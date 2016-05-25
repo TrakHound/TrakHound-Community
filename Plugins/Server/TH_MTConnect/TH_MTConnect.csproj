@@ -48,18 +48,18 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\Component.cs" />
-    <Compile Include="Components\Constraints.cs" />
-    <Compile Include="Components\DataItem.cs" />
-    <Compile Include="Components\Description.cs" />
-    <Compile Include="Components\Device.cs" />
-    <Compile Include="Components\Filter.cs" />
-    <Compile Include="Components\Requests.cs" />
-    <Compile Include="Components\Source.cs" />
-    <Compile Include="Error.cs" />
-    <Compile Include="Components\ReturnData.cs" />
-    <Compile Include="Components\Tools.cs" />
-    <Compile Include="Header.cs" />
+    <None Include="Components\Component.cs" />
+    <None Include="Components\Constraints.cs" />
+    <None Include="Components\DataItem.cs" />
+    <None Include="Components\Description.cs" />
+    <None Include="Components\Device.cs" />
+    <None Include="Components\Filter.cs" />
+    <None Include="Components\Requests.cs" />
+    <None Include="Components\Source.cs" />
+    <None Include="Error.cs" />
+    <None Include="Components\ReturnData.cs" />
+    <None Include="Components\Tools.cs" />
+    <None Include="Header.cs" />
     <Compile Include="Plugin\AgentConfiguration.cs" />
     <Compile Include="Plugin\ConfigurationPage\Controls\MessageItem.xaml.cs">
       <DependentUpon>MessageItem.xaml</DependentUpon>
@@ -78,16 +78,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Streams\ComponentStream.cs" />
-    <Compile Include="Streams\Condition.cs" />
-    <Compile Include="Streams\DataItem.cs" />
-    <Compile Include="Streams\DeviceStream.cs" />
-    <Compile Include="Streams\Event.cs" />
-    <Compile Include="Streams\Requests.cs" />
-    <Compile Include="Streams\ReturnData.cs" />
-    <Compile Include="Streams\Sample.cs" />
-    <Compile Include="Streams\Tools.cs" />
-    <Compile Include="Tools.cs" />
+    <None Include="Streams\ComponentStream.cs" />
+    <None Include="Streams\Condition.cs" />
+    <None Include="Streams\DataItem.cs" />
+    <None Include="Streams\DeviceStream.cs" />
+    <None Include="Streams\Event.cs" />
+    <None Include="Streams\Requests.cs" />
+    <None Include="Streams\ReturnData.cs" />
+    <None Include="Streams\Sample.cs" />
+    <None Include="Streams\Tools.cs" />
+    <None Include="Tools.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="LICENSE.txt">
@@ -106,6 +106,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\MTConnect.NET\MTConnect.NET\MTConnect.NET.csproj">
+      <Project>{d7ece6e3-647d-4f74-b63e-c509153eb4b7}</Project>
+      <Name>MTConnect.NET</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Libraries\TH_Configuration\TH_Configuration.csproj">
       <Project>{147a0360-5f86-4d33-a874-46f785723ead}</Project>
       <Name>TH_Configuration</Name>

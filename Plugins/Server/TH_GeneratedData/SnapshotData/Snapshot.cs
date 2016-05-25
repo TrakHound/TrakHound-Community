@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 
+using MTConnect.Application.Streams;
+
 using TH_Configuration;
 using TH_Database;
 using TH_Global;
@@ -57,7 +59,7 @@ namespace TH_GeneratedData.SnapshotData
         public class ProcessInfo
         {
             public List<Snapshot> PreviousItems { get; set; }
-            public TH_MTConnect.Streams.ReturnData CurrentData { get; set; }
+            public ReturnData CurrentData { get; set; }
             public InstanceData CurrentInstanceData { get; set; }
         }
 
@@ -109,7 +111,7 @@ namespace TH_GeneratedData.SnapshotData
             }
         }
 
-        private static bool ProcessCollected(Snapshot snapshot, TH_MTConnect.Streams.ReturnData currentData)
+        private static bool ProcessCollected(Snapshot snapshot, ReturnData currentData)
         {
             bool result = false;
 
@@ -134,7 +136,7 @@ namespace TH_GeneratedData.SnapshotData
             return result;
         }
 
-        private static bool ProcessCollectedCondtion(Snapshot snapshot, List<TH_MTConnect.Streams.DataItem> dataItems)
+        private static bool ProcessCollectedCondtion(Snapshot snapshot, List<DataItem> dataItems)
         {
             bool result = false;
 
@@ -163,7 +165,7 @@ namespace TH_GeneratedData.SnapshotData
             return result;
         }
 
-        private static bool ProcessCollectedEvent(Snapshot snapshot, List<TH_MTConnect.Streams.DataItem> dataItems)
+        private static bool ProcessCollectedEvent(Snapshot snapshot, List<DataItem> dataItems)
         {
             bool result = false;
 
@@ -192,7 +194,7 @@ namespace TH_GeneratedData.SnapshotData
             return result;
         }
 
-        private static bool ProcessCollectedSample(Snapshot snapshot, List<TH_MTConnect.Streams.DataItem> dataItems)
+        private static bool ProcessCollectedSample(Snapshot snapshot, List<DataItem> dataItems)
         {
             bool result = false;
 
@@ -222,7 +224,7 @@ namespace TH_GeneratedData.SnapshotData
         }
 
 
-        private static void ProcessGenerated(Snapshot snapshot, GeneratedEventsConfiguration gec, InstanceData currentInstanceData, TH_MTConnect.Streams.ReturnData currentData)
+        private static void ProcessGenerated(Snapshot snapshot, GeneratedEventsConfiguration gec, InstanceData currentInstanceData, ReturnData currentData)
         {
             var e = gec.Events.Find(x => x.Name.ToLower() == snapshot.Link.ToLower());
             if (e != null)
@@ -250,7 +252,7 @@ namespace TH_GeneratedData.SnapshotData
             }
         }
 
-        static DateTime GetTimestampFromCurrent(GeneratedEvents.Value value, TH_MTConnect.Streams.ReturnData currentData)
+        static DateTime GetTimestampFromCurrent(Value value, ReturnData currentData)
         {
             var result = DateTime.MinValue;
 
@@ -274,11 +276,11 @@ namespace TH_GeneratedData.SnapshotData
             return result;
         }
 
-        static DateTime GetTimestampFromTrigger(Trigger trigger, List<TH_MTConnect.Streams.DataItem> dataItems)
+        static DateTime GetTimestampFromTrigger(Trigger trigger, List<DataItem> dataItems)
         {
             var result = DateTime.MinValue;
 
-            TH_MTConnect.Streams.DataItem item = dataItems.Find(x => x.DataItemId == trigger.Link);
+            DataItem item = dataItems.Find(x => x.DataItemId == trigger.Link);
 
             if (item != null) if (item.Timestamp > result) result = item.Timestamp;
 

@@ -9,11 +9,13 @@ using TH_Configuration;
 using TH_Database.Tables;
 using TH_Plugins;
 
-using TH_MTConnect.Streams;
+using MTConnect;
+using MTConnect.Application.Streams;
+using MTConnect.Application.Headers;
 
 namespace TH_MTConnect.Plugin
 {
-    public partial class MTConnect
+    public partial class Plugin
     {
         // Implement a more efficient way of collecting samples using xpath
         // agent.mtconnect.org/current?path=//*[@id='p2' or @id='x2']
@@ -25,7 +27,7 @@ namespace TH_MTConnect.Plugin
         private const long MaxSampleCount = 10000;
         private bool startFromFirst = false;
 
-        private ReturnData GetSample(Header_Streams header, AgentConfiguration ac, Configuration config)
+        private ReturnData GetSample(Streams header, AgentConfiguration ac, Configuration config)
         {
             ReturnData result = null;
 
@@ -113,7 +115,7 @@ namespace TH_MTConnect.Plugin
             return result;
         }
 
-        private void UpdateAgentInstanceID(Header_Streams header, Configuration config)
+        private void UpdateAgentInstanceID(Streams header, Configuration config)
         {
             lastInstanceId = agentInstanceId;
             agentInstanceId = header.InstanceId;
@@ -133,7 +135,7 @@ namespace TH_MTConnect.Plugin
             public long Count { get; set; }
         }
 
-        private SampleInfo GetSampleInfo(Header_Streams header, Configuration config)
+        private SampleInfo GetSampleInfo(Streams header, Configuration config)
         {
             var result = new SampleInfo();
 

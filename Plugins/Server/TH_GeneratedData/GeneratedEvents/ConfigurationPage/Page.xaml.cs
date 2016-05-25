@@ -14,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 using TH_Global.Functions;
-using TH_MTConnect.Components;
+using MTConnect.Application.Components;
 using TH_Plugins;
 using TH_Plugins.Server;
 using TH_UserManagement.Management;
@@ -281,7 +281,7 @@ namespace TH_GeneratedData.GeneratedEvents.ConfigurationPage
 
         void LoadEventValues()
         {
-            EventValues = TH_MTConnect.Tables.GetEventTypes();
+            EventValues = MTConnect.Application.EventTypes.Get();
         }
 
         #endregion

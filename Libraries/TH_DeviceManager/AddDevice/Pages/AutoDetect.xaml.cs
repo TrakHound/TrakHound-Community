@@ -19,7 +19,8 @@ using System.Xml;
 using TH_Configuration;
 using TH_Global;
 using TH_Global.Functions;
-using TH_MTConnect.Components;
+using MTConnect;
+using MTConnect.Application.Components;
 using TH_UserManagement.Management;
 
 namespace TH_DeviceManager.AddDevice.Pages
@@ -253,7 +254,7 @@ namespace TH_DeviceManager.AddDevice.Pages
             {
                 var info = (RunProbeInfo)o;
 
-                string url = TH_MTConnect.HTTP.GetUrl(info.Address.ToString(), info.Port, null);
+                string url = MTConnect.HTTP.GetUrl(info.Address.ToString(), info.Port, null);
 
                 var probe = Requests.Get(url, null, 1000, 1);
                 if (probe != null)
@@ -334,7 +335,7 @@ namespace TH_DeviceManager.AddDevice.Pages
         {
             bool result = false;
 
-            var ac = TH_MTConnect.Plugin.AgentConfiguration.Read(config.ConfigurationXML);
+            var ac = AgentConfiguration.Read(config);
             if (ac != null)
             {
                 if (address.ToString() == ac.Address && port == ac.Port && device.Name == ac.DeviceName)
@@ -345,6 +346,28 @@ namespace TH_DeviceManager.AddDevice.Pages
 
             return result;
         }
+
+        private class AgentConfiguration
+        {
+            public string Address { get; set; }
+            public int Port { get; set; }
+            public string DeviceName { get; set; }
+
+            public static AgentConfiguration Read(Configuration config)
+            {
+                var result = new AgentConfiguration();
+                result.Address = XML_Functions.GetInnerText(config.ConfigurationXML, "/Agent/Address");
+
+                int port = 80;
+                int.TryParse(XML_Functions.GetInnerText(config.ConfigurationXML, "/Agent/Port"), out port);
+                result.Port = port;
+
+                result.DeviceName = XML_Functions.GetInnerText(config.ConfigurationXML, "/Agent/DeviceName");
+
+                return result;
+            }
+        }
+
 
         private class GetDeviceInfoImageInfo
         {

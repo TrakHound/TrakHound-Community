@@ -76,7 +76,7 @@ namespace TH_ShiftTable
         /// <param name="info"></param>
         /// <param name="currentData"></param>
         /// <returns></returns>
-        public static int GetTotalShiftSeconds(ShiftRowInfo info, TH_MTConnect.Streams.ReturnData currentData)
+        public static int GetTotalShiftSeconds(ShiftRowInfo info, MTConnect.Application.Streams.ReturnData currentData)
         {
             int Result = 0;
 

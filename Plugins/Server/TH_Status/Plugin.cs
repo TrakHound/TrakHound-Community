@@ -32,7 +32,7 @@ namespace TH_Status
             {
                 if (data.Id.ToLower() == "mtconnect_probe" && data.Data02 != null)
                 {
-                    var infos = StatusInfo.GetList((TH_MTConnect.Components.ReturnData)data.Data02);
+                    var infos = StatusInfo.GetList((MTConnect.Application.Components.ReturnData)data.Data02);
                     if (infos.Count > 0)
                     {
                         statusInfos = infos;
@@ -41,7 +41,7 @@ namespace TH_Status
                 }
                 else if (data.Id.ToLower() == "mtconnect_current" && data.Data02 != null)
                 {
-                    StatusInfo.ProcessList((TH_MTConnect.Streams.ReturnData)data.Data02, statusInfos);
+                    StatusInfo.ProcessList((MTConnect.Application.Streams.ReturnData)data.Data02, statusInfos);
 
                     SendStatusData(statusInfos);
 

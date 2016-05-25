@@ -4,7 +4,6 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Threading;
@@ -14,11 +13,11 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using System.Net;
-using System.Net.NetworkInformation;
+
+using MTConnect;
+using MTConnect.Application.Components;
 
 using TH_Global.Functions;
-using TH_MTConnect.Components;
 using TH_Plugins;
 using TH_Plugins.Server;
 
@@ -633,13 +632,13 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
             {
                 if (data.Id.ToLower() == "mtconnect_probe_header")
                 {
-                    var header = (Header_Devices)data.Data02;
+                    var header = (MTConnect.Application.Headers.Devices)data.Data02;
                     LoadProbeHeader(header);
                 }
             }
         }
 
-        private void LoadProbeHeader(Header_Devices header)
+        private void LoadProbeHeader(MTConnect.Application.Headers.Devices header)
         {
             InstanceId = header.InstanceId.ToString();
             Sender = header.Sender;

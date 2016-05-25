@@ -96,6 +96,10 @@
     <Compile Include="Tools.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\MTConnect.NET\MTConnect.NET\MTConnect.NET.csproj">
+      <Project>{d7ece6e3-647d-4f74-b63e-c509153eb4b7}</Project>
+      <Name>MTConnect.NET</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Libraries\TH_Configuration\TH_Configuration.csproj">
       <Project>{147a0360-5f86-4d33-a874-46f785723ead}</Project>
       <Name>TH_Configuration</Name>
@@ -134,10 +138,6 @@
       <Project>{86a72f6d-0c7d-40fd-b7ce-d0b9d75ee99b}</Project>
       <Name>TH_InstanceTable</Name>
       <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\TH_MTConnect\TH_MTConnect.csproj">
-      <Project>{318e6702-3c9e-4acc-b326-e3ec903417a8}</Project>
-      <Name>TH_MTConnect</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

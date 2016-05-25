@@ -5,7 +5,7 @@
 
 using System.Windows.Media;
 
-using TH_MTConnect.Components;
+using MTConnect.Application.Components;
 
 namespace TH_DeviceManager.AddDevice
 {
@@ -22,7 +22,7 @@ namespace TH_DeviceManager.AddDevice
         public int Port { get; set; }
         public Device Device { get; set; }
 
-        public TH_MTConnect.Components.Description DeviceDescription
+        public Description DeviceDescription
         {
             get
             {

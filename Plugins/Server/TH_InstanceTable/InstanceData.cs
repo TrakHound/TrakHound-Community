@@ -75,7 +75,7 @@ namespace TH_InstanceTable
 
     public class CurrentInstanceData
     {
-        public TH_MTConnect.Streams.ReturnData CurrentData { get; set; }
+        public MTConnect.Application.Streams.ReturnData CurrentData { get; set; }
         public InstanceData Data { get; set; }
     }
 }

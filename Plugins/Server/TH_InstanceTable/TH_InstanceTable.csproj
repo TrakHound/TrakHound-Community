@@ -65,6 +65,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\MTConnect.NET\MTConnect.NET\MTConnect.NET.csproj">
+      <Project>{d7ece6e3-647d-4f74-b63e-c509153eb4b7}</Project>
+      <Name>MTConnect.NET</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Libraries\TH_Configuration\TH_Configuration.csproj">
       <Project>{147a0360-5f86-4d33-a874-46f785723ead}</Project>
       <Name>TH_Configuration</Name>
@@ -99,10 +103,6 @@
       <Project>{e039a6be-d47c-4046-86d3-71acd62a217a}</Project>
       <Name>TH_WPF</Name>
       <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\TH_MTConnect\TH_MTConnect.csproj">
-      <Project>{318e6702-3c9e-4acc-b326-e3ec903417a8}</Project>
-      <Name>TH_MTConnect</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -9,11 +9,12 @@ using TH_Configuration;
 using TH_Global;
 using TH_Plugins;
 
-using TH_MTConnect.Streams;
+using MTConnect;
+using MTConnect.Application.Streams;
 
 namespace TH_MTConnect.Plugin
 {
-    public partial class MTConnect
+    public partial class Plugin
     {
 
         private ReturnData GetCurrent(AgentConfiguration config)

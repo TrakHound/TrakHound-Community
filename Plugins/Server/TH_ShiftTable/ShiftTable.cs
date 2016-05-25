@@ -9,6 +9,8 @@ using System.Data;
 using System.Linq;
 using System.Text;
 
+using MTConnect.Application.Streams;
+
 using TH_Configuration;
 using TH_Database;
 using TH_GeneratedData.GeneratedEvents;
@@ -52,14 +54,14 @@ namespace TH_ShiftTable
                 }
                 else if (data.Id.ToLower() == "mtconnect_current")
                 {
-                    Update_CurrentShiftInfo((TH_MTConnect.Streams.ReturnData)data.Data02);
+                    Update_CurrentShiftInfo((ReturnData)data.Data02);
                 }
             }
         }
 
         private CurrentShiftInfo currentShiftInfo;
 
-        public void Update_CurrentShiftInfo(TH_MTConnect.Streams.ReturnData returnData)
+        public void Update_CurrentShiftInfo(ReturnData returnData)
         {
             currentData = returnData;
 
@@ -145,7 +147,7 @@ namespace TH_ShiftTable
 
         #region "Methods"
 
-        TH_MTConnect.Streams.ReturnData currentData;
+        ReturnData currentData;
 
         #region "Database"
 

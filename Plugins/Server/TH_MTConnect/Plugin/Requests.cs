@@ -9,15 +9,17 @@ using TH_Configuration;
 using TH_Database.Tables;
 using TH_Plugins;
 
+using MTConnect.Application;
+
 namespace TH_MTConnect.Plugin
 {
-    public partial class MTConnect
+    public partial class Plugin
     {
 
         private System.Timers.Timer requestTimer;
 
-        Components.ReturnData probeData;
-        Streams.ReturnData currentData;
+        MTConnect.Application.Components.ReturnData probeData;
+        MTConnect.Application.Streams.ReturnData currentData;
 
         private void Start(Configuration config)
         {
@@ -124,7 +126,7 @@ namespace TH_MTConnect.Plugin
             if (SendData != null) SendData(data);
         }
 
-        private bool GetAvailability(Streams.ReturnData data)
+        private bool GetAvailability(MTConnect.Application.Streams.ReturnData data)
         {
             if (data.DeviceStreams.Count > 0)
             {

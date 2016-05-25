@@ -17,7 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 using TH_Global.Functions;
-using TH_MTConnect.Components;
+using MTConnect.Application.Components;
 using TH_Plugins;
 using TH_Plugins.Server;
 using TH_UserManagement.Management;

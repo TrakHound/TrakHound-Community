@@ -11,7 +11,7 @@ using TH_Plugins.Server;
 
 namespace TH_MTConnect.Plugin
 {
-    public partial class MTConnect : IServerPlugin
+    public partial class Plugin : IServerPlugin
     {
         public string Name { get { return "TH_MTConnect"; } }
 

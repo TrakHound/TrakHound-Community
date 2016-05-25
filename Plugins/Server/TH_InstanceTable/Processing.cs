@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
+using MTConnect.Application;
+
 using TH_Configuration;
 using TH_Plugins;
 
@@ -22,7 +24,7 @@ namespace TH_InstanceTable
 
         private List<string> columnNames;
 
-        private TH_MTConnect.Streams.ReturnData currentData;
+        private MTConnect.Application.Streams.ReturnData currentData;
 
         // Before ProcessInstances()
         private InstanceData PreviousInstanceData_old;
@@ -31,14 +33,14 @@ namespace TH_InstanceTable
 
         private List<InstanceData> bufferedInstanceDatas = new List<InstanceData>();
 
-        public void Update_Probe(TH_MTConnect.Components.ReturnData returnData)
+        public void Update_Probe(MTConnect.Application.Components.ReturnData returnData)
         {
             columnNames = GetVariablesFromProbeData(returnData);
 
             if (AddDatabases) CreateInstanceTable(columnNames);
         }
 
-        public void Update_Current(TH_MTConnect.Streams.ReturnData returnData)
+        public void Update_Current(MTConnect.Application.Streams.ReturnData returnData)
         {
             currentData = returnData;
 
@@ -69,7 +71,7 @@ namespace TH_InstanceTable
             }
         }
 
-        public void Update_Sample(TH_MTConnect.Streams.ReturnData returnData)
+        public void Update_Sample(MTConnect.Application.Streams.ReturnData returnData)
         {
             List<InstanceData> instanceDatas = ProcessInstances(currentData, returnData);
 
@@ -104,7 +106,7 @@ namespace TH_InstanceTable
         }
 
 
-        List<string> GetVariablesFromProbeData(TH_MTConnect.Components.ReturnData returnData)
+        List<string> GetVariablesFromProbeData(MTConnect.Application.Components.ReturnData returnData)
         {
 
             var result = new List<string>();
@@ -117,7 +119,7 @@ namespace TH_InstanceTable
                 if (ic.Conditions)
                 {
                     // Conditions -------------------------------------------------------------------------
-                    foreach (var dataItem in dataItems.FindAll(x => x.Category == TH_MTConnect.Components.DataItemCategory.CONDITION))
+                    foreach (var dataItem in dataItems.FindAll(x => x.Category == MTConnect.Application.Components.DataItemCategory.CONDITION))
                     {
                         string name = dataItem.Id.ToUpper();
                         if (!result.Contains(name)) result.Add(name);
@@ -128,7 +130,7 @@ namespace TH_InstanceTable
                 if (ic.Events)
                 {
                     // Events -----------------------------------------------------------------------------
-                    foreach (var dataItem in dataItems.FindAll(x => x.Category == TH_MTConnect.Components.DataItemCategory.EVENT))
+                    foreach (var dataItem in dataItems.FindAll(x => x.Category == MTConnect.Application.Components.DataItemCategory.EVENT))
                     {
                         string name = dataItem.Id.ToUpper();
                         if (!result.Contains(name)) result.Add(name);
@@ -139,7 +141,7 @@ namespace TH_InstanceTable
                 if (ic.Samples)
                 {
                     // Samples ----------------------------------------------------------------------------
-                    foreach (var dataItem in dataItems.FindAll(x => x.Category == TH_MTConnect.Components.DataItemCategory.SAMPLE))
+                    foreach (var dataItem in dataItems.FindAll(x => x.Category == MTConnect.Application.Components.DataItemCategory.SAMPLE))
                     {
                         string name = dataItem.Id.ToUpper();
                         if (!result.Contains(name)) result.Add(name);
@@ -153,7 +155,7 @@ namespace TH_InstanceTable
 
 
         // Process instance table after receiving Sample Data
-        List<InstanceData> ProcessInstances(TH_MTConnect.Streams.ReturnData currentData, TH_MTConnect.Streams.ReturnData sampleData)
+        List<InstanceData> ProcessInstances(MTConnect.Application.Streams.ReturnData currentData, MTConnect.Application.Streams.ReturnData sampleData)
         {
             List<InstanceData> Result = new List<InstanceData>();
 
@@ -279,7 +281,7 @@ namespace TH_InstanceTable
         }
 
         // Process InstanceData after receiving Current Data
-        public static InstanceData ProcessInstance(TH_MTConnect.Streams.ReturnData currentData)
+        public static InstanceData ProcessInstance(MTConnect.Application.Streams.ReturnData currentData)
         {
             var result = new InstanceData(); ;
             result.Timestamp = currentData.Header.CreationTime; // Agent.MTConnect.org only outputs to the nearest second (not fractional seconds), check if issue with Open Source Agent
@@ -291,7 +293,7 @@ namespace TH_InstanceTable
             return result;
         }
 
-        static void FillInstanceDataWithCurrentData(List<string> usedVariables, InstanceData data, TH_MTConnect.Streams.ReturnData currentData)
+        static void FillInstanceDataWithCurrentData(List<string> usedVariables, InstanceData data, MTConnect.Application.Streams.ReturnData currentData)
         {
             // Get all of the DataItems from the DeviceStream object
             var dataItems = currentData.DeviceStreams[0].GetAllDataItems();
@@ -305,7 +307,7 @@ namespace TH_InstanceTable
                     //value.Value = item.Value;
                     //value.Value = item.CDATA;
 
-                    if (item.Category == TH_MTConnect.Streams.DataItemCategory.CONDITION)
+                    if (item.Category == MTConnect.Application.Streams.DataItemCategory.CONDITION)
                     {
                         value.Value = item.Value;
                     }
@@ -318,7 +320,7 @@ namespace TH_InstanceTable
             }
         }
 
-        List<InstanceVariableData> GetVariableDataFromDataItemCollection(List<TH_MTConnect.Streams.DataItem> dataItems)
+        List<InstanceVariableData> GetVariableDataFromDataItemCollection(List<MTConnect.Application.Streams.DataItem> dataItems)
         {
 
             List<InstanceVariableData> Result = new List<InstanceVariableData>();
@@ -329,7 +331,7 @@ namespace TH_InstanceTable
                 instanceData.Id = item.DataItemId;
                 //instanceData.Value = item.Value;
 
-                if (item.Category == TH_MTConnect.Streams.DataItemCategory.CONDITION)
+                if (item.Category == MTConnect.Application.Streams.DataItemCategory.CONDITION)
                 {
                     instanceData.Value = item.Value;
                 }

@@ -6,11 +6,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
 using System.Data;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -528,7 +525,7 @@ namespace TH_DeviceManager
             }
         }
 
-        private List<TH_MTConnect.Components.DataItem> probeData = new List<TH_MTConnect.Components.DataItem>();
+        private List<MTConnect.Application.Components.DataItem> probeData = new List<MTConnect.Application.Components.DataItem>();
 
         void GetProbeData(DataTable dt)
         {
@@ -561,13 +558,13 @@ namespace TH_DeviceManager
             int.TryParse(p, out port);
 
             // Proxy Settings
-            TH_MTConnect.HTTP.ProxySettings proxy = null;
+            MTConnect.HTTP.ProxySettings proxy = null;
             if (proxyPort != null)
             {
                 int proxy_p = -1;
                 if (int.TryParse(proxyPort, out proxy_p))
                 {
-                    proxy = new TH_MTConnect.HTTP.ProxySettings();
+                    proxy = new MTConnect.HTTP.ProxySettings();
                     proxy.Address = proxyAddress;
                     proxy.Port = proxy_p;
                 }
@@ -581,10 +578,10 @@ namespace TH_DeviceManager
             public string address;
             public int port;
             public string deviceName;
-            public TH_MTConnect.HTTP.ProxySettings proxy;
+            public MTConnect.HTTP.ProxySettings proxy;
         }
 
-        void RunProbe(string address, TH_MTConnect.HTTP.ProxySettings proxy, int port, string deviceName)
+        void RunProbe(string address, MTConnect.HTTP.ProxySettings proxy, int port, string deviceName)
         {
             var info = new Probe_Info();
             info.address = address;
@@ -602,9 +599,9 @@ namespace TH_DeviceManager
                 var info = o as Probe_Info;
                 if (info != null)
                 {
-                    string url = TH_MTConnect.HTTP.GetUrl(info.address, info.port, info.deviceName) + "probe";
+                    string url = MTConnect.HTTP.GetUrl(info.address, info.port, info.deviceName) + "probe";
 
-                    var returnData = TH_MTConnect.Components.Requests.Get(url, info.proxy, 2000, 1);
+                    var returnData = MTConnect.Application.Components.Requests.Get(url, info.proxy, 2000, 1);
                     if (returnData != null)
                     {
                         SendProbeHeader(returnData.Header);
@@ -621,7 +618,7 @@ namespace TH_DeviceManager
             }
         }
 
-        private void SendProbeHeader(TH_MTConnect.Header_Devices header)
+        private void SendProbeHeader(MTConnect.Application.Headers.Devices header)
         {
             var data = new EventData();
             data.Id = "MTConnect_Probe_Header";
@@ -636,7 +633,7 @@ namespace TH_DeviceManager
             }
         }
 
-        private void SendProbeDataItems(List<TH_MTConnect.Components.DataItem> items)
+        private void SendProbeDataItems(List<MTConnect.Application.Components.DataItem> items)
         {
             var data = new EventData();
             data.Id = "MTConnect_Probe_DataItems";

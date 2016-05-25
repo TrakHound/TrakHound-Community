@@ -36,9 +36,9 @@ namespace TH_InstanceTable
             {
                 switch (data.Id.ToLower())
                 {
-                    case "mtconnect_probe": Update_Probe((TH_MTConnect.Components.ReturnData)data.Data02); break;
-                    case "mtconnect_current": Update_Current((TH_MTConnect.Streams.ReturnData)data.Data02); break;
-                    case "mtconnect_sample": Update_Sample((TH_MTConnect.Streams.ReturnData)data.Data02); break;
+                    case "mtconnect_probe": Update_Probe((MTConnect.Application.Components.ReturnData)data.Data02); break;
+                    case "mtconnect_current": Update_Current((MTConnect.Application.Streams.ReturnData)data.Data02); break;
+                    case "mtconnect_sample": Update_Sample((MTConnect.Application.Streams.ReturnData)data.Data02); break;
                 }
             }
         }
