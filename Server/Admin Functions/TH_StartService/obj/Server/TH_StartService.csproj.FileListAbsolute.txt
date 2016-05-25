@@ -1,4 +1,0 @@
-F:\feenux\TrakHound\TrakHound\Server\Admin Functions\TH_StartService\bin\Server\TH_StartService.exe.config
-F:\feenux\TrakHound\TrakHound\Server\Admin Functions\TH_StartService\bin\Server\TH_StartService.exe
-F:\feenux\TrakHound\TrakHound\Server\Admin Functions\TH_StartService\obj\Server\TH_StartService.csprojResolveAssemblyReference.cache
-F:\feenux\TrakHound\TrakHound\Server\Admin Functions\TH_StartService\obj\Server\TH_StartService.exe

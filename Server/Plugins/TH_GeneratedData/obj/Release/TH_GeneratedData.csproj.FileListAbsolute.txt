@@ -1,8 +1,0 @@
-F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\bin\Release\TH_GeneratedData.dll
-F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\bin\Release\TH_GeneratedData.pdb
-F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Release\TH_GeneratedData.csprojResolveAssemblyReference.cache
-C:\TrakHound\Server\Plugins\TH_GeneratedData\LICENSE.txt
-C:\TrakHound\Server\Plugins\TH_GeneratedData\TH_GeneratedData.dll
-C:\TrakHound\Server\Plugins\TH_GeneratedData\TH_GeneratedData.pdb
-F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Release\TH_GeneratedData.dll
-F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Release\TH_GeneratedData.pdb

@@ -175,7 +175,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Server\Plugins\TH_MTConnect\TH_MTConnect.csproj">
+    <ProjectReference Include="..\..\Plugins\Server\TH_MTConnect\TH_MTConnect.csproj">
       <Project>{318e6702-3c9e-4acc-b326-e3ec903417a8}</Project>
       <Name>TH_MTConnect</Name>
     </ProjectReference>

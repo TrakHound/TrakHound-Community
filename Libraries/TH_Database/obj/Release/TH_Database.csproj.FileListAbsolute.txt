@@ -1,1 +1,14 @@
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Database\obj\Release\TH_Database.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Database\obj\Release\TH_Database.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Database\bin\Release\LICENSE.txt
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Database\bin\Release\TH_Database.dll
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Database\bin\Release\TH_Database.pdb
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Database\bin\Release\TH_Configuration.dll
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Database\bin\Release\TH_Global.dll
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Database\bin\Release\TH_Plugins.dll
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Database\bin\Release\Newtonsoft.Json.dll
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Database\bin\Release\TH_Global.pdb
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Database\bin\Release\TH_Plugins.pdb
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Database\bin\Release\Newtonsoft.Json.xml
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Database\obj\Release\TH_Database.dll
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Database\obj\Release\TH_Database.pdb

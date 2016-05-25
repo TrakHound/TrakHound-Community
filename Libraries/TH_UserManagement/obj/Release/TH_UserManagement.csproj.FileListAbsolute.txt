@@ -1,2 +1,24 @@
 F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\obj\Release\TH_UserManagement.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\obj\Release\TH_UserManagement_MarkupCompile.cache
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_UserManagement\obj\Release\TH_UserManagement.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_UserManagement\obj\Release\TH_UserManagement.g.resources
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_UserManagement\obj\Release\TH_UserManagement.Properties.Resources.resources
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_UserManagement\obj\Release\TH_UserManagement.csproj.GenerateResource.Cache
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_UserManagement\bin\Release\LICENSE.txt
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_UserManagement\bin\Release\TH_UserManagement.dll
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_UserManagement\bin\Release\TH_UserManagement.pdb
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_UserManagement\bin\Release\TH_Configuration.dll
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_UserManagement\bin\Release\TH_Database.dll
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_UserManagement\bin\Release\TH_Global.dll
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_UserManagement\bin\Release\TH_Plugins.dll
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_UserManagement\bin\Release\TH_Styles.dll
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_UserManagement\bin\Release\TH_WPF.dll
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_UserManagement\bin\Release\Newtonsoft.Json.dll
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_UserManagement\bin\Release\TH_Database.pdb
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_UserManagement\bin\Release\TH_Global.pdb
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_UserManagement\bin\Release\TH_Plugins.pdb
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_UserManagement\bin\Release\TH_Styles.pdb
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_UserManagement\bin\Release\TH_WPF.pdb
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_UserManagement\bin\Release\Newtonsoft.Json.xml
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_UserManagement\obj\Release\TH_UserManagement.dll
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_UserManagement\obj\Release\TH_UserManagement.pdb

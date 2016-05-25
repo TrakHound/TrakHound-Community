@@ -4,7 +4,7 @@
 library
 C#
 .cs
-F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\Debug\
 TH_DeviceManager
 none
 false
@@ -13,7 +13,7 @@ DEBUG;TRACE
 11-1448832029
 
 18529198260
-22-425024869
+221224390606
 AddDevice\Controls\CatalogItem.xaml;AddDevice\Page.xaml;AddDevice\Pages\AutoDetect.xaml;AddDevice\Pages\LoadFromFile.xaml;AddDevice\Pages\Manual.xaml;EditPage.xaml;DeviceList.xaml;Pages\Databases\Controls\DatabaseItemContainer.xaml;Controls\PageItem.xaml;Pages\Databases\Page.xaml;Pages\Description\Page.xaml;
 
 False

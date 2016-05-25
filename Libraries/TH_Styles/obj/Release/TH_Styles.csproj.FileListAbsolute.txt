@@ -45,3 +45,23 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_Styles\obj\Release\Styles\ScrollBars.
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Styles\obj\Release\Styles\ToggleButtons.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Styles\obj\Release\TH_Styles_MarkupCompile.lref
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Styles\obj\Release\Themes.baml
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\bin\Release\TH_Styles.dll
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\bin\Release\TH_Styles.pdb
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\obj\Release\TH_Styles.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\obj\Release\Styles\CheckBoxes.baml
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\obj\Release\Styles\Colors.baml
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\obj\Release\Styles\ComboBox2.baml
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\obj\Release\Styles\ComboBox1.baml
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\obj\Release\Styles\ComboBox3.baml
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\obj\Release\Styles\DataGrid.baml
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\obj\Release\Styles\RadioButtons.baml
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\obj\Release\Styles\ScrollBars.baml
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\obj\Release\Styles\ToggleButtons.baml
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\obj\Release\TH_Styles_MarkupCompile.cache
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\obj\Release\TH_Styles_MarkupCompile.lref
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\obj\Release\Themes.baml
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\obj\Release\TH_Styles.g.resources
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\obj\Release\TH_Styles.Properties.Resources.resources
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\obj\Release\TH_Styles.csproj.GenerateResource.Cache
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\obj\Release\TH_Styles.dll
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\obj\Release\TH_Styles.pdb

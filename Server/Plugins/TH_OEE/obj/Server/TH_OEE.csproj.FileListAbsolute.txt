@@ -1,3 +1,0 @@
-F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_OEE\bin\Server\TH_OEE.dll
-F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_OEE\obj\Server\TH_OEE.csprojResolveAssemblyReference.cache
-F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_OEE\obj\Server\TH_OEE.dll
