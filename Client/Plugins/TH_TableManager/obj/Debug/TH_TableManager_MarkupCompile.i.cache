@@ -4,7 +4,7 @@
 library
 C#
 .cs
-F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_TableManager\obj\Debug\
+F:\feenux\TrakHound\Source Code\GitHub\Client\Plugins\TH_TableManager\obj\Debug\
 TH_TableManager
 none
 false
@@ -13,7 +13,7 @@ DEBUG;TRACE
 3-1093497919
 
 8624593201
-19-846304891
+19-979544896
 Controls\DeviceButton.xaml;TableManager.xaml;Controls\Button.xaml;
 
 False

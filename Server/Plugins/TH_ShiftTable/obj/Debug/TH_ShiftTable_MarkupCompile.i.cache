@@ -4,7 +4,7 @@
 library
 C#
 .cs
-F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Debug\
+F:\feenux\TrakHound\Source Code\GitHub\Server\Plugins\TH_ShiftTable\obj\Debug\
 TH_ShiftTable
 none
 false
@@ -13,7 +13,7 @@ DEBUG;TRACE
 3830894059
 1436831558
 13-2052657681
-221006884634
+22-1331002015
 ConfigurationPage\Controls\BreakListItem.xaml;ConfigurationPage\Controls\ShiftListItem.xaml;ConfigurationPage\Page.xaml;
 
 True

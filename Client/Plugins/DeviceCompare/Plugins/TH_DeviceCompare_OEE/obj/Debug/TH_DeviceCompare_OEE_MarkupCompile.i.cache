@@ -4,7 +4,7 @@
 library
 C#
 .cs
-F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_OEE\obj\Debug\
+F:\feenux\TrakHound\Source Code\GitHub\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_OEE\obj\Debug\
 TH_DeviceCompare_OEE
 none
 false
@@ -13,7 +13,7 @@ DEBUG;TRACE
 5560117364
 
 15496802927
-17-537016345
+17592918093
 Timeline\ToolTip.xaml;Timeline\View.xaml;Values\Availability\View.xaml;Values\OEE\View.xaml;Values\Performance\View.xaml;
 
 False

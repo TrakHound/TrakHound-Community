@@ -19,6 +19,8 @@ namespace TH_WPF
         {
             InitializeComponent();
             root.DataContext = this;
+
+            Update();
         }
 
         public int Index { get; set; }

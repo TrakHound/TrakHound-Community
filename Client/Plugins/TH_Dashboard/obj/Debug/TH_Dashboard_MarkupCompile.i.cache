@@ -4,7 +4,7 @@
 library
 C#
 .cs
-F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_Dashboard\obj\Debug\
+F:\feenux\TrakHound\Source Code\GitHub\Client\Plugins\TH_Dashboard\obj\Debug\
 TH_Dashboard
 none
 false
@@ -13,7 +13,7 @@ DEBUG;TRACE
 11831376056
 
 61412496812
-19-435021014
+19694913424
 Dashboard.xaml;
 
 False

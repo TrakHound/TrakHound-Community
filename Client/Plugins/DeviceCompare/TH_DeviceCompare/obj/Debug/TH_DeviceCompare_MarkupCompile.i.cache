@@ -4,7 +4,7 @@
 library
 C#
 .cs
-F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\TH_DeviceCompare\obj\Debug\
+F:\feenux\TrakHound\Source Code\GitHub\Client\Plugins\DeviceCompare\TH_DeviceCompare\obj\Debug\
 TH_DeviceCompare
 none
 false
@@ -13,8 +13,8 @@ DEBUG;TRACE
 62100594746
 
 16289231591
-19369901227
+19-704810979
 Controls\DeviceDisplay\Overlay.xaml;Controls\GlossOverlay.xaml;Controls\DeviceDisplay\Header.xaml;Controls\RowHeader.xaml;DeviceCompare.xaml;Themes\Generic.xaml;
 
-False
+True
 

@@ -53,7 +53,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_UserManagement", "Librar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrakHound-Server-Console", "Server\TrakHound-Server-Console\TrakHound-Server-Console.csproj", "{0554162D-A8D3-434C-8F15-D70C02977E78}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template", "Client\Plugins\Template\Template.csproj", "{467E29D5-34BF-40D0-BE18-E5422861CEBE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CP_Template", "Client\Plugins\Template\CP_Template.csproj", "{467E29D5-34BF-40D0-BE18-E5422861CEBE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_DeviceManager", "Libraries\TH_DeviceManager\TH_DeviceManager.csproj", "{B5F883CC-0E97-468C-9CA4-84031F446EDF}"
 EndProject
@@ -69,11 +69,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_DeviceCompare_OEE", "Cli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_DeviceCompare_ProductionStatusTimes", "Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_ProductionStatusTimes\TH_DeviceCompare_ProductionStatusTimes.csproj", "{E067CC14-AA7D-4A16-8708-3504E86D5B9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_Dashboard", "Client\Plugins\TH_Dashboard\TH_Dashboard.csproj", "{DCE32D98-8898-4AE4-B5F9-C617BDAE00E1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CP_Dashboard", "Client\Plugins\TH_Dashboard\CP_Dashboard.csproj", "{DCE32D98-8898-4AE4-B5F9-C617BDAE00E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_StatusData", "Client\Plugins\TH_StatusData\TH_StatusData.csproj", "{CB42CE42-E942-49CA-9F3A-CBD768107434}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CP_StatusData", "Client\Plugins\TH_StatusData\CP_StatusData.csproj", "{CB42CE42-E942-49CA-9F3A-CBD768107434}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_TableManager", "Client\Plugins\TH_TableManager\TH_TableManager.csproj", "{06B0562F-4CD5-431F-9C2C-7A7E5959711C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CP_TableManager", "Client\Plugins\TH_TableManager\CP_TableManager.csproj", "{06B0562F-4CD5-431F-9C2C-7A7E5959711C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_SQLite", "Database\TH_SQLite\TH_SQLite.csproj", "{02138C94-D478-4E48-9CE1-59EABA9176DE}"
 EndProject
@@ -83,11 +83,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsole", "Testing\Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_MySQL", "Database\TH_MySQL\TH_MySQL.csproj", "{0822B312-19ED-4556-A197-210F0CB15BF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_DeviceTable", "Client\Plugins\TH_DeviceTable\TH_DeviceTable.csproj", "{10D4016B-919D-4844-903A-6CB98A02F299}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CP_DeviceTable", "Client\Plugins\TH_DeviceTable\CP_DeviceTable.csproj", "{10D4016B-919D-4844-903A-6CB98A02F299}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreeViewTest", "Testing\TreeViewTest\TreeViewTest.csproj", "{EBAEE151-FDBA-4DA5-876B-44E37A9B7B02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_DevicePage", "Client\Plugins\TH_DevicePage\TH_DevicePage.csproj", "{F5ECBE24-D563-4B4D-B9A4-82B99F332CC2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CP_DevicePage", "Client\Plugins\TH_DevicePage\CP_DevicePage.csproj", "{F5ECBE24-D563-4B4D-B9A4-82B99F332CC2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsole1", "Testing\TestConsole1\TestConsole1.csproj", "{9BB1D8DF-57AF-409C-B320-45B07C86282B}"
 EndProject
@@ -95,17 +95,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_Plugins", "Libraries\TH_
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_MTConnect", "Server\Plugins\TH_MTConnect\TH_MTConnect.csproj", "{318E6702-3C9E-4ACC-B326-E3EC903417A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrakHound-Updater", "Updater\TrakHound-Updater\TrakHound-Updater.csproj", "{BEE07C25-F18B-4883-9277-B12E1834D347}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Updater", "Updater", "{29467D8A-7F0E-4E5A-BBD4-BD42B62D8493}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_Parts", "Server\Plugins\TH_Parts\TH_Parts.csproj", "{A2042507-CEC6-483A-8BCE-0EDA5EC793B4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_Status", "Server\Plugins\TH_Status\TH_Status.csproj", "{4E167A2B-4229-444C-9B35-0ED814791FE1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_GitHub", "Libraries\TH_GitHub\TH_GitHub.csproj", "{725221C1-50A4-41A4-A8A8-11735EBE0D88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_StatusTable", "Client\Plugins\TH_DeviceStatus\TH_StatusTable.csproj", "{457E0C73-4DA0-4831-AAAD-F65D5823B7D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CP_StatusTable", "Client\Plugins\TH_DeviceStatus\CP_StatusTable.csproj", "{457E0C73-4DA0-4831-AAAD-F65D5823B7D8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableCreator", "Testing\TableCreator\TableCreator.csproj", "{F1652D45-957A-4654-B4EA-37E78993EB2E}"
 EndProject
@@ -119,7 +115,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCF_Server", "Testing\WCF_S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_Mobile", "Libraries\TH_Mobile\TH_Mobile.csproj", "{168E0B49-FAC0-4C2D-9DA3-A643BA9DD515}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_StatusStack", "Client\Plugins\TH_StatusStack\TH_StatusStack.csproj", "{811584E1-5320-49A3-8598-4FAB7B3C62C5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CP_StatusStack", "Client\Plugins\TH_StatusStack\CP_StatusStack.csproj", "{811584E1-5320-49A3-8598-4FAB7B3C62C5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CP_ControllerStatus", "Client\Plugins\CP_ControllerStatus\CP_ControllerStatus.csproj", "{5D79B992-FA0E-4252-BA30-420F2C2954C0}"
 EndProject
@@ -132,6 +128,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server Test Console", "Server\Server Test Console\Server Test Console.csproj", "{5BF5D617-2BCD-4F61-9664-11D8F2F15E75}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_Controls", "Libraries\TH_Controls\TH_Controls.csproj", "{89B5C585-0174-497B-88D0-34F0DEF094E6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{E8FFCE81-DDBA-4DCD-84D9-10B63D7A7AD2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -354,12 +352,6 @@ Global
 		{318E6702-3C9E-4ACC-B326-E3EC903417A8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{318E6702-3C9E-4ACC-B326-E3EC903417A8}.Server|Any CPU.ActiveCfg = Server|Any CPU
 		{318E6702-3C9E-4ACC-B326-E3EC903417A8}.Server|Any CPU.Build.0 = Server|Any CPU
-		{BEE07C25-F18B-4883-9277-B12E1834D347}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BEE07C25-F18B-4883-9277-B12E1834D347}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BEE07C25-F18B-4883-9277-B12E1834D347}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BEE07C25-F18B-4883-9277-B12E1834D347}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BEE07C25-F18B-4883-9277-B12E1834D347}.Server|Any CPU.ActiveCfg = Release|Any CPU
-		{BEE07C25-F18B-4883-9277-B12E1834D347}.Server|Any CPU.Build.0 = Release|Any CPU
 		{A2042507-CEC6-483A-8BCE-0EDA5EC793B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A2042507-CEC6-483A-8BCE-0EDA5EC793B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2042507-CEC6-483A-8BCE-0EDA5EC793B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -503,7 +495,6 @@ Global
 		{9BB1D8DF-57AF-409C-B320-45B07C86282B} = {ADAEDDC0-659A-4052-8903-F58E7495C61B}
 		{EB5E38E0-AF12-49F7-990B-243389690EA6} = {DA17B6B4-9D2B-4DBB-9D7F-E0F627C1067E}
 		{318E6702-3C9E-4ACC-B326-E3EC903417A8} = {E674475B-6739-45ED-84FC-FC46FC9A4EEE}
-		{BEE07C25-F18B-4883-9277-B12E1834D347} = {29467D8A-7F0E-4E5A-BBD4-BD42B62D8493}
 		{A2042507-CEC6-483A-8BCE-0EDA5EC793B4} = {E674475B-6739-45ED-84FC-FC46FC9A4EEE}
 		{4E167A2B-4229-444C-9B35-0ED814791FE1} = {E674475B-6739-45ED-84FC-FC46FC9A4EEE}
 		{725221C1-50A4-41A4-A8A8-11735EBE0D88} = {DA17B6B4-9D2B-4DBB-9D7F-E0F627C1067E}

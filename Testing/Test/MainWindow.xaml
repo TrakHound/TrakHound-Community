@@ -6,13 +6,25 @@
         
         Title="MainWindow"
         
-        Background="{StaticResource Accent_Normal}"
-        
         >
 
     <Grid x:Name="dummy" Background="#fff">
 
-        <th_wpf:TimeSlider Title="Dummy" HelpText="Dummy Help" Value="1000" Maximum="60000" TickFrequency="5000" LargeChange="1000" Minimum="1000"/>
+        <StackPanel>
+
+            <Button Content="MORE" Width="50" Height="50" Click="MORE_Click"/>
+
+            <Button Content="LESS" Width="50" Height="50" Click="LESS_Click"/>
+
+            <th_wpf:TimeProgress Value="{Binding Value}" Maximum="{Binding Maximum}" Foreground="Red" BarBrush="Red"/>
+
+        </StackPanel>
+
+        <!--<Button Content="MORE" Width="50" Height="50"/>
+
+        <th_wpf:TimeProgress Value="{Binding Value}" Maximum="{Binding Maximum}" />-->
+
+        <!--<th_wpf:TimeSlider Title="Dummy" HelpText="Dummy Help" Value="1000" Maximum="60000" TickFrequency="5000" LargeChange="1000" Minimum="1000"/>-->
 
         <!--<StackPanel>
 

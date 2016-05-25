@@ -4,7 +4,7 @@
 library
 C#
 .cs
-F:\feenux\TrakHound\TrakHound\Database\TH_SQLite\obj\Debug\
+F:\feenux\TrakHound\Source Code\GitHub\Database\TH_SQLite\obj\Debug\
 TH_SQLite
 none
 false
@@ -13,8 +13,8 @@ DEBUG;TRACE
 21728075019
 
 12-639499593
-27-1583185999
+27873095902
 ConfigurationPage\Button.xaml;ConfigurationPage\Page.xaml;
 
-False
+True
 

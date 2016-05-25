@@ -31,5 +31,38 @@ namespace Test
             DataContext = this;
         }
 
+
+
+        public double Value
+        {
+            get { return (double)GetValue(ValueProperty); }
+            set { SetValue(ValueProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Value.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ValueProperty =
+            DependencyProperty.Register("Value", typeof(double), typeof(MainWindow), new PropertyMetadata(25d));
+
+
+
+        public double Maximum
+        {
+            get { return (double)GetValue(MaximumProperty); }
+            set { SetValue(MaximumProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Maximum.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty MaximumProperty =
+            DependencyProperty.Register("Maximum", typeof(double), typeof(MainWindow), new PropertyMetadata(100d));
+
+        private void MORE_Click(object sender, RoutedEventArgs e)
+        {
+            Value += 1;
+        }
+
+        private void LESS_Click(object sender, RoutedEventArgs e)
+        {
+            Value -= 1;
+        }
     }
 }

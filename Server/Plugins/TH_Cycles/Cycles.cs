@@ -204,6 +204,7 @@ namespace TH_Cycles
             }
         }
 
+
         string[] setupPrimaryKey = { "Cycle_Id" };
 
         void CreateSetupTable()
@@ -400,107 +401,6 @@ namespace TH_Cycles
 
             return result;
         }
-
-        //private List<CycleData> ProcessCycleEvent(ref List<CycleData> cycles, Event cycleEvent, InstanceData instanceData, CycleConfiguration cc)
-        //{
-        //    var result = new List<CycleData>();
-
-        //    // Search for cycle name link in InstanceData
-        //    var instanceValue = instanceData.Values.Find(x => x.Id == cc.CycleNameLink);
-        //    if (instanceValue != null)
-        //    {
-        //        var cycleOverrides = new List<CycleOverride>();
-
-        //        // Get CycleOverride values from InstanceData
-        //        foreach (var ovr in cc.OverrideLinks)
-        //        {
-        //            var cycleOverride = GetOverrideFromInstanceData(ovr, instanceData);
-        //            if (cycleOverride != null) cycleOverrides.Add(cycleOverride);
-        //        }
-
-        //        // Process Cycle Event using instanceData
-        //        var eventReturn = cycleEvent.Process(instanceData);
-        //        if (eventReturn != null)
-        //        {
-        //            // Get the name of the cycle
-        //            string cycleName = instanceValue.Value;
-
-        //            // Get the name of the cycleEvent (cycleEvent.Value)
-        //            string cycleEventValue = eventReturn.Value;
-
-        //            TH_ShiftTable.CurrentShiftInfo startShiftInfo = null;
-        //            TH_ShiftTable.CurrentShiftInfo endShiftInfo = null;
-
-        //            // Get ShiftId from Timestamp
-        //            if (cycleData != null) startShiftInfo = TH_ShiftTable.CurrentShiftInfo.Get(configuration, cycleData.StartTime);
-        //            if (instanceData != null) endShiftInfo = TH_ShiftTable.CurrentShiftInfo.Get(configuration, instanceData.Timestamp);
-
-
-        //            CycleData cycle = cycleData;
-
-        //            // Check if new cycle is needed
-        //            if (cycle != null &&
-        //                (cycle.ShiftId.Id == GetShiftId(endShiftInfo) &&
-        //                 cycle.Name == cycleName &&
-        //                 cycle.Event == cycleEventValue &&
-        //                 CompareOverrideLists(cycle.CycleOverrides, cycleOverrides)
-        //                ))
-        //            {
-        //                //Use current stored cycle
-        //                UpdateCycleData(cycle, instanceData);
-        //                cycles.Add(cycle.Copy());
-        //                result.Add(cycle.Copy());
-        //            }
-        //            else
-        //            {
-        //                if (cycle != null)
-        //                {
-        //                    // If a different shift then split the times
-        //                    if (GetShiftId(startShiftInfo) != GetShiftId(endShiftInfo))
-        //                    {
-        //                        cycle.StopTime = startShiftInfo.segmentEnd;
-        //                        cycle.StopTimeUtc = startShiftInfo.segmentEndUTC;
-        //                        cycles.Add(cycle.Copy());
-        //                        result.Add(cycle.Copy());
-
-        //                        // Set new Shift ID and StartTimes for next shift segment (keep same cycle instance ID)
-        //                        SetCycleShiftId(cycle, instanceData);
-        //                        cycle.StartTime = startShiftInfo.segmentEnd;
-        //                        cycle.StartTimeUtc = startShiftInfo.segmentEndUTC;
-        //                    }
-
-        //                    // Set Stop Time
-        //                    cycle.StopTime = instanceData.Timestamp.ToLocalTime();
-        //                    cycle.StopTimeUtc = instanceData.Timestamp;
-        //                    cycles.Add(cycle.Copy());
-        //                    result.Add(cycle.Copy());
-
-        //                    if (cycle.Name != cycleName || cycleEventValue == cc.StoppedEventValue)
-        //                    {
-        //                        cycle = CreateCycleData(cycleName);
-        //                    }
-        //                }
-        //                else // No previous Cycle so create one (usually when server is first started
-        //                {
-        //                    cycle = CreateCycleData(cycleName);
-        //                }
-
-        //                cycle.CycleOverrides = cycleOverrides.ToList();
-
-        //                // Update Cycle
-        //                UpdateCycleDataEvent(cycle, eventReturn.Value, instanceData, cc);
-        //                UpdateCycleData(cycle, instanceData);
-        //                cycles.Add(cycle.Copy());
-        //                result.Add(cycle.Copy());
-        //            }
-
-        //            cycleData = cycle.Copy();
-        //        }
-        //    }
-
-        //    return result;
-        //}
-
         
         private static string GetShiftId(TH_ShiftTable.CurrentShiftInfo info)
         {

@@ -4,7 +4,7 @@
 library
 C#
 .cs
-F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\
+F:\feenux\TrakHound\Source Code\GitHub\Server\Plugins\TH_GeneratedData\obj\Debug\
 TH_GeneratedData
 none
 false
@@ -13,7 +13,7 @@ DEBUG;TRACE
 8440430138
 1436831558
 26-1059905608
-23-1948264781
+238815866
 GeneratedEvents\ConfigurationPage\Controls\CaptureItem.xaml;GeneratedEvents\ConfigurationPage\Controls\Default.xaml;GeneratedEvents\ConfigurationPage\Controls\Event.xaml;GeneratedEvents\ConfigurationPage\Controls\EventButton.xaml;GeneratedEvents\ConfigurationPage\Controls\Trigger.xaml;GeneratedEvents\ConfigurationPage\Controls\Value.xaml;GeneratedEvents\ConfigurationPage\Page.xaml;SnapshotData\ConfigurationPage\Page.xaml;
 
 True
