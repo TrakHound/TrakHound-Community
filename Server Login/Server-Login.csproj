@@ -7,7 +7,7 @@
     <ProjectGuid>{00EA8291-3359-4BFB-ADA3-BA7B70B312BC}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TrakHound_Server_Login</RootNamespace>
+    <RootNamespace>Server_Login</RootNamespace>
     <AssemblyName>TrakHound-Server-Login</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

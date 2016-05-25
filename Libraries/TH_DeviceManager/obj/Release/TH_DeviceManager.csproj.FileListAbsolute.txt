@@ -5,11 +5,6 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Release\Controls\Pa
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Release\Pages\Agent\Controls\MessageItem.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Release\GeneratedInternalTypeHelper.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Release\TH_DeviceManager_MarkupCompile.cache
-F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\Release\TH_DeviceManager.csprojResolveAssemblyReference.cache
-F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\Release\Controls\PageItem.baml
-F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\Release\Controls\PageItem.g.cs
-F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\Release\GeneratedInternalTypeHelper.g.cs
-F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\Release\TH_DeviceManager_MarkupCompile.cache
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Release\LICENSE.txt
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Release\TH_DeviceManager.dll
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Release\TH_DeviceManager.pdb
@@ -24,12 +19,13 @@ F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Release\Newtonsoft.Json.dll
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Release\TH_MTConnect.pdb
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Release\TH_Database.pdb
-F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Release\TH_Global.pdb
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Release\TH_Plugins.pdb
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Release\TH_Styles.pdb
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Release\TH_UserManagement.pdb
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Release\TH_WPF.pdb
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Release\Newtonsoft.Json.xml
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\Release\TH_DeviceManager.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\Release\Controls\PageItem.baml
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\Release\Pages\Databases\Page.baml
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\Release\Pages\Description\Page.baml
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\Release\AddDevice\Controls\CatalogItem.g.cs
@@ -40,8 +36,11 @@ F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\Release\EditPage.g.cs
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\Release\DeviceList.g.cs
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\Release\Pages\Databases\Controls\DatabaseItemContainer.g.cs
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\Release\Controls\PageItem.g.cs
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\Release\Pages\Databases\Page.g.cs
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\Release\Pages\Description\Page.g.cs
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\Release\GeneratedInternalTypeHelper.g.cs
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\Release\TH_DeviceManager_MarkupCompile.cache
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\Release\TH_DeviceManager_MarkupCompile.lref
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\Release\AddDevice\Controls\CatalogItem.baml
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\Release\AddDevice\Page.baml

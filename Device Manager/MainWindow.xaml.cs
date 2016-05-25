@@ -11,7 +11,7 @@ using TH_Global.Functions;
 using TH_Global.TrakHound.Users;
 using TH_WPF;
 
-namespace TrakHound_Server_DeviceManager
+namespace Device_Manager
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

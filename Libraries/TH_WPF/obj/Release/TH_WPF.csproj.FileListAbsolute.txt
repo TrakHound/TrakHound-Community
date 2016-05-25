@@ -109,6 +109,18 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Release\TimeLine\TickMark.g.c
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Release\TimeLine\TimeLine.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Release\TimeProgress.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Release\GeneratedInternalTypeHelper.g.cs
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\bin\Release\LICENSE.txt
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\bin\Release\TH_WPF.dll
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\bin\Release\TH_WPF.pdb
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\bin\Release\System.Windows.Controls.DataVisualization.Toolkit.dll
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\bin\Release\TH_Global.dll
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\bin\Release\TH_Styles.dll
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\bin\Release\Newtonsoft.Json.dll
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\bin\Release\WPFToolkit.dll
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\bin\Release\TH_Styles.pdb
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\bin\Release\System.Windows.Controls.DataVisualization.Toolkit.pdb
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\bin\Release\Newtonsoft.Json.xml
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\bin\Release\WPFToolkit.pdb
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\obj\Release\TH_WPF.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\obj\Release\CollapseButton.baml
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\obj\Release\ListButton.baml
@@ -145,21 +157,6 @@ F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\obj\Release\Ti
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\obj\Release\GeneratedInternalTypeHelper.g.cs
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\obj\Release\TH_WPF_MarkupCompile.cache
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\obj\Release\TH_WPF_MarkupCompile.lref
-F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\obj\Release\TH_WPF.dll
-F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\obj\Release\TH_WPF.pdb
-F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\bin\Release\LICENSE.txt
-F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\bin\Release\TH_WPF.dll
-F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\bin\Release\TH_WPF.pdb
-F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\bin\Release\System.Windows.Controls.DataVisualization.Toolkit.dll
-F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\bin\Release\TH_Global.dll
-F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\bin\Release\TH_Styles.dll
-F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\bin\Release\Newtonsoft.Json.dll
-F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\bin\Release\WPFToolkit.dll
-F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\bin\Release\TH_Global.pdb
-F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\bin\Release\TH_Styles.pdb
-F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\bin\Release\System.Windows.Controls.DataVisualization.Toolkit.pdb
-F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\bin\Release\Newtonsoft.Json.xml
-F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\bin\Release\WPFToolkit.pdb
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\obj\Release\Button.baml
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\obj\Release\Charting\PieChart.baml
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\obj\Release\Histogram\Histogram.baml
@@ -182,3 +179,5 @@ F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\obj\Release\Ti
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\obj\Release\TH_WPF.g.resources
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\obj\Release\TH_WPF.Properties.Resources.resources
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\obj\Release\TH_WPF.csproj.GenerateResource.Cache
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\obj\Release\TH_WPF.dll
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_WPF\obj\Release\TH_WPF.pdb

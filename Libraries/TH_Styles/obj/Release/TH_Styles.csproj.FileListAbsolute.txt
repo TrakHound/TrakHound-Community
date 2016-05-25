@@ -47,7 +47,6 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_Styles\obj\Release\TH_Styles_MarkupCo
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Styles\obj\Release\Themes.baml
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\bin\Release\TH_Styles.dll
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\bin\Release\TH_Styles.pdb
-F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\obj\Release\TH_Styles.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\obj\Release\Styles\CheckBoxes.baml
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\obj\Release\Styles\Colors.baml
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\obj\Release\Styles\ComboBox2.baml

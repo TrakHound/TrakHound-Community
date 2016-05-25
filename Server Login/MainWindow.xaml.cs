@@ -13,7 +13,7 @@ using TH_Configuration;
 using TH_Global.Functions;
 using TH_Global.TrakHound.Users;
 
-namespace TrakHound_Server_Login
+namespace Server_Login
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

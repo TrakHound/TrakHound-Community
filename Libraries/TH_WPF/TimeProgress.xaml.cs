@@ -90,10 +90,7 @@ namespace TH_WPF
         }
 
         public static readonly DependencyProperty MaximumProperty =
-    DependencyProperty.Register("Maximum", typeof(double), typeof(TimeProgress), new PropertyMetadata(1d));
-
-        //public static readonly DependencyProperty MaximumProperty =
-        //    DependencyProperty.Register("Maximum", typeof(double), typeof(TimeProgress), new PropertyMetadata(1d, new PropertyChangedCallback(Value_PropertyChanged)));
+            DependencyProperty.Register("Maximum", typeof(double), typeof(TimeProgress), new PropertyMetadata(1d));
 
 
         private static void Value_PropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
@@ -113,8 +110,6 @@ namespace TH_WPF
 
                 BarValue = Value;
                 BarMaximum = Maximum;
-
-                TH_Global.Logger.Log("BarValue = " + BarValue.ToString("N2") + " :: Maximum = " + BarMaximum.ToString("N2"));
             }
             else
             {
