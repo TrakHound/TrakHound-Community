@@ -9,7 +9,7 @@ using System.Data;
 using System.Linq;
 
 using TH_Configuration;
-using TH_InstanceTable;
+using TH_InstanceData;
 using TH_Plugins;
 using TH_Plugins.Server;
 
@@ -66,7 +66,7 @@ namespace TH_GeneratedData.GeneratedEvents
 
         public void Closing() { }
 
-        public Type[] ConfigurationPageTypes { get { return new Type[] { typeof(ConfigurationPage.Page) }; } }
+        //public Type[] ConfigurationPageTypes { get { return new Type[] { typeof(ConfigurationPage.Page) }; } }
 
 
         private Configuration configuration;

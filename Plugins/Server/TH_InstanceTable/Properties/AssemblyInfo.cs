@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TH_InstanceTable")]
-[assembly: AssemblyDescription("TrakHound Server Plugin for Creating a Table to hold each Instance of new MTConnect Data")]
+[assembly: AssemblyTitle("TH_InstanceData")]
+[assembly: AssemblyDescription("TrakHound Server Plugin for Creating objects to hold each Instance of new MTConnect Data")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Feenux LLC")]
-[assembly: AssemblyProduct("TH_InstanceTable")]
+[assembly: AssemblyProduct("TH_InstanceData")]
 [assembly: AssemblyCopyright("Copyright © 2015 Feenux LLC, All Rights Reserved")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

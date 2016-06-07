@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 
 using TH_Configuration;
-using TH_InstanceTable;
+using TH_InstanceData;
 
 namespace TH_GeneratedData.GeneratedEvents
 {

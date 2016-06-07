@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>C:\TrakHound\Plugins\Server\Parts\</OutputPath>
+    <OutputPath>C:\TrakHound\Plugins\Server\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -48,9 +48,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration.cs" />
-    <Compile Include="ConfigurationPage\Page.xaml.cs">
+    <None Include="ConfigurationPage\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="Database.cs" />
     <Compile Include="PartInfo.cs" />
     <Compile Include="Plugin.cs" />
@@ -90,16 +90,16 @@
       <Project>{51202eb2-c838-456e-9bd0-50840d12a19c}</Project>
       <Name>TH_GeneratedData</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TH_ShiftTable\TH_ShiftTable.csproj">
+    <ProjectReference Include="..\TH_ShiftTable\TH_Shifts.csproj">
       <Project>{21996c58-2404-42e4-a2d7-bec46aef6357}</Project>
-      <Name>TH_ShiftTable</Name>
+      <Name>TH_Shifts</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="ConfigurationPage\Page.xaml">
+    <None Include="ConfigurationPage\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -115,7 +115,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(TargetName).dll $(TargetName).splugin</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -43,7 +43,7 @@ namespace TH_Plugins.Server
         /// </summary>
         event SendData_Handler SendData;
 
-        Type[] ConfigurationPageTypes { get; }
+        //Type[] ConfigurationPageTypes { get; }
 
     }
 

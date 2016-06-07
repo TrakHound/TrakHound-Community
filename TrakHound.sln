@@ -89,6 +89,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server-Login", "Server Logi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_Mobile", "Plugins\Server\TH_Mobile\TH_Mobile.csproj", "{168E0B49-FAC0-4C2D-9DA3-A643BA9DD515}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrakHound-Bug-Reporter", "TrakHound-Bug-Reporter\TrakHound-Bug-Reporter.csproj", "{3B2BA5FC-527B-4E69-9072-38D1EFAA19F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -324,6 +326,12 @@ Global
 		{168E0B49-FAC0-4C2D-9DA3-A643BA9DD515}.Release|Any CPU.Build.0 = Release|Any CPU
 		{168E0B49-FAC0-4C2D-9DA3-A643BA9DD515}.Server|Any CPU.ActiveCfg = Release|Any CPU
 		{168E0B49-FAC0-4C2D-9DA3-A643BA9DD515}.Server|Any CPU.Build.0 = Release|Any CPU
+		{3B2BA5FC-527B-4E69-9072-38D1EFAA19F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B2BA5FC-527B-4E69-9072-38D1EFAA19F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B2BA5FC-527B-4E69-9072-38D1EFAA19F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B2BA5FC-527B-4E69-9072-38D1EFAA19F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B2BA5FC-527B-4E69-9072-38D1EFAA19F9}.Server|Any CPU.ActiveCfg = Release|Any CPU
+		{3B2BA5FC-527B-4E69-9072-38D1EFAA19F9}.Server|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -10,7 +10,7 @@ using System.Reflection;
 
 using TH_Configuration;
 
-namespace TH_ShiftTable
+namespace TH_Shifts
 {
     public class ShiftConfiguration
     {

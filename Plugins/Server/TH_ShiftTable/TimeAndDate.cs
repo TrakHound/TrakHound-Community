@@ -5,7 +5,7 @@
 
 using System;
 
-namespace TH_ShiftTable
+namespace TH_Shifts
 {
     public class ShiftTime : IComparable
     {

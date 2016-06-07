@@ -10,7 +10,7 @@ using System.Linq;
 using TH_Configuration;
 using TH_GeneratedData.GeneratedEvents;
 
-namespace TH_ShiftTable
+namespace TH_Shifts
 {
     public class GenEventShiftItem
     {

@@ -217,10 +217,6 @@
 
         <Grid Grid.Row="1" Background="{StaticResource Window_Background_Gradient}">
 
-            <!--<ItemsControl ItemsSource="{Binding DeviceInfos}"/>-->
-
-
-
             <DataGrid x:Name="Devices_DG" ItemsSource="{Binding DeviceInfos, IsAsync=True}"
                   AutoGenerateColumns="False"
                   BorderBrush="Transparent"

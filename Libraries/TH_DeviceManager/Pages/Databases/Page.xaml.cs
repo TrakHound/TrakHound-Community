@@ -27,7 +27,7 @@ namespace TH_DeviceManager.Pages.Databases
     /// <summary>
     /// Interaction logic for Page.xaml
     /// </summary>
-    public partial class Page : UserControl, TH_Plugins.Server.IConfigurationPage
+    public partial class Page : UserControl, TH_Plugins.ConfigurationPage.IConfigurationPage
     {
         public Page()
         {
@@ -58,7 +58,7 @@ namespace TH_DeviceManager.Pages.Databases
 
         public bool Loaded { get; set; }
 
-        public event TH_Plugins.Server.SettingChanged_Handler SettingChanged;
+        public event TH_Plugins.ConfigurationPage.SettingChanged_Handler SettingChanged;
 
 
         public event SendData_Handler SendData;

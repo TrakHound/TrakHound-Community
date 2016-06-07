@@ -11,7 +11,7 @@ namespace TH_Plugins.Database
 {
     public static class DatabasePlugin
     { 
-        public const string PLUGIN_EXTENSION = ".dplugin";
+        //public const string PLUGIN_EXTENSION = ".dplugin";
 
         public class PluginContainer : ReaderContainer
         {

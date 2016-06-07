@@ -10,7 +10,7 @@ using System.Xml;
 
 using TH_Configuration;
 
-namespace TH_InstanceTable
+namespace TH_InstanceData
 {
     public class InstanceConfiguration
     {

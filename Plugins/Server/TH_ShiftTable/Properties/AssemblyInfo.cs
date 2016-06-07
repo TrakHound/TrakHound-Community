@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TH_ShiftTable")]
+[assembly: AssemblyTitle("TH_Shifts")]
 [assembly: AssemblyDescription("TrakHound Server Plugin for tracking data by shift")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Feenux LLC")]

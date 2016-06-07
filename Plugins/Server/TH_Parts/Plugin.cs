@@ -71,7 +71,7 @@ namespace TH_Parts
 
         public void Closing() { }
 
-        public Type[] ConfigurationPageTypes { get { return new Type[] { typeof(ConfigurationPage.Page) }; } }
+        //public Type[] ConfigurationPageTypes { get { return new Type[] { typeof(ConfigurationPage.Page) }; } }
 
 
         private Configuration configuration;

@@ -11,7 +11,7 @@ namespace TH_Plugins.Client
 {
     public static class ClientPlugin
     {
-        public const string PLUGIN_EXTENSION = ".cplugin";
+        //public const string PLUGIN_EXTENSION = ".cplugin";
 
         public class PluginContainer : ReaderContainer
         {

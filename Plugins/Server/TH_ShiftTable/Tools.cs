@@ -7,7 +7,7 @@ using System;
 
 using TH_GeneratedData.GeneratedEvents;
 
-namespace TH_ShiftTable
+namespace TH_Shifts
 {
     public class Tools
     {

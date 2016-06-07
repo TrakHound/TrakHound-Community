@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>C:\TrakHound\Plugins\Server\Cycles\</OutputPath>
+    <OutputPath>C:\TrakHound\Plugins\Server\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -25,7 +25,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>C:\TrakHound\Server\Plugins\TH_Cycles\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -49,15 +49,15 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigurationPage\Controls\OverrideLinkItem.xaml.cs">
+    <None Include="ConfigurationPage\Controls\OverrideLinkItem.xaml.cs">
       <DependentUpon>OverrideLinkItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ConfigurationPage\Controls\ProductionTypeItem.xaml.cs">
+    </None>
+    <None Include="ConfigurationPage\Controls\ProductionTypeItem.xaml.cs">
       <DependentUpon>ProductionTypeItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ConfigurationPage\Page.xaml.cs">
+    </None>
+    <None Include="ConfigurationPage\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="CycleConfiguration.cs" />
     <Compile Include="CycleData.cs" />
     <Compile Include="Cycles.cs" />
@@ -113,14 +113,14 @@
       <Name>TH_GeneratedData</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\TH_InstanceTable\TH_InstanceTable.csproj">
+    <ProjectReference Include="..\TH_InstanceTable\TH_InstanceData.csproj">
       <Project>{86a72f6d-0c7d-40fd-b7ce-d0b9d75ee99b}</Project>
-      <Name>TH_InstanceTable</Name>
+      <Name>TH_InstanceData</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\TH_ShiftTable\TH_ShiftTable.csproj">
+    <ProjectReference Include="..\TH_ShiftTable\TH_Shifts.csproj">
       <Project>{21996c58-2404-42e4-a2d7-bec46aef6357}</Project>
-      <Name>TH_ShiftTable</Name>
+      <Name>TH_Shifts</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
@@ -128,23 +128,23 @@
     <Content Include="LICENSE.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Resources\Add_01.png" />
-    <Resource Include="Resources\Cycle_01.png" />
-    <Resource Include="Resources\Help_01.png" />
+    <None Include="Resources\Add_01.png" />
+    <None Include="Resources\Cycle_01.png" />
+    <None Include="Resources\Help_01.png" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="ConfigurationPage\Controls\OverrideLinkItem.xaml">
+    <None Include="ConfigurationPage\Controls\OverrideLinkItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ConfigurationPage\Controls\ProductionTypeItem.xaml">
+    </None>
+    <None Include="ConfigurationPage\Controls\ProductionTypeItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ConfigurationPage\Page.xaml">
+    </None>
+    <None Include="ConfigurationPage\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

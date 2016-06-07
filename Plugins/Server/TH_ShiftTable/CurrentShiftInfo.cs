@@ -7,7 +7,7 @@ using System;
 
 using TH_Configuration;
 
-namespace TH_ShiftTable
+namespace TH_Shifts
 {
     public class CurrentShiftInfo
     {

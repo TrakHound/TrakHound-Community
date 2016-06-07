@@ -195,6 +195,40 @@ namespace TH_StatusData
 
         #region "Get Tables"
 
+        //private static string[] dataTableNames = new string[]
+        //{
+        //    TableNames.SnapShots,
+        //    TableNames.Variables,
+        //    TableNames.GenEventValues,
+        //    TableNames.ShiftSegments,
+        //    TableNames.Status,
+        //    TableNames.OEE_Segments,
+        //    TableNames.OEE_Shifts,
+        //};
+
+        //private static string[] dataTableFilters = new string[]
+        //{
+        //    null,
+        //    null,
+        //    null,
+        //    null,
+        //    null,
+        //    null,
+        //    null,
+        //};
+
+        //private static string[] dataTableColumns = new string[]
+        //{
+        //    "NAME, VALUE",
+        //    "VARIABLE, VALUE",
+        //    null,
+        //    null,
+        //    null,
+        //    null,
+        //    null,
+        //};
+
+
         private static string[] dataTableNames = new string[]
         {
             TableNames.SnapShots,
@@ -325,28 +359,28 @@ namespace TH_StatusData
                 // Send Gen Event Values
                 SendDataEvent(genEventData);
 
-                //Get Shift Data
-                EventData shiftTableData = GetShifts(shiftData, config);
-                // Send Shift Data
-                SendDataEvent(shiftTableData);
+            //Get Shift Data
+            EventData shiftTableData = GetShifts(shiftData, config);
+            // Send Shift Data
+            SendDataEvent(shiftTableData);
 
-                // Get OEE Data
-                EventData oeeData = GetOEE(config, shiftData);
-                // Send OEE Data
-                SendDataEvent(oeeData);
+           // //Get OEE Data
+           //EventData oeeData = GetOEE(config, shiftData);
+           // // Send OEE Data
+           // SendDataEvent(oeeData);
 
-                // Get OEE Segments Data
-                EventData oeeSegmentsData = GetOEESegments(config, shiftData);
-                // Send OEE Segments Data
+            // Get OEE Segments Data
+            EventData oeeSegmentsData = GetOEESegments(config, shiftData);
+            //Send OEE Segments Data
                 SendDataEvent(oeeSegmentsData);
 
-                // Get Parts Data
-                EventData partsData = GetParts(config, shiftData);
-                // Send Parts Data
-                SendDataEvent(partsData);
+            //Get Parts Data
+           EventData partsData = GetParts(config, shiftData);
+            // Send Parts Data
+            SendDataEvent(partsData);
 
-                // Get Status Data
-                EventData statusData = GetStatus(status, config);
+            // Get Status Data
+            EventData statusData = GetStatus(status, config);
                 // Send Status Data
                 SendDataEvent(statusData);
             //}
@@ -544,32 +578,32 @@ namespace TH_StatusData
             return result;
         }
 
-        static EventData GetOEE(Configuration config, ShiftData shiftData)
-        {
-            var result = new EventData();
+        //static EventData GetOEE(Configuration config, ShiftData shiftData)
+        //{
+        //    var result = new EventData();
 
-            if (shiftData.shiftId != null)
-            {
-                if (shiftData.shiftId.Contains("_"))
-                {
-                    //string shiftQuery = shiftData.shiftId.Substring(0, shiftData.shiftId.LastIndexOf('_')); // Get Current Shift
-                    string shiftQuery = shiftData.shiftId.Substring(0, shiftData.shiftId.IndexOf('_')); // Get Whole day
+        //    if (shiftData.shiftId != null)
+        //    {
+        //        if (shiftData.shiftId.Contains("_"))
+        //        {
+        //            //string shiftQuery = shiftData.shiftId.Substring(0, shiftData.shiftId.LastIndexOf('_')); // Get Current Shift
+        //            string shiftQuery = shiftData.shiftId.Substring(0, shiftData.shiftId.IndexOf('_')); // Get Whole day
 
-                    DataTable dt = Table.Get(config.Databases_Client, Global.GetTableName(TableNames.OEE, config.DatabaseId), "WHERE Shift_Id LIKE '" + shiftQuery + "%'");
-                    if (dt != null)
-                    {
-                        var data = new EventData();
-                        data.Id = "StatusData_OEE";
-                        data.Data01 = config;
-                        data.Data02 = dt;
+        //            DataTable dt = Table.Get(config.Databases_Client, Global.GetTableName(TableNames.OEE, config.DatabaseId), "WHERE Shift_Id LIKE '" + shiftQuery + "%'");
+        //            if (dt != null)
+        //            {
+        //                var data = new EventData();
+        //                data.Id = "StatusData_OEE";
+        //                data.Data01 = config;
+        //                data.Data02 = dt;
 
-                        result = data;
-                    }
-                }
-            }
+        //                result = data;
+        //            }
+        //        }
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
         static EventData GetOEESegments(Configuration config, ShiftData shiftData)
         {

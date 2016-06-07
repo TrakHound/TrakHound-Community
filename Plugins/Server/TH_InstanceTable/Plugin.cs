@@ -9,7 +9,7 @@ using TH_Configuration;
 using TH_Plugins;
 using TH_Plugins.Server;
 
-namespace TH_InstanceTable
+namespace TH_InstanceData
 {
     public partial class Plugin : IServerPlugin
     {
@@ -47,7 +47,7 @@ namespace TH_InstanceTable
 
         public void Closing() { }
 
-        public Type[] ConfigurationPageTypes { get { return new Type[] { typeof(ConfigurationPage.Page) }; } }
+        //public Type[] ConfigurationPageTypes { get { return new Type[] { typeof(ConfigurationPage.Page) }; } }
 
     }
 }

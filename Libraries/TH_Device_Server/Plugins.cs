@@ -61,7 +61,7 @@ namespace TH_Device_Server
         {
             if (Directory.Exists(path))
             {
-                var foundPlugins = TH_Plugins.Reader.FindPlugins<IServerPlugin>(path, new ServerPlugin.PluginContainer(), ServerPlugin.PLUGIN_EXTENSION);
+                var foundPlugins = TH_Plugins.Reader.FindPlugins<IServerPlugin>(path, new ServerPlugin.PluginContainer());
                 foreach (var plugin in foundPlugins)
                 {
                     if (!plugins.Exists(x => x.Name.ToLower() == plugin.Name.ToLower()))

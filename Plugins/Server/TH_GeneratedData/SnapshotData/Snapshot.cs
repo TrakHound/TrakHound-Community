@@ -12,7 +12,7 @@ using MTConnect.Application.Streams;
 using TH_Configuration;
 using TH_Database;
 using TH_Global;
-using TH_InstanceTable;
+using TH_InstanceData;
 
 using TH_GeneratedData.GeneratedEvents;
 

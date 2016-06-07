@@ -144,6 +144,10 @@ namespace TH_Mobile
                 var infos = (List<StatusInfo>)data.Data02;
                 StatusInfo info = null;
 
+                // Availability
+                info = infos.Find(x => x.Type == "AVAILABILITY");
+                updateData.Controller.Availability = info.Value1;
+
                 // Controller Mode
                 info = infos.Find(x => x.Type == "CONTROLLER_MODE");
                 updateData.Controller.ControllerMode = info.Value1;
@@ -160,6 +164,10 @@ namespace TH_Mobile
                 info = infos.Find(x => x.Type == "SYSTEM");
                 updateData.Controller.SystemMessage = info.Value1;
                 updateData.Controller.SystemStatus = info.Value2;
+
+                // Program Name
+                info = infos.Find(x => x.Type == "PROGRAM");
+                updateData.Controller.ProgramName = info.Value1;
             }
         }
 

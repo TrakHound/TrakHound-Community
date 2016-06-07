@@ -36,6 +36,12 @@ namespace TH_StatusTable
 
         private void CreateColumns(int first, int count)
         {
+            int length = Devices_DG.Columns.Count;
+            for (var x = length - 1; x > 3; x--)
+            {
+                Devices_DG.Columns.RemoveAt(x);
+            }
+
             var columns = new List<DataGridColumn>();
 
             int last = first + count;
@@ -62,23 +68,17 @@ namespace TH_StatusTable
                 DateTime end = new DateTime(1, 1, 1, hour, 0, 0);
 
                 header.Text = startHour + " " + titleSuffix;
-                header.TooltipHeader = start.ToShortTimeString() + " - " + end.ToShortTimeString();
+                header.TooltipHeader = DateTime.Now.ToLongDateString() + Environment.NewLine + start.ToShortTimeString() + " - " + end.ToShortTimeString();
                 column.Header = header;
 
                 // Add Cell
-                //var cell = new FrameworkElementFactory(typeof(Controls.Cell));
                 var cell = new FrameworkElementFactory(typeof(Controls.BetterCell));
                 cell.SetBinding(Controls.BetterCell.HourDataProperty, new Binding("HourDatas[" + x.ToString() + "]"));
-
-                
-
 
                 // Set Template
                 var template = new DataTemplate();
                 template.VisualTree = cell;
                 column.CellTemplate = template;
-                //column.CellStyle = TryFindResource("HourColumnTemplate");
-                
 
                 columns.Add(column);
             }
@@ -97,6 +97,7 @@ namespace TH_StatusTable
 
         private void Refresh_Clicked(TH_WPF.Button bt)
         {
+            CreateColumns(0, 24);
             Devices_DG.Items.Refresh();
         }
     }

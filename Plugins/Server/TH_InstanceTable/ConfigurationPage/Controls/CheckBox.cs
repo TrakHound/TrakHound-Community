@@ -1,4 +1,4 @@
-﻿namespace TH_InstanceTable.ConfigurationPage.Controls
+﻿namespace TH_InstanceData.ConfigurationPage.Controls
 {
     public class CheckBox : System.Windows.Controls.CheckBox
     {

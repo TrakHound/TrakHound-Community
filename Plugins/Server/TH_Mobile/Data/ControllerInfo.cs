@@ -12,21 +12,25 @@ namespace TH_Mobile.Data
         [NonSerialized]
         public bool Changed;
 
+        public string Availability { get; set; }
         public string ControllerMode { get; set; }
         public string EmergencyStop { get; set; }
         public string ExecutionMode { get; set; }
         public string SystemStatus { get; set; }
         public string SystemMessage { get; set; }
+        public string ProgramName { get; set; } 
 
         public bool EqualTo(ControllerInfo info)
         {
             return
                 info != null &&
+                Availability == info.Availability &&
                 ControllerMode == info.ControllerMode &&
                 EmergencyStop == info.EmergencyStop &&
                 ExecutionMode == info.ExecutionMode &&
                 SystemStatus == info.SystemStatus &&
-                SystemMessage == info.SystemMessage;
+                SystemMessage == info.SystemMessage &&
+                ProgramName == info.ProgramName;
         }
     }
 }

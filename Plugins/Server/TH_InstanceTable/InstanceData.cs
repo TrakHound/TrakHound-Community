@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace TH_InstanceTable
+namespace TH_InstanceData
 {
     public class InstanceData : IDisposable
     {

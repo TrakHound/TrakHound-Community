@@ -14,7 +14,7 @@ using TH_GeneratedData.GeneratedEvents;
 using TH_Global;
 using TH_Global.Functions;
 using TH_Global.Shifts;
-using TH_InstanceTable;
+using TH_InstanceData;
 using TH_Plugins;
 using TH_Plugins.Database;
 using TH_Plugins.Server;
@@ -77,7 +77,7 @@ namespace TH_Cycles
 
         public void Closing() { }
 
-        public Type[] ConfigurationPageTypes { get { return new Type[] { typeof(ConfigurationPage.Page) }; } }
+        //public Type[] ConfigurationPageTypes { get { return new Type[] { typeof(ConfigurationPage.Page) }; } }
 
         public bool UseDatabases { get; set; }
 
@@ -333,12 +333,12 @@ namespace TH_Cycles
                     // Get the name of the cycleEvent (cycleEvent.Value)
                     string cycleEventValue = eventReturn.Value;
 
-                    TH_ShiftTable.CurrentShiftInfo startShiftInfo = null;
-                    TH_ShiftTable.CurrentShiftInfo endShiftInfo = null;
+                    TH_Shifts.CurrentShiftInfo startShiftInfo = null;
+                    TH_Shifts.CurrentShiftInfo endShiftInfo = null;
 
                     // Get ShiftId from Timestamp
-                    if (cycleData != null) startShiftInfo = TH_ShiftTable.CurrentShiftInfo.Get(configuration, cycleData.StartTime);
-                    if (instanceData != null) endShiftInfo = TH_ShiftTable.CurrentShiftInfo.Get(configuration, instanceData.Timestamp);
+                    if (cycleData != null) startShiftInfo = TH_Shifts.CurrentShiftInfo.Get(configuration, cycleData.StartTime);
+                    if (instanceData != null) endShiftInfo = TH_Shifts.CurrentShiftInfo.Get(configuration, instanceData.Timestamp);
 
 
                     CycleData cycle = cycleData;
@@ -402,7 +402,7 @@ namespace TH_Cycles
             return result;
         }
         
-        private static string GetShiftId(TH_ShiftTable.CurrentShiftInfo info)
+        private static string GetShiftId(TH_Shifts.CurrentShiftInfo info)
         {
             if (info != null) return info.id;
             return null;
@@ -491,7 +491,7 @@ namespace TH_Cycles
 
         void SetCycleShiftId(CycleData cycle, InstanceData data)
         {         
-            var shiftId = TH_ShiftTable.CurrentShiftInfo.Get(configuration, data.Timestamp);
+            var shiftId = TH_Shifts.CurrentShiftInfo.Get(configuration, data.Timestamp);
             if (shiftId != null) cycle.ShiftId = new ShiftId(shiftId.id);
         }
 

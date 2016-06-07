@@ -12,7 +12,7 @@ namespace TH_Plugins.Server
     public static class ServerPlugin
     {
 
-        public const string PLUGIN_EXTENSION = ".splugin";
+        //public const string PLUGIN_EXTENSION = ".splugin";
 
         public class PluginContainer : ReaderContainer
         {

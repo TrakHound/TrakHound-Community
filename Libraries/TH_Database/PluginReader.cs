@@ -74,7 +74,7 @@ namespace TH_Database
         {
             var result = new List<IDatabasePlugin>();
 
-            var plugins = Reader.FindPlugins<IDatabasePlugin>(path, new DatabasePlugin.PluginContainer(), DatabasePlugin.PLUGIN_EXTENSION);
+            var plugins = Reader.FindPlugins<IDatabasePlugin>(path, new DatabasePlugin.PluginContainer());
             foreach (var plugin in plugins)
             {
                 // Only add if not already in returned list

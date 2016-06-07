@@ -13,7 +13,7 @@ using MTConnect.Application;
 using TH_Configuration;
 using TH_Plugins;
 
-namespace TH_InstanceTable
+namespace TH_InstanceData
 {
     public partial class Plugin
     {

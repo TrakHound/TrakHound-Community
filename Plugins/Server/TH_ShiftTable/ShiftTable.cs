@@ -20,7 +20,7 @@ using TH_Plugins;
 using TH_Plugins.Database;
 using TH_Plugins.Server;
 
-namespace TH_ShiftTable
+namespace TH_Shifts
 {
     public class ShiftTable : IServerPlugin
     {
@@ -135,7 +135,7 @@ namespace TH_ShiftTable
 
         }
 
-        public Type[] ConfigurationPageTypes { get { return new Type[] { typeof(ConfigurationPage.Page) }; } }
+        //public Type[] ConfigurationPageTypes { get { return new Type[] { typeof(ConfigurationPage.Page) }; } }
 
         #endregion
 

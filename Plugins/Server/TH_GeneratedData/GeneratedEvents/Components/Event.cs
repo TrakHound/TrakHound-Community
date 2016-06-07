@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-using TH_InstanceTable;
+using TH_InstanceData;
 
 namespace TH_GeneratedData.GeneratedEvents
 {

@@ -22,7 +22,7 @@ using TH_Plugins;
 using TH_Plugins.Server;
 using TH_UserManagement.Management;
 
-namespace TH_InstanceTable.ConfigurationPage
+namespace TH_InstanceData.ConfigurationPage
 {
     /// <summary>
     /// Interaction logic for Page.xaml
@@ -44,7 +44,7 @@ namespace TH_InstanceTable.ConfigurationPage
             {
                 if (_image == null)
                 {
-                    _image = new BitmapImage(new Uri("pack://application:,,,/TH_InstanceTable;component/Resources/Hourglass_01.png"));
+                    _image = new BitmapImage(new Uri("pack://application:,,,/TH_InstanceData;component/Resources/Hourglass_01.png"));
                     _image.Freeze();
                 }
 

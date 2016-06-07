@@ -42,7 +42,7 @@ namespace TH_MTConnect.Plugin
             Stop();
         }
 
-        public Type[] ConfigurationPageTypes { get { return new Type[] { typeof(ConfigurationPage.Page) }; } }
+        //public Type[] ConfigurationPageTypes { get { return new Type[] { typeof(ConfigurationPage.Page) }; } }
 
 
         Configuration configuration;

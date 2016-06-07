@@ -41,7 +41,7 @@
         </Grid>
 
         <!--Close Button-->
-        <th_wpf:Button Grid.Column="1" Clicked="CloseButton_Clicked" Width="20" Height="20" Margin="10,0,0,0" Foreground="#fff" VerticalAlignment="Top" Image="/TrakHound-Server-DeviceManager;component/Resources/X_01.png">
+        <th_wpf:Button Grid.Column="1" Clicked="CloseButton_Clicked" Width="20" Height="20" Margin="10,0,0,0" Foreground="#fff" VerticalAlignment="Top" Image="/TrakHound-Device-Manager;component/Resources/X_01.png">
             <th_wpf:Button.Style>
                 <Style TargetType="th_wpf:Button">
                     <Setter Property="Background" Value="Transparent"/>

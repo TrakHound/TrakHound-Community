@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>C:\TrakHound\Plugins\Server\TH_MTConnect\</OutputPath>
+    <OutputPath>C:\TrakHound\Plugins\Server\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -61,12 +61,12 @@
     <None Include="Components\Tools.cs" />
     <None Include="Header.cs" />
     <Compile Include="Plugin\AgentConfiguration.cs" />
-    <Compile Include="Plugin\ConfigurationPage\Controls\MessageItem.xaml.cs">
+    <None Include="Plugin\ConfigurationPage\Controls\MessageItem.xaml.cs">
       <DependentUpon>MessageItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Plugin\ConfigurationPage\Page.xaml.cs">
+    </None>
+    <None Include="Plugin\ConfigurationPage\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="Plugin\Current.cs" />
     <Compile Include="Plugin\Plugin.cs" />
     <Compile Include="Plugin\Probe.cs" />
@@ -141,19 +141,19 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Page Include="Plugin\ConfigurationPage\Controls\MessageItem.xaml">
+    <None Include="Plugin\ConfigurationPage\Controls\MessageItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Plugin\ConfigurationPage\Page.xaml">
+    </None>
+    <None Include="Plugin\ConfigurationPage\Page.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(TargetName).dll $(TargetName).splugin
-</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

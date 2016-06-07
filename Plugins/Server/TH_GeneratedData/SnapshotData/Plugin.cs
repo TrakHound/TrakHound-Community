@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Data;
 
 using TH_Configuration;
-using TH_InstanceTable;
+using TH_InstanceData;
 using TH_Plugins;
 using TH_Plugins.Server;
 
@@ -73,13 +73,13 @@ namespace TH_GeneratedData.SnapshotData
 
         public void Closing() { }
 
-        public Type[] ConfigurationPageTypes
-        {
-            get
-            {
-                return new Type[] { typeof(ConfigurationPage.Page) };
-            }
-        }
+        //public Type[] ConfigurationPageTypes
+        //{
+        //    get
+        //    {
+        //        return new Type[] { typeof(ConfigurationPage.Page) };
+        //    }
+        //}
 
 
         private Configuration configuration;

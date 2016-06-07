@@ -13,7 +13,7 @@ using MTConnect.Application.Streams;
 using TH_Configuration;
 using TH_Global.Shifts;
 
-namespace TH_ShiftTable
+namespace TH_Shifts
 {
     public class ShiftRowInfo
     {

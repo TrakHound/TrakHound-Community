@@ -139,7 +139,7 @@ namespace TrakHound_Client
         {
             var result = new List<IClientPlugin>();
 
-            var plugins = Reader.FindPlugins<IClientPlugin>(path, new ClientPlugin.PluginContainer(), ClientPlugin.PLUGIN_EXTENSION);
+            var plugins = Reader.FindPlugins<IClientPlugin>(path, new ClientPlugin.PluginContainer());
             foreach (var plugin in plugins)
             {
                 // Only add if not already in returned list

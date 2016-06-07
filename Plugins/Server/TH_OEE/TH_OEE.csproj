@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>C:\TrakHound\Plugins\Server\OEE\</OutputPath>
+    <OutputPath>C:\TrakHound\Plugins\Server\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -104,9 +104,9 @@
       <Name>TH_Cycles</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\TH_ShiftTable\TH_ShiftTable.csproj">
+    <ProjectReference Include="..\TH_ShiftTable\TH_Shifts.csproj">
       <Project>{21996c58-2404-42e4-a2d7-bec46aef6357}</Project>
-      <Name>TH_ShiftTable</Name>
+      <Name>TH_Shifts</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
