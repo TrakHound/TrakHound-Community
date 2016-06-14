@@ -115,20 +115,14 @@
       <Name>TH_Styles</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Libraries\TH_UserManagement\TH_UserManagement.csproj">
-      <Project>{85f2c2a8-cd43-486b-9918-2a1f11cfc15f}</Project>
-      <Name>TH_UserManagement</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Libraries\TH_WPF\TH_WPF.csproj">
       <Project>{e039a6be-d47c-4046-86d3-71acd62a217a}</Project>
       <Name>TH_WPF</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\TH_InstanceTable\TH_InstanceData.csproj">
+    <ProjectReference Include="..\TH_InstanceData\TH_InstanceData.csproj">
       <Project>{86a72f6d-0c7d-40fd-b7ce-d0b9d75ee99b}</Project>
       <Name>TH_InstanceData</Name>
-      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

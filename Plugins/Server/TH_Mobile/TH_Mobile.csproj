@@ -65,7 +65,7 @@
       <Project>{eb5e38e0-af12-49f7-990b-243389690ea6}</Project>
       <Name>TH_Plugins</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TH_ShiftTable\TH_Shifts.csproj">
+    <ProjectReference Include="..\TH_Shifts\TH_Shifts.csproj">
       <Project>{21996c58-2404-42e4-a2d7-bec46aef6357}</Project>
       <Name>TH_Shifts</Name>
     </ProjectReference>

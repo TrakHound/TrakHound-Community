@@ -140,6 +140,22 @@ namespace TH_GeneratedData_Config.GeneratedEvents
             }
         }
 
+        ObservableCollection<string> _dataItemTypes;
+        public ObservableCollection<string> DataItemTypes
+        {
+            get
+            {
+                if (_dataItemTypes == null)
+                    _dataItemTypes = new ObservableCollection<string>();
+                return _dataItemTypes;
+            }
+
+            set
+            {
+                _dataItemTypes = value;
+            }
+        }
+
         private List<DataItem> probeData = new List<DataItem>();
 
         public class CollectedItem : IComparable
@@ -205,6 +221,22 @@ namespace TH_GeneratedData_Config.GeneratedEvents
                     probeData = dataItems;
                     if (Loaded) LoadCollectedItems(dataItems);
                 }
+            }
+        }
+
+        private void LoadDataItemTypes(List<DataItem> dataItems)
+        {
+            DataItemTypes.Clear();
+
+            foreach (var dataItem in dataItems)
+            {
+                string type = dataItem.Type;
+                if (!string.IsNullOrEmpty(dataItem.SubType))
+                {
+                    type += "||" + dataItem.SubType;
+                }
+
+                DataItemTypes.Add(type);
             }
         }
 

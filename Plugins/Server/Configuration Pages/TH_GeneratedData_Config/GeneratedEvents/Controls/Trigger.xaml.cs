@@ -84,6 +84,23 @@ namespace TH_GeneratedData_Config.GeneratedEvents.Controls
             }
         }
 
+        #region "Link Type"
+
+        public string LinkType
+        {
+            get { return (string)GetValue(LinkTypeProperty); }
+            set { SetValue(LinkTypeProperty, value); }
+        }
+
+        public static readonly DependencyProperty LinkTypeProperty =
+            DependencyProperty.Register("LinkType", typeof(string), typeof(Trigger), new PropertyMetadata(null));
+
+        private void LinkType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        #endregion
 
         #region "Value"
 
