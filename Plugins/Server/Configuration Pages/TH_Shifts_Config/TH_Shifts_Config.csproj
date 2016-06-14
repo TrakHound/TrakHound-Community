@@ -80,6 +80,10 @@
       <Project>{e039a6be-d47c-4046-86d3-71acd62a217a}</Project>
       <Name>TH_WPF</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\TH_Shifts\TH_Shifts.csproj">
+      <Project>{21996c58-2404-42e4-a2d7-bec46aef6357}</Project>
+      <Name>TH_Shifts</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\BreakListItem.xaml">

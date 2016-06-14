@@ -64,3 +64,4 @@ F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\obj\Release
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\obj\Release\TH_Styles.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\obj\Release\TH_Styles.dll
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\obj\Release\TH_Styles.pdb
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Styles\obj\Release\TH_Styles.csprojResolveAssemblyReference.cache

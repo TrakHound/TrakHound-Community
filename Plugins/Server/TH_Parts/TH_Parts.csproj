@@ -69,17 +69,13 @@
       <Project>{eb5e38e0-af12-49f7-990b-243389690ea6}</Project>
       <Name>TH_Plugins</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Libraries\TH_Styles\TH_Styles.csproj">
-      <Project>{ebfabb3a-6fb4-47ae-8cb1-b663d57cf5b1}</Project>
-      <Name>TH_Styles</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Libraries\TH_WPF\TH_WPF.csproj">
-      <Project>{e039a6be-d47c-4046-86d3-71acd62a217a}</Project>
-      <Name>TH_WPF</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TH_GeneratedData\TH_GeneratedData.csproj">
       <Project>{51202eb2-c838-456e-9bd0-50840d12a19c}</Project>
       <Name>TH_GeneratedData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TH_Shifts\TH_Shifts.csproj">
+      <Project>{21996c58-2404-42e4-a2d7-bec46aef6357}</Project>
+      <Name>TH_Shifts</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -84,25 +84,14 @@
       <Project>{eb5e38e0-af12-49f7-990b-243389690ea6}</Project>
       <Name>TH_Plugins</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Libraries\TH_Styles\TH_Styles.csproj">
-      <Project>{ebfabb3a-6fb4-47ae-8cb1-b663d57cf5b1}</Project>
-      <Name>TH_Styles</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Libraries\TH_UserManagement\TH_UserManagement.csproj">
-      <Project>{85f2c2a8-cd43-486b-9918-2a1f11cfc15f}</Project>
-      <Name>TH_UserManagement</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Libraries\TH_WPF\TH_WPF.csproj">
-      <Project>{e039a6be-d47c-4046-86d3-71acd62a217a}</Project>
-      <Name>TH_WPF</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\TH_Cycles\TH_Cycles.csproj">
       <Project>{ad70962e-e836-494b-8dff-444d7bc74c80}</Project>
       <Name>TH_Cycles</Name>
       <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\TH_Shifts\TH_Shifts.csproj">
+      <Project>{21996c58-2404-42e4-a2d7-bec46aef6357}</Project>
+      <Name>TH_Shifts</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
