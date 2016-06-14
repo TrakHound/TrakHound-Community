@@ -1,0 +1,75 @@
+﻿<UserControl x:Class="TH_MySQL_Config.Button"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             
+             mc:Ignorable="d" 
+             MinWidth="200">
+
+    <Grid>
+        
+        <StackPanel Orientation="Horizontal">
+
+            <!--Database Type-->
+            <TextBlock Text="MySQL" FontSize="14pt" Margin="0,0,10,0">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+            <!--Database Name-->
+            <StackPanel Orientation="Horizontal" Margin="10,0">
+
+                <!--Label-->
+                <TextBlock Text="Database Name" VerticalAlignment="Center" FontSize="8pt">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Light}"/>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+                <!--Value-->
+                <TextBlock Text="{Binding DatabaseName}" FontSize="12pt" Margin="10,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Light}"/>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+            </StackPanel>
+
+            <!--Server-->
+            <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="10,0">
+
+                <!--Label-->
+                <TextBlock Text="Server" VerticalAlignment="Center" FontSize="8pt">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Light}"/>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+                <!--Value-->
+                <TextBlock Text="{Binding Server}" FontSize="12pt" Margin="10,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Light}"/>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+            </StackPanel>
+
+        </StackPanel>
+        
+    </Grid>
+    
+</UserControl>

@@ -34,19 +34,15 @@
     <OutputPath>bin\Server\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <None Include="GeneratedEvents\ConfigurationPage\Controls\CaptureItem.xaml.cs">
@@ -85,11 +81,6 @@
     <Compile Include="GeneratedEvents\Components\Trigger.cs" />
     <Compile Include="GeneratedEvents\Components\Value.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="SnapshotData\Database.cs" />
     <Compile Include="SnapshotData\Plugin.cs" />
     <Compile Include="SnapshotData\Snapshot.cs" />
@@ -144,15 +135,6 @@
     <Content Include="LICENSE.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Resources\Camera_01.png" />
-    <Resource Include="Resources\Group_01.png" />
-    <Resource Include="Resources\Carrot_Arrow_Up_01.png" />
-    <Resource Include="Resources\Edit_02.png" />
-    <Resource Include="Resources\Edit_01.png" />
-    <Resource Include="Resources\Refresh_01.png" />
-    <Resource Include="Resources\Add_01.png" />
-    <Resource Include="Resources\Help_01.png" />
-    <Resource Include="Resources\X_01.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="GeneratedEvents\ConfigurationPage\Controls\CaptureItem.xaml">
@@ -187,12 +169,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -14,7 +14,7 @@ using TH_Cycles;
 using TH_Global.Shifts;
 using TH_Plugins;
 using TH_Plugins.Server;
-using TH_ShiftTable;
+using TH_Shifts;
 
 namespace TH_OEE
 {

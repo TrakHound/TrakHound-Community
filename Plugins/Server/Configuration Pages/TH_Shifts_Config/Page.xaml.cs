@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 
 using TH_Global.Functions;
 using TH_Plugins;
-using TH_Plugins.ConfigurationPage;
+using TH_Plugins.Server;
 
 using TH_Shifts;
 
@@ -41,7 +41,7 @@ namespace TH_Shifts_Config
             {
                 if (_image == null)
                 {
-                    _image = new BitmapImage(new Uri("pack://application:,,,/TH_Shifts;component/Resources/Timer_01.png"));
+                    _image = new BitmapImage(new Uri("pack://application:,,,/TH_Shifts_Config;component/Resources/Timer_01.png"));
                     _image.Freeze();
                 }
 

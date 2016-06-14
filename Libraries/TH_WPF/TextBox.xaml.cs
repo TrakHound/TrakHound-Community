@@ -32,6 +32,8 @@ namespace TH_WPF
 
         #region "Public Properties"
 
+        public object DataObject { get; set; }
+
         public string Title
         {
             get { return (string)GetValue(TitleProperty); }

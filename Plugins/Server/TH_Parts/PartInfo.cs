@@ -7,7 +7,7 @@ using System;
 
 using TH_Configuration;
 using TH_GeneratedData.GeneratedEvents;
-using TH_ShiftTable;
+using TH_Shifts;
 
 using TH_Global.Functions;
 

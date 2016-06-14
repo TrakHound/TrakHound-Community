@@ -157,7 +157,7 @@ namespace TH_InstanceData
         // Process instance table after receiving Sample Data
         List<InstanceData> ProcessInstances(MTConnect.Application.Streams.ReturnData currentData, MTConnect.Application.Streams.ReturnData sampleData)
         {
-            List<InstanceData> Result = new List<InstanceData>();
+            var result = new List<InstanceData>();
 
             InstanceData previousData = PreviousInstanceData_old;
 
@@ -232,6 +232,9 @@ namespace TH_InstanceData
                                 {
                                     var newval = new InstanceData.DataItemValue();
                                     newval.Id = ivd.Id;
+                                    newval.Type = ivd.Type;
+                                    newval.SubType = ivd.SubType;
+
                                     if (ivd.Value != null) newval.Value = ivd.Value.ToString();
                                     data.Values.Add(newval);
                                 }
@@ -253,14 +256,14 @@ namespace TH_InstanceData
                                 }
                             }
 
-                            if (changed) Result.Add(data);
+                            if (changed) result.Add(data);
                         }
                     }
                     else if (currentData != null)
                     {
                         InstanceData instanceData = ProcessInstance(currentData);
 
-                        Result.Add(instanceData);
+                        result.Add(instanceData);
 
                         previousData = instanceData.Copy();
                     }
@@ -270,14 +273,14 @@ namespace TH_InstanceData
             {
                 InstanceData instanceData = ProcessInstance(currentData);
 
-                Result.Add(instanceData);
+                result.Add(instanceData);
 
                 previousData = instanceData.Copy();
             }
 
             PreviousInstanceData_new = previousData;
 
-            return Result;
+            return result;
         }
 
         // Process InstanceData after receiving Current Data
@@ -304,8 +307,9 @@ namespace TH_InstanceData
                 {
                     var value = new InstanceData.DataItemValue();
                     value.Id = item.DataItemId;
-                    //value.Value = item.Value;
-                    //value.Value = item.CDATA;
+
+                    value.Type = item.Type;
+                    value.SubType = item.SubType;
 
                     if (item.Category == MTConnect.Application.Streams.DataItemCategory.CONDITION)
                     {
@@ -322,14 +326,15 @@ namespace TH_InstanceData
 
         List<InstanceVariableData> GetVariableDataFromDataItemCollection(List<MTConnect.Application.Streams.DataItem> dataItems)
         {
-
-            List<InstanceVariableData> Result = new List<InstanceVariableData>();
+            var result = new List<InstanceVariableData>();
 
             foreach (var item in dataItems)
             {
                 var instanceData = new InstanceVariableData();
                 instanceData.Id = item.DataItemId;
-                //instanceData.Value = item.Value;
+
+                instanceData.Type = item.Type;
+                instanceData.SubType = item.SubType;
 
                 if (item.Category == MTConnect.Application.Streams.DataItemCategory.CONDITION)
                 {
@@ -340,14 +345,13 @@ namespace TH_InstanceData
                 instanceData.Timestamp = item.Timestamp;
                 instanceData.Sequence = item.Sequence;
 
-                Result.Add(instanceData);
+                result.Add(instanceData);
             }
-            
+
             // Sort List by timestamp ASC
-            Result.Sort((x, y) => x.Timestamp.Second.CompareTo(y.Timestamp.Second));
+            result.Sort((x, y) => x.Timestamp.Second.CompareTo(y.Timestamp.Second));
 
-            return Result;
-
+            return result;
         }
 
     }

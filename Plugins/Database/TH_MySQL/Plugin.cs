@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.NetworkInformation;
-using System.Data;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
-using System.ComponentModel.Composition;
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
 
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
+using System.Data;
 
 using TH_Configuration;
-using TH_Database;
-using TH_Plugins;
 using TH_Plugins.Database;
 
 namespace TH_MySQL
@@ -20,23 +19,23 @@ namespace TH_MySQL
 
         public string Type { get { return "MySQL"; } }
 
-        public Type Config_Page { get { return typeof(ConfigurationPage.Page); } }
+        //public Type Config_Page { get { return typeof(ConfigurationPage.Page); } }
 
-        public object CreateConfigurationButton(DataTable dt)
-        {
-            ConfigurationPage.Button result = new ConfigurationPage.Button();
+        //public object CreateConfigurationButton(DataTable dt)
+        //{
+        //    ConfigurationPage.Button result = new ConfigurationPage.Button();
 
-            if (dt != null)
-            {
-                if (dt.Rows.Count > 0)
-                {
-                    result.DatabaseName = GetTableValue("Database", dt);
-                    result.Server = GetTableValue("Server", dt);
-                }
-            }
+        //    if (dt != null)
+        //    {
+        //        if (dt.Rows.Count > 0)
+        //        {
+        //            result.DatabaseName = GetTableValue("Database", dt);
+        //            result.Server = GetTableValue("Server", dt);
+        //        }
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
         public void Initialize(Database_Configuration config)
         {

@@ -19,8 +19,15 @@ namespace TH_GeneratedData.GeneratedEvents
         CONTAINS_WHOLE_WORD_MATCH_CASE = 7
     };
 
+    public enum TriggerLinkType
+    {
+        ID = 0,
+        Type = 1,
+    }
+
     public class Trigger
     {
+        public TriggerLinkType LinkType { get; set; }
         public string Link { get; set; }
         public string Value { get; set; }
         public TriggerModifier Modifier { get; set; }
@@ -33,6 +40,15 @@ namespace TH_GeneratedData.GeneratedEvents
             {
                 result = new Trigger();
 
+                if (Node.Attributes["link_type"] != null)
+                {
+                    switch (Node.Attributes["link_type"].Value.ToString().ToLower())
+                    {
+                        case "type": result.LinkType = TriggerLinkType.Type; break;
+                        default: result.LinkType = TriggerLinkType.ID; break;
+                    }
+                }
+
                 if (Node.Attributes["link"] != null)
                     result.Link = Node.Attributes["link"].Value;
 
@@ -41,7 +57,7 @@ namespace TH_GeneratedData.GeneratedEvents
 
                 // Added modifier to enable being able to say != to 'value' (ex. Message != "")
                 if (Node.Attributes["modifier"] != null)
-
+                {
                     switch (Node.Attributes["modifier"].Value.ToString().ToLower())
                     {
                         case "not": result.Modifier = TriggerModifier.NOT; break;
@@ -52,6 +68,7 @@ namespace TH_GeneratedData.GeneratedEvents
                         case "contains_whole_word": result.Modifier = TriggerModifier.CONTAINS_WHOLE_WORD; break;
                         case "contains_whole_word_match_case": result.Modifier = TriggerModifier.CONTAINS_WHOLE_WORD_MATCH_CASE; break;
                     }
+                }     
             }
 
             return result;

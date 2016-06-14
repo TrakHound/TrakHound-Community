@@ -55,7 +55,7 @@ namespace TH_Database
             string path;
 
             // Load from System Directory first (easier for user to navigate to 'C:\TrakHound\')
-            path = TH_Global.FileLocations.TrakHound + @"\Plugins\";
+            path = FileLocations.TrakHound + @"\Plugins\";
             if (Directory.Exists(path)) AddPlugins(GetPlugins(path), result);
 
             // Load from App root Directory (doesn't overwrite plugins found in System Directory)

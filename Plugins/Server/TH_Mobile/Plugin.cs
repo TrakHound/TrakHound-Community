@@ -10,7 +10,7 @@ using TH_Configuration;
 using TH_Global.Functions;
 using TH_Plugins;
 using TH_Plugins.Server;
-using TH_ShiftTable;
+using TH_Shifts;
 using TH_Status;
 
 namespace TH_Mobile

@@ -32,7 +32,7 @@
                     <!--Image-->
                     <Grid Height="30" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,0,0" VerticalAlignment="Center">
                         <Grid.Resources>
-                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_ShiftTable;component/Resources/Timer_01.png" />
+                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_Shifts_Config;component/Resources/Timer_01.png" />
                         </Grid.Resources>
                         <Grid.Style>
                             <Style TargetType="Grid">
@@ -54,7 +54,7 @@
             </Grid>
 
             <!--Add Shift Button-->
-            <th_wpf:Button Text="Add Shift" Height="35" HorizontalAlignment="Left" Margin="0,10" Image="/TH_GeneratedData;component/Resources/Add_01.png" Clicked="AddShift_Clicked">
+            <th_wpf:Button Text="Add Shift" Height="35" HorizontalAlignment="Left" Margin="0,10" Image="/TH_Shifts_Config;component/Resources/Add_01.png" Clicked="AddShift_Clicked">
                 <th_wpf:Button.Style>
                     <Style TargetType="th_wpf:Button">
                         <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>

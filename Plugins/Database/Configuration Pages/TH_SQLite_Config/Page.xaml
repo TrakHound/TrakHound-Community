@@ -1,0 +1,66 @@
+﻿<UserControl x:Class="TH_SQLite_Config.Page"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="600"
+             d:DesignWidth="800">
+
+    <Grid>
+
+        <StackPanel>
+
+            <!--SQLite Description-->
+            <Grid MaxWidth="600" HorizontalAlignment="Left" Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Image Source="/TH_SQLite_Config;component/Resources/sqlite_logo.png" Margin="0,0,20,0" Height="50"/>
+
+                <TextBlock Grid.Column="1" Foreground="{StaticResource Foreground_Normal}" FontSize="10pt" TextAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap">
+                    <Run Text="SQLite is a serverless database system that is written to a single local file."/>
+                    <Run Text="There is no setup necessary and the file will be automatically created based on the path set below."/>
+                    <Run Text="This is a good choice for testing TrakHound or when not used on a network."/>
+                    <Run Text="More information on SQLite can be found"/>
+                    <Hyperlink NavigateUri="https://www.sqlite.org/" RequestNavigate="Hyperlink_RequestNavigate">here</Hyperlink>
+                </TextBlock>
+
+            </Grid>
+
+            <!--Manual Configuration-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel MinWidth="400">
+                    <StackPanel.Resources>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Margin" Value="0,5"/>
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <!--Database Name-->
+                    <th_wpf:TextBox Text="{Binding DatabasePath, Mode=TwoWay}" Title="Database File Path" Instructions="Enter path to the database file" TextChanged="TXT_TextChanged">
+                        <th_wpf:TextBox.HelpText>
+                            Enter path to the database file
+                        </th_wpf:TextBox.HelpText>
+                    </th_wpf:TextBox>
+
+                </StackPanel>
+
+            </Grid>
+
+        </StackPanel>
+
+    </Grid>
+
+</UserControl>

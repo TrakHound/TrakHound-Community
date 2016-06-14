@@ -19,7 +19,7 @@ using TH_Configuration;
 using TH_Global;
 using TH_Global.Functions;
 using TH_Plugins;
-using TH_Plugins.ConfigurationPage;
+using TH_Plugins.Server;
 using TH_UserManagement.Management;
 using TH_WPF;
 

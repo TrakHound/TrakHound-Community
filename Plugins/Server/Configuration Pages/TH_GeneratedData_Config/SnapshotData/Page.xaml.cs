@@ -1,4 +1,9 @@
-﻿using MTConnect.Application.Components;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using MTConnect.Application.Components;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,7 +16,7 @@ using System.Windows.Media.Imaging;
 using TH_GeneratedData.SnapshotData;
 using TH_Global.Functions;
 using TH_Plugins;
-using TH_Plugins.ConfigurationPage;
+using TH_Plugins.Server;
 
 namespace TH_GeneratedData_Config.SnapshotData
 {

@@ -5,7 +5,7 @@
 
 using System;
 
-using TH_Plugins.ConfigurationPage;
+using TH_Plugins.Server;
 
 namespace TH_MTConnect_Config
 {

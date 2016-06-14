@@ -8,5 +8,5 @@ F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Global\bin\Release
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Global\bin\Release\TH_Global.dll
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Global\bin\Release\Newtonsoft.Json.dll
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Global\bin\Release\Newtonsoft.Json.xml
-F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Global\obj\Release\TH_Global.dll
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Global\obj\Release\TH_Global.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_Global\obj\Release\TH_Global.dll

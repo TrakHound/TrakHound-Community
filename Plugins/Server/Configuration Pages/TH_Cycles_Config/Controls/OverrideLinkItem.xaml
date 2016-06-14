@@ -52,7 +52,7 @@
             </StackPanel>
 
             <!--Remove Button-->
-            <th_wpf:Button Grid.Column="1" Image="/TH_GeneratedData;component/Resources/X_01.png" Cursor="Hand" Margin="20,5,5,5" Height="25" Padding="3" Clicked="Removed_Clicked">
+            <th_wpf:Button Grid.Column="1" Image="/TH_GeneratedData_Config;component/Resources/X_01.png" Cursor="Hand" Margin="20,5,5,5" Height="25" Padding="3" Clicked="Removed_Clicked">
                 <th_wpf:Button.Style>
                     <Style TargetType="th_wpf:Button">
                         <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>

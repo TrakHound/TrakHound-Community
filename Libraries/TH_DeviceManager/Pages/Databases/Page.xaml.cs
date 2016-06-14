@@ -13,6 +13,8 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
+using System.IO;
+
 using TH_Configuration;
 using TH_Database;
 using TH_Global;
@@ -27,14 +29,17 @@ namespace TH_DeviceManager.Pages.Databases
     /// <summary>
     /// Interaction logic for Page.xaml
     /// </summary>
-    public partial class Page : UserControl, TH_Plugins.ConfigurationPage.IConfigurationPage
+    public partial class Page : UserControl, TH_Plugins.Server.IConfigurationPage
     {
         public Page()
         {
             InitializeComponent();
             DataContext = this;
 
+            GetPluginInfos();
+
             CreateAddDatabaseButtons();
+
         }
 
         #region "Page Interface"
@@ -58,7 +63,7 @@ namespace TH_DeviceManager.Pages.Databases
 
         public bool Loaded { get; set; }
 
-        public event TH_Plugins.ConfigurationPage.SettingChanged_Handler SettingChanged;
+        public event TH_Plugins.Server.SettingChanged_Handler SettingChanged;
 
 
         public event SendData_Handler SendData;
@@ -242,7 +247,7 @@ namespace TH_DeviceManager.Pages.Databases
 
                 foreach (var plugin in list)
                 {
-                    TH_WPF.Button bt = new TH_WPF.Button();
+                    var bt = new TH_WPF.Button();
                     bt.Text = plugin.Type.Replace('_', ' ');
                     bt.DataObject = plugin;
                     bt.Clicked += AddDatabase_Clicked;
@@ -277,7 +282,7 @@ namespace TH_DeviceManager.Pages.Databases
 
         class PageGroup
         {
-            public TH_Plugins.Database.IConfigurationPage Page { get; set; }
+            public IConfigurationPage Page { get; set; }
             public object ButtonContent { get; set; }
         }
 
@@ -289,6 +294,52 @@ namespace TH_DeviceManager.Pages.Databases
         {
             clientPageGroups = GetPageGroups(dt, Page_Type.Client);
             serverPageGroups = GetPageGroups(dt, Page_Type.Server);
+        }
+
+        private List<IConfigurationInfo> GetPluginInfos()
+        {
+            var result = new List<IConfigurationInfo>();
+
+            string pluginsPath;
+
+            // Load from System Directory first (easier for user to navigate to 'C:\TrakHound\')
+            pluginsPath = FileLocations.Plugins;
+            if (Directory.Exists(pluginsPath)) GetPluginInfos(pluginsPath, result);
+
+            // Load from App root Directory (doesn't overwrite plugins found in System Directory)
+            pluginsPath = AppDomain.CurrentDomain.BaseDirectory;
+            if (Directory.Exists(pluginsPath)) GetPluginInfos(pluginsPath, result);
+
+            return result;
+        }
+
+        private List<IConfigurationInfo> pluginInfos = new List<IConfigurationInfo>();
+
+        private void GetPluginInfos(string path, List<IConfigurationInfo> infos)
+        {
+            if (Directory.Exists(path))
+            {
+                try
+                {
+                    var plugins = Reader.FindPlugins<IConfigurationInfo>(path, new ConfigurationInfoPlugin.PluginContainer());
+                    foreach (var plugin in plugins)
+                    {
+                        if (!infos.Exists(x => x.GetType().FullName == plugin.GetType().FullName))
+                        {
+                            infos.Add(plugin);
+                        }
+                    }
+                }
+                catch (Exception ex) { Logger.Log("LoadPlugins() : Exception : " + ex.Message, Logger.LogLineType.Error); }
+
+                // Search Subdirectories
+                foreach (string directory in Directory.GetDirectories(path))
+                {
+                    GetPluginInfos(directory, infos);
+                }
+
+                pluginInfos = infos;
+            }
         }
 
         private List<PageGroup> GetPageGroups(DataTable dt, Page_Type pageType)
@@ -327,33 +378,102 @@ namespace TH_DeviceManager.Pages.Databases
             return result;
         }
 
+        //private List<PageGroup> GetPageGroups(DataTable dt, Page_Type pageType)
+        //{
+        //    var result = new List<PageGroup>();
+
+        //    if (dt != null)
+        //    {
+        //        if (Global.Plugins != null)
+        //        {
+        //            foreach (var plugin in Global.Plugins)
+        //            {
+        //                string type = plugin.Type.Replace(' ', '_');
+
+        //                string prefix = null;
+        //                if (pageType == Page_Type.Client) prefix = "/Databases_Client/" + type + "||";
+        //                else if (pageType == Page_Type.Server) prefix = "/Databases_Server/" + type + "||";
+
+        //                List<string> addresses = GetAddressesForDatabase(prefix, dt);
+
+        //                foreach (string address in addresses)
+        //                {
+        //                    string filter = "address LIKE '" + address + "*'";
+        //                    DataView dv = dt.AsDataView();
+        //                    dv.RowFilter = filter;
+        //                    DataTable temp_dt = dv.ToTable();
+        //                    temp_dt.PrimaryKey = new DataColumn[] { temp_dt.Columns["address"] };
+
+        //                    var group = GetPageGroup(plugin, pageType, temp_dt, address);
+        //                    result.Add(group);
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    return result;
+        //}
+
         private PageGroup GetPageGroup(IDatabasePlugin plugin, Page_Type pageType, DataTable dt = null, string prefix = null)
         {
-            Type config_type = plugin.Config_Page;
-            if (config_type != null)
+            var pluginInfo = pluginInfos.Find(x => x.Type == plugin.Type);
+            if (pluginInfo != null)
             {
-                object configButton = plugin.CreateConfigurationButton(dt);
-                if (configButton != null)
+                Type config_type = pluginInfo.ConfigurationPageType;
+                if (config_type != null)
                 {
-                    object o = Activator.CreateInstance(config_type);
-                    var page = (TH_Plugins.Database.IConfigurationPage)o;
+                    object configButton = pluginInfo.CreateConfigurationButton(dt);
+                    if (configButton != null)
+                    {
+                        object o = Activator.CreateInstance(config_type);
+                        var page = (TH_Plugins.Database.IConfigurationPage)o;
 
-                    if (pageType == Page_Type.Client) page.ApplicationType = Application_Type.Client;
-                    else page.ApplicationType = Application_Type.Server;
+                        if (pageType == Page_Type.Client) page.ApplicationType = Application_Type.Client;
+                        else page.ApplicationType = Application_Type.Server;
 
-                    page.prefix = prefix;
-                    if (dt != null) page.LoadConfiguration(dt);
-                    page.SettingChanged += Configuration_Page_SettingChanged;
+                        page.prefix = prefix;
+                        if (dt != null) page.LoadConfiguration(dt);
+                        page.SettingChanged += Configuration_Page_SettingChanged;
 
-                    var group = new PageGroup();
-                    group.Page = page;
-                    group.ButtonContent = configButton;
+                        var group = new PageGroup();
+                        group.Page = page;
+                        group.ButtonContent = configButton;
 
-                    return group;
+                        return group;
+                    }
                 }
             }
+
             return null;
         }
+
+        //private PageGroup GetPageGroup(IConfigurationInfo pluginInfo, Page_Type pageType, DataTable dt = null, string prefix = null)
+        //{
+        //    Type config_type = pluginInfo.ConfigurationPageType;
+        //    if (config_type != null)
+        //    {
+        //        object configButton = pluginInfo.CreateConfigurationButton(dt);
+        //        if (configButton != null)
+        //        {
+        //            object o = Activator.CreateInstance(config_type);
+        //            var page = (TH_Plugins.Database.IConfigurationPage)o;
+
+        //            if (pageType == Page_Type.Client) page.ApplicationType = Application_Type.Client;
+        //            else page.ApplicationType = Application_Type.Server;
+
+        //            page.prefix = prefix;
+        //            if (dt != null) page.LoadConfiguration(dt);
+        //            page.SettingChanged += Configuration_Page_SettingChanged;
+
+        //            var group = new PageGroup();
+        //            group.Page = page;
+        //            group.ButtonContent = configButton;
+
+        //            return group;
+        //        }
+        //    }
+        //    return null;
+        //}
 
         private void CreatePageButtons(DataTable dt, Page_Type type)
         {

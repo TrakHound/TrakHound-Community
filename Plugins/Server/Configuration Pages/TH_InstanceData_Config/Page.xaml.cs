@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -19,7 +18,7 @@ using System.Windows.Shapes;
 using TH_Global.Functions;
 using MTConnect.Application.Components;
 using TH_Plugins;
-using TH_Plugins.ConfigurationPage;
+using TH_Plugins.Server;
 
 namespace TH_InstanceData_Config
 {

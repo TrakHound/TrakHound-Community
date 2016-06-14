@@ -16,7 +16,7 @@ using System.Windows.Media.Imaging;
 using TH_Global.Functions;
 using MTConnect.Application.Components;
 using TH_Plugins;
-using TH_Plugins.ConfigurationPage;
+using TH_Plugins.Server;
 
 namespace TH_GeneratedData_Config.GeneratedEvents
 {
@@ -369,7 +369,8 @@ namespace TH_GeneratedData_Config.GeneratedEvents
                 attr += "numval||" + e.Default.numval.ToString() + ";";
                 string val = e.Default.value;
 
-                DataTable_Functions.UpdateTableValue(dt, "address", adr, "attributes", attr);
+                DataTable_Functions.UpdateTableValue(dt, "address", addr, "attributes", attr);
+                DataTable_Functions.UpdateTableValue(dt, "address", addr, "value", val);
                 //Table_Functions.UpdateTableValue(val, attr, addr, dt);
             }
         }
@@ -397,8 +398,8 @@ namespace TH_GeneratedData_Config.GeneratedEvents
                 attr = "";
                 attr += "numval||" + v.result.numval.ToString() + ";";
                 string val = v.result.value;
-                DataTable_Functions.UpdateTableValue(dt, "address", adr, "attributes", attr);
-                DataTable_Functions.UpdateTableValue(dt, "address", adr, "value", val);
+                DataTable_Functions.UpdateTableValue(dt, "address", addr, "attributes", attr);
+                DataTable_Functions.UpdateTableValue(dt, "address", addr, "value", val);
                 //Table_Functions.UpdateTableValue(val, attr, addr, dt);
             }
         }
@@ -477,7 +478,7 @@ namespace TH_GeneratedData_Config.GeneratedEvents
 
         public static List<Event> GetGeneratedEvents(DataTable dt)
         {
-            List<Event> result = new List<Event>();
+            var result = new List<Event>();
 
             string address = "/GeneratedData/GeneratedEvents/";
 
@@ -745,7 +746,8 @@ namespace TH_GeneratedData_Config.GeneratedEvents
 
             foreach (Event e in genEvents)
             {
-                this.Dispatcher.BeginInvoke(new Action<Event, bool>(AddEvent), priority, new object[] { e, false });
+                AddEvent(e);
+                //this.Dispatcher.BeginInvoke(new Action<Event, bool>(AddEvent), priority, new object[] { e, false });
             }
         }
 
@@ -755,13 +757,13 @@ namespace TH_GeneratedData_Config.GeneratedEvents
         {
             Controls.Event ev = CreateEvent(e);
 
-            Controls.EventButton event_bt = new Controls.EventButton();
+            var event_bt = new Controls.EventButton();
             event_bt.EventName = String_Functions.UppercaseFirst(e.name.Replace('_', ' '));
             event_bt.SettingChanged += event_bt_SettingChanged;
             event_bt.RemoveClicked += Event_RemoveClicked;
             event_bt.ParentEvent = e;
 
-            TH_WPF.CollapseButton bt = new TH_WPF.CollapseButton();
+            var bt = new TH_WPF.CollapseButton();
             bt.ButtonContent = event_bt;
 
             if (select)
@@ -813,7 +815,7 @@ namespace TH_GeneratedData_Config.GeneratedEvents
             // Default
             Controls.Default def = new Controls.Default();
             def.ParentResult = e.Default;
-            def.ValueName = e.Default.value;
+            if (e.Default != null) def.ValueName = e.Default.value;
             def.SettingChanged += def_SettingChanged;
             result.DefaultValue = def;
 

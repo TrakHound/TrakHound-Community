@@ -13,18 +13,22 @@ namespace TH_InstanceData
         public InstanceData() { Values = new List<DataItemValue>(); }
 
         public DateTime Timestamp { get; set; }
-        public Int64 Sequence { get; set; }
-        public Int64 AgentInstanceId { get; set; }
+        public long Sequence { get; set; }
+        public long AgentInstanceId { get; set; }
 
         public class DataItemValue
         {
             public string Id { get; set; }
+            public string Type { get; set; }
+            public string SubType { get; set; }
             public string Value { get; set; }
 
             public DataItemValue Copy()
             {
                 var result = new DataItemValue();
                 result.Id = Id;
+                result.Type = Type;
+                result.SubType = SubType;
                 result.Value = Value;
                 return result;
             }
@@ -32,17 +36,19 @@ namespace TH_InstanceData
 
         public InstanceData Copy()
         {
-            InstanceData result = new InstanceData();
+            var result = new InstanceData();
             result.Timestamp = Timestamp;
             result.Sequence = Sequence;
             result.AgentInstanceId = AgentInstanceId;
 
-            foreach (InstanceData.DataItemValue val in Values)
+            foreach (var val in Values)
             {
                 if (val != null)
                 {
-                    InstanceData.DataItemValue newval = new InstanceData.DataItemValue();
+                    var newval = new DataItemValue();
                     newval.Id = val.Id;
+                    newval.Type = val.Type;
+                    newval.SubType = val.SubType;
                     newval.Value = val.Value;
                     result.Values.Add(newval.Copy());
                 }
@@ -68,9 +74,13 @@ namespace TH_InstanceData
     class InstanceVariableData
     {
         public string Id { get; set; }
+
+        public string Type { get; set; }
+        public string SubType { get; set; }
+
         public object Value { get; set; }
         public DateTime Timestamp { get; set; }
-        public Int64 Sequence { get; set; }
+        public long Sequence { get; set; }
     }
 
     public class CurrentInstanceData

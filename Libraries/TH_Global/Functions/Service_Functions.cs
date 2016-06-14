@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ServiceProcess;
+using System.Diagnostics;
 
 namespace TH_Global.Functions
 {
@@ -56,7 +57,6 @@ namespace TH_Global.Functions
             var services = ServiceController.GetServices();
             return services.ToList().Exists(x => x.ServiceName == serviceName);
         }
-
     }
 
     public enum ServiceStatus

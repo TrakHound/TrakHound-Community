@@ -110,7 +110,7 @@
                 </StackPanel>
 
                 <!--Remove Button-->
-                <th_wpf:Button Image="/TH_GeneratedData;component/Resources/X_01.png" Cursor="Hand" Height="30" Margin="10" Clicked="RemoveShift_Clicked" HorizontalAlignment="Right" VerticalAlignment="Top" ToolTip="Remove this Shift">
+                <th_wpf:Button Image="/TH_Shifts_Config;component/Resources/X_01.png" Cursor="Hand" Height="30" Margin="10" Clicked="RemoveShift_Clicked" HorizontalAlignment="Right" VerticalAlignment="Top" ToolTip="Remove this Shift">
                     <th_wpf:Button.Style>
                         <Style TargetType="th_wpf:Button">
                             <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
@@ -141,7 +141,7 @@
                     </ItemsControl.Resources>
                 </ItemsControl>
 
-                <th_wpf:Button Image="/TH_ShiftTable;component/Resources/Add_01.png" Clicked="AddBreak_Clicked" Height="35" ImageTextPadding="10" Text="Add Break" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <th_wpf:Button Image="/TH_Shifts_Config;component/Resources/Add_01.png" Clicked="AddBreak_Clicked" Height="35" ImageTextPadding="10" Text="Add Break" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top">
                     <th_wpf:Button.Style>
                         <Style TargetType="th_wpf:Button">
                             <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>

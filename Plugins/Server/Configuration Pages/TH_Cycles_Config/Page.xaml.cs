@@ -19,7 +19,7 @@ using MTConnect.Application.Components;
 
 using TH_Global.Functions;
 using TH_Plugins;
-using TH_Plugins.ConfigurationPage;
+using TH_Plugins.Server;
 
 namespace TH_Cycles_Config
 {

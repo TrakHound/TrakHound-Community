@@ -33,7 +33,7 @@ namespace TH_Plugins.Database
         /// <summary>
         /// Configuration Page Type (ex. typeof(TH_MySQL.ConfigurationPage.Page))
         /// </summary>
-        Type Config_Page { get; }
+        //Type Config_Page { get; }
 
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace TH_Plugins.Database
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
-        object CreateConfigurationButton(DataTable dt);
+        //object CreateConfigurationButton(DataTable dt);
 
         /// <summary>
         /// Method to intialize the plugin using the Database_Configuration object passed as an argument.

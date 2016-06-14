@@ -23,22 +23,22 @@ namespace TH_SQLite
         public string Type { get { return "SQLite"; } }
 
 
-        public Type Config_Page { get { return typeof(ConfigurationPage.Page); } }
+        //public Type Config_Page { get { return typeof(ConfigurationPage.Page); } }
 
-        public object CreateConfigurationButton(DataTable dt)
-        {
-            ConfigurationPage.Button result = new ConfigurationPage.Button();
+        //public object CreateConfigurationButton(DataTable dt)
+        //{
+        //    ConfigurationPage.Button result = new ConfigurationPage.Button();
 
-            if (dt != null)
-            {
-                if (dt.Rows.Count > 0)
-                {
-                    result.DatabasePath = GetTableValue("database_path", dt);
-                }
-            }
+        //    if (dt != null)
+        //    {
+        //        if (dt.Rows.Count > 0)
+        //        {
+        //            result.DatabasePath = GetTableValue("database_path", dt);
+        //        }
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
         string GetTableValue(string name, DataTable dt)
         {

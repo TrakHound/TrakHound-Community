@@ -53,7 +53,7 @@
             </StackPanel>
 
             <!--Remove Button-->
-            <th_wpf:Button Grid.Column="1" Image="/TH_GeneratedData;component/Resources/X_01.png" Cursor="Hand" Margin="50,0,0,0" Height="30" Clicked="RemoveBreak_Clicked" HorizontalAlignment="Right" VerticalAlignment="Center" ToolTip="Remove this Break">
+            <th_wpf:Button Grid.Column="1" Image="/TH_Shifts_Config;component/Resources/X_01.png" Cursor="Hand" Margin="50,0,0,0" Height="30" Clicked="RemoveBreak_Clicked" HorizontalAlignment="Right" VerticalAlignment="Center" ToolTip="Remove this Break">
                 <th_wpf:Button.Style>
                     <Style TargetType="th_wpf:Button">
                         <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>

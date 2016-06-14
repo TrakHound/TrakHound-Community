@@ -46,10 +46,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigurationPage\Controls\MessageItem.xaml.cs">
+    <Compile Include="Controls\MessageItem.xaml.cs">
       <DependentUpon>MessageItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ConfigurationPage\Page.xaml.cs">
+    <Compile Include="Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
     <Compile Include="Info.cs" />
@@ -83,11 +83,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="ConfigurationPage\Controls\MessageItem.xaml">
+    <Page Include="Controls\MessageItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ConfigurationPage\Page.xaml">
+    <Page Include="Page.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
