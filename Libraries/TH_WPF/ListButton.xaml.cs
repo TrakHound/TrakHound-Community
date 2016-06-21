@@ -80,6 +80,14 @@ namespace TH_WPF
             DependencyProperty.Register("ShowImage", typeof(bool), typeof(ListButton), new PropertyMetadata(true));
 
 
+        public bool ShowText
+        {
+            get { return (bool)GetValue(ShowTextProperty); }
+            set { SetValue(ShowTextProperty, value); }
+        }
+
+        public static readonly DependencyProperty ShowTextProperty =
+            DependencyProperty.Register("ShowText", typeof(bool), typeof(ListButton), new PropertyMetadata(true));
 
 
         public Brush HoverBrush

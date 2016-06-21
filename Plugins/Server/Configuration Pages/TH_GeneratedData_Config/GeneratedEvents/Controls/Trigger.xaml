@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:TH_GeneratedData_Config.GeneratedEvents.Controls"
              
              xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              
              mc:Ignorable="d" 
              >
@@ -31,21 +32,40 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!--Modifier-->
-            <ComboBox x:Name="type_COMBO" Grid.Column="0" Margin="10,0" SelectionChanged="LinkType_SelectionChanged" Height="30" MinWidth="150" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand">
-                <ComboBox.Items>
-                    <ComboBoxItem Content="HTML"/>
-                    <ComboBoxItem Content="Plain Text"/>
-                </ComboBox.Items>
-            </ComboBox>
+            <!--Link Type-->
+            <Grid Grid.Column="0">
 
+                <ComboBox x:Name="type_COMBO" Grid.Column="0" Margin="10,0" SelectedValue="{Binding LinkType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="LinkType_SelectionChanged" Height="30" MinWidth="150" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand">
+                    <ComboBox.Items>
+                        <sys:String>ID</sys:String>
+                        <sys:String>Type</sys:String>
+                    </ComboBox.Items>
+                </ComboBox>
+
+                <!--Instructions-->
+                <TextBlock Text="Link Type" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" TextAlignment="Center" Margin="20,0,30,0" >
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding LinkType}" Value="">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding LinkType}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+            </Grid>
+            
             <!--Link-->
             <Grid Grid.Column="1" Margin="10,0">
 
                 <ComboBox MinWidth="200" Height="30" Padding="10,0" 
-                              DataContext="{Binding ParentPage}" ItemsSource="{Binding CollectedItems}"
-                              SelectedValuePath="Id"
-                              DisplayMemberPath="Display"
+                              DataContext="{Binding ParentPage}"
                               SelectionChanged="Link_SelectionChanged"
                               VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
                               FontSize="14" Cursor="Hand"
@@ -53,10 +73,16 @@
                     <ComboBox.Style>
                         <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
                             <Setter Property="SelectedValue" Value="{Binding SelectedLink, RelativeSource={RelativeSource AncestorType=local:Trigger}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Setter Property="ItemsSource" Value="{Binding DataItemTypes}"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding CollectedItems.Count}" Value="0">
                                     <Setter Property="Text" Value="{Binding SelectedLink, RelativeSource={RelativeSource AncestorType=local:Trigger}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                     <Setter Property="IsEditable" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding LinkType, RelativeSource={RelativeSource AncestorType=local:Trigger}}" Value="ID">
+                                    <Setter Property="ItemsSource" Value="{Binding CollectedItems}"/>
+                                    <Setter Property="SelectedValuePath" Value="Id"/>
+                                    <Setter Property="DisplayMemberPath" Value="Display"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>

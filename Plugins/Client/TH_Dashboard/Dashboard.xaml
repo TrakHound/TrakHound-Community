@@ -25,47 +25,160 @@
         </Grid.ColumnDefinitions>
 
         <Border Grid.Column="0" BorderBrush="{StaticResource Shade_Light}" BorderThickness="0,0,1,0">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Width" Value="200"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsExpanded}" Value="false">
+                            <Setter Property="Width" Value="45"/>
+                            <!--<DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="00:00:1" Storyboard.TargetProperty="MaxWidth" From="45" To="300">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="00:00:1" Storyboard.TargetProperty="MaxWidth" From="300" To="45" >
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseIn"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.ExitActions>-->
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
 
-            <ItemsControl ItemsSource="{Binding Pages}" Margin="0,40">
-                <ItemsControl.Resources>
-                    <Style TargetType="th_wpf:ListButton">
-                        <Setter Property="Foreground" Value="#fff"/>
-                        <Setter Property="Background" Value="Transparent"/>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                            </Trigger>
-                            <Trigger Property="IsSelected" Value="true">
-                                <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </ItemsControl.Resources>
-            </ItemsControl>
+            <StackPanel>
 
+                <!--Collapse/Expand Image-->
+                <Rectangle Width="25" Height="25" Margin="10,5" RenderTransformOrigin="0.5, 0.5" Cursor="Hand" MouseDown="Expand_MouseDown">
+                    
+                    <Rectangle.Resources>
+                        <ImageBrush x:Key="Expand_IMG" Stretch="Uniform" ImageSource="/TH_Dashboard;component/Resources/Forward_01.png" />
+                    </Rectangle.Resources>
+
+                    <Rectangle.RenderTransform>
+                        <RotateTransform/>
+                    </Rectangle.RenderTransform>
+
+                    <Rectangle.Style>
+                        <Style TargetType="Rectangle">
+                            <Setter Property="OpacityMask" Value="{StaticResource Expand_IMG}" />
+                            <Setter Property="Fill" Value="#aaffffff"/>
+                            <Setter Property="ToolTip" Value="Expand Page List (Show Page Titles)"/>
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                            <Style.Triggers>
+
+                                <DataTrigger Binding="{Binding IsExpanded}" Value="true">
+                                    
+                                    <Setter Property="ToolTip" Value="Collapse Page List (Hide Page Titles)"/>
+
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="(Rectangle.RenderTransform).(RotateTransform.Angle)" From="0" To="-180" Duration="0:0:0.2"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="(Rectangle.RenderTransform).(RotateTransform.Angle)" From="-180" To="0" Duration="0:0:0.2"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Fill" Value="#fff"/>
+                                </Trigger>
+
+                            </Style.Triggers>
+                        </Style>
+                    </Rectangle.Style>
+
+                </Rectangle>
+
+                <!--Page List-->
+                <ItemsControl ItemsSource="{Binding Pages}" Margin="0,40">
+                    <ItemsControl.Resources>
+                        <Style TargetType="th_wpf:ListButton">
+                            <Setter Property="Foreground" Value="#fff"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="ShowText" Value="True"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsExpanded}" Value="false">
+                                    <Setter Property="ShowText" Value="False"/>
+                                </DataTrigger>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="true">
+                                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ItemsControl.Resources>
+                </ItemsControl>
+
+            </StackPanel>
+            
         </Border>
 
         <!--Page Content-->
         <Border Grid.Column="1">
 
-            <ContentControl Content="{Binding PageContent}">
-                <ContentControl.Style>
-                    <Style TargetType="ContentControl">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Devices.Count}" Value="0">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding LoadingDevices}" Value="true">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                            <!--<DataTrigger Binding="{Binding LoggedIn}" Value="false">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>-->
-                        </Style.Triggers>
-                    </Style>
-                </ContentControl.Style>
-            </ContentControl>
-            
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!--Selected Page Info-->
+                <Border BorderBrush="#33ffffff" BorderThickness="0,0,0,1" Margin="0,0,0,5">
+
+                    <Grid Margin="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="{Binding PageContent.Title}" Foreground="#fff" FontSize="14" FontWeight="Bold" Margin="0,0,20,0" VerticalAlignment="Center"/>
+
+                        <TextBlock Grid.Column="1" Text="{Binding PageContent.Description}" Foreground="#fff" FontSize="10" TextWrapping="Wrap" MaxWidth="500" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+                    </Grid>
+
+                </Border>
+
+                <!--Selected Page Content-->
+                <ContentControl Grid.Row="1" Content="{Binding PageContent}">
+                    <ContentControl.Style>
+                        <Style TargetType="ContentControl">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Devices.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding LoadingDevices}" Value="true">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ContentControl.Style>
+                </ContentControl>
+
+            </Grid>
+
         </Border>
 
         <!--No Devices-->

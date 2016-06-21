@@ -364,6 +364,9 @@ namespace TH_StatusData
             // Send Shift Data
             SendDataEvent(shiftTableData);
 
+            EventData productionStatusData = GetProductionStatusData(config, shiftData);
+            SendDataEvent(productionStatusData);
+
            // //Get OEE Data
            //EventData oeeData = GetOEE(config, shiftData);
            // // Send OEE Data
@@ -525,7 +528,6 @@ namespace TH_StatusData
 
             if (shiftData.shiftDate != null && shiftData.shiftName != null)
             {
-                //DataTable shifts_DT = Table.Get(config.Databases_Client, GetTableName(TableNames.Shifts, config.DatabaseId), "WHERE Date='" + shiftData.shiftDate + "' AND Shift='" + shiftData.shiftName + "'");
                 DataTable shifts_DT = Table.Get(config.Databases_Client, Global.GetTableName(TableNames.Shifts, config.DatabaseId), "WHERE Date='" + shiftData.shiftDate + "'");
                 if (shifts_DT != null)
                 {
@@ -541,10 +543,9 @@ namespace TH_StatusData
             return result;
         }
 
-
         #endregion
         
-        static EventData GetProductionStatusList(Configuration config, ShiftData shiftData)
+        static EventData GetProductionStatusData(Configuration config, ShiftData shiftData)
         {
             var result = new EventData();
 
@@ -563,7 +564,7 @@ namespace TH_StatusData
                 string tableName = TableNames.Gen_Events_TablePrefix + "production_status";
 
 
-                DataTable dt = Table.Get(config.Databases_Client, tableName, filter);
+                DataTable dt = Table.Get(config.Databases_Client, Global.GetTableName(tableName, config.DatabaseId), filter);
                 if (dt != null)
                 {
                     var data = new EventData();

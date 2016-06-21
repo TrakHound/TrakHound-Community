@@ -90,7 +90,7 @@ namespace TH_WPF
         }
 
         public static readonly DependencyProperty MaximumProperty =
-            DependencyProperty.Register("Maximum", typeof(double), typeof(TimeProgress), new PropertyMetadata(1d));
+            DependencyProperty.Register("Maximum", typeof(double), typeof(TimeProgress), new PropertyMetadata(1d, new PropertyChangedCallback(Value_PropertyChanged)));
 
 
         private static void Value_PropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)

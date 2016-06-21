@@ -134,7 +134,10 @@ namespace TH_Global.Functions
 
                 result = xml;
             }
-            catch (Exception ex) { Logger.Log("XML_Functions.StringToXmlDocument :: Exception :: " + ex.Message); }
+            catch (Exception ex)
+            {
+                //Logger.Log("XML_Functions.StringToXmlDocument :: Exception :: " + ex.Message);
+            }
 
             return result;
         }
@@ -173,8 +176,14 @@ namespace TH_Global.Functions
                         }
                     }
                 }
-                catch (XmlException ex) { Logger.Log("XmlException :: " + ex.Message, Logger.LogLineType.Error); }
-                catch (Exception ex) { Logger.Log("Exception :: " + ex.Message, Logger.LogLineType.Error); }
+                catch (XmlException ex)
+                {
+                    //Logger.Log("XmlException :: " + ex.Message, Logger.LogLineType.Error);
+                }
+                catch (Exception ex)
+                {
+                    //Logger.Log("Exception :: " + ex.Message, Logger.LogLineType.Error);
+                }
 
                 if (!success) System.Threading.Thread.Sleep(50);
 
@@ -205,8 +214,14 @@ namespace TH_Global.Functions
                             }
                         }
                     }
-                    catch (XmlException ex) { Logger.Log("XmlException :: " + ex.Message, Logger.LogLineType.Error); }
-                    catch (Exception ex) { Logger.Log("Exception :: " + ex.Message, Logger.LogLineType.Error); }
+                    catch (XmlException ex)
+                    {
+                        //Logger.Log("XmlException :: " + ex.Message, Logger.LogLineType.Error);
+                    }
+                    catch (Exception ex)
+                    {
+                        //Logger.Log("Exception :: " + ex.Message, Logger.LogLineType.Error);
+                    }
 
                     if (!success) System.Threading.Thread.Sleep(50);
 
@@ -216,8 +231,6 @@ namespace TH_Global.Functions
 
             return null;
         }
-
-      
 
     }
 }

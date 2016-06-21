@@ -79,6 +79,17 @@ namespace TH_Dashboard
             DependencyProperty.Register("LoadingDevices", typeof(bool), typeof(Dashboard), new PropertyMetadata(false));
 
 
+        public bool IsExpanded
+        {
+            get { return (bool)GetValue(IsExpandedProperty); }
+            set { SetValue(IsExpandedProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsExpandedProperty =
+            DependencyProperty.Register("IsExpanded", typeof(bool), typeof(Dashboard), new PropertyMetadata(true));
+
+
+
         void UpdateLoggedInChanged(EventData data)
         {
             if (data != null)
@@ -139,6 +150,7 @@ namespace TH_Dashboard
                         ListButton lb = new ListButton();
                         lb.ToolTip = config.Name;
                         lb.Image = plugin.Image;
+                        lb.Text = plugin.Title;
                         lb.Selected += lb_Selected;
                         lb.DataObject = plugin;
                         Pages.Add(lb);
@@ -278,5 +290,9 @@ namespace TH_Dashboard
             }
         }
 
+        private void Expand_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            IsExpanded = !IsExpanded;
+        }
     }
 }

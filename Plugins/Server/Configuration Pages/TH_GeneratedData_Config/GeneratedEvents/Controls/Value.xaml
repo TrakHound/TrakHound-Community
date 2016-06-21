@@ -101,7 +101,7 @@
                 </ItemsControl>
 
                 <!--Add Button-->
-                <th_wpf:Button Image="/TH_GeneratedData_Config;component/Resources/Add_01.png" Text="Add Trigger" ImageTextPadding="10" VerticalAlignment="Center" Height="35" Margin="10,5" Clicked="AddTrigger_Clicked" FocusManager.IsFocusScope="False">
+                <th_wpf:Button Image="/TH_GeneratedData_Config;component/Resources/Add_01.png" Text="Add Trigger" ImageTextPadding="10" VerticalAlignment="Center" HorizontalAlignment="Left" Height="35" Margin="10,5" Clicked="AddTrigger_Clicked" FocusManager.IsFocusScope="False">
                     <th_wpf:Button.Style>
                         <Style TargetType="th_wpf:Button">
                             <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>

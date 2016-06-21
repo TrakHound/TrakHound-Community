@@ -224,22 +224,6 @@ namespace TH_GeneratedData_Config.GeneratedEvents
             }
         }
 
-        private void LoadDataItemTypes(List<DataItem> dataItems)
-        {
-            DataItemTypes.Clear();
-
-            foreach (var dataItem in dataItems)
-            {
-                string type = dataItem.Type;
-                if (!string.IsNullOrEmpty(dataItem.SubType))
-                {
-                    type += "||" + dataItem.SubType;
-                }
-
-                DataItemTypes.Add(type);
-            }
-        }
-
         private void LoadCollectedItems(List<DataItem> dataItems)
         {
             var newItems = new List<CollectedItem>();
@@ -281,38 +265,23 @@ namespace TH_GeneratedData_Config.GeneratedEvents
                 }
             }
         }
-
-        //private void LoadProbeData(List<DataItem> items)
-        //{
-        //    foreach (var dataItem in items)
-        //    {
-        //        var item = new CollectedItem(dataItem);
-        //        if (!CollectedItems.ToList().Exists(x => x.Id == item.Id)) CollectedItems.Add(item);
-        //    }
-
-        //    foreach (Controls.Event ev in events)
-        //    {
-        //        foreach (Controls.Value v in ev.Values)
-        //        {
-        //            foreach (Controls.Trigger t in v.Triggers)
-        //            {
-        //                Dispatcher.BeginInvoke(new Action<Controls.Trigger>(Trigger_UpdateCollectedLink), priority, new object[] { t });
-        //            }
-        //        }
-
-        //        foreach (Controls.CaptureItem ci in ev.CaptureItems)
-        //        {
-        //            Dispatcher.BeginInvoke(new Action<Controls.CaptureItem>(CaptureItem_UpdateCollectedLink), priority, new object[] { ci });
-        //        }
-        //    }
-        //}
-
-
-        public DataTable EventValues;
+        
+        public MTConnect.Types.EventType[] EventValues;
 
         void LoadEventValues()
         {
-            EventValues = MTConnect.Application.EventTypes.Get();
+            EventValues = MTConnect.Types.Events.Get();
+            var sampleValues = MTConnect.Types.Samples.Get();
+            var conditionValues = MTConnect.Types.Conditions.Get();
+
+            DataItemTypes.Clear();
+
+            foreach (var eventValue in EventValues)
+            {
+                if (!DataItemTypes.ToList().Exists(x => x == eventValue.Type)) DataItemTypes.Add(eventValue.Type);
+            }
+
+            
         }
 
         #endregion
@@ -459,6 +428,7 @@ namespace TH_GeneratedData_Config.GeneratedEvents
                 if (dataitem != null) link = dataitem.Id;
 
                 attr += "link||" + link + ";";
+                attr += "link_type||" + t.linkType + ";";
 
                 if (t.modifier != null)
                 {
@@ -713,6 +683,7 @@ namespace TH_GeneratedData_Config.GeneratedEvents
                         {
                             result = new Trigger();
                             result.id = id;
+                            result.linkType = DataTable_Functions.TrakHound.GetRowAttribute("link_type", row);
                             result.link = DataTable_Functions.TrakHound.GetRowAttribute("link", row);
                             result.value = DataTable_Functions.TrakHound.GetRowAttribute("value", row);
 
@@ -977,7 +948,7 @@ namespace TH_GeneratedData_Config.GeneratedEvents
 
         Controls.Trigger CreateTrigger(Trigger t, Value v, Event e)
         {
-            Controls.Trigger result = new Controls.Trigger();
+            var result = new Controls.Trigger();
 
             result.ParentPage = this;
             result.ParentEvent = e;
@@ -991,6 +962,8 @@ namespace TH_GeneratedData_Config.GeneratedEvents
             {
                 result.DataItems.Add(item.Id);
             }
+
+            result.LinkType = t.linkType;
 
             //result.link_COMBO.Text = t.link;
             result.SelectedLink = t.link;
@@ -1181,6 +1154,7 @@ namespace TH_GeneratedData_Config.GeneratedEvents
             public int numval { get; set; }
             public string value { get; set; }
             public string link { get; set; }
+            public string linkType { get; set; }
 
             public string modifier { get; set; }
         }

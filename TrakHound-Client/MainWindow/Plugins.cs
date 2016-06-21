@@ -13,7 +13,6 @@ using TH_Configuration;
 using TH_Global.TrakHound.Users;
 using TH_Plugins;
 using TH_Plugins.Client;
-//using TH_UserManagement.Management;
 using TH_WPF;
 
 using TH_Global;
@@ -82,7 +81,10 @@ namespace TrakHound_Client
             "Status Table",
 
             "Table Manager",
-            "Status Data" 
+            "Status Data",
+            "Status Timeline",
+            "Status Hour Timeline",
+            "Controller Status Tables" 
         };
 
         private void LoadPlugins()

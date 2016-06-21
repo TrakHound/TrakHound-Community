@@ -215,23 +215,34 @@ namespace TH_GeneratedData.GeneratedEvents
 
         private static bool FindTrigger(InstanceData.DataItemValue value, Trigger trigger)
         {
-            if (trigger.LinkType == TriggerLinkType.Type)
+            if (trigger.Link != null)
             {
-                return FormatDataItemType(value) == trigger.Link;
+                if (trigger.LinkType == TriggerLinkType.Type)
+                {
+                    return FormatDataItemType(value) == trigger.Link.ToLower();
+                }
+                else
+                {
+                    return value.Id == trigger.Link;
+                }
             }
-            else
-            {
-                return value.Id == trigger.Link;
-            }
+
+            return false;
         }
 
         private static string FormatDataItemType(InstanceData.DataItemValue value)
         {
-            if (!string.IsNullOrEmpty(value.Type) && !string.IsNullOrEmpty(value.SubType))
+            if (!string.IsNullOrEmpty(value.Type))
             {
-                return value.Type + "||" + value.SubType;
+                return value.Type.ToLower();
             }
-            else return value.Type;
+
+            return null;
+            //if (!string.IsNullOrEmpty(value.Type) && !string.IsNullOrEmpty(value.SubType))
+            //{
+            //    return value.Type + "||" + value.SubType;
+            //}
+            //else return value.Type;
         }
     }
 

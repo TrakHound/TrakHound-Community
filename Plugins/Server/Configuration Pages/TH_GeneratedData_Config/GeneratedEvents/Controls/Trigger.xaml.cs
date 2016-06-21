@@ -97,7 +97,7 @@ namespace TH_GeneratedData_Config.GeneratedEvents.Controls
 
         private void LinkType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            if (ParentTrigger != null) ParentTrigger.linkType = LinkType;
         }
 
         #endregion
@@ -128,30 +128,47 @@ namespace TH_GeneratedData_Config.GeneratedEvents.Controls
             
             if (SelectedLink != null)
             {
-                int index = ParentPage.CollectedItems.ToList().FindIndex(x => x.Id == SelectedLink.ToString());
-                if (index >= 0)
+                if (LinkType == "Type")
                 {
-                    var item = ParentPage.CollectedItems[index];
-                    //var item = link_COMBO.SelectedItem as Page.CollectedItem;
-                    if (item != null)
+                    int index = ParentPage.DataItemTypes.ToList().FindIndex(x => x == SelectedLink.ToString());
+                    if (index >= 0)
                     {
-                        if (item.Category == "EVENT")
+                        var item = ParentPage.DataItemTypes[index];
+                        if (item != null)
                         {
                             if (ParentPage != null)
                             {
-                                DataTable dt = ParentPage.EventValues;
-
-                                if (dt != null)
+                                var match = ParentPage.EventValues.ToList().Find(x => x.Type == item);
+                                if (match != null)
                                 {
-                                    DataView dv = ParentPage.EventValues.AsDataView();
-                                    dv.RowFilter = "NAME='" + item.Type + "'";
-                                    DataTable temp_dt = dv.ToTable(false, "VALUE");
-
-                                    foreach (DataRow row in temp_dt.Rows)
+                                    foreach (var value in match.Values)
                                     {
-                                        string value = row[0].ToString();
-
                                         value_COMBO.Items.Add(value);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    int index = ParentPage.CollectedItems.ToList().FindIndex(x => x.Id == SelectedLink.ToString());
+                    if (index >= 0)
+                    {
+                        var item = ParentPage.CollectedItems[index];
+                        if (item != null)
+                        {
+                            if (item.Category == "EVENT")
+                            {
+                                if (ParentPage != null)
+                                {
+                                    var match = ParentPage.EventValues.ToList().Find(x => x.Type == item.Type);
+                                    if (match != null)
+                                    {
+                                        foreach (var value in match.Values)
+                                        {
+                                            value_COMBO.Items.Add(value);
+                                        }
                                     }
                                 }
                             }

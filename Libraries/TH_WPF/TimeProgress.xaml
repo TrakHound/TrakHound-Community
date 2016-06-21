@@ -19,10 +19,6 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel>
-                <!--<Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>-->
 
                 <!--Title-->
                 <Viewbox MaxHeight="16" HorizontalAlignment="Left">

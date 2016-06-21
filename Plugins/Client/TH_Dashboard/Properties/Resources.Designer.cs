@@ -63,9 +63,29 @@ namespace TH_Dashboard.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Back_01 {
+            get {
+                object obj = ResourceManager.GetObject("Back_01", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Dashboard_01 {
             get {
                 object obj = ResourceManager.GetObject("Dashboard_01", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Forward_01 {
+            get {
+                object obj = ResourceManager.GetObject("Forward_01", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
