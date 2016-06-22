@@ -1,20 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-using System.Data;
-
 using TH_Global.Functions;
 using TH_Plugins;
 using UI_Tools.Timeline;
@@ -95,36 +84,44 @@ namespace TH_StatusTimeline.Controls
         public static readonly DependencyProperty AlertProperty =
             DependencyProperty.Register("Alert", typeof(bool), typeof(Row), new PropertyMetadata(false));
 
-
-
-
-
-
-
-        public HourData[] HourDatas
-        {
-            get { return (HourData[])GetValue(HourDatasProperty); }
-            set { SetValue(HourDatasProperty, value); }
-        }
-
-        public static readonly DependencyProperty HourDatasProperty =
-            DependencyProperty.Register("HourDatas", typeof(HourData[]), typeof(Row), new PropertyMetadata(null));
-
-
         #endregion
 
         private string shiftDate;
         private DateTime currentTime;
-        private DateTime previousTimestamp;
 
-        public void LoadData(EventData data)
+        public void UpdateData(EventData data)
         {
-            LoadSnapshots(data);
-            LoadVariables(data);
-            LoadStatusData(data);
+            UpdateDatabaseConnection(data);
+            UpdateAvailability(data);
+            UpdateSnapshots(data);
+            UpdateVariables(data);
+            UpdateStatusData(data);
         }
 
-        private void LoadVariables(EventData data)
+        private void UpdateDatabaseConnection(EventData data)
+        {
+            if (data.Id.ToLower() == "statusdata_connection")
+            {
+                if (data.Data02.GetType() == typeof(bool))
+                {
+                    Connected = (bool)data.Data02;
+                }
+            }
+        }
+
+        private void UpdateAvailability(EventData data)
+        {
+            if (data.Id.ToLower() == "statusdata_availability")
+            {
+                if (data.Data02.GetType() == typeof(bool))
+                {
+                    Available = (bool)data.Data02;
+                }
+            }
+        }
+
+
+        private void UpdateVariables(EventData data)
         {
             if (data.Id.ToLower() == "statusdata_variables")
             {
@@ -137,7 +134,7 @@ namespace TH_StatusTimeline.Controls
             }
         }
 
-        private void LoadSnapshots(EventData data)
+        private void UpdateSnapshots(EventData data)
         {
             if (data.Id.ToLower() == "statusdata_snapshots")
             {
@@ -207,7 +204,7 @@ namespace TH_StatusTimeline.Controls
             }
         }
 
-        private void LoadStatusData(EventData data)
+        private void UpdateStatusData(EventData data)
         {
             if (data.Id.ToLower() == "statusdata_productionstatus" && data.Data02 != null)
             {
@@ -280,142 +277,7 @@ namespace TH_StatusTimeline.Controls
                 }
             }
         }
-
-        //private void LoadStatusData(EventData data)
-        //{
-        //    if (data.Id.ToLower() == "statusdata_productionstatus" && data.Data02 != null)
-        //    {
-        //        if ((DateTime.Now - lastUIUpdate) > UIDelay)
-        //        {
-        //            lastUIUpdate = DateTime.Now;
-
-        //            var dt = data.Data02 as DataTable;
-        //            if (dt != null)
-        //            {
-        //                DateTime previousTimestamp = DateTime.MinValue;
-        //                string previousValue = null;
-
-        //                DateTime previousUsedTimestamp = DateTime.MinValue;
-        //                string previousUsedValue = null;
-
-        //                var infos = new List<StatusInfo>();
-
-        //                var dv = dt.AsDataView();
-        //                dv.Sort = "TIMESTAMP ASC";
-        //                var temp_dt = dv.ToTable();
-
-        //                for (var x = 0; x < temp_dt.Rows.Count; x++)
-        //                {
-        //                    DataRow row = temp_dt.Rows[x];
-
-        //                    DateTime timestamp = DataTable_Functions.GetDateTimeFromRow("timestamp", row).ToLocalTime();
-        //                    string value = DataTable_Functions.GetRowValue("value", row);
-
-        //                    if (previousTimestamp > DateTime.MinValue && timestamp > previousTimestamp)
-        //                    {
-        //                        if ((timestamp - previousTimestamp) >= MIN_DURATION && value != previousUsedValue)
-        //                        {
-        //                            var info = new StatusInfo();
-        //                            info.Start = previousUsedTimestamp;
-        //                            info.End = timestamp;
-        //                            info.Value = previousUsedValue;
-
-        //                            if (info.Duration >= MIN_DURATION)
-        //                            {
-        //                                infos.Add(info);
-
-        //                                previousUsedTimestamp = info.End;
-        //                                previousUsedValue = info.Value;
-        //                            }
-        //                        }
-        //                    }
-
-        //                    // Capture on first iteration
-        //                    if (x == 0)
-        //                    {
-        //                        previousUsedTimestamp = timestamp;
-        //                        previousUsedValue = value;
-        //                    }
-
-        //                    previousTimestamp = timestamp;
-        //                    previousValue = value;
-        //                }
-
-        //                //DateTime previousTimestamp1;
-        //                //DateTime previousTimestamp2;
-        //                //string previousValue1;
-        //                //string previousValue2;
-
-        //                var events = new List<TimelineEvent>();
-
-        //                foreach (var info in infos)
-        //                {
-        //                    var e = CreateEvent(info.Start, info.End, info.Value);
-        //                    events.Add(e);
-        //                }
-
-        //                timeline.ResetEvents(events);
-        //            }
-        //        }
-        //    }
-        //}
-
-        //private void LoadStatusData(EventData data)
-        //{
-        //    if (data.Id.ToLower() == "statusdata_productionstatus" && data.Data02 != null)
-        //    {
-        //        var dt = data.Data02 as DataTable;
-        //        if (dt != null)
-        //        {
-        //            DateTime previousTimestamp = DateTime.MinValue;
-        //            string previousValue = null;
-
-        //            var events = new List<TimelineEvent>();
-
-        //            for (var x = 0; x < dt.Rows.Count; x++)
-        //            {
-        //                DataRow row = dt.Rows[x];
-
-        //                string ts = DataTable_Functions.GetRowValue("timestamp", row);
-        //                string value = DataTable_Functions.GetRowValue("value", row);
-
-        //                if (ts != null)
-        //                {
-        //                    DateTime timestamp = DateTime.MinValue;
-        //                    if (DateTime.TryParse(ts, out timestamp))
-        //                    {
-        //                        timestamp = timestamp.ToLocalTime();
-
-        //                        if (previousTimestamp > DateTime.MinValue && timestamp > previousTimestamp)
-        //                        {
-        //                            var e = CreateEvent(previousTimestamp, timestamp, previousValue);
-        //                            events.Add(e);
-        //                        }
-
-        //                        previousTimestamp = timestamp;
-        //                        previousValue = value;
-        //                    }
-        //                }
-        //            }
-
-        //            if (currentTime > previousTimestamp && currentTime > DateTime.MinValue && previousTimestamp > DateTime.MinValue)
-        //            {
-        //                var current = CreateEvent(previousTimestamp, currentTime, previousValue);
-        //                events.Add(current);
-
-        //                DateTime n = currentTime;
-
-        //                timeline.MaxDateTime = new DateTime(n.Year, n.Month, n.Day, 23, 59, 59);
-        //                timeline.MinDateTime = new DateTime(n.Year, n.Month, n.Day, 0, 0, 0);
-
-        //                timeline.CurrentDateTime = n;
-        //            }
-
-        //            timeline.ResetEvents(events);
-        //        }
-        //    }
-        //}
-
+        
         private TimelineEvent CreateEvent(DateTime start, DateTime end, string value)
         {
             var e = new TimelineEvent();
@@ -434,7 +296,7 @@ namespace TH_StatusTimeline.Controls
 
             if (value == "Alert") e.EventBrush = new SolidColorBrush(alert);
             else if (value == "Idle") e.EventBrush = new SolidColorBrush(idle);
-            else if (value == "Production") e.EventBrush = new SolidColorBrush(production);
+            else if (value == "Production" || value == "Full Production") e.EventBrush = new SolidColorBrush(production);
 
             e.Title = value;
             e.Description = TimeSpan_Functions.ToFormattedString(duration);

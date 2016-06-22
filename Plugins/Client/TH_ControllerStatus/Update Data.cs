@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 
 using TH_Configuration;
-using TH_Global;
-using TH_Global.Functions;
 using TH_Plugins;
-using TH_WPF;
 
 namespace TH_ControllerStatus
 {
@@ -31,7 +25,7 @@ namespace TH_ControllerStatus
                         if (index >= 0)
                         {
                             var row = Rows[index];
-                            row.LoadData(data);   
+                            row.UpdateData(data);   
                         }
                     }));
                 }

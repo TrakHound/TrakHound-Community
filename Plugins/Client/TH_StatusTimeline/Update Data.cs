@@ -31,7 +31,7 @@ namespace TH_StatusTimeline
                         if (index >= 0)
                         {
                             var row = Rows[index];
-                            row.LoadData(data);   
+                            row.UpdateData(data);   
                         }
                     }));
                 }

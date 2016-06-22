@@ -308,6 +308,43 @@
 
                 </Border>
 
+                <!--Mouse Over Panel w/ ToolTip-->
+                <Border Grid.Column="0">
+                    <Border.ToolTip>
+                        <StackPanel MaxWidth="300">
+                            <TextBlock Text="Device Status" FontWeight="Bold"/>
+                            <TextBlock TextWrapping="Wrap">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Production}" Value="true">
+                                                <Setter Property="Text" Value="Device is currently in Production"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Idle}" Value="true">
+                                                <Setter Property="Text" Value="Device is currently Idle"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Alert}" Value="true">
+                                                <Setter Property="Text" Value="Device currently in an Alert and needs Attention"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border.ToolTip>
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="#33ffffff"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                </Border>
+
+
                 <!--Timeline-->
                 <ui:TimelineTray x:Name="timeline" Grid.Column="3" RecalculateEventTopPosition="False">
 
@@ -348,6 +385,61 @@
                     </StackPanel>
 
                 </Border>
+
+                <!--Mouse Over Panel w/ ToolTip-->
+                <Border Grid.Column="1">
+                    <Border.ToolTip>
+                        <StackPanel Width="300">
+                            <StackPanel.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontSize" Value="12"/>
+                                    <Setter Property="Margin" Value="0,2"/>
+                                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                                </Style>
+                            </StackPanel.Resources>
+
+                            <TextBlock Text="{Binding Configuration.Description.Description}" Foreground="{StaticResource Foreground_Normal}" FontSize="14" FontWeight="Bold" TextWrapping="Wrap"/>
+
+                            <TextBlock>
+                                <Run Text="Manufacturer :" Foreground="{StaticResource Foreground_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Manufacturer}" Foreground="{StaticResource Foreground_Normal}"/>
+                            </TextBlock>
+
+                            <TextBlock>
+                                <Run Text="Model :" Foreground="{StaticResource Foreground_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Model}" Foreground="{StaticResource Foreground_Normal}"/>
+                            </TextBlock>
+
+                            <TextBlock>
+                                <Run Text="Serial :" Foreground="{StaticResource Foreground_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Serial}" Foreground="{StaticResource Foreground_Normal}"/>
+                            </TextBlock>
+
+                            <TextBlock>
+                                <Run Text="Controller :" Foreground="{StaticResource Foreground_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Controller}" Foreground="{StaticResource Foreground_Normal}"/>
+                            </TextBlock>
+
+                            <TextBlock>
+                                <Run Text="Location :" Foreground="{StaticResource Foreground_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Location}" Foreground="{StaticResource Foreground_Normal}"/>
+                            </TextBlock>
+
+                        </StackPanel>
+
+                    </Border.ToolTip>
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="#100080ff"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                </Border>
+
 
                 <!--Device ID-->
                 <Border Grid.Column="2" Background="#fff" BorderBrush="#ccc" BorderThickness="0,0,1,0">

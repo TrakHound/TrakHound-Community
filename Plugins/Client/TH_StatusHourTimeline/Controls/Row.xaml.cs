@@ -112,14 +112,38 @@ namespace TH_StatusHourTimeline.Controls
 
         public DateTime CurrentTime { get; set; }
 
-        public void LoadData(EventData data)
+        public void UpdateData(EventData data)
         {
-            LoadSnapshots(data);
-            LoadVariables(data);
-            LoadShiftData(data);
+            UpdateDatabaseConnection(data);
+            UpdateAvailability(data);
+            UpdateSnapshots(data);
+            UpdateVariables(data);
+            UpdateShiftData(data);
         }
 
-        private void LoadVariables(EventData data)
+        private void UpdateDatabaseConnection(EventData data)
+        {
+            if (data.Id.ToLower() == "statusdata_connection")
+            {
+                if (data.Data02.GetType() == typeof(bool))
+                {
+                    Connected = (bool)data.Data02;
+                }
+            }
+        }
+
+        private void UpdateAvailability(EventData data)
+        {
+            if (data.Id.ToLower() == "statusdata_availability")
+            {
+                if (data.Data02.GetType() == typeof(bool))
+                {
+                    Available = (bool)data.Data02;
+                }
+            }
+        }
+
+        private void UpdateVariables(EventData data)
         {
             if (data.Id.ToLower() == "statusdata_variables")
             {
@@ -138,7 +162,7 @@ namespace TH_StatusHourTimeline.Controls
             }
         }
 
-        private void LoadSnapshots(EventData data)
+        private void UpdateSnapshots(EventData data)
         {
             if (data.Id.ToLower() == "statusdata_snapshots")
             {
@@ -153,7 +177,7 @@ namespace TH_StatusHourTimeline.Controls
             }
         }
 
-        private void LoadShiftData(EventData data)
+        private void UpdateShiftData(EventData data)
         {
             if (data.Id.ToLower() == "statusdata_shiftdata")
             {

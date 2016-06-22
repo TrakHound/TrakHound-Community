@@ -48,7 +48,7 @@
                                              BarBrush="{StaticResource StatusGreen}" 
                                              BarBackgroundBrush="{StaticResource StatusGreen_Hover}"/>
 
-                            <!--<th_wpf:TimeProgress Text="Idle" Value="{Binding HourData.IdleSeconds}"
+                            <th_wpf:TimeProgress Text="Idle" Value="{Binding HourData.IdleSeconds}"
                                              Maximum="{Binding HourData.TotalSeconds}"
                                              BarBrush="{StaticResource StatusYellow}" 
                                              BarBackgroundBrush="{StaticResource StatusYellow_Hover}"/>
@@ -56,7 +56,7 @@
                             <th_wpf:TimeProgress Text="Alert" Value="{Binding HourData.AlertSeconds}"
                                              Maximum="{Binding HourData.TotalSeconds}"
                                              BarBrush="{StaticResource StatusRed}" 
-                                             BarBackgroundBrush="{StaticResource StatusRed_Hover}"/>-->
+                                             BarBackgroundBrush="{StaticResource StatusRed_Hover}"/>
 
                         </StackPanel>
 
@@ -100,7 +100,7 @@
                             </MultiDataTrigger>
 
                             <DataTrigger Binding="{Binding HourData.TotalSeconds}" Value="0">
-                                <Setter Property="Fill" Value="#eee"/>
+                                <Setter Property="Fill" Value="#fff"/>
                             </DataTrigger>
                             
                         </Style.Triggers>
@@ -133,7 +133,7 @@
 
                                 <DataTrigger Binding="{Binding HourData.TotalSeconds}" Value="0">
                                     <Setter Property="Margin" Value="10"/>
-                                    <Setter Property="Foreground" Value="#ddd"/>
+                                    <Setter Property="Foreground" Value="#ccc"/>
                                     <Setter Property="Text" Value="N/A"/>
                                 </DataTrigger>
 

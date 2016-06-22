@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media;
 using System.Collections.ObjectModel;
-using System.Windows.Media.Imaging;
-using System.Windows.Interop;
-using System.Windows.Input;
+using System.Linq;
+using System.Windows.Media;
 
 using TH_Configuration;
 using TH_Plugins;
@@ -23,7 +17,7 @@ namespace TH_StatusHourTimeline
 
         public string Title { get { return "Status Hour Timeline"; } }
 
-        public string Description { get { return "View Device Status Timeline by Hour for the current day"; } }
+        public string Description { get { return "View Device Status Timeline by Hour for the current day. Pecentage is given for what status the device was in for the majority of the hour."; } }
 
         public ImageSource Image { get { return null; } }
 
