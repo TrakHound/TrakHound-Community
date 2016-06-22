@@ -1,0 +1,57 @@
+﻿<UserControl x:Class="TH_StatusTimes.StatusTimes"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TH_StatusTimes"
+             mc:Ignorable="d" 
+             d:DesignHeight="100">
+
+    <Grid x:Name="root" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--Headers-->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="TextAlignment" Value="Center"/>
+                    <Setter Property="Foreground" Value="#fff"/>
+                    <Setter Property="TextWrapping" Value="Wrap"/>
+                    <Setter Property="Margin" Value="5"/>
+                </Style>
+            </Grid.Resources>
+
+            <TextBlock Grid.Column="0" Text="S" ToolTip="Displays the Device's current status whether it is in Production, Idle, or Alert."/>
+
+            <TextBlock Grid.Column="1" Text="Device Description"/>
+
+            <TextBlock Grid.Column="2" Text="Device ID"/>
+
+            <TextBlock Grid.Column="3" Text="Production"/>
+            
+            <TextBlock Grid.Column="4" Text="Idle"/>
+
+            <TextBlock Grid.Column="5" Text="Alert"/>
+
+        </Grid>
+
+        <!--Rows-->
+        <ItemsControl Grid.Row="1" ItemsSource="{Binding Rows}" Background="{StaticResource Window_Background}"/>
+
+    </Grid>
+    
+</UserControl>

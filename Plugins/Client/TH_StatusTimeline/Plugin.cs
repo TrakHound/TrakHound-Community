@@ -148,9 +148,7 @@ namespace TH_StatusTimeline
             return null;
         }
 
-
         public TH_Global.IPage Options { get; set; }
-
 
     }
 }

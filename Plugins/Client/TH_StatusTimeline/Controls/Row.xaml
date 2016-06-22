@@ -377,8 +377,24 @@
                         <TextBlock Text="{Binding Configuration.Description.Description}" Foreground="{StaticResource Foreground_Normal}" FontSize="12"  Margin="0,2" HorizontalAlignment="Left" FontWeight="Bold"/>
 
                         <!--Manufacturer-->
-                        <TextBlock Text="{Binding Configuration.Description.Manufacturer}" Foreground="{StaticResource Foreground_Normal}" FontSize="10" Margin="0,2" HorizontalAlignment="Left"/>
-
+                        <TextBlock Foreground="{StaticResource Foreground_Normal}" FontSize="10" Margin="0,2" HorizontalAlignment="Left">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Configuration.Description.Manufacturer}" Value="{x:Null}"/>
+                                                <Condition Binding="{Binding Configuration.Description.Model}" Value="{x:Null}"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                            <Run Text="{Binding Configuration.Description.Manufacturer}"/>
+                            <Run Text="{Binding Configuration.Description.Model}"/>
+                        </TextBlock>
+                        
                         <!--Serial-->
                         <TextBlock Text="{Binding Configuration.Description.Serial}" Foreground="{StaticResource Foreground_Normal}" FontSize="10" Margin="0,2" HorizontalAlignment="Left"/>
 

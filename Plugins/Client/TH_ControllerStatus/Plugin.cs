@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 using TH_Configuration;
 using TH_Plugins;
@@ -19,7 +20,7 @@ namespace TH_ControllerStatus
 
         public string Description { get { return "View Controller Status Variables for each Device"; } }
 
-        public ImageSource Image { get { return null; } }
+        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_OeeStatus;component/Resources/Warning_01.png")); } }
 
 
         public string Author { get { return "TrakHound"; } }

@@ -109,8 +109,6 @@ namespace TH_WPF
         {
             if (Maximum > 0)
             {
-                TH_Global.Logger.Log("Value = " + Value + " :: Maximum = " + Maximum, TH_Global.Logger.LogLineType.Notification);
-
                 double percentage = Math.Min(1, Value / Maximum);
                 Percentage = percentage.ToString("P1");
 
@@ -121,8 +119,6 @@ namespace TH_WPF
             }
             else
             {
-                TH_Global.Logger.Log("MAXIMUM ERROR :: Value = " + Value + " :: Maximum = " + Maximum, TH_Global.Logger.LogLineType.Notification);
-
                 Percentage = "0.0%";
                 Time = "00:00:00";
 
