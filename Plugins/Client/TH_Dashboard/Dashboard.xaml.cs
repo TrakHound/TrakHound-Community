@@ -30,6 +30,8 @@ namespace TH_Dashboard
             PluginConfigurationCategory pages = new PluginConfigurationCategory();
             pages.Name = "Pages";
             SubCategories.Add(pages);
+
+            IsExpanded = Properties.Settings.Default.IsExpanded;
         }
 
         ObservableCollection<ListButton> pages;
@@ -147,13 +149,12 @@ namespace TH_Dashboard
 
                         catch { }
 
-                        ListButton lb = new ListButton();
-                        lb.ToolTip = config.Name;
-                        lb.Image = plugin.Image;
-                        lb.Text = plugin.Title;
-                        lb.Selected += lb_Selected;
-                        lb.DataObject = plugin;
-                        Pages.Add(lb);
+                        var bt = new ListButton();
+                        bt.Image = plugin.Image;
+                        bt.Text = plugin.Title;
+                        bt.Selected += lb_Selected;
+                        bt.DataObject = plugin;
+                        Pages.Add(bt);
 
                         EnabledPlugins.Add(config);
                     }
@@ -293,6 +294,9 @@ namespace TH_Dashboard
         private void Expand_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             IsExpanded = !IsExpanded;
+
+            Properties.Settings.Default.IsExpanded = IsExpanded;
+            Properties.Settings.Default.Save();
         }
     }
 }

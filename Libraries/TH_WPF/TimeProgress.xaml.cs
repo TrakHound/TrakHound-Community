@@ -86,7 +86,11 @@ namespace TH_WPF
         public double Maximum
         {
             get { return (double)GetValue(MaximumProperty); }
-            set { SetValue(MaximumProperty, value); }
+            set
+            {
+                SetValue(MaximumProperty, value);
+                Update();
+            }
         }
 
         public static readonly DependencyProperty MaximumProperty =
@@ -99,10 +103,14 @@ namespace TH_WPF
             if (tp != null) tp.Update();
         }
 
+
+
         private void Update()
         {
             if (Maximum > 0)
             {
+                TH_Global.Logger.Log("Value = " + Value + " :: Maximum = " + Maximum, TH_Global.Logger.LogLineType.Notification);
+
                 double percentage = Math.Min(1, Value / Maximum);
                 Percentage = percentage.ToString("P1");
 
@@ -113,6 +121,8 @@ namespace TH_WPF
             }
             else
             {
+                TH_Global.Logger.Log("MAXIMUM ERROR :: Value = " + Value + " :: Maximum = " + Maximum, TH_Global.Logger.LogLineType.Notification);
+
                 Percentage = "0.0%";
                 Time = "00:00:00";
 
@@ -130,7 +140,7 @@ namespace TH_WPF
         }
 
         public static readonly DependencyProperty BarValueProperty =
-            DependencyProperty.Register("BarValue", typeof(double), typeof(TimeProgress), new PropertyMetadata(10d));
+            DependencyProperty.Register("BarValue", typeof(double), typeof(TimeProgress), new PropertyMetadata(0d));
 
 
         public double BarMaximum
@@ -140,7 +150,7 @@ namespace TH_WPF
         }
 
         public static readonly DependencyProperty BarMaximumProperty =
-            DependencyProperty.Register("BarMaximum", typeof(double), typeof(TimeProgress), new PropertyMetadata(60d));
+            DependencyProperty.Register("BarMaximum", typeof(double), typeof(TimeProgress), new PropertyMetadata(1d));
 
         #endregion
 
@@ -267,8 +277,12 @@ namespace TH_WPF
             return GreaterThan(tp1, tp2) || EqualTo(tp1, tp2);
         }
 
+
         #endregion
 
-
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            Update();
+        }
     }
 }

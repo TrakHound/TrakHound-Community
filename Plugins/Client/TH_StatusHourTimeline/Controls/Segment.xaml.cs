@@ -25,6 +25,29 @@ namespace TH_StatusHourTimeline.Controls
             root.DataContext = this;
         }
 
+
+
+        //public double TotalSeconds
+        //{
+        //    get { return (double)GetValue(TotalSecondsProperty); }
+        //    set { SetValue(TotalSecondsProperty, value); }
+        //}
+
+        //public static readonly DependencyProperty TotalSecondsProperty =
+        //    DependencyProperty.Register("TotalSeconds", typeof(double), typeof(Segment), new PropertyMetadata(1d));
+
+
+        //public double ProductionSeconds
+        //{
+        //    get { return (double)GetValue(ProductionSecondsProperty); }
+        //    set { SetValue(ProductionSecondsProperty, value); }
+        //}
+
+        //public static readonly DependencyProperty ProductionSecondsProperty =
+        //    DependencyProperty.Register("ProductionSeconds", typeof(double), typeof(Segment), new PropertyMetadata(0d));
+
+
+
         public HourData HourData
         {
             get { return (HourData)GetValue(HourDataProperty); }

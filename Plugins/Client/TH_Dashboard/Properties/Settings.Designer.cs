@@ -34,5 +34,17 @@ namespace TH_Dashboard.Properties {
                 this["SelectedPage"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool IsExpanded {
+            get {
+                return ((bool)(this["IsExpanded"]));
+            }
+            set {
+                this["IsExpanded"] = value;
+            }
+        }
     }
 }

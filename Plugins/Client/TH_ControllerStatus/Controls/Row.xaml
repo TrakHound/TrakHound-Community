@@ -106,6 +106,42 @@
 
                 </Border>
 
+                <!--Mouse Over Panel w/ ToolTip-->
+                <Border Grid.Column="0">
+                    <Border.ToolTip>
+                        <StackPanel MaxWidth="300">
+                            <TextBlock Text="Device Status" FontWeight="Bold"/>
+                            <TextBlock TextWrapping="Wrap">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Production}" Value="true">
+                                                <Setter Property="Text" Value="Device is currently in Production"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Idle}" Value="true">
+                                                <Setter Property="Text" Value="Device is currently Idle"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Alert}" Value="true">
+                                                <Setter Property="Text" Value="Device currently in an Alert and needs Attention"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border.ToolTip>
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="#33ffffff"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                </Border>
+
                 <!--Description-->
                 <Border Grid.Column="1" BorderBrush="#ccc" BorderThickness="0,0,1,0">
 
@@ -127,13 +163,83 @@
                         <TextBlock Text="{Binding Configuration.Description.Description}" Foreground="{StaticResource Foreground_Normal}" FontSize="12"  Margin="0,2" HorizontalAlignment="Left" FontWeight="Bold"/>
 
                         <!--Manufacturer-->
-                        <TextBlock Text="{Binding Configuration.Description.Manufacturer}" Foreground="{StaticResource Foreground_Normal}" FontSize="10" Margin="0,2" HorizontalAlignment="Left"/>
+                        <TextBlock Foreground="{StaticResource Foreground_Normal}" FontSize="10" Margin="0,2" HorizontalAlignment="Left">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Configuration.Description.Manufacturer}" Value="{x:Null}"/>
+                                                <Condition Binding="{Binding Configuration.Description.Model}" Value="{x:Null}"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                            <Run Text="{Binding Configuration.Description.Manufacturer}"/>
+                            <Run Text="{Binding Configuration.Description.Model}"/>
+                        </TextBlock>
 
                         <!--Serial-->
                         <TextBlock Text="{Binding Configuration.Description.Serial}" Foreground="{StaticResource Foreground_Normal}" FontSize="10" Margin="0,2" HorizontalAlignment="Left"/>
 
                     </StackPanel>
 
+                </Border>
+
+                <!--Mouse Over Panel w/ ToolTip-->
+                <Border Grid.Column="1">
+                    <Border.ToolTip>
+                        <StackPanel Width="300">
+                            <StackPanel.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontSize" Value="12"/>
+                                    <Setter Property="Margin" Value="0,2"/>
+                                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                                </Style>
+                            </StackPanel.Resources>
+
+                            <TextBlock Text="{Binding Configuration.Description.Description}" Foreground="{StaticResource Foreground_Normal}" FontSize="14" FontWeight="Bold" TextWrapping="Wrap"/>
+
+                            <TextBlock>
+                                <Run Text="Manufacturer :" Foreground="{StaticResource Foreground_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Manufacturer}" Foreground="{StaticResource Foreground_Normal}"/>
+                            </TextBlock>
+
+                            <TextBlock>
+                                <Run Text="Model :" Foreground="{StaticResource Foreground_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Model}" Foreground="{StaticResource Foreground_Normal}"/>
+                            </TextBlock>
+
+                            <TextBlock>
+                                <Run Text="Serial :" Foreground="{StaticResource Foreground_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Serial}" Foreground="{StaticResource Foreground_Normal}"/>
+                            </TextBlock>
+
+                            <TextBlock>
+                                <Run Text="Controller :" Foreground="{StaticResource Foreground_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Controller}" Foreground="{StaticResource Foreground_Normal}"/>
+                            </TextBlock>
+
+                            <TextBlock>
+                                <Run Text="Location :" Foreground="{StaticResource Foreground_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Location}" Foreground="{StaticResource Foreground_Normal}"/>
+                            </TextBlock>
+
+                        </StackPanel>
+                        
+                    </Border.ToolTip>
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="#100080ff"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
                 </Border>
 
                 <!--Device ID-->
@@ -225,6 +331,39 @@
 
                 </Border>
 
+                <!--Mouse Over Panel w/ ToolTip-->
+                <Border Grid.Column="3">
+                    <Border.ToolTip>
+                        <StackPanel MaxWidth="300">
+                            <TextBlock Text="Device Availability" FontWeight="Bold"/>
+                            <TextBlock TextWrapping="Wrap">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Availability}" Value="AVAILABLE">
+                                                <Setter Property="Text" Value="Device is currently Available to collect data"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Availability}" Value="UNAVAILABLE">
+                                                <Setter Property="Text" Value="Device is Not currently Available to collect data"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border.ToolTip>
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="#33ffffff"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                </Border>
+
                 <!--Emergency Stop-->
                 <Border Grid.Column="4" BorderBrush="#ccc" BorderThickness="0,0,1,0">
                     <Border.Style>
@@ -254,6 +393,53 @@
 
                 </Border>
 
+                <!--Mouse Over Panel w/ ToolTip-->
+                <Border Grid.Column="4">
+                    <Border.ToolTip>
+                        <StackPanel MaxWidth="300">
+                            <TextBlock Text="Device Emergency Stop" FontWeight="Bold"/>
+                            <TextBlock TextWrapping="Wrap">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding EmergencyStop}" Value="ARMED">
+                                                <Setter Property="Text" Value="Device's Emergency Stop is current Armed"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding EmergencyStop}" Value="TRIGGERED">
+                                                <Setter Property="Text" Value="Device's Emergency Stop is current Triggered"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border.ToolTip>
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="#100080ff"/>
+                                </Trigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                        <Condition Binding="{Binding EmergencyStop}" Value="ARMED"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value="#33ffffff"/>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                        <Condition Binding="{Binding EmergencyStop}" Value="TRIGGERED"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value="#33ffffff"/>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                </Border>
+                
                 <!--Execution Mode-->
                 <Border Grid.Column="5" BorderBrush="#ccc" BorderThickness="0,0,1,0">
                     <Border.Style>
@@ -326,6 +512,52 @@
 
                     </Grid>
 
+                </Border>
+
+                <!--Mouse Over Panel w/ ToolTip-->
+                <Border Grid.Column="5">
+                    <Border.ToolTip>
+                        <StackPanel MaxWidth="300">
+                            <TextBlock Text="Device Execution Mode" FontWeight="Bold"/>
+                            <TextBlock TextWrapping="Wrap">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ExecutionMode}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                                <Run Text="Device's Execution Mode is currently"/>
+                                <Run Text="{Binding ExecutionMode}"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border.ToolTip>
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="#100080ff"/>
+                                </Trigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                        <Condition Binding="{Binding ExecutionMode}" Value="ACTIVE"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value="#33ffffff"/>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                        <Condition Binding="{Binding ExecutionMode}" Value="STOPPED"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value="#33ffffff"/>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
                 </Border>
 
                 <!--Controller Mode-->
@@ -497,6 +729,38 @@
 
                 </Border>
 
+                <!--Mouse Over Panel w/ ToolTip-->
+                <Border Grid.Column="6">
+                    <Border.ToolTip>
+                        <StackPanel MaxWidth="300">
+                            <TextBlock Text="Device Controller Mode" FontWeight="Bold"/>
+                            <TextBlock TextWrapping="Wrap">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ControllerMode}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                                <Run Text="Device's Controller Mode is currently"/>
+                                <Run Text="{Binding ControllerMode}"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border.ToolTip>
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="#100080ff"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                </Border>
+                
                 <!--Program-->
                 <Border Grid.Column="7" BorderBrush="#ccc" BorderThickness="0,0,1,0">
 

@@ -15,7 +15,7 @@ namespace TH_ControllerStatus
 
         #region "Descriptive"
 
-        public string Title { get { return "Controller Status Tables"; } }
+        public string Title { get { return "Controller Status"; } }
 
         public string Description { get { return "View Controller Status Variables for each Device"; } }
 

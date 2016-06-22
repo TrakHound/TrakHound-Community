@@ -7,7 +7,7 @@
              xmlns:th_wpf="clr-namespace:TH_WPF"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              
-             Margin="10"
+             Margin="10" Loaded="UserControl_Loaded"
              >
 
     <StackPanel x:Name="root">

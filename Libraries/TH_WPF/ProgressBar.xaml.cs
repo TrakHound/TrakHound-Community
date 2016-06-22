@@ -28,7 +28,6 @@ namespace TH_WPF
             set 
             {
                 SetValue(ValueProperty, value);
-
                 SetProgressValue(value);
             }
         }

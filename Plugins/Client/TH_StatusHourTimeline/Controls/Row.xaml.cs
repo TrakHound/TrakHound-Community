@@ -1,19 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-using System.Data;
 
 using TH_Global.Functions;
 using TH_Plugins;
@@ -178,22 +167,27 @@ namespace TH_StatusHourTimeline.Controls
 
                     foreach (var hourData in HourDatas)
                     {
-                        hourData.TotalSeconds = 0;
-                        hourData.ProductionSeconds = 0;
-                        hourData.IdleSeconds = 0;
-                        hourData.AlertSeconds = 0;
+                        double total = 0;
+                        double production = 0;
+                        double idle = 0;
+                        double alert = 0;
 
                         var matches = shiftDatas.FindAll(x => x.Start.Hour == hourData.StartHour);
                         if (matches != null)
                         {
                             foreach (var match in matches)
                             {
-                                hourData.TotalSeconds += match.TotalTime;
-                                hourData.ProductionSeconds += match.ProductionTime;
-                                hourData.IdleSeconds += match.IdleTime;
-                                hourData.AlertSeconds += match.AlertTime;
+                                total += match.TotalTime;
+                                production += match.ProductionTime;
+                                idle += match.IdleTime;
+                                alert += match.AlertTime;
                             }
                         }
+
+                        hourData.TotalSeconds = total;
+                        hourData.ProductionSeconds = production;
+                        hourData.IdleSeconds = idle;
+                        hourData.AlertSeconds = alert;
                     }
                 }
             }
@@ -222,7 +216,6 @@ namespace TH_StatusHourTimeline.Controls
                 result.Id = DataTable_Functions.GetRowValue("id", row);
                 result.Date = DataTable_Functions.GetRowValue("date", row);
                 result.Shift = DataTable_Functions.GetRowValue("shift", row);
-                //result.SegmentId = DataTable_Functions.GetRowValue("id", row);
 
                 result.Start = DataTable_Functions.GetDateTimeFromRow("start", row);
                 result.End = DataTable_Functions.GetDateTimeFromRow("end", row);

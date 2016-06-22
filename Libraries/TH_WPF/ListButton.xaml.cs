@@ -26,7 +26,14 @@ namespace TH_WPF
             DataContext = this;
         }
 
-        public object DataObject;
+        public object DataObject
+        {
+            get { return (object)GetValue(DataObjectProperty); }
+            set { SetValue(DataObjectProperty, value); }
+        }
+
+        public static readonly DependencyProperty DataObjectProperty =
+            DependencyProperty.Register("DataObject", typeof(object), typeof(ListButton), new PropertyMetadata(null));
 
 
         public bool AlternateStyle

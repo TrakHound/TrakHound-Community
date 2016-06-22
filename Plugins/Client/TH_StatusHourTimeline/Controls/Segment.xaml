@@ -48,7 +48,7 @@
                                              BarBrush="{StaticResource StatusGreen}" 
                                              BarBackgroundBrush="{StaticResource StatusGreen_Hover}"/>
 
-                            <th_wpf:TimeProgress Text="Idle" Value="{Binding HourData.IdleSeconds}"
+                            <!--<th_wpf:TimeProgress Text="Idle" Value="{Binding HourData.IdleSeconds}"
                                              Maximum="{Binding HourData.TotalSeconds}"
                                              BarBrush="{StaticResource StatusYellow}" 
                                              BarBackgroundBrush="{StaticResource StatusYellow_Hover}"/>
@@ -56,7 +56,7 @@
                             <th_wpf:TimeProgress Text="Alert" Value="{Binding HourData.AlertSeconds}"
                                              Maximum="{Binding HourData.TotalSeconds}"
                                              BarBrush="{StaticResource StatusRed}" 
-                                             BarBackgroundBrush="{StaticResource StatusRed_Hover}"/>
+                                             BarBackgroundBrush="{StaticResource StatusRed_Hover}"/>-->
 
                         </StackPanel>
 

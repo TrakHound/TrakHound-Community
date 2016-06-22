@@ -78,13 +78,12 @@ namespace TrakHound_Client
             "Part Count",
 
             "Device Table",
-            "Status Table",
 
             "Table Manager",
             "Status Data",
             "Status Timeline",
             "Status Hour Timeline",
-            "Controller Status Tables" 
+            "Controller Status" 
         };
 
         private void LoadPlugins()
