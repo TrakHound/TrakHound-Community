@@ -7,13 +7,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-
-using System.IO;
 
 using TH_Configuration;
 using TH_Database;
@@ -36,10 +36,11 @@ namespace TH_DeviceManager.Pages.Databases
             InitializeComponent();
             DataContext = this;
 
-            GetPluginInfos();
+            LoadPlugins();
 
-            CreateAddDatabaseButtons();
+            //GetPluginInfos();
 
+            //CreateAddDatabaseButtons();
         }
 
         #region "Page Interface"
@@ -80,13 +81,21 @@ namespace TH_DeviceManager.Pages.Databases
 
             configurationTable = dt;
 
-            GetPageGroups(dt);
+            LoadConfiguration();
+        }
 
-            UpdatePageType(PageType);
+        private void LoadConfiguration()
+        {
+            if (configurationTable != null && pluginInfos.Count > 0)
+            {
+                GetPageGroups(configurationTable);
 
-            configurationTable = dt;
+                UpdatePageType(PageType);
 
-            DatabaseId = DataTable_Functions.GetTableValue(dt, "address", "/DatabaseId", "value");
+                configurationTable = configurationTable;
+
+                DatabaseId = DataTable_Functions.GetTableValue(configurationTable, "address", "/DatabaseId", "value");
+            }
         }
 
         public void SaveConfiguration(DataTable dt)
@@ -180,6 +189,17 @@ namespace TH_DeviceManager.Pages.Databases
 
         #endregion
 
+
+        public bool Loading
+        {
+            get { return (bool)GetValue(LoadingProperty); }
+            set { SetValue(LoadingProperty, value); }
+        }
+
+        public static readonly DependencyProperty LoadingProperty =
+            DependencyProperty.Register("Loading", typeof(bool), typeof(Page), new PropertyMetadata(true));
+
+
         DataTable configurationTable;
 
         void Configuration_Page_SettingChanged(string name, string oldVal, string newVal)
@@ -263,16 +283,18 @@ namespace TH_DeviceManager.Pages.Databases
                 var plugin = (IDatabasePlugin)bt.DataObject;
 
                 var group = GetPageGroup(plugin, PageType);
+                if (group != null)
+                {
+                    if (PageType == Page_Type.Client) clientPageGroups.Add(group);
+                    else if (PageType == Page_Type.Server) serverPageGroups.Add(group);
 
-                if (PageType == Page_Type.Client) clientPageGroups.Add(group);
-                else if (PageType == Page_Type.Server) serverPageGroups.Add(group);
+                    var pageBt = CreatePageButton(group);
 
-                var pageBt = CreatePageButton(group);
+                    foreach (CollapseButton ocbt in DatabaseList.OfType<CollapseButton>().ToList()) ocbt.IsExpanded = false;
+                    pageBt.IsExpanded = true;
 
-                foreach (CollapseButton ocbt in DatabaseList.OfType<CollapseButton>().ToList()) ocbt.IsExpanded = false;
-                pageBt.IsExpanded = true;
-
-                DatabaseList.Add(pageBt);
+                    DatabaseList.Add(pageBt);
+                }
             }
         }
 
@@ -296,6 +318,30 @@ namespace TH_DeviceManager.Pages.Databases
             serverPageGroups = GetPageGroups(dt, Page_Type.Server);
         }
 
+
+        private List<IConfigurationInfo> pluginInfos = new List<IConfigurationInfo>();
+
+        private void LoadPlugins()
+        {
+            ThreadPool.QueueUserWorkItem(new WaitCallback(LoadPlugins_Worker));
+        }
+
+        private void LoadPlugins_Worker(object o)
+        {
+            pluginInfos = GetPluginInfos();
+
+            Dispatcher.BeginInvoke(new Action(LoadPlugins_Finished), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+        }
+
+        private void LoadPlugins_Finished()
+        {
+            CreateAddDatabaseButtons();
+
+            LoadConfiguration();
+
+            Loading = false;
+        }
+
         private List<IConfigurationInfo> GetPluginInfos()
         {
             var result = new List<IConfigurationInfo>();
@@ -312,8 +358,6 @@ namespace TH_DeviceManager.Pages.Databases
 
             return result;
         }
-
-        private List<IConfigurationInfo> pluginInfos = new List<IConfigurationInfo>();
 
         private void GetPluginInfos(string path, List<IConfigurationInfo> infos)
         {
@@ -338,7 +382,7 @@ namespace TH_DeviceManager.Pages.Databases
                     GetPluginInfos(directory, infos);
                 }
 
-                pluginInfos = infos;
+                //pluginInfos = infos;
             }
         }
 
@@ -369,7 +413,7 @@ namespace TH_DeviceManager.Pages.Databases
                             temp_dt.PrimaryKey = new DataColumn[] { temp_dt.Columns["address"] };
 
                             var group = GetPageGroup(plugin, pageType, temp_dt, address);
-                            result.Add(group);
+                            if (group != null) result.Add(group);
                         }
                     }
                 }
@@ -426,7 +470,7 @@ namespace TH_DeviceManager.Pages.Databases
                     if (configButton != null)
                     {
                         object o = Activator.CreateInstance(config_type);
-                        var page = (TH_Plugins.Database.IConfigurationPage)o;
+                        var page = (IConfigurationPage)o;
 
                         if (pageType == Page_Type.Client) page.ApplicationType = Application_Type.Client;
                         else page.ApplicationType = Application_Type.Server;

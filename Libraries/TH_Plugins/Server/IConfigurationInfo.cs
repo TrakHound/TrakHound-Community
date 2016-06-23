@@ -5,12 +5,17 @@
 
 using System;
 using System.ComponentModel.Composition;
+using System.Windows.Media;
 
 namespace TH_Plugins.Server
 {
     [InheritedExport(typeof(IConfigurationInfo))]
     public interface IConfigurationInfo
     {
+
+        string Title { get; }
+
+        ImageSource Image { get; }
 
         Type ConfigurationPageType { get; }
 

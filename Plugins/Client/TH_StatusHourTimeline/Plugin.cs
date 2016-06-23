@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 using TH_Configuration;
 using TH_Plugins;
@@ -19,7 +20,8 @@ namespace TH_StatusHourTimeline
 
         public string Description { get { return "View Device Status Timeline by Hour for the current day. Pecentage is given for what status the device was in for the majority of the hour."; } }
 
-        public ImageSource Image { get { return null; } }
+        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_StatusHourTimeline;component/Resources/Time_Status_01.png")); } }
+
 
 
         public string Author { get { return "TrakHound"; } }

@@ -323,79 +323,70 @@ namespace TH_DeviceManager
 
             if (pluginPageTypes == null)
             {
-                //LoadPages_Worker(null);
                 ThreadPool.QueueUserWorkItem(new WaitCallback(LoadPages_Worker));
             }
             else
             {
-                LoadPages_Finished(pluginPageTypes);
+                foreach (var info in pluginInfos)
+                {
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        AddPage(info);
+
+                    }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                }
+
+                LoadPages_Finished();
             }
+
+            GetProbeData(ConfigurationTable);
         }
 
         private void LoadPages_Worker(object o)
         {
             var types = GetPluginPageTypes();
 
-            Dispatcher.BeginInvoke(new Action<List<Type>>(LoadPages_Finished), UI_Functions.PRIORITY_BACKGROUND, new object[] { types });
+            foreach (var info in pluginInfos)
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    AddPage(info);
+
+                }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+            }
+
+            Dispatcher.BeginInvoke(new Action(LoadPages_Finished), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
         }
 
-        private void LoadPages_Finished(List<Type> types)
+        private void LoadPages_Finished()
         {
-            CreatePages(types);
-
             PagesLoading = false;
-
-            GetProbeData(ConfigurationTable);
         }
 
-
-        private void CreatePages(List<Type> pluginPageTypes)
+        private static IConfigurationPage CreatePage(IConfigurationInfo info)
         {
-            // Create List of IConfigurationPage Types
-            var types = new List<Type>();
-            //types.Add(typeof(Pages.Description.Page));
-            //types.Add(typeof(Pages.Databases.Page));
-            foreach (var type in pluginPageTypes)
-            {
-                types.Add(type);
-            }
-
-            foreach (var type in types)
-            {
-                var page = CreatePage(type);
-                AddPage(page);
-            }
-        }
-
-        private static IConfigurationPage CreatePage(Type type)
-        {
-            object o = Activator.CreateInstance(type);
+            object o = Activator.CreateInstance(info.ConfigurationPageType);
             var page = (IConfigurationPage)o;
             return page;
         }
 
-        private void AddPage(IConfigurationPage page)
+        private void AddPage(IConfigurationInfo info)
         {
-            AddPageButton(page);
-            page.SendData += page_SendData;
-            page.SettingChanged += page_SettingChanged;
-
-            ConfigurationPages.Add(page);
+            AddPageButton(info);
         }
-
 
         bool first = true;
 
-        void AddPageButton(IConfigurationPage page)
+        void AddPageButton(IConfigurationInfo info)
         {
             var bt = new ListButton();
-            bt.Text = page.Title;
+            bt.Text = info.Title;
 
-            if (page.Image != null) bt.Image = page.Image;
+            if (info.Image != null) bt.Image = info.Image;
             else bt.Image = new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/Plug_01.png"));
 
             bt.Selected += Page_Selected;
-            bt.DataObject = page;
+            bt.DataObject = info;
 
             if (first) Page_Selected(bt);
             first = false;
@@ -431,7 +422,16 @@ namespace TH_DeviceManager
         {
             if (lb.DataObject != null)
             {
-                var page = (IConfigurationPage)lb.DataObject;
+                var info = (IConfigurationInfo)lb.DataObject;
+
+                var page = ConfigurationPages.Find(x => x.Title == info.Title);
+                if (page == null)
+                {
+                    page = CreatePage(info);
+                    page.SendData += page_SendData;
+                    page.SettingChanged += page_SettingChanged;
+                    ConfigurationPages.Add(page);
+                }
 
                 LoadPage(page);
 
@@ -448,9 +448,13 @@ namespace TH_DeviceManager
 
         static List<Type> pluginPageTypes;
 
+        static List<IConfigurationInfo> pluginInfos = new List<IConfigurationInfo>();
+
         public List<Type> GetPluginPageTypes()
         {
             var result = pluginPageTypes;
+
+            pluginInfos.Clear();
 
             if (result == null)
             {
@@ -483,24 +487,13 @@ namespace TH_DeviceManager
                     {
                         var type = plugin.ConfigurationPageType;
 
-                        //Logger.Log(type.FullName.ToString(), Logger.LogLineType.Notification);
-
                         if (!types.Exists(x => x.FullName == type.FullName))
                         {
+                            pluginInfos.Add(plugin);
+
                             types.Add(type);
                         }
                     }
-
-                    //var plugins = Reader.FindPlugins<IConfigurationPage>(path, new ConfigurationPagePlugin.PluginContainer());
-                    //foreach (var plugin in plugins)
-                    //{
-                    //    var type = plugin.GetType();
-
-                    //    if (!types.Exists(x => x.FullName == type.FullName))
-                    //    {
-                    //        types.Add(type);
-                    //    }
-                    //}
                 }
                 catch (Exception ex) { Logger.Log("LoadPlugins() : Exception : " + ex.Message, Logger.LogLineType.Error); }
 
@@ -511,67 +504,7 @@ namespace TH_DeviceManager
                 }
             }
         }
-
-        //static List<Type> pluginPageTypes;
-
-        //public List<Type> GetPluginPageTypes()
-        //{
-        //    var result = pluginPageTypes;
-
-        //    if (result == null)
-        //    {
-        //        result = new List<Type>();
-
-        //        string pluginsPath;
-
-        //        // Load from System Directory first (easier for user to navigate to 'C:\TrakHound\')
-        //        pluginsPath = FileLocations.Plugins;
-        //        if (Directory.Exists(pluginsPath)) GetPluginPageTypes(pluginsPath, result);
-
-        //        // Load from App root Directory (doesn't overwrite plugins found in System Directory)
-        //        pluginsPath = AppDomain.CurrentDomain.BaseDirectory;
-        //        if (Directory.Exists(pluginsPath)) GetPluginPageTypes(pluginsPath, result);
-
-        //        pluginPageTypes = result;
-        //    }
-
-        //    return result;
-        //}
-
-        //private void GetPluginPageTypes(string path, List<Type> types)
-        //{
-        //    if (Directory.Exists(path))
-        //    {
-        //        try
-        //        {
-        //            var plugins = Reader.FindPlugins<IServerPlugin>(path, new ServerPlugin.PluginContainer(), ServerPlugin.PLUGIN_EXTENSION);
-        //            foreach (var plugin in plugins)
-        //            {
-        //                if (plugin.ConfigurationPageTypes != null)
-        //                {
-        //                    foreach (var type in plugin.ConfigurationPageTypes)
-        //                    {
-        //                        if (type != null)
-        //                        {
-        //                            if (!types.Exists(x => x.FullName == type.FullName))
-        //                            {
-        //                                types.Add(type);
-        //                            }
-        //                        }
-        //                    }
-        //                }  
-        //            }
-        //        }
-        //        catch (Exception ex) { Logger.Log("LoadPlugins() : Exception : " + ex.Message, Logger.LogLineType.Error); }
-
-        //        // Search Subdirectories
-        //        foreach (string directory in Directory.GetDirectories(path))
-        //        {
-        //            GetPluginPageTypes(directory, types);
-        //        }
-        //    }
-        //}
-
+        
         #endregion
 
         #region "MTC Data Items"  

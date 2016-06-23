@@ -63,6 +63,16 @@ namespace TH_StatusTimeline.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Outline_01 {
+            get {
+                object obj = ResourceManager.GetObject("Outline_01", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Power_01 {
             get {
                 object obj = ResourceManager.GetObject("Power_01", resourceCulture);

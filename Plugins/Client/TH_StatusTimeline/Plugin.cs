@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Interop;
-using System.Windows.Input;
 
 using TH_Configuration;
 using TH_Plugins;
@@ -25,7 +20,7 @@ namespace TH_StatusTimeline
 
         public string Description { get { return "View Device Status Timeline for the current day"; } }
 
-        public ImageSource Image { get { return null; } }
+        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_StatusTimeline;component/Resources/Outline_01.png")); } }
 
 
         public string Author { get { return "TrakHound"; } }

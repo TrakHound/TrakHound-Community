@@ -4,32 +4,20 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data;
+using System.IO;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using System.Threading;
-
-using System.Collections.ObjectModel;
-using System.Data;
-using System.IO;
-
-using TH_Configuration;
 using TH_Global;
 using TH_Global.Functions;
 using TH_Plugins;
 using TH_Plugins.Server;
-using TH_UserManagement;
 using TH_UserManagement.Management;
 
 namespace TH_DeviceManager.Pages.Description
