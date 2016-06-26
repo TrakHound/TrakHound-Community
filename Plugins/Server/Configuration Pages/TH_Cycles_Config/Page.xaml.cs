@@ -530,9 +530,7 @@ namespace TH_Cycles_Config
                     var item = new Controls.ProductionTypeItem();
                     item.ParentPage = this;
                     item.ValueName = DataTable_Functions.TrakHound.GetRowAttribute("name", row);
-                    //item.ValueName = Table_Functions.GetAttribute("name", row);
                     item.productionType_COMBO.Text = DataTable_Functions.TrakHound.GetRowAttribute("type", row);
-                    //item.productionType_COMBO.Text = Table_Functions.GetAttribute("type", row);
                     item.SettingChanged += ProductionTypeItem_SettingChanged;
                     ProductionTypes.Add(item);
                 }
@@ -559,7 +557,6 @@ namespace TH_Cycles_Config
                 attr += "type||" + item.productionType_COMBO.Text + ";";
 
                 DataTable_Functions.UpdateTableValue(dt, "address", adr, "attributes", attr);
-                //Table_Functions.UpdateTableValue(null, attr, adr, dt);
             }
         }
 
@@ -639,7 +636,7 @@ namespace TH_Cycles_Config
                 attr += "id||" + id.ToString("00") + ";";
 
                 DataTable_Functions.UpdateTableValue(dt, "address", adr, "attributes", attr);
-                //Table_Functions.UpdateTableValue(val, attr, adr, dt);
+                DataTable_Functions.UpdateTableValue(dt, "address", adr, "value", val);
             }
         }
 

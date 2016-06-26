@@ -201,7 +201,7 @@ namespace TH_Global.Functions
             if (dt != null)
             {
                 DataRow[] rows = dt.Select(keyColumn + "='" + key + "'");
-                if (rows.Length > 0)
+                if (rows.Length > 0 && valueColumn != null)
                 {
                     foreach (var row in rows)
                     {
@@ -215,7 +215,7 @@ namespace TH_Global.Functions
                 {
                     DataRow row = dt.NewRow();
                     row[keyColumn] = key;
-                    row[valueColumn] = value;
+                    if (valueColumn != null) row[valueColumn] = value;
                     dt.Rows.Add(row);
                 }
             }

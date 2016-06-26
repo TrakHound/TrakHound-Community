@@ -116,13 +116,17 @@
 
         <Grid Grid.Row="1">
 
-            <ItemsControl ItemsSource="{Binding SnapshotItems}" Margin="20" FocusManager.IsFocusScope="False">
-                <ItemsControl.Resources>
-                    <Style TargetType="controls:SnapshotItem">
-                        <Setter Property="Margin" Value="0,0,0,10"/>
-                    </Style>
-                </ItemsControl.Resources>
-            </ItemsControl>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+                <ItemsControl ItemsSource="{Binding SnapshotItems}" Margin="20">
+                    <ItemsControl.Resources>
+                        <Style TargetType="controls:SnapshotItem">
+                            <Setter Property="Margin" Value="0,0,0,10"/>
+                        </Style>
+                    </ItemsControl.Resources>
+                </ItemsControl>
+
+            </ScrollViewer>
 
             <!--<DataGrid x:Name="Snapshots_DG" ItemsSource="{Binding Snapshots}"
                 AutoGenerateColumns="False"

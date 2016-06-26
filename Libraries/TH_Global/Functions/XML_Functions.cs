@@ -39,15 +39,25 @@ namespace TH_Global.Functions
                 var node = element.SelectSingleNode(xPath);
                 if (node == null) node = AddNode(doc, xPath);
 
+                result = SetAttribute(doc, node, attributeName, attributeValue);
+            }
+
+            return result;
+        }
+
+        public static bool SetAttribute(XmlDocument doc, XmlNode node, string attributeName, string attributeValue)
+        {
+            if (node != null)
+            {
                 var attr = doc.CreateAttribute(attributeName);
                 attr.Value = attributeValue;
 
                 node.Attributes.SetNamedItem(attr);
-                
-                result = true;
+
+                return true;
             }
 
-            return result;
+            return false;
         }
 
         public static string GetInnerText(XmlDocument doc, string xPath)

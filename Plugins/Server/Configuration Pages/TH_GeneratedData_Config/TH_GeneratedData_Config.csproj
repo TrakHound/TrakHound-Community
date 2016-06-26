@@ -59,6 +59,9 @@
     <Compile Include="GeneratedEvents\Controls\EventButton.xaml.cs">
       <DependentUpon>EventButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GeneratedEvents\Controls\MultiTrigger.xaml.cs">
+      <DependentUpon>MultiTrigger.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GeneratedEvents\Controls\Trigger.xaml.cs">
       <DependentUpon>Trigger.xaml</DependentUpon>
     </Compile>
@@ -99,6 +102,10 @@
     <Page Include="GeneratedEvents\Controls\EventButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GeneratedEvents\Controls\MultiTrigger.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GeneratedEvents\Controls\Trigger.xaml">
       <Generator>MSBuild:Compile</Generator>

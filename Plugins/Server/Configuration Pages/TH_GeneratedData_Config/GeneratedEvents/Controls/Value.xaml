@@ -35,7 +35,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!--Value Label-->
-                <TextBlock Grid.Column="0" Text="Value" FontSize="8pt" Foreground="#aaa" Margin="10,5" VerticalAlignment="Center" FocusManager.IsFocusScope="False"/>
+                <TextBlock Grid.Column="0" Text="Value" FontSize="8pt" Foreground="#888" Margin="10,5" VerticalAlignment="Center" FocusManager.IsFocusScope="False"/>
 
                 <!--Value Name Input-->
                 <Border Grid.Column="1" BorderThickness="1" CornerRadius="1" Margin="0,5,0,5" MinWidth="100" FocusManager.IsFocusScope="False">
@@ -87,33 +87,63 @@
 
             <Rectangle Height="1" Fill="#ccc" Margin="10,20"/>
 
-            <TextBlock Grid.Column="1" Text="Triggers" FontSize="8pt" Foreground="#aaa" Margin="10,0,0,10" FocusManager.IsFocusScope="False"/>
+            <TextBlock Grid.Column="1" FontSize="8pt" Foreground="#888" Margin="10,0,0,10" FocusManager.IsFocusScope="False">
+                Triggers - Value is met when all of the Trigger conditions are met
+            </TextBlock>
 
             <StackPanel Grid.Row="1" VerticalAlignment="Center" FocusManager.IsFocusScope="False">
 
-                <!--Values-->
+                <!--Triggers-->
                 <ItemsControl ItemsSource="{Binding Triggers}" FocusManager.IsFocusScope="False">
                     <ItemsControl.Resources>
                         <Style TargetType="controls:Trigger">
                             <Setter Property="Margin" Value="10,0,10,10"/>
                         </Style>
+                        <Style TargetType="controls:MultiTrigger">
+                            <Setter Property="Margin" Value="10,0,10,10"/>
+                        </Style>
                     </ItemsControl.Resources>
                 </ItemsControl>
 
-                <!--Add Button-->
-                <th_wpf:Button Image="/TH_GeneratedData_Config;component/Resources/Add_01.png" Text="Add Trigger" ImageTextPadding="10" VerticalAlignment="Center" HorizontalAlignment="Left" Height="35" Margin="10,5" Clicked="AddTrigger_Clicked" FocusManager.IsFocusScope="False">
-                    <th_wpf:Button.Style>
-                        <Style TargetType="th_wpf:Button">
-                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </th_wpf:Button.Style>
-                </th_wpf:Button>
+                <StackPanel Orientation="Horizontal">
+
+                    <!--Add Trigger Button-->
+                    <th_wpf:Button Image="/TH_GeneratedData_Config;component/Resources/Add_01.png" Text="Add Trigger" ImageTextPadding="10" VerticalAlignment="Center" HorizontalAlignment="Left" Height="35" Margin="10,5" Clicked="AddTrigger_Clicked">
+                        <th_wpf:Button.ToolTip>
+                            Add a new Trigger that defines a single condition that must be met (logical AND)
+                        </th_wpf:Button.ToolTip>
+                        <th_wpf:Button.Style>
+                            <Style TargetType="th_wpf:Button">
+                                <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </th_wpf:Button.Style>
+                    </th_wpf:Button>
+
+                    <!--Add MultiTrigger Button-->
+                    <th_wpf:Button Image="/TH_GeneratedData_Config;component/Resources/Add_01.png" Text="Add MultiTrigger" ImageTextPadding="10" VerticalAlignment="Center" HorizontalAlignment="Left" Height="35" Margin="10,5" Clicked="AddMultiTrigger_Clicked">
+                        <th_wpf:Button.ToolTip>
+                            Add a new MultiTrigger that defines multiple Triggers where only one has to be met (logical AND/OR)
+                        </th_wpf:Button.ToolTip>
+                        <th_wpf:Button.Style>
+                            <Style TargetType="th_wpf:Button">
+                                <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </th_wpf:Button.Style>
+                    </th_wpf:Button>
+
+                </StackPanel>
 
             </StackPanel>
 

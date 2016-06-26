@@ -4,6 +4,7 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
@@ -58,10 +59,7 @@ namespace TH_Parts_Config
 
         public event SendData_Handler SendData;
 
-        public void GetSentData(EventData data)
-        {
-
-        }
+        public void GetSentData(EventData data) { }
 
 
         public void LoadConfiguration(DataTable dt)

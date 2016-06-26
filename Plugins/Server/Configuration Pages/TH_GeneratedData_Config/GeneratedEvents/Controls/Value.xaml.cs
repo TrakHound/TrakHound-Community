@@ -121,13 +121,13 @@ namespace TH_GeneratedData_Config.GeneratedEvents.Controls
 
         #region "Triggers"
 
-        ObservableCollection<Trigger> triggers;
-        public ObservableCollection<Trigger> Triggers
+        ObservableCollection<object> triggers;
+        public ObservableCollection<object> Triggers
         {
             get
             {
                 if (triggers == null)
-                    triggers = new ObservableCollection<Trigger>();
+                    triggers = new ObservableCollection<object>();
                 return triggers;
             }
 
@@ -138,10 +138,18 @@ namespace TH_GeneratedData_Config.GeneratedEvents.Controls
         }
 
         public event Clicked_Handler AddTriggerClicked;
+        public event Clicked_Handler AddMultiTriggerClicked;
 
         private void AddTrigger_Clicked(TH_WPF.Button bt)
         {
             if (AddTriggerClicked != null) AddTriggerClicked(this);
+
+            if (SettingChanged != null) SettingChanged();
+        }
+
+        private void AddMultiTrigger_Clicked(TH_WPF.Button bt)
+        {
+            if (AddMultiTriggerClicked != null) AddMultiTriggerClicked(this);
 
             if (SettingChanged != null) SettingChanged();
         }

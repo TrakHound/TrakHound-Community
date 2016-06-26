@@ -337,9 +337,7 @@ namespace TH_DeviceManager
                 }
 
                 LoadPages_Finished();
-            }
-
-            GetProbeData(ConfigurationTable);
+            }            
         }
 
         private void LoadPages_Worker(object o)
@@ -361,6 +359,8 @@ namespace TH_DeviceManager
         private void LoadPages_Finished()
         {
             PagesLoading = false;
+
+            GetProbeData(ConfigurationTable);
         }
 
         private static IConfigurationPage CreatePage(IConfigurationInfo info)
@@ -430,6 +430,10 @@ namespace TH_DeviceManager
                     page = CreatePage(info);
                     page.SendData += page_SendData;
                     page.SettingChanged += page_SettingChanged;
+
+                    page.GetSentData(GetProbeHeader());
+                    page.GetSentData(GetProbeDataItems());
+
                     ConfigurationPages.Add(page);
                 }
 
@@ -527,6 +531,8 @@ namespace TH_DeviceManager
 
         private List<MTConnect.Application.Components.DataItem> probeData = new List<MTConnect.Application.Components.DataItem>();
 
+        private MTConnect.Application.Headers.Devices probeHeader;
+
         void GetProbeData(DataTable dt)
         {
             LoadAgentSettings(dt);
@@ -604,6 +610,7 @@ namespace TH_DeviceManager
                     var returnData = MTConnect.Application.Components.Requests.Get(url, info.proxy, 2000, 1);
                     if (returnData != null)
                     {
+                        probeHeader = returnData.Header;
                         SendProbeHeader(returnData.Header);
 
                         foreach (var device in returnData.Devices)
@@ -633,6 +640,20 @@ namespace TH_DeviceManager
             }
         }
 
+        private EventData GetProbeHeader()
+        {
+            if (probeHeader != null)
+            {
+                var data = new EventData();
+                data.Id = "MTConnect_Probe_Header";
+                data.Data02 = probeHeader;
+
+                return data;
+            }
+
+            return null;
+        }
+
         private void SendProbeDataItems(List<MTConnect.Application.Components.DataItem> items)
         {
             var data = new EventData();
@@ -646,6 +667,21 @@ namespace TH_DeviceManager
                     page.GetSentData(data);
                 }), PRIORITY_BACKGROUND, new object[] { });     
             }
+        }
+
+
+        private EventData GetProbeDataItems()
+        {
+            if (probeData != null)
+            {
+                var data = new EventData();
+                data.Id = "MTConnect_Probe_DataItems";
+                data.Data02 = probeData;
+
+                return data;
+            }
+
+            return null;           
         }
 
         #endregion

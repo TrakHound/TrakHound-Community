@@ -19,7 +19,7 @@
         <!--Description-->
         <StackPanel Margin="0,10" FocusManager.IsFocusScope="False">
 
-            <TextBlock Text="Event Description" FontSize="8pt" Foreground="#aaa" Margin="10,5" FocusManager.IsFocusScope="False"/>
+            <TextBlock Text="Event Description" FontSize="8pt" Foreground="#888" Margin="10,5" FocusManager.IsFocusScope="False"/>
 
             <Border BorderThickness="1" CornerRadius="1" Margin="0,5" FocusManager.IsFocusScope="False">
                 <Border.Style>
@@ -67,6 +67,9 @@
             
             <!--Add Value Button-->
             <th_wpf:Button Height="40" Text="Add Value" ImageTextPadding="10" Image="/TH_GeneratedData_Config;component/Resources/Add_01.png" Margin="0,20" Clicked="AddValue_Clicked" HorizontalAlignment="Left" FocusManager.IsFocusScope="False">
+                <th_wpf:Button.ToolTip>
+                    Add a new Value to the Event
+                </th_wpf:Button.ToolTip>
                 <th_wpf:Button.Style>
                     <Style TargetType="th_wpf:Button">
                         <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>

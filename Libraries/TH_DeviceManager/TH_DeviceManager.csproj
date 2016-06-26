@@ -56,6 +56,14 @@
     <Compile Include="AddDevice\Pages\LoadFromFile.xaml.cs">
       <DependentUpon>LoadFromFile.xaml</DependentUpon>
     </Compile>
+    <None Include="AutoGenerate.cs" />
+    <Compile Include="AutoGenerate\Cycles.cs" />
+    <Compile Include="AutoGenerate\GeneratedEvents\DeviceStatus.cs" />
+    <Compile Include="AutoGenerate\GeneratedEvents\ProductionStatus.cs" />
+    <Compile Include="AutoGenerate\GeneratedEvents\ProgramExecution.cs" />
+    <Compile Include="AutoGenerate\InstanceData.cs" />
+    <Compile Include="AutoGenerate\Shifts.cs" />
+    <Compile Include="AutoGenerate\SnapshotData.cs" />
     <Compile Include="DeviceManager.cs" />
     <Compile Include="Global.cs" />
     <None Include="ShareDevice\Page.xaml.cs">
@@ -301,6 +309,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Generate_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GeneratedEvents.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

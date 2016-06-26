@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<GeneratedEvents>
+  <Event id="00" name="production_status">
+    <Value id="00">
+      <Triggers>
+        <Trigger id="00" link="AVAILABILITY" link_type="Type" value="AVAILABLE" />
+        <Trigger id="01" link="EMERGENCY_STOP" link_type="Type" value="ARMED" />
+        <Trigger id="02" link="SYSTEM" link_type="Type" value="Normal" />
+        <Trigger id="03" link="SYSTEM" link_type="Type" value="Normal" />
+      </Triggers>
+      <Result numval="1">Production</Result>
+    </Value>
+    <Default numval="0">Alert</Default>
+  </Event>
+  <Event id="01" name="alert">
+    <Value id="00">
+      <Triggers>
+        <Trigger id="00" link="avail" value="AVAILABLE" />
+        <Trigger id="01" link="estop" value="ARMED" />
+      </Triggers>
+      <Result numval="1">False</Result>
+    </Value>
+    <Default numval="0">True</Default>
+  </Event>
+  <Event id="02" name="production">
+    <Value id="00">
+      <Triggers>
+        <Trigger id="00" link="avail" value="AVAILABLE" />
+        <Trigger id="01" link="estop" value="ARMED" />
+        <Trigger id="02" link="cn3" value="AUTOMATIC" />
+        <Trigger id="03" link="cn6" value="ACTIVE" />
+      </Triggers>
+      <Result numval="1">True</Result>
+    </Value>
+    <Default numval="0">False</Default>
+  </Event>
+  <Event id="03" name="idle">
+    <Value id="00">
+      <Triggers>
+        <Trigger id="00" link="avail" value="AVAILABLE" />
+        <Trigger id="01" link="estop" value="ARMED" />
+        <Trigger id="02" link="cn6" modifier="not" value="ACTIVE" />
+      </Triggers>
+      <Result numval="1">True</Result>
+    </Value>
+    <Default numval="0">False</Default>
+  </Event>
+</GeneratedEvents>

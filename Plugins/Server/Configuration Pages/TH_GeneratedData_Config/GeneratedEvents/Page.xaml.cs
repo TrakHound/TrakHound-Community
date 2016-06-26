@@ -253,9 +253,17 @@ namespace TH_GeneratedData_Config.GeneratedEvents
             {
                 foreach (Controls.Value v in ev.Values)
                 {
-                    foreach (Controls.Trigger t in v.Triggers)
+                    foreach (Controls.Trigger t in v.Triggers.OfType<Controls.Trigger>())
                     {
                         Dispatcher.BeginInvoke(new Action<Controls.Trigger>(Trigger_UpdateCollectedLink), priority, new object[] { t });
+                    }
+
+                    foreach (Controls.MultiTrigger t in v.Triggers.OfType<Controls.MultiTrigger>())
+                    {
+                        foreach (Controls.Trigger tr in t.Triggers)
+                        {
+                            Dispatcher.BeginInvoke(new Action<Controls.Trigger>(Trigger_UpdateCollectedLink), priority, new object[] { tr });
+                        }
                     }
                 }
 
@@ -348,7 +356,6 @@ namespace TH_GeneratedData_Config.GeneratedEvents
             attr += "description||" + e.description + ";";
 
             DataTable_Functions.UpdateTableValue(dt, "address", adr, "attributes", attr);
-            //Table_Functions.UpdateTableValue(null, attr, adr, dt);
 
             int numval = e.values.Count;
             foreach (Value v in e.values)
@@ -372,7 +379,6 @@ namespace TH_GeneratedData_Config.GeneratedEvents
 
                 DataTable_Functions.UpdateTableValue(dt, "address", addr, "attributes", attr);
                 DataTable_Functions.UpdateTableValue(dt, "address", addr, "value", val);
-                //Table_Functions.UpdateTableValue(val, attr, addr, dt);
             }
         }
 
@@ -387,10 +393,12 @@ namespace TH_GeneratedData_Config.GeneratedEvents
             string attr = "";
             attr += "id||" + v.id.ToString("00") + ";";
             DataTable_Functions.UpdateTableValue(dt, "address", adr, "attributes", attr);
-            //Table_Functions.UpdateTableValue(null, attr, adr, dt);
 
             // Save Triggers
-            foreach (Trigger t in v.triggers) SaveTrigger(t, v, e, dt);
+            foreach (Trigger t in v.triggers.OfType<Trigger>()) SaveTrigger(t, v, e, dt);
+
+            // Save MultiTriggers
+            foreach (MultiTrigger mt in v.triggers.OfType<MultiTrigger>()) SaveMultiTrigger(mt, v, e, dt);
 
             // Save Result
             if (v.result != null)
@@ -401,17 +409,69 @@ namespace TH_GeneratedData_Config.GeneratedEvents
                 string val = v.result.value;
                 DataTable_Functions.UpdateTableValue(dt, "address", addr, "attributes", attr);
                 DataTable_Functions.UpdateTableValue(dt, "address", addr, "value", val);
-                //Table_Functions.UpdateTableValue(val, attr, addr, dt);
             }
         }
 
         void SaveTrigger(Trigger t, Value v, Event e, DataTable dt)
         {
+            string adr = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00");
+            adr += "/Value||" + v.id.ToString("00") + "/Triggers";
+            //adr += "/Trigger";
+
+            SaveTrigger(t, v, e, dt, adr);
+
+
+            //if (t.link != null && t.modifier != null)
+            //{
+            //    string adr = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00");
+            //    adr += "/Value||" + v.id.ToString("00") + "/Triggers";
+            //    adr += "/Trigger";
+
+            //    int id = DataTable_Functions.TrakHound.GetUnusedAddressId(adr, dt);
+            //    adr = adr + "||" + id.ToString("00");
+
+            //    t.id = id;
+
+            //    // Save Root
+            //    string attr = "";
+            //    attr += "id||" + t.id.ToString("00") + ";";
+
+            //    string link = t.link;
+            //    List<CollectedItem> linkitems = CollectedItems.ToList();
+            //    CollectedItem dataitem = linkitems.Find(x => x.Display == link);
+            //    if (dataitem != null) link = dataitem.Id;
+
+            //    attr += "link||" + link + ";";
+            //    attr += "link_type||" + t.linkType + ";";
+
+            //    if (t.modifier != null)
+            //    {
+            //        switch (t.modifier)
+            //        {
+            //            case "Not Equal To": attr += "modifier||" + "not" + ";"; break;
+            //            case "Greater Than": attr += "modifier||" + "greater_than" + ";"; break;
+            //            case "Less Than": attr += "modifier||" + "less_than" + ";"; break;
+            //            case "Contains": attr += "modifier||" + "contains" + ";"; break;
+            //            case "Contains Match Case": attr += "modifier||" + "contains_match_case" + ";"; break;
+            //            case "Contains Whole Word": attr += "modifier||" + "contains_whole_word" + ";"; break;
+            //            case "Contains Whole Word Match Case": attr += "modifier||" + "contains_whole_word_match_case" + ";"; break;
+            //        }
+            //    }
+
+            //    attr += "value||" + t.value + ";";
+
+            //    DataTable_Functions.UpdateTableValue(dt, "address", adr, "attributes", attr);
+            //}
+        }
+
+        void SaveTrigger(Trigger t, Value v, Event e, DataTable dt, string addressPrefix)
+        {
             if (t.link != null && t.modifier != null)
             {
-                string adr = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00");
-                adr += "/Value||" + v.id.ToString("00") + "/Triggers";
-                adr += "/Trigger";
+                //string adr = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00");
+                //adr += "/Value||" + v.id.ToString("00") + "/Triggers";
+                string adr = addressPrefix + "/Trigger";
+                //adr += "/Trigger";
 
                 int id = DataTable_Functions.TrakHound.GetUnusedAddressId(adr, dt);
                 adr = adr + "||" + id.ToString("00");
@@ -447,7 +507,27 @@ namespace TH_GeneratedData_Config.GeneratedEvents
                 attr += "value||" + t.value + ";";
 
                 DataTable_Functions.UpdateTableValue(dt, "address", adr, "attributes", attr);
-                //Table_Functions.UpdateTableValue(null, attr, adr, dt);
+            }
+        }
+
+        void SaveMultiTrigger(MultiTrigger mt, Value v, Event e, DataTable dt)
+        {
+            string adr = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00");
+            adr += "/Value||" + v.id.ToString("00") + "/Triggers";
+            adr += "/MultiTrigger";
+
+            int id = DataTable_Functions.TrakHound.GetUnusedAddressId(adr, dt);
+            adr = adr + "||" + id.ToString("00");
+
+            // Set Attributes
+            string attr = "";
+            attr += "id||" + id.ToString("00") + ";";
+
+            DataTable_Functions.UpdateTableValue(dt, "address", adr, "attributes", attr);
+
+            foreach (var trigger in mt.triggers)
+            {
+                SaveTrigger(trigger, v, e, dt, adr);
             }
         }
 
@@ -471,7 +551,6 @@ namespace TH_GeneratedData_Config.GeneratedEvents
 
             attr += "link||" + link + ";";
             DataTable_Functions.UpdateTableValue(dt, "address", adr, "attributes", attr);
-            //Table_Functions.UpdateTableValue(null, attr, adr, dt);
         }
 
         #endregion
@@ -529,7 +608,29 @@ namespace TH_GeneratedData_Config.GeneratedEvents
                     foreach (DataRow row in temp_dt.Rows)
                     {
                         Trigger t = GetTriggerFromRow(v, row);
-                        if (t != null) v.triggers.Add(t);
+                        if (t != null)
+                        {
+                            var match = GetMultiTriggerFromRow(v, row);
+                            if (match != null)
+                            {
+                                MultiTrigger multiTrigger = v.triggers.OfType<MultiTrigger>().ToList().Find(x => x.id == match.id);
+                                if (multiTrigger != null)
+                                {
+                                    multiTrigger.triggers.Add(t);
+                                }  
+                            }
+                            else
+                            {
+                                v.triggers.Add(t);
+                            }
+                        }
+
+                        MultiTrigger mt = GetMultiTriggerFromRow(v, row);
+                        if (mt != null)
+                        {
+                            MultiTrigger multiTrigger = v.triggers.OfType<MultiTrigger>().ToList().Find(x => x.id == mt.id);
+                            if (multiTrigger == null) v.triggers.Add(mt);
+                        }
 
                         GetResultFromRow(v, row);
                     }
@@ -546,7 +647,6 @@ namespace TH_GeneratedData_Config.GeneratedEvents
             string adr = row["address"].ToString();
 
             string lastNode = DataTable_Functions.TrakHound.GetLastNode(row);
-            //string lastNode = Table_Functions.GetLastNode(row);
 
             if (lastNode != null)
             {
@@ -587,14 +687,11 @@ namespace TH_GeneratedData_Config.GeneratedEvents
             string adr = row["address"].ToString();
 
             string lastNode = DataTable_Functions.TrakHound.GetLastNode(row);
-            //string lastNode = Table_Functions.GetLastNode(row);
-
             if (lastNode != null)
             {
                 if (lastNode.ToLower() == "value")
                 {
                     string strId = DataTable_Functions.TrakHound.GetRowAttribute("id", row);
-                    //string strId = Table_Functions.GetAttribute("id", row);
                     if (strId != null)
                     {
                         int id = -1;
@@ -658,15 +755,46 @@ namespace TH_GeneratedData_Config.GeneratedEvents
             }
         }
 
+        static MultiTrigger GetMultiTriggerFromRow(Value v, DataRow row)
+        {
+            MultiTrigger result = null;
+
+            string adr = row["address"].ToString();
+
+            if (adr.Contains("MultiTrigger"))
+            {
+                int eventIndex = adr.IndexOf("MultiTrigger");
+                int separatorIndex = adr.IndexOf("||", eventIndex);
+                int slashIndex = adr.IndexOf("/", separatorIndex + 1);
+
+                if (slashIndex > separatorIndex || slashIndex == -1)
+                {
+                    string val = row["value"].ToString();
+                    string strId = null;
+                    if (slashIndex >= 0) strId = adr.Substring(separatorIndex + 2, 2);
+                    else strId = adr.Substring(separatorIndex + 2);
+
+                    int id;
+                    if (int.TryParse(strId, out id))
+                    {
+                        result = new MultiTrigger();
+                        result.id = id;
+                    }
+                }
+            }
+
+            return result;
+        }
+
         static Trigger GetTriggerFromRow(Value v, DataRow row)
         {
             Trigger result = null;
 
             string adr = row["address"].ToString();
 
-            if (adr.Contains("Trigger"))
+            if (DataTable_Functions.TrakHound.GetLastNode(row) == "Trigger")
             {
-                int eventIndex = adr.IndexOf("Trigger");
+                int eventIndex = adr.LastIndexOf("Trigger");
                 int slashIndex = adr.IndexOf('/', eventIndex) + 1;
                 int separatorIndex = adr.IndexOf("||", slashIndex);
 
@@ -678,33 +806,63 @@ namespace TH_GeneratedData_Config.GeneratedEvents
                     int id;
                     if (int.TryParse(strId, out id))
                     {
-                        Trigger t = v.triggers.Find(x => x.id == id);
-                        if (t == null)
+                        result = new Trigger();
+                        result.id = id;
+
+                        result.linkType = DataTable_Functions.TrakHound.GetRowAttribute("link_type", row);
+                        if (result.linkType == null) result.linkType = "ID";
+
+                        result.link = DataTable_Functions.TrakHound.GetRowAttribute("link", row);
+                        result.value = DataTable_Functions.TrakHound.GetRowAttribute("value", row);
+
+                        string modifier = "Equal To";
+                        string mod = DataTable_Functions.TrakHound.GetRowAttribute("modifier", row);
+                        if (mod != null)
                         {
-                            result = new Trigger();
-                            result.id = id;
-                            result.linkType = DataTable_Functions.TrakHound.GetRowAttribute("link_type", row);
-                            result.link = DataTable_Functions.TrakHound.GetRowAttribute("link", row);
-                            result.value = DataTable_Functions.TrakHound.GetRowAttribute("value", row);
-
-                            string modifier = "Equal To";
-                            string mod = DataTable_Functions.TrakHound.GetRowAttribute("modifier", row);
-                            if (mod != null)
+                            switch (mod.ToLower())
                             {
-                                switch (mod.ToLower())
-                                {
-                                    case "not": modifier = "Not Equal To"; break;
-                                    case "greater_than": modifier = "Greater Than"; break;
-                                    case "less_than": modifier = "Less Than"; break;
-                                    case "contains": modifier = "Contains"; break;
-                                    case "contains_match_case": modifier = "Contains Match Case"; break;
-                                    case "contains_whole_word": modifier = "Contains Whole Word"; break;
-                                    case "contains_whole_word_match_case": modifier = "Contains Whole Word Match Case"; break;
-                                }
+                                case "not": modifier = "Not Equal To"; break;
+                                case "greater_than": modifier = "Greater Than"; break;
+                                case "less_than": modifier = "Less Than"; break;
+                                case "contains": modifier = "Contains"; break;
+                                case "contains_match_case": modifier = "Contains Match Case"; break;
+                                case "contains_whole_word": modifier = "Contains Whole Word"; break;
+                                case "contains_whole_word_match_case": modifier = "Contains Whole Word Match Case"; break;
                             }
-
-                            result.modifier = modifier;
                         }
+
+                        result.modifier = modifier;
+
+                        //Trigger t = v.triggers.OfType<Trigger>().ToList().Find(x => x.id == id);
+                        //if (t == null)
+                        //{
+                        //    result = new Trigger();
+                        //    result.id = id;
+
+                        //    result.linkType = DataTable_Functions.TrakHound.GetRowAttribute("link_type", row);
+                        //    if (result.linkType == null) result.linkType = "ID";
+
+                        //    result.link = DataTable_Functions.TrakHound.GetRowAttribute("link", row);
+                        //    result.value = DataTable_Functions.TrakHound.GetRowAttribute("value", row);
+
+                        //    string modifier = "Equal To";
+                        //    string mod = DataTable_Functions.TrakHound.GetRowAttribute("modifier", row);
+                        //    if (mod != null)
+                        //    {
+                        //        switch (mod.ToLower())
+                        //        {
+                        //            case "not": modifier = "Not Equal To"; break;
+                        //            case "greater_than": modifier = "Greater Than"; break;
+                        //            case "less_than": modifier = "Less Than"; break;
+                        //            case "contains": modifier = "Contains"; break;
+                        //            case "contains_match_case": modifier = "Contains Match Case"; break;
+                        //            case "contains_whole_word": modifier = "Contains Whole Word"; break;
+                        //            case "contains_whole_word_match_case": modifier = "Contains Whole Word Match Case"; break;
+                        //        }
+                        //    }
+
+                        //    result.modifier = modifier;
+                        //}
                     }
                 }
             }
@@ -793,7 +951,7 @@ namespace TH_GeneratedData_Config.GeneratedEvents
 
         Controls.Event CreateEvent(Event e)
         {
-            Controls.Event result = new Controls.Event();
+            var result = new Controls.Event();
             result.ParentPage = this;
             result.ParentEvent = e;
 
@@ -816,7 +974,7 @@ namespace TH_GeneratedData_Config.GeneratedEvents
             }
 
             // Default
-            Controls.Default def = new Controls.Default();
+            var def = new Controls.Default();
             def.ParentResult = e.Default;
             if (e.Default != null) def.ValueName = e.Default.value;
             def.SettingChanged += def_SettingChanged;
@@ -853,11 +1011,20 @@ namespace TH_GeneratedData_Config.GeneratedEvents
         {
             if (e.ParentEvent != null)
             {
-                Value val = new Value();
+                var value = new Value();
 
-                e.ParentEvent.values.Add(val);
+                e.ParentEvent.values.Add(value);
 
-                e.Values.Add(CreateValue(val, e.ParentEvent));
+                var uiValue = CreateValue(value, e.ParentEvent);
+
+                var t = new Trigger();
+                uiValue.ParentValue.triggers.Add(t);
+
+                Controls.Trigger tr = CreateTrigger(t, uiValue.ParentValue, uiValue.ParentEvent);
+                tr.modifier_COMBO.SelectedItem = "Equal To";
+                uiValue.Triggers.Add(tr);
+
+                e.Values.Add(uiValue);
             }
 
             ChangeSetting(null, null, null);
@@ -877,15 +1044,22 @@ namespace TH_GeneratedData_Config.GeneratedEvents
             result.SettingChanged += result_SettingChanged;
             result.RemoveClicked += Value_RemoveClicked;
             result.AddTriggerClicked += Value_AddTriggerClicked;
+            result.AddMultiTriggerClicked += Value_AddMultiTriggerClicked;
 
             if (v.result != null)
             {
                 result.ValueName = v.result.value.Replace('_', ' ');
             }
 
-            foreach (Trigger t in v.triggers)
+            foreach (Trigger t in v.triggers.OfType<Trigger>())
             {
                 Controls.Trigger tr = CreateTrigger(t, v, e);
+                result.Triggers.Add(tr);
+            }
+
+            foreach (MultiTrigger t in v.triggers.OfType<MultiTrigger>())
+            {
+                Controls.MultiTrigger tr = CreateMultiTrigger(t, v, e);
                 result.Triggers.Add(tr);
             }
 
@@ -912,12 +1086,47 @@ namespace TH_GeneratedData_Config.GeneratedEvents
                             Controls.Value v = e.Values[index];
                             if (v != null)
                             {
-                                Trigger t = new Trigger();
+                                var t = new Trigger();
                                 val.ParentValue.triggers.Add(t);
 
                                 Controls.Trigger tr = CreateTrigger(t, val.ParentValue, val.ParentEvent);
                                 tr.modifier_COMBO.SelectedItem = "Equal To";
                                 val.Triggers.Add(tr);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void Value_AddMultiTriggerClicked(Controls.Value val)
+        {
+            if (val.ParentValue != null && val.ParentEvent != null)
+            {
+                if (val.ParentEvent.values.Contains(val.ParentValue))
+                {
+                    Controls.Event e = events.Find(x => x.ParentEvent == val.ParentEvent);
+                    if (e != null)
+                    {
+                        int index = e.Values.ToList().FindIndex(x => x.ParentValue == val.ParentValue);
+                        if (index >= 0)
+                        {
+                            Controls.Value v = e.Values[index];
+                            if (v != null)
+                            {
+                                var multitrigger = new MultiTrigger();
+                                val.ParentValue.triggers.Add(multitrigger);
+
+                                Controls.MultiTrigger uiMultiTrigger = CreateMultiTrigger(multitrigger, val.ParentValue, val.ParentEvent);
+                                
+                                var trigger = new Trigger();
+                                multitrigger.triggers.Add(trigger);
+
+                                Controls.Trigger uiTrigger = CreateTrigger(trigger, uiMultiTrigger.ParentValue, uiMultiTrigger.ParentEvent);
+                                uiTrigger.modifier_COMBO.SelectedItem = "Equal To";
+                                uiMultiTrigger.Triggers.Add(uiTrigger);
+
+                                val.Triggers.Add(uiMultiTrigger);
                             }
                         }
                     }
@@ -1014,6 +1223,90 @@ namespace TH_GeneratedData_Config.GeneratedEvents
 
             //Page.CollectedItem ci = CollectedItems.ToList().Find(x => x.Id == item.link_COMBO.Text);
             //if (ci != null) item.link_COMBO.Text = ci.Display;
+        }
+
+        #endregion
+
+        #region "MultiTrigger"
+
+        Controls.MultiTrigger CreateMultiTrigger(MultiTrigger t, Value v, Event e)
+        {
+            var result = new Controls.MultiTrigger();
+
+            result.ParentPage = this;
+            result.ParentEvent = e;
+            result.ParentValue = v;
+            result.ParentMultiTrigger = t;
+
+            foreach (var trigger in t.triggers)
+            {
+                result.Triggers.Add(CreateTrigger(trigger, v, e));
+            }
+
+            result.AddTriggerClicked += MultiTrigger_AddTriggerClicked;
+            result.SettingChanged += MultiTrigger_SettingChanged;
+            result.RemoveClicked += MultiTrigger_RemoveClicked;
+
+            return result;
+        }
+
+        private void MultiTrigger_AddTriggerClicked(Controls.MultiTrigger sender)
+        {
+            if (sender.ParentMultiTrigger != null && sender.ParentValue != null && sender.ParentEvent != null)
+            {
+                if (sender.ParentEvent.values.Contains(sender.ParentValue))
+                {
+                    Controls.Event e = events.Find(x => x.ParentEvent == sender.ParentEvent);
+                    if (e != null)
+                    {
+                        int index = e.Values.ToList().FindIndex(x => x.ParentValue == sender.ParentValue);
+                        if (index >= 0)
+                        {
+                            Controls.Value v = e.Values[index];
+                            if (v != null)
+                            {
+                                //index = v.Triggers.OfType<MultiTrigger>().ToList().FindIndex(x => x.id == sender.ParentMultiTrigger.id);
+                                //if (index >= 0)
+                                //{
+                                    var t = new Trigger();
+                                    Controls.Trigger tr = CreateTrigger(t, sender.ParentValue, sender.ParentEvent);
+
+                               sender.ParentMultiTrigger.triggers.Add(t);
+
+                                tr.modifier_COMBO.SelectedItem = "Equal To";
+                                    sender.Triggers.Add(tr);
+                                //}    
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        void MultiTrigger_SettingChanged()
+        {
+            ChangeSetting(null, null, null);
+        }
+
+        void MultiTrigger_RemoveClicked(Controls.MultiTrigger t)
+        {
+            if (t.ParentMultiTrigger != null && t.ParentValue != null && t.ParentEvent != null)
+            {
+                t.ParentValue.triggers.Remove(t.ParentMultiTrigger);
+
+                if (t.ParentEvent.values.Contains(t.ParentValue))
+                {
+                    Controls.Event e = events.Find(x => x.ParentEvent == t.ParentEvent);
+                    if (e != null)
+                    {
+                        Controls.Value v = e.Values.ToList().Find(x => x.ParentValue == t.ParentValue);
+                        if (v != null)
+                        {
+                            if (v.Triggers.Contains(t)) v.Triggers.Remove(t);
+                        }
+                    }
+                }
+            }
         }
 
         #endregion
@@ -1139,13 +1432,22 @@ namespace TH_GeneratedData_Config.GeneratedEvents
 
         public class Value
         {
-            public Value() { triggers = new List<Trigger>(); }
+            public Value() { triggers = new List<object>(); }
 
-            public List<Trigger> triggers { get; set; }
+            public List<object> triggers { get; set; }
 
             public int id { get; set; }
 
             public Result result { get; set; }
+        }
+
+        public class MultiTrigger
+        {
+            public MultiTrigger() { triggers = new List<Trigger>(); }
+
+            public int id { get; set; }
+
+            public List<Trigger> triggers { get; set; }
         }
 
         public class Trigger
