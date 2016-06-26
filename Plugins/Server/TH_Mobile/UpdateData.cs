@@ -10,7 +10,7 @@ namespace TH_Mobile
 {
     public class UpdateData
     {
-        public UpdateData(Configuration config)
+        public UpdateData(DeviceConfiguration config)
         {
             UniqueId = config.UniqueId;
 

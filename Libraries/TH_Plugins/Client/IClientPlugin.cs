@@ -158,7 +158,7 @@ namespace TH_Plugins.Client
         /// <summary>
         /// List of Device_Client objects
         /// </summary>
-        ObservableCollection<Configuration> Devices { get; set; }
+        ObservableCollection<DeviceConfiguration> Devices { get; set; }
 
         /// <summary>
         /// Sets the OptionsPage object to be displayed in the Clients Options menu as a seperate page

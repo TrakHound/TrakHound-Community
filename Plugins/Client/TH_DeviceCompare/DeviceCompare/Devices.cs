@@ -27,7 +27,7 @@ namespace TH_DeviceCompare
 
             if (e.NewItems != null)
             {
-                foreach (Configuration newConfig in e.NewItems)
+                foreach (DeviceConfiguration newConfig in e.NewItems)
                 {
                     if (newConfig != null) AddDevice(newConfig);
                 }
@@ -39,7 +39,7 @@ namespace TH_DeviceCompare
 
             if (e.OldItems != null)
             {
-                foreach (Configuration oldConfig in e.OldItems)
+                foreach (DeviceConfiguration oldConfig in e.OldItems)
                 {
                     Devices.Remove(oldConfig);
 
@@ -60,7 +60,7 @@ namespace TH_DeviceCompare
         /// Create the DeviceDisplays and RowHeaders based on the Devices set for DeviceCompare
         /// </summary>
         /// <param name="devices"></param>
-        void UpdateDeviceList(List<Configuration> configs)
+        void UpdateDeviceList(List<DeviceConfiguration> configs)
         {
             if (configs != null)
             {
@@ -75,7 +75,7 @@ namespace TH_DeviceCompare
                     // Add the RowHeaders
                     AddRowHeaders(Plugins, category.PluginConfigurations);
 
-                    foreach (Configuration config in configs)
+                    foreach (var config in configs)
                     {
                         AddDevice(config);
                     }
@@ -105,7 +105,7 @@ namespace TH_DeviceCompare
             }
         }
 
-        private void AddDevice(Configuration config)
+        private void AddDevice(DeviceConfiguration config)
         {
             var category = SubCategories.Find(x => x.Name == "Components");
             if (category != null)
@@ -117,7 +117,6 @@ namespace TH_DeviceCompare
                 DeviceDisplays.Add(display);
                 if (display.Group.Header != null) Headers.Add(display.Group.Header);
                 if (display.Group.Column != null) Columns.Add(display.Group.Column);
-                //if (display.Group.Overlay != null) Overlays.Add(display.Group.Overlay);
             }
         }
 
@@ -131,7 +130,6 @@ namespace TH_DeviceCompare
             DeviceDisplays.Add(display);
             if (display.Group.Header != null) Headers.Add(display.Group.Header);
             if (display.Group.Column != null) Columns.Add(display.Group.Column);
-            //if (display.Group.Overlay != null) Overlays.Add(display.Group.Overlay);
 
             SortDataItems();
             LoadHeaderView();

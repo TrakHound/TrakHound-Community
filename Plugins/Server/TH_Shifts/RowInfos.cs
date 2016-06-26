@@ -60,7 +60,7 @@ namespace TH_Shifts
             return Result;
         }
 
-        public static List<ShiftRowInfo> Get(Configuration config, List<GenEventShiftItem> genEventShiftItems, ReturnData currentData)
+        public static List<ShiftRowInfo> Get(DeviceConfiguration config, List<GenEventShiftItem> genEventShiftItems, ReturnData currentData)
         {
             var result = new List<ShiftRowInfo>();
 

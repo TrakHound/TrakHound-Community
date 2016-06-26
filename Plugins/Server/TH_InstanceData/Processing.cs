@@ -18,7 +18,7 @@ namespace TH_InstanceData
     public partial class Plugin
     {
 
-        private Configuration configuration;
+        private DeviceConfiguration configuration;
 
         private bool AddDatabases = false;
 
@@ -85,7 +85,7 @@ namespace TH_InstanceData
         }
 
 
-        private void SendInstanceData(Configuration config, List<InstanceData> instanceDatas)
+        private void SendInstanceData(DeviceConfiguration config, List<InstanceData> instanceDatas)
         {
             var data = new EventData();
             data.Id = "InstanceData";
@@ -95,7 +95,7 @@ namespace TH_InstanceData
             if (SendData != null) SendData(data);
         }
 
-        private void SendCurrentInstanceData(Configuration config, CurrentInstanceData instanceData)
+        private void SendCurrentInstanceData(DeviceConfiguration config, CurrentInstanceData instanceData)
         {
             var data = new EventData();
             data.Id = "CurrentInstanceData";

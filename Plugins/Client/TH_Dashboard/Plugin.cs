@@ -140,14 +140,14 @@ namespace TH_Dashboard
 
         #region "Device Properties"
 
-        private ObservableCollection<Configuration> _devices;
-        public ObservableCollection<Configuration> Devices
+        private ObservableCollection<DeviceConfiguration> _devices;
+        public ObservableCollection<DeviceConfiguration> Devices
         {
             get
             {
                 if (_devices == null)
                 {
-                    _devices = new ObservableCollection<Configuration>();
+                    _devices = new ObservableCollection<DeviceConfiguration>();
                 }
                 return _devices;
             }

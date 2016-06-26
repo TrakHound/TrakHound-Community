@@ -64,12 +64,11 @@ namespace TH_GeneratedData_Config.GeneratedEvents
 
         public void LoadConfiguration(DataTable dt)
         {
+            Loading = true;
             loading = true;
             configurationTable = dt;
 
-            List<Event> genEvents;
-
-            genEvents = GetGeneratedEvents(dt);
+            List<Event> genEvents = GetGeneratedEvents(dt);
 
             if (genEvents.Count > 0) DisplayEvents = true;
             else DisplayEvents = false;
@@ -77,12 +76,16 @@ namespace TH_GeneratedData_Config.GeneratedEvents
             CreateGeneratedEvents(genEvents);
 
             GeneratedEvents.Clear();
-            foreach (Event e in genEvents) GeneratedEvents.Add(e);
+            foreach (Event e in genEvents)
+            {
+                Dispatcher.BeginInvoke(new Action(() => { GeneratedEvents.Add(e); }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+            }
 
             // Load MTConnect DataItems using Probe Data
             if (!Loaded) LoadCollectedItems(probeData);
 
             loading = false;
+            Dispatcher.BeginInvoke(new Action(() => { Loading = false; }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
         }
 
         public void SaveConfiguration(DataTable dt)
@@ -122,8 +125,18 @@ namespace TH_GeneratedData_Config.GeneratedEvents
         DataTable configurationTable;
 
 
+        public bool Loading
+        {
+            get { return (bool)GetValue(LoadingProperty); }
+            set { SetValue(LoadingProperty, value); }
+        }
+
+        public static readonly DependencyProperty LoadingProperty =
+            DependencyProperty.Register("Loading", typeof(bool), typeof(Page), new PropertyMetadata(true));
+
+
         #region "MTC Data Items"  
-        
+
         List_Functions.ObservableCollectionEx<CollectedItem> _collectedItems;
         public List_Functions.ObservableCollectionEx<CollectedItem> CollectedItems
         {
@@ -907,8 +920,7 @@ namespace TH_GeneratedData_Config.GeneratedEvents
 
             foreach (Event e in genEvents)
             {
-                AddEvent(e);
-                //this.Dispatcher.BeginInvoke(new Action<Event, bool>(AddEvent), priority, new object[] { e, false });
+                Dispatcher.BeginInvoke(new Action<Event, bool>(AddEvent), priority, new object[] { e, false});
             }
         }
 

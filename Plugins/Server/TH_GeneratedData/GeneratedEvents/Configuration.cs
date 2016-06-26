@@ -115,7 +115,7 @@ namespace TH_GeneratedData.GeneratedEvents
             return result;
         }
 
-        public static GeneratedEventsConfiguration Get(Configuration configuration)
+        public static GeneratedEventsConfiguration Get(DeviceConfiguration configuration)
         {
             GeneratedEventsConfiguration Result = null;
 

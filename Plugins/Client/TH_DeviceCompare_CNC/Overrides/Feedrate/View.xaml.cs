@@ -45,7 +45,7 @@ namespace TH_DeviceCompare_CNC.Overrides.Feedrate
 
         void Update(EventData data)
         {
-            if (data != null && data.Data01 != null && data.Data01.GetType() == typeof(Configuration))
+            if (data != null && data.Data01 != null && data.Data01.GetType() == typeof(DeviceConfiguration))
             {
                 // Snapshot Table Data
                 if (data.Id.ToLower() == "statusdata_snapshots")

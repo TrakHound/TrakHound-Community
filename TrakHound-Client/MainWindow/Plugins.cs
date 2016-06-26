@@ -569,7 +569,7 @@ namespace TrakHound_Client
         /// Update the devices list for each plugin
         /// </summary>
         /// <param name="devices"></param>
-        private void Plugins_UpdateDeviceList(List<Configuration> configs)
+        private void Plugins_UpdateDeviceList(List<DeviceConfiguration> configs)
         {
             foreach (var plugin in Plugins)
             {
@@ -589,7 +589,7 @@ namespace TrakHound_Client
         /// Update device for each plugin
         /// </summary>
         /// <param name="config"></param>
-        private void Plugins_UpdateDevice(Configuration config)
+        private void Plugins_UpdateDevice(DeviceConfiguration config)
         {
             foreach (var plugin in Plugins)
             {
@@ -614,7 +614,7 @@ namespace TrakHound_Client
         /// Add device for each plugin
         /// </summary>
         /// <param name="config"></param>
-        private void Plugins_AddDevice(Configuration config)
+        private void Plugins_AddDevice(DeviceConfiguration config)
         {
             foreach (var plugin in Plugins)
             {
@@ -634,7 +634,7 @@ namespace TrakHound_Client
         /// Remove device for each plugin
         /// </summary>
         /// <param name="config"></param>
-        private void Plugins_RemoveDevice(Configuration config)
+        private void Plugins_RemoveDevice(DeviceConfiguration config)
         {
             foreach (var plugin in Plugins)
             {

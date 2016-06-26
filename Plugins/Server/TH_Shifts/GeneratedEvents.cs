@@ -41,7 +41,7 @@ namespace TH_Shifts
             return eventName + " = " + eventValue + " : " + duration.ToString() + " : " + start_timestamp.ToString("o") + " - " + end_timestamp.ToString("o") + " :: " + segment.beginTime + " - " + segment.endTime;
         }
 
-        public static List<GenEventShiftItem> Get(Configuration config, List<GeneratedEvent> genEventItems)
+        public static List<GenEventShiftItem> Get(DeviceConfiguration config, List<GeneratedEvent> genEventItems)
         {
             var result = new List<GenEventShiftItem>();
 

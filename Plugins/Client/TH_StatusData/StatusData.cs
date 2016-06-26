@@ -24,14 +24,14 @@ namespace TH_StatusData
         {
             public DatabaseGroup()
             {
-                Configurations = new List<Configuration>();
+                Configurations = new List<DeviceConfiguration>();
             }
 
             public Database_Configuration Database { get; set; }
-            public List<Configuration> Configurations { get; set; }
+            public List<DeviceConfiguration> Configurations { get; set; }
         }
 
-        private static List<DatabaseGroup> GetUniqueDatabaseGroups(List<Configuration> configs)
+        private static List<DatabaseGroup> GetUniqueDatabaseGroups(List<DeviceConfiguration> configs)
         {
             var result = new List<DatabaseGroup>();
 
@@ -181,7 +181,7 @@ namespace TH_StatusData
             return result;
         }
 
-        private void SendConnectionData(Configuration config, bool connected)
+        private void SendConnectionData(DeviceConfiguration config, bool connected)
         {
             var data = new EventData();
             data.Id = "StatusData_Connection";
@@ -317,7 +317,7 @@ namespace TH_StatusData
         }
 
 
-        private void UpdateDeviceData(Configuration config, List<DataTable> tables)
+        private void UpdateDeviceData(DeviceConfiguration config, List<DataTable> tables)
         {
             var list = tables.ToList();
 
@@ -390,7 +390,7 @@ namespace TH_StatusData
         }
 
 
-        private static EventData GetVariables(DataTable dt, Configuration config)
+        private static EventData GetVariables(DataTable dt, DeviceConfiguration config)
         {
             var result = new EventData();
 
@@ -407,7 +407,7 @@ namespace TH_StatusData
             return result;
         }
 
-        private static EventData GetShiftSegments(DataTable dt, Configuration config)
+        private static EventData GetShiftSegments(DataTable dt, DeviceConfiguration config)
         {
             var result = new EventData();
 
@@ -424,7 +424,7 @@ namespace TH_StatusData
             return result;
         }
 
-        private EventData GetAvailability(DataTable dt, Configuration config)
+        private EventData GetAvailability(DataTable dt, DeviceConfiguration config)
         {
             bool available = false;
 
@@ -442,7 +442,7 @@ namespace TH_StatusData
             return result;
         }
 
-        private static EventData GetSnapShots(DataTable dt, Configuration config)
+        private static EventData GetSnapShots(DataTable dt, DeviceConfiguration config)
         {
             var result = new EventData();
 
@@ -459,7 +459,7 @@ namespace TH_StatusData
             return result;
         }
 
-        private static EventData GetGenEventValues(DataTable dt, Configuration config)
+        private static EventData GetGenEventValues(DataTable dt, DeviceConfiguration config)
         {
             var result = new EventData();
 
@@ -476,7 +476,7 @@ namespace TH_StatusData
             return result;
         }
 
-        private static EventData GetStatus(DataTable dt, Configuration config)
+        private static EventData GetStatus(DataTable dt, DeviceConfiguration config)
         {
             var result = new EventData();
 
@@ -522,7 +522,7 @@ namespace TH_StatusData
             return result;
         }
 
-        private static EventData GetShifts(ShiftData shiftData, Configuration config)
+        private static EventData GetShifts(ShiftData shiftData, DeviceConfiguration config)
         {
             var result = new EventData();
 
@@ -545,7 +545,7 @@ namespace TH_StatusData
 
         #endregion
         
-        static EventData GetProductionStatusData(Configuration config, ShiftData shiftData)
+        static EventData GetProductionStatusData(DeviceConfiguration config, ShiftData shiftData)
         {
             var result = new EventData();
 
@@ -606,7 +606,7 @@ namespace TH_StatusData
         //    return result;
         //}
 
-        static EventData GetOEESegments(Configuration config, ShiftData shiftData)
+        static EventData GetOEESegments(DeviceConfiguration config, ShiftData shiftData)
         {
             var result = new EventData();
 
@@ -633,7 +633,7 @@ namespace TH_StatusData
             return result;
         }
 
-        static EventData GetParts(Configuration config, ShiftData shiftData)
+        static EventData GetParts(DeviceConfiguration config, ShiftData shiftData)
         {
             var result = new EventData();
 

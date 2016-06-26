@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Threading;
 
+using TH_Configuration;
 using TH_DeviceManager;
 using TH_Global;
 using TH_Global.Functions;
@@ -67,7 +68,7 @@ namespace Device_Manager
             ListButton_Selected(Pages[0]);
         }
 
-        private void DeviceList_EditSelected(TH_Configuration.Configuration config)
+        private void DeviceList_EditSelected(DeviceConfiguration config)
         {
             var editPage = new EditPage(config);
             editPage.DeviceManager = deviceManager;

@@ -20,7 +20,7 @@ using TH_Global.Functions;
 namespace TH_Configuration
 {
 
-    public class Configuration : IComparable, INotifyPropertyChanged
+    public class DeviceConfiguration : IComparable, INotifyPropertyChanged
     {
         /// <summary>
         /// *** IN PROGRESS :: 4-9-16 *** NOT FULLY IMPLENETED YET
@@ -42,7 +42,6 @@ namespace TH_Configuration
         /// }
         /// </summary>
 
-        public Agent_Settings Agent;
         public Database_Settings Databases_Client;
         public Database_Settings Databases_Server;
         public FileLocation_Settings FileLocations;
@@ -58,14 +57,13 @@ namespace TH_Configuration
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public Configuration()
+        public DeviceConfiguration()
         {
             init();
         }
 
         void init()
         {
-            Agent = new Agent_Settings();
             FileLocations = new FileLocation_Settings();
             Description = new Description_Settings();
             Databases_Client = new Database_Settings();
@@ -107,27 +105,27 @@ namespace TH_Configuration
 
         #region "Remote Configurations"
 
-        private bool _useTrakHoundCloud;
-        public bool UseTrakHoundCloud
-        {
-            get { return _useTrakHoundCloud; }
-            set
-            {
-                _useTrakHoundCloud = value;
-                UpdateConfigurationXML("UseTrakHoundCloud", _useTrakHoundCloud.ToString());
-            }
-        }
+        //private bool _useTrakHoundCloud;
+        //public bool UseTrakHoundCloud
+        //{
+        //    get { return _useTrakHoundCloud; }
+        //    set
+        //    {
+        //        _useTrakHoundCloud = value;
+        //        UpdateConfigurationXML("UseTrakHoundCloud", _useTrakHoundCloud.ToString());
+        //    }
+        //}
 
-        private bool _remote;
-        public bool Remote
-        {
-            get { return _remote; }
-            set
-            {
-                _remote = value;
-                UpdateConfigurationXML("Remote", _remote.ToString());
-            }
-        }
+        //private bool _remote;
+        //public bool Remote
+        //{
+        //    get { return _remote; }
+        //    set
+        //    {
+        //        _remote = value;
+        //        UpdateConfigurationXML("Remote", _remote.ToString());
+        //    }
+        //}
 
         private string _clientUpdateId;
         public string ClientUpdateId
@@ -151,14 +149,14 @@ namespace TH_Configuration
             }
         }
 
-        private string _table;
+        private string _tablename;
         public string TableName
         {
-            get { return _table; }
+            get { return _tablename; }
             set
             {
-                _table = value;
-                UpdateConfigurationXML("TableName", _table);
+                _tablename = value;
+                UpdateConfigurationXML("TableName", _tablename);
             }
         }
 
@@ -173,38 +171,38 @@ namespace TH_Configuration
             }
         }
 
-        private string _sharedId;
-        public string SharedId
-        {
-            get { return _sharedId; }
-            set
-            {
-                _sharedId = value;
-                UpdateConfigurationXML("SharedId", _sharedId);
-            }
-        }
+        //private string _sharedId;
+        //public string SharedId
+        //{
+        //    get { return _sharedId; }
+        //    set
+        //    {
+        //        _sharedId = value;
+        //        UpdateConfigurationXML("SharedId", _sharedId);
+        //    }
+        //}
 
-        private string _sharedLinkTag;
-        public string SharedLinkTag
-        {
-            get { return _sharedLinkTag; }
-            set
-            {
-                _sharedLinkTag = value;
-                UpdateConfigurationXML("SharedLinkTag", _sharedLinkTag);
-            }
-        }
+        //private string _sharedLinkTag;
+        //public string SharedLinkTag
+        //{
+        //    get { return _sharedLinkTag; }
+        //    set
+        //    {
+        //        _sharedLinkTag = value;
+        //        UpdateConfigurationXML("SharedLinkTag", _sharedLinkTag);
+        //    }
+        //}
 
-        private string _sharedTableName;
-        public string SharedTableName
-        {
-            get { return _sharedTableName; }
-            set
-            {
-                _sharedTableName = value;
-                UpdateConfigurationXML("SharedTableName", _sharedTableName);
-            }
-        }
+        //private string _sharedTableName;
+        //public string SharedTableName
+        //{
+        //    get { return _sharedTableName; }
+        //    set
+        //    {
+        //        _sharedTableName = value;
+        //        UpdateConfigurationXML("SharedTableName", _sharedTableName);
+        //    }
+        //}
 
         #endregion
 
@@ -292,9 +290,9 @@ namespace TH_Configuration
         /// </summary>
         /// <param name="ConfigFilePath">Path to XML File</param>
         /// <returns>Returns a Machine_Settings object containing information found.</returns>
-        public static Configuration Read(string path)
+        public static DeviceConfiguration Read(string path)
         {
-            Configuration result = null;
+            DeviceConfiguration result = null;
 
             if (File.Exists(path))
             {
@@ -326,9 +324,9 @@ namespace TH_Configuration
             return result;
         }
 
-        public static Configuration[] ReadAll(string path)
+        public static DeviceConfiguration[] ReadAll(string path)
         {
-            var result = new List<Configuration>();
+            var result = new List<DeviceConfiguration>();
 
             if (Directory.Exists(path))
             {
@@ -358,9 +356,9 @@ namespace TH_Configuration
             return result.ToArray();
         }
 
-        public static Configuration Read(XmlDocument xml)
+        public static DeviceConfiguration Read(XmlDocument xml)
         {
-            var result = new Configuration();
+            var result = new DeviceConfiguration();
 
             result.ConfigurationXML = xml;
 
@@ -372,7 +370,6 @@ namespace TH_Configuration
                     {
                         switch (node.Name.ToLower())
                         {
-                            //case "agent": result.Agent = Process_Agent(node); break;
                             case "databases_client": result.Databases_Client = Process_Databases(node); break;
                             case "databases_server": result.Databases_Server = Process_Databases(node); break;
                             case "description": result.Description = Process_Description(node); break;
@@ -380,7 +377,7 @@ namespace TH_Configuration
 
                             default:
 
-                                Type Settings = typeof(Configuration);
+                                Type Settings = typeof(DeviceConfiguration);
                                 PropertyInfo info = Settings.GetProperty(node.Name);
 
                                 if (info != null)
@@ -396,52 +393,6 @@ namespace TH_Configuration
             }
 
             return result;
-        }
-
-        private static Agent_Settings Process_Agent(XmlNode Node)
-        {
-
-            Agent_Settings Result = new Agent_Settings();
-
-            List<Tuple<string, int>> RowLimits = new List<Tuple<string, int>>();
-            List<string> OmitInstance = new List<string>();
-
-            foreach (XmlNode Child in Node.ChildNodes)
-            {
-                if (Child.NodeType == XmlNodeType.Element)
-                {
-                    if (Child.InnerText != "")
-                    {
-                        Type Settings = typeof(Agent_Settings);
-                        PropertyInfo info = Settings.GetProperty(Child.Name);
-
-                        if (info != null)
-                        {
-                            Type t = info.PropertyType;
-                            info.SetValue(Result, Convert.ChangeType(Child.InnerText, t), null);
-                        }
-                        else
-                        {
-                            if (Child.Name.ToLower() == "simulation_sample_files")
-                            {
-                                foreach (XmlNode simNode in Child.ChildNodes)
-                                {
-                                    if (simNode.NodeType == XmlNodeType.Element)
-                                    {
-                                        if (simNode.Name.ToLower() == "simulation_sample_path")
-                                        {
-                                            Result.Simulation_Sample_Files.Add(simNode.InnerText);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return Result;
-
         }
 
         private static Database_Settings Process_Databases(XmlNode node)
@@ -558,7 +509,7 @@ namespace TH_Configuration
             return Result;
         }
 
-        public void Process_IConfiguration<T>(IConfiguration config, XmlNode Node)
+        public void Process_IConfiguration<T>(IDeviceConfiguration config, XmlNode Node)
         {
             config.ConfigurationPropertyChanged += Config_ConfigurationPropertyChanged;
 
@@ -615,19 +566,19 @@ namespace TH_Configuration
 
         #region "Static"
 
-        public static Configuration CreateBlank()
+        public static DeviceConfiguration CreateBlank()
         {
             XmlDocument xml = new XmlDocument();
                    
             xml.LoadXml(Properties.Resources.BlankConfiguration);
 
-            Configuration result = Read(xml);
+            DeviceConfiguration result = Read(xml);
 
             return result;
         }
 
 
-        public static bool Save(Configuration config)
+        public static bool Save(DeviceConfiguration config)
         {
             bool result = false;
 
@@ -685,7 +636,7 @@ namespace TH_Configuration
         {
             if (obj == null) return 1;
 
-            var i = obj as Configuration;
+            var i = obj as DeviceConfiguration;
             if (i != null)
             {
                 if (i > this) return -1;
@@ -698,7 +649,7 @@ namespace TH_Configuration
         public override bool Equals(object obj)
         {
 
-            var other = obj as Configuration;
+            var other = obj as DeviceConfiguration;
             if (object.ReferenceEquals(other, null)) return false;
 
             return (this == other);
@@ -712,7 +663,7 @@ namespace TH_Configuration
 
         #region "Private"
 
-        static bool EqualTo(Configuration c1, Configuration c2)
+        static bool EqualTo(DeviceConfiguration c1, DeviceConfiguration c2)
         {
             if (!object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return false;
             if (object.ReferenceEquals(c1, null) && !object.ReferenceEquals(c2, null)) return false;
@@ -721,7 +672,7 @@ namespace TH_Configuration
             return c1.UniqueId == c2.UniqueId && c1.Index == c2.Index;
         }
 
-        static bool NotEqualTo(Configuration c1, Configuration c2)
+        static bool NotEqualTo(DeviceConfiguration c1, DeviceConfiguration c2)
         {
             if (!object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return true;
             if (object.ReferenceEquals(c1, null) && !object.ReferenceEquals(c2, null)) return true;
@@ -730,13 +681,13 @@ namespace TH_Configuration
             return c1.UniqueId != c2.UniqueId || c1.Index != c2.Index;
         }
 
-        static bool LessThan(Configuration c1, Configuration c2)
+        static bool LessThan(DeviceConfiguration c1, DeviceConfiguration c2)
         {
             if (c1.Index > c2.Index) return false;
             else return true;
         }
 
-        static bool GreaterThan(Configuration c1, Configuration c2)
+        static bool GreaterThan(DeviceConfiguration c1, DeviceConfiguration c2)
         {
             if (c1.Index < c2.Index) return false;
             else return true;
@@ -744,34 +695,34 @@ namespace TH_Configuration
 
         #endregion
 
-        public static bool operator ==(Configuration c1, Configuration c2)
+        public static bool operator ==(DeviceConfiguration c1, DeviceConfiguration c2)
         {
             return EqualTo(c1, c2);
         }
 
-        public static bool operator !=(Configuration c1, Configuration c2)
+        public static bool operator !=(DeviceConfiguration c1, DeviceConfiguration c2)
         {
             return NotEqualTo(c1, c2);
         }
 
 
-        public static bool operator <(Configuration c1, Configuration c2)
+        public static bool operator <(DeviceConfiguration c1, DeviceConfiguration c2)
         {
             return LessThan(c1, c2);
         }
 
-        public static bool operator >(Configuration c1, Configuration c2)
+        public static bool operator >(DeviceConfiguration c1, DeviceConfiguration c2)
         {
             return GreaterThan(c1, c2);
         }
 
 
-        public static bool operator <=(Configuration c1, Configuration c2)
+        public static bool operator <=(DeviceConfiguration c1, DeviceConfiguration c2)
         {
             return LessThan(c1, c2) || EqualTo(c1, c2);
         }
 
-        public static bool operator >=(Configuration c1, Configuration c2)
+        public static bool operator >=(DeviceConfiguration c1, DeviceConfiguration c2)
         {
             return GreaterThan(c1, c2) || EqualTo(c1, c2);
         }

@@ -24,7 +24,7 @@ namespace TH_Parts
         public int Count { get; set; }
 
 
-        public static PartInfo Get(Configuration config, GeneratedEvent genEventItem)
+        public static PartInfo Get(DeviceConfiguration config, GeneratedEvent genEventItem)
         {
             var pc = PartsConfiguration.Get(config);
             if (pc != null)

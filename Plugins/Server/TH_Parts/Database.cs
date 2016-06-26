@@ -16,7 +16,7 @@ namespace TH_Parts
     {
         private static string[] primaryKey = { "SHIFT_ID", "ID" };
 
-        public static void CreatePartsTable(Configuration config)
+        public static void CreatePartsTable(DeviceConfiguration config)
         {
             var columns = new List<ColumnDefinition>();
 
@@ -30,7 +30,7 @@ namespace TH_Parts
             Table.Create(config.Databases_Server, GetTableName(config), ColArray, primaryKey);
         }
 
-        public static void AddRows(Configuration config, List<PartInfo> infos)
+        public static void AddRows(DeviceConfiguration config, List<PartInfo> infos)
         {
             var columns = new List<string>();
             columns.Add("SHIFT_ID");
@@ -54,7 +54,7 @@ namespace TH_Parts
             Row.Insert(config.Databases_Server, GetTableName(config), columns.ToArray(), tableValues, primaryKey, true);
         }
 
-        private static string GetTableName(Configuration config)
+        private static string GetTableName(DeviceConfiguration config)
         {
             if (config.DatabaseId != null) return config.DatabaseId + "_" + TableNames.Parts;
             else return TableNames.Parts;

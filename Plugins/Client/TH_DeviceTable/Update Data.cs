@@ -26,7 +26,7 @@ namespace TH_DeviceTable
         {
             if (data != null && data.Id != null && data.Data01 != null)
             {
-                Configuration config = data.Data01 as Configuration;
+                var config = data.Data01 as DeviceConfiguration;
                 if (config != null)
                 {
                     int index = DeviceInfos.ToList().FindIndex(x => x.Configuration.UniqueId == config.UniqueId);

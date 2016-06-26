@@ -38,7 +38,7 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
             root.DataContext = this;
         }
 
-        public Header(Configuration config)
+        public Header(DeviceConfiguration config)
         {
             InitializeComponent();
             root.DataContext = this;

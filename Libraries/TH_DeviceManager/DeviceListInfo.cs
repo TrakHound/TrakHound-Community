@@ -14,7 +14,7 @@ namespace TH_DeviceManager
     /// </summary>
     public class DeviceListInfo : IComparable
     {
-        public DeviceListInfo(Configuration config)
+        public DeviceListInfo(DeviceConfiguration config)
         {
             Configuration = config;
         }

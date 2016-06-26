@@ -91,14 +91,14 @@ namespace TH_StatusData
 
         #region "Devices"
 
-        private ObservableCollection<Configuration> _devices;
-        public ObservableCollection<Configuration> Devices
+        private ObservableCollection<DeviceConfiguration> _devices;
+        public ObservableCollection<DeviceConfiguration> Devices
         {
             get
             {
                 if (_devices == null)
                 {
-                    _devices = new ObservableCollection<Configuration>();
+                    _devices = new ObservableCollection<DeviceConfiguration>();
                     _devices.CollectionChanged += Devices_CollectionChanged;
                 }
                 return _devices;

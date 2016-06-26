@@ -135,9 +135,9 @@ namespace TH_UserManagement.Management
             return result;
         }
 
-        public static List<Configuration> GetOwnedSharedConfigurations(UserConfiguration userConfig)
+        public static List<DeviceConfiguration> GetOwnedSharedConfigurations(UserConfiguration userConfig)
         {
-            List<Configuration> result = null;
+            List<DeviceConfiguration> result = null;
 
             NameValueCollection values = new NameValueCollection();
 
@@ -148,7 +148,7 @@ namespace TH_UserManagement.Management
 
             if (responseString != null)
             {
-                result = new List<Configuration>();
+                result = new List<DeviceConfiguration>();
 
                 string[] tables = responseString.Split('%');
 
@@ -165,13 +165,13 @@ namespace TH_UserManagement.Management
                             DataTable dt = JSON.ToTable(tabledata);
                             if (dt != null)
                             {
-                                XmlDocument xml = TH_Configuration.Converter.TableToXML(dt);
+                                XmlDocument xml = Converter.TableToXML(dt);
                                 if (xml != null)
                                 {
-                                    Configuration config = TH_Configuration.Configuration.Read(xml);
+                                    var config = DeviceConfiguration.Read(xml);
                                     if (config != null)
                                     {
-                                        config.Remote = true;
+                                        //config.Remote = true;
                                         config.TableName = tablename;
                                         result.Add(config);
                                     }

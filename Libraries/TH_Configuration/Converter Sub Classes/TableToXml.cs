@@ -23,7 +23,8 @@ namespace TH_Configuration.Converter_Sub_Classes
             XmlElement root = result.DocumentElement;
             result.InsertBefore(xmlDeclaration, root);
 
-            XmlElement configuration = result.CreateElement(string.Empty, "Settings", string.Empty);
+            //XmlElement configuration = result.CreateElement(string.Empty, "Settings", string.Empty);
+            XmlElement configuration = result.CreateElement(string.Empty, "DeviceConfiguration", string.Empty);
             result.AppendChild(configuration);
 
             foreach (DataRow row in table.Rows)

@@ -41,7 +41,7 @@ namespace TH_DeviceTable
             }
         }
 
-        public Configuration Configuration { get; set; }
+        public DeviceConfiguration Configuration { get; set; }
 
         public Description_Settings Description
         {

@@ -34,14 +34,14 @@ namespace TrakHound_Client
             }
         }
 
-        public List<Configuration> Devices { get; set; }
+        public List<DeviceConfiguration> Devices { get; set; }
 
-        private void Devicemanager_DeviceListUpdated(List<Configuration> configs)
+        private void Devicemanager_DeviceListUpdated(List<DeviceConfiguration> configs)
         {
-            this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(UpdateDeviceList), MainWindow.PRIORITY_BACKGROUND, new object[] { configs });
+            this.Dispatcher.BeginInvoke(new Action<List<DeviceConfiguration>>(UpdateDeviceList), MainWindow.PRIORITY_BACKGROUND, new object[] { configs });
         }
 
-        private void Devicemanager_DeviceUpdated(Configuration config, DeviceManager.DeviceUpdateArgs args)
+        private void Devicemanager_DeviceUpdated(DeviceConfiguration config, DeviceManager.DeviceUpdateArgs args)
         {
             switch (args.Event)
             {
@@ -90,15 +90,15 @@ namespace TrakHound_Client
         /// Method that loads devices from DeviceManager's DeviceLoaded event
         /// </summary>
         /// <param name="configs"></param>
-        private void UpdateDeviceList(List<Configuration> configs)
+        private void UpdateDeviceList(List<DeviceConfiguration> configs)
         {
-            var enabledConfigs = new List<Configuration>();
+            var enabledConfigs = new List<DeviceConfiguration>();
 
             if (configs != null)
             {
                 var orderedConfigs = configs.OrderBy(x => x.Description.Manufacturer).ThenBy(x => x.Description.Description).ThenBy(x => x.Description.Device_ID);
 
-                foreach (Configuration config in orderedConfigs)
+                foreach (DeviceConfiguration config in orderedConfigs)
                 {
                     if (config.ClientEnabled)
                     {
@@ -133,7 +133,7 @@ namespace TrakHound_Client
         /// Device Manager Added a device so add this device to Devices
         /// </summary>
         /// <param name="config"></param>
-        private void AddDevice(Configuration config)
+        private void AddDevice(DeviceConfiguration config)
         {
             Logger.Log("AddDevice() :: " + config.Description.Description, Logger.LogLineType.Debug);
 
@@ -152,7 +152,7 @@ namespace TrakHound_Client
         /// Device Manager Updated a device so remove old device and new device to Devices
         /// </summary>
         /// <param name="config"></param>
-        private void UpdateDevice(Configuration config)
+        private void UpdateDevice(DeviceConfiguration config)
         {
             Logger.Log("UpdateDevice() :: " + config.Description.Description, Logger.LogLineType.Debug);
 
@@ -174,7 +174,7 @@ namespace TrakHound_Client
         /// Device Manager Removed a device so remove this device to Devices
         /// </summary>
         /// <param name="config"></param>
-        private void RemoveDevice(Configuration config)
+        private void RemoveDevice(DeviceConfiguration config)
         {
             Logger.Log("RemoveDevice() :: " + config.Description.Description, Logger.LogLineType.Debug);
 

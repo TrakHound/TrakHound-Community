@@ -30,7 +30,7 @@ namespace TH_DeviceManager
     /// </summary>
     public partial class EditPage : UserControl, IPage
     {
-        public EditPage(Configuration config)
+        public EditPage(DeviceConfiguration config)
         {
             InitializeComponent();
             DataContext = this;
@@ -83,7 +83,7 @@ namespace TH_DeviceManager
         /// <summary>
         /// Configuration object that is being edited
         /// </summary>
-        public Configuration Configuration { get; set; }
+        public DeviceConfiguration Configuration { get; set; }
 
         /// <summary>
         /// Configuration DataTable object that is being edited
@@ -263,7 +263,7 @@ namespace TH_DeviceManager
                     // If not logged in Save to File in 'C:\TrakHound\'
                     else
                     {
-                        success = Configuration.Save(dt);
+                        success = DeviceConfiguration.Save(dt);
                     }
                 }
 
@@ -272,7 +272,7 @@ namespace TH_DeviceManager
                 XmlDocument xml = Converter.TableToXML(dt);
                 if (xml != null)
                 {
-                    Configuration = Configuration.Read(xml);
+                    Configuration = DeviceConfiguration.Read(xml);
                     Configuration.TableName = tablename;
                 }
             }

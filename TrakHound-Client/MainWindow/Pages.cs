@@ -498,9 +498,9 @@ namespace TrakHound_Client
 
         private void DeviceManager_DeviceList_AddDeviceSelected() { DeviceManager_AddDevice_Open(); }
 
-        private void DeviceManager_DeviceList_DeviceEditSelected(TH_Configuration.Configuration config) { DeviceManager_EditDevice_Open(config); }
+        private void DeviceManager_DeviceList_DeviceEditSelected(DeviceConfiguration config) { DeviceManager_EditDevice_Open(config); }
 
-        private void DeviceManager_DeviceList_DeviceEditTableSelected(TH_Configuration.Configuration config) { }
+        private void DeviceManager_DeviceList_DeviceEditTableSelected(DeviceConfiguration config) { }
 
         #endregion
 
@@ -541,11 +541,11 @@ namespace TrakHound_Client
 
         private void DeviceManager_AddDevice_DeviceListSelected() { DeviceManager_DeviceList_Open(); }
 
-        private void DeviceManager_AddDevice_EditTableSelected(TH_Configuration.Configuration config) { }
+        private void DeviceManager_AddDevice_EditTableSelected(DeviceConfiguration config) { }
 
         #endregion
 
-        public void DeviceManager_EditDevice_Open(Configuration config)
+        public void DeviceManager_EditDevice_Open(DeviceConfiguration config)
         {
             string title = "Edit Device - " + config.Description.Description;
             if (config.Description.Device_ID != null) title += " (" + config.Description.Device_ID + ")";
@@ -570,7 +570,7 @@ namespace TrakHound_Client
 
         private void DeviceManager_EditDevice_DeviceListSelected() { DeviceManager_DeviceList_Open(); }
 
-        public void DeviceManager_EditDeviceTable_Open(Configuration config)
+        public void DeviceManager_EditDeviceTable_Open(DeviceConfiguration config)
         {
             //string title = "Edit Device Table - " + config.Description.Description;
             //if (config.Description.Device_ID != null) title += " (" + config.Description.Device_ID + ")";

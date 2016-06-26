@@ -20,7 +20,7 @@ namespace TH_GeneratedData.GeneratedEvents
 
         public string Name { get { return "TH_GeneratedEvents"; } }
 
-        public void Initialize(Configuration config)
+        public void Initialize(DeviceConfiguration config)
         {
             var gec = GeneratedEventsConfiguration.Read(config.ConfigurationXML);
             if (gec != null)
@@ -69,7 +69,7 @@ namespace TH_GeneratedData.GeneratedEvents
         //public Type[] ConfigurationPageTypes { get { return new Type[] { typeof(ConfigurationPage.Page) }; } }
 
 
-        private Configuration configuration;
+        private DeviceConfiguration configuration;
 
         void SendGeneratedEvents(List<GeneratedEvent> events)
         {

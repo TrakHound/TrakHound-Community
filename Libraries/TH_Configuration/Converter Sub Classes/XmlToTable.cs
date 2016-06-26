@@ -38,7 +38,8 @@ namespace TH_Configuration.Converter_Sub_Classes
 
             foreach (XmlNode node in xml.ChildNodes)
             {
-                if (node.Name.ToLower() == "settings" && node.NodeType == XmlNodeType.Element)
+                //if (node.Name.ToLower() == "settings" && node.NodeType == XmlNodeType.Element)
+                if (node.Name.ToLower() == "deviceconfiguration" && node.NodeType == XmlNodeType.Element)
                 {
                     foreach (XmlNode child in node.ChildNodes)
                     {
@@ -115,7 +116,8 @@ namespace TH_Configuration.Converter_Sub_Classes
 
                 if (node == null) break;
 
-            } while (node.Name != "Settings");
+            } while (node.Name != "DeviceConfiguration");
+            //} while (node.Name != "Settings");
 
             if (Result.Length > 0)
             {

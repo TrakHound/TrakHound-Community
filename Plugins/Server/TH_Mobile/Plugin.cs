@@ -21,7 +21,7 @@ namespace TH_Mobile
         public static UpdateQueue queue = new UpdateQueue();
 
 
-        private Configuration configuration;
+        private DeviceConfiguration configuration;
 
         private string userId;
 
@@ -33,7 +33,7 @@ namespace TH_Mobile
 
         public string Name { get { return "TH_Mobile"; } }
 
-        public void Initialize(Configuration config)
+        public void Initialize(DeviceConfiguration config)
         {
             configuration = config;
 

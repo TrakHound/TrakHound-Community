@@ -109,7 +109,7 @@ namespace TH_InstanceData
             return result;
         }
 
-        public static InstanceConfiguration Get(Configuration config)
+        public static InstanceConfiguration Get(DeviceConfiguration config)
         {
             InstanceConfiguration Result = null;
 

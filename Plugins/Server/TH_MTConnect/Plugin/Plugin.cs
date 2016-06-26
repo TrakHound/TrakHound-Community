@@ -15,7 +15,7 @@ namespace TH_MTConnect.Plugin
     {
         public string Name { get { return "TH_MTConnect"; } }
 
-        public void Initialize(Configuration config)
+        public void Initialize(DeviceConfiguration config)
         {
             var ac = AgentConfiguration.Read(config.ConfigurationXML);
             if (ac != null)
@@ -45,7 +45,7 @@ namespace TH_MTConnect.Plugin
         //public Type[] ConfigurationPageTypes { get { return new Type[] { typeof(ConfigurationPage.Page) }; } }
 
 
-        Configuration configuration;
+        DeviceConfiguration configuration;
 
         private bool started = false;
 

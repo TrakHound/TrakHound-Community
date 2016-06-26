@@ -141,11 +141,6 @@ namespace TH_DeviceManager.AddDevice.Pages
                 DevicesNotAdded = 0;
                 NetworkNodesFound = 0;
 
-                //Dispatcher.BeginInvoke(new Action(() =>
-                //{
-
-                //}), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
-
                 if (LoadCatalog_THREAD != null) LoadCatalog_THREAD.Abort();
 
                 LoadCatalog_THREAD = new Thread(new ThreadStart(LoadCatalog_Worker));
@@ -331,7 +326,7 @@ namespace TH_DeviceManager.AddDevice.Pages
             }
         }
 
-        private bool TestAgentConfiguration(Configuration config, IPAddress address, int port, Device device)
+        private bool TestAgentConfiguration(DeviceConfiguration config, IPAddress address, int port, Device device)
         {
             bool result = false;
 
@@ -353,7 +348,7 @@ namespace TH_DeviceManager.AddDevice.Pages
             public int Port { get; set; }
             public string DeviceName { get; set; }
 
-            public static AgentConfiguration Read(Configuration config)
+            public static AgentConfiguration Read(DeviceConfiguration config)
             {
                 var result = new AgentConfiguration();
                 result.Address = XML_Functions.GetInnerText(config.ConfigurationXML, "/Agent/Address");
@@ -548,7 +543,7 @@ namespace TH_DeviceManager.AddDevice.Pages
         class AddDevice_Return
         {
             public DeviceInfo DeviceInfo { get; set; }
-            public Configuration Configuration { get; set; }
+            public DeviceConfiguration Configuration { get; set; }
             public bool Success { get; set; }
         }
 
@@ -590,7 +585,7 @@ namespace TH_DeviceManager.AddDevice.Pages
                             XmlDocument xml = Converter.TableToXML(dt);
                             if (xml != null)
                             {
-                                Configuration config = Configuration.Read(xml);
+                                var config = DeviceConfiguration.Read(xml);
                                 if (config != null)
                                 {
                                     // Update Configuration to be Enabled, use the selected Agent Settings, and
@@ -646,7 +641,7 @@ namespace TH_DeviceManager.AddDevice.Pages
             }
         }
 
-        private void UpdateEnabled(Configuration config)
+        private void UpdateEnabled(DeviceConfiguration config)
         {
             config.ClientEnabled = true;
             XML_Functions.SetInnerText(config.ConfigurationXML, "/ClientEnabled", "True");
@@ -655,38 +650,38 @@ namespace TH_DeviceManager.AddDevice.Pages
             XML_Functions.SetInnerText(config.ConfigurationXML, "/ServerEnabled", "True");
         }
 
-        private void UpdateAgentConfiguration(DeviceInfo info, Configuration config)
+        private void UpdateAgentConfiguration(DeviceInfo info, DeviceConfiguration config)
         {
             // Save IP Address
-            config.Agent.Address = info.IPAddress;
+            //config.Agent.Address = info.IPAddress;
             XML_Functions.SetInnerText(config.ConfigurationXML, "/Agent/Address", info.IPAddress);
 
             // Save Port
-            config.Agent.Port = info.Port;
+            //config.Agent.Port = info.Port;
             XML_Functions.SetInnerText(config.ConfigurationXML, "/Agent/Port", info.Port.ToString());
 
             // Save DeviceName
-            config.Agent.DeviceName = info.Device.Name;
+            //config.Agent.DeviceName = info.Device.Name;
             XML_Functions.SetInnerText(config.ConfigurationXML, "/Agent/DeviceName", info.Device.Name);
 
             // Save Heartbeat
-            config.Agent.Heartbeat = 5000;
+            //config.Agent.Heartbeat = 5000;
             XML_Functions.SetInnerText(config.ConfigurationXML, "/Agent/Heartbeat", "5000");
         }
 
-        private void UpdateDatabaseConfiguration(Configuration config)
+        private void UpdateDatabaseConfiguration(DeviceConfiguration config)
         {
             // If NO databases are configured then add a SQLite database for both client and server
             if (config.Databases_Client.Databases.Count == 0 && config.Databases_Server.Databases.Count == 0)
             {
-                config.DatabaseId = Configuration.GenerateDatabaseId();
+                config.DatabaseId = DeviceConfiguration.GenerateDatabaseId();
 
                 AddDatabaseConfiguration("/Databases_Client", config);
                 AddDatabaseConfiguration("/Databases_Server", config);
             }
         }
 
-        private void AddDatabaseConfiguration(string prefix, Configuration config)
+        private void AddDatabaseConfiguration(string prefix, DeviceConfiguration config)
         {
             XML_Functions.AddNode(config.ConfigurationXML, prefix + "/SQLite");
             XML_Functions.SetAttribute(config.ConfigurationXML, prefix + "/SQLite", "id", "00");
@@ -696,7 +691,7 @@ namespace TH_DeviceManager.AddDevice.Pages
             XML_Functions.SetInnerText(config.ConfigurationXML, prefix + "/SQLite/DatabasePath", path);
         }
 
-        private void UpdateDescriptionConfiguration(DeviceInfo info, Configuration config)
+        private void UpdateDescriptionConfiguration(DeviceInfo info, DeviceConfiguration config)
         {
             // Save Device Description
             string val = info.Device.Description.CDATA;
@@ -717,12 +712,12 @@ namespace TH_DeviceManager.AddDevice.Pages
             XML_Functions.SetInnerText(config.ConfigurationXML, "/Description/Manufacturer", val);
         }
 
-        private bool SaveLocalConfigurationToUser(Configuration config)
+        private bool SaveLocalConfigurationToUser(DeviceConfiguration config)
         {
             bool result = false;
 
             // Set new Unique Id
-            string uniqueId = Configuration.GenerateUniqueID();
+            string uniqueId = DeviceConfiguration.GenerateUniqueID();
             config.UniqueId = uniqueId;
             XML_Functions.SetInnerText(config.ConfigurationXML, "UniqueId", uniqueId);
 
@@ -730,7 +725,7 @@ namespace TH_DeviceManager.AddDevice.Pages
             config.FilePath = uniqueId;
             XML_Functions.SetInnerText(config.ConfigurationXML, "FilePath", config.FilePath);
 
-            result = Configuration.Save(config);
+            result = DeviceConfiguration.Save(config);
 
             return result;
         }

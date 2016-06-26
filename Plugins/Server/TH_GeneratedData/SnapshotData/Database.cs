@@ -18,7 +18,7 @@ namespace TH_GeneratedData.SnapshotData
 
         static string[] snapshotsPrimaryKey = { "NAME" };
 
-        public static void CreateTable(Configuration config)
+        public static void CreateTable(DeviceConfiguration config)
         {
             var columns = new List<ColumnDefinition>()
             {
@@ -32,7 +32,7 @@ namespace TH_GeneratedData.SnapshotData
             Table.Replace(config.Databases_Server, GetTableName(config), columns.ToArray(), snapshotsPrimaryKey);
         }
 
-        public static void IntializeRows(Configuration config)
+        public static void IntializeRows(DeviceConfiguration config)
         {
             var sdc = SnapshotDataConfiguration.Get(config);
             if (sdc != null)
@@ -55,7 +55,7 @@ namespace TH_GeneratedData.SnapshotData
             }
         }
 
-        public static void UpdateRows(Configuration config, List<Snapshot> snapshots)
+        public static void UpdateRows(DeviceConfiguration config, List<Snapshot> snapshots)
         {
             // Set Columns to Update (include Name so that it can Update the row instead of creating a new one)
             var columns = new List<string>();
@@ -88,7 +88,7 @@ namespace TH_GeneratedData.SnapshotData
             Row.Insert(config.Databases_Server, GetTableName(config), columns.ToArray(), rowValues, snapshotsPrimaryKey, true);
         }
 
-        private static string GetTableName(Configuration config)
+        private static string GetTableName(DeviceConfiguration config)
         {
             if (config.DatabaseId != null) return config.DatabaseId + "_" + TableNames.SnapShots;
             else return TableNames.SnapShots;

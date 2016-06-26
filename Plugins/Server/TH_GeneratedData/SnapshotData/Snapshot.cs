@@ -63,7 +63,7 @@ namespace TH_GeneratedData.SnapshotData
             public InstanceData CurrentInstanceData { get; set; }
         }
 
-        public static void Process(Configuration config, ProcessInfo info)
+        public static void Process(DeviceConfiguration config, ProcessInfo info)
         {
             if (info.CurrentInstanceData != null)
             {

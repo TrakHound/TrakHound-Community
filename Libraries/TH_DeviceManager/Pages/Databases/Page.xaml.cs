@@ -661,7 +661,7 @@ namespace TH_DeviceManager.Pages.Databases
 
         private void GenerateId_Clicked(TH_WPF.Button bt)
         {
-            DatabaseId = Configuration.GenerateDatabaseId();
+            DatabaseId = DeviceConfiguration.GenerateDatabaseId();
 
             if (SettingChanged != null) SettingChanged(null, null, null);
         }
@@ -697,7 +697,7 @@ namespace TH_DeviceManager.Pages.Databases
             string databaseId = DatabaseId;
             if (string.IsNullOrEmpty(databaseId))
             {
-                databaseId = Configuration.GenerateDatabaseId();           
+                databaseId = DeviceConfiguration.GenerateDatabaseId();           
             }
 
             DataTable_Functions.UpdateTableValue(dt, "address", "/DatabaseId", "value", databaseId);

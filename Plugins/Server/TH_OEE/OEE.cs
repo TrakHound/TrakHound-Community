@@ -25,7 +25,7 @@ namespace TH_OEE
 
         public string Name { get { return "TH_OEE"; } }
 
-        public void Initialize(Configuration configuration)
+        public void Initialize(DeviceConfiguration configuration)
         {
             config = configuration;
 
@@ -69,7 +69,7 @@ namespace TH_OEE
 
         #region "Properties"
 
-        Configuration config { get; set; }
+        DeviceConfiguration config { get; set; }
 
         #endregion
 

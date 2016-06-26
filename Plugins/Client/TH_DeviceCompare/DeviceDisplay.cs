@@ -31,7 +31,7 @@ namespace TH_DeviceCompare
         /// <param name="config">Device Configuration object to use</param>
         /// <param name="plugins">List of IClientPlugin objects to use for DataItems (Cells)</param>
         /// <param name="configs">List of PluginConfiguration objects to determine 'Enabled' state for each IClientPlugin</param>
-        public DeviceDisplay(Configuration config, List<IClientPlugin> plugins, List<PluginConfiguration> configs)
+        public DeviceDisplay(DeviceConfiguration config, List<IClientPlugin> plugins, List<PluginConfiguration> configs)
         {
             Configuration = config;
 
@@ -66,7 +66,7 @@ namespace TH_DeviceCompare
 
         const System.Windows.Threading.DispatcherPriority Priority_Context = System.Windows.Threading.DispatcherPriority.ContextIdle;
 
-        public Configuration Configuration { get; set; }
+        public DeviceConfiguration Configuration { get; set; }
 
         /// <summary>
         /// Unique Id for identifying which Device this DeviceDisplay related to

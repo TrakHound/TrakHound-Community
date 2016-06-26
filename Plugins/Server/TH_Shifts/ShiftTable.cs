@@ -29,7 +29,7 @@ namespace TH_Shifts
 
         public string Name { get { return "TH_ShiftTable"; } }
 
-        public void Initialize(Configuration config)
+        public void Initialize(DeviceConfiguration config)
         {
             var sc = ShiftConfiguration.Read(config.ConfigurationXML);
             if (sc != null)
@@ -141,7 +141,7 @@ namespace TH_Shifts
 
         #region "Properties"
 
-        Configuration configuration { get; set; }
+        DeviceConfiguration configuration { get; set; }
 
         #endregion
 
@@ -246,7 +246,7 @@ namespace TH_Shifts
             ShiftTableColumns = Column.Get(configuration.Databases_Server, GetTableName(TableNames.Shifts));
         }
 
-        static List<string> GetGeneratedEventColumnNames(Configuration config)
+        static List<string> GetGeneratedEventColumnNames(DeviceConfiguration config)
         {
             var result = new List<string>();
 

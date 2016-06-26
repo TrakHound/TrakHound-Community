@@ -17,7 +17,7 @@ namespace TH_Status
 
         public string Name { get { return "TH_Status"; } }
 
-        public void Initialize(Configuration config)
+        public void Initialize(DeviceConfiguration config)
         {
             configuration = config;
 
@@ -61,7 +61,7 @@ namespace TH_Status
         public Type[] ConfigurationPageTypes { get { return null; } }
 
 
-        private Configuration configuration;
+        private DeviceConfiguration configuration;
 
         private void SendStatusData(List<StatusInfo> infos)
         {

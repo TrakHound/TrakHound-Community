@@ -5,12 +5,12 @@ using System.Text;
 
 namespace TH_Configuration
 {
-    public delegate void ConfigurationPropertyChanged_Handler(string xPath, string value);
+    public delegate void DeviceConfigurationPropertyChanged_Handler(string xPath, string value);
 
-    public interface IConfiguration
+    public interface IDeviceConfiguration
     {
 
-        event ConfigurationPropertyChanged_Handler ConfigurationPropertyChanged;
+        event DeviceConfigurationPropertyChanged_Handler ConfigurationPropertyChanged;
 
     }
 }

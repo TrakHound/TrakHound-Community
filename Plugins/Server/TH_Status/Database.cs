@@ -16,7 +16,7 @@ namespace TH_Status
     {
         private static string[] primaryKey = { "INFO_TYPE", "ADDRESS" };
 
-        public static void CreateTable(Configuration config)
+        public static void CreateTable(DeviceConfiguration config)
         {
             var columns = new List<ColumnDefinition>();
 
@@ -36,7 +36,7 @@ namespace TH_Status
             Table.Create(config.Databases_Server, GetTableName(config), ColArray, primaryKey);
         }
 
-        public static void AddRows(Configuration config, List<StatusInfo> infos)
+        public static void AddRows(DeviceConfiguration config, List<StatusInfo> infos)
         {
             var columns = new List<string>();
             columns.Add("INFO_TYPE");
@@ -66,7 +66,7 @@ namespace TH_Status
             Row.Insert(config.Databases_Server, GetTableName(config), columns.ToArray(), tableValues, primaryKey, true);
         }
 
-        public static void UpdateRows(Configuration config, List<StatusInfo> infos)
+        public static void UpdateRows(DeviceConfiguration config, List<StatusInfo> infos)
         {
             var columns = new List<string>();
             columns.Add("INFO_TYPE");
@@ -104,7 +104,7 @@ namespace TH_Status
             Row.Insert(config.Databases_Server, GetTableName(config), columns.ToArray(), tableValues, primaryKey, true);
         }
 
-        private static string GetTableName(Configuration config)
+        private static string GetTableName(DeviceConfiguration config)
         {
             if (config.DatabaseId != null) return config.DatabaseId + "_" + TableNames.Status;
             else return TableNames.Status;

@@ -366,7 +366,7 @@ namespace TH_DeviceManager.AddDevice.Pages
         private class AddDeviceInfo
         {
             public Controls.CatalogItem CatalogItem { get; set; }
-            public Configuration Configuration { get; set; }
+            public DeviceConfiguration Configuration { get; set; }
             public Shared.SharedListItem SharedListItem { get; set; }
             public bool Success { get; set; }
         }
@@ -406,7 +406,7 @@ namespace TH_DeviceManager.AddDevice.Pages
                             if (xml != null)
                             {
                                 // Process the XML file and get a TH_Configuration.Configuration object
-                                Configuration config = Configuration.Read(xml);
+                                var config = DeviceConfiguration.Read(xml);
                                 if (config != null)
                                 {
                                     item.Configuration = config;
@@ -442,7 +442,7 @@ namespace TH_DeviceManager.AddDevice.Pages
         }
 
 
-        private bool SaveLocalConfigurationToUser(Configuration config)
+        private bool SaveLocalConfigurationToUser(DeviceConfiguration config)
         {
             bool result = false;
 

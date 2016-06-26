@@ -28,7 +28,7 @@ namespace TH_Cycles
 
         public string Name { get { return "TH_Cycles"; } }
 
-        public void Initialize(Configuration config)
+        public void Initialize(DeviceConfiguration config)
         {
             var cc = CycleConfiguration.Read(config.ConfigurationXML);
             if (cc != null)
@@ -87,7 +87,7 @@ namespace TH_Cycles
 
         #region "Properties"
 
-        private Configuration configuration;
+        private DeviceConfiguration configuration;
 
         #endregion
 

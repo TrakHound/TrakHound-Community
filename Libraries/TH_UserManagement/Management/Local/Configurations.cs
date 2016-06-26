@@ -18,7 +18,7 @@ namespace TH_UserManagement.Management.Local
         static string[] primaryKey = { "address" };
 
 
-        public static bool Add(UserConfiguration userConfig, Configuration configuration, Database_Settings db)
+        public static bool Add(UserConfiguration userConfig, DeviceConfiguration configuration, Database_Settings db)
         {
             Users.CreateUserTable(db);
 
@@ -28,7 +28,7 @@ namespace TH_UserManagement.Management.Local
             XML_Functions.SetInnerText(configuration.ConfigurationXML, "TableName", tableName);
 
             // Set new Unique Id
-            string uniqueId = Configuration.GenerateUniqueID();
+            string uniqueId = DeviceConfiguration.GenerateUniqueID();
             configuration.UniqueId = uniqueId;
             XML_Functions.SetInnerText(configuration.ConfigurationXML, "UniqueId", uniqueId);
 
@@ -54,9 +54,9 @@ namespace TH_UserManagement.Management.Local
             return Table.List(db, "LIKE '" + userConfig.username + "%'");
         }
 
-        public static List<Configuration> Get(UserConfiguration userConfig, Database_Settings db)
+        public static List<DeviceConfiguration> Get(UserConfiguration userConfig, Database_Settings db)
         {
-            List<Configuration> result = new List<Configuration>();
+            var result = new List<DeviceConfiguration>();
 
             string[] tables = Table.List(db, "LIKE '" + userConfig.username + "%'");
             if (tables != null)
@@ -66,13 +66,13 @@ namespace TH_UserManagement.Management.Local
                     DataTable dt = Table.Get(db, table);
                     if (dt != null)
                     {
-                        XmlDocument xml = TH_Configuration.Converter.TableToXML(dt);
+                        XmlDocument xml = Converter.TableToXML(dt);
                         if (xml != null)
                         {
-                            Configuration config = TH_Configuration.Configuration.Read(xml);
+                            var config = DeviceConfiguration.Read(xml);
                             if (config != null)
                             {
-                                config.Remote = true;
+                                //config.Remote = true;
                                 config.TableName = table;
                                 result.Add(config);
                             }

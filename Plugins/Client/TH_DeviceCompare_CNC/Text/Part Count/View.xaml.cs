@@ -44,7 +44,7 @@ namespace TH_DeviceCompare_CNC.Text.Part_Count
 
         void Update(EventData data)
         {
-            if (data != null && data.Data01 != null && data.Data01.GetType() == typeof(Configuration))
+            if (data != null && data.Data01 != null && data.Data01.GetType() == typeof(DeviceConfiguration))
             {
 
                 // Use Snapshot table if Part Count is given as a total for the day

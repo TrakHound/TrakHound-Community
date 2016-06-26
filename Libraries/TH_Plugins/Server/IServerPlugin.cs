@@ -25,7 +25,7 @@ namespace TH_Plugins.Server
         /// Called to initialize the plugin using the Configuration file passed as a parameter
         /// </summary>
         /// <param name="Config"></param>
-        void Initialize(Configuration Config);
+        void Initialize(DeviceConfiguration Config);
 
         /// <summary>
         /// Called when the plugin is closing

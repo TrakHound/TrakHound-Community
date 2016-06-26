@@ -21,7 +21,7 @@ namespace TH_MTConnect.Plugin
         MTConnect.Application.Components.ReturnData probeData;
         MTConnect.Application.Streams.ReturnData currentData;
 
-        private void Start(Configuration config)
+        private void Start(DeviceConfiguration config)
         {
             if (!started)
             {
@@ -55,7 +55,7 @@ namespace TH_MTConnect.Plugin
             timer.Enabled = true;
         }
 
-        private void RunRequests(Configuration config)
+        private void RunRequests(DeviceConfiguration config)
         {
             var ac = AgentConfiguration.Get(config);
             if (ac != null)
@@ -111,7 +111,7 @@ namespace TH_MTConnect.Plugin
         }
 
 
-        private void UpdateAvailability(bool available, Configuration config)
+        private void UpdateAvailability(bool available, DeviceConfiguration config)
         {
             string tablePrefix;
             if (config.DatabaseId != null) tablePrefix = config.DatabaseId + "_";

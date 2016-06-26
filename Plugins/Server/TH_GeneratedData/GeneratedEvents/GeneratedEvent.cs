@@ -25,7 +25,7 @@ namespace TH_GeneratedData.GeneratedEvents
 
         public List<CaptureItem> CaptureItems { get; set; }
 
-        public static List<GeneratedEvent> Process(Configuration config, List<InstanceData> instanceDatas)
+        public static List<GeneratedEvent> Process(DeviceConfiguration config, List<InstanceData> instanceDatas)
         {
             var result = new List<GeneratedEvent>();
 

@@ -238,6 +238,7 @@
 
         </Grid>
 
+        <!--Loading-->
         <Grid Grid.Row="1" Background="{StaticResource Window_Background}">
             <Grid.Style>
                 <Style TargetType="Grid">

@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
+using TH_Configuration;
 using TH_Global.Functions;
 using TH_Plugins;
 
@@ -41,14 +42,14 @@ namespace TH_ControllerStatus.Controls
 
 
 
-        public TH_Configuration.Configuration Configuration
+        public DeviceConfiguration Configuration
         {
-            get { return (TH_Configuration.Configuration)GetValue(ConfigurationProperty); }
+            get { return (DeviceConfiguration)GetValue(ConfigurationProperty); }
             set { SetValue(ConfigurationProperty, value); }
         }
 
         public static readonly DependencyProperty ConfigurationProperty =
-            DependencyProperty.Register("Configuration", typeof(TH_Configuration.Configuration), typeof(Row), new PropertyMetadata(null));
+            DependencyProperty.Register("Configuration", typeof(DeviceConfiguration), typeof(Row), new PropertyMetadata(null));
 
 
 

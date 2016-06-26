@@ -87,8 +87,8 @@ namespace TH_DeviceCompare_OEE.Values.Performance
 
         #region "Device Properties"
 
-        private ObservableCollection<Configuration> _devices;
-        public ObservableCollection<Configuration> Devices
+        private ObservableCollection<DeviceConfiguration> _devices;
+        public ObservableCollection<DeviceConfiguration> Devices
         {
             get { return null; }
             set { _devices = null; }

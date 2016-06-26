@@ -35,7 +35,7 @@ namespace TH_DeviceCompare_ProductionStatusTimes
 
         void Update(EventData data)
         {
-            if (data != null && data.Data01 != null && data.Data01.GetType() == typeof(Configuration))
+            if (data != null && data.Data01 != null && data.Data01.GetType() == typeof(DeviceConfiguration))
             {
                 // GenEvent Values
                 if (data.Id.ToLower() == "statusdata_geneventvalues")

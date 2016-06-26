@@ -11,7 +11,7 @@ namespace TH_Mobile.Data
 {
     public class DescriptionInfo
     {
-        public DescriptionInfo(Configuration config)
+        public DescriptionInfo(DeviceConfiguration config)
         {
             Description = config.Description.Description;
             DeviceId = config.Description.Device_ID;

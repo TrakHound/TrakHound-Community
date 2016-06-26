@@ -127,7 +127,7 @@ namespace TH_DeviceManager.AddDevice.Pages
             bool result = false;
 
             // Get Configuration from path
-            Configuration config = Configuration.Read(path);
+            var config = DeviceConfiguration.Read(path);
             if (config != null)
             {
                 if (ParentPage.DeviceManager.CurrentUser != null)
@@ -139,7 +139,7 @@ namespace TH_DeviceManager.AddDevice.Pages
                 // If not logged in Read from File in 'C:\TrakHound\'
                 else
                 {
-                    result = Configuration.Save(config);
+                    result = DeviceConfiguration.Save(config);
                 }
 
                 if (result) ParentPage.DeviceManager.AddDevice(config);

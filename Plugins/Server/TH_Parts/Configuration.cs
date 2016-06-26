@@ -78,7 +78,7 @@ namespace TH_Parts
             return result;
         }
 
-        public static PartsConfiguration Get(Configuration configuration)
+        public static PartsConfiguration Get(DeviceConfiguration configuration)
         {
             PartsConfiguration result = null;
 

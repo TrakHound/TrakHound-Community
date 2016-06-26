@@ -47,7 +47,7 @@ namespace TH_MTConnect.Plugin
             return result;
         }
 
-        private void SendProbeData(ReturnData returnData, Configuration config)
+        private void SendProbeData(ReturnData returnData, DeviceConfiguration config)
         {
             if (returnData != null)
             {

@@ -79,7 +79,7 @@ namespace TH_Device_Server
             else Logger.Log("Plugins Directory Doesn't Exist (" + path + ")", Logger.LogLineType.Warning);
         }
 
-        void Plugins_Initialize(Configuration config)
+        void Plugins_Initialize(DeviceConfiguration config)
         {
             if (plugins != null && config != null)
             {

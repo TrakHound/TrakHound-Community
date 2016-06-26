@@ -11,7 +11,7 @@ namespace TH_Configuration.Converter_Sub_Classes
     public static class ObjectToXml
     {
 
-        public static XmlDocument Create(Configuration obj)
+        public static XmlDocument Create(DeviceConfiguration obj)
         {
             XmlDocument result = new XmlDocument();
 
@@ -20,10 +20,11 @@ namespace TH_Configuration.Converter_Sub_Classes
             XmlElement root = result.DocumentElement;
             result.InsertBefore(xmlDeclaration, root);
 
-            XmlElement configuration = result.CreateElement(string.Empty, "Settings", string.Empty);
+            //XmlElement configuration = result.CreateElement(string.Empty, "Settings", string.Empty);
+            XmlElement configuration = result.CreateElement(string.Empty, "DeviceConfiguration", string.Empty);
             result.AppendChild(configuration);
 
-            foreach (PropertyInfo info in typeof(Configuration).GetProperties())
+            foreach (PropertyInfo info in typeof(DeviceConfiguration).GetProperties())
             {
                 XmlNode propertyNode = result.CreateElement(string.Empty, info.Name, string.Empty);
                 object value = info.GetValue(obj, null);

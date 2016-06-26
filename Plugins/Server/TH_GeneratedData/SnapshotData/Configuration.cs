@@ -78,7 +78,7 @@ namespace TH_GeneratedData.SnapshotData
             return result;
         }
 
-        public static SnapshotDataConfiguration Get(Configuration configuration)
+        public static SnapshotDataConfiguration Get(DeviceConfiguration configuration)
         {
             SnapshotDataConfiguration Result = null;
 

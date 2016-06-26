@@ -40,7 +40,7 @@ namespace TH_UserManagement.Management.Remote
         }
 
         
-        public static bool Add(UserConfiguration userConfig, Configuration configuration)
+        public static bool Add(UserConfiguration userConfig, DeviceConfiguration configuration)
         {
             bool result = false;
 
@@ -60,7 +60,7 @@ namespace TH_UserManagement.Management.Remote
                 XML_Functions.SetInnerText(configuration.ConfigurationXML, "TableName", tableName);
 
                 // Set new Unique Id
-                string uniqueId = Configuration.GenerateUniqueID();
+                string uniqueId = DeviceConfiguration.GenerateUniqueID();
                 configuration.UniqueId = uniqueId;
                 XML_Functions.SetInnerText(configuration.ConfigurationXML, "UniqueId", uniqueId);
 
@@ -102,9 +102,9 @@ namespace TH_UserManagement.Management.Remote
             else return null;
         }
 
-        public static List<Configuration> Get(UserConfiguration userConfig)
+        public static List<DeviceConfiguration> Get(UserConfiguration userConfig)
         {
-            List<Configuration> result = null;
+            List<DeviceConfiguration> result = null;
 
             NameValueCollection values = new NameValueCollection();
 
@@ -115,7 +115,7 @@ namespace TH_UserManagement.Management.Remote
 
             if (responseString != null)
             {
-                result = new List<Configuration>();
+                result = new List<DeviceConfiguration>();
 
                 string[] tables = responseString.Split(TABLE_DELIMITER_START.ToCharArray());
 
@@ -132,13 +132,13 @@ namespace TH_UserManagement.Management.Remote
                             DataTable dt = JSON.ToTable(tabledata);
                             if (dt != null)
                             {
-                                XmlDocument xml = TH_Configuration.Converter.TableToXML(dt);
+                                XmlDocument xml = Converter.TableToXML(dt);
                                 if (xml != null)
                                 {
-                                    Configuration config = TH_Configuration.Configuration.Read(xml);
+                                    var config = DeviceConfiguration.Read(xml);
                                     if (config != null)
                                     {
-                                        config.Remote = true;
+                                        //config.Remote = true;
                                         config.TableName = tablename;
                                         result.Add(config);
                                     }

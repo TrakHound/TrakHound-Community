@@ -18,7 +18,7 @@ namespace TH_Parts
 
         public string Name { get { return "TH_Parts"; } }
 
-        public void Initialize(Configuration config)
+        public void Initialize(DeviceConfiguration config)
         {
             PartsConfiguration pc = PartsConfiguration.Read(config.ConfigurationXML);
             if (pc != null)
@@ -74,7 +74,7 @@ namespace TH_Parts
         //public Type[] ConfigurationPageTypes { get { return new Type[] { typeof(ConfigurationPage.Page) }; } }
 
 
-        private Configuration configuration;
+        private DeviceConfiguration configuration;
 
         private void SendPartInfos(List<PartInfo> infos)
         {

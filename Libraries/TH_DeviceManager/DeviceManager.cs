@@ -61,7 +61,7 @@ namespace TH_DeviceManager
         /// Delegate with a List<TH_Configuration.Configuration> argument to update this DeviceManager's device lists
         /// </summary>
         /// <param name="configs"></param>
-        public delegate void Update_Handler(List<Configuration> configs);
+        public delegate void Update_Handler(List<DeviceConfiguration> configs);
 
         /// <summary>
         /// Event to tell that the Device list has been updated and passes the list as an argument
@@ -97,7 +97,7 @@ namespace TH_DeviceManager
         /// </summary>
         /// <param name="config">TH_Configuration.Configuration object that has been updated</param>
         /// <param name="args">DeviceUpdateArgs object used to describe the type of udpates</param>
-        public delegate void DeviceUpdated_Handler(Configuration config, DeviceUpdateArgs args);
+        public delegate void DeviceUpdated_Handler(DeviceConfiguration config, DeviceUpdateArgs args);
 
         /// <summary>
         /// Event to tell when a Device has been updated (Added/Removed/Changed)
@@ -106,30 +106,30 @@ namespace TH_DeviceManager
 
         #endregion
 
-        private List<Configuration> _devices;
+        private List<DeviceConfiguration> _devices;
         /// <summary>
-        /// List of TH_Configuration.Configuration objects that represent the active devices
+        /// List of TH_Configuration.DeviceConfiguration objects that represent the active devices
         /// </summary>
-        public List<Configuration> Devices
+        public List<DeviceConfiguration> Devices
         {
             get
             {
-                if (_devices == null) _devices = new List<Configuration>();
+                if (_devices == null) _devices = new List<DeviceConfiguration>();
                 return _devices;
             }
             set { _devices = value; }
         }
 
-        private List<Configuration> _sharedDevices;
+        private List<DeviceConfiguration> _sharedDevices;
         /// <summary>
         /// List of TH_Configuration.Configuration objects that represent the shared devices that are
         /// owned by the current user
         /// </summary>
-        public List<Configuration> SharedDevices
+        public List<DeviceConfiguration> SharedDevices
         {
             get
             {
-                if (_sharedDevices == null) _sharedDevices = new List<Configuration>();
+                if (_sharedDevices == null) _sharedDevices = new List<DeviceConfiguration>();
                 return _sharedDevices;
             }
             set { _sharedDevices = value; }
@@ -168,8 +168,8 @@ namespace TH_DeviceManager
 
         private void LoadDevices_Worker()
         {
-            List<Configuration> added = null;
-            List<Configuration> shared = null;
+            List<DeviceConfiguration> added = null;
+            List<DeviceConfiguration> shared = null;
 
             if (currentuser != null)
             {
@@ -181,7 +181,7 @@ namespace TH_DeviceManager
             // If not logged in Read from File in 'C:\TrakHound\Devices\'
             else
             {
-                added = Configuration.ReadAll(FileLocations.Devices).ToList();
+                added = DeviceConfiguration.ReadAll(FileLocations.Devices).ToList();
 
                 added = added.OrderBy(x => x.Index).ToList();
 
@@ -194,7 +194,7 @@ namespace TH_DeviceManager
                     Logger.Log("Device Configuration Loaded :: " + added[x].Description.Description);
                 }
 
-                foreach (var device in added) Configuration.Save(device);
+                foreach (var device in added) DeviceConfiguration.Save(device);
             }
 
             Devices = added;
@@ -206,7 +206,7 @@ namespace TH_DeviceManager
             if (DevicesLoaded != null) DevicesLoaded();
         }
 
-        private List<Configuration> LoadDevices_Added()
+        private List<DeviceConfiguration> LoadDevices_Added()
         {
             var userConfig = UserConfiguration.FromNewUserConfiguration(currentuser);
 
@@ -232,7 +232,7 @@ namespace TH_DeviceManager
             return result;
         }
 
-        private List<Configuration> LoadDevices_Shared()
+        private List<DeviceConfiguration> LoadDevices_Shared()
         {
             var userConfig = UserConfiguration.FromNewUserConfiguration(currentuser);
 
@@ -254,7 +254,7 @@ namespace TH_DeviceManager
         /// Adds a device to the Device List
         /// </summary>
         /// <param name="config">The Device to add</param>
-        public void AddDevice(Configuration config)
+        public void AddDevice(DeviceConfiguration config)
         {
             Devices.Add(config);
 
@@ -268,7 +268,7 @@ namespace TH_DeviceManager
         /// Adds a device to the Shared Device List
         /// </summary>
         /// <param name="config">The Device to add</param>
-        public void AddSharedDevice(Configuration config)
+        public void AddSharedDevice(DeviceConfiguration config)
         {
             SharedDevices.Add(config);
         }
@@ -296,7 +296,7 @@ namespace TH_DeviceManager
         /// </summary>
         /// <param name="config">The Device that was updated</param>
         /// <param name="args">Tells what type of update took place</param>
-        public void UpdateDevice(Configuration config, DeviceUpdateArgs args)
+        public void UpdateDevice(DeviceConfiguration config, DeviceUpdateArgs args)
         {
             if (DeviceUpdated != null) DeviceUpdated(config, args);
         }
@@ -306,7 +306,7 @@ namespace TH_DeviceManager
         /// </summary>
         /// <param name="config">The Device to remove</param>
         /// <returns></returns>
-        public bool RemoveDevice(Configuration config)
+        public bool RemoveDevice(DeviceConfiguration config)
         {
             bool result = false;
 
@@ -343,7 +343,7 @@ namespace TH_DeviceManager
         /// <param name="config">The Device to change</param>
         /// <param name="type">Sets whether the Client or Server is enabled</param>
         /// <returns></returns>
-        public bool EnableDevice(Configuration config, ManagementType type)
+        public bool EnableDevice(DeviceConfiguration config, ManagementType type)
         {
             bool result = false;
 
@@ -363,7 +363,7 @@ namespace TH_DeviceManager
             {
                 result = UpdateEnabledXML(config.ConfigurationXML, true, type);
                 if (result) result = ResetUpdateId(config, type);
-                if (result) result = Configuration.Save(config);
+                if (result) result = DeviceConfiguration.Save(config);
             }
 
             return result;
@@ -375,7 +375,7 @@ namespace TH_DeviceManager
         /// <param name="config">The Device to change</param>
         /// <param name="type">Sets whether the Client or Server is disabled</param>
         /// <returns></returns>
-        public bool DisableDevice(Configuration config, ManagementType type)
+        public bool DisableDevice(DeviceConfiguration config, ManagementType type)
         {
             bool result = false;
 
@@ -395,7 +395,7 @@ namespace TH_DeviceManager
             {
                 result = UpdateEnabledXML(config.ConfigurationXML, false, type);
                 if (result) result = ResetUpdateId(config, type);
-                if (result) result = Configuration.Save(config);
+                if (result) result = DeviceConfiguration.Save(config);
             }
 
             return result;
@@ -407,7 +407,7 @@ namespace TH_DeviceManager
         /// <param name="config">The Device to change</param>
         /// <param name="newIndex">The new Index value</param>
         /// <returns></returns>
-        public bool ChangeDeviceIndex(Configuration config, int newIndex)
+        public bool ChangeDeviceIndex(DeviceConfiguration config, int newIndex)
         {
             bool result = false;
 
@@ -420,14 +420,14 @@ namespace TH_DeviceManager
             else
             {
                 result = XML_Functions.SetInnerText(config.ConfigurationXML, "Index", newIndex.ToString());
-                if (result) result = Configuration.Save(config);
+                if (result) result = DeviceConfiguration.Save(config);
             }
 
             return result;
         }
 
 
-        private void RemoveDeviceFromList(Configuration config)
+        private void RemoveDeviceFromList(DeviceConfiguration config)
         {
             int index = Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
             if (index >= 0)
@@ -441,7 +441,7 @@ namespace TH_DeviceManager
             }
         }
 
-        private bool ResetUpdateId(Configuration config, ManagementType type)
+        private bool ResetUpdateId(DeviceConfiguration config, ManagementType type)
         {
             bool result = false;
 

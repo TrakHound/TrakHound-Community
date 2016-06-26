@@ -19,7 +19,7 @@ namespace TH_GeneratedData.GeneratedEvents
 
         private static string[] genEventValuesPrimaryKey = { "EVENT", "VALUE" };
 
-        public static void CreateValueTable(Configuration config, List<Event> events)
+        public static void CreateValueTable(DeviceConfiguration config, List<Event> events)
         {
             var columns = new List<ColumnDefinition>()
             {
@@ -67,7 +67,7 @@ namespace TH_GeneratedData.GeneratedEvents
         public const string GenTablePrefix = TableNames.Gen_Events_TablePrefix;
         static string[] genEventsPrimaryKey = { "TIMESTAMP" };
 
-        public static void CreateEventTable(Configuration config, Event e)
+        public static void CreateEventTable(DeviceConfiguration config, Event e)
         {
             var columns = new List<ColumnDefinition>()
             {
@@ -91,7 +91,7 @@ namespace TH_GeneratedData.GeneratedEvents
             Table.Create(config.Databases_Server, tableName, ColArray, genEventsPrimaryKey);
         }
 
-        public static void InsertEventItems(Configuration config, List<GeneratedEvent> events)
+        public static void InsertEventItems(DeviceConfiguration config, List<GeneratedEvent> events)
         {
             IEnumerable<string> distinctEventNames = events.Select(x => x.EventName).Distinct();
 
@@ -159,7 +159,7 @@ namespace TH_GeneratedData.GeneratedEvents
             return Result;
         }
 
-        private static string GetTableName(Configuration config, string tablename)
+        private static string GetTableName(DeviceConfiguration config, string tablename)
         {
             if (config.DatabaseId != null) return config.DatabaseId + "_" + tablename;
             else return tablename;

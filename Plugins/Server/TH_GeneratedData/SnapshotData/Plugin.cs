@@ -19,7 +19,7 @@ namespace TH_GeneratedData.SnapshotData
 
         public string Name { get { return "TH_SnapshotData"; } }
 
-        public void Initialize(Configuration config)
+        public void Initialize(DeviceConfiguration config)
         {
             var sdc = SnapshotDataConfiguration.Read(config.ConfigurationXML);
             if (sdc != null)
@@ -82,7 +82,7 @@ namespace TH_GeneratedData.SnapshotData
         //}
 
 
-        private Configuration configuration;
+        private DeviceConfiguration configuration;
 
         private List<Snapshot> previousSSI;
 

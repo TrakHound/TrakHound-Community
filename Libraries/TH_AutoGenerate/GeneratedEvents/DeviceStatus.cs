@@ -10,7 +10,7 @@ using TH_Global.Functions;
 
 using MTConnect.Application.Components;
 
-namespace TH_DeviceManager.AutoGenerate.GeneratedEvents
+namespace TH_AutoGenerate.GeneratedEvents
 {
     public static class DeviceStatus
     {
@@ -43,7 +43,7 @@ namespace TH_DeviceManager.AutoGenerate.GeneratedEvents
             item = probeItems.Find(x => x.Category == DataItemCategory.EVENT && x.Type == "EMERGENCY_STOP");
             if (item != null) DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||01", "attributes", "id||01;link||" + item.Id + ";link_type||ID;value||ARMED;");
 
-            item = probeItems.Find(x => x.Category == DataItemCategory.EVENT && x.Type == "SYSTEM" && x.FullAddress.Contains("controller"));
+            item = probeItems.Find(x => x.Category == DataItemCategory.CONDITION && x.Type == "SYSTEM" && x.FullAddress.ToLower().Contains("controller"));
             if (item != null) DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||02", "attributes", "id||02;link||" + item.Id + ";link_type||ID;modifier||NOT;value||Fault;");
 
             item = probeItems.Find(x => x.Category == DataItemCategory.EVENT && x.Type == "CONTROLLER_MODE");
@@ -73,7 +73,7 @@ namespace TH_DeviceManager.AutoGenerate.GeneratedEvents
             item = probeItems.Find(x => x.Category == DataItemCategory.EVENT && x.Type == "EMERGENCY_STOP");
             if (item != null) DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||01", "attributes", "id||01;link||" + item.Id + ";link_type||ID;value||ARMED;");
 
-            item = probeItems.Find(x => x.Category == DataItemCategory.EVENT && x.Type == "SYSTEM" && x.FullAddress.Contains("controller"));
+            item = probeItems.Find(x => x.Category == DataItemCategory.CONDITION && x.Type == "SYSTEM" && x.FullAddress.ToLower().Contains("controller"));
             if (item != null) DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||02", "attributes", "id||02;link||" + item.Id + ";link_type||ID;modifier||NOT;value||Fault;");
 
             // Add Result

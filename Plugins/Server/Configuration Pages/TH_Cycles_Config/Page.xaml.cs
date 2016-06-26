@@ -71,8 +71,8 @@ namespace TH_Cycles_Config
             LoadGeneratedEventItems(dt);
 
             GetProductionTypeValues();
-            LoadProductionTypes(dt);
-            LoadOverrideLinks(dt);
+            //LoadProductionTypes(dt);
+            //LoadOverrideLinks(dt);
 
             ClearData();
             LoadData(dt);
@@ -602,7 +602,7 @@ namespace TH_Cycles_Config
                 {
                     var item = new Controls.OverrideLinkItem();
                     item.ParentPage = this;
-                    item.SelectedId = DataTable_Functions.GetRowValue("Value", row);
+                    item.SelectedId = DataTable_Functions.GetRowValue("value", row);
                     item.RemoveClicked += OverrideLinkItem_RemoveClicked;
                     item.SettingChanged += OverrideLinkItem_SettingChanged;
                     OverrideLinks.Add(item);

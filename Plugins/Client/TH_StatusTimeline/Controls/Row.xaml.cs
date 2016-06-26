@@ -44,14 +44,14 @@ namespace TH_StatusTimeline.Controls
 
 
 
-        public TH_Configuration.Configuration Configuration
+        public TH_Configuration.DeviceConfiguration Configuration
         {
-            get { return (TH_Configuration.Configuration)GetValue(ConfigurationProperty); }
+            get { return (TH_Configuration.DeviceConfiguration)GetValue(ConfigurationProperty); }
             set { SetValue(ConfigurationProperty, value); }
         }
 
         public static readonly DependencyProperty ConfigurationProperty =
-            DependencyProperty.Register("Configuration", typeof(TH_Configuration.Configuration), typeof(Row), new PropertyMetadata(null));
+            DependencyProperty.Register("Configuration", typeof(TH_Configuration.DeviceConfiguration), typeof(Row), new PropertyMetadata(null));
 
 
 

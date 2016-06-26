@@ -17,7 +17,7 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
     /// </summary>
     public partial class Overlay : UserControl, IComparable
     {
-        public Overlay(Configuration config)
+        public Overlay(DeviceConfiguration config)
         {
             InitializeComponent();
             DataContext = this;
@@ -29,7 +29,7 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
 
         public int Index { get; set; }
 
-        Configuration configuration;
+        DeviceConfiguration configuration;
 
 
         public bool Loading

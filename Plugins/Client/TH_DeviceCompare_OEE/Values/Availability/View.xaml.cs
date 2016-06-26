@@ -51,7 +51,7 @@ namespace TH_DeviceCompare_OEE.Values.Availability
 
         void Update(EventData data)
         {
-            if (data != null && data.Data01 != null && data.Data01.GetType() == typeof(Configuration))
+            if (data != null && data.Data01 != null && data.Data01.GetType() == typeof(DeviceConfiguration))
             {
                 // OEE Table Data
                 if (data.Id.ToLower() == "statusdata_oee_segments")

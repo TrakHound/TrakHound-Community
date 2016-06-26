@@ -127,7 +127,7 @@ namespace TH_TableManager
 
         Thread TableList_WORKER;
 
-        void LoadTableList(Configuration config)
+        void LoadTableList(DeviceConfiguration config)
         {
             TableListShown = false;
             TableDataView = null;
@@ -141,7 +141,7 @@ namespace TH_TableManager
 
         void LoadTableList_Worker(object o)
         {
-            var config = (Configuration)o;
+            var config = (DeviceConfiguration)o;
 
             string[] tableNames = TH_Database.Table.List(config.Databases_Client);
 
@@ -158,10 +158,10 @@ namespace TH_TableManager
                 tableNames = list.ToArray();
             }
 
-            this.Dispatcher.BeginInvoke(new Action<Configuration, string[]>(LoadTableList_Finished), Priority, new object[] { config, tableNames });
+            this.Dispatcher.BeginInvoke(new Action<DeviceConfiguration, string[]>(LoadTableList_Finished), Priority, new object[] { config, tableNames });
         }
 
-        void LoadTableList_Finished(Configuration config, string[] tableNames)
+        void LoadTableList_Finished(DeviceConfiguration config, string[] tableNames)
         {
             TableList.Clear();
 
@@ -246,8 +246,8 @@ namespace TH_TableManager
 
             string tablename = LB.DataObject.ToString();
 
-            Dispatcher.BeginInvoke(new Action<string, Configuration>(LoadInfo), Priority, new object[] { tablename, SelectedDevice });
-            Dispatcher.BeginInvoke(new Action<string, long, Configuration>(LoadTable), Priority, new object[] { tablename, page, SelectedDevice });
+            Dispatcher.BeginInvoke(new Action<string, DeviceConfiguration>(LoadInfo), Priority, new object[] { tablename, SelectedDevice });
+            Dispatcher.BeginInvoke(new Action<string, long, DeviceConfiguration>(LoadTable), Priority, new object[] { tablename, page, SelectedDevice });
         }
 
         #endregion
@@ -289,21 +289,21 @@ namespace TH_TableManager
         const System.Windows.Threading.DispatcherPriority Priority = System.Windows.Threading.DispatcherPriority.ContextIdle;
 
 
-        public Configuration SelectedDevice
+        public DeviceConfiguration SelectedDevice
         {
-            get { return (Configuration)GetValue(SelectedDeviceProperty); }
+            get { return (DeviceConfiguration)GetValue(SelectedDeviceProperty); }
             set { SetValue(SelectedDeviceProperty, value); }
         }
 
         public static readonly DependencyProperty SelectedDeviceProperty =
-            DependencyProperty.Register("SelectedDevice", typeof(Configuration), typeof(Plugin), new PropertyMetadata(null));
+            DependencyProperty.Register("SelectedDevice", typeof(DeviceConfiguration), typeof(Plugin), new PropertyMetadata(null));
 
         void lb_Device_Selected(TH_WPF.ListButton lb)
         {
             foreach (TH_WPF.ListButton olb in DeviceList.OfType<TH_WPF.ListButton>()) if (olb != lb) olb.IsSelected = false;
             lb.IsSelected = true;
-        
-            Configuration device = (Configuration)lb.DataObject;
+
+            DeviceConfiguration device = (DeviceConfiguration)lb.DataObject;
 
             SelectedDevice = device;
 
@@ -316,7 +316,7 @@ namespace TH_TableManager
         {
             public string Tablename { get; set; }
             public long Page { get; set; }
-            public Configuration Config { get; set; }
+            public DeviceConfiguration Config { get; set; }
         }
 
         #region "Table Info"
@@ -372,7 +372,7 @@ namespace TH_TableManager
 
         Thread Info_WORKER;
 
-        void LoadInfo(string tableName, Configuration config)
+        void LoadInfo(string tableName, DeviceConfiguration config)
         {
             SelectedTableName = tableName;
 
@@ -468,7 +468,7 @@ namespace TH_TableManager
 
         LoadTableParameters selectedTableParameters;
 
-        void LoadTable(string tableName, long page, Configuration config)
+        void LoadTable(string tableName, long page, DeviceConfiguration config)
         {
             TableDataView = null;
             LoadingRowDisplay = false;

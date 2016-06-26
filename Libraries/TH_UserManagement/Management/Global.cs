@@ -129,7 +129,7 @@ namespace TH_UserManagement.Management
 
     public static class Configurations
     {
-        public static bool AddConfigurationToUser(UserConfiguration userConfig, Configuration configuration)
+        public static bool AddConfigurationToUser(UserConfiguration userConfig, DeviceConfiguration configuration)
         {
             bool result = false;
 
@@ -175,9 +175,9 @@ namespace TH_UserManagement.Management
             return result;
         }
 
-        public static List<Configuration> GetConfigurationsListForUser(UserConfiguration userConfig)
+        public static List<DeviceConfiguration> GetConfigurationsListForUser(UserConfiguration userConfig)
         {
-            List<Configuration> result = null;
+            List<DeviceConfiguration> result = null;
 
             if (UserManagementSettings.Database == null)
             {

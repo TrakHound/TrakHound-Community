@@ -96,7 +96,7 @@ namespace TH_Shifts
             return result;
         }
 
-        public static ShiftConfiguration Get(Configuration configuration)
+        public static ShiftConfiguration Get(DeviceConfiguration configuration)
         {
             ShiftConfiguration result = null;
 

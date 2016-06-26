@@ -119,6 +119,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_OeeStatus", "Plugins\Cli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_StatusTimes", "Plugins\Client\TH_StatusTimes\TH_StatusTimes.csproj", "{3D043DAF-53BB-47E1-89C3-871702819AEB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_AutoGenerate", "Libraries\TH_AutoGenerate\TH_AutoGenerate.csproj", "{6C22E8AB-DD87-4B36-A28E-A44B4C6BF779}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -432,6 +434,12 @@ Global
 		{3D043DAF-53BB-47E1-89C3-871702819AEB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3D043DAF-53BB-47E1-89C3-871702819AEB}.Server|Any CPU.ActiveCfg = Release|Any CPU
 		{3D043DAF-53BB-47E1-89C3-871702819AEB}.Server|Any CPU.Build.0 = Release|Any CPU
+		{6C22E8AB-DD87-4B36-A28E-A44B4C6BF779}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C22E8AB-DD87-4B36-A28E-A44B4C6BF779}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C22E8AB-DD87-4B36-A28E-A44B4C6BF779}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C22E8AB-DD87-4B36-A28E-A44B4C6BF779}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C22E8AB-DD87-4B36-A28E-A44B4C6BF779}.Server|Any CPU.ActiveCfg = Release|Any CPU
+		{6C22E8AB-DD87-4B36-A28E-A44B4C6BF779}.Server|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -485,5 +493,6 @@ Global
 		{0BBC7261-4D19-4A6D-B203-C742A65576A5} = {635E4A98-547F-4D6A-A484-565DC42D336A}
 		{3B14C2C3-4DA8-4D56-8F32-CB31078EEDEE} = {635E4A98-547F-4D6A-A484-565DC42D336A}
 		{3D043DAF-53BB-47E1-89C3-871702819AEB} = {635E4A98-547F-4D6A-A484-565DC42D336A}
+		{6C22E8AB-DD87-4B36-A28E-A44B4C6BF779} = {EEAC6CD4-32AF-4324-802F-4EE58C8CF5E5}
 	EndGlobalSection
 EndGlobal

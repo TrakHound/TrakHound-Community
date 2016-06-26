@@ -27,7 +27,7 @@ namespace TH_MTConnect.Plugin
         private const long MaxSampleCount = 10000;
         private bool startFromFirst = false;
 
-        private ReturnData GetSample(Streams header, AgentConfiguration ac, Configuration config)
+        private ReturnData GetSample(Streams header, AgentConfiguration ac, DeviceConfiguration config)
         {
             ReturnData result = null;
 
@@ -67,7 +67,7 @@ namespace TH_MTConnect.Plugin
             return result;
         }
 
-        private void SendSampleData(ReturnData returnData, Configuration config)
+        private void SendSampleData(ReturnData returnData, DeviceConfiguration config)
         {
             if (returnData != null)
             {
@@ -81,7 +81,7 @@ namespace TH_MTConnect.Plugin
         }
 
 
-        private long GetLastSequenceFromMySQL(Configuration config)
+        private long GetLastSequenceFromMySQL(DeviceConfiguration config)
         {
             long result = -1;
 
@@ -98,7 +98,7 @@ namespace TH_MTConnect.Plugin
             return result;
         }
 
-        private long GetAgentInstanceIdFromMySQL(Configuration config)
+        private long GetAgentInstanceIdFromMySQL(DeviceConfiguration config)
         {
             long result = -1;
 
@@ -115,7 +115,7 @@ namespace TH_MTConnect.Plugin
             return result;
         }
 
-        private void UpdateAgentInstanceID(Streams header, Configuration config)
+        private void UpdateAgentInstanceID(Streams header, DeviceConfiguration config)
         {
             lastInstanceId = agentInstanceId;
             agentInstanceId = header.InstanceId;
@@ -135,7 +135,7 @@ namespace TH_MTConnect.Plugin
             public long Count { get; set; }
         }
 
-        private SampleInfo GetSampleInfo(Streams header, Configuration config)
+        private SampleInfo GetSampleInfo(Streams header, DeviceConfiguration config)
         {
             var result = new SampleInfo();
 

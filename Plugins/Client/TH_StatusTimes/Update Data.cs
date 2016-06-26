@@ -13,7 +13,7 @@ namespace TH_StatusTimes
         {
             if (data != null && data.Id != null && data.Data01 != null)
             {
-                var config = data.Data01 as Configuration;
+                var config = data.Data01 as DeviceConfiguration;
                 if (config != null)
                 {
                     Dispatcher.BeginInvoke(new Action(() =>

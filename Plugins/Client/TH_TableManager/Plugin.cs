@@ -125,14 +125,14 @@ namespace TH_TableManager
 
         #region "Device Properties"
 
-        private ObservableCollection<Configuration> _devices;
-        public ObservableCollection<Configuration> Devices
+        private ObservableCollection<DeviceConfiguration> _devices;
+        public ObservableCollection<DeviceConfiguration> Devices
         {
             get
             {
                 if (_devices == null)
                 {
-                    _devices = new ObservableCollection<Configuration>();
+                    _devices = new ObservableCollection<DeviceConfiguration>();
                     _devices.CollectionChanged += Devices_CollectionChanged;
                 }
                 return _devices;
@@ -152,7 +152,7 @@ namespace TH_TableManager
 
             if (e.NewItems != null)
             {
-                foreach (Configuration newConfig in e.NewItems)
+                foreach (DeviceConfiguration newConfig in e.NewItems)
                 {
                     if (newConfig != null) AddDeviceButton(newConfig);
                 }
@@ -160,7 +160,7 @@ namespace TH_TableManager
 
             if (e.OldItems != null)
             {
-                foreach (Configuration oldConfig in e.OldItems)
+                foreach (DeviceConfiguration oldConfig in e.OldItems)
                 {
                     Devices.Remove(oldConfig);
 
@@ -174,15 +174,15 @@ namespace TH_TableManager
         {
             if (bt != null && bt.DataObject != null)
             {
-                if (bt.DataObject.GetType() == typeof(Configuration))
+                if (bt.DataObject.GetType() == typeof(DeviceConfiguration))
                 {
-                    return ((Configuration)bt.DataObject).UniqueId;
+                    return ((DeviceConfiguration)bt.DataObject).UniqueId;
                 }
             }
             return null;
         }
 
-        private void AddDeviceButton(Configuration config)
+        private void AddDeviceButton(DeviceConfiguration config)
         {
             Global.Initialize(config.Databases_Client);
 

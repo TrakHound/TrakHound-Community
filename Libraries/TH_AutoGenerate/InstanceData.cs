@@ -10,7 +10,7 @@ using TH_Global.Functions;
 
 using MTConnect.Application.Components;
 
-namespace TH_DeviceManager.AutoGenerate
+namespace TH_AutoGenerate
 {
     public static class InstanceData
     {

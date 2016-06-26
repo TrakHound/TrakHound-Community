@@ -15,12 +15,12 @@ namespace TH_Device_Server
     public partial class Device_Server
     {
 
-        public Device_Server(Configuration config)
+        public Device_Server(DeviceConfiguration config)
         {
             Configuration = config;
         }
 
-        public Configuration Configuration { get; set; }
+        public DeviceConfiguration Configuration { get; set; }
 
         public string ConfigurationPath { get; set; }
 
@@ -63,7 +63,7 @@ namespace TH_Device_Server
             Plugins_Update_SendData(data);
         }
 
-        private void Initialize(Configuration config)
+        private void Initialize(DeviceConfiguration config)
         {
             Configuration = config;
 
@@ -116,7 +116,7 @@ namespace TH_Device_Server
             public string Message { get; set; }
         }
 
-        DatabaseConnectionStatus CheckDatabaseConnection(Configuration config)
+        DatabaseConnectionStatus CheckDatabaseConnection(DeviceConfiguration config)
         {
             // Ping Database connection for each Database Configuration
             bool dbsuccess = true;
@@ -140,7 +140,7 @@ namespace TH_Device_Server
             return status;
         }
 
-        private void SendDatabaseStatus(bool connected, Configuration config)
+        private void SendDatabaseStatus(bool connected, DeviceConfiguration config)
         {
             var data = new EventData();
             data.Id = "DatabaseStatus";
@@ -159,7 +159,7 @@ namespace TH_Device_Server
             TH_Database.Tables.Variables.CreateTable(Configuration.Databases_Server, tablePrefix);
         }
 
-        void PrintDeviceHeader(Configuration config)
+        void PrintDeviceHeader(DeviceConfiguration config)
         {
             Logger.Log("Device [" + config.Index.ToString() + "] ---------------------------------------", Logger.LogLineType.Console);
 
@@ -168,11 +168,6 @@ namespace TH_Device_Server
             if (config.Description.Manufacturer != null) Logger.Log(config.Description.Manufacturer, Logger.LogLineType.Console);
             if (config.Description.Model != null) Logger.Log(config.Description.Model, Logger.LogLineType.Console);
             if (config.Description.Serial != null) Logger.Log(config.Description.Serial, Logger.LogLineType.Console);
-
-            Logger.Log("Agent ----------------------------------", Logger.LogLineType.Console);
-            if (config.Agent.IP_Address != null) Logger.Log(config.Agent.IP_Address, Logger.LogLineType.Console);
-            if (config.Agent.Port > 0) Logger.Log(config.Agent.Port.ToString(), Logger.LogLineType.Console);
-            if (config.Agent.Device_Name != null) Logger.Log(config.Agent.Device_Name, Logger.LogLineType.Console);
 
             Logger.Log("--------------------------------------------------", Logger.LogLineType.Console);
         }

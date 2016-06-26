@@ -13,6 +13,63 @@ namespace TH_Global.Functions
 {
     public static class Network_Functions
     {
+        public static IPAddress GetHostIP()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip;
+                }
+            }
+
+            return null;
+        }
+
+        public static IPAddress[] GetAddressList(IPAddress ipAddress)
+        {
+            var result = new List<IPAddress>();
+
+            byte[] ipBytes = ipAddress.GetAddressBytes();
+
+            var b = new byte[4];
+            b[0] = ipBytes[0];
+            b[1] = ipBytes[1];
+            b[2] = ipBytes[2];
+
+            for (var x = 0; x <= 255; x++)
+            {
+                b[3] = Convert.ToByte(x);
+
+                var ip = new IPAddress(b);
+                result.Add(ip);
+            }
+
+            return result.ToArray();
+        }
+
+        //public static IPAddress[] GetAddressList(IPAddress ipAddress)
+        //{
+        //    var result = new IPAddress[256];
+
+        //    byte[] ipBytes = ipAddress.GetAddressBytes();
+
+        //    var b = new byte[4];
+        //    b[0] = ipBytes[0];
+        //    b[1] = ipBytes[1];
+        //    b[2] = ipBytes[2];
+
+        //    for (var x = 0; x <= 255; x++)
+        //    {
+        //        b[3] = Convert.ToByte(x);
+
+        //        var ip = new IPAddress(b);
+        //        result[x] = ip;
+        //    }
+
+        //    return result;
+        //}
 
         public class PingNodes
         {
@@ -54,19 +111,7 @@ namespace TH_Global.Functions
                 }
             }
 
-            private static IPAddress GetHostIP()
-            {
-                var host = Dns.GetHostEntry(Dns.GetHostName());
-                foreach (var ip in host.AddressList)
-                {
-                    if (ip.AddressFamily == AddressFamily.InterNetwork)
-                    {
-                        return ip;
-                    }
-                }
-
-                return null;
-            }
+            
 
             private static IPAddress GetSubnetMask(IPAddress ip)
             {
@@ -103,27 +148,7 @@ namespace TH_Global.Functions
                 return null;
             }
 
-            private static IPAddress[] GetAddressList(IPAddress ipAddress)
-            {
-                var result = new IPAddress[256];
-
-                byte[] ipBytes = ipAddress.GetAddressBytes();
             
-                var b = new byte[4];
-                b[0] = ipBytes[0];
-                b[1] = ipBytes[1];
-                b[2] = ipBytes[2];
-
-                for (var x = 0; x <= 255; x++)
-                {
-                    b[3] = Convert.ToByte(x);
-
-                    var ip = new IPAddress(b);
-                    result[x] = ip;
-                }
-                
-                return result;
-            }
 
             private void StartPing(IPAddress ipAddress, int index)
             {

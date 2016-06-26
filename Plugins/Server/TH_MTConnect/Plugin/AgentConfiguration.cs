@@ -110,7 +110,7 @@ namespace TH_MTConnect.Plugin
             return result;
         }
 
-        public static AgentConfiguration Get(Configuration configuration)
+        public static AgentConfiguration Get(DeviceConfiguration configuration)
         {
             AgentConfiguration result = null;
 

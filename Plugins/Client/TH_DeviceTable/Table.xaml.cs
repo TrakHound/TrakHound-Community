@@ -47,7 +47,7 @@ namespace TH_DeviceTable
             }
         }
 
-        private void OpenDevicePage(Configuration config)
+        private void OpenDevicePage(DeviceConfiguration config)
         {
             var data = new EventData();
             data.Id = "DevicePage_Show";

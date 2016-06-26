@@ -16,7 +16,7 @@ namespace TH_InstanceData
 
         public string Name { get { return "TH_InstanceData"; } }
 
-        public void Initialize(Configuration config)
+        public void Initialize(DeviceConfiguration config)
         {
             InstanceConfiguration ic = InstanceConfiguration.Read(config.ConfigurationXML);
             if (ic != null)

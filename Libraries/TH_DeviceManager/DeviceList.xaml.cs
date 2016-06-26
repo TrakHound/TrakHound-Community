@@ -119,11 +119,11 @@ namespace TH_DeviceManager
 
         #region "Device Manager Event Handlers"
 
-        private void _deviceManager_DeviceListUpdated(List<Configuration> configs) { AddDevices(configs); }
+        private void _deviceManager_DeviceListUpdated(List<DeviceConfiguration> configs) { AddDevices(configs); }
 
-        private void _deviceManager_SharedDeviceListUpdated(List<Configuration> configs) { AddSharedDevices(configs); }
+        private void _deviceManager_SharedDeviceListUpdated(List<DeviceConfiguration> configs) { AddSharedDevices(configs); }
 
-        private void _deviceManager_DeviceUpdated(Configuration config, DeviceManager.DeviceUpdateArgs args)
+        private void _deviceManager_DeviceUpdated(DeviceConfiguration config, DeviceManager.DeviceUpdateArgs args)
         {
             if (args.Sender != this)
             {
@@ -163,7 +163,7 @@ namespace TH_DeviceManager
 
         #endregion
 
-        private void OpenEditTable(Configuration config)
+        private void OpenEditTable(DeviceConfiguration config)
         {
             if (EditTableSelected != null) EditTableSelected(config);
         }
@@ -171,16 +171,16 @@ namespace TH_DeviceManager
 
         #region "Device Lists"
 
-        ObservableCollection<Configuration> _devices;
+        ObservableCollection<DeviceConfiguration> _devices;
         /// <summary>
         /// Collection of TH_Configuration.Configuration objects that represent the active devices
         /// </summary>
-        public ObservableCollection<Configuration> Devices
+        public ObservableCollection<DeviceConfiguration> Devices
         {
             get
             {
                 if (_devices == null)
-                    _devices = new ObservableCollection<Configuration>();
+                    _devices = new ObservableCollection<DeviceConfiguration>();
                 return _devices;
             }
 
@@ -190,17 +190,17 @@ namespace TH_DeviceManager
             }
         }
 
-        ObservableCollection<Configuration> _sharedDevices;
+        ObservableCollection<DeviceConfiguration> _sharedDevices;
         /// <summary>
         /// Collection of TH_Configuration.Configuration objects that represent the shared devices
         /// that are owned by the current user
         /// </summary>
-        public ObservableCollection<Configuration> SharedDevices
+        public ObservableCollection<DeviceConfiguration> SharedDevices
         {
             get
             {
                 if (_sharedDevices == null)
-                    _sharedDevices = new ObservableCollection<Configuration>();
+                    _sharedDevices = new ObservableCollection<DeviceConfiguration>();
                 return _sharedDevices;
             }
 
@@ -210,7 +210,7 @@ namespace TH_DeviceManager
             }
         }
 
-        private void AddDeviceToList(Configuration config, int index = -1)
+        private void AddDeviceToList(DeviceConfiguration config, int index = -1)
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
@@ -222,7 +222,7 @@ namespace TH_DeviceManager
             ), PRIORITY_BACKGROUND, new object[] { });
         }
 
-        private void ReplaceDeviceInList(Configuration config)
+        private void ReplaceDeviceInList(DeviceConfiguration config)
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
@@ -236,7 +236,7 @@ namespace TH_DeviceManager
             ), PRIORITY_BACKGROUND, new object[] { });
         }
 
-        private void RemoveDeviceFromList(Configuration config)
+        private void RemoveDeviceFromList(DeviceConfiguration config)
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
@@ -256,7 +256,7 @@ namespace TH_DeviceManager
         }
 
 
-        private void AddSharedDeviceToList(Configuration config)
+        private void AddSharedDeviceToList(DeviceConfiguration config)
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
@@ -278,7 +278,7 @@ namespace TH_DeviceManager
 
         #region "Add Devices"
 
-        private void AddDevices(List<Configuration> configs)
+        private void AddDevices(List<DeviceConfiguration> configs)
         {
             ClearDevices();
 
@@ -288,7 +288,7 @@ namespace TH_DeviceManager
             }
         }
 
-        private void AddSharedDevices(List<Configuration> configs)
+        private void AddSharedDevices(List<DeviceConfiguration> configs)
         {
             ClearSharedDevices();
 
@@ -307,11 +307,11 @@ namespace TH_DeviceManager
 
         private class RemoveDevices_Info
         {
-            public List<Configuration> Devices { get; set; }
+            public List<DeviceConfiguration> Devices { get; set; }
             public bool Success { get; set; }
         }
 
-        private void RemoveDevices(List<Configuration> configs)
+        private void RemoveDevices(List<DeviceConfiguration> configs)
         {
             // Set the text for the MessageBox based on how many devices are selected to be removed
             string msg = null;
@@ -335,7 +335,7 @@ namespace TH_DeviceManager
 
             if (o != null)
             {
-                var configs = (List<Configuration>)o;
+                var configs = (List<DeviceConfiguration>)o;
 
                 removeInfo.Devices = configs;
 
@@ -406,7 +406,7 @@ namespace TH_DeviceManager
             {
                 EnableDevice_Info info = (EnableDevice_Info)o;
 
-                var config = ((Configuration)info.DataObject);
+                var config = ((DeviceConfiguration)info.DataObject);
 
                 // Enable Device using DeviceManager
                 if (DeviceManager != null) info.Success = DeviceManager.EnableDevice(config, info.Type);
@@ -428,7 +428,7 @@ namespace TH_DeviceManager
             {
                 if (info.Success)
                 {
-                    var config = ((Configuration)info.DataObject);
+                    var config = ((DeviceConfiguration)info.DataObject);
 
                     //Raise DeviceUpdated Event
                     var args = new DeviceManager.DeviceUpdateArgs();
@@ -464,7 +464,7 @@ namespace TH_DeviceManager
             {
                 EnableDevice_Info info = (EnableDevice_Info)o;
 
-                var config = ((Configuration)info.DataObject);
+                var config = ((DeviceConfiguration)info.DataObject);
 
                 // Disable Device using DeviceManager
                 if (DeviceManager != null) info.Success = DeviceManager.DisableDevice(config, info.Type);
@@ -486,7 +486,7 @@ namespace TH_DeviceManager
             {
                 if (info.Success)
                 {
-                    var config = ((Configuration)info.DataObject);
+                    var config = ((DeviceConfiguration)info.DataObject);
 
                     // Raise DeviceUpdated Event
                     var args = new DeviceManager.DeviceUpdateArgs();
@@ -552,9 +552,9 @@ namespace TH_DeviceManager
 
                 if (valid)
                 {
-                    Configuration refConfig = null;
-                    if (change > 0) refConfig = (Configuration)items[items.IndexOf(selectedItems[0]) - 1];
-                    else if (change < 0) refConfig = (Configuration)items[items.IndexOf(selectedItems[selectedItems.Count - 1]) + 1];
+                    DeviceConfiguration refConfig = null;
+                    if (change > 0) refConfig = (DeviceConfiguration)items[items.IndexOf(selectedItems[0]) - 1];
+                    else if (change < 0) refConfig = (DeviceConfiguration)items[items.IndexOf(selectedItems[selectedItems.Count - 1]) + 1];
 
                     int refIndex = refConfig.Index;
 
@@ -564,7 +564,7 @@ namespace TH_DeviceManager
                         if (change > 0) adjChange = change + ((selectedItems.Count - 1) - x);
                         else if (change < 0) adjChange = change - x;
 
-                        var config = (Configuration)selectedItems[x];
+                        var config = (DeviceConfiguration)selectedItems[x];
 
                         int listIndex = items.IndexOf(selectedItems[x]);
 
@@ -592,7 +592,7 @@ namespace TH_DeviceManager
                     {
                         var info = infos[x];
 
-                        var config = (Configuration)items[info.OldListIndex];
+                        var config = (DeviceConfiguration)items[info.OldListIndex];
                         config.Index = info.DeviceIndex;
 
                         selectedIndexes[x] = info.NewListIndex;
@@ -704,7 +704,7 @@ namespace TH_DeviceManager
         {
             foreach (var device in Devices_DG.SelectedItems)
             {
-                var config = (Configuration)device;
+                var config = (DeviceConfiguration)device;
 
                 if (EditSelected != null) EditSelected(config);
             }
@@ -714,7 +714,7 @@ namespace TH_DeviceManager
         {
             foreach (var device in Devices_DG.SelectedItems)
             {
-                var config = (Configuration)device;
+                var config = (DeviceConfiguration)device;
 
                 if (EditTableSelected != null) EditTableSelected(config);
             }
@@ -729,7 +729,7 @@ namespace TH_DeviceManager
         {
             if (Devices_DG.SelectedItem != null)
             {
-                var config = (Configuration)Devices_DG.SelectedItem;
+                var config = (DeviceConfiguration)Devices_DG.SelectedItem;
 
                 if (config != null)
                 {
@@ -742,11 +742,11 @@ namespace TH_DeviceManager
         {
             if (Devices_DG.SelectedItems != null && Devices_DG.SelectedItems.Count > 0)
             {
-                var configs = new List<Configuration>();
+                var configs = new List<DeviceConfiguration>();
 
                 foreach (var item in Devices_DG.SelectedItems)
                 {
-                    var config = item as Configuration;
+                    var config = item as DeviceConfiguration;
                     if (config != null) configs.Add(config);
                 }
 
@@ -758,7 +758,7 @@ namespace TH_DeviceManager
         {
             if (Devices_DG.SelectedItem != null)
             {
-                var config = (Configuration)Devices_DG.SelectedItem;
+                var config = (DeviceConfiguration)Devices_DG.SelectedItem;
 
                 if (config != null)
                 {
@@ -774,9 +774,9 @@ namespace TH_DeviceManager
         {
             foreach (var device in Devices_DG.SelectedItems)
             {
-                var config = (Configuration)device;
+                var config = (DeviceConfiguration)device;
 
-                Configuration.Save(config);
+                DeviceConfiguration.Save(config);
             }
 
             try
@@ -817,7 +817,7 @@ namespace TH_DeviceManager
         {
             if (bt.DataObject != null)
             {
-                var config = (Configuration)bt.DataObject;
+                var config = (DeviceConfiguration)bt.DataObject;
 
                 if (EditSelected != null) EditSelected(config);
             }

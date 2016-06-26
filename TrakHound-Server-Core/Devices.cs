@@ -30,7 +30,7 @@ namespace TrakHound_Server_Core
             DevicesMonitor_Initialize();
         }
 
-        void AddDevice(Configuration config)
+        void AddDevice(DeviceConfiguration config)
         {
             config.Index = Devices.Count;
 
@@ -39,7 +39,7 @@ namespace TrakHound_Server_Core
 
         private void StartDeviceServer(object obj)
         {
-            var config = (Configuration)obj;
+            var config = (DeviceConfiguration)obj;
 
             var server = new Device_Server(config);
             Devices.Add(server);
@@ -93,7 +93,7 @@ namespace TrakHound_Server_Core
 
         void DevicesMonitor_Worker()
         {
-            List<Configuration> configs = null;
+            List<DeviceConfiguration> configs = null;
 
             if (CurrentUser != null)
             {
@@ -102,14 +102,14 @@ namespace TrakHound_Server_Core
             }
             else
             {
-                configs = Configuration.ReadAll(FileLocations.Devices).ToList();
+                configs = DeviceConfiguration.ReadAll(FileLocations.Devices).ToList();
             }
 
             if (configs != null)
             {
                 if (configs.Count > 0)
                 {
-                    foreach (Configuration config in configs)
+                    foreach (DeviceConfiguration config in configs)
                     {
                         if (config != null)
                         {
@@ -169,10 +169,10 @@ namespace TrakHound_Server_Core
             }
         }
 
-        private Configuration GetSettingsFromNode(XmlNode Node)
+        private DeviceConfiguration GetSettingsFromNode(XmlNode Node)
         {
 
-            Configuration Result = null;
+            DeviceConfiguration Result = null;
 
             string configPath = null;
 
@@ -188,7 +188,7 @@ namespace TrakHound_Server_Core
             {
                 configPath = GetConfigurationPath(configPath);
 
-                Result = Configuration.Read(configPath);
+                Result = DeviceConfiguration.Read(configPath);
             }
 
             return Result;
@@ -220,8 +220,8 @@ namespace TrakHound_Server_Core
 
                 if (File.Exists(configPath))
                 {
-                    Configuration config = new Configuration();
-                    config = Configuration.Read(configPath);
+                    var config = new DeviceConfiguration();
+                    config = DeviceConfiguration.Read(configPath);
 
                     if (config != null)
                     {

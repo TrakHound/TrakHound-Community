@@ -19,7 +19,7 @@ namespace TH_OEE.Database
         public const string TABLENAME = TableNames.OEE_Segments;
         public static string[] primaryKey = { "SHIFT_ID" };
 
-        public static void CreateTable(Configuration config)
+        public static void CreateTable(DeviceConfiguration config)
         {
             var columns = new List<ColumnDefinition>();
 
@@ -45,7 +45,7 @@ namespace TH_OEE.Database
             Table.Create(config.Databases_Server, Global.GetTableName(TABLENAME, config.DatabaseId), ColArray, primaryKey);
         }
 
-        public static OEEData GetPrevious(Configuration config, ShiftId shiftId)
+        public static OEEData GetPrevious(DeviceConfiguration config, ShiftId shiftId)
         {
             var dt = Table.Get(config.Databases_Server, Global.GetTableName(TABLENAME, config.DatabaseId), "WHERE shift_id='" + shiftId + "'");
             if (dt != null && dt.Rows.Count > 0)
@@ -56,7 +56,7 @@ namespace TH_OEE.Database
             return null;
         }
 
-        public static void UpdateRows(Configuration config, List<OEEData> datas)
+        public static void UpdateRows(DeviceConfiguration config, List<OEEData> datas)
         {
             var rowValues = new List<List<object>>();
 

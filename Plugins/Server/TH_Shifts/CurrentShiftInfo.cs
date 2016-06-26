@@ -35,7 +35,7 @@ namespace TH_Shifts
         public DateTime segmentEnd { get; set; }
         public DateTime segmentEndUTC { get; set; }
 
-        public static CurrentShiftInfo Get(Configuration config, DateTime ts)
+        public static CurrentShiftInfo Get(DeviceConfiguration config, DateTime ts)
         {
             CurrentShiftInfo Result = null;
 

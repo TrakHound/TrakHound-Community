@@ -8,7 +8,7 @@ using TH_Configuration;
 namespace TH_DeviceManager
 {
 
-    public delegate void DeviceSelected_Handler(Configuration config);
+    public delegate void DeviceSelected_Handler(DeviceConfiguration config);
     public delegate void PageSelected_Handler();
 
     public enum ManagementType

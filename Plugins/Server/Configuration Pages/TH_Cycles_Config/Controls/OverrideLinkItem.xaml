@@ -24,7 +24,6 @@
 
                     <TextBlock Text="Link" FontSize="8pt" Foreground="#888" Margin="10,0" VerticalAlignment="Center"/>
 
-                    <!--<ComboBox x:Name="collectedlink_COMBO" MinWidth="200" Padding="20,0" DataContext="{Binding ParentPage}" ItemsSource="{Binding CollectedItems}" IsSynchronizedWithCurrentItem="False" TextBoxBase.TextChanged="ComboBox_TextChanged" IsEditable="True" SelectionChanged="Link_SelectionChanged" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Cursor="Hand"/>-->
                     <ComboBox 
                               MinWidth="200" Height="30" Padding="20,0" 
                               DataContext="{Binding ParentPage}" ItemsSource="{Binding CollectedItems}"
@@ -33,8 +32,10 @@
                               SelectionChanged="Link_SelectionChanged"
                               VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
                               FontSize="14" Cursor="Hand"
+                              IsEditable="True"
+                              SelectedValue="{Binding SelectedId, RelativeSource={RelativeSource AncestorType=local:OverrideLinkItem}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         >
-                        <ComboBox.Style>
+                        <!--<ComboBox.Style>
                             <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
                                 <Setter Property="SelectedValue" Value="{Binding SelectedId, RelativeSource={RelativeSource AncestorType=local:OverrideLinkItem}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                 <Style.Triggers>
@@ -44,7 +45,7 @@
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </ComboBox.Style>
+                        </ComboBox.Style>-->
                     </ComboBox>
 
                 </StackPanel>

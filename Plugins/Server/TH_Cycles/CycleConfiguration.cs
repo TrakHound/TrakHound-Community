@@ -100,7 +100,7 @@ namespace TH_Cycles
             return result;
         }
 
-        public static CycleConfiguration Get(Configuration configuration)
+        public static CycleConfiguration Get(DeviceConfiguration configuration)
         {
             CycleConfiguration result = null;
 

@@ -32,7 +32,7 @@ namespace TH_DeviceTable
             }
         }
 
-        public void AddDevice(Configuration config)
+        public void AddDevice(DeviceConfiguration config)
         {
             var info = new DeviceInfo();
             info.Configuration = config;

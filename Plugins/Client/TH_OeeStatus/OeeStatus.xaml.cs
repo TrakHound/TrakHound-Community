@@ -44,7 +44,7 @@ namespace TH_OeeStatus
             }
         }
 
-        private void AddRow(Configuration config)
+        private void AddRow(DeviceConfiguration config)
         {
             var row = new Row();
             row.Configuration = config;

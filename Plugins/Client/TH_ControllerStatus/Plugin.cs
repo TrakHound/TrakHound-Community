@@ -84,14 +84,14 @@ namespace TH_ControllerStatus
 
         #endregion
 
-        private ObservableCollection<Configuration> _devices;
-        public ObservableCollection<Configuration> Devices
+        private ObservableCollection<DeviceConfiguration> _devices;
+        public ObservableCollection<DeviceConfiguration> Devices
         {
             get
             {
                 if (_devices == null)
                 {
-                    _devices = new ObservableCollection<Configuration>();
+                    _devices = new ObservableCollection<DeviceConfiguration>();
                     _devices.CollectionChanged += Devices_CollectionChanged;
                 }
                 return _devices;
@@ -113,7 +113,7 @@ namespace TH_ControllerStatus
 
                 if (e.NewItems != null)
                 {
-                    foreach (Configuration newConfig in e.NewItems)
+                    foreach (DeviceConfiguration newConfig in e.NewItems)
                     {
                         if (newConfig != null) AddRow(newConfig);
                     }
@@ -121,7 +121,7 @@ namespace TH_ControllerStatus
 
                 if (e.OldItems != null)
                 {
-                    foreach (Configuration oldConfig in e.OldItems)
+                    foreach (DeviceConfiguration oldConfig in e.OldItems)
                     {
                         Devices.Remove(oldConfig);
 
