@@ -146,28 +146,28 @@ namespace TH_Mobile
 
                 // Availability
                 info = infos.Find(x => x.Type == "AVAILABILITY");
-                updateData.Controller.Availability = info.Value1;
+                if (info != null) updateData.Controller.Availability = info.Value1;
 
                 // Controller Mode
                 info = infos.Find(x => x.Type == "CONTROLLER_MODE");
-                updateData.Controller.ControllerMode = info.Value1;
+                if (info != null) updateData.Controller.ControllerMode = info.Value1;
 
                 // Emergency Stop
                 info = infos.Find(x => x.Type == "EMERGENCY_STOP");
-                updateData.Controller.EmergencyStop = info.Value1;
+                if (info != null) updateData.Controller.EmergencyStop = info.Value1;
 
                 // Execution Mode
                 info = infos.Find(x => x.Type == "EXECUTION");
-                updateData.Controller.ExecutionMode = info.Value1;
+                if (info != null) updateData.Controller.ExecutionMode = info.Value1;
 
                 // System status
                 info = infos.Find(x => x.Type == "SYSTEM");
-                updateData.Controller.SystemMessage = info.Value1;
-                updateData.Controller.SystemStatus = info.Value2;
+                if (info != null) updateData.Controller.SystemMessage = info.Value1;
+                if (info != null) updateData.Controller.SystemStatus = info.Value2;
 
                 // Program Name
                 info = infos.Find(x => x.Type == "PROGRAM");
-                updateData.Controller.ProgramName = info.Value1;
+                if (info != null) updateData.Controller.ProgramName = info.Value1;
             }
         }
 

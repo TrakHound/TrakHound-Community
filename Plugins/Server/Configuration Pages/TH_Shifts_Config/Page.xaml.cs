@@ -91,11 +91,12 @@ namespace TH_Shifts_Config
 
         public static List<Shift> GetShifts(DataTable dt)
         {
-            List<Shift> result = new List<Shift>();
+            var result = new List<Shift>();
 
-            string address = "/ShiftData/Shifts/";
-
-            string filter = "address LIKE '" + address + "*'";
+            string address = "/Shifts/";
+            string oldAddress = "/ShiftData/Shifts/";
+            string filter = "address LIKE '" + address + "*' OR address LIKE '" + oldAddress + "*'";
+            //string filter = "address LIKE '" + address + "*'";
             DataView dv = dt.AsDataView();
             dv.RowFilter = filter;
             DataTable temp_dt = dv.ToTable();
@@ -227,49 +228,32 @@ namespace TH_Shifts_Config
 
         public void SaveConfiguration(DataTable dt)
         {
-                string prefix = "/ShiftData/Shifts/";
+            // Clear all shift rows first (so that Ids can be sequentially assigned)
+            DataTable_Functions.TrakHound.DeleteRows("/Shifts/*", "address", dt);
+            DataTable_Functions.TrakHound.DeleteRows("/ShiftData/*", "address", dt);
 
-                // Clear all shift rows first (so that Ids can be sequentially assigned) --------------
-                string filter = "address LIKE '" + prefix + "*'";
-                DataView dv = dt.AsDataView();
-                dv.RowFilter = filter;
-                DataTable temp_dt = dv.ToTable();
-                foreach (DataRow row in temp_dt.Rows)
+            if (shifts != null)
+            {
+                foreach (Shift s in shifts)
                 {
-                    DataRow dbRow = dt.Rows.Find(row["address"]);
-                    if (dbRow != null) dt.Rows.Remove(dbRow);
+                    SaveShift(s, dt);
                 }
-                // ------------------------------------------------------------------------------------
+            }
 
-                if (shifts != null)
-                {
-                    foreach (Shift s in shifts)
-                    {
-                        SaveShift(s, dt);
-                    }
-                }
-
-                configurationTable = dt;
+            configurationTable = dt;
         }
 
         static void SaveShift(Shift s, DataTable dt)
         {
-            int id = 0;
-            string adr = "/ShiftData/Shifts/Shift||";
-            string test = adr + id.ToString("00");
+            //int id = 0;
+            //string adr = "/Shifts/Shift";
+            //string test = adr + id.ToString("00");
 
-            //// Reassign Id (to keep everything in sequence)
-            //if (dt != null)
-            //{
-            //    while (DataTable_Functions.GetTableValue(dt, "address", test, ") != null)
-            //    {
-            //        id += 1;
-            //        test = adr + id.ToString("00");
-            //    }
-            //}
+            int id = DataTable_Functions.TrakHound.GetUnusedAddressId("/Shifts/Shift", dt);
+            string adr = "/Shifts/Shift||" + id.ToString("00");
 
-            DataTable_Functions.TrakHound.GetUnusedAddressId(test, dt);
-            adr = test;
+            //DataTable_Functions.TrakHound.GetUnusedAddressId(adr, dt);
+            //adr = test;
 
             s.id = id;
 
@@ -277,120 +261,164 @@ namespace TH_Shifts_Config
             string attr = "";
             attr += "id||" + s.id.ToString("00") + ";";
             attr += "name||" + s.name + ";";
-            //attr += "begintime||" + s.begintime.To24HourString() + ";";
-            //attr += "endtime||" + s.endtime.To24HourString() + ";";
             attr += "begintime||" + s.begintime.ToFullString() + ";";
             attr += "endtime||" + s.endtime.ToFullString() + ";";
 
-            //Table_Functions.UpdateTableValue(null, attr, adr, dt);
             DataTable_Functions.UpdateTableValue(dt, "address", adr, "attributes", attr);
 
-            // Save Segments
-            List<Segment> segments = CreateSegments(s);
-
-            foreach (Segment segment in segments)
+            for (var i = 0; i < s.Breaks.Count; i++)
             {
-                string segadr = adr + "/Segments/" + String_Functions.UppercaseFirst(segment.type) + "||" + segment.id.ToString("00");
+                var segment = s.Breaks[i];
+
+                string segadr = adr + "/Segments/Break||" + i.ToString("00");
 
                 string segattr = "";
-                segattr += "id||" + segment.id.ToString("00") + ";";
-                //segattr += "begintime||" + segment.begintime.To24HourString() + ";";
-                //segattr += "endtime||" + segment.endtime.To24HourString() + ";";
+                segattr += "id||" + i.ToString("00") + ";";
                 segattr += "begintime||" + segment.begintime.ToFullString() + ";";
                 segattr += "endtime||" + segment.endtime.ToFullString() + ";";
 
-                //Table_Functions.UpdateTableValue(null, segattr, segadr, dt);
                 DataTable_Functions.UpdateTableValue(dt, "address", segadr, "attributes", segattr);
             }
         }
 
-        static List<Segment> CreateSegments(Shift shift)
-        {
-            List<Segment> result = new List<Segment>();
+        //static void SaveShift(Shift s, DataTable dt)
+        //{
+        //    int id = 0;
+        //    string adr = "/Shifts/Shift||";
+        //    string test = adr + id.ToString("00");
 
-            var interval = new ShiftTime();
-            interval.minute = 5;
+        //    //// Reassign Id (to keep everything in sequence)
+        //    //if (dt != null)
+        //    //{
+        //    //    while (DataTable_Functions.GetTableValue(dt, "address", test, ") != null)
+        //    //    {
+        //    //        id += 1;
+        //    //        test = adr + id.ToString("00");
+        //    //    }
+        //    //}
 
-            ShiftTime begintime = shift.begintime.Copy();
-            ShiftTime endtime = shift.endtime.Copy();
-            //if (endtime < begintime) endtime.dayOffset = begintime.dayOffset + 1;
-            if (endtime < begintime) endtime.hour += 24;
+        //    DataTable_Functions.TrakHound.GetUnusedAddressId(test, dt);
+        //    adr = test;
 
-            ShiftTime time = begintime.Copy();
+        //    s.id = id;
 
-            int nextBreakIndex = 0;
+        //    // Save Attributes
+        //    string attr = "";
+        //    attr += "id||" + s.id.ToString("00") + ";";
+        //    attr += "name||" + s.name + ";";
+        //    //attr += "begintime||" + s.begintime.To24HourString() + ";";
+        //    //attr += "endtime||" + s.endtime.To24HourString() + ";";
+        //    attr += "begintime||" + s.begintime.ToFullString() + ";";
+        //    attr += "endtime||" + s.endtime.ToFullString() + ";";
 
-            List<Segment> breaks = shift.Breaks;
-            if (breaks != null)
-            {
-                // Make sure the Segments(breaks) have values set
-                List<Segment> sortedBreaks = new List<Segment>();
-                foreach (Segment b in breaks) if (b.begintime != null || b.endtime != null) sortedBreaks.Add(b);
+        //    //Table_Functions.UpdateTableValue(null, attr, adr, dt);
+        //    DataTable_Functions.UpdateTableValue(dt, "address", adr, "attributes", attr);
 
-                sortedBreaks.Sort((a, b) => a.begintime.CompareTo(b.begintime));
+        //    // Save Segments
+        //    List<Segment> segments = CreateSegments(s);
 
-                breaks = sortedBreaks;
-            }
+        //    foreach (Segment segment in segments)
+        //    {
+        //        string segadr = adr + "/Segments/" + String_Functions.UppercaseFirst(segment.type) + "||" + segment.id.ToString("00");
 
-            int id = 0;
+        //        string segattr = "";
+        //        segattr += "id||" + segment.id.ToString("00") + ";";
+        //        //segattr += "begintime||" + segment.begintime.To24HourString() + ";";
+        //        //segattr += "endtime||" + segment.endtime.To24HourString() + ";";
+        //        segattr += "begintime||" + segment.begintime.ToFullString() + ";";
+        //        segattr += "endtime||" + segment.endtime.ToFullString() + ";";
 
-            while (time < endtime)
-            {
-                ShiftTime prev = time.Copy();
+        //        //Table_Functions.UpdateTableValue(null, segattr, segadr, dt);
+        //        DataTable_Functions.UpdateTableValue(dt, "address", segadr, "attributes", segattr);
+        //    }
+        //}
 
-                bool breakfound = false;
-                string type = "Work";
+        //static List<Segment> CreateSegments(Shift shift)
+        //{
+        //    List<Segment> result = new List<Segment>();
 
-                if (breaks != null)
-                {
-                    if (nextBreakIndex < breaks.Count)
-                    {
-                        // If break is same hour but less than 'time' (ex. time=11:00 and break.begintime=11:30)
-                        if (time.hour == breaks[nextBreakIndex].begintime.hour && time < breaks[nextBreakIndex].begintime)
-                        {
-                            time = breaks[nextBreakIndex].begintime;
-                            breakfound = true;
-                        }
-                        else if (time >= breaks[nextBreakIndex].begintime)
-                        {
-                            time = breaks[nextBreakIndex].endtime;
-                            nextBreakIndex += 1;
-                            breakfound = true;
-                            type = "Break";
-                        }
-                    }
-                }
+        //    var interval = new ShiftTime();
+        //    interval.minute = 5;
 
-                if (!breakfound)
-                {
-                    time = time.AddShiftTime(interval);
+        //    ShiftTime begintime = shift.begintime.Copy();
+        //    ShiftTime endtime = shift.endtime.Copy();
+        //    //if (endtime < begintime) endtime.dayOffset = begintime.dayOffset + 1;
+        //    if (endtime < begintime) endtime.hour += 24;
 
-                    //time.hour = 0;
-                    //time.minute += 5;
-                    //time.second = 0;
+        //    ShiftTime time = begintime.Copy();
 
-                    //time.hour += 1;
-                    //time.minute = 0;
-                    //time.second = 0;
+        //    int nextBreakIndex = 0;
 
-                    if (time > endtime) time = endtime.Copy();
-                }
+        //    List<Segment> breaks = shift.Breaks;
+        //    if (breaks != null)
+        //    {
+        //        // Make sure the Segments(breaks) have values set
+        //        List<Segment> sortedBreaks = new List<Segment>();
+        //        foreach (Segment b in breaks) if (b.begintime != null || b.endtime != null) sortedBreaks.Add(b);
 
-                Segment segment = new Segment();
-                segment.begintime = prev.Copy();
-                segment.endtime = time.Copy();
-                segment.type = type;
-                segment.id = id;
-                result.Add(segment);
+        //        sortedBreaks.Sort((a, b) => a.begintime.CompareTo(b.begintime));
 
-                id += 1;
-            }
+        //        breaks = sortedBreaks;
+        //    }
 
-            return result;
-        }
+        //    int id = 0;
+
+        //    while (time < endtime)
+        //    {
+        //        ShiftTime prev = time.Copy();
+
+        //        bool breakfound = false;
+        //        string type = "Work";
+
+        //        if (breaks != null)
+        //        {
+        //            if (nextBreakIndex < breaks.Count)
+        //            {
+        //                // If break is same hour but less than 'time' (ex. time=11:00 and break.begintime=11:30)
+        //                if (time.hour == breaks[nextBreakIndex].begintime.hour && time < breaks[nextBreakIndex].begintime)
+        //                {
+        //                    time = breaks[nextBreakIndex].begintime;
+        //                    breakfound = true;
+        //                }
+        //                else if (time >= breaks[nextBreakIndex].begintime)
+        //                {
+        //                    time = breaks[nextBreakIndex].endtime;
+        //                    nextBreakIndex += 1;
+        //                    breakfound = true;
+        //                    type = "Break";
+        //                }
+        //            }
+        //        }
+
+        //        if (!breakfound)
+        //        {
+        //            time = time.AddShiftTime(interval);
+
+        //            //time.hour = 0;
+        //            //time.minute += 5;
+        //            //time.second = 0;
+
+        //            //time.hour += 1;
+        //            //time.minute = 0;
+        //            //time.second = 0;
+
+        //            if (time > endtime) time = endtime.Copy();
+        //        }
+
+        //        Segment segment = new Segment();
+        //        segment.begintime = prev.Copy();
+        //        segment.endtime = time.Copy();
+        //        segment.type = type;
+        //        segment.id = id;
+        //        result.Add(segment);
+
+        //        id += 1;
+        //    }
+
+        //    return result;
+        //}
 
         #endregion
-
 
 
         #region "ShiftListItems"

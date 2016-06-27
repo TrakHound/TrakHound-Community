@@ -42,7 +42,7 @@ namespace TH_Cycles
         {
             CycleConfiguration result = new CycleConfiguration();
 
-            XmlNodeList nodes = configXML.SelectNodes("/Settings/Cycles");
+            XmlNodeList nodes = configXML.SelectNodes("//Cycles");
 
             if (nodes != null)
             {

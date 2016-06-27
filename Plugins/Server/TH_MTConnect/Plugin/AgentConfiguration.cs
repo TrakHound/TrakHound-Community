@@ -79,7 +79,7 @@ namespace TH_MTConnect.Plugin
         {
             var result = new AgentConfiguration();
 
-            XmlNodeList nodes = configXML.SelectNodes("/Settings/Agent");
+            XmlNodeList nodes = configXML.SelectNodes("//Agent");
 
             if (nodes != null)
             {

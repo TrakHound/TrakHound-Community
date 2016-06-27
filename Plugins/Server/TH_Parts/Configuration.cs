@@ -39,7 +39,7 @@ namespace TH_Parts
         {
             var result = new PartsConfiguration();
 
-            XmlNodeList nodes = xml.SelectNodes("/Settings/Parts");
+            XmlNodeList nodes = xml.SelectNodes("//Parts");
 
             if (nodes != null)
             {

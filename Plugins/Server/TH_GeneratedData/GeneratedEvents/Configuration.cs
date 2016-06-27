@@ -28,7 +28,7 @@ namespace TH_GeneratedData.GeneratedEvents
         {
             var result = new GeneratedEventsConfiguration();
 
-            XmlNodeList nodes = configXML.SelectNodes("/Settings/GeneratedData/GeneratedEvents");
+            XmlNodeList nodes = configXML.SelectNodes("//GeneratedData/GeneratedEvents");
 
             if (nodes != null)
             {

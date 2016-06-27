@@ -34,7 +34,7 @@ namespace TH_InstanceData
         {
             var result = new InstanceConfiguration();
 
-            XmlNodeList nodes = xml.SelectNodes("/Settings/InstanceTable");
+            XmlNodeList nodes = xml.SelectNodes("//InstanceTable");
 
             if (nodes != null)
             {

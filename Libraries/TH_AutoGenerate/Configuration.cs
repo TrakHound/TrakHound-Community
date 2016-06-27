@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
 
 using System.Data;
 
@@ -37,6 +37,7 @@ namespace TH_AutoGenerate
             Agent.Add(dt, probeData.Address, probeData.Port, probeData.Device.Name);
             Databases.Add(dt);
             InstanceData.Add(dt, items);
+            SnapshotData.Add(dt);
             GeneratedEvents.DeviceStatus.Add(dt, items);
             GeneratedEvents.ProductionStatus.Add(dt, items);
             GeneratedEvents.ProgramExecution.Add(dt, items);

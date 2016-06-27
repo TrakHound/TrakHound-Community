@@ -105,6 +105,13 @@ namespace TH_Shifts_Config.Controls
             {
                 ShiftTime selectedTime = (ShiftTime)combo.SelectedItem;
                 if (ParentSegment != null) ParentSegment.begintime = selectedTime.Copy();
+
+                if (EndTime == null || selectedTime > EndTime)
+                {
+                    int i = combo.SelectedIndex;
+                    if (i < combo.Items.Count - 1) EndTime = (ShiftTime)combo.Items[i + 1];
+                    else if (i < combo.Items.Count) EndTime = (ShiftTime)combo.Items[i];
+                }
             }
 
             if (begintimechanged) if (SettingChanged != null) SettingChanged("Break Begin Time");

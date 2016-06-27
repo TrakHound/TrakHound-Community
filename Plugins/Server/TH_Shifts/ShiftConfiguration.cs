@@ -29,65 +29,65 @@ namespace TH_Shifts
         {
             var result = new ShiftConfiguration();
 
-            XmlNodeList nodes = configXML.SelectNodes("/Settings/ShiftData");
-
+            XmlNodeList nodes = configXML.SelectNodes("//Shifts");
+            if (nodes != null && nodes.Count == 0) nodes = configXML.SelectNodes("//ShiftData");
             if (nodes != null)
             {
                 if (nodes.Count > 0)
                 {
-
                     XmlNode node = nodes[0];
 
-                    foreach (XmlNode Child in node.ChildNodes)
+                    foreach (XmlNode child in node.ChildNodes)
                     {
-                        if (Child.NodeType == XmlNodeType.Element)
+                        if (child.NodeType == XmlNodeType.Element && child.Name.ToLower() == "shift")
                         {
+                            result.shifts.Add(ProcessShift(child));
 
-                            Type Setting = typeof(ShiftConfiguration);
-                            PropertyInfo info = Setting.GetProperty(Child.Name);
+                            //Type Setting = typeof(ShiftConfiguration);
+                            //PropertyInfo info = Setting.GetProperty(Child.Name);
 
-                            if (info != null)
-                            {
-                                Type t = info.PropertyType;
-                                info.SetValue(result, Convert.ChangeType(Child.InnerText, t), null);
-                            }
-                            else
-                            {
-                                switch (Child.Name.ToLower())
-                                {
-                                    case "shifts":
+                            //if (info != null)
+                            //{
+                            //    Type t = info.PropertyType;
+                            //    info.SetValue(result, Convert.ChangeType(Child.InnerText, t), null);
+                            //}
+                            //else
+                            //{
+                            //    switch (Child.Name.ToLower())
+                            //    {
+                            //        case "shifts":
 
-                                        foreach (XmlNode shiftNode in Child.ChildNodes)
-                                        {
-                                            if (shiftNode.Name.ToLower() == "shift")
-                                            {
-                                                if (shiftNode.NodeType == XmlNodeType.Element)
-                                                {
-                                                    result.shifts.Add(ProcessShift(shiftNode));
-                                                }
-                                            }
-                                        }
+                            //            foreach (XmlNode shiftNode in Child.ChildNodes)
+                            //            {
+                            //                if (shiftNode.Name.ToLower() == "shift")
+                            //                {
+                            //                    if (shiftNode.NodeType == XmlNodeType.Element)
+                            //                    {
+                            //                        result.shifts.Add(ProcessShift(shiftNode));
+                            //                    }
+                            //                }
+                            //            }
 
-                                        break;
+                            //            break;
 
-                                    case "generatedevents":
+                            //        case "generatedevents":
 
-                                        foreach (XmlNode eventNode in Child.ChildNodes)
-                                        {
+                            //            foreach (XmlNode eventNode in Child.ChildNodes)
+                            //            {
 
-                                            if (eventNode.Name.ToLower() == "event")
-                                            {
-                                                if (eventNode.NodeType == XmlNodeType.Element)
-                                                {
-                                                    result.generatedEvents.Add(ProcessGeneratedEvent(eventNode));
-                                                }
-                                            }
+                            //                if (eventNode.Name.ToLower() == "event")
+                            //                {
+                            //                    if (eventNode.NodeType == XmlNodeType.Element)
+                            //                    {
+                            //                        result.generatedEvents.Add(ProcessGeneratedEvent(eventNode));
+                            //                    }
+                            //                }
 
-                                        }
+                            //            }
 
-                                        break;
-                                }
-                            }
+                            //            break;
+                            //    }
+                            //}
                         }
                     }
                 }
@@ -110,7 +110,7 @@ namespace TH_Shifts
 
         static Shift ProcessShift(XmlNode node)
         {
-            Shift Result = null;
+            Shift result = null;
 
             if (node.Attributes != null)
             {
@@ -121,24 +121,24 @@ namespace TH_Shifts
                     )
                 {
 
-                    Result = new Shift();
+                    result = new Shift();
 
                     int id;
                     int.TryParse(node.Attributes["id"].Value, out id);
-                    Result.id = id;
+                    result.id = id;
 
-                    Result.name = node.Attributes["name"].Value;
+                    result.name = node.Attributes["name"].Value;
 
                     DateTime beginTime = DateTime.MinValue;
                     if (DateTime.TryParse(node.Attributes["begintime"].Value, out beginTime))
                     {
-                        Result.beginTime = new ShiftTime(beginTime, false);
+                        result.beginTime = new ShiftTime(beginTime, false);
                     }
 
                     DateTime endTime = DateTime.MinValue;
                     if (DateTime.TryParse(node.Attributes["endtime"].Value, out endTime))
                     {
-                        Result.endTime = new ShiftTime(endTime, false);
+                        result.endTime = new ShiftTime(endTime, false);
                     }
 
                     foreach (XmlNode child in node.ChildNodes)
@@ -149,27 +149,29 @@ namespace TH_Shifts
                             {
                                 case "segments":
 
-                                    Result.segments = ProcessSegments(child, Result);
+                                    result.breaks = ProcessSegments(child, result);
 
                                     break;
 
                                 case "days":
 
-                                    Result.days = ProcessDays(child);
+                                    result.days = ProcessDays(child);
 
                                     break;
                             }
                         }
                     }
+
+                    result.segments = CreateSegments(result);
                 }
             }
 
-            return Result;
+            return result;
         }
 
         static List<Segment> ProcessSegments(XmlNode node, Shift shift)
         {
-            List<Segment> Result = new List<Segment>();
+            var result = new List<Segment>();
 
             foreach (XmlNode child in node.ChildNodes)
             {
@@ -177,29 +179,128 @@ namespace TH_Shifts
                 {
                     if (child.Attributes["id"] != null && child.Attributes["begintime"] != null && child.Attributes["endtime"] != null)
                     {
-                        Segment sc = new Segment();
-                        int id;
-                        int.TryParse(child.Attributes["id"].Value, out id);
-                        sc.id = id;
-                        sc.type = child.Name;
-                        sc.shift = shift;
-
-                        ShiftTime begin;
-                        ShiftTime end;
-
-                        if (ShiftTime.TryParse(child.Attributes["begintime"].Value, out begin) &&
-                        ShiftTime.TryParse(child.Attributes["endtime"].Value, out end))
+                        if (child.Name == "Work")
                         {
-                            sc.beginTime = begin;
-                            sc.endTime = end;
+                            var sc = new Segment();
+                            int id;
+                            int.TryParse(child.Attributes["id"].Value, out id);
+                            sc.id = id;
+                            sc.type = child.Name;
+                            sc.shift = shift;
 
-                            Result.Add(sc);
+                            ShiftTime begin;
+                            ShiftTime end;
+
+                            if (ShiftTime.TryParse(child.Attributes["begintime"].Value, out begin) &&
+                            ShiftTime.TryParse(child.Attributes["endtime"].Value, out end))
+                            {
+                                sc.beginTime = begin;
+                                sc.endTime = end;
+
+                                result.Add(sc);
+                            }
                         }
                     }
                 }
             }
 
-            return Result;
+            //// Save Segments
+            //List<Segment> segments = CreateSegments(s);
+
+            //foreach (Segment segment in segments)
+            //{
+            //    string segadr = adr + "/Segments/" + String_Functions.UppercaseFirst(segment.type) + "||" + segment.id.ToString("00");
+
+            //    string segattr = "";
+            //    segattr += "id||" + segment.id.ToString("00") + ";";
+            //    //segattr += "begintime||" + segment.begintime.To24HourString() + ";";
+            //    //segattr += "endtime||" + segment.endtime.To24HourString() + ";";
+            //    segattr += "begintime||" + segment.begintime.ToFullString() + ";";
+            //    segattr += "endtime||" + segment.endtime.ToFullString() + ";";
+
+            //    //Table_Functions.UpdateTableValue(null, segattr, segadr, dt);
+            //    DataTable_Functions.UpdateTableValue(dt, "address", segadr, "attributes", segattr);
+            //}
+
+            return result;
+        }
+
+        static List<Segment> CreateSegments(Shift shift)
+        {
+            var result = new List<Segment>();
+
+            var interval = new ShiftTime();
+            interval.minute = 5;
+
+            ShiftTime begintime = shift.beginTime.Copy();
+            ShiftTime endtime = shift.endTime.Copy();
+            //if (endtime < begintime) endtime.dayOffset = begintime.dayOffset + 1;
+            if (endtime < begintime) endtime.hour += 24;
+
+            ShiftTime time = begintime.Copy();
+
+            int nextBreakIndex = 0;
+
+            List<Segment> breaks = shift.breaks;
+            if (breaks != null)
+            {
+                // Make sure the Segments(breaks) have values set
+                List<Segment> sortedBreaks = new List<Segment>();
+                foreach (Segment b in breaks) if (b.beginTime != null || b.endTime != null) sortedBreaks.Add(b);
+
+                sortedBreaks.Sort((a, b) => a.beginTime.CompareTo(b.beginTime));
+
+                breaks = sortedBreaks;
+            }
+
+            int id = 0;
+
+            while (time < endtime)
+            {
+                ShiftTime prev = time.Copy();
+
+                bool breakfound = false;
+                string type = "Work";
+
+                if (breaks != null)
+                {
+                    if (nextBreakIndex < breaks.Count)
+                    {
+                        // If break is same hour but less than 'time' (ex. time=11:00 and break.begintime=11:30)
+                        if (time.hour == breaks[nextBreakIndex].beginTime.hour && time < breaks[nextBreakIndex].beginTime)
+                        {
+                            time = breaks[nextBreakIndex].beginTime;
+                            breakfound = true;
+                        }
+                        else if (time >= breaks[nextBreakIndex].beginTime)
+                        {
+                            time = breaks[nextBreakIndex].endTime;
+                            nextBreakIndex += 1;
+                            breakfound = true;
+                            type = "Break";
+                        }
+                    }
+                }
+
+                if (!breakfound)
+                {
+                    time = time.AddShiftTime(interval);
+
+                    if (time > endtime) time = endtime.Copy();
+                }
+
+                var segment = new Segment();
+                segment.beginTime = prev.Copy();
+                segment.endTime = time.Copy();
+                segment.type = type;
+                segment.id = id;
+                segment.shift = shift;
+                result.Add(segment);
+
+                id += 1;
+            }
+
+            return result;
         }
 
         static List<DayOfWeek> ProcessDays(XmlNode node)
@@ -268,6 +369,7 @@ namespace TH_Shifts
         public ShiftTime endTime { get; set; }
 
         public List<Segment> segments;
+        public List<Segment> breaks;
 
         public List<DayOfWeek> days;
     }

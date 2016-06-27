@@ -25,10 +25,10 @@ namespace TH_GeneratedData.SnapshotData
         {
             var result = new SnapshotDataConfiguration();
 
-            XmlNodeList nodes = configXML.SelectNodes("/Settings/GeneratedData/SnapshotData");
+            XmlNodeList nodes = configXML.SelectNodes("//GeneratedData/SnapshotData");
 
             // Test old version of 'SnapShot' instead of 'Snapshot'
-            if (nodes != null && nodes.Count == 0) nodes = configXML.SelectNodes("/Settings/GeneratedData/SnapShotData");
+            if (nodes != null && nodes.Count == 0) nodes = configXML.SelectNodes("//GeneratedData/SnapShotData");
 
             if (nodes != null)
             {
