@@ -222,7 +222,7 @@ namespace TH_DeviceManager.AddDevice.Pages
         {
             string url = "http://" + address + ":" + port;
 
-            var probeReturn = Requests.Get(url, 1000);
+            var probeReturn = Requests.Get(url, 2000, 1);
             if (probeReturn != null)
             {
                 foreach (var device in probeReturn.Devices)

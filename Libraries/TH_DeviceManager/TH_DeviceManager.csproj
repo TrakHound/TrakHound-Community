@@ -57,6 +57,9 @@
       <DependentUpon>LoadFromFile.xaml</DependentUpon>
     </Compile>
     <None Include="AutoGenerate.cs" />
+    <Compile Include="AddDevice\Pages\Manual.xaml.cs">
+      <DependentUpon>Manual.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DeviceManager.cs" />
     <Compile Include="Global.cs" />
     <None Include="ShareDevice\Page.xaml.cs">
@@ -78,14 +81,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AddDevice\Pages\Manual.xaml">
+    <None Include="AddDevice\Pages\Manualold.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
+    </None>
     <None Include="EditTable.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
+    <Page Include="AddDevice\Pages\Manual.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="EditPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -109,9 +116,9 @@
     <Compile Include="AddDevice\Pages\AutoDetect.xaml.cs">
       <DependentUpon>AutoDetect.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AddDevice\Pages\Manual.xaml.cs">
-      <DependentUpon>Manual.xaml</DependentUpon>
-    </Compile>
+    <None Include="AddDevice\Pages\Manualold.xaml.cs">
+      <DependentUpon>Manualold.xaml</DependentUpon>
+    </None>
     <Compile Include="Controls\DataGrid Controls.cs" />
     <None Include="DeviceListInfo.cs" />
     <None Include="Device Manager Table\Load Configuration.cs" />

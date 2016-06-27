@@ -100,8 +100,6 @@ namespace TH_Global.Functions
                     {
                         expectedIndexes = list.Length;
 
-                        Logger.Log("Pinging Addresses :: " + list[0].ToString() + " to " + list[list.Length - 1].ToString(), Logger.LogLineType.Notification);
-
                     for (var x = 0; x <= list.Length - 1; x++)
                         {
                             int index = x;
@@ -155,8 +153,6 @@ namespace TH_Global.Functions
                 var ping = new Ping();
                 ping.PingCompleted += Ping_PingCompleted;
                 ping.SendAsync(ipAddress, 2000, index);
-
-                Logger.Log("Ping Sent : " + ipAddress.ToString());
             }
 
             private void Ping_PingCompleted(object sender, PingCompletedEventArgs e)

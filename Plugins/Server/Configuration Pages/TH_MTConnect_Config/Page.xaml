@@ -71,7 +71,6 @@
                         <th_wpf:TextBox.HelpText>
                             Enter the Port of the MTConnect Agent. If the Agent is a URL (ex. www.agent.mtconnect.org) the Port will be 80.
                         If the Port value is left blank the Port will default to 80. 
-                        If the Port is not known, click the 'Test Connection' button and the standard MTConnect ports will be tested and found.
                         </th_wpf:TextBox.HelpText>
                     </th_wpf:TextBox>
 
@@ -79,7 +78,6 @@
                     <th_wpf:TextBox Text="{Binding DeviceName, Mode=TwoWay}" Title="Device Name" Example="VMC-3Axis" TextChanged="TXT_TextChanged">
                         <th_wpf:TextBox.HelpText>
                             Enter the Device Name from the MTConnect Agent to collect data from. This can be found in the Agent's Probe XML file.
-                        If the Device Name is not known, click the 'Test Connection' button and select it from the list.
                         </th_wpf:TextBox.HelpText>
                     </th_wpf:TextBox>
 

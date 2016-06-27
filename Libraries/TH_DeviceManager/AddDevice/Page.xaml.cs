@@ -105,7 +105,7 @@ namespace TH_DeviceManager.AddDevice
             {
                 manualPage = new Pages.Manual();
                 manualPage.ParentPage = this;
-                manualPage.LoadCatalog();
+                //manualPage.LoadCatalog();
             }
 
             CurrentPage = manualPage;

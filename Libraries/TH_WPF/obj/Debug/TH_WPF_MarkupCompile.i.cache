@@ -16,5 +16,5 @@ DEBUG;TRACE
 16290377169
 Button.xaml;Charting\PieChart.xaml;CollapseButton.xaml;Histogram\Histogram.xaml;Histogram\Label.xaml;ImageDisplay.xaml;ImageBox.xaml;LevelIndicator\Indicator.xaml;ListButton.xaml;LoadingAnimation\Block.xaml;LoadingAnimation\Wheel.xaml;LoadingAnimation\Wheel2.xaml;MessageBox.xaml;MeterDisplay.xaml;NumberDisplay.xaml;PasswordBox.xaml;ProductionIndicator.xaml;ProgressBar.xaml;Styles\Button.xaml;Styles\Colors.xaml;TextBox.xaml;Themes\Generic.xaml;TimeLine\Segment.xaml;TimeLine\TickMark.xaml;TimeLine\TimeLine.xaml;TimeProgress.xaml;TimeSlider.xaml;
 
-True
+False
 
