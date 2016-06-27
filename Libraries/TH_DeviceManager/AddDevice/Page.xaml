@@ -19,7 +19,7 @@
 
     <Grid Background="{StaticResource Window_Background_Accent_Gradient}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
@@ -27,9 +27,6 @@
         <StackPanel HorizontalAlignment="Center">
             <StackPanel.Resources>
                 <Style TargetType="th_wpf:ListButton">
-                    <Setter Property="ShowImage" Value="False"/>
-                    <Setter Property="Height" Value="100"/>
-                    <Setter Property="Width" Value="100"/>
                     <Setter Property="MinWidth" Value="100"/>
                     <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
                     <Setter Property="Background" Value="Transparent"/>
@@ -42,39 +39,16 @@
                         </Trigger>
                     </Style.Triggers>
                 </Style>
-                <Style TargetType="controls:PageItem">
-                    <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                    <Setter Property="Background" Value="Transparent"/>
-                </Style>
             </StackPanel.Resources>
 
             <!--Auto Detect-->
-            <th_wpf:ListButton>
-                <th_wpf:ListButton.ButtonContent>
-                    <controls:PageItem Text="Auto Detect" Image="/TH_DeviceManager;component/Resources/options_gear_30px.png" Clicked="AutoDetect_Clicked"/>
-                </th_wpf:ListButton.ButtonContent>
-            </th_wpf:ListButton>
+            <th_wpf:ListButton Text="Auto Detect" Image="/TH_DeviceManager;component/Resources/options_gear_30px.png" Selected="AutoDetect_Clicked"/>
 
             <!--Manual-->
-            <th_wpf:ListButton>
-                <th_wpf:ListButton.ButtonContent>
-                    <controls:PageItem Text="Manual" Image="/TH_DeviceManager;component/Resources/Edit_02.png" Clicked="Manual_Clicked"/>
-                </th_wpf:ListButton.ButtonContent>
-            </th_wpf:ListButton>
+            <th_wpf:ListButton Text="Manual" Image="/TH_DeviceManager;component/Resources/Edit_02.png" Selected="Manual_Clicked"/>
 
             <!--Load From File-->
-            <th_wpf:ListButton>
-                <th_wpf:ListButton.ButtonContent>
-                    <controls:PageItem Text="Load From File" Image="/TH_DeviceManager;component/Resources/List_01.png" Clicked="LoadFromFile_Clicked"/>
-                </th_wpf:ListButton.ButtonContent>
-            </th_wpf:ListButton>
-
-            <!--Create New Device-->
-            <!--<th_wpf:ListButton>
-                <th_wpf:ListButton.ButtonContent>
-                    <controls:PageItem Text="Create New Device" Image="/TH_DeviceManager;component/Resources/Information_01.png" Clicked="CreateNew_Clicked"/>
-                </th_wpf:ListButton.ButtonContent>
-            </th_wpf:ListButton>-->
+            <th_wpf:ListButton Text="Load From File" Image="/TH_DeviceManager;component/Resources/List_01.png" Selected="LoadFromFile_Clicked"/>
 
         </StackPanel>
 

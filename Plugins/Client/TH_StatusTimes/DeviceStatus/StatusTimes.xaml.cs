@@ -2,16 +2,16 @@
 using System.Windows.Controls;
 
 using TH_Configuration;
-using TH_StatusTimes.Controls;
+using TH_StatusTimes.DeviceStatus.Controls;
 
-namespace TH_StatusTimes
+namespace TH_StatusTimes.DeviceStatus
 {
     /// <summary>
     /// Interaction logic for StatusTimeline.xaml
     /// </summary>
-    public partial class StatusTimes : UserControl
+    public partial class DeviceStatusTimes : UserControl
     {
-        public StatusTimes()
+        public DeviceStatusTimes()
         {
             InitializeComponent();
             root.DataContext = this;

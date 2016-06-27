@@ -6,7 +6,7 @@ using System.Windows.Controls;
 using TH_Global.Functions;
 using TH_Plugins;
 
-namespace TH_StatusTimes.Controls
+namespace TH_StatusTimes.ProductionStatus.Controls
 {
     /// <summary>
     /// Interaction logic for Row.xaml
@@ -53,15 +53,15 @@ namespace TH_StatusTimes.Controls
 
 
 
-        public bool Production
+
+        public bool Active
         {
-            get { return (bool)GetValue(ProductionProperty); }
-            set { SetValue(ProductionProperty, value); }
+            get { return (bool)GetValue(ActiveProperty); }
+            set { SetValue(ActiveProperty, value); }
         }
 
-        public static readonly DependencyProperty ProductionProperty =
-            DependencyProperty.Register("Production", typeof(bool), typeof(Row), new PropertyMetadata(false));
-
+        public static readonly DependencyProperty ActiveProperty =
+            DependencyProperty.Register("Active", typeof(bool), typeof(Row), new PropertyMetadata(false));
 
         public bool Idle
         {
@@ -104,25 +104,54 @@ namespace TH_StatusTimes.Controls
             DependencyProperty.Register("ProductionSeconds", typeof(double), typeof(Row), new PropertyMetadata(0d));
 
 
-        public double IdleSeconds
+        public double AlarmSeconds
         {
-            get { return (double)GetValue(IdleSecondsProperty); }
-            set { SetValue(IdleSecondsProperty, value); }
+            get { return (double)GetValue(AlarmSecondsProperty); }
+            set { SetValue(AlarmSecondsProperty, value); }
         }
 
-        public static readonly DependencyProperty IdleSecondsProperty =
-            DependencyProperty.Register("IdleSeconds", typeof(double), typeof(Row), new PropertyMetadata(0d));
+        public static readonly DependencyProperty AlarmSecondsProperty =
+            DependencyProperty.Register("AlarmSeconds", typeof(double), typeof(Row), new PropertyMetadata(0d));
 
 
-        public double AlertSeconds
+        public double SetupSeconds
         {
-            get { return (double)GetValue(AlertSecondsProperty); }
-            set { SetValue(AlertSecondsProperty, value); }
+            get { return (double)GetValue(SetupSecondsProperty); }
+            set { SetValue(SetupSecondsProperty, value); }
         }
 
-        public static readonly DependencyProperty AlertSecondsProperty =
-            DependencyProperty.Register("AlertSeconds", typeof(double), typeof(Row), new PropertyMetadata(0d));
+        public static readonly DependencyProperty SetupSecondsProperty =
+            DependencyProperty.Register("SetupSeconds", typeof(double), typeof(Row), new PropertyMetadata(0d));
 
+
+        public double TeardownSeconds
+        {
+            get { return (double)GetValue(TeardownSecondsProperty); }
+            set { SetValue(TeardownSecondsProperty, value); }
+        }
+
+        public static readonly DependencyProperty TeardownSecondsProperty =
+            DependencyProperty.Register("TeardownSeconds", typeof(double), typeof(Row), new PropertyMetadata(0d));
+
+
+        public double MaintenanceSeconds
+        {
+            get { return (double)GetValue(MaintenanceSecondsProperty); }
+            set { SetValue(MaintenanceSecondsProperty, value); }
+        }
+
+        public static readonly DependencyProperty MaintenanceSecondsProperty =
+            DependencyProperty.Register("MaintenanceSeconds", typeof(double), typeof(Row), new PropertyMetadata(0d));
+
+
+        public double ProcessDevelopmentSeconds
+        {
+            get { return (double)GetValue(ProcessDevelopmentSecondsProperty); }
+            set { SetValue(ProcessDevelopmentSecondsProperty, value); }
+        }
+
+        public static readonly DependencyProperty ProcessDevelopmentSecondsProperty =
+            DependencyProperty.Register("ProcessDevelopmentSeconds", typeof(double), typeof(Row), new PropertyMetadata(0d));
 
         #endregion
 
@@ -184,11 +213,16 @@ namespace TH_StatusTimes.Controls
             {
                 if (data.Data02 != null)
                 {
-                    Alert = DataTable_Functions.GetBooleanTableValue(data.Data02, "name", "Alert", "value");
-
-                    Idle = DataTable_Functions.GetBooleanTableValue(data.Data02, "name", "Idle", "value");
-
-                    Production = DataTable_Functions.GetBooleanTableValue(data.Data02, "name", "Production", "value");
+                    var deviceStatus = DataTable_Functions.GetTableValue(data.Data02, "name", "Device Status", "value");
+                    if (deviceStatus != null)
+                    {
+                        switch (deviceStatus.ToLower())
+                        {
+                            case "active": Active = true; Idle = false; Alert = false; break;
+                            case "idle": Active = false; Idle = true; Alert = false; break;
+                            case "alert": Active = false; Idle = false; Alert = true; break;
+                        }
+                    }
                 }
             }
         }
@@ -202,21 +236,30 @@ namespace TH_StatusTimes.Controls
                 {
                     double total = 0;
                     double production = 0;
-                    double idle = 0;
-                    double alert = 0;
+                    double alarm = 0;
+                    double setup = 0;
+                    double teardown = 0;
+                    double maintenance = 0;
+                    double processDevelopment = 0;
 
                     foreach (DataRow row in dt.Rows)
                     {
                         total += DataTable_Functions.GetDoubleFromRow("totaltime", row);
                         production += DataTable_Functions.GetDoubleFromRow("production_status__production", row);
-                        idle += DataTable_Functions.GetDoubleFromRow("production_status__idle", row);
-                        alert += DataTable_Functions.GetDoubleFromRow("production_status__alert", row);
+                        alarm += DataTable_Functions.GetDoubleFromRow("production_status__alarm", row);
+                        setup += DataTable_Functions.GetDoubleFromRow("production_status__setup", row);
+                        teardown += DataTable_Functions.GetDoubleFromRow("production_status__teardown", row);
+                        maintenance += DataTable_Functions.GetDoubleFromRow("production_status__maintenance", row);
+                        processDevelopment += DataTable_Functions.GetDoubleFromRow("production_status__process_development", row);
                     }
 
                     TotalSeconds = total;
                     ProductionSeconds = production;
-                    IdleSeconds = idle;
-                    AlertSeconds = alert;
+                    AlarmSeconds = alarm;
+                    SetupSeconds = setup;
+                    TeardownSeconds = teardown;
+                    MaintenanceSeconds = maintenance;
+                    ProcessDevelopmentSeconds = processDevelopment;
                 }
             }
         }

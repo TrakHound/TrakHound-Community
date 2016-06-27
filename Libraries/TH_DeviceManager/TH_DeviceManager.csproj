@@ -182,6 +182,10 @@
       <Project>{d7ece6e3-647d-4f74-b63e-c509153eb4b7}</Project>
       <Name>MTConnect.NET</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TH_AutoGenerate\TH_AutoGenerate.csproj">
+      <Project>{6c22e8ab-dd87-4b36-a28e-a44b4c6bf779}</Project>
+      <Name>TH_AutoGenerate</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TH_Configuration\TH_Configuration.csproj">
       <Project>{147a0360-5f86-4d33-a874-46f785723ead}</Project>
       <Name>TH_Configuration</Name>

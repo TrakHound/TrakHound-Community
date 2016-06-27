@@ -131,13 +131,21 @@ namespace TH_DeviceManager.AddDevice
 
         #region "Navigation (Side Panel) Buttons"
 
-        private void AutoDetect_Clicked(TH_DeviceManager.Controls.PageItem item) { ShowAutoDetect(); }
+        private void AutoDetect_Clicked(TH_WPF.ListButton bt) { ShowAutoDetect(); }
 
-        private void Manual_Clicked(TH_DeviceManager.Controls.PageItem item) { ShowManual(); }
+        private void Manual_Clicked(TH_WPF.ListButton bt) { ShowManual(); }
 
-        private void LoadFromFile_Clicked(TH_DeviceManager.Controls.PageItem item) { ShowLoadFromFile(); }
+        private void LoadFromFile_Clicked(TH_WPF.ListButton bt) { ShowLoadFromFile(); }
 
-        private void CreateNew_Clicked(TH_DeviceManager.Controls.PageItem item) { ShowCreateNew(); }
+        private void CreateNew_Clicked(TH_WPF.ListButton bt) { ShowCreateNew(); }
+
+        //private void AutoDetect_Clicked(TH_DeviceManager.Controls.PageItem item) { ShowAutoDetect(); }
+
+        //private void Manual_Clicked(TH_DeviceManager.Controls.PageItem item) { ShowManual(); }
+
+        //private void LoadFromFile_Clicked(TH_DeviceManager.Controls.PageItem item) { ShowLoadFromFile(); }
+
+        //private void CreateNew_Clicked(TH_DeviceManager.Controls.PageItem item) { ShowCreateNew(); }
 
         #endregion
 

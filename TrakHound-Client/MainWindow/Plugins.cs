@@ -85,7 +85,8 @@ namespace TrakHound_Client
             "Status Hour Timeline",
             "Controller Status",
             "OEE Status",
-            "Status Times"
+            "Device Status Times",
+            "Production Status Times"
         };
 
         private void LoadPlugins()

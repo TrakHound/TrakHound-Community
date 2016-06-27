@@ -42,8 +42,8 @@
                                 </Style>
                             </StackPanel.Resources>
 
-                            <th_wpf:TimeProgress Text="Production" 
-                                             Value="{Binding HourData.ProductionSeconds}"
+                            <th_wpf:TimeProgress Text="Active" 
+                                             Value="{Binding HourData.ActiveSeconds}"
                                              Maximum="{Binding HourData.TotalSeconds}"
                                              BarBrush="{StaticResource StatusGreen}" 
                                              BarBackgroundBrush="{StaticResource StatusGreen_Hover}"/>
@@ -122,7 +122,7 @@
                             <Style.Triggers>
                                 
                                 <DataTrigger Binding="{Binding HourData.Status}" Value="2">
-                                    <Setter Property="Text" Value="{Binding HourData.ProductionPercentage, StringFormat=P0}"/>
+                                    <Setter Property="Text" Value="{Binding HourData.ActivePercentage, StringFormat=P0}"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding HourData.Status}" Value="1">
                                     <Setter Property="Text" Value="{Binding HourData.IdlePercentage, StringFormat=P0}"/>

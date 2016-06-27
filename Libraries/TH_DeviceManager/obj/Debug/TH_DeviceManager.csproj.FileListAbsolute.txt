@@ -208,3 +208,5 @@ F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\obj\Debug\TH_DeviceManager.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Debug\MTConnect.NET.dll
 F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Debug\MTConnect.NET.pdb
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Debug\TH_AutoGenerate.dll
+F:\feenux\TrakHound\Source Code\GitHub\TrakHound\Libraries\TH_DeviceManager\bin\Debug\TH_AutoGenerate.pdb

@@ -110,17 +110,17 @@ namespace TH_StatusHourTimeline
         }
 
 
-        private double _productionSeconds;
-        public double ProductionSeconds
+        private double _activeSeconds;
+        public double ActiveSeconds
         {
-            get { return _productionSeconds; }
+            get { return _activeSeconds; }
             set
             {
-                var val = _productionSeconds;
-                _productionSeconds = value;
+                var val = _activeSeconds;
+                _activeSeconds = value;
                 ProcessStatus();
                 ProcessPercentages();
-                if (val != _productionSeconds) NotifyChanged("ProductionSeconds");
+                if (val != _activeSeconds) NotifyChanged("ActiveSeconds");
             }
         }
 
@@ -158,21 +158,21 @@ namespace TH_StatusHourTimeline
         {
             if (TotalSeconds > 0)
             {
-                ProductionPercentage = ProductionSeconds / TotalSeconds;
+                ActivePercentage = ActiveSeconds / TotalSeconds;
                 IdlePercentage = IdleSeconds / TotalSeconds;
                 AlertPercentage = AlertSeconds / TotalSeconds;
             }
         }
 
-        private double _productionPercentage;
-        public double ProductionPercentage
+        private double _activePercentage;
+        public double ActivePercentage
         {
-            get { return _productionPercentage; }
+            get { return _activePercentage; }
             set
             {
-                var val = _productionPercentage;
-                _productionPercentage = value;
-                if (val != _productionPercentage) NotifyChanged("ProductionPercentage");
+                var val = _activePercentage;
+                _activePercentage = value;
+                if (val != _activePercentage) NotifyChanged("ActivePercentage");
             }
         }
 
@@ -203,8 +203,8 @@ namespace TH_StatusHourTimeline
 
         private void ProcessStatus()
         {
-            if (ProductionSeconds > IdleSeconds && ProductionSeconds > AlertSeconds) Status = 2;
-            else if (IdleSeconds > AlertSeconds && IdleSeconds > ProductionSeconds) Status = 1;
+            if (ActiveSeconds > IdleSeconds && ActiveSeconds > AlertSeconds) Status = 2;
+            else if (IdleSeconds > AlertSeconds && IdleSeconds > ActiveSeconds) Status = 1;
             else Status = 0;
         }
 

@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="TH_StatusTimes.Controls.Row"
+﻿<UserControl x:Class="TH_StatusTimes.DeviceStatus.Controls.Row"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:TH_StatusTimes.Controls"
+             xmlns:local="clr-namespace:TH_StatusTimes.DeviceStatus.Controls"
              
              xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
              
@@ -44,7 +44,7 @@
                     <Border.Style>
                         <Style TargetType="Border">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Production}" Value="true">
+                                <DataTrigger Binding="{Binding Active}" Value="true">
                                     <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Idle}" Value="true">
@@ -248,11 +248,11 @@
 
                 </Border>
 
-                <!--Production-->
+                <!--Active-->
                 <Border Grid.Column="3" BorderBrush="#ccc" BorderThickness="0,0,1,0">
 
-                    <th_wpf:TimeProgress Text="Production" 
-                    Value="{Binding ProductionSeconds}"
+                    <th_wpf:TimeProgress Text="Active" 
+                    Value="{Binding ActiveSeconds}"
                     Maximum="{Binding TotalSeconds}"
                     BarBrush="{StaticResource StatusGreen}" 
                     BarBackgroundBrush="{StaticResource StatusGreen_Hover}"/>

@@ -9,14 +9,14 @@ using TH_Configuration;
 using TH_Plugins;
 using TH_Plugins.Client;
 
-namespace TH_StatusTimes
+namespace TH_StatusTimes.ProductionStatus
 {
-    public partial class StatusTimes : IClientPlugin
+    public partial class ProductionStatusTimes : IClientPlugin
     {
 
         #region "Descriptive"
 
-        public string Title { get { return "Status Times"; } }
+        public string Title { get { return "Production Status Times"; } }
 
         public string Description { get { return "View Production Status Times and Percentages for the current day"; } }
 

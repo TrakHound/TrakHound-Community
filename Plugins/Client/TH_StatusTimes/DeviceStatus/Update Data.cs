@@ -4,9 +4,9 @@ using System.Linq;
 using TH_Configuration;
 using TH_Plugins;
 
-namespace TH_StatusTimes
+namespace TH_StatusTimes.DeviceStatus
 {
-    public partial class StatusTimes
+    public partial class DeviceStatusTimes
     {
 
         void Update(EventData data)

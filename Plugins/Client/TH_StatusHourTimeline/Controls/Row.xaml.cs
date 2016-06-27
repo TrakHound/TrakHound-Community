@@ -56,35 +56,45 @@ namespace TH_StatusHourTimeline.Controls
             DependencyProperty.Register("Configuration", typeof(TH_Configuration.DeviceConfiguration), typeof(Row), new PropertyMetadata(null));
 
 
-
-        public bool Production
+        public string DeviceStatus
         {
-            get { return (bool)GetValue(ProductionProperty); }
-            set { SetValue(ProductionProperty, value); }
+            get { return (string)GetValue(DeviceStatusProperty); }
+            set { SetValue(DeviceStatusProperty, value); }
         }
 
-        public static readonly DependencyProperty ProductionProperty =
-            DependencyProperty.Register("Production", typeof(bool), typeof(Row), new PropertyMetadata(false));
+        public static readonly DependencyProperty DeviceStatusProperty =
+            DependencyProperty.Register("DeviceStatus", typeof(string), typeof(Row), new PropertyMetadata(null));
 
 
-        public bool Idle
-        {
-            get { return (bool)GetValue(IdleProperty); }
-            set { SetValue(IdleProperty, value); }
-        }
 
-        public static readonly DependencyProperty IdleProperty =
-            DependencyProperty.Register("Idle", typeof(bool), typeof(Row), new PropertyMetadata(false));
+        //public bool Production
+        //{
+        //    get { return (bool)GetValue(ProductionProperty); }
+        //    set { SetValue(ProductionProperty, value); }
+        //}
+
+        //public static readonly DependencyProperty ProductionProperty =
+        //    DependencyProperty.Register("Production", typeof(bool), typeof(Row), new PropertyMetadata(false));
 
 
-        public bool Alert
-        {
-            get { return (bool)GetValue(AlertProperty); }
-            set { SetValue(AlertProperty, value); }
-        }
+        //public bool Idle
+        //{
+        //    get { return (bool)GetValue(IdleProperty); }
+        //    set { SetValue(IdleProperty, value); }
+        //}
 
-        public static readonly DependencyProperty AlertProperty =
-            DependencyProperty.Register("Alert", typeof(bool), typeof(Row), new PropertyMetadata(false));
+        //public static readonly DependencyProperty IdleProperty =
+        //    DependencyProperty.Register("Idle", typeof(bool), typeof(Row), new PropertyMetadata(false));
+
+
+        //public bool Alert
+        //{
+        //    get { return (bool)GetValue(AlertProperty); }
+        //    set { SetValue(AlertProperty, value); }
+        //}
+
+        //public static readonly DependencyProperty AlertProperty =
+        //    DependencyProperty.Register("Alert", typeof(bool), typeof(Row), new PropertyMetadata(false));
 
 
 
@@ -168,11 +178,7 @@ namespace TH_StatusHourTimeline.Controls
             {
                 if (data.Data02 != null)
                 {
-                    Alert = DataTable_Functions.GetBooleanTableValue(data.Data02, "name", "Alert", "value");
-
-                    Idle = DataTable_Functions.GetBooleanTableValue(data.Data02, "name", "Idle", "value");
-
-                    Production = DataTable_Functions.GetBooleanTableValue(data.Data02, "name", "Production", "value");
+                    DeviceStatus = DataTable_Functions.GetTableValue(data.Data02, "name", "Device Status", "value");
                 }
             }
         }
@@ -192,7 +198,7 @@ namespace TH_StatusHourTimeline.Controls
                     foreach (var hourData in HourDatas)
                     {
                         double total = 0;
-                        double production = 0;
+                        double active = 0;
                         double idle = 0;
                         double alert = 0;
 
@@ -202,14 +208,14 @@ namespace TH_StatusHourTimeline.Controls
                             foreach (var match in matches)
                             {
                                 total += match.TotalTime;
-                                production += match.ProductionTime;
+                                active += match.ProductionTime;
                                 idle += match.IdleTime;
                                 alert += match.AlertTime;
                             }
                         }
 
                         hourData.TotalSeconds = total;
-                        hourData.ProductionSeconds = production;
+                        hourData.ActiveSeconds = active;
                         hourData.IdleSeconds = idle;
                         hourData.AlertSeconds = alert;
                     }

@@ -45,7 +45,7 @@
             </StackPanel>
 
             <!--Percentage-->
-            <TextBlock Canvas.Left="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,0" Text="{Binding Percentage}" FontSize="20" FontFamily="{StaticResource RobotoFont}" >
+            <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,0" Text="{Binding Percentage}" FontSize="20" FontFamily="{StaticResource RobotoFont}" >
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Foreground" Value="{Binding Foreground}"/>
