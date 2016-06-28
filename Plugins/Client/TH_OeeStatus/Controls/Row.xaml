@@ -44,11 +44,7 @@
                     <ColumnDefinition Width="30"/>
                     <ColumnDefinition Width="200"/>
                     <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="200"/>
-                    <ColumnDefinition Width="200"/>
-                    <ColumnDefinition Width="200"/>
-                    <ColumnDefinition Width="200"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*" MinWidth="800"/>
                 </Grid.ColumnDefinitions>
 
                 <!--Status Indicator-->
@@ -56,13 +52,13 @@
                     <Border.Style>
                         <Style TargetType="Border">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Production}" Value="true">
+                                <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
                                     <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Idle}" Value="true">
+                                <DataTrigger Binding="{Binding DeviceStatus}" Value="Idle">
                                     <Setter Property="Background" Value="{StaticResource StatusYellow}"/>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Alert}" Value="true">
+                                <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
                                     <Setter Property="Background" Value="{StaticResource StatusRed}"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -78,7 +74,7 @@
                                 <Setter Property="OpacityMask" Value="{StaticResource Power_IMG}"/>
                                 <Setter Property="Opacity" Value="0"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Alert}" Value="true">
+                                    <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
                                         <DataTrigger.EnterActions>
                                             <BeginStoryboard>
                                                 <Storyboard>
@@ -124,14 +120,14 @@
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Production}" Value="true">
-                                                <Setter Property="Text" Value="Device is currently in Production"/>
+                                            <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
+                                                <Setter Property="Text" Value="Device is currently Active"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding Idle}" Value="true">
+                                            <DataTrigger Binding="{Binding DeviceStatus}" Value="Idle">
                                                 <Setter Property="Text" Value="Device is currently Idle"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding Alert}" Value="true">
-                                                <Setter Property="Text" Value="Device currently in an Alert and needs Attention"/>
+                                            <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
+                                                <Setter Property="Text" Value="Device currently needs Attention"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -150,7 +146,7 @@
                         </Style>
                     </Border.Style>
                 </Border>
-
+                
                 <!--Description-->
                 <Border Grid.Column="1" BorderBrush="#ccc" BorderThickness="0,0,1,0">
 
@@ -237,7 +233,6 @@
                             </TextBlock>
 
                         </StackPanel>
-
                     </Border.ToolTip>
                     <Border.Style>
                         <Style TargetType="Border">
@@ -260,110 +255,114 @@
 
                 </Border>
 
-                <!--OEE-->
-                <Border Grid.Column="3" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                <UniformGrid Grid.Column="3" Columns="4">
 
-                    <th_wpf:MeterDisplay Value="{Binding Oee}" >
-                        <th_wpf:MeterDisplay.Style>
-                            <Style TargetType="th_wpf:MeterDisplay" BasedOn="{StaticResource {x:Type th_wpf:MeterDisplay}}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding OeeStatus}" Value="0">
-                                        <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusRed}"/>
-                                        <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusRed_Hover}"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding OeeStatus}" Value="1">
-                                        <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusBlue}"/>
-                                        <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusBlue_Hover}"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding OeeStatus}" Value="2">
-                                        <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
-                                        <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </th_wpf:MeterDisplay.Style>
-                    </th_wpf:MeterDisplay>
+                    <!--OEE-->
+                    <Border BorderBrush="#ccc" BorderThickness="0,0,1,0">
 
-                </Border>
+                        <th_wpf:MeterDisplay Value="{Binding Oee}" >
+                            <th_wpf:MeterDisplay.Style>
+                                <Style TargetType="th_wpf:MeterDisplay" BasedOn="{StaticResource {x:Type th_wpf:MeterDisplay}}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding OeeStatus}" Value="0">
+                                            <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusRed}"/>
+                                            <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusRed_Hover}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding OeeStatus}" Value="1">
+                                            <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusOrange}"/>
+                                            <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusOrange_Hover}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding OeeStatus}" Value="2">
+                                            <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
+                                            <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </th_wpf:MeterDisplay.Style>
+                        </th_wpf:MeterDisplay>
 
-                <!--Availability-->
-                <Border Grid.Column="4" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                    </Border>
 
-                    <th_wpf:MeterDisplay Value="{Binding Availability}" >
-                        <th_wpf:MeterDisplay.Style>
-                            <Style TargetType="th_wpf:MeterDisplay" BasedOn="{StaticResource {x:Type th_wpf:MeterDisplay}}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding AvailabilityStatus}" Value="0">
-                                        <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusRed}"/>
-                                        <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusRed_Hover}"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding AvailabilityStatus}" Value="1">
-                                        <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusBlue}"/>
-                                        <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusBlue_Hover}"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding AvailabilityStatus}" Value="2">
-                                        <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
-                                        <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </th_wpf:MeterDisplay.Style>
-                    </th_wpf:MeterDisplay>
+                    <!--Availability-->
+                    <Border BorderBrush="#ccc" BorderThickness="0,0,1,0">
 
-                </Border>
+                        <th_wpf:MeterDisplay Value="{Binding Availability}" >
+                            <th_wpf:MeterDisplay.Style>
+                                <Style TargetType="th_wpf:MeterDisplay" BasedOn="{StaticResource {x:Type th_wpf:MeterDisplay}}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding AvailabilityStatus}" Value="0">
+                                            <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusRed}"/>
+                                            <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusRed_Hover}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding AvailabilityStatus}" Value="1">
+                                            <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusOrange}"/>
+                                            <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusOrange_Hover}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding AvailabilityStatus}" Value="2">
+                                            <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
+                                            <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </th_wpf:MeterDisplay.Style>
+                        </th_wpf:MeterDisplay>
 
-                <!--Performance-->
-                <Border Grid.Column="5" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                    </Border>
 
-                    <th_wpf:MeterDisplay Value="{Binding Performance}" >
-                        <th_wpf:MeterDisplay.Style>
-                            <Style TargetType="th_wpf:MeterDisplay" BasedOn="{StaticResource {x:Type th_wpf:MeterDisplay}}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding PerformanceStatus}" Value="0">
-                                        <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusRed}"/>
-                                        <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusRed_Hover}"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding PerformanceStatus}" Value="1">
-                                        <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusBlue}"/>
-                                        <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusBlue_Hover}"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding PerformanceStatus}" Value="2">
-                                        <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
-                                        <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </th_wpf:MeterDisplay.Style>
-                    </th_wpf:MeterDisplay>
+                    <!--Performance-->
+                    <Border BorderBrush="#ccc" BorderThickness="0,0,1,0">
 
-                </Border>
+                        <th_wpf:MeterDisplay Value="{Binding Performance}" >
+                            <th_wpf:MeterDisplay.Style>
+                                <Style TargetType="th_wpf:MeterDisplay" BasedOn="{StaticResource {x:Type th_wpf:MeterDisplay}}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding PerformanceStatus}" Value="0">
+                                            <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusRed}"/>
+                                            <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusRed_Hover}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding PerformanceStatus}" Value="1">
+                                            <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusOrange}"/>
+                                            <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusOrange_Hover}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding PerformanceStatus}" Value="2">
+                                            <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
+                                            <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </th_wpf:MeterDisplay.Style>
+                        </th_wpf:MeterDisplay>
 
-                <!--Quality-->
-                <Border Grid.Column="6" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                    </Border>
 
-                    <th_wpf:MeterDisplay Value="{Binding Quality}" >
-                        <th_wpf:MeterDisplay.Style>
-                            <Style TargetType="th_wpf:MeterDisplay" BasedOn="{StaticResource {x:Type th_wpf:MeterDisplay}}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding QualityStatus}" Value="0">
-                                        <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusRed}"/>
-                                        <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusRed_Hover}"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding QualityStatus}" Value="1">
-                                        <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusBlue}"/>
-                                        <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusBlue_Hover}"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding QualityStatus}" Value="2">
-                                        <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
-                                        <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </th_wpf:MeterDisplay.Style>
-                    </th_wpf:MeterDisplay>
+                    <!--Quality-->
+                    <Border BorderBrush="#ccc" BorderThickness="0,0,1,0">
 
-                </Border>
+                        <th_wpf:MeterDisplay Value="{Binding Quality}" >
+                            <th_wpf:MeterDisplay.Style>
+                                <Style TargetType="th_wpf:MeterDisplay" BasedOn="{StaticResource {x:Type th_wpf:MeterDisplay}}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding QualityStatus}" Value="0">
+                                            <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusRed}"/>
+                                            <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusRed_Hover}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding QualityStatus}" Value="1">
+                                            <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusOrange}"/>
+                                            <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusOrange_Hover}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding QualityStatus}" Value="2">
+                                            <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
+                                            <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </th_wpf:MeterDisplay.Style>
+                        </th_wpf:MeterDisplay>
 
+                    </Border>
+
+                </UniformGrid>
+                
             </Grid>
 
             <!--Gloss Overlay-->

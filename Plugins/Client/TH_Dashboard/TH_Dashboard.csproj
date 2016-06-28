@@ -139,6 +139,12 @@
   <ItemGroup>
     <Resource Include="Resources\Forward_01.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Start_02.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Stop_02.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

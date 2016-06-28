@@ -14,7 +14,7 @@
              xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
                           
              mc:Ignorable="d" 
-             d:DesignHeight="100" 
+             d:DesignHeight="150" 
              d:DesignWidth="800"
                         
              Loaded="UserControl_Loaded"
@@ -29,16 +29,23 @@
         <Border Grid.Column="0" BorderBrush="{StaticResource Shade_Light}" BorderThickness="0,0,1,0">
             <Border.Style>
                 <Style TargetType="Border">
-                    <Setter Property="Width" Value="45"/>
+                    <Setter Property="MinWidth" Value="45"/>
+                    <Setter Property="MaxWidth" Value="65"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsExpanded}" Value="true">
-                            <Setter Property="Width" Value="200"/>
+                            <Setter Property="MinWidth" Value="200"/>
+                            <Setter Property="MaxWidth" Value="200"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </Border.Style>
 
-            <StackPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
 
                 <!--Collapse/Expand Image-->
                 <Rectangle Width="25" Height="25" Margin="10,5" RenderTransformOrigin="0.5, 0.5" Cursor="Hand" MouseDown="Expand_MouseDown">
@@ -90,36 +97,100 @@
                 </Rectangle>
 
                 <!--Page List-->
-                <ItemsControl ItemsSource="{Binding Pages}" Margin="0,20">
-                    <ItemsControl.Resources>
-                        <Style TargetType="th_wpf:ListButton">
-                            <Setter Property="Foreground" Value="#fff"/>
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="ShowText" Value="False"/>
-                            <Setter Property="ToolTip">
-                                <Setter.Value>
-                                    <StackPanel MaxWidth="300">
-                                        <TextBlock Text="{Binding DataObject.Title}" FontWeight="Bold"/>
-                                        <TextBlock Text="{Binding DataObject.Description}" TextWrapping="Wrap"/>
-                                    </StackPanel>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType={x:Type local:Dashboard}}}" Value="true">
-                                    <Setter Property="ShowText" Value="True"/>
-                                </DataTrigger>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                                </Trigger>
-                                <Trigger Property="IsSelected" Value="true">
-                                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ItemsControl.Resources>
-                </ItemsControl>
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
 
-            </StackPanel>
+                    <ItemsControl ItemsSource="{Binding Pages}" Margin="0,20">
+                        <ItemsControl.Resources>
+                            <Style TargetType="th_wpf:ListButton">
+                                <Setter Property="Foreground" Value="#fff"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="ShowText" Value="False"/>
+                                <Setter Property="ToolTip">
+                                    <Setter.Value>
+                                        <StackPanel MaxWidth="300">
+                                            <TextBlock Text="{Binding DataObject.Title}" FontWeight="Bold"/>
+                                            <TextBlock Text="{Binding DataObject.Description}" TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType={x:Type local:Dashboard}}}" Value="true">
+                                        <Setter Property="ShowText" Value="True"/>
+                                    </DataTrigger>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="true">
+                                        <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ItemsControl.Resources>
+                    </ItemsControl>
+
+                </ScrollViewer>
+                
+                <!--Slideshow Controls-->
+                <StackPanel Grid.Row="2" Margin="0,20">
+
+                    <!--Start Button-->
+                    <th_wpf:Button Image="Resources/Start_02.png" Clicked="StartSlideshow_Clicked">
+                        <th_wpf:Button.Style>
+                            <Style TargetType="th_wpf:Button">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="#ccffffff"/>
+                                <Setter Property="Text" Value="{x:Null}"/>
+                                <Setter Property="Height" Value="30"/>
+                                <Setter Property="ToolTip" Value="Start Slideshow"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Foreground" Value="#fff"/>
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled" Value="false">
+                                        <Setter Property="Foreground" Value="#33ffffff"/>
+                                    </Trigger>
+                                    <DataTrigger Binding="{Binding SlideshowRunning}" Value="true">
+                                        <Setter Property="IsEnabled" Value="false"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsExpanded}" Value="true">
+                                        <Setter Property="Text" Value="Start Slideshow"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </th_wpf:Button.Style>
+                    </th_wpf:Button>
+
+                    <!--Stop Button-->
+                    <th_wpf:Button Image="Resources/Stop_02.png" Clicked="StopSlideshow_Clicked">
+                        <th_wpf:Button.Style>
+                            <Style TargetType="th_wpf:Button">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="#ccffffff"/>
+                                <Setter Property="Text" Value="{x:Null}"/>
+                                <Setter Property="Height" Value="30"/>
+                                <Setter Property="IsEnabled" Value="false"/>
+                                <Setter Property="ToolTip" Value="Stop Slideshow"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Foreground" Value="#fff"/>
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled" Value="false">
+                                        <Setter Property="Foreground" Value="#33ffffff"/>
+                                    </Trigger>
+                                    <DataTrigger Binding="{Binding SlideshowRunning}" Value="true">
+                                        <Setter Property="IsEnabled" Value="true"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsExpanded}" Value="true">
+                                        <Setter Property="Text" Value="Stop Slideshow"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </th_wpf:Button.Style>
+                    </th_wpf:Button>
+
+                </StackPanel>
+                
+            </Grid>
             
         </Border>
 

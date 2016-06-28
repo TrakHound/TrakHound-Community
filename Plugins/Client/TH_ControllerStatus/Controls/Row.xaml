@@ -47,6 +47,106 @@
                     <Border.Style>
                         <Style TargetType="Border">
                             <Style.Triggers>
+                                <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
+                                    <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding DeviceStatus}" Value="Idle">
+                                    <Setter Property="Background" Value="{StaticResource StatusYellow}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
+                                    <Setter Property="Background" Value="{StaticResource StatusRed}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+
+                    <Rectangle HorizontalAlignment="Center" VerticalAlignment="Center" Fill="White">
+                        <Rectangle.Style>
+                            <Style TargetType="Rectangle">
+                                <Setter Property="Height" Value="20"/>
+                                <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"/>
+                                <Setter Property="Margin" Value="0"/>
+                                <Setter Property="OpacityMask" Value="{StaticResource Power_IMG}"/>
+                                <Setter Property="Opacity" Value="0"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
+                                        <DataTrigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Duration="00:00:1.0" Storyboard.TargetProperty="Opacity" From="0" To="1" >
+                                                        <DoubleAnimation.EasingFunction>
+                                                            <CubicEase EasingMode="EaseOut"/>
+                                                        </DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.EnterActions>
+                                        <DataTrigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Duration="00:00:1.0" Storyboard.TargetProperty="Opacity" From="1" To="0" >
+                                                        <DoubleAnimation.EasingFunction>
+                                                            <CubicEase EasingMode="EaseOut"/>
+                                                        </DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.ExitActions>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Available}" Value="true">
+                                        <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}"/>
+                                    </DataTrigger>
+                                    <Trigger Property="Opacity" Value="0">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Rectangle.Style>
+                    </Rectangle>
+
+                </Border>
+
+                <!--Mouse Over Panel w/ ToolTip-->
+                <Border Grid.Column="0">
+                    <Border.ToolTip>
+                        <StackPanel MaxWidth="300">
+                            <TextBlock Text="Device Status" FontWeight="Bold"/>
+                            <TextBlock TextWrapping="Wrap">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
+                                                <Setter Property="Text" Value="Device is currently Active"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding DeviceStatus}" Value="Idle">
+                                                <Setter Property="Text" Value="Device is currently Idle"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
+                                                <Setter Property="Text" Value="Device currently needs Attention"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border.ToolTip>
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="#33ffffff"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                </Border>
+                
+                <!--Status Indicator--><!--
+                <Border Grid.Column="0" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
                                 <DataTrigger Binding="{Binding Production}" Value="true">
                                     <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
                                 </DataTrigger>
@@ -106,7 +206,7 @@
 
                 </Border>
 
-                <!--Mouse Over Panel w/ ToolTip-->
+                --><!--Mouse Over Panel w/ ToolTip--><!--
                 <Border Grid.Column="0">
                     <Border.ToolTip>
                         <StackPanel MaxWidth="300">
@@ -140,7 +240,7 @@
                             </Style.Triggers>
                         </Style>
                     </Border.Style>
-                </Border>
+                </Border>-->
 
                 <!--Description-->
                 <Border Grid.Column="1" BorderBrush="#ccc" BorderThickness="0,0,1,0">
@@ -829,8 +929,11 @@
                             <TextBlock Text="{Binding SystemStatus}" FontSize="16" Margin="0,0,0,2">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="{StaticResource StatusGreen}"/>
+                                        <Setter Property="Foreground" Value="#333"/>
                                         <Style.Triggers>
+                                            <Trigger Property="Text" Value="Normal">
+                                                <Setter Property="Foreground" Value="{StaticResource StatusGreen}"/>
+                                            </Trigger>
                                             <Trigger Property="Text" Value="Fault">
                                                 <Setter Property="Foreground" Value="{StaticResource StatusRed}"/>
                                             </Trigger>

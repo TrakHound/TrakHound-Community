@@ -10,7 +10,7 @@
              >
 
     <Grid x:Name="root">
-        <Grid.Style>
+        <!--<Grid.Style>
             <Style TargetType="Grid">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding Status}" Value="0">
@@ -18,7 +18,7 @@
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
-        </Grid.Style>
+        </Grid.Style>-->
 
         <th_wpf:MeterDisplay Value="{Binding Value}" >
             <th_wpf:MeterDisplay.Style>
@@ -33,6 +33,18 @@
                     <Setter Property="HorizontalAlignment" Value="Center"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Status}" Value="0">
+                            <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusRed}"/>
+                            <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusRed_Hover}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Status}" Value="1">
+                            <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusOrange}"/>
+                            <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusOrange_Hover}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Status}" Value="2">
+                            <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
+                            <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
+                        </DataTrigger>
+                        <!--<DataTrigger Binding="{Binding Status}" Value="0">
                             <Setter Property="ActiveLevelBrush" Value="White"/>
                             <Setter Property="InactiveLevelBrush" Value="#66ffffff"/>
                             <Setter Property="Foreground" Value="White" />
@@ -44,7 +56,7 @@
                         <DataTrigger Binding="{Binding Status}" Value="2">
                             <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
                             <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
-                        </DataTrigger>
+                        </DataTrigger>-->
                     </Style.Triggers>
                 </Style>
             </th_wpf:MeterDisplay.Style>

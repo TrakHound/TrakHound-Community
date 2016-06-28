@@ -121,6 +121,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_StatusTimes", "Plugins\C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_AutoGenerate", "Libraries\TH_AutoGenerate\TH_AutoGenerate.csproj", "{6C22E8AB-DD87-4B36-A28E-A44B4C6BF779}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_ProductionStatus", "Plugins\Client\TH_ProductionStatus\TH_ProductionStatus.csproj", "{58AF223D-50A0-416B-9ABB-B7CBFA6A4DA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -440,6 +442,12 @@ Global
 		{6C22E8AB-DD87-4B36-A28E-A44B4C6BF779}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6C22E8AB-DD87-4B36-A28E-A44B4C6BF779}.Server|Any CPU.ActiveCfg = Release|Any CPU
 		{6C22E8AB-DD87-4B36-A28E-A44B4C6BF779}.Server|Any CPU.Build.0 = Release|Any CPU
+		{58AF223D-50A0-416B-9ABB-B7CBFA6A4DA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58AF223D-50A0-416B-9ABB-B7CBFA6A4DA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58AF223D-50A0-416B-9ABB-B7CBFA6A4DA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58AF223D-50A0-416B-9ABB-B7CBFA6A4DA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58AF223D-50A0-416B-9ABB-B7CBFA6A4DA1}.Server|Any CPU.ActiveCfg = Release|Any CPU
+		{58AF223D-50A0-416B-9ABB-B7CBFA6A4DA1}.Server|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -494,5 +502,6 @@ Global
 		{3B14C2C3-4DA8-4D56-8F32-CB31078EEDEE} = {635E4A98-547F-4D6A-A484-565DC42D336A}
 		{3D043DAF-53BB-47E1-89C3-871702819AEB} = {635E4A98-547F-4D6A-A484-565DC42D336A}
 		{6C22E8AB-DD87-4B36-A28E-A44B4C6BF779} = {EEAC6CD4-32AF-4324-802F-4EE58C8CF5E5}
+		{58AF223D-50A0-416B-9ABB-B7CBFA6A4DA1} = {635E4A98-547F-4D6A-A484-565DC42D336A}
 	EndGlobalSection
 EndGlobal

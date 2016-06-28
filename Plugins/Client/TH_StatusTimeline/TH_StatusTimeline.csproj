@@ -31,18 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OxyPlot, Version=1.0.0.0, Culture=neutral, PublicKeyToken=638079a8f0bd61e9, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\TrakHound Pro\packages\OxyPlot.Core.1.0.0-unstable2100\lib\net40-client\OxyPlot.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="OxyPlot.Wpf, Version=1.0.0.0, Culture=neutral, PublicKeyToken=75e952ba404cdbb0, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\TrakHound Pro\packages\OxyPlot.Wpf.1.0.0-unstable2100\lib\net40\OxyPlot.Wpf.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="OxyPlot.Xps, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\TrakHound Pro\packages\OxyPlot.Wpf.1.0.0-unstable2100\lib\net40\OxyPlot.Xps.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -73,7 +61,6 @@
     <Compile Include="StatusTimeline.xaml.cs">
       <DependentUpon>StatusTimeline.xaml</DependentUpon>
     </Compile>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\UI Tools\UI Tools\UI Tools.csproj">

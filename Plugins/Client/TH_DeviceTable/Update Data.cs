@@ -77,27 +77,29 @@ namespace TH_DeviceTable
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    bool b;
-                    string s;
+                    info.DeviceStatus = DataTable_Functions.GetTableValue(data.Data02, "name", "Device Status", "value");
 
-                    // Alert
-                    b = false;
-                    s = GetTableValue(data.Data02, "Alert");
-                    bool.TryParse(s, out b);
-                    info.Alert = b;
+                    //bool b;
+                    //string s;
 
-                    // Idle
-                    b = false;
-                    s = GetTableValue(data.Data02, "Idle");
-                    bool.TryParse(s, out b);
-                    info.Idle = b;
+                    //// Alert
+                    //b = false;
+                    //s = GetTableValue(data.Data02, "Alert");
+                    //bool.TryParse(s, out b);
+                    //info.Alert = b;
 
-                    // Production
-                    b = false;
-                    s = GetTableValue(data.Data02, "Production");
-                    bool.TryParse(s, out b);
-                    info.Production = b;
-                    
+                    //// Idle
+                    //b = false;
+                    //s = GetTableValue(data.Data02, "Idle");
+                    //bool.TryParse(s, out b);
+                    //info.Idle = b;
+
+                    //// Production
+                    //b = false;
+                    //s = GetTableValue(data.Data02, "Production");
+                    //bool.TryParse(s, out b);
+                    //info.Production = b;
+
                 }), PRIORITY_BACKGROUND, new object[] { });
             }
         }

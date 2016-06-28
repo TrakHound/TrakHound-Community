@@ -19,6 +19,8 @@ namespace TH_WPF
         {
             InitializeComponent();
             bd.DataContext = this;
+
+            SetProgressValue(Value);
         }
 
 
@@ -90,13 +92,13 @@ namespace TH_WPF
             DependencyProperty.Register("ProgressHeight", typeof(double), typeof(ProgressBar), new PropertyMetadata(0d));
 
 
-        void SetProgressValue(double value)
+        void SetProgressValue(double value, bool animate = true)
         {
-            if (Orientation == ProgressBarOrientation.Vertical) SetProgressHeight(value);
-            else SetProgressWidth(value);
+            if (Orientation == ProgressBarOrientation.Vertical) SetProgressHeight(value, animate);
+            else SetProgressWidth(value, animate);
         }
         
-        void SetProgressWidth(double value)
+        void SetProgressWidth(double value, bool animate = true)
         {
             double controlWidth = this.ActualWidth;
 
@@ -107,12 +109,12 @@ namespace TH_WPF
 
             if (ProgressWidth != val)
             {
-                if (AnimateValueChange) Animate(val, ProgressWidthProperty);
-                else ProgressWidth = val;
+                if (AnimateValueChange && animate) Animate(val, ProgressWidthProperty);
+                else SetValue(ProgressWidthProperty, val);
             }
         }
 
-        void SetProgressHeight(double value)
+        void SetProgressHeight(double value, bool animate = true)
         {
             double controlHeight = this.ActualHeight;
 
@@ -123,14 +125,14 @@ namespace TH_WPF
 
             if (ProgressHeight != val)
             {
-                if (AnimateValueChange) Animate(val, ProgressHeightProperty);
+                if (AnimateValueChange && animate) Animate(val, ProgressHeightProperty);
                 else ProgressHeight = val;
             }
         }
 
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            SetProgressWidth(Value);
+            SetProgressWidth(Value, false);
         }
 
 
@@ -155,8 +157,15 @@ namespace TH_WPF
             if (!double.IsNaN(to)) animation.To = Math.Max(0, to);
             else animation.To = 0;
             animation.Duration = new Duration(TimeSpan.FromMilliseconds(500));
+            animation.FillBehavior = FillBehavior.Stop;
+            animation.Completed += Animation_Completed;
             animation.Freeze();
-            BeginAnimation(dp, animation);
+            BeginAnimation(dp, animation, HandoffBehavior.Compose);
+        }
+
+        private void Animation_Completed(object sender, EventArgs e)
+        {
+            SetProgressValue(Value, false);
         }
     }
 

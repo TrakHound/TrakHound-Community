@@ -93,6 +93,26 @@ namespace TH_Dashboard.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Start_02 {
+            get {
+                object obj = ResourceManager.GetObject("Start_02", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Stop_02 {
+            get {
+                object obj = ResourceManager.GetObject("Stop_02", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap TrakHound_Logo_10_200px {
             get {
                 object obj = ResourceManager.GetObject("TrakHound_Logo_10_200px", resourceCulture);

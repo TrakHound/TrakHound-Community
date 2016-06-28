@@ -3,11 +3,13 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 using TH_Plugins;
 using TH_Plugins.Client;
@@ -143,7 +145,7 @@ namespace TH_Dashboard
                         {
                             plugin.SubCategories = config.SubCategories;
                             plugin.SendData += Plugin_SendData;
-
+                            
                             plugin.Initialize();
                         }
 
@@ -214,6 +216,8 @@ namespace TH_Dashboard
 
         private void lb_Selected(ListButton lb)
         {
+            StopSlideshow();
+
             SelectPage(lb);
         }
 
@@ -221,6 +225,58 @@ namespace TH_Dashboard
         {
             if (config.Enabled) Plugins_Load(config);
             else Plugins_Unload(config);
+        }
+
+        #endregion
+
+        #region "Slideshow"
+
+        public bool SlideshowRunning
+        {
+            get { return (bool)GetValue(SlideshowRunningProperty); }
+            set { SetValue(SlideshowRunningProperty, value); }
+        }
+
+        public static readonly DependencyProperty SlideshowRunningProperty =
+            DependencyProperty.Register("SlideshowRunning", typeof(bool), typeof(Dashboard), new PropertyMetadata(false));
+
+        private void StartSlideshow_Clicked(TH_WPF.Button bt)
+        {
+            StartSlideshow();
+        }
+
+        private void StopSlideshow_Clicked(TH_WPF.Button bt)
+        {
+            StopSlideshow();
+        }
+
+        private System.Timers.Timer slideshowTimer;
+
+        private void StartSlideshow()
+        {
+            SlideshowRunning = true;
+
+            slideshowTimer = new System.Timers.Timer();
+            slideshowTimer.Interval = 20000;
+            slideshowTimer.Elapsed += SlideshowTimer_Elapsed;
+            slideshowTimer.Enabled = true;
+        }
+
+        private void SlideshowTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(new Action(() => {
+
+                SelectNextPage();
+
+            }), TH_Global.Functions.UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+        }
+
+        private void StopSlideshow()
+        {
+            SlideshowRunning = false;
+
+            if (slideshowTimer != null) slideshowTimer.Enabled = false;
+            slideshowTimer = null;
         }
 
         #endregion
@@ -244,7 +300,6 @@ namespace TH_Dashboard
             }
 
             var childPlugIn = lb.DataObject as UserControl;
-
             PageContent = childPlugIn;
 
             int index = Pages.ToList().FindIndex(x => x == lb);
@@ -252,6 +307,39 @@ namespace TH_Dashboard
             {
                 Properties.Settings.Default.SelectedPage = index;
                 Properties.Settings.Default.Save();
+            }
+        }
+
+
+        private void SelectNextPage()
+        {
+            if (currentPage != null && Pages.Count > 0)
+            {
+                int currentIndex = Pages.ToList().FindIndex(x => x.Text == currentPage.Name);
+                if (currentIndex >= 0)
+                {
+                    int next = 0;
+
+                    if (currentIndex < Pages.Count - 1) next = currentIndex + 1;
+
+                    SelectPage(Pages[next]);
+                }
+            }
+        }
+
+        private void SelectPreviousPage()
+        {
+            if (currentPage != null && Pages.Count > 0)
+            {
+                int currentIndex = Pages.ToList().FindIndex(x => x.Text == currentPage.Name);
+                if (currentIndex >= 0)
+                {
+                    int next = Pages.Count - 1;
+
+                    if (currentIndex > 0) next = currentIndex - 1;
+
+                    SelectPage(Pages[next]);
+                }
             }
         }
 
@@ -298,5 +386,6 @@ namespace TH_Dashboard
             Properties.Settings.Default.IsExpanded = IsExpanded;
             Properties.Settings.Default.Save();
         }
+
     }
 }

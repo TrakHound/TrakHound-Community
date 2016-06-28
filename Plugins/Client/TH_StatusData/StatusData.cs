@@ -367,10 +367,13 @@ namespace TH_StatusData
             EventData productionStatusData = GetProductionStatusData(config, shiftData);
             SendDataEvent(productionStatusData);
 
-           // //Get OEE Data
-           //EventData oeeData = GetOEE(config, shiftData);
-           // // Send OEE Data
-           // SendDataEvent(oeeData);
+            EventData deviceStatusData = GetDeviceStatusData(config, shiftData);
+            SendDataEvent(deviceStatusData);
+
+            // //Get OEE Data
+            //EventData oeeData = GetOEE(config, shiftData);
+            // // Send OEE Data
+            // SendDataEvent(oeeData);
 
             // Get OEE Segments Data
             EventData oeeSegmentsData = GetOEESegments(config, shiftData);
@@ -544,7 +547,41 @@ namespace TH_StatusData
         }
 
         #endregion
-        
+
+        static EventData GetDeviceStatusData(DeviceConfiguration config, ShiftData shiftData)
+        {
+            var result = new EventData();
+
+            DateTime start = DateTime.MinValue;
+            DateTime.TryParse(shiftData.shiftStartUTC, out start);
+
+            DateTime end = DateTime.MinValue;
+            DateTime.TryParse(shiftData.shiftEndUTC, out end);
+
+            if (end < start) end = end.AddDays(1);
+
+            if (start > DateTime.MinValue && end > DateTime.MinValue)
+            {
+                string filter = "WHERE TIMESTAMP BETWEEN '" + start.ToString("yyyy-MM-dd HH:mm:ss") + "' AND '" + end.ToString("yyyy-MM-dd HH:mm:ss") + "'";
+
+                string tableName = TableNames.Gen_Events_TablePrefix + "device_status";
+
+
+                DataTable dt = Table.Get(config.Databases_Client, Global.GetTableName(tableName, config.DatabaseId), filter);
+                if (dt != null)
+                {
+                    var data = new EventData();
+                    data.Id = "StatusData_DeviceStatus";
+                    data.Data01 = config;
+                    data.Data02 = dt;
+
+                    result = data;
+                }
+            }
+
+            return result;
+        }
+
         static EventData GetProductionStatusData(DeviceConfiguration config, ShiftData shiftData)
         {
             var result = new EventData();

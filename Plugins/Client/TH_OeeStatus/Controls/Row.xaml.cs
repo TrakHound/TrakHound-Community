@@ -53,34 +53,45 @@ namespace TH_OeeStatus.Controls
 
 
 
-        public bool Production
+        public string DeviceStatus
         {
-            get { return (bool)GetValue(ProductionProperty); }
-            set { SetValue(ProductionProperty, value); }
+            get { return (string)GetValue(DeviceStatusProperty); }
+            set { SetValue(DeviceStatusProperty, value); }
         }
 
-        public static readonly DependencyProperty ProductionProperty =
-            DependencyProperty.Register("Production", typeof(bool), typeof(Row), new PropertyMetadata(false));
+        public static readonly DependencyProperty DeviceStatusProperty =
+            DependencyProperty.Register("DeviceStatus", typeof(string), typeof(Row), new PropertyMetadata(null));
 
 
-        public bool Idle
-        {
-            get { return (bool)GetValue(IdleProperty); }
-            set { SetValue(IdleProperty, value); }
-        }
 
-        public static readonly DependencyProperty IdleProperty =
-            DependencyProperty.Register("Idle", typeof(bool), typeof(Row), new PropertyMetadata(false));
+        //public bool Production
+        //{
+        //    get { return (bool)GetValue(ProductionProperty); }
+        //    set { SetValue(ProductionProperty, value); }
+        //}
+
+        //public static readonly DependencyProperty ProductionProperty =
+        //    DependencyProperty.Register("Production", typeof(bool), typeof(Row), new PropertyMetadata(false));
 
 
-        public bool Alert
-        {
-            get { return (bool)GetValue(AlertProperty); }
-            set { SetValue(AlertProperty, value); }
-        }
+        //public bool Idle
+        //{
+        //    get { return (bool)GetValue(IdleProperty); }
+        //    set { SetValue(IdleProperty, value); }
+        //}
 
-        public static readonly DependencyProperty AlertProperty =
-            DependencyProperty.Register("Alert", typeof(bool), typeof(Row), new PropertyMetadata(false));
+        //public static readonly DependencyProperty IdleProperty =
+        //    DependencyProperty.Register("Idle", typeof(bool), typeof(Row), new PropertyMetadata(false));
+
+
+        //public bool Alert
+        //{
+        //    get { return (bool)GetValue(AlertProperty); }
+        //    set { SetValue(AlertProperty, value); }
+        //}
+
+        //public static readonly DependencyProperty AlertProperty =
+        //    DependencyProperty.Register("Alert", typeof(bool), typeof(Row), new PropertyMetadata(false));
 
 
 
@@ -229,11 +240,13 @@ namespace TH_OeeStatus.Controls
             {
                 if (data.Data02 != null)
                 {
-                    Alert = DataTable_Functions.GetBooleanTableValue(data.Data02, "name", "Alert", "value");
+                    DeviceStatus = DataTable_Functions.GetTableValue(data.Data02, "name", "Device Status", "value");
 
-                    Idle = DataTable_Functions.GetBooleanTableValue(data.Data02, "name", "Idle", "value");
+                    //Alert = DataTable_Functions.GetBooleanTableValue(data.Data02, "name", "Alert", "value");
 
-                    Production = DataTable_Functions.GetBooleanTableValue(data.Data02, "name", "Production", "value");
+                    //Idle = DataTable_Functions.GetBooleanTableValue(data.Data02, "name", "Idle", "value");
+
+                    //Production = DataTable_Functions.GetBooleanTableValue(data.Data02, "name", "Production", "value");
                 }
             }
         }

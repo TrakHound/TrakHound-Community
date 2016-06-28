@@ -40,7 +40,7 @@ namespace TH_AutoGenerate
             SnapshotData.Add(dt);
             GeneratedEvents.DeviceStatus.Add(dt, items);
             GeneratedEvents.ProductionStatus.Add(dt, items);
-            GeneratedEvents.ProgramExecution.Add(dt, items);
+            GeneratedEvents.CycleExecution.Add(dt, items);
             GeneratedEvents.PartsCount.Add(dt, items);
             Shifts.Add(dt, items);
             Cycles.Add(dt, items);

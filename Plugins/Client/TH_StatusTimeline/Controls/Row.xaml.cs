@@ -53,6 +53,14 @@ namespace TH_StatusTimeline.Controls
         public static readonly DependencyProperty ConfigurationProperty =
             DependencyProperty.Register("Configuration", typeof(TH_Configuration.DeviceConfiguration), typeof(Row), new PropertyMetadata(null));
 
+        public string DeviceStatus
+        {
+            get { return (string)GetValue(DeviceStatusProperty); }
+            set { SetValue(DeviceStatusProperty, value); }
+        }
+
+        public static readonly DependencyProperty DeviceStatusProperty =
+            DependencyProperty.Register("DeviceStatus", typeof(string), typeof(Row), new PropertyMetadata(null));
 
 
         public bool Production
@@ -140,11 +148,13 @@ namespace TH_StatusTimeline.Controls
             {
                 if (data.Data02 != null)
                 {
-                    Alert = DataTable_Functions.GetBooleanTableValue(data.Data02, "name", "Alert", "value");
+                    DeviceStatus = DataTable_Functions.GetTableValue(data.Data02, "name", "Device Status", "value");
 
-                    Idle = DataTable_Functions.GetBooleanTableValue(data.Data02, "name", "Idle", "value");
+                    //Alert = DataTable_Functions.GetBooleanTableValue(data.Data02, "name", "Alert", "value");
 
-                    Production = DataTable_Functions.GetBooleanTableValue(data.Data02, "name", "Production", "value");
+                    //Idle = DataTable_Functions.GetBooleanTableValue(data.Data02, "name", "Idle", "value");
+
+                    //Production = DataTable_Functions.GetBooleanTableValue(data.Data02, "name", "Production", "value");
                 }
             }
         }
@@ -206,7 +216,7 @@ namespace TH_StatusTimeline.Controls
 
         private void UpdateStatusData(EventData data)
         {
-            if (data.Id.ToLower() == "statusdata_productionstatus" && data.Data02 != null)
+            if (data.Id.ToLower() == "statusdata_devicestatus" && data.Data02 != null)
             {
                 if ((DateTime.Now - lastUIUpdate) > UIDelay)
                 {
@@ -277,7 +287,81 @@ namespace TH_StatusTimeline.Controls
                 }
             }
         }
-        
+
+        //private void UpdateStatusData(EventData data)
+        //{
+        //    if (data.Id.ToLower() == "statusdata_productionstatus" && data.Data02 != null)
+        //    {
+        //        if ((DateTime.Now - lastUIUpdate) > UIDelay)
+        //        {
+        //            lastUIUpdate = DateTime.Now;
+
+        //            var dt = data.Data02 as DataTable;
+        //            if (dt != null)
+        //            {
+        //                // Get list of all infos
+        //                var infos = StatusInfo.FromTable(dt);
+
+        //                // Filter out infos with duration less than min
+        //                infos = infos.FindAll(x => x.Duration >= MIN_DURATION);
+
+        //                if (infos.Count > 0 && currentTime > DateTime.MinValue && currentTime > infos[infos.Count - 1].End)
+        //                {
+        //                    var info = new StatusInfo();
+        //                    info.Value = infos[infos.Count - 1].Value;
+        //                    info.Start = infos[infos.Count - 1].End;
+        //                    info.End = currentTime;
+        //                    infos.Add(info);
+
+        //                    DateTime n = currentTime;
+
+        //                    timeline.MaxDateTime = new DateTime(n.Year, n.Month, n.Day, 23, 59, 59);
+        //                    timeline.MinDateTime = new DateTime(n.Year, n.Month, n.Day, 0, 0, 0);
+
+        //                    timeline.CurrentDateTime = n;
+        //                }
+
+
+        //                // Combine adjacent infos with same values
+        //                var combinedInfos = new List<StatusInfo>();
+        //                DateTime previousTimestamp = DateTime.MinValue;
+        //                for (var x = 0; x < infos.Count; x++)
+        //                {
+        //                    if (x == 0) previousTimestamp = infos[x].Start;
+
+        //                    if (x > 0)
+        //                    {
+        //                        if (infos[x].Value != infos[x - 1].Value || x == infos.Count - 1)
+        //                        {
+        //                            var newInfo = new StatusInfo();
+        //                            newInfo.Start = previousTimestamp;
+
+        //                            if (x == infos.Count - 1) newInfo.End = infos[x].End;
+        //                            else newInfo.End = infos[x].Start;
+
+        //                            newInfo.Value = infos[x - 1].Value;
+
+        //                            combinedInfos.Add(newInfo);
+
+        //                            previousTimestamp = infos[x].Start;
+        //                        }
+        //                    }
+        //                }
+
+        //                var events = new List<TimelineEvent>();
+
+        //                foreach (var info in combinedInfos)
+        //                {
+        //                    var e = CreateEvent(info.Start, info.End, info.Value);
+        //                    events.Add(e);
+        //                }
+
+        //                timeline.ResetEvents(events);
+        //            }
+        //        }
+        //    }
+        //}
+
         private TimelineEvent CreateEvent(DateTime start, DateTime end, string value)
         {
             var e = new TimelineEvent();
@@ -288,15 +372,15 @@ namespace TH_StatusTimeline.Controls
 
             Color alert = UI_Tools.Functions.Colors.GetColorFromResource(this, "StatusRed");
             Color idle = UI_Tools.Functions.Colors.GetColorFromResource(this, "StatusYellow");
-            Color production = UI_Tools.Functions.Colors.GetColorFromResource(this, "StatusGreen");
+            Color active = UI_Tools.Functions.Colors.GetColorFromResource(this, "StatusGreen");
 
             if (alert == null) alert = Colors.Red;
             if (alert == null) idle = Colors.Yellow;
-            if (alert == null) production = Colors.Green;
+            if (alert == null) active = Colors.Green;
 
             if (value == "Alert") e.EventBrush = new SolidColorBrush(alert);
             else if (value == "Idle") e.EventBrush = new SolidColorBrush(idle);
-            else if (value == "Production" || value == "Full Production") e.EventBrush = new SolidColorBrush(production);
+            else if (value == "Active") e.EventBrush = new SolidColorBrush(active);
 
             e.Title = value;
             e.Description = TimeSpan_Functions.ToFormattedString(duration);

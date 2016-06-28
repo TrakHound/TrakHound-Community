@@ -41,7 +41,6 @@ namespace TH_ControllerStatus.Controls
             DependencyProperty.Register("Available", typeof(bool), typeof(Row), new PropertyMetadata(false));
 
 
-
         public DeviceConfiguration Configuration
         {
             get { return (DeviceConfiguration)GetValue(ConfigurationProperty); }
@@ -52,38 +51,14 @@ namespace TH_ControllerStatus.Controls
             DependencyProperty.Register("Configuration", typeof(DeviceConfiguration), typeof(Row), new PropertyMetadata(null));
 
 
-
-        public bool Production
+        public string DeviceStatus
         {
-            get { return (bool)GetValue(ProductionProperty); }
-            set { SetValue(ProductionProperty, value); }
+            get { return (string)GetValue(DeviceStatusProperty); }
+            set { SetValue(DeviceStatusProperty, value); }
         }
 
-        public static readonly DependencyProperty ProductionProperty =
-            DependencyProperty.Register("Production", typeof(bool), typeof(Row), new PropertyMetadata(false));
-
-
-        public bool Idle
-        {
-            get { return (bool)GetValue(IdleProperty); }
-            set { SetValue(IdleProperty, value); }
-        }
-
-        public static readonly DependencyProperty IdleProperty =
-            DependencyProperty.Register("Idle", typeof(bool), typeof(Row), new PropertyMetadata(false));
-
-
-        public bool Alert
-        {
-            get { return (bool)GetValue(AlertProperty); }
-            set { SetValue(AlertProperty, value); }
-        }
-
-        public static readonly DependencyProperty AlertProperty =
-            DependencyProperty.Register("Alert", typeof(bool), typeof(Row), new PropertyMetadata(false));
-
-
-
+        public static readonly DependencyProperty DeviceStatusProperty =
+            DependencyProperty.Register("DeviceStatus", typeof(string), typeof(Row), new PropertyMetadata(null));
 
 
         public string Availability
@@ -235,11 +210,7 @@ namespace TH_ControllerStatus.Controls
             {
                 if (data.Data02 != null)
                 {
-                    Alert = DataTable_Functions.GetBooleanTableValue(data.Data02, "name", "Alert", "value");
-
-                    Idle = DataTable_Functions.GetBooleanTableValue(data.Data02, "name", "Idle", "value");
-
-                    Production = DataTable_Functions.GetBooleanTableValue(data.Data02, "name", "Production", "value");
+                    DeviceStatus = DataTable_Functions.GetTableValue(data.Data02, "name", "Device Status", "value");
                 }
             }
         }
@@ -253,8 +224,8 @@ namespace TH_ControllerStatus.Controls
                 EmergencyStop = DataTable_Functions.GetTableValue(data.Data02, "type", "EMERGENCY_STOP", "value1");
                 ExecutionMode = DataTable_Functions.GetTableValue(data.Data02, "type", "EXECUTION", "value1");
                 ControllerMode = DataTable_Functions.GetTableValue(data.Data02, "type", "CONTROLLER_MODE", "value1");
-                SystemStatus = DataTable_Functions.GetTableValue(data.Data02, "type", "SYSTEM", "value1");
-                SystemMessage = DataTable_Functions.GetTableValue(data.Data02, "type", "SYSTEM", "value2");
+                SystemStatus = DataTable_Functions.GetTableValue(data.Data02, "type", "SYSTEM", "value2");
+                SystemMessage = DataTable_Functions.GetTableValue(data.Data02, "type", "SYSTEM", "value1");
                 Program = DataTable_Functions.GetTableValue(data.Data02, "type", "PROGRAM", "value1");
                 Block = DataTable_Functions.GetTableValue(data.Data02, "type", "BLOCK", "value1");
                 Line = DataTable_Functions.GetTableValue(data.Data02, "type", "LINE", "value1");

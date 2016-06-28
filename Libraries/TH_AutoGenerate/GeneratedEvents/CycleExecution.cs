@@ -10,20 +10,20 @@ using TH_Global.Functions;
 
 namespace TH_AutoGenerate.GeneratedEvents
 {
-    public static class ProgramExecution
+    public static class CycleExecution
     {
         public static void Add(DataTable dt, List<DataItem> probeItems)
         {
             // Add Event
             string eventPrefix = "/GeneratedData/GeneratedEvents/Event||02";
-            DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix, "attributes", "id||02;name||program_execution;");
+            DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix, "attributes", "id||02;name||cycle_execution;");
 
             AddProgramStartedValue(eventPrefix, dt, probeItems);
             AddProgramPausedValue(eventPrefix, dt, probeItems);
             AddCaptureItems(eventPrefix, dt, probeItems);
 
             // Add Default
-            DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/Default", "value", "Program Stopped");
+            DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/Default", "value", "Stopped");
             DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/Default", "attributes", "numval||0;");
         }
 
@@ -55,7 +55,7 @@ namespace TH_AutoGenerate.GeneratedEvents
             if (item != null) DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||05", "attributes", "id||05;link||" + item.Id + ";link_type||ID;modifier||not;value||;");
 
             // Add Result
-            DataTable_Functions.UpdateTableValue(dt, "address", valuePrefix + "/Result", "value", "Program Started");
+            DataTable_Functions.UpdateTableValue(dt, "address", valuePrefix + "/Result", "value", "Started");
             DataTable_Functions.UpdateTableValue(dt, "address", valuePrefix + "/Result", "attributes", "numval||2;");
         }
 
@@ -94,7 +94,7 @@ namespace TH_AutoGenerate.GeneratedEvents
             if (item != null) DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||05", "attributes", "id||05;link||" + item.Id + ";link_type||ID;modifier||not;value||;");
 
             // Add Result
-            DataTable_Functions.UpdateTableValue(dt, "address", valuePrefix + "/Result", "value", "Program Paused");
+            DataTable_Functions.UpdateTableValue(dt, "address", valuePrefix + "/Result", "value", "Paused");
             DataTable_Functions.UpdateTableValue(dt, "address", valuePrefix + "/Result", "attributes", "numval||1;");
         }
 

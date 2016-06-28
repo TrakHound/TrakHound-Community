@@ -84,6 +84,7 @@ namespace TrakHound_Client
             "Status Timeline",
             "Status Hour Timeline",
             "Controller Status",
+            "Production Status",
             "OEE Status",
             "Device Status Times",
             "Production Status Times"

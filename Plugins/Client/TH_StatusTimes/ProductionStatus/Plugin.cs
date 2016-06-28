@@ -20,7 +20,7 @@ namespace TH_StatusTimes.ProductionStatus
 
         public string Description { get { return "View Production Status Times and Percentages for the current day"; } }
 
-        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_StatusTimes;component/Resources/Status_Percentage_01.png")); } }
+        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_StatusTimes;component/Resources/Production_Percentage_01.png")); } }
 
 
         public string Author { get { return "TrakHound"; } }

@@ -125,41 +125,53 @@ namespace TH_DeviceTable
 
         #region "Status"
 
-        private bool _alert;
-        public bool Alert
+        private string _deviceStatus;
+        public string DeviceStatus
         {
-            get { return _alert; }
+            get { return _deviceStatus; }
             set
             {
-                var val = _alert;
-                _alert = value;
-                if (val != _alert) NotifyChanged("Alert");
+                var val = _deviceStatus;
+                _deviceStatus = value;
+                if (val != _deviceStatus) NotifyChanged("DeviceStatus");
             }
         }
 
-        private bool _idle;
-        public bool Idle
-        {
-            get { return _idle; }
-            set
-            {
-                var val = _idle;
-                _idle = value;
-                if (val != _idle) NotifyChanged("Idle");
-            }
-        }
+        //private bool _alert;
+        //public bool Alert
+        //{
+        //    get { return _alert; }
+        //    set
+        //    {
+        //        var val = _alert;
+        //        _alert = value;
+        //        if (val != _alert) NotifyChanged("Alert");
+        //    }
+        //}
 
-        private bool _production;
-        public bool Production
-        {
-            get { return _production; }
-            set
-            {
-                var val = _production;
-                _production = value;
-                if (val != _production) NotifyChanged("Production");
-            }
-        }
+        //private bool _idle;
+        //public bool Idle
+        //{
+        //    get { return _idle; }
+        //    set
+        //    {
+        //        var val = _idle;
+        //        _idle = value;
+        //        if (val != _idle) NotifyChanged("Idle");
+        //    }
+        //}
+
+        //private bool _production;
+        //public bool Production
+        //{
+        //    get { return _production; }
+        //    set
+        //    {
+        //        var val = _production;
+        //        _production = value;
+        //        if (val != _production) NotifyChanged("Production");
+        //    }
+        //}
 
         #endregion
 

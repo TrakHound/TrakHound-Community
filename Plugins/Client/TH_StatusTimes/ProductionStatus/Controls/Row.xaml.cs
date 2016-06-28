@@ -51,36 +51,43 @@ namespace TH_StatusTimes.ProductionStatus.Controls
         public static readonly DependencyProperty ConfigurationProperty =
             DependencyProperty.Register("Configuration", typeof(TH_Configuration.DeviceConfiguration), typeof(Row), new PropertyMetadata(null));
 
-
-
-
-        public bool Active
+        public string DeviceStatus
         {
-            get { return (bool)GetValue(ActiveProperty); }
-            set { SetValue(ActiveProperty, value); }
+            get { return (string)GetValue(DeviceStatusProperty); }
+            set { SetValue(DeviceStatusProperty, value); }
         }
 
-        public static readonly DependencyProperty ActiveProperty =
-            DependencyProperty.Register("Active", typeof(bool), typeof(Row), new PropertyMetadata(false));
-
-        public bool Idle
-        {
-            get { return (bool)GetValue(IdleProperty); }
-            set { SetValue(IdleProperty, value); }
-        }
-
-        public static readonly DependencyProperty IdleProperty =
-            DependencyProperty.Register("Idle", typeof(bool), typeof(Row), new PropertyMetadata(false));
+        public static readonly DependencyProperty DeviceStatusProperty =
+            DependencyProperty.Register("DeviceStatus", typeof(string), typeof(Row), new PropertyMetadata(null));
 
 
-        public bool Alert
-        {
-            get { return (bool)GetValue(AlertProperty); }
-            set { SetValue(AlertProperty, value); }
-        }
+        //public bool Active
+        //{
+        //    get { return (bool)GetValue(ActiveProperty); }
+        //    set { SetValue(ActiveProperty, value); }
+        //}
 
-        public static readonly DependencyProperty AlertProperty =
-            DependencyProperty.Register("Alert", typeof(bool), typeof(Row), new PropertyMetadata(false));
+        //public static readonly DependencyProperty ActiveProperty =
+        //    DependencyProperty.Register("Active", typeof(bool), typeof(Row), new PropertyMetadata(false));
+
+        //public bool Idle
+        //{
+        //    get { return (bool)GetValue(IdleProperty); }
+        //    set { SetValue(IdleProperty, value); }
+        //}
+
+        //public static readonly DependencyProperty IdleProperty =
+        //    DependencyProperty.Register("Idle", typeof(bool), typeof(Row), new PropertyMetadata(false));
+
+
+        //public bool Alert
+        //{
+        //    get { return (bool)GetValue(AlertProperty); }
+        //    set { SetValue(AlertProperty, value); }
+        //}
+
+        //public static readonly DependencyProperty AlertProperty =
+        //    DependencyProperty.Register("Alert", typeof(bool), typeof(Row), new PropertyMetadata(false));
 
 
 
@@ -213,16 +220,18 @@ namespace TH_StatusTimes.ProductionStatus.Controls
             {
                 if (data.Data02 != null)
                 {
-                    var deviceStatus = DataTable_Functions.GetTableValue(data.Data02, "name", "Device Status", "value");
-                    if (deviceStatus != null)
-                    {
-                        switch (deviceStatus.ToLower())
-                        {
-                            case "active": Active = true; Idle = false; Alert = false; break;
-                            case "idle": Active = false; Idle = true; Alert = false; break;
-                            case "alert": Active = false; Idle = false; Alert = true; break;
-                        }
-                    }
+                    DeviceStatus = DataTable_Functions.GetTableValue(data.Data02, "name", "Device Status", "value");
+
+                    //var deviceStatus = DataTable_Functions.GetTableValue(data.Data02, "name", "Device Status", "value");
+                    //if (deviceStatus != null)
+                    //{
+                    //    switch (deviceStatus.ToLower())
+                    //    {
+                    //        case "active": Active = true; Idle = false; Alert = false; break;
+                    //        case "idle": Active = false; Idle = true; Alert = false; break;
+                    //        case "alert": Active = false; Idle = false; Alert = true; break;
+                    //    }
+                    //}
                 }
             }
         }

@@ -255,9 +255,9 @@ namespace TH_StatusHourTimeline.Controls
 
                 result.Type = DataTable_Functions.GetRowValue("type", row);
                 result.TotalTime = DataTable_Functions.GetDoubleFromRow("totaltime", row);
-                result.ProductionTime = DataTable_Functions.GetDoubleFromRow("production_status__production", row);
-                result.IdleTime = DataTable_Functions.GetDoubleFromRow("production_status__idle", row);
-                result.AlertTime = DataTable_Functions.GetDoubleFromRow("production_status__alert", row);
+                result.ProductionTime = DataTable_Functions.GetDoubleFromRow("device_status__active", row);
+                result.IdleTime = DataTable_Functions.GetDoubleFromRow("device_status__idle", row);
+                result.AlertTime = DataTable_Functions.GetDoubleFromRow("device_status__alert", row);
 
                 return result;
             }

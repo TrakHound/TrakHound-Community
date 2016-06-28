@@ -49,7 +49,7 @@
     <Compile Include="GeneratedEvents\DeviceStatus.cs" />
     <Compile Include="GeneratedEvents\PartsCount.cs" />
     <Compile Include="GeneratedEvents\ProductionStatus.cs" />
-    <Compile Include="GeneratedEvents\ProgramExecution.cs" />
+    <Compile Include="GeneratedEvents\CycleExecution.cs" />
     <Compile Include="InstanceData.cs" />
     <Compile Include="Parts.cs" />
     <Compile Include="Shifts.cs" />

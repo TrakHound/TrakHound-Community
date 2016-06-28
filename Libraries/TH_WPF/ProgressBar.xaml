@@ -18,7 +18,7 @@
         <Rectangle Fill="{Binding Foreground}" RadiusX="1" RadiusY="1">
             <Rectangle.Style>
                 <Style TargetType="Rectangle">
-                    <Setter Property="Width" Value="{Binding ProgressWidth}"/>
+                    <Setter Property="Width" Value="{Binding ProgressWidth, Mode=OneWay}"/>
                     <Setter Property="Height" Value="auto"/>
                     <Setter Property="HorizontalAlignment" Value="Left"/>
                     <Setter Property="VerticalAlignment" Value="Stretch"/>
