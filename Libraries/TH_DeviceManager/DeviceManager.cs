@@ -34,9 +34,13 @@ namespace TH_DeviceManager
             get { return currentuser; }
             set
             {
+                var prevUser = currentuser;
                 currentuser = value;
 
-                LoadDevices();
+                if (!(prevUser != null && currentuser != null && prevUser.Username == currentuser.Username))
+                {
+                    LoadDevices();
+                }
             }
         }
 

@@ -60,8 +60,16 @@ namespace TH_UserManagement.Management.Remote
                     else if (ImageFormat.Bmp.Equals(img.RawFormat)) contentFormat = "image/bmp";
                     else if (ImageFormat.Tiff.Equals(img.RawFormat)) contentFormat = "image/tiff";
 
-                    NameValueCollection nvc = new NameValueCollection();
-                    //if (HTTP.UploadFile("https://www.feenux.com/php/configurations/uploadimage.php", localpath, "file", contentFormat, nvc))
+                    var nvc = new NameValueCollection();
+                    string response = HTTP.UploadFile("https://www.feenux.com/php/configurations/uploadimage.php", localpath, "file", contentFormat, nvc);
+                    if (response != null)
+                    {
+                        if (response == "Image Uploaded Successfully!") result = true;
+                    }
+
+
+                    //NameValueCollection nvc = new NameValueCollection();
+                    //if (TH_Global.Web.HTTP.UploadFile("https://www.feenux.com/php/configurations/uploadimage.php", localpath, "file", contentFormat, nvc))
                     //{
                     //    result = true;
                     //}
@@ -170,11 +178,28 @@ namespace TH_UserManagement.Management.Remote
         {
             bool result = false;
 
-            NameValueCollection nvc = new NameValueCollection();
-            //if (HTTP.UploadFile("https://www.feenux.com/php/users/uploadprofileimage.php", localpath, "file", "image/jpeg", nvc))
+            result = Images.UploadImage(localpath);
+
+            //string contentFormat = null;
+
+            //if (ImageFormat.Jpeg.Equals(img.RawFormat)) contentFormat = "image/jpeg";
+            //else if (ImageFormat.Png.Equals(img.RawFormat)) contentFormat = "image/png";
+            //else if (ImageFormat.Gif.Equals(img.RawFormat)) contentFormat = "image/gif";
+            //else if (ImageFormat.Bmp.Equals(img.RawFormat)) contentFormat = "image/bmp";
+            //else if (ImageFormat.Tiff.Equals(img.RawFormat)) contentFormat = "image/tiff";
+
+            //var nvc = new NameValueCollection();
+            //string response = HTTP.UploadFile("https://www.feenux.com/php/configurations/uploadimage.php", localpath, "file", contentFormat, nvc);
+            //if (response != null)
             //{
-            //    result = true;
+            //    if (response == "Image Uploaded Successfully!") result = true;
             //}
+
+            //NameValueCollection nvc = new NameValueCollection();
+            ////if (HTTP.UploadFile("https://www.feenux.com/php/users/uploadprofileimage.php", localpath, "file", "image/jpeg", nvc))
+            ////{
+            ////    result = true;
+            ////}
 
             return result;
         }

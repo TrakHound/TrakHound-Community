@@ -706,6 +706,7 @@ namespace TrakHound_Client.Menus.Login
 
                     CurrentUser = UploadProfileImage(CurrentUser, imagePath);
 
+                    LoadProfileImage(CurrentUser);
 
                     //// Crop and Resize image
                     //System.Drawing.Image img = ProcessImage(imagePath);
@@ -788,7 +789,7 @@ namespace TrakHound_Client.Menus.Login
 
                     img.Save(localPath);
 
-                    result = UserManagement.ProfileImage.Set(userConfig.SessionToken, localPath);
+                    result = UserManagement.ProfileImage.Set(userConfig.SessionToken, localPath); 
                 }
             }
 

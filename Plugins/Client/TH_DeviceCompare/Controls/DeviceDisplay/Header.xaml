@@ -29,15 +29,15 @@
                         <Setter Property="Background" Value="#22000000"/>
                     </DataTrigger>
 
-                    <DataTrigger Binding="{Binding Production}" Value="true">
+                    <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
                         <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
                     </DataTrigger>
 
-                    <DataTrigger Binding="{Binding Idle}" Value="true">
+                    <DataTrigger Binding="{Binding DeviceStatus}" Value="Idle">
                         <Setter Property="Background" Value="{StaticResource StatusYellow}"/>
                     </DataTrigger>
 
-                    <DataTrigger Binding="{Binding Alert}" Value="true">
+                    <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
                         <Setter Property="Background" Value="{StaticResource StatusRed}"/>
                     </DataTrigger>
 
@@ -430,7 +430,7 @@
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
                                             <Condition Binding="{Binding Connected}" Value="true"/>
-                                            <Condition Binding="{Binding Alert}" Value="true"/>
+                                            <Condition Binding="{Binding DeviceStatus}" Value="Alert"/>
                                         </MultiDataTrigger.Conditions>
 
                                         <MultiDataTrigger.EnterActions>

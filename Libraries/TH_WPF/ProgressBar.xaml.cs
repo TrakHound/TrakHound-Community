@@ -49,12 +49,18 @@ namespace TH_WPF
         }
 
         public static readonly DependencyProperty MaximumProperty =
-            DependencyProperty.Register("Maximum", typeof(double), typeof(ProgressBar), new PropertyMetadata(100d, new PropertyChangedCallback(Value_PropertyChanged)));
+            DependencyProperty.Register("Maximum", typeof(double), typeof(ProgressBar), new PropertyMetadata(100d, new PropertyChangedCallback(Maximum_PropertyChanged)));
 
         private static void Value_PropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
             var pb = obj as ProgressBar;
             if (pb != null) pb.SetProgressValue(pb.Value);
+        }
+
+        private static void Maximum_PropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        {
+            var pb = obj as ProgressBar;
+            if (pb != null) pb.SetProgressValue(pb.Value, false);
         }
 
 
@@ -92,10 +98,15 @@ namespace TH_WPF
             DependencyProperty.Register("ProgressHeight", typeof(double), typeof(ProgressBar), new PropertyMetadata(0d));
 
 
+        private double percentage = 0;
+
         void SetProgressValue(double value, bool animate = true)
         {
             if (Orientation == ProgressBarOrientation.Vertical) SetProgressHeight(value, animate);
             else SetProgressWidth(value, animate);
+
+            if (Maximum > 0) percentage = Value / Maximum;
+            else percentage = 0;
         }
         
         void SetProgressWidth(double value, bool animate = true)
@@ -104,12 +115,15 @@ namespace TH_WPF
 
             double val = Math.Min(Maximum, value);
 
+            double p = 0;
+            if (Maximum > 0) p = val / Maximum;
+
             // Get ProgressWidth by calculating proportion of Value and Maximum
             val = (val * controlWidth) / Maximum;
 
             if (ProgressWidth != val)
             {
-                if (AnimateValueChange && animate) Animate(val, ProgressWidthProperty);
+                if (AnimateValueChange && animate && percentage != p) Animate(val, ProgressWidthProperty);
                 else SetValue(ProgressWidthProperty, val);
             }
         }
@@ -120,12 +134,15 @@ namespace TH_WPF
 
             double val = Math.Min(Maximum, value);
 
+            double p = 0;
+            if (Maximum > 0) p = val / Maximum;
+
             // Get ProgressWidth by calculating proportion of Value and Maximum
             val = (val * controlHeight) / Maximum;
 
             if (ProgressHeight != val)
             {
-                if (AnimateValueChange && animate) Animate(val, ProgressHeightProperty);
+                if (AnimateValueChange && animate && percentage != p) Animate(val, ProgressHeightProperty);
                 else ProgressHeight = val;
             }
         }

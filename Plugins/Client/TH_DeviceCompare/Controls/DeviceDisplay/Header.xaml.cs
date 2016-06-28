@@ -123,11 +123,13 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
         /// <param name="snapshotData"></param>
         public void UpdateData_Snapshots(object snapshotData)
         {
-            Update_Alert(snapshotData);
+            DeviceStatus = DataTable_Functions.GetTableValue(snapshotData, "name", "Device Status", "value");
 
-            Update_Idle(snapshotData);
+            //Update_Alert(snapshotData);
 
-            Update_Production(snapshotData);
+            //Update_Idle(snapshotData);
+
+            //Update_Production(snapshotData);
         }
 
         /// <summary>
@@ -139,47 +141,47 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
             Update_Break(variableData);
         }
 
-        void Update_Production(object snapshotData)
-        {
-            DataTable dt = snapshotData as DataTable;
-            if (dt != null)
-            {
-                string value = DataTable_Functions.GetTableValue(dt, "name", "Production", "value");
+        //void Update_Production(object snapshotData)
+        //{
+        //    DataTable dt = snapshotData as DataTable;
+        //    if (dt != null)
+        //    {
+        //        string value = DataTable_Functions.GetTableValue(dt, "name", "Production", "value");
 
-                bool val = true;
-                if (value != null) bool.TryParse(value, out val);
+        //        bool val = true;
+        //        if (value != null) bool.TryParse(value, out val);
 
-                Production = val;
-            }
-        }
+        //        Production = val;
+        //    }
+        //}
 
-        void Update_Idle(object snapshotData)
-        {
-            DataTable dt = snapshotData as DataTable;
-            if (dt != null)
-            {
-                string value = DataTable_Functions.GetTableValue(dt, "name", "Idle", "value");
+        //void Update_Idle(object snapshotData)
+        //{
+        //    DataTable dt = snapshotData as DataTable;
+        //    if (dt != null)
+        //    {
+        //        string value = DataTable_Functions.GetTableValue(dt, "name", "Idle", "value");
 
-                bool val = true;
-                if (value != null) bool.TryParse(value, out val);
+        //        bool val = true;
+        //        if (value != null) bool.TryParse(value, out val);
 
-                Idle = val;
-            }
-        }
+        //        Idle = val;
+        //    }
+        //}
 
-        void Update_Alert(object snapshotData)
-        {
-            DataTable dt = snapshotData as DataTable;
-            if (dt != null)
-            {
-                string value = DataTable_Functions.GetTableValue(dt, "name", "Alert", "value");
+        //void Update_Alert(object snapshotData)
+        //{
+        //    DataTable dt = snapshotData as DataTable;
+        //    if (dt != null)
+        //    {
+        //        string value = DataTable_Functions.GetTableValue(dt, "name", "Alert", "value");
 
-                bool val = true;
-                if (value != null) bool.TryParse(value, out val);
+        //        bool val = true;
+        //        if (value != null) bool.TryParse(value, out val);
 
-                Alert = val;
-            }
-        }
+        //        Alert = val;
+        //    }
+        //}
 
         void Update_Break(object variableData)
         {
@@ -248,34 +250,45 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
             DependencyProperty.Register("ConnectionText", typeof(string), typeof(Header), new PropertyMetadata(null));
 
 
-        public bool Production
+        public string DeviceStatus
         {
-            get { return (bool)GetValue(ProductionProperty); }
-            set { SetValue(ProductionProperty, value); }
+            get { return (string)GetValue(DeviceStatusProperty); }
+            set { SetValue(DeviceStatusProperty, value); }
         }
 
-        public static readonly DependencyProperty ProductionProperty =
-            DependencyProperty.Register("Production", typeof(bool), typeof(Header), new PropertyMetadata(false));
+        public static readonly DependencyProperty DeviceStatusProperty =
+            DependencyProperty.Register("DeviceStatus", typeof(string), typeof(Header), new PropertyMetadata(null));
 
 
-        public bool Idle
-        {
-            get { return (bool)GetValue(IdleProperty); }
-            set { SetValue(IdleProperty, value); }
-        }
 
-        public static readonly DependencyProperty IdleProperty =
-            DependencyProperty.Register("Idle", typeof(bool), typeof(Header), new PropertyMetadata(false));
+        //public bool Production
+        //{
+        //    get { return (bool)GetValue(ProductionProperty); }
+        //    set { SetValue(ProductionProperty, value); }
+        //}
+
+        //public static readonly DependencyProperty ProductionProperty =
+        //    DependencyProperty.Register("Production", typeof(bool), typeof(Header), new PropertyMetadata(false));
 
 
-        public bool Alert
-        {
-            get { return (bool)GetValue(AlertProperty); }
-            set { SetValue(AlertProperty, value); }
-        }
+        //public bool Idle
+        //{
+        //    get { return (bool)GetValue(IdleProperty); }
+        //    set { SetValue(IdleProperty, value); }
+        //}
 
-        public static readonly DependencyProperty AlertProperty =
-            DependencyProperty.Register("Alert", typeof(bool), typeof(Header), new PropertyMetadata(false));
+        //public static readonly DependencyProperty IdleProperty =
+        //    DependencyProperty.Register("Idle", typeof(bool), typeof(Header), new PropertyMetadata(false));
+
+
+        //public bool Alert
+        //{
+        //    get { return (bool)GetValue(AlertProperty); }
+        //    set { SetValue(AlertProperty, value); }
+        //}
+
+        //public static readonly DependencyProperty AlertProperty =
+        //    DependencyProperty.Register("Alert", typeof(bool), typeof(Header), new PropertyMetadata(false));
 
 
 
@@ -686,9 +699,9 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
             root.DataContext = this;
 
             Connected = true;
-            Production = true;
-            Idle = false;
-            Alert = false;
+            //Production = true;
+            //Idle = false;
+            //Alert = false;
             ScheduledDowntime = true;
             LastUpdatedTimestamp = DateTime.Now.ToString();
            
