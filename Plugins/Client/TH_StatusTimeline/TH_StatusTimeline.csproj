@@ -63,10 +63,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\UI Tools\UI Tools\UI Tools.csproj">
-      <Project>{b4c046ff-4a7d-4059-aaf8-713059ccf0f3}</Project>
-      <Name>UI Tools</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Libraries\TH_Configuration\TH_Configuration.csproj">
       <Project>{147a0360-5f86-4d33-a874-46f785723ead}</Project>
       <Name>TH_Configuration</Name>
@@ -86,6 +82,10 @@
     <ProjectReference Include="..\..\..\Libraries\TH_WPF\TH_WPF.csproj">
       <Project>{e039a6be-d47c-4046-86d3-71acd62a217a}</Project>
       <Name>TH_WPF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Libraries\UI Tools\UI Tools.csproj">
+      <Project>{b4c046ff-4a7d-4059-aaf8-713059ccf0f3}</Project>
+      <Name>UI Tools</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

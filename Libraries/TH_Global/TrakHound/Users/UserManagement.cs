@@ -20,6 +20,22 @@ namespace TH_Global.TrakHound.Users
 {
     public static class UserManagement
     {
+        #region "API Configuration"
+
+        public static void SetApiConfiguration(ApiConfiguration apiConfig)
+        {
+            if (apiConfig != null)
+            {
+                _apiHost = new Uri(apiConfig.Address);
+            }
+        }
+
+        private static Uri _apiHost = new Uri("https://www.feenux.com/trakhound/api/");
+        public static Uri ApiHost { get { return _apiHost; } }
+
+        #endregion
+
+
         public static UserConfiguration CreateUser(CreateUserInfo info, string note = "")
         {
             string json = JSON.FromObject(info);
@@ -27,7 +43,7 @@ namespace TH_Global.TrakHound.Users
             {
                 UserConfiguration result = null;
 
-                string url = "https://www.feenux.com/trakhound/api/users/create/";
+                string url = new Uri(_apiHost, "api/users/create/").ToString();
 
                 var postDatas = new NameValueCollection();
                 postDatas["user"] = json;
@@ -52,7 +68,8 @@ namespace TH_Global.TrakHound.Users
             {
                 UserConfiguration result = null;
 
-                string url = "https://www.feenux.com/trakhound/api/users/edit/";
+                string url = new Uri(_apiHost, "users/edit/").ToString();
+                //string url = "https://www.feenux.com/trakhound/api/users/edit/";
 
                 var postDatas = new NameValueCollection();
                 postDatas["user"] = json;
@@ -79,7 +96,8 @@ namespace TH_Global.TrakHound.Users
 
             if (id != null && id.Length > 0)
             {
-                string url = "https://www.feenux.com/trakhound/api/login/";
+                string url = new Uri(_apiHost, "users/login/index.php").ToString();
+                //string url = "https://www.feenux.com/trakhound/api/login/index.php";
 
                 var postDatas = new NameValueCollection();
                 postDatas["id"] = id;
@@ -103,7 +121,8 @@ namespace TH_Global.TrakHound.Users
 
             if (id != null && id.Length > 0)
             {
-                string url = "https://www.feenux.com/trakhound/api/login/";
+                string url = new Uri(_apiHost, "users/login/index.php").ToString();
+                //string url = "https://www.feenux.com/trakhound/api/login/index.php";
 
                 string senderId = SenderId.Get();
 
@@ -132,7 +151,8 @@ namespace TH_Global.TrakHound.Users
             {
                 string senderId = SenderId.Get();
 
-                string url = "https://www.feenux.com/trakhound/api/login/?token=" + token + "&sender_id=" + senderId + "&note=" + note;
+                string url = new Uri(_apiHost, "users/login/?token=" + token + "&sender_id=" + senderId + "&note=" + note).ToString();
+                //string url = "https://www.feenux.com/trakhound/api/login/?token=" + token + "&sender_id=" + senderId + "&note=" + note;
 
                 string response = HTTP.GET(url);
                 if (response != null)
@@ -148,8 +168,9 @@ namespace TH_Global.TrakHound.Users
         public static bool Logout(string token = null)
         {
             bool result = false;
-       
-            string url = "https://www.feenux.com/trakhound/api/logout/?";
+
+            string url = new Uri(_apiHost, "users/logout/").ToString();
+            //string url = "https://www.feenux.com/trakhound/api/logout/?";
             string senderId = SenderId.Get();
 
             url += "sender_id=" + SenderId.Get();
@@ -164,14 +185,13 @@ namespace TH_Global.TrakHound.Users
 
         public static class ProfileImage
         {
-
             public static UserConfiguration Set(string token, string path)
             {
                 UserConfiguration result = null;
 
                 if (!string.IsNullOrEmpty(token))
                 {
-                    string url = "https://www.feenux.com/trakhound/api/profile_image/set/";
+                    string url = "https://www.feenux.com/trakhound/api/profile_image/set/index.php";
                     string senderId = SenderId.Get();
 
                     var postDatas = new NameValueCollection();
@@ -239,9 +259,7 @@ namespace TH_Global.TrakHound.Users
 
                 return result;
             }
-
         }
-
 
         public static class Token
         {

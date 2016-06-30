@@ -1,0 +1,21 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--Border Colors-->
+    <Color x:Key="DarkGrayBorder_Color">#FF636363</Color>
+    <Color x:Key="LightGrayBorder_Color">#FFC8C8C8</Color>
+    <Color x:Key="VeryLightGrayBorder_Color">#AAC8C8C8</Color>
+    <Color x:Key="BlueBorder_Color">#FF0050A0</Color>
+
+    <!--Border Brushes-->
+    <SolidColorBrush x:Key="DarkGrayBorder" Color="{StaticResource DarkGrayBorder_Color}" />
+    <SolidColorBrush x:Key="LightGrayBorder" Color="{StaticResource LightGrayBorder_Color}" />
+    <SolidColorBrush x:Key="VeryLightGrayBorder" Color="{StaticResource VeryLightGrayBorder_Color}" />
+    <SolidColorBrush x:Key="BlueBorder" Color="{StaticResource BlueBorder_Color}" />
+    <LinearGradientBrush x:Key="GrayGradientBorder" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="{StaticResource DarkGrayBorder_Color}" Offset="0"/>
+        <GradientStop Color="{StaticResource LightGrayBorder_Color}" Offset="0.5"/>
+        <GradientStop Color="{StaticResource DarkGrayBorder_Color}" Offset="1"/>
+    </LinearGradientBrush>
+
+</ResourceDictionary>

@@ -1,0 +1,172 @@
+﻿<!--
+ * Copyright (c) 2010, Andriy Syrov
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification, are permitted provided 
+ * that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the 
+ * following disclaimer.
+ * 
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and 
+ * the following disclaimer in the documentation and/or other materials provided with the distribution.
+ *
+ * Neither the name of Andriy Syrov nor the names of his contributors may be used to endorse or promote 
+ * products derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED 
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A 
+ * PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY 
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED 
+ * TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN 
+ * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ *   
+ -->
+
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:s="clr-namespace:System;assembly=mscorlib"
+    xmlns:timeline="clr-namespace:TimelineLibrary"
+    xmlns:core="clr-namespace:ColorWheel.Core;assembly=ColorWheel.Core"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <core:ColorManager
+        x:Key="ColorManager" />
+
+    <!-- Region Column Colors -->
+    
+    <core:TemplateColor
+        x:Key="TimelineColumnBackground"
+        Name="TimelineColumnBackground"
+        Color="#FF111111"
+        Category="Timeline\\Columns" />
+
+    <core:TemplateColor
+        x:Key="TimelineColumnForeground"
+        Name="TimelineColumnForeground"
+        Color="#FF777777"
+        Category="Timeline\\Columns" />
+
+    <core:TemplateColor
+        x:Key="TimelineColumnBorder"
+        Name="TimelineColumnBorder"
+        Color="#FF222222"
+        Category="Timeline\\Columns" />
+
+    <core:TemplateColor
+        x:Key="TimelineVisibleWindowBackground"
+        Name="TimelineVisibleWindowBackground"
+        Color="#66444444"
+        Effect="3D"
+        Category="Timeline\\Columns" />
+
+    <!-- EndRegion -->
+
+    <!-- Region Event -->
+    
+    <core:TemplateColor
+        x:Key="TimelineEventBackground"
+        Name="TimelineEventBackground"
+        Color="#CC222222"
+        Effect="3D"
+        Category="Timeline\\Event" />
+
+    <core:TemplateColor
+        x:Key="TimelineEventForeground"
+        Name="TimelineEventForeground"
+        Color="#FF999999"
+        Category="Timeline\\Event" />
+
+    <core:TemplateColor
+        x:Key="TimelineEventBorder"
+        Name="TimelineEventBorder"
+        Color="#FF444444"
+        Category="Timeline\\Event" />
+
+    <core:TemplateColor
+        x:Key="TimelineEventLine"
+        Name="TimelineEventLine"
+        Color="#FF555555"
+        Category="Timeline\\Event" />
+
+    <!-- EndRegion -->
+
+    <!-- Region Tooltip -->
+    
+    <core:TemplateColor
+        x:Key="TimelineTooltipBackground"
+        Name="TimelineTooltipBackground"
+        BasedOnTemplate="{StaticResource TimelineEventBackground}"
+        Category="Timeline\\Tooltip" />
+
+    <core:TemplateColor
+        x:Key="TimelineTooltipBorder"
+        Name="TimelineTooltipBorder"
+        BasedOnTemplate="{StaticResource TimelineEventBorder}"
+        Category="Timeline\\Tooltip" />
+
+    <core:TemplateColor
+        x:Key="TimelineTooltipForeground"
+        Name="TimelineTooltipForeground"
+        BasedOnTemplate="{StaticResource TimelineEventForeground}"
+        Category="Timeline\\Tooltip" />
+    
+    <!-- EndRegion -->
+
+    <!-- Region Toolbox -->
+    
+    <core:TemplateColor
+        x:Key="TimelineToolboxBackground"
+        Name="TimelineToolboxBackground"
+        BasedOnTemplate="{StaticResource TimelineColumnBackground}"
+        Effect="3D"
+        Category="Timeline\\Toolbox" />
+
+    <core:TemplateColor
+        x:Key="TimelineToolboxBorder"
+        Name="TimelineToolboxBorder"
+        BasedOnTemplate="{StaticResource TimelineColumnBorder}"
+        Category="Timeline\\Toolbox" />
+
+    <core:TemplateColor
+        x:Key="TimelineToolboxButtonBackground"
+        Name="TimelineToolboxButtonBackground"
+        BasedOnTemplate="{StaticResource TimelineColumnBackground}"
+        Effect="3D"
+        Category="Timeline\\Toolbox" />
+    
+    <core:TemplateColor
+        x:Key="TimelineToolboxButtonForeground"
+        Name="TimelineToolboxButtonForeground"
+        BasedOnTemplate="{StaticResource TimelineEventForeground}"
+        Category="Timeline\\Toolbox" />
+    
+    <!-- EndRegion -->
+
+    <!-- Region Misc -->
+    
+    <core:TemplateColor
+        x:Key="TimelineNavigationButtonBorder"
+        Name="TimelineNavigationButtonBorder"
+        BasedOnTemplate="{StaticResource TimelineColumnBorder}"
+        Effect="Light(0.2)"
+        Category="Timeline\\Toolbox" />
+
+    <!-- EndRegion -->
+
+    <s:Int32
+        x:Key="TooltipTimeout">60</s:Int32>
+
+    <s:Double
+        x:Key="TimelineVisibleWindowRadius">2</s:Double>
+    
+    <CornerRadius
+        TopLeft="2"
+        TopRight="2"
+        BottomLeft="2"
+        BottomRight="2"
+        x:Key="TimelineEventCornerRadius" />
+
+</ResourceDictionary>

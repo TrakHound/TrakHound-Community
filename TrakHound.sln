@@ -123,6 +123,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_AutoGenerate", "Librarie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_ProductionStatus", "Plugins\Client\TH_ProductionStatus\TH_ProductionStatus.csproj", "{58AF223D-50A0-416B-9ABB-B7CBFA6A4DA1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI Tools", "Libraries\UI Tools\UI Tools.csproj", "{B4C046FF-4A7D-4059-AAF8-713059CCF0F3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -448,6 +450,12 @@ Global
 		{58AF223D-50A0-416B-9ABB-B7CBFA6A4DA1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{58AF223D-50A0-416B-9ABB-B7CBFA6A4DA1}.Server|Any CPU.ActiveCfg = Release|Any CPU
 		{58AF223D-50A0-416B-9ABB-B7CBFA6A4DA1}.Server|Any CPU.Build.0 = Release|Any CPU
+		{B4C046FF-4A7D-4059-AAF8-713059CCF0F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4C046FF-4A7D-4059-AAF8-713059CCF0F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4C046FF-4A7D-4059-AAF8-713059CCF0F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4C046FF-4A7D-4059-AAF8-713059CCF0F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4C046FF-4A7D-4059-AAF8-713059CCF0F3}.Server|Any CPU.ActiveCfg = Release|Any CPU
+		{B4C046FF-4A7D-4059-AAF8-713059CCF0F3}.Server|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -503,5 +511,6 @@ Global
 		{3D043DAF-53BB-47E1-89C3-871702819AEB} = {635E4A98-547F-4D6A-A484-565DC42D336A}
 		{6C22E8AB-DD87-4B36-A28E-A44B4C6BF779} = {EEAC6CD4-32AF-4324-802F-4EE58C8CF5E5}
 		{58AF223D-50A0-416B-9ABB-B7CBFA6A4DA1} = {635E4A98-547F-4D6A-A484-565DC42D336A}
+		{B4C046FF-4A7D-4059-AAF8-713059CCF0F3} = {EEAC6CD4-32AF-4324-802F-4EE58C8CF5E5}
 	EndGlobalSection
 EndGlobal

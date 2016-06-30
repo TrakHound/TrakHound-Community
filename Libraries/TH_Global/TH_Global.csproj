@@ -47,6 +47,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xaml" />
@@ -90,6 +91,17 @@
     <Compile Include="Security.cs" />
     <Compile Include="States.cs" />
     <Compile Include="TableNames.cs" />
+    <Compile Include="TrakHound\ApiConfiguration.cs" />
+    <Compile Include="TrakHound\Configurations\Converter Sub Classes\ObjectToXml.cs" />
+    <Compile Include="TrakHound\Configurations\Converter Sub Classes\TableToXml.cs" />
+    <Compile Include="TrakHound\Configurations\Converter Sub Classes\XmlToTable.cs" />
+    <Compile Include="TrakHound\Configurations\Converter.cs" />
+    <Compile Include="TrakHound\Configurations\Database_Settings.cs" />
+    <Compile Include="TrakHound\Configurations\Description_Settings.cs" />
+    <Compile Include="TrakHound\Configurations\DeviceConfiguration.cs" />
+    <Compile Include="TrakHound\Configurations\FileLocation_Settings.cs" />
+    <Compile Include="TrakHound\Configurations\IConfiguration.cs" />
+    <Compile Include="TrakHound\Devices\Update.cs" />
     <Compile Include="TrakHound\Images.cs" />
     <Compile Include="TrakHound\Shifts.cs" />
     <Compile Include="TrakHound\Users\CreateUserInfo.cs" />

@@ -38,10 +38,10 @@ namespace TH_Global.TrakHound.Users
 
         public DateTime LastLogin { get; set; }
 
-        public int DeviceLimit { get; set; }
-        public int DeviceCount { get; set; }
-        public int UserLevel { get; set; }
-        public int PlanType { get; set; }
+        //public int DeviceLimit { get; set; }
+        //public int DeviceCount { get; set; }
+        //public int UserLevel { get; set; }
+        //public int PlanType { get; set; }
 
         public static UserConfiguration Get(string json)
         {
