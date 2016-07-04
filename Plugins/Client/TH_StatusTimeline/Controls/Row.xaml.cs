@@ -8,6 +8,11 @@ using TH_Global.Functions;
 using TH_Plugins;
 using UI_Tools.Timeline;
 
+using TH_Configuration;
+using TH_Database;
+using TH_Global;
+using TH_Global.Shifts;
+
 namespace TH_StatusTimeline.Controls
 {
     /// <summary>
@@ -103,7 +108,6 @@ namespace TH_StatusTimeline.Controls
             UpdateAvailability(data);
             UpdateSnapshots(data);
             UpdateVariables(data);
-            UpdateStatusData(data);
         }
 
         private void UpdateDatabaseConnection(EventData data)
@@ -138,6 +142,8 @@ namespace TH_StatusTimeline.Controls
                     currentTime = DataTable_Functions.GetDateTimeTableValue(data.Data02, "variable", "shift_currenttime", "value");
 
                     shiftDate = DataTable_Functions.GetTableValue(data.Data02, "variable", "shift_date", "value");
+
+                    UpdateDeviceStatusData(data, shiftDate);
                 }
             }
         }
@@ -159,11 +165,147 @@ namespace TH_StatusTimeline.Controls
             }
         }
 
-        private DateTime lastUIUpdate = DateTime.MinValue;
 
-        public TimeSpan UIDelay = TimeSpan.FromSeconds(30);
+        public DateTime LastTimelineUpdate = DateTime.MinValue;
 
+        private TimeSpan UIDelay = TimeSpan.FromSeconds(30);
         private TimeSpan MIN_DURATION = TimeSpan.FromSeconds(60);
+
+        private void UpdateDeviceStatusData(EventData data, string shiftDate)
+        {
+            if (currentTime > DateTime.MinValue && !string.IsNullOrEmpty(shiftDate))
+            {
+                if ((DateTime.Now - LastTimelineUpdate) > UIDelay)
+                {
+                    LastTimelineUpdate = DateTime.Now;
+
+                    DateTime d = DateTime.MinValue;
+                    if (DateTime.TryParse(shiftDate, out d))
+                    {
+                        var start = new DateTime(d.Year, d.Month, d.Day, 0, 0, 0).Subtract(TimeSpan.FromDays(1));
+                        var end = new DateTime(d.Year, d.Month, d.Day, 23, 59, 59);
+
+                        var deviceConfig = (DeviceConfiguration)data.Data01;
+
+                        UpdateDeviceStatusData(deviceConfig, start, end);
+                    }
+                }
+            }
+        }
+
+        private void UpdateDeviceStatusData(DeviceConfiguration config, DateTime start, DateTime end)
+        {
+            if (end < start) end = end.AddDays(1);
+
+            if (start > DateTime.MinValue && end > DateTime.MinValue)
+            {
+                string filter = "WHERE TIMESTAMP BETWEEN '" + start.ToString("yyyy-MM-dd HH:mm:ss") + "' AND '" + end.ToString("yyyy-MM-dd HH:mm:ss") + "'";
+
+                string tableName = TableNames.Gen_Events_TablePrefix + "device_status";
+
+                DataTable dt = Table.Get(config.Databases_Client, Global.GetTableName(tableName, config.DatabaseId), filter);
+                if (dt != null)
+                {
+                    // Get list of all infos
+                    var infos = StatusInfo.FromTable(dt);
+
+                    // Filter out infos with duration less than min
+                    infos = infos.FindAll(x => x.Duration >= MIN_DURATION);
+
+                    if (infos.Count > 0 && currentTime > DateTime.MinValue && currentTime > infos[infos.Count - 1].End)
+                    {
+                        var info = new StatusInfo();
+                        info.Value = infos[infos.Count - 1].Value;
+                        info.Start = infos[infos.Count - 1].End;
+                        info.End = currentTime;
+                        infos.Add(info);
+
+                        DateTime n = currentTime;
+                        timeline.MaxDateTime = new DateTime(n.Year, n.Month, n.Day, 23, 59, 59);
+                        timeline.MinDateTime = new DateTime(n.Year, n.Month, n.Day, 0, 0, 0);
+
+                        timeline.CurrentDateTime = n;
+                    }
+
+
+                    // Combine adjacent infos with same values
+                    var combinedInfos = new List<StatusInfo>();
+                    DateTime previousTimestamp = DateTime.MinValue;
+                    for (var x = 0; x < infos.Count; x++)
+                    {
+                        if (x == 0) previousTimestamp = infos[x].Start;
+
+                        if (x > 0)
+                        {
+                            if (infos[x].Value != infos[x - 1].Value || x == infos.Count - 1)
+                            {
+                                var newInfo = new StatusInfo();
+                                newInfo.Start = previousTimestamp;
+
+                                if (x == infos.Count - 1) newInfo.End = infos[x].End;
+                                else newInfo.End = infos[x].Start;
+
+                                newInfo.Value = infos[x - 1].Value;
+
+                                combinedInfos.Add(newInfo);
+
+                                previousTimestamp = infos[x].Start;
+                            }
+                        }
+                    }
+
+                    var events = new List<TimelineEvent>();
+
+                    foreach (var info in combinedInfos)
+                    {
+                        var e = CreateEvent(info.Start, info.End, info.Value);
+                        events.Add(e);
+                    }
+
+                    timeline.ResetEvents(events);
+                }
+            }
+        }
+
+        //static EventData GetProductionStatusData(DeviceConfiguration config, ShiftData shiftData)
+        //{
+        //    var result = new EventData();
+
+        //    DateTime start = DateTime.MinValue;
+        //    DateTime.TryParse(shiftData.shiftStartUTC, out start);
+
+        //    DateTime end = DateTime.MinValue;
+        //    DateTime.TryParse(shiftData.shiftEndUTC, out end);
+
+        //    if (end < start) end = end.AddDays(1);
+
+        //    if (start > DateTime.MinValue && end > DateTime.MinValue)
+        //    {
+        //        string filter = "WHERE TIMESTAMP BETWEEN '" + start.ToString("yyyy-MM-dd HH:mm:ss") + "' AND '" + end.ToString("yyyy-MM-dd HH:mm:ss") + "'";
+
+        //        string tableName = TableNames.Gen_Events_TablePrefix + "production_status";
+
+
+        //        DataTable dt = Table.Get(config.Databases_Client, Global.GetTableName(tableName, config.DatabaseId), filter);
+        //        if (dt != null)
+        //        {
+        //            var data = new EventData();
+        //            data.Id = "StatusData_ProductionStatus";
+        //            data.Data01 = config;
+        //            data.Data02 = dt;
+
+        //            result = data;
+        //        }
+        //    }
+
+        //    return result;
+        //}
+
+        //private DateTime lastUIUpdate = DateTime.MinValue;
+
+        //public TimeSpan UIDelay = TimeSpan.FromSeconds(30);
+
+        //private TimeSpan MIN_DURATION = TimeSpan.FromSeconds(60);
 
         private class StatusInfo
         {
@@ -214,79 +356,79 @@ namespace TH_StatusTimeline.Controls
             }
         }
 
-        private void UpdateStatusData(EventData data)
-        {
-            if (data.Id.ToLower() == "statusdata_devicestatus" && data.Data02 != null)
-            {
-                if ((DateTime.Now - lastUIUpdate) > UIDelay)
-                {
-                    lastUIUpdate = DateTime.Now;
+        //private void UpdateStatusData(EventData data)
+        //{
+        //    if (data.Id.ToLower() == "statusdata_devicestatus" && data.Data02 != null)
+        //    {
+        //        if ((DateTime.Now - lastUIUpdate) > UIDelay)
+        //        {
+        //            lastUIUpdate = DateTime.Now;
 
-                    var dt = data.Data02 as DataTable;
-                    if (dt != null)
-                    {
-                        // Get list of all infos
-                        var infos = StatusInfo.FromTable(dt);
+        //            var dt = data.Data02 as DataTable;
+        //            if (dt != null)
+        //            {
+        //                // Get list of all infos
+        //                var infos = StatusInfo.FromTable(dt);
 
-                        // Filter out infos with duration less than min
-                        infos = infos.FindAll(x => x.Duration >= MIN_DURATION);
+        //                // Filter out infos with duration less than min
+        //                infos = infos.FindAll(x => x.Duration >= MIN_DURATION);
 
-                        if (infos.Count > 0 && currentTime > DateTime.MinValue && currentTime > infos[infos.Count - 1].End)
-                        {
-                            var info = new StatusInfo();
-                            info.Value = infos[infos.Count - 1].Value;
-                            info.Start = infos[infos.Count - 1].End;
-                            info.End = currentTime;
-                            infos.Add(info);
+        //                if (infos.Count > 0 && currentTime > DateTime.MinValue && currentTime > infos[infos.Count - 1].End)
+        //                {
+        //                    var info = new StatusInfo();
+        //                    info.Value = infos[infos.Count - 1].Value;
+        //                    info.Start = infos[infos.Count - 1].End;
+        //                    info.End = currentTime;
+        //                    infos.Add(info);
 
-                            DateTime n = currentTime;
+        //                    DateTime n = currentTime;
 
-                            timeline.MaxDateTime = new DateTime(n.Year, n.Month, n.Day, 23, 59, 59);
-                            timeline.MinDateTime = new DateTime(n.Year, n.Month, n.Day, 0, 0, 0);
+        //                    timeline.MaxDateTime = new DateTime(n.Year, n.Month, n.Day, 23, 59, 59);
+        //                    timeline.MinDateTime = new DateTime(n.Year, n.Month, n.Day, 0, 0, 0);
 
-                            timeline.CurrentDateTime = n;
-                        }
+        //                    timeline.CurrentDateTime = n;
+        //                }
 
 
-                        // Combine adjacent infos with same values
-                        var combinedInfos = new List<StatusInfo>();
-                        DateTime previousTimestamp = DateTime.MinValue;
-                        for (var x = 0; x < infos.Count; x++)
-                        {
-                            if (x == 0) previousTimestamp = infos[x].Start;
+        //                // Combine adjacent infos with same values
+        //                var combinedInfos = new List<StatusInfo>();
+        //                DateTime previousTimestamp = DateTime.MinValue;
+        //                for (var x = 0; x < infos.Count; x++)
+        //                {
+        //                    if (x == 0) previousTimestamp = infos[x].Start;
 
-                            if (x > 0)
-                            {
-                                if (infos[x].Value != infos[x - 1].Value || x == infos.Count - 1)
-                                {
-                                    var newInfo = new StatusInfo();
-                                    newInfo.Start = previousTimestamp;
+        //                    if (x > 0)
+        //                    {
+        //                        if (infos[x].Value != infos[x - 1].Value || x == infos.Count - 1)
+        //                        {
+        //                            var newInfo = new StatusInfo();
+        //                            newInfo.Start = previousTimestamp;
 
-                                    if (x == infos.Count - 1) newInfo.End = infos[x].End;
-                                    else newInfo.End = infos[x].Start;
+        //                            if (x == infos.Count - 1) newInfo.End = infos[x].End;
+        //                            else newInfo.End = infos[x].Start;
 
-                                    newInfo.Value = infos[x - 1].Value;
+        //                            newInfo.Value = infos[x - 1].Value;
 
-                                    combinedInfos.Add(newInfo);
+        //                            combinedInfos.Add(newInfo);
 
-                                    previousTimestamp = infos[x].Start;
-                                }
-                            }
-                        }
+        //                            previousTimestamp = infos[x].Start;
+        //                        }
+        //                    }
+        //                }
 
-                        var events = new List<TimelineEvent>();
+        //                var events = new List<TimelineEvent>();
 
-                        foreach (var info in combinedInfos)
-                        {
-                            var e = CreateEvent(info.Start, info.End, info.Value);
-                            events.Add(e);
-                        }
+        //                foreach (var info in combinedInfos)
+        //                {
+        //                    var e = CreateEvent(info.Start, info.End, info.Value);
+        //                    events.Add(e);
+        //                }
 
-                        timeline.ResetEvents(events);
-                    }
-                }
-            }
-        }
+        //                timeline.ResetEvents(events);
+        //            }
+        //        }
+        //    }
+        //}
 
         //private void UpdateStatusData(EventData data)
         //{

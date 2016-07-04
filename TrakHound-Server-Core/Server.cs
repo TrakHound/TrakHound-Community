@@ -5,6 +5,7 @@
 
 using TH_Device_Server;
 using TH_Global;
+using TH_Global.TrakHound;
 using TH_Global.TrakHound.Users;
 
 namespace TrakHound_Server_Core
@@ -16,6 +17,8 @@ namespace TrakHound_Server_Core
             Logger.AppicationName = "TrakHound-Server";
 
             FileLocations.CreateAllDirectories();
+
+            ApiConfiguration.Set(ApiConfiguration.Read());
 
             TH_Database.DatabasePluginReader.ReadPlugins();
 

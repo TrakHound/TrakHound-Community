@@ -8,7 +8,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
 
-using TH_Configuration;
+//using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 
 namespace TH_Cycles
 {

@@ -58,12 +58,14 @@ namespace TH_GitHub
             string data = string.Format(format, client_secret, note, note_url);
             data = "{" + data + "}";
 
-            byte[] bytes = Encoding.UTF8.GetBytes(data);
+            var postData = new HTTP.PostContentData("parameters", data, "application/json");
+            var postDatas = new HTTP.PostContentData[1];
+            postDatas[0] = postData;
 
             var headers = new HTTP.HeaderData[1];
             headers[0] = Authentication.GetBasicHeader(credentials);
 
-            string response = HTTP.PUT(Authentication.AUTHENTICATION_URL + "/clients/" + client_id, bytes, headers, "TrakHound");
+            string response = HTTP.PUT(Authentication.AUTHENTICATION_URL + "/clients/" + client_id, postDatas, headers, "TrakHound");
 
             return Parse(response);
         }

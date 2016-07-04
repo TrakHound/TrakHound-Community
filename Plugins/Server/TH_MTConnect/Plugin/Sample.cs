@@ -5,7 +5,8 @@
 
 using System;
 
-using TH_Configuration;
+//using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Database.Tables;
 using TH_Plugins;
 

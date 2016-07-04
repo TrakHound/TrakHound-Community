@@ -10,10 +10,11 @@ using System.IO;
 using System.Xml;
 using System;
 
-using TH_Configuration;
+//using TH_Configuration;
 using TH_Database;
 using TH_Device_Server;
 using TH_Global;
+using TH_Global.TrakHound.Configurations;
 using TH_Global.TrakHound.Users;
 using TH_UserManagement.Management;
 
@@ -51,8 +52,14 @@ namespace TrakHound_Server_Core
         private void UpdateLoginInformation(Device_Server server)
         {
             // Send User Login info
-            if (CurrentUser != null) server.SendPluginsData("UserLogin", CurrentUser.Id);
-            else server.SendPluginsData("UserLogin", GetLoginRegistyKey());
+            //if (CurrentUser != null) server.SendPluginsData("UserLogin", CurrentUser.Id);
+            //else server.SendPluginsData("UserLogin", GetLoginRegistyKey());
+
+            if (CurrentUser != null) server.SendPluginsData("UserLoginId", CurrentUser.Id);
+            else server.SendPluginsData("UserLoginId", GetLoginRegistyKey());
+
+            if (CurrentUser != null) server.SendPluginsData("UserLogin", CurrentUser);
+            else server.SendPluginsData("UserLogin", null);
         }
 
         #region "Devices Monitor"
@@ -97,8 +104,10 @@ namespace TrakHound_Server_Core
 
             if (CurrentUser != null)
             {
-                var userConfig = TH_UserManagement.Management.UserConfiguration.FromNewUserConfiguration(CurrentUser);
-                configs = Configurations.GetConfigurationsListForUser(userConfig);
+                configs = TH_Global.TrakHound.Devices.Get(CurrentUser);
+
+                //var userConfig = TH_UserManagement.Management.UserConfiguration.FromNewUserConfiguration(CurrentUser);
+                //configs = Configurations.GetConfigurationsListForUser(userConfig);
             }
             else
             {

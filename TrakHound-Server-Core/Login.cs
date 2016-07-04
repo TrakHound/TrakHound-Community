@@ -49,13 +49,15 @@ namespace TrakHound_Server_Core
             }
 
             CurrentUser = userConfig;
+
+            if (userConfig != null) Logger.Log(String_Functions.UppercaseFirst(userConfig.Username) + " Logged in Successfully");
         }
 
         public void Login(UserConfiguration userConfig)
         {
             CurrentUser = userConfig;
 
-            Logger.Log(String_Functions.UppercaseFirst(userConfig.Username) + " Logged in Successfully");
+            if (userConfig != null) Logger.Log(String_Functions.UppercaseFirst(userConfig.Username) + " Logged in Successfully");
         }
 
         public void Logout()

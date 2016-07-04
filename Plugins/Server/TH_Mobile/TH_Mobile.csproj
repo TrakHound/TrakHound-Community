@@ -42,14 +42,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database.cs" />
-    <Compile Include="Data\ControllerInfo.cs" />
-    <Compile Include="Data\DescriptionInfo.cs" />
-    <Compile Include="Data\OeeInfo.cs" />
-    <Compile Include="Data\StatusInfo.cs" />
-    <Compile Include="Data\TimersInfo.cs" />
+    <None Include="Data\ControllerInfo.cs" />
+    <None Include="Data\DescriptionInfo.cs" />
+    <None Include="Data\OeeInfo.cs" />
+    <None Include="Data\StatusInfo.cs" />
+    <None Include="Data\TimersInfo.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UpdateData.cs" />
+    <None Include="UpdateData.cs" />
     <Compile Include="UpdateQueue.cs" />
   </ItemGroup>
   <ItemGroup>

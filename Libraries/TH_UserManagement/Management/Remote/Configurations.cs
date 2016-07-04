@@ -7,7 +7,8 @@ using System.Xml;
 using System.Collections.Specialized;
 using System.Data;
 
-using TH_Configuration;
+//using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Global;
 using TH_Global.Functions;
 using TH_Global.Web;

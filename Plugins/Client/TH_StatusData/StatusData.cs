@@ -364,11 +364,11 @@ namespace TH_StatusData
             // Send Shift Data
             SendDataEvent(shiftTableData);
 
-            EventData productionStatusData = GetProductionStatusData(config, shiftData);
-            SendDataEvent(productionStatusData);
+            //EventData productionStatusData = GetProductionStatusData(config, shiftData);
+            //SendDataEvent(productionStatusData);
 
-            EventData deviceStatusData = GetDeviceStatusData(config, shiftData);
-            SendDataEvent(deviceStatusData);
+            //EventData deviceStatusData = GetDeviceStatusData(config, shiftData);
+            //SendDataEvent(deviceStatusData);
 
             // //Get OEE Data
             //EventData oeeData = GetOEE(config, shiftData);

@@ -20,22 +20,9 @@ namespace TH_Global.TrakHound.Users
 {
     public static class UserManagement
     {
-        #region "API Configuration"
-
-        public static void SetApiConfiguration(ApiConfiguration apiConfig)
-        {
-            if (apiConfig != null)
-            {
-                _apiHost = new Uri(apiConfig.Address);
-            }
-        }
-
-        private static Uri _apiHost = new Uri("https://www.feenux.com/trakhound/api/");
-        public static Uri ApiHost { get { return _apiHost; } }
-
-        #endregion
-
-
+        /// <summary>
+        /// Used to Create a new User Account
+        /// </summary>
         public static UserConfiguration CreateUser(CreateUserInfo info, string note = "")
         {
             string json = JSON.FromObject(info);
@@ -43,7 +30,7 @@ namespace TH_Global.TrakHound.Users
             {
                 UserConfiguration result = null;
 
-                string url = new Uri(_apiHost, "api/users/create/").ToString();
+                string url = new Uri(ApiConfiguration.ApiHost, "api/users/create/").ToString();
 
                 var postDatas = new NameValueCollection();
                 postDatas["user"] = json;
@@ -61,6 +48,9 @@ namespace TH_Global.TrakHound.Users
             return null;
         }
 
+        /// <summary>
+        /// Used to Edit an existing user account
+        /// </summary>
         public static UserConfiguration EditUser(EditUserInfo info, string note = "")
         {
             string json = JSON.FromObject(info);
@@ -68,8 +58,7 @@ namespace TH_Global.TrakHound.Users
             {
                 UserConfiguration result = null;
 
-                string url = new Uri(_apiHost, "users/edit/").ToString();
-                //string url = "https://www.feenux.com/trakhound/api/users/edit/";
+                string url = new Uri(ApiConfiguration.ApiHost, "users/edit/").ToString();
 
                 var postDatas = new NameValueCollection();
                 postDatas["user"] = json;
@@ -89,15 +78,16 @@ namespace TH_Global.TrakHound.Users
             return null;
         }
 
-
+        /// <summary>
+        /// Basic User login using (Username or Email Address) and Plain Text Password
+        /// </summary>
         public static UserConfiguration BasicLogin(string id, string password, string note = "")
         {
             UserConfiguration result = null;
 
             if (id != null && id.Length > 0)
             {
-                string url = new Uri(_apiHost, "users/login/index.php").ToString();
-                //string url = "https://www.feenux.com/trakhound/api/login/index.php";
+                string url = new Uri(ApiConfiguration.ApiHost, "users/login/index.php").ToString();
 
                 var postDatas = new NameValueCollection();
                 postDatas["id"] = id;
@@ -115,14 +105,16 @@ namespace TH_Global.TrakHound.Users
             return result;
         }
 
+        /// <summary>
+        /// User Login that Creates and Returns a Remember Token
+        /// </summary>
         public static UserConfiguration CreateTokenLogin(string id, string password, string note = "")
         {
             UserConfiguration result = null;
 
             if (id != null && id.Length > 0)
             {
-                string url = new Uri(_apiHost, "users/login/index.php").ToString();
-                //string url = "https://www.feenux.com/trakhound/api/login/index.php";
+                string url = new Uri(ApiConfiguration.ApiHost, "users/login/index.php").ToString();
 
                 string senderId = SenderId.Get();
 
@@ -143,6 +135,9 @@ namespace TH_Global.TrakHound.Users
             return result;
         }
 
+        /// <summary>
+        /// User Login using Remember Token
+        /// </summary>
         public static UserConfiguration TokenLogin(string token, string note = "")
         {
             UserConfiguration result = null;
@@ -151,8 +146,7 @@ namespace TH_Global.TrakHound.Users
             {
                 string senderId = SenderId.Get();
 
-                string url = new Uri(_apiHost, "users/login/?token=" + token + "&sender_id=" + senderId + "&note=" + note).ToString();
-                //string url = "https://www.feenux.com/trakhound/api/login/?token=" + token + "&sender_id=" + senderId + "&note=" + note;
+                string url = new Uri(ApiConfiguration.ApiHost, "users/login/?token=" + token + "&sender_id=" + senderId + "&note=" + note).ToString();
 
                 string response = HTTP.GET(url);
                 if (response != null)
@@ -164,20 +158,37 @@ namespace TH_Global.TrakHound.Users
             return result;
         }
 
-
+        /// <summary>
+        /// Used to Logout a currently logged in user
+        /// </summary>
         public static bool Logout(string token = null)
         {
             bool result = false;
 
-            string url = new Uri(_apiHost, "users/logout/").ToString();
-            //string url = "https://www.feenux.com/trakhound/api/logout/?";
+            string url = new Uri(ApiConfiguration.ApiHost, "users/logout/index.php").ToString();
+
             string senderId = SenderId.Get();
 
             url += "sender_id=" + SenderId.Get();
             if (token != null) url += "&token=" + token;
 
             string response = HTTP.GET(url);
-            if (!string.IsNullOrEmpty(response)) result = true;
+            if (!string.IsNullOrEmpty(response))
+            {
+                string[] x = response.Split('(', ')');
+                if (x != null && x.Length > 1)
+                {
+                    string error = x[1];
+
+                    Logger.Log("User Logout Failed : Error " + error, Logger.LogLineType.Warning);
+                    result = false;
+                }
+                else
+                {
+                    Logger.Log("User Logout Successful", Logger.LogLineType.Notification);
+                    result = true;
+                }
+            }
 
             return result;
         }

@@ -6,7 +6,8 @@
 using System;
 using System.ComponentModel.Composition;
 
-using TH_Configuration;
+//using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 
 namespace TH_Plugins.Server
 {

@@ -5,9 +5,12 @@
 
 using System;
 using System.Collections.Specialized;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+
+using TH_Global.Functions;
 
 namespace TH_Global.Web
 {
@@ -313,6 +316,48 @@ namespace TH_Global.Web
             public string Text { get; set; }
         }
 
+        public class PostContentData
+        {
+            public PostContentData(string name, string value)
+            {
+                Name = name;
+                Value = value;
+            }
+
+            public PostContentData(string name, string value, string contentType)
+            {
+                Name = name;
+                Value = value;
+                ContentType = contentType;
+            }
+
+            public string Name { get; set; }
+            public string Value { get; set; }
+            public string ContentType { get; set; }
+
+            public static PostContentData[] FromNamedValueCollection(NameValueCollection nvc)
+            {
+                var result = new List<PostContentData>();
+
+                foreach (var key in nvc.AllKeys)
+                {
+                    var vals = "";
+                    foreach (var val in nvc.GetValues(key)) vals += val;
+
+                    result.Add(new PostContentData(key, vals));
+                }
+
+                return result.ToArray();
+            }
+        }
+
+        public class FileContentData
+        {
+            public string Id { get; set; }
+            public string FilePath { get; set; }
+            public string ContentType { get; set; }
+        }
+
         public class HTTPInfo
         {
             public HTTPInfo()
@@ -329,7 +374,7 @@ namespace TH_Global.Web
             private void Init()
             {
                 Url = "";
-                Data = null;
+                //Data = null;
                 Headers = null;
                 UserAgent = null;
                 Timeout = 5000;
@@ -338,13 +383,16 @@ namespace TH_Global.Web
             }
 
             public string Url { get; set; }
-            public byte[] Data { get; set; }
+            public PostContentData[] ContentData;
+            public FileContentData[] FileData { get; set; }
+            //public byte[] Data { get; set; }
             public HeaderData[] Headers { get; set; }
             public string UserAgent { get; set; }
             public NetworkCredential Credential { get; set; }
             public ProxySettings ProxySettings { get; set; }
             public int Timeout { get; set; }
             public int MaxAttempts { get; set; }
+           
             public bool GetResponse { get; set; }
         }
 
@@ -352,35 +400,64 @@ namespace TH_Global.Web
 
         public static string POST(HTTPInfo info)
         {
-            return SendData("POST", info.Url, info.Data, info.Headers, info.UserAgent, info.Credential, info.ProxySettings, info.Timeout, info.MaxAttempts, info.GetResponse);
+            return SendData("POST", info.Url, info.ContentData, info.FileData, info.Headers, info.UserAgent, info.Credential, info.ProxySettings, info.Timeout, info.MaxAttempts, info.GetResponse);
         }
 
         public static string POST(string url, NameValueCollection postValues)
         {
-            var postBytes = CreatePostBytes(postValues);
-
-            return SendData("POST", url, postBytes);
+            return SendData("POST", url, PostContentData.FromNamedValueCollection(postValues));
         }
 
-        public static string POST(string url, byte[] postBytes)
+        public static string POST(string url, PostContentData[] postContentData)
         {
-            return SendData("POST", url, postBytes);
+            return SendData("POST", url, postContentData);
         }
 
-        public static string POST(string url, byte[] postBytes, HeaderData[] headers)
+        public static string POST(string url, PostContentData[] postContentData, HeaderData[] headers)
         {
-            return SendData("POST", url, postBytes, headers);
+            return SendData("POST", url, postContentData, null, headers);
         }
 
-        public static string POST(string url, byte[] postBytes, HeaderData[] headers, string userAgent)
+        public static string POST(string url, PostContentData[] postContentData, HeaderData[] headers, string userAgent)
         {
-            return SendData("POST", url, postBytes, headers, userAgent);
+            return SendData("POST", url, postContentData, null, headers, userAgent);
         }
 
-        public static string POST(string url, byte[] postBytes, HeaderData[] headers, string userAgent, NetworkCredential credential)
+        public static string POST(string url, PostContentData[] postContentData, HeaderData[] headers, string userAgent, NetworkCredential credential)
         {
-            return SendData("POST", url, postBytes, headers, userAgent, credential);
+            return SendData("POST", url, postContentData, null, headers, userAgent, credential);
         }
+
+
+        //public static string POST(HTTPInfo info)
+        //{
+        //    return SendData("POST", info.Url, info.Data, info.Headers, info.UserAgent, info.Credential, info.ProxySettings, info.Timeout, info.MaxAttempts, info.FileDatas, info.GetResponse);
+        //}
+
+        //public static string POST(string url, NameValueCollection postValues)
+        //{
+        //    return SendData("POST", url, PostContentData.FromNamedValueCollection(postValues));
+        //}
+
+        //public static string POST(string url, byte[] postBytes)
+        //{
+        //    return SendData("POST", url, postBytes);
+        //}
+
+        //public static string POST(string url, byte[] postBytes, HeaderData[] headers)
+        //{
+        //    return SendData("POST", url, postBytes, headers);
+        //}
+
+        //public static string POST(string url, byte[] postBytes, HeaderData[] headers, string userAgent)
+        //{
+        //    return SendData("POST", url, postBytes, headers, userAgent);
+        //}
+
+        //public static string POST(string url, byte[] postBytes, HeaderData[] headers, string userAgent, NetworkCredential credential)
+        //{
+        //    return SendData("POST", url, postBytes, headers, userAgent, credential);
+        //}
 
         #endregion
 
@@ -393,30 +470,62 @@ namespace TH_Global.Web
 
         public static string PUT(string url, NameValueCollection postValues)
         {
-            var postBytes = CreatePostBytes(postValues);
+            //var postBytes = CreatePostBytes(postValues);
 
-            return SendData("PUT", url, postBytes);
+            return SendData("PUT", url, PostContentData.FromNamedValueCollection(postValues));
         }
 
-        public static string PUT(string url, byte[] postBytes)
+        //public static string PUT(string url, NameValueCollection postValues)
+        //{
+        //    return SendData("PUT", url, postValues);
+        //}
+
+        public static string PUT(string url, PostContentData[] postContentData, HeaderData[] headers)
         {
-            return SendData("PUT", url, postBytes);
+            return SendData("PUT", url, postContentData, null, headers);
         }
 
-        public static string PUT(string url, byte[] postBytes, HeaderData[] headers)
+        public static string PUT(string url, PostContentData[] postContentData, HeaderData[] headers, string userAgent)
         {
-            return SendData("PUT", url, postBytes, headers);
+            return SendData("PUT", url, postContentData, null, headers, userAgent);
         }
 
-        public static string PUT(string url, byte[] postBytes, HeaderData[] headers, string userAgent)
+        public static string PUT(string url, PostContentData[] postContentData, HeaderData[] headers, string userAgent, NetworkCredential credential)
         {
-            return SendData("PUT", url, postBytes, headers, userAgent);
+            return SendData("PUT", url, postContentData, null, headers, userAgent, credential);
         }
 
-        public static string PUT(string url, byte[] postBytes, HeaderData[] headers, string userAgent, NetworkCredential credential)
-        {
-            return SendData("PUT", url, postBytes, headers, userAgent, credential);
-        }
+        //public static string PUT(string url)
+        //{
+        //    return SendData("PUT", url);
+        //}
+
+        //public static string PUT(string url, NameValueCollection postValues)
+        //{
+        //    var postBytes = CreatePostBytes(postValues);
+
+        //    return SendData("PUT", url, postBytes);
+        //}
+
+        //public static string PUT(string url, byte[] postBytes)
+        //{
+        //    return SendData("PUT", url, postBytes);
+        //}
+
+        //public static string PUT(string url, byte[] postBytes, HeaderData[] headers)
+        //{
+        //    return SendData("PUT", url, postBytes, headers);
+        //}
+
+        //public static string PUT(string url, byte[] postBytes, HeaderData[] headers, string userAgent)
+        //{
+        //    return SendData("PUT", url, postBytes, headers, userAgent);
+        //}
+
+        //public static string PUT(string url, byte[] postBytes, HeaderData[] headers, string userAgent, NetworkCredential credential)
+        //{
+        //    return SendData("PUT", url, postBytes, headers, userAgent, credential);
+        //}
 
         #endregion
 
@@ -424,7 +533,7 @@ namespace TH_Global.Web
 
         public static string GET(HTTPInfo info)
         {
-            return SendData("GET", info.Url, info.Data, info.Headers, info.UserAgent, info.Credential, info.ProxySettings, info.Timeout, info.MaxAttempts, info.GetResponse);
+            return SendData("GET", info.Url, null, null, info.Headers, info.UserAgent, info.Credential, info.ProxySettings, info.Timeout, info.MaxAttempts, info.GetResponse);
         }
 
         public static string GET(string url)
@@ -434,27 +543,33 @@ namespace TH_Global.Web
 
         public static string GET(string url, HeaderData[] headers)
         {
-            return SendData("GET", url, null, headers);
+            return SendData("GET", url, null, null, headers);
         }
 
         public static string GET(string url, HeaderData[] headers, string userAgent)
         {
-            return SendData("GET", url, null, headers, userAgent);
+            return SendData("GET", url, null, null, headers, userAgent);
         }
 
-        public static string GET(string url, byte[] postBytes, HeaderData[] headers, string userAgent, NetworkCredential credential)
+        public static string GET(string url, HeaderData[] headers, string userAgent, NetworkCredential credential)
         {
-            return SendData("GET", url, postBytes, headers, userAgent, credential);
+            return SendData("GET", url, null, null, headers, userAgent, credential);
         }
 
         #endregion
 
 
-        private static string SendData(string method, string url,
-            byte[] sendBytes = null, HeaderData[] headers = null,
-            string userAgent = null, NetworkCredential credential = null,
+        private static string SendData(
+            string method, 
+            string url,
+            PostContentData[] postDatas = null,
+            FileContentData[] fileDatas = null,
+            HeaderData[] headers = null,
+            string userAgent = null,
+            NetworkCredential credential = null,
             ProxySettings proxySettings = null,
-            int timeout = TIMEOUT, int maxAttempts = CONNECTION_ATTEMPTS,
+            int timeout = TIMEOUT,
+            int maxAttempts = CONNECTION_ATTEMPTS,
             bool getResponse = true)
         {
             string result = null;
@@ -473,10 +588,13 @@ namespace TH_Global.Web
                     // Create HTTP request and define Header info
                     var request = (HttpWebRequest)WebRequest.Create(url);
 
+                    string boundary = String_Functions.RandomString(10);
+
                     request.Timeout = timeout;
                     request.ReadWriteTimeout = timeout;
-                    request.ContentType = "application/x-www-form-urlencoded";
-                    //request.ContentType = "application/json";
+                    if (method == "POST") request.ContentType = "multipart/form-data; boundary=" + boundary;
+                    else request.ContentType = "application/x-www-form-urlencoded";
+
 
                     // Set the Method
                     request.Method = method;
@@ -517,19 +635,51 @@ namespace TH_Global.Web
 
                     request.Proxy = proxy;
 
-                    // Add POST data to request stream
-                    if (sendBytes != null)
-                    {
-                        request.ContentLength = sendBytes.Length;
+                    var builder = new StringBuilder();
 
-                        using (Stream postStream = request.GetRequestStream())
+                    // Add Post Name/Value Pairs
+                    if (postDatas != null)
+                    {
+                        string formdataTemplate = "Content-Disposition: form-data; name=\"{0}\"\r\n\r\n{1}";
+
+                        foreach (var postData in postDatas)
                         {
-                            postStream.WriteTimeout = timeout;
-                            postStream.Write(sendBytes, 0, sendBytes.Length);
+                            string formitem = string.Format(formdataTemplate, postData.Name, postData.Value);
+                            builder.Append("\r\n--" + boundary + "\r\n");
+                            builder.Append(formitem);
                         }
                     }
-                    else request.ContentLength = 0;
 
+                    // Add File data
+                    if (fileDatas != null)
+                    {
+                        builder.Append("\r\n--" + boundary + "\r\n");
+                        builder.Append(GetFileContent(fileDatas));
+                    }
+
+                    if (builder.Length > 0)
+                    {
+                        // Write Trailer Boundary
+                        string trailer = "\r\n--" + boundary + "--\r\n";
+                        builder.Append(trailer);
+
+                        string dataString = builder.ToString();
+
+                        // Write Data to Request Stream
+                        if (!string.IsNullOrEmpty(dataString))
+                        {
+                            request.ContentLength = dataString.Length;
+
+                            using (var requestStream = request.GetRequestStream())
+                            {
+                                byte[] dataBytes = Encoding.ASCII.GetBytes(dataString);
+
+                                requestStream.Write(dataBytes, 0, dataBytes.Length);
+                            }
+                        }
+                    }
+
+                    // Get Response Message from HTTP Request
                     if (getResponse)
                     {
                         // Get HTTP resonse and return as string
@@ -554,7 +704,203 @@ namespace TH_Global.Web
             return result;
         }
 
-        
+        //private static string SendData(string method, string url,
+        //    byte[] sendBytes = null, HeaderData[] headers = null,
+        //    string userAgent = null, NetworkCredential credential = null,
+        //    ProxySettings proxySettings = null,
+        //    int timeout = TIMEOUT, int maxAttempts = CONNECTION_ATTEMPTS,
+        //    FileContentData[] fileDatas = null,
+        //    bool getResponse = true)
+        //{
+        //    string result = null;
+
+        //    int attempts = 0;
+        //    bool success = false;
+        //    string message = null;
+
+        //    // Try to send data for number of connectionAttempts
+        //    while (attempts < maxAttempts && !success)
+        //    {
+        //        attempts += 1;
+
+        //        try
+        //        {
+        //            // Create HTTP request and define Header info
+        //            var request = (HttpWebRequest)WebRequest.Create(url);
+
+        //            //string boundary = "\r\n-----------------------------" + DateTime.Now.Ticks.ToString("x") + "\r\n";
+        //            //byte[] boundarybytes = System.Text.Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");
+
+        //            string boundary = String_Functions.RandomString(10);
+        //            //string boundary = DateTime.Now.Ticks.ToString("x");
+        //            //string leadingBoundary = "\r\n--" + boundary + "\r\n";
+        //            //byte[] boundarybytes = System.Text.Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");
+
+        //            request.Timeout = timeout;
+        //            request.ReadWriteTimeout = timeout;
+        //            request.ContentType = "multipart/form-data; boundary=" + boundary;
+        //            //request.ContentType = "application/x-www-form-urlencoded";
+        //            //request.ContentType = "application/json";
+
+        //            // Set the Method
+        //            request.Method = method;
+
+        //            // Set the UserAgent
+        //            if (userAgent != null) request.UserAgent = userAgent;
+        //            else request.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; Windows NT 5.2; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)";
+
+        //            // Add Header data to request stream (if present)
+        //            if (headers != null)
+        //            {
+        //                foreach (var header in headers)
+        //                {
+        //                    request.Headers[header.Id] = header.Text;
+        //                }
+        //            }
+
+        //            // set NetworkCredentials
+        //            if (credential != null)
+        //            {
+        //                request.Credentials = credential;
+        //                request.PreAuthenticate = true;
+        //            }
+
+        //            // Get Default System Proxy (Windows Internet Settings -> Proxy Settings)
+        //            var proxy = WebRequest.GetSystemWebProxy();
+
+        //            // Get Custom Proxy Settings from Argument (overwrite default proxy settings)
+        //            if (proxySettings != null)
+        //            {
+        //                if (proxySettings.Address != null && proxySettings.Port > 0)
+        //                {
+        //                    var customProxy = new WebProxy(proxySettings.Address, proxySettings.Port);
+        //                    customProxy.BypassProxyOnLocal = false;
+        //                    proxy = customProxy;
+        //                }
+        //            }
+
+        //            request.Proxy = proxy;
+
+        //            // Add POST data to request stream
+        //            //if (sendBytes != null)
+        //            //{
+        //            //    request.ContentLength = sendBytes.Length;
+
+        //            //    using (Stream contentStream = request.GetRequestStream())
+        //            //    {
+        //            //        contentStream.WriteTimeout = timeout;
+        //            //        contentStream.Write(boundarybytes, 0, boundarybytes.Length);
+        //            //        contentStream.Write(sendBytes, 0, sendBytes.Length);
+        //            //        contentStream.Write(boundarybytes, 0, boundarybytes.Length);
+        //            //    }
+        //            //}
+
+
+        //            var builder = new StringBuilder();
+
+
+        //            // Add Post Name/Value Pairs
+        //            builder.Append("\r\n--" + boundary + "\r\n");
+        //            string formdataTemplate = "Content-Disposition: form-data; name=\"{0}\"\r\n\r\n{1}";
+        //            string formitem = string.Format(formdataTemplate, "test", "value");
+        //            builder.Append(formitem);
+
+
+        //            // Add File data
+        //            builder.Append("\r\n--" + boundary + "\r\n");
+        //            builder.Append(GetFileContent(fileDatas));
+
+        //            // Write Trailer Boundary
+        //            string trailer = "\r\n--" + boundary + "--\r\n";
+        //            builder.Append(trailer);
+
+        //            string dataString = builder.ToString();
+
+        //            // Write Data to Request Stream
+        //            if (!string.IsNullOrEmpty(dataString))
+        //            {
+        //                request.ContentLength = dataString.Length;
+
+        //                using (var requestStream = request.GetRequestStream())
+        //                {
+        //                    byte[] dataBytes = Encoding.ASCII.GetBytes(dataString);
+
+        //                    requestStream.Write(dataBytes, 0, dataBytes.Length);
+        //                }
+        //            }
+
+
+        //            // Get Response Message from HTTP Request
+        //            if (getResponse)
+        //            {
+        //                // Get HTTP resonse and return as string
+        //                using (var response = (HttpWebResponse)request.GetResponse())
+        //                using (var s = response.GetResponseStream())
+        //                using (var reader = new StreamReader(s))
+        //                {
+        //                    result = reader.ReadToEnd();
+        //                    success = true;
+        //                }
+        //            }
+        //            else success = true;
+        //        }
+        //        catch (WebException wex) { message = wex.Message; }
+        //        catch (Exception ex) { message = ex.Message; }
+
+        //        if (!success) System.Threading.Thread.Sleep(500);
+        //    }
+
+        //    if (!success) Logger.Log("Send :: " + attempts.ToString() + " Attempts :: URL = " + url + " :: " + message);
+
+        //    return result;
+        //}
+
+        /// <summary>
+        /// Get string for HTTP file Content
+        /// </summary>
+        private static string GetFileContent(FileContentData[] fileDatas)
+        {
+            var builder = new StringBuilder();
+
+            string boundary = String_Functions.RandomString(10);
+
+            // Write Header
+            builder.Append("Content-Disposition: form-data; name=\"files\"");
+            builder.Append("Content-Type: multipart/mixed; boundary=" + boundary + "\r\n\r\n");
+
+            foreach (var fileData in fileDatas)
+            {
+                if (File.Exists(fileData.FilePath))
+                {
+                    var file = new FileInfo(fileData.FilePath);
+
+                    // Write Header Boundary
+                    string headerTemplate = "Content-Disposition: file; name=\"{0}\"; filename=\"{1}\"\r\nContent-Type: {2}\r\n\r\n";
+                    string header = string.Format(headerTemplate, fileData.Id, fileData.FilePath, fileData.ContentType);
+                    builder.Append("\r\n--" + boundary + "\r\n");
+                    builder.Append(header);
+
+                    // Write File Contents
+                    using (var fileStream = new FileStream(fileData.FilePath, FileMode.Open, FileAccess.Read))
+                    {
+                        var reader = new StreamReader(fileStream);
+
+                        string contents = reader.ReadToEnd();
+
+                        contents = EncodePostString(contents);
+
+                        builder.Append(contents);
+                    }
+                }
+            }
+
+            // Write Trailer Boundary
+            string trailer = "\r\n--" + boundary + "--\r\n";
+            builder.Append(trailer);
+
+            return builder.ToString();
+        }
+
 
 
 

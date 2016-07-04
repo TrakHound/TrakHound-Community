@@ -11,6 +11,7 @@ using System.Windows.Input;
 
 using TH_Configuration;
 using TH_Global.Functions;
+using TH_Global.TrakHound;
 using TH_Global.TrakHound.Users;
 
 namespace Server_Login
@@ -24,6 +25,8 @@ namespace Server_Login
         {
             InitializeComponent();
             DataContext = this;
+
+            ApiConfiguration.Set(ApiConfiguration.Read());
         }
 
         public Database_Settings userDatabaseSettings;

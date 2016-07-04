@@ -1,72 +1,49 @@
-﻿using System;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Runtime.Serialization;
-using System.Runtime;
 
-using System.Data;
-
-using TH_Global.TrakHound.Users;
-using TH_Global.Functions;
-using TH_Global.Web;
 using TH_Global.TrakHound.Configurations;
-
+using TH_Global.TrakHound.Users;
+using TH_Global.Web;
 
 namespace TH_Global.TrakHound
 {
     public static partial class Devices
     {
-        [DataContract()]
-        private class DeviceInfo
-        {
-            public DeviceInfo(string uniqueId, DataTable table)
-            {
-                UniqueId = uniqueId;
 
-                if (table != null)
-                {
-                    Data = new List<Row>();
+        // Example POST Data
+        // -----------------------------------------------------
 
-                    foreach (DataRow row in table.Rows)
-                    {
-                        Data.Add(Row.FromDataRow(row));
-                    }
-                }
-            }
+        // name = 'token'
+        // value = Session Token
 
-            [DataMember(Name = "unique_id")]
-            public string UniqueId { get; set; }
+        // name = 'sender_id'
+        // value = Sender ID
 
-            [DataMember(Name = "data")]
-            public List<Row> Data { get; set; }
-
-            [DataContract()]
-            public class Row
-            {
-                [DataMember(Name = "address")]
-                public string Address { get; set; }
-
-                [DataMember(Name = "value")]
-                public string Value { get; set; }
-
-                [DataMember(Name = "attributes")]
-                public string Attributes { get; set; }
-
-                public static Row FromDataRow(DataRow row)
-                {
-                    var result = new Row();
-
-                    result.Address = DataTable_Functions.GetRowValue("address", row);
-                    result.Value = DataTable_Functions.GetRowValue("value", row);
-                    result.Attributes = DataTable_Functions.GetRowValue("attributes", row);
-
-                    return result;
-                }
-            } 
-        }
-
+        // name = 'devices'
+        // value =  [{
+        //	
+        //	 "unique_id": "987654321",
+        //	 "data": [
+        //		{ "address": "/ClientEnabled", "value": "true", "" },
+        //		{ "address": "/ServerEnabled", "value": "true", "" },
+        //		{ "address": "/UniqueId", "value": "987654321", "" }
+        //		]
+        //	}, 
+        //	{
+        //	 "unique_id": "123456789",
+        //	 "data": [
+        //		{ "address": "/ClientEnabled", "value": "true", "" },
+        //		{ "address": "/ServerEnabled", "value": "true", "" },
+        //		{ "address": "/UniqueId", "value": "123456789", "" }
+        //		]
+        // }]
+        // -----------------------------------------------------
 
         public static bool Update(UserConfiguration userConfig, DeviceConfiguration deviceConfig)
         {
@@ -83,7 +60,7 @@ namespace TH_Global.TrakHound
                     string json = JSON.FromObject(infos);
                     if (json != null)
                     {
-                        Uri apiHost = UserManagement.ApiHost;
+                        Uri apiHost = ApiConfiguration.ApiHost;
 
                         string url = new Uri(apiHost, "devices/update/index.php").ToString();
 
@@ -95,7 +72,19 @@ namespace TH_Global.TrakHound
                         string response = HTTP.POST(url, postDatas);
                         if (response != null)
                         {
-                            
+                            string[] x = response.Split('(', ')');
+                            if (x != null && x.Length > 1)
+                            {
+                                string error = x[1];
+
+                                Logger.Log("Update Device Failed : Error " + error, Logger.LogLineType.Warning);
+                                result = false;
+                            }
+                            else
+                            {
+                                Logger.Log("Update Device Successful", Logger.LogLineType.Notification);
+                                result = true;
+                            }
                         }
                     }
                 }

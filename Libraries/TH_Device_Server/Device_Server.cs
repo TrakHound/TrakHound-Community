@@ -5,7 +5,8 @@
 
 using System;
 
-using TH_Configuration;
+//using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Database;
 using TH_Global;
 using TH_Plugins;
@@ -59,6 +60,15 @@ namespace TH_Device_Server
             var data = new EventData();
             data.Id = id;
             data.Data01 = message;
+
+            Plugins_Update_SendData(data);
+        }
+
+        public void SendPluginsData(string id, object obj)
+        {
+            var data = new EventData();
+            data.Id = id;
+            data.Data01 = obj;
 
             Plugins_Update_SendData(data);
         }

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 using System.Xml;
 using System.Reflection;
@@ -10,6 +7,19 @@ namespace TH_Global.TrakHound
 {
     public class ApiConfiguration
     {
+        public static void Set(ApiConfiguration apiConfig)
+        {
+            if (apiConfig != null)
+            {
+                _apiHost = new Uri(apiConfig.Address);
+            }
+        }
+
+        private static Uri _apiHost = new Uri("https://www.feenux.com/trakhound/api/");
+        public static Uri ApiHost { get { return _apiHost; } }
+
+
+
         public string Address { get; set; }
 
 
@@ -18,12 +28,12 @@ namespace TH_Global.TrakHound
 
         public static ApiConfiguration Read()
         {
-            var result = new ApiConfiguration();
-
             if (File.Exists(CONFIG_FILEPATH))
             {
                 try
                 {
+                    var result = new ApiConfiguration();
+
                     var xml = new XmlDocument();
                     xml.Load(CONFIG_FILEPATH);
 
@@ -44,11 +54,13 @@ namespace TH_Global.TrakHound
                             }
                         }
                     }
+
+                    return result;
                 }
                 catch (Exception ex) { Logger.Log("Exception :: " + ex.Message); }
             }
 
-            return result;
+            return null;
         }
 
     }

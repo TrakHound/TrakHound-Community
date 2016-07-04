@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 
+using Newtonsoft.Json;
+
 namespace TH_Global.TrakHound.Users
 {
     /// <summary>
@@ -15,27 +17,55 @@ namespace TH_Global.TrakHound.Users
     /// </summary>
     public class UserConfiguration
     {
+        [JsonProperty("id")]
         public string Id { get; set; }
+
+        [JsonProperty("username")]
         public string Username { get; set; }
 
+        [JsonProperty("first_name")]
         public string FirstName { get; set; }
+
+        [JsonProperty("last_name")]
         public string LastName { get; set; }
+
+        [JsonProperty("company")]
         public string Company { get; set; }
 
+        [JsonProperty("email")]
         public string Email { get; set; }
+
+        [JsonProperty("phone")]
         public string Phone { get; set; }
+
+        [JsonProperty("address1")]
         public string Address1 { get; set; }
+
+        [JsonProperty("address2")]
         public string Address2 { get; set; }
+
+        [JsonProperty("city")]
         public string City { get; set; }
+
+        [JsonProperty("state")]
         public string State { get; set; }
+
+        [JsonProperty("country")]
         public string Country { get; set; }
+
+        [JsonProperty("zipcode")]
         public string Zipcode { get; set; }
 
+        [JsonProperty("image_url")]
         public string ImageUrl { get; set; }
 
+        [JsonProperty("token")]
         public string Token { get; set; }
+
+        [JsonProperty("session_token")]
         public string SessionToken { get; set; }
 
+        [JsonProperty("last_login")]
         public DateTime LastLogin { get; set; }
 
         //public int DeviceLimit { get; set; }

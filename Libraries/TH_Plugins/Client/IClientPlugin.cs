@@ -8,7 +8,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Windows.Media;
 
-using TH_Configuration;
+//using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Global;
 
 namespace TH_Plugins.Client

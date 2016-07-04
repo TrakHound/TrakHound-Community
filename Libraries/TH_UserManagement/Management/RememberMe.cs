@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 using Microsoft.Win32;
 
-using TH_Configuration;
+//using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Global;
 
 namespace TH_UserManagement.Management

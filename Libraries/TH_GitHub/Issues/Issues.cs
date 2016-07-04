@@ -42,17 +42,22 @@ namespace TH_GitHub
 
             string body = ComposeBody(issue);
 
-            string postData = string.Format(format, issue.Title, body);
-            postData = "{ " + postData + " }";
+            string data = string.Format(format, issue.Title, body);
+            data = "{ " + data + " }";
+
+            var postData = new HTTP.PostContentData("parameters", data, "application/json");
+            var postDatas = new HTTP.PostContentData[1];
+            postDatas[0] = postData;
 
             var headers = new HTTP.HeaderData[1];
             //headers[0] = Authentication.GetBasicHeader(credentials);
             //string token = Authentication.GetToken(credentials.Username);
             //headers[0] = Authentication.GetOAuth2Header(token);
 
-            byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+            //byte[] byteArray = Encoding.UTF8.GetBytes(postData);
 
-            HTTP.POST(REPOSITORY_URL, byteArray, headers, "TrakHound");
+            HTTP.POST(REPOSITORY_URL, postDatas, headers, "TrakHound");
+            //HTTP.POST(REPOSITORY_URL, byteArray, headers, "TrakHound");
         }
 
         public static bool Create(Issue issue, HTTP.HeaderData loginHeader)
@@ -61,16 +66,36 @@ namespace TH_GitHub
 
             string body = ComposeBody(issue);
 
-            string postData = string.Format(format, issue.Title, body);
-            postData = "{ " + postData + " }";
+            string data = string.Format(format, issue.Title, body);
+            data = "{ " + data + " }";
+
+            var postData = new HTTP.PostContentData("parameters", data, "application/json");
+            var postDatas = new HTTP.PostContentData[1];
+            postDatas[0] = postData;
 
             var headers = new HTTP.HeaderData[1];
             headers[0] = loginHeader;
 
-            byte[] byteArray = Encoding.UTF8.GetBytes(postData);
 
-            return !string.IsNullOrEmpty(HTTP.POST(REPOSITORY_URL, byteArray, headers, "TrakHound"));
+            return !string.IsNullOrEmpty(HTTP.POST(REPOSITORY_URL, postDatas, headers, "TrakHound"));
         }
+
+        //public static bool Create(Issue issue, HTTP.HeaderData loginHeader)
+        //{
+        //    string format = "\"title\": \"{0}\", \"body\": \"{1}\"";
+
+        //    string body = ComposeBody(issue);
+
+        //    string postData = string.Format(format, issue.Title, body);
+        //    postData = "{ " + postData + " }";
+
+        //    var headers = new HTTP.HeaderData[1];
+        //    headers[0] = loginHeader;
+
+        //    byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+
+        //    return !string.IsNullOrEmpty(HTTP.POST(REPOSITORY_URL, byteArray, headers, "TrakHound"));
+        //}
 
         private static string ComposeBody(Issue issue)
         {

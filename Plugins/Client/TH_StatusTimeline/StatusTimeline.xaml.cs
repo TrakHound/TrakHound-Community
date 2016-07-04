@@ -50,7 +50,7 @@ namespace TH_StatusTimeline
         {
             var row = new Row();
             row.Configuration = config;
-            row.UIDelay.Add(TimeSpan.FromSeconds(rnd.Next(5, 30)));
+            row.LastTimelineUpdate.Add(TimeSpan.FromSeconds(rnd.Next(5, 30)));
             Rows.Add(row);
         }
 

@@ -13,6 +13,9 @@ using TH_Plugins.Server;
 using TH_Shifts;
 using TH_Status;
 
+using TH_Global.TrakHound;
+using TH_Global.TrakHound.Users;
+
 namespace TH_Mobile
 {
 
@@ -20,12 +23,16 @@ namespace TH_Mobile
     {
         public static UpdateQueue queue = new UpdateQueue();
 
+        internal static UserConfiguration currentUser;
+
 
         private DeviceConfiguration configuration;
 
-        private string userId;
+        private Data.DeviceInfo deviceInfo;
 
-        private UpdateData updateData;
+        //private string userId;
+
+        //private UpdateData updateData;
 
         private bool databaseConnected;
         private bool deviceAvailable;
@@ -37,13 +44,22 @@ namespace TH_Mobile
         {
             configuration = config;
 
-            updateData = new UpdateData(config);
-            queue.Add(updateData);
+            deviceInfo = new Data.DeviceInfo();
+            deviceInfo.Description.Description = config.Description.Description;
+            deviceInfo.Description.DeviceId = config.Description.Device_ID;
+            deviceInfo.Description.Manufacturer = config.Description.Manufacturer;
+            deviceInfo.Description.Model = config.Description.Model;
+            deviceInfo.Description.Serial = config.Description.Serial;
+            deviceInfo.Description.Controller = config.Description.Controller;
+            deviceInfo.Description.ImageUrl = config.FileLocations.Image_Path;
+            deviceInfo.Description.LogoUrl = config.FileLocations.Manufacturer_Logo_Path;
+
+            queue.Add(deviceInfo);
         }
 
         public void GetSentData(EventData data)
         {
-            if (data != null && updateData != null)
+            if (data != null && deviceInfo != null)
             {
                 switch (data.Id.ToLower())
                 {
@@ -81,135 +97,139 @@ namespace TH_Mobile
         {
             if (data.Data01 != null && configuration != null)
             {
-                userId = data.Data01.ToString();
+                currentUser = (UserConfiguration)data.Data01;
 
-                updateData.UserId = userId;
+                //userId = data.Data01.ToString();
+
+                //updateData.UserId = userId;
             }
         }
 
         private void UpdateDatabaseStatus(EventData data)
         {
-            if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
+            if (data.Data01 != null && data.Data02 != null && currentUser != null)
             {
                 databaseConnected = (bool)data.Data02;
 
-                int prev = updateData.Status.Connected;
+                int prev = deviceInfo.Status.Connected;
 
-                if (databaseConnected && deviceAvailable) updateData.Status.Connected = 1;
-                else updateData.Status.Connected = 0;
+                if (databaseConnected && deviceAvailable) deviceInfo.Status.Connected = 1;
+                else deviceInfo.Status.Connected = 0;
             }
         }
 
         private void UpdateDeviceAvailability(EventData data)
         {
-            if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
+            if (data.Data01 != null && data.Data02 != null && currentUser != null)
             {
                 deviceAvailable = (bool)data.Data02;
 
-                int prev = updateData.Status.Connected;
+                int prev = deviceInfo.Status.Connected;
 
-                if (databaseConnected && deviceAvailable) updateData.Status.Connected = 1;
-                else updateData.Status.Connected = 0;
+                if (databaseConnected && deviceAvailable) deviceInfo.Status.Connected = 1;
+                else deviceInfo.Status.Connected = 0;
             }
         }
 
         private void UpdateSnapshots(EventData data)
         {
-            if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
+            if (data.Data01 != null && data.Data02 != null && currentUser != null)
             {
-                bool alert = DataTable_Functions.GetBooleanTableValue(data.Data02, "NAME", "Alert", "VALUE");
-                bool idle = DataTable_Functions.GetBooleanTableValue(data.Data02, "NAME", "Idle", "VALUE");
-                bool production = DataTable_Functions.GetBooleanTableValue(data.Data02, "NAME", "Production", "VALUE");
+                //bool alert = DataTable_Functions.GetBooleanTableValue(data.Data02, "NAME", "Alert", "VALUE");
+                //bool idle = DataTable_Functions.GetBooleanTableValue(data.Data02, "NAME", "Idle", "VALUE");
+                //bool production = DataTable_Functions.GetBooleanTableValue(data.Data02, "NAME", "Production", "VALUE");
 
-                if (alert) updateData.Status.Status = 0;
-                else if (idle) updateData.Status.Status = 1;
-                else if (production) updateData.Status.Status = 2;
+                //if (alert) deviceInfo.Status.Status = 0;
+                //else if (idle) deviceInfo.Status.Status = 1;
+                //else if (production) deviceInfo.Status.Status = 2;
 
-                updateData.Status.ProductionStatus = DataTable_Functions.GetTableValue(data.Data02, "NAME", "Production Status", "VALUE");
+                deviceInfo.Status.DeviceStatus = DataTable_Functions.GetTableValue(data.Data02, "NAME", "Device Status", "VALUE");
+
+                deviceInfo.Status.ProductionStatus = DataTable_Functions.GetTableValue(data.Data02, "NAME", "Production Status", "VALUE");
 
                 DateTime start = DataTable_Functions.GetDateTimeTableValue(data.Data02, "NAME", "Production Status", "PREVIOUS_TIMESTAMP");
                 DateTime end = DataTable_Functions.GetDateTimeTableValue(data.Data02, "NAME", "Production Status", "TIMESTAMP");
 
                 if (start > DateTime.MinValue && end > DateTime.MinValue)
                 {
-                    updateData.Status.ProductionStatusTimer = Convert.ToInt32((end - start).TotalSeconds);
+                    deviceInfo.Status.ProductionStatusTimer = Convert.ToInt32((end - start).TotalSeconds);
                 }
             }
         }
 
         private void UpdateStatus(EventData data)
         {
-            if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
+            if (data.Data01 != null && data.Data02 != null && currentUser != null)
             {
                 var infos = (List<StatusInfo>)data.Data02;
                 StatusInfo info = null;
 
                 // Availability
                 info = infos.Find(x => x.Type == "AVAILABILITY");
-                if (info != null) updateData.Controller.Availability = info.Value1;
+                if (info != null) deviceInfo.Controller.Availability = info.Value1;
 
                 // Controller Mode
                 info = infos.Find(x => x.Type == "CONTROLLER_MODE");
-                if (info != null) updateData.Controller.ControllerMode = info.Value1;
+                if (info != null) deviceInfo.Controller.ControllerMode = info.Value1;
 
                 // Emergency Stop
                 info = infos.Find(x => x.Type == "EMERGENCY_STOP");
-                if (info != null) updateData.Controller.EmergencyStop = info.Value1;
+                if (info != null) deviceInfo.Controller.EmergencyStop = info.Value1;
 
                 // Execution Mode
                 info = infos.Find(x => x.Type == "EXECUTION");
-                if (info != null) updateData.Controller.ExecutionMode = info.Value1;
+                if (info != null) deviceInfo.Controller.ExecutionMode = info.Value1;
 
                 // System status
                 info = infos.Find(x => x.Type == "SYSTEM");
-                if (info != null) updateData.Controller.SystemMessage = info.Value1;
-                if (info != null) updateData.Controller.SystemStatus = info.Value2;
+                if (info != null) deviceInfo.Controller.SystemMessage = info.Value1;
+                if (info != null) deviceInfo.Controller.SystemStatus = info.Value2;
 
                 // Program Name
                 info = infos.Find(x => x.Type == "PROGRAM");
-                if (info != null) updateData.Controller.ProgramName = info.Value1;
+                if (info != null) deviceInfo.Controller.ProgramName = info.Value1;
             }
         }
 
         private void UpdateOee(EventData data)
         {
-            if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
+            if (data.Data01 != null && data.Data02 != null && currentUser != null)
             {
                 double val = (double)data.Data02;
-                if (updateData.Oee.Oee != val)
+                if (deviceInfo.Oee.Oee != val)
                 {
-                    updateData.Oee.Oee = Math.Round(val, 2);
+                    deviceInfo.Oee.Oee = Math.Round(val, 2);
                 }
             }
         }
 
         private void UpdateOeeAvailability(EventData data)
         {
-            if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
+            if (data.Data01 != null && data.Data02 != null && currentUser != null)
             {
                 double val = (double)data.Data02;
-                if (updateData.Oee.Availability != val)
+                if (deviceInfo.Oee.Availability != val)
                 {
-                    updateData.Oee.Availability = Math.Round(val, 2);
+                    deviceInfo.Oee.Availability = Math.Round(val, 2);
                 }
             }
         }
 
         private void UpdateOeePeformance(EventData data)
         {
-            if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
+            if (data.Data01 != null && data.Data02 != null && currentUser != null)
             {
                 double val = (double)data.Data02;
-                if (updateData.Oee.Performance != val)
+                if (deviceInfo.Oee.Performance != val)
                 {
-                    updateData.Oee.Performance = Math.Round(val, 2);
+                    deviceInfo.Oee.Performance = Math.Round(val, 2);
                 }
             }
         }
 
         private void UpdateStatusTimers(EventData data)
         {
-            if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(userId))
+            if (data.Data01 != null && data.Data02 != null && currentUser != null)
             {
                 var infos = (List<ShiftRowInfo>)data.Data02;
 
@@ -223,7 +243,7 @@ namespace TH_Mobile
                     total += info.TotalTime;
 
                     // Production
-                    var item = info.GenEventRowInfos.Find(x => x.ColumnName.ToLower() == "production__true");
+                    var item = info.GenEventRowInfos.Find(x => x.ColumnName.ToLower() == "active__true");
                     if (item != null) production += item.Seconds;
 
                     // Idle
@@ -235,17 +255,17 @@ namespace TH_Mobile
                     if (item != null) alert += item.Seconds;
                 }
 
-                if (updateData.Timers.Total != total ||
-                    updateData.Timers.Production != production ||
-                    updateData.Timers.Idle != idle ||
-                    updateData.Timers.Alert != alert)
+                if (deviceInfo.Timers.Total != total ||
+                    deviceInfo.Timers.Active != production ||
+                    deviceInfo.Timers.Idle != idle ||
+                    deviceInfo.Timers.Alert != alert)
                 {
-                    updateData.Timers.Total = total;
-                    updateData.Timers.Production = production;
-                    updateData.Timers.Idle = idle;
-                    updateData.Timers.Alert = alert;
+                    deviceInfo.Timers.Total = total;
+                    deviceInfo.Timers.Active = production;
+                    deviceInfo.Timers.Idle = idle;
+                    deviceInfo.Timers.Alert = alert;
 
-                    queue.Add(updateData);
+                    queue.Add(deviceInfo);
                 }
             }
         }

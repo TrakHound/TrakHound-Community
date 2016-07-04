@@ -101,6 +101,16 @@
     <Compile Include="TrakHound\Configurations\DeviceConfiguration.cs" />
     <Compile Include="TrakHound\Configurations\FileLocation_Settings.cs" />
     <Compile Include="TrakHound\Configurations\IConfiguration.cs" />
+    <Compile Include="TrakHound\Data\ControllerInfo.cs" />
+    <Compile Include="TrakHound\Data\DescriptionInfo.cs" />
+    <Compile Include="TrakHound\Data\DeviceInfo.cs" />
+    <Compile Include="TrakHound\Data\Get.cs" />
+    <Compile Include="TrakHound\Data\OeeInfo.cs" />
+    <Compile Include="TrakHound\Data\StatusInfo.cs" />
+    <Compile Include="TrakHound\Data\TimersInfo.cs" />
+    <Compile Include="TrakHound\Data\Update.cs" />
+    <Compile Include="TrakHound\Devices\DeviceInfo.cs" />
+    <Compile Include="TrakHound\Devices\Get.cs" />
     <Compile Include="TrakHound\Devices\Update.cs" />
     <Compile Include="TrakHound\Images.cs" />
     <Compile Include="TrakHound\Shifts.cs" />

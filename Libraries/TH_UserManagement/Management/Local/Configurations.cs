@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Xml;
 
-using TH_Configuration;
+//using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Database;
 using TH_Global;
 using TH_Global.Functions;

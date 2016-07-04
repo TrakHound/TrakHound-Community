@@ -48,14 +48,14 @@ namespace TH_Global.Web
                 {
                     try
                     {
-                        JsonSerializerSettings JSS = new JsonSerializerSettings();
-                        JSS.DateFormatHandling = DateFormatHandling.IsoDateFormat;
-                        JSS.DateParseHandling = DateParseHandling.DateTime;
-                        JSS.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+                        var jss = new JsonSerializerSettings();
+                        jss.DateFormatHandling = DateFormatHandling.IsoDateFormat;
+                        jss.DateParseHandling = DateParseHandling.DateTime;
+                        jss.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
 
                         data = ConvertToSafe(data);
 
-                        return (T)JsonConvert.DeserializeObject(data, (typeof(T)), JSS);
+                        return (T)JsonConvert.DeserializeObject(data, (typeof(T)), jss);
                     }
                     catch (JsonException jex) { Logger.Log(jex.Message); }
                     catch (Exception ex) { Logger.Log(ex.Message); }
