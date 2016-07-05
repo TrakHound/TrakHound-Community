@@ -10,7 +10,7 @@ using System.Linq;
 
 using MTConnect.Application;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Plugins;
 
 namespace TH_InstanceData

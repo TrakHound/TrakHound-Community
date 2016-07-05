@@ -4,9 +4,9 @@ using System.Linq;
 using System.Xml;
 using System.Reflection;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 
-namespace TH_Configuration.Converter_Sub_Classes
+namespace TH_Global.TrakHound.Configurations.Converter_Sub_Classes
 {
     public static class ObjectToXml
     {

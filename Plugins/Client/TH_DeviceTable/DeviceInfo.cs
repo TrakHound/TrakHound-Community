@@ -11,7 +11,7 @@ using System.Windows.Media;
 using System.Windows;
 using System.Globalization;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 
 namespace TH_DeviceTable
 {

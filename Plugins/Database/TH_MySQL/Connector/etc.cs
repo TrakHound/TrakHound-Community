@@ -5,7 +5,7 @@ using System.IO;
 
 using MySql.Data.MySqlClient;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Global;
 
 namespace TH_MySQL.Connector

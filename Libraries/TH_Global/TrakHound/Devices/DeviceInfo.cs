@@ -14,8 +14,11 @@ namespace TH_Global.TrakHound
     public static partial class Devices
     {
 
-        protected class DeviceInfo
+        public class DeviceInfo
         {
+            [JsonConstructor]
+            public DeviceInfo() { }
+
             public DeviceInfo(string uniqueId, DataTable table)
             {
                 UniqueId = uniqueId;
@@ -31,6 +34,17 @@ namespace TH_Global.TrakHound
                 }
             }
 
+            public DeviceInfo(string uniqueId, Row row)
+            {
+                UniqueId = uniqueId;
+
+                if (row != null)
+                {
+                    Data = new List<Row>();
+                    Data.Add(row);
+                }
+            }
+
             [JsonProperty("unique_id")]
             public string UniqueId { get; set; }
 
@@ -39,6 +53,16 @@ namespace TH_Global.TrakHound
 
             public class Row
             {
+                [JsonConstructor]
+                public Row() { }
+
+                public Row(string address, string value, string attributes)
+                {
+                    Address = address;
+                    Value = value;
+                    Attributes = attributes;
+                }
+
                 [JsonProperty("address")]
                 public string Address { get; set; }
 

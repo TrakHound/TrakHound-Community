@@ -14,7 +14,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_DeviceManager.Controls;
 using TH_Global;
 using TH_Global.Functions;
@@ -173,7 +173,7 @@ namespace TH_DeviceManager
 
         ObservableCollection<DeviceConfiguration> _devices;
         /// <summary>
-        /// Collection of TH_Configuration.Configuration objects that represent the active devices
+        /// Collection of TH_Global.TrakHound.Configurations.Configuration objects that represent the active devices
         /// </summary>
         public ObservableCollection<DeviceConfiguration> Devices
         {
@@ -192,7 +192,7 @@ namespace TH_DeviceManager
 
         ObservableCollection<DeviceConfiguration> _sharedDevices;
         /// <summary>
-        /// Collection of TH_Configuration.Configuration objects that represent the shared devices
+        /// Collection of TH_Global.TrakHound.Configurations.Configuration objects that represent the shared devices
         /// that are owned by the current user
         /// </summary>
         public ObservableCollection<DeviceConfiguration> SharedDevices

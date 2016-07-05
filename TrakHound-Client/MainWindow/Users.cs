@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Global.Functions;
 using TH_Global.TrakHound.Users;
 //using TH_UserManagement.Management;

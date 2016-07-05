@@ -9,7 +9,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Global.Functions;
 using TH_Plugins;
 using TH_Plugins.Client;

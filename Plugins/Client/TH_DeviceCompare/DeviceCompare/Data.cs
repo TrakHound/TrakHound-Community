@@ -5,7 +5,7 @@
 
 using System;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Plugins;
 
 namespace TH_DeviceCompare

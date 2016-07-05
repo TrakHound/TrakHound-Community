@@ -14,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.ComponentModel;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Global;
 using TH_Global.Functions;
 using TH_UserManagement.Management;
@@ -35,7 +35,7 @@ namespace TH_DeviceManager
             DataContext = this;
 
             Configuration = config;
-            ConfigurationTable = TH_Configuration.Converter.XMLToTable(config.ConfigurationXML);
+            ConfigurationTable = TH_Global.TrakHound.Configurations.Converter.XMLToTable(config.ConfigurationXML);
         }
 
         public string Title { get { return "Edit Device Table"; } }

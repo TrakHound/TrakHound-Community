@@ -11,7 +11,8 @@
     <AssemblyName>TH_Database</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,10 +51,6 @@
     <Compile Include="Tables\Variables.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TH_Configuration\TH_Configuration.csproj">
-      <Project>{147a0360-5f86-4d33-a874-46f785723ead}</Project>
-      <Name>TH_Configuration</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TH_Global\TH_Global.csproj">
       <Project>{3233b466-2fa9-4ae7-8a21-7eeb57bb61f4}</Project>
       <Name>TH_Global</Name>

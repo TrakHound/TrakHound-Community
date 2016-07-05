@@ -16,7 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Global;
 using TH_Global.Functions;
 using MTConnect;
@@ -325,9 +325,13 @@ namespace TH_DeviceManager.AddDevice.Pages
                 // Add Device to user (or save to disk if local)
                 if (ParentPage.DeviceManager.CurrentUser != null)
                 {
-                    var userConfig = UserConfiguration.FromNewUserConfiguration(ParentPage.DeviceManager.CurrentUser);
+                    //var userConfig = UserConfiguration.FromNewUserConfiguration(ParentPage.DeviceManager.CurrentUser);
 
-                    success = Configurations.AddConfigurationToUser(userConfig, config);
+                    //success = Configurations.AddConfigurationToUser(userConfig, config);
+
+                    success = TH_Global.TrakHound.Devices.Update(ParentPage.DeviceManager.CurrentUser, config);
+
+                    //success = Configurations.AddConfigurationToUser(userConfig, config);
                 }
                 else
                 {

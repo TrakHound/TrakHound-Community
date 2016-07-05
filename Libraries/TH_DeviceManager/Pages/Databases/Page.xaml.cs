@@ -15,7 +15,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Database;
 using TH_Global;
 using TH_Global.Functions;

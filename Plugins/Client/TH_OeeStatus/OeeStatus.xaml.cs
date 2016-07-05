@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 using TH_OeeStatus.Controls;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 
 namespace TH_OeeStatus
 {

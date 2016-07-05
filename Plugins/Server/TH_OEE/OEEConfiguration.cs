@@ -10,7 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Xml;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 
 namespace TH_OEE
 {

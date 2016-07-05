@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace TH_Configuration
+namespace TH_Global.TrakHound.Configurations
 {
 
     public class Description_Settings

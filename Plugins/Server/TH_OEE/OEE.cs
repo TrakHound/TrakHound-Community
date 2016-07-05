@@ -9,7 +9,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Cycles;
 using TH_Global.Shifts;
 using TH_Plugins;

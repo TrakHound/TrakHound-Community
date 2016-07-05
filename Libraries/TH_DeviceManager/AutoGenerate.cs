@@ -6,7 +6,7 @@ using System.Xml;
 
 using System.Data;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Global.Functions;
 
 using MTConnect.Application.Components;

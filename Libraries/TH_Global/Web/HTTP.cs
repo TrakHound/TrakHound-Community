@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Web;
 
 using TH_Global.Functions;
 
@@ -112,125 +113,125 @@ namespace TH_Global.Web
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        public static string EncodePostString(string str)
-        {
-            string result = str;
-            result = result.Replace("!", "%21");
-            result = result.Replace("#", "%23");
-            result = result.Replace("$", "%24");
-            result = result.Replace("&", "%26");
-            result = result.Replace("'", "%27");
-            //result = result.Replace("(", "%28");
-            //result = result.Replace(")", "%29");
-            result = result.Replace("*", "%2a");
-            result = result.Replace("+", "%2b");
-            result = result.Replace(",", "%2c");
-            result = result.Replace("/", "%2f");
-            result = result.Replace(":", "%3a");
-            result = result.Replace(";", "%3b");
-            result = result.Replace("=", "%3d");
-            result = result.Replace("?", "%3f");
-            result = result.Replace("@", "%40");
-            result = result.Replace("[", "%5b");
-            result = result.Replace("]", "%5d");
-            result = result.Replace(" ", "+");
+        //public static string EncodePostString(string str)
+        //{
+        //    string result = str;
+        //    result = result.Replace("!", "%21");
+        //    result = result.Replace("#", "%23");
+        //    result = result.Replace("$", "%24");
+        //    result = result.Replace("&", "%26");
+        //    result = result.Replace("'", "%27");
+        //    //result = result.Replace("(", "%28");
+        //    //result = result.Replace(")", "%29");
+        //    result = result.Replace("*", "%2a");
+        //    result = result.Replace("+", "%2b");
+        //    result = result.Replace(",", "%2c");
+        //    result = result.Replace("/", "%2f");
+        //    result = result.Replace(":", "%3a");
+        //    result = result.Replace(";", "%3b");
+        //    result = result.Replace("=", "%3d");
+        //    result = result.Replace("?", "%3f");
+        //    result = result.Replace("@", "%40");
+        //    result = result.Replace("[", "%5b");
+        //    result = result.Replace("]", "%5d");
+        //    result = result.Replace(" ", "+");
 
-            return result;
-        }
+        //    return result;
+        //}
 
 
-        public static string Send(string url, NameValueCollection postData = null)
-        {
-            string result = null;
+        //public static string Send(string url, NameValueCollection postData = null)
+        //{
+        //    string result = null;
 
-            var attempts = 0;
-            var success = false;
-            string message = null;
+        //    var attempts = 0;
+        //    var success = false;
+        //    string message = null;
 
-            // Try to send data for number of connectionAttempts
-            while (attempts < CONNECTION_ATTEMPTS && !success)
-            {
-                attempts += 1;
+        //    // Try to send data for number of connectionAttempts
+        //    while (attempts < CONNECTION_ATTEMPTS && !success)
+        //    {
+        //        attempts += 1;
 
-                try
-                {
-                    byte[] postBytes = new byte[0];
+        //        try
+        //        {
+        //            byte[] postBytes = new byte[0];
 
-                    if (postData != null) postBytes = CreatePostBytes(postData);
+        //            if (postData != null) postBytes = CreatePostBytes(postData);
 
-                    // Create HTTP request and define Header info
-                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                    request.Timeout = TIMEOUT;
-                    request.Method = "POST";
-                    request.ContentType = "application/x-www-form-urlencoded";
-                    request.ContentLength = postBytes.Length;
-                    request.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)";
+        //            // Create HTTP request and define Header info
+        //            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+        //            request.Timeout = TIMEOUT;
+        //            request.Method = "POST";
+        //            request.ContentType = "application/x-www-form-urlencoded";
+        //            request.ContentLength = postBytes.Length;
+        //            request.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)";
 
-                    // Add POST data to request stream
-                    Stream postStream = request.GetRequestStream();
-                    postStream.Write(postBytes, 0, postBytes.Length);
-                    postStream.Flush();
-                    postStream.Close();
+        //            // Add POST data to request stream
+        //            Stream postStream = request.GetRequestStream();
+        //            postStream.Write(postBytes, 0, postBytes.Length);
+        //            postStream.Flush();
+        //            postStream.Close();
 
-                    // Get HTTP resonse and return as string
-                    GetHTTPResponse(request);
+        //            // Get HTTP resonse and return as string
+        //            GetHTTPResponse(request);
 
-                    success = true;
-                }
-                catch (WebException wex) { message = wex.Message; }
-                catch (Exception ex) { message = ex.Message; }
+        //            success = true;
+        //        }
+        //        catch (WebException wex) { message = wex.Message; }
+        //        catch (Exception ex) { message = ex.Message; }
 
-                if (!success) System.Threading.Thread.Sleep(1000);
-            }
+        //        if (!success) System.Threading.Thread.Sleep(1000);
+        //    }
 
-            if (!success) Logger.Log("Send :: " + attempts.ToString() + " Attempts :: URL = " + url + " :: " + message);
+        //    if (!success) Logger.Log("Send :: " + attempts.ToString() + " Attempts :: URL = " + url + " :: " + message);
 
-            return result;
-        }
+        //    return result;
+        //}
 
         /// <summary>
         /// Create byte array that contains Post Data
         /// </summary>
         /// <param name="nvc"></param>
         /// <returns></returns>
-        public static byte[] CreatePostBytes(NameValueCollection nvc)
-        {
-            var postData = new StringBuilder();
-            for (var x = 0; x <= nvc.AllKeys.Length - 1; x++)
-            {
-                string key = nvc.AllKeys[x];
-                var vals = "";
-                foreach (var value in nvc.GetValues(key))
-                {
-                    vals += value;
-                }
-                postData.Append(EncodePostString(key));
-                postData.Append("=");
-                postData.Append(EncodePostString(vals));
+        //public static byte[] CreatePostBytes(NameValueCollection nvc)
+        //{
+        //    var postData = new StringBuilder();
+        //    for (var x = 0; x <= nvc.AllKeys.Length - 1; x++)
+        //    {
+        //        string key = nvc.AllKeys[x];
+        //        var vals = "";
+        //        foreach (var value in nvc.GetValues(key))
+        //        {
+        //            vals += value;
+        //        }
+        //        postData.Append(EncodePostString(key));
+        //        postData.Append("=");
+        //        postData.Append(EncodePostString(vals));
 
-                // If not the last data item then add '&'
-                if (x < nvc.AllKeys.Length) postData.Append("&");
-            }
+        //        // If not the last data item then add '&'
+        //        if (x < nvc.AllKeys.Length) postData.Append("&");
+        //    }
 
-            // Convert POST data to byte array
-            var ascii = new ASCIIEncoding();
-            return ascii.GetBytes(postData.ToString());
-        }
+        //    // Convert POST data to byte array
+        //    var ascii = new ASCIIEncoding();
+        //    return ascii.GetBytes(postData.ToString());
+        //}
 
         /// <summary>
         /// HTTP resonse and return as string
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        static string GetHTTPResponse(HttpWebRequest request)
-        {
-            using (var response = (HttpWebResponse)request.GetResponse())
-            using (var s = response.GetResponseStream())
-            using (var reader = new StreamReader(s))
-            {
-                return reader.ReadToEnd();
-            }
-        }
+        //static string GetHTTPResponse(HttpWebRequest request)
+        //{
+        //    using (var response = (HttpWebResponse)request.GetResponse())
+        //    using (var s = response.GetResponseStream())
+        //    using (var reader = new StreamReader(s))
+        //    {
+        //        return reader.ReadToEnd();
+        //    }
+        //}
 
 
         /// <summary>
@@ -321,13 +322,13 @@ namespace TH_Global.Web
             public PostContentData(string name, string value)
             {
                 Name = name;
-                Value = value;
+                Value = HttpUtility.UrlEncode(value);
             }
 
             public PostContentData(string name, string value, string contentType)
             {
                 Name = name;
-                Value = value;
+                Value = System.Web.HttpUtility.UrlEncode(value);
                 ContentType = contentType;
             }
 
@@ -688,6 +689,7 @@ namespace TH_Global.Web
                         using (var reader = new StreamReader(s))
                         {
                             result = reader.ReadToEnd();
+                            result = HttpUtility.UrlDecode(result);
                             success = true;
                         }
                     }
@@ -887,7 +889,9 @@ namespace TH_Global.Web
 
                         string contents = reader.ReadToEnd();
 
-                        contents = EncodePostString(contents);
+                        contents = HttpUtility.UrlEncode(contents);
+
+                        //contents = EncodePostString(contents);
 
                         builder.Append(contents);
                     }

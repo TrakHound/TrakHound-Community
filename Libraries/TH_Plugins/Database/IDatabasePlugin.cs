@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Data;
 
-//using TH_Configuration;
+//using TH_Global.TrakHound.Configurations;
 using TH_Global.TrakHound.Configurations;
 
 namespace TH_Plugins.Database

@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Plugins;
 using TH_Plugins.Client;
 

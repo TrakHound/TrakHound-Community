@@ -8,69 +8,78 @@
              d:DesignHeight="100" d:DesignWidth="1000">
     
     <Grid x:Name="root" >
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        
-        <!--Headers-->
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="30"/>
-                <ColumnDefinition Width="200"/>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.Resources>
-                <Style TargetType="TextBlock">
-                    <Setter Property="VerticalAlignment" Value="Center"/>
-                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                    <Setter Property="TextAlignment" Value="Center"/>
-                    <Setter Property="Foreground" Value="#fff"/>
-                    <Setter Property="TextWrapping" Value="Wrap"/>
-                    <Setter Property="Margin" Value="5"/>
-                </Style>
-            </Grid.Resources>
 
-            <TextBlock Grid.Column="0" Text="S" ToolTip="Displays the Device's current status whether it is in Production, Idle, or Alert."/>
-            
-            <TextBlock Grid.Column="1" Text="Device Description"/>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
 
-            <TextBlock Grid.Column="2" Text="Device ID"/>
+            <Grid>
 
-            <UniformGrid Grid.Column="3" Columns="24">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-                <TextBlock Text="12 AM"/>
-                <TextBlock Text="1 AM"/>
-                <TextBlock Text="2 AM"/>
-                <TextBlock Text="3 AM"/>
-                <TextBlock Text="4 AM"/>
-                <TextBlock Text="5 AM"/>
-                <TextBlock Text="6 AM"/>
-                <TextBlock Text="7 AM"/>
-                <TextBlock Text="8 AM"/>
-                <TextBlock Text="9 AM"/>
-                <TextBlock Text="10 AM"/>
-                <TextBlock Text="11 AM"/>
-                <TextBlock Text="12 PM"/>
-                <TextBlock Text="1 PM"/>
-                <TextBlock Text="2 PM"/>
-                <TextBlock Text="3 PM"/>
-                <TextBlock Text="4 PM"/>
-                <TextBlock Text="5 PM"/>
-                <TextBlock Text="6 PM"/>
-                <TextBlock Text="7 PM"/>
-                <TextBlock Text="8 PM"/>
-                <TextBlock Text="9 PM"/>
-                <TextBlock Text="10 PM"/>
-                <TextBlock Text="11 PM"/>
+                <!--Headers-->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="TextAlignment" Value="Center"/>
+                            <Setter Property="Foreground" Value="#fff"/>
+                            <Setter Property="TextWrapping" Value="Wrap"/>
+                            <Setter Property="Margin" Value="5"/>
+                        </Style>
+                    </Grid.Resources>
 
-            </UniformGrid>
+                    <TextBlock Grid.Column="0" Text="S" ToolTip="Displays the Device's current status whether it is in Production, Idle, or Alert."/>
 
-        </Grid>
-        
-        <!--Rows-->
-        <ItemsControl Grid.Row="1" ItemsSource="{Binding Rows}" Background="{StaticResource Window_Background}"/>
+                    <TextBlock Grid.Column="1" Text="Device Description"/>
+
+                    <TextBlock Grid.Column="2" Text="Device ID"/>
+
+                    <UniformGrid Grid.Column="3" Columns="24">
+
+                        <TextBlock Text="12 AM"/>
+                        <TextBlock Text="1 AM"/>
+                        <TextBlock Text="2 AM"/>
+                        <TextBlock Text="3 AM"/>
+                        <TextBlock Text="4 AM"/>
+                        <TextBlock Text="5 AM"/>
+                        <TextBlock Text="6 AM"/>
+                        <TextBlock Text="7 AM"/>
+                        <TextBlock Text="8 AM"/>
+                        <TextBlock Text="9 AM"/>
+                        <TextBlock Text="10 AM"/>
+                        <TextBlock Text="11 AM"/>
+                        <TextBlock Text="12 PM"/>
+                        <TextBlock Text="1 PM"/>
+                        <TextBlock Text="2 PM"/>
+                        <TextBlock Text="3 PM"/>
+                        <TextBlock Text="4 PM"/>
+                        <TextBlock Text="5 PM"/>
+                        <TextBlock Text="6 PM"/>
+                        <TextBlock Text="7 PM"/>
+                        <TextBlock Text="8 PM"/>
+                        <TextBlock Text="9 PM"/>
+                        <TextBlock Text="10 PM"/>
+                        <TextBlock Text="11 PM"/>
+
+                    </UniformGrid>
+
+                </Grid>
+
+                <!--Rows-->
+                <ItemsControl Grid.Row="1" ItemsSource="{Binding Rows}" Background="{StaticResource Window_Background}"/>
+
+            </Grid>
+
+        </ScrollViewer>
 
     </Grid>
     

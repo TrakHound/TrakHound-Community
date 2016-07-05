@@ -53,10 +53,6 @@
     <Compile Include="UpdateQueue.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Libraries\TH_Configuration\TH_Configuration.csproj">
-      <Project>{147a0360-5f86-4d33-a874-46f785723ead}</Project>
-      <Name>TH_Configuration</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Libraries\TH_Global\TH_Global.csproj">
       <Project>{3233b466-2fa9-4ae7-8a21-7eeb57bb61f4}</Project>
       <Name>TH_Global</Name>

@@ -9,6 +9,7 @@ using System.Windows.Media.Animation;
 using Microsoft.Shell;
 
 using TH_Database;
+using TH_Global.TrakHound;
 
 namespace TrakHound_Client
 {
@@ -43,6 +44,8 @@ namespace TrakHound_Client
             Splash_UpdateStatus("...Initializing", 10);
 
             TH_Global.FileLocations.CreateAllDirectories();
+
+            ApiConfiguration.Set(ApiConfiguration.Read());
 
             InitializeComponent();
             DataContext = this;

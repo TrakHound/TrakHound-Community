@@ -12,7 +12,7 @@ namespace TH_MySQL
     /// </summary>
     public class Queue
     {
-        public TH_Configuration.Database_Configuration config;
+        public TH_Global.TrakHound.Configurations.Database_Configuration config;
 
         public Queue()
         {

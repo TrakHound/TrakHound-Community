@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_GeneratedData.GeneratedEvents;
 
 namespace TH_Shifts

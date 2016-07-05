@@ -32,7 +32,7 @@ namespace TH_Global.TrakHound.Configurations
         ///     set
         ///     {
         ///         _propertyName = value;
-        ///         TH_Configuration.UpdateConfigurationXML("PropertyName", _propertyName);
+        ///         TH_Global.TrakHound.Configurations.UpdateConfigurationXML("PropertyName", _propertyName);
         ///     }
         /// }
         /// </summary>

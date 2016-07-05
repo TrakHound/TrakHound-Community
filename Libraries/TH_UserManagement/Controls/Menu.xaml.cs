@@ -17,7 +17,7 @@ using System.IO;
 using System.Threading;
 using System.Windows.Media.Animation;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Global;
 using TH_Global.Functions;
 using TH_WPF;

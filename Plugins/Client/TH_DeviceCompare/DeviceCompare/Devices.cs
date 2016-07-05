@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Global.Functions;
 
 namespace TH_DeviceCompare

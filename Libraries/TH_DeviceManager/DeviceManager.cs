@@ -11,16 +11,17 @@ using System.Linq;
 using System.Threading;
 using System.Xml;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Global;
 using TH_Global.Functions;
+using TH_Global.TrakHound;
 //using TH_Global.TrakHound.Users;
-using TH_UserManagement.Management;
+//using TH_UserManagement.Management;
 
 namespace TH_DeviceManager
 {
     /// <summary>
-    /// Class used to manage Devices (TH_Configuration.Configuration) objects
+    /// Class used to manage Devices (TH_Global.TrakHound.Configurations.Configuration) objects
     /// </summary>
     public class DeviceManager
     {
@@ -62,7 +63,7 @@ namespace TH_DeviceManager
         public event Status_Handler DevicesLoaded;
 
         /// <summary>
-        /// Delegate with a List<TH_Configuration.Configuration> argument to update this DeviceManager's device lists
+        /// Delegate with a List<TH_Global.TrakHound.Configurations.Configuration> argument to update this DeviceManager's device lists
         /// </summary>
         /// <param name="configs"></param>
         public delegate void Update_Handler(List<DeviceConfiguration> configs);
@@ -97,9 +98,9 @@ namespace TH_DeviceManager
         }
 
         /// <summary>
-        /// Delegate with the TH_Configuration.Configuration object that has been udpated and a DeviceUpdateArgs object that describes the update
+        /// Delegate with the TH_Global.TrakHound.Configurations.Configuration object that has been udpated and a DeviceUpdateArgs object that describes the update
         /// </summary>
-        /// <param name="config">TH_Configuration.Configuration object that has been updated</param>
+        /// <param name="config">TH_Global.TrakHound.Configurations.Configuration object that has been updated</param>
         /// <param name="args">DeviceUpdateArgs object used to describe the type of udpates</param>
         public delegate void DeviceUpdated_Handler(DeviceConfiguration config, DeviceUpdateArgs args);
 
@@ -112,7 +113,7 @@ namespace TH_DeviceManager
 
         private List<DeviceConfiguration> _devices;
         /// <summary>
-        /// List of TH_Configuration.DeviceConfiguration objects that represent the active devices
+        /// List of TH_Global.TrakHound.Configurations.DeviceConfiguration objects that represent the active devices
         /// </summary>
         public List<DeviceConfiguration> Devices
         {
@@ -126,7 +127,7 @@ namespace TH_DeviceManager
 
         private List<DeviceConfiguration> _sharedDevices;
         /// <summary>
-        /// List of TH_Configuration.Configuration objects that represent the shared devices that are
+        /// List of TH_Global.TrakHound.Configurations.Configuration objects that represent the shared devices that are
         /// owned by the current user
         /// </summary>
         public List<DeviceConfiguration> SharedDevices
@@ -180,7 +181,7 @@ namespace TH_DeviceManager
                 // Get Added Configurations
                 added = LoadDevices_Added();
 
-                shared = LoadDevices_Shared();
+                //shared = LoadDevices_Shared();
             }
             // If not logged in Read from File in 'C:\TrakHound\Devices\'
             else
@@ -212,9 +213,9 @@ namespace TH_DeviceManager
 
         private List<DeviceConfiguration> LoadDevices_Added()
         {
-            var userConfig = UserConfiguration.FromNewUserConfiguration(currentuser);
+            //var userConfig = UserConfiguration.FromNewUserConfiguration(currentuser);
 
-            var result = Configurations.GetConfigurationsListForUser(userConfig);
+            var result = TH_Global.TrakHound.Devices.Get(currentuser);
             if (result != null)
             {
                 result = result.OrderBy(x => x.Index).ToList();
@@ -226,30 +227,67 @@ namespace TH_DeviceManager
                     result[x].Index = 1000 + (1000 * x);
                 }
 
-                var indexItems = new List<Tuple<string, int>>();
+                var deviceInfos = new List<Devices.DeviceInfo>();
 
-                foreach (var config in result) indexItems.Add(new Tuple<string, int>(config.TableName, config.Index));
+                foreach (var config in result)
+                {
+                    deviceInfos.Add(new Devices.DeviceInfo(config.UniqueId, new Devices.DeviceInfo.Row("/Index", config.Index.ToString(), null)));
+                }
 
-                Configurations.UpdateIndexes(indexItems);
+                TH_Global.TrakHound.Devices.Update(currentuser, deviceInfos);
+
+                
+
+                //var indexItems = new List<Tuple<string, int>>();
+
+                //foreach (var config in result) indexItems.Add(new Tuple<string, int>(config.TableName, config.Index));
+
+                //Configurations.UpdateIndexes(indexItems);
             }
 
             return result;
         }
 
-        private List<DeviceConfiguration> LoadDevices_Shared()
-        {
-            var userConfig = UserConfiguration.FromNewUserConfiguration(currentuser);
+        //private List<DeviceConfiguration> LoadDevices_Added()
+        //{
+        //    var userConfig = UserConfiguration.FromNewUserConfiguration(currentuser);
 
-            var result = Shared.GetOwnedSharedConfigurations(userConfig);
-            if (result != null)
-            {
-                result = result.OrderBy(x => x.Description.Manufacturer).
-                    ThenBy(x => x.Description.Controller).
-                    ThenBy(x => x.Description.Model).ToList();
-            }
+        //    var result = Configurations.GetConfigurationsListForUser(userConfig);
+        //    if (result != null)
+        //    {
+        //        result = result.OrderBy(x => x.Index).ToList();
 
-            return result;
-        }
+        //        // Reset order to be in intervals of 1000 in order to leave room in between for changes in index
+        //        // This index model allows for devices to change index without having to update every device each time.
+        //        for (var x = 0; x <= result.Count - 1; x++)
+        //        {
+        //            result[x].Index = 1000 + (1000 * x);
+        //        }
+
+        //        var indexItems = new List<Tuple<string, int>>();
+
+        //        foreach (var config in result) indexItems.Add(new Tuple<string, int>(config.TableName, config.Index));
+
+        //        Configurations.UpdateIndexes(indexItems);
+        //    }
+
+        //    return result;
+        //}
+
+        //private List<DeviceConfiguration> LoadDevices_Shared()
+        //{
+        //    var userConfig = UserConfiguration.FromNewUserConfiguration(currentuser);
+
+        //    var result = Shared.GetOwnedSharedConfigurations(userConfig);
+        //    if (result != null)
+        //    {
+        //        result = result.OrderBy(x => x.Description.Manufacturer).
+        //            ThenBy(x => x.Description.Controller).
+        //            ThenBy(x => x.Description.Model).ToList();
+        //    }
+
+        //    return result;
+        //}
 
         #endregion
 
@@ -315,7 +353,14 @@ namespace TH_DeviceManager
             bool result = false;
 
             // If logged in then remove table
-            if (currentuser != null) result = Configurations.RemoveConfigurationTable(config.TableName);
+            if (currentuser != null)
+            {
+                var uniqueIds = new string[1];
+                uniqueIds[0] = config.UniqueId;
+
+                result = TH_Global.TrakHound.Devices.Remove(currentuser, uniqueIds);
+            }
+            //if (currentuser != null) result = Configurations.RemoveConfigurationTable(config.TableName);
             // If not logged in then delete local configuration file
             else
             {
@@ -356,8 +401,11 @@ namespace TH_DeviceManager
                 string tablename = config.TableName;
                 if (tablename != null)
                 {
-                    if (type == ManagementType.Client) result = Configurations.UpdateConfigurationTable("/ClientEnabled", "True", tablename);
-                    else if (type == ManagementType.Server) result = Configurations.UpdateConfigurationTable("/ServerEnabled", "True", tablename);
+                    if (type == ManagementType.Client) result = TH_Global.TrakHound.Devices.Update(currentuser, config.UniqueId, new TH_Global.TrakHound.Devices.DeviceInfo.Row("/ClientEnabled", "True", null));
+                    else if (type == ManagementType.Server) result = TH_Global.TrakHound.Devices.Update(currentuser, config.UniqueId, new TH_Global.TrakHound.Devices.DeviceInfo.Row("/ServerEnabled", "True", null));
+
+                    //if (type == ManagementType.Client) result = Configurations.UpdateConfigurationTable("/ClientEnabled", "True", tablename);
+                    //else if (type == ManagementType.Server) result = Configurations.UpdateConfigurationTable("/ServerEnabled", "True", tablename);
                 }
 
                 if (result) result = UpdateEnabledXML(config.ConfigurationXML, true, type);
@@ -388,8 +436,11 @@ namespace TH_DeviceManager
                 string tablename = config.TableName;
                 if (tablename != null)
                 {
-                    if (type == ManagementType.Client) result = Configurations.UpdateConfigurationTable("/ClientEnabled", "False", tablename);
-                    else if (type == ManagementType.Server) result = Configurations.UpdateConfigurationTable("/ServerEnabled", "False", tablename);
+                    if (type == ManagementType.Client) result = TH_Global.TrakHound.Devices.Update(currentuser, config.UniqueId, new TH_Global.TrakHound.Devices.DeviceInfo.Row("/ClientEnabled", "False", null));
+                    else if (type == ManagementType.Server) result = TH_Global.TrakHound.Devices.Update(currentuser, config.UniqueId, new TH_Global.TrakHound.Devices.DeviceInfo.Row("/ServerEnabled", "False", null));
+
+                    //if (type == ManagementType.Client) result = Configurations.UpdateConfigurationTable("/ClientEnabled", "False", tablename);
+                    //else if (type == ManagementType.Server) result = Configurations.UpdateConfigurationTable("/ServerEnabled", "False", tablename);
                 }
 
                 if (result) result = UpdateEnabledXML(config.ConfigurationXML, false, type);
@@ -418,7 +469,8 @@ namespace TH_DeviceManager
             if (currentuser != null)
             {
                 string tablename = config.TableName;
-                if (tablename != null) result = Configurations.UpdateConfigurationTable("/Index", newIndex.ToString(), tablename);
+                if (tablename != null) result = TH_Global.TrakHound.Devices.Update(currentuser, config.UniqueId, new Devices.DeviceInfo.Row("/Index", newIndex.ToString(), null));
+                //if (tablename != null) result = Configurations.UpdateConfigurationTable("/Index", newIndex.ToString(), tablename);
                 if (result) result = XML_Functions.SetInnerText(config.ConfigurationXML, "Index", newIndex.ToString());
             }
             else
@@ -453,7 +505,8 @@ namespace TH_DeviceManager
             {
                 var updateId = String_Functions.RandomString(20);
 
-                if (currentuser != null) result = Configurations.UpdateConfigurationTable("/ClientUpdateId", updateId, config.TableName);
+                if (currentuser != null) result = TH_Global.TrakHound.Devices.Update(currentuser, config.UniqueId, new Devices.DeviceInfo.Row("/ClientUpdateId", updateId, null));
+                //if (currentuser != null) result = Configurations.UpdateConfigurationTable("/ClientUpdateId", updateId, config.TableName);
                 else result = true;
 
                 if (result)
@@ -466,7 +519,8 @@ namespace TH_DeviceManager
             {
                 var updateId = String_Functions.RandomString(20);
 
-                if (currentuser != null) result = Configurations.UpdateConfigurationTable("/ServerUpdateId", updateId, config.TableName);
+                if (currentuser != null) result = TH_Global.TrakHound.Devices.Update(currentuser, config.UniqueId, new Devices.DeviceInfo.Row("/ServerUpdateId", updateId, null));
+                //if (currentuser != null) result = Configurations.UpdateConfigurationTable("/ServerUpdateId", updateId, config.TableName);
                 else result = true;
 
                 if (result)

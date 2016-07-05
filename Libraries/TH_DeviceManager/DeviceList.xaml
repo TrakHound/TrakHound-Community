@@ -125,7 +125,17 @@
                 <Rectangle />
 
                 <!--Refresh Device List-->
-                <th_wpf:Button Image="Resources/Refresh_01.png" ToolTip="Refresh Device List" Clicked="Refresh_Toolbar_Clicked"/>
+                <th_wpf:Button Image="Resources/Refresh_01.png" ToolTip="Refresh Device List" Clicked="Refresh_Toolbar_Clicked">
+                    <th_wpf:Button.Style>
+                        <Style TargetType="th_wpf:Button" BasedOn="{StaticResource {x:Type th_wpf:Button}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DevicesLoading}" Value="true">
+                                    <Setter Property="IsEnabled" Value="false"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </th_wpf:Button.Style>
+                </th_wpf:Button>
 
                 <!--Separator-->
                 <Rectangle />

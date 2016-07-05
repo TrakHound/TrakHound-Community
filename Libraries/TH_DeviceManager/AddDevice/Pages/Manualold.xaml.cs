@@ -15,7 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Global;
 using TH_Global.Functions;
 using TH_UserManagement.Management;
@@ -405,7 +405,7 @@ namespace TH_DeviceManager.AddDevice.Pages
                             XmlDocument xml = Converter.TableToXML(dt);
                             if (xml != null)
                             {
-                                // Process the XML file and get a TH_Configuration.Configuration object
+                                // Process the XML file and get a TH_Global.TrakHound.Configurations.Configuration object
                                 var config = DeviceConfiguration.Read(xml);
                                 if (config != null)
                                 {

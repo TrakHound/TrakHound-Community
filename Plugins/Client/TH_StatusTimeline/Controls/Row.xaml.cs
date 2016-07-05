@@ -8,7 +8,7 @@ using TH_Global.Functions;
 using TH_Plugins;
 using UI_Tools.Timeline;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Database;
 using TH_Global;
 using TH_Global.Shifts;
@@ -49,14 +49,14 @@ namespace TH_StatusTimeline.Controls
 
 
 
-        public TH_Configuration.DeviceConfiguration Configuration
+        public TH_Global.TrakHound.Configurations.DeviceConfiguration Configuration
         {
-            get { return (TH_Configuration.DeviceConfiguration)GetValue(ConfigurationProperty); }
+            get { return (TH_Global.TrakHound.Configurations.DeviceConfiguration)GetValue(ConfigurationProperty); }
             set { SetValue(ConfigurationProperty, value); }
         }
 
         public static readonly DependencyProperty ConfigurationProperty =
-            DependencyProperty.Register("Configuration", typeof(TH_Configuration.DeviceConfiguration), typeof(Row), new PropertyMetadata(null));
+            DependencyProperty.Register("Configuration", typeof(TH_Global.TrakHound.Configurations.DeviceConfiguration), typeof(Row), new PropertyMetadata(null));
 
         public string DeviceStatus
         {

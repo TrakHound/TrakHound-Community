@@ -13,7 +13,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Global.Functions;
 using TH_Plugins;
 using TH_Plugins.Client;

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Plugins;
 using TH_Plugins.Client;
 
@@ -116,7 +116,12 @@ namespace TH_StatusHourTimeline
                 {
                     foreach (DeviceConfiguration newConfig in e.NewItems)
                     {
-                        if (newConfig != null) AddRow(newConfig);
+                        if (newConfig != null)
+                        {
+                            Dispatcher.BeginInvoke(new Action<DeviceConfiguration>(AddRow), TH_Global.Functions.UI_Functions.PRIORITY_BACKGROUND, new object[] { newConfig });
+                        }
+
+                        //if (newConfig != null) AddRow(newConfig);
                     }
                 }
 

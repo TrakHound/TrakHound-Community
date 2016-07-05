@@ -13,7 +13,7 @@ using System.Windows.Controls;
 using System.Collections.ObjectModel;
 using System.Windows.Media.Animation;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_DeviceManager;
 using TH_Global;
 using TH_Global.TrakHound.Users;

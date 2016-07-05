@@ -9,7 +9,7 @@ using System.Linq;
 using System.Data;
 using System.Xml;
 
-namespace TH_Configuration.Converter_Sub_Classes
+namespace TH_Global.TrakHound.Configurations.Converter_Sub_Classes
 {
     public static class TableToXml
     {

@@ -9,7 +9,7 @@ using System.Data;
 
 using MTConnect.Application.Streams;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Database;
 using TH_Global;
 using TH_InstanceData;

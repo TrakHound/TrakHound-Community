@@ -3,7 +3,7 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Mobile.Data;
 
 namespace TH_Mobile

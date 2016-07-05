@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TH_Configuration")]
+[assembly: AssemblyTitle("TH_Global.TrakHound.Configurations")]
 [assembly: AssemblyDescription("Class Library to read Configuration files for the TrakHound Software Package")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Feenux LLC")]
-[assembly: AssemblyProduct("TH_Configuration")]
+[assembly: AssemblyProduct("TH_Global.TrakHound.Configurations")]
 [assembly: AssemblyCopyright("Copyright © 2015 Feenux LLC, All Rights Reserved")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

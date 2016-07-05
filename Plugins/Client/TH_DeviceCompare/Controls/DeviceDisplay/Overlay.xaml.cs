@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 
 namespace TH_DeviceCompare.Controls.DeviceDisplay
 {

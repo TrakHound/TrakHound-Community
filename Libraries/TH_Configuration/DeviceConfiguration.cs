@@ -17,7 +17,7 @@ using System.Linq.Expressions;
 using TH_Global;
 using TH_Global.Functions;
 
-namespace TH_Configuration
+namespace TH_Global.TrakHound.Configurations
 {
 
     public class DeviceConfiguration : IComparable, INotifyPropertyChanged
@@ -37,7 +37,7 @@ namespace TH_Configuration
         ///     set
         ///     {
         ///         _propertyName = value;
-        ///         TH_Configuration.UpdateConfigurationXML("PropertyName", _propertyName);
+        ///         TH_Global.TrakHound.Configurations.UpdateConfigurationXML("PropertyName", _propertyName);
         ///     }
         /// }
         /// </summary>

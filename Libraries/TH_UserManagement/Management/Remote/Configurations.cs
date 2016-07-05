@@ -7,7 +7,7 @@ using System.Xml;
 using System.Collections.Specialized;
 using System.Data;
 
-//using TH_Configuration;
+//using TH_Global.TrakHound.Configurations;
 using TH_Global.TrakHound.Configurations;
 using TH_Global;
 using TH_Global.Functions;
@@ -65,7 +65,7 @@ namespace TH_UserManagement.Management.Remote
                 configuration.UniqueId = uniqueId;
                 XML_Functions.SetInnerText(configuration.ConfigurationXML, "UniqueId", uniqueId);
 
-                DataTable dt = TH_Configuration.Converter.XMLToTable(configuration.ConfigurationXML);
+                DataTable dt = TH_Global.TrakHound.Configurations.Converter.XMLToTable(configuration.ConfigurationXML);
 
                 result = Update(tableName, dt);
             }

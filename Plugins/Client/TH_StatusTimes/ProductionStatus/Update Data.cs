@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Plugins;
 
 namespace TH_StatusTimes.ProductionStatus

@@ -4,7 +4,7 @@ using System.Xml;
 
 using TH_Global.Functions;
 
-namespace TH_Configuration
+namespace TH_Global.TrakHound.Configurations
 {
     public class Database_Settings
     {

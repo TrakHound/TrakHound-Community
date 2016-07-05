@@ -77,7 +77,7 @@ namespace TH_Global.TrakHound
                             {
                                 string error = x[1];
 
-                                Logger.Log("Update Device Failed : Error " + error, Logger.LogLineType.Warning);
+                                Logger.Log("Update Device Failed : Error " + error, Logger.LogLineType.Error);
                                 result = false;
                             }
                             else
@@ -85,6 +85,91 @@ namespace TH_Global.TrakHound
                                 Logger.Log("Update Device Successful", Logger.LogLineType.Notification);
                                 result = true;
                             }
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public static bool Update(UserConfiguration userConfig, List<DeviceInfo> deviceInfos)
+        {
+            bool result = false;
+
+            if (userConfig != null)
+            {
+                string json = JSON.FromObject(deviceInfos);
+                if (json != null)
+                {
+                    Uri apiHost = ApiConfiguration.ApiHost;
+
+                    string url = new Uri(apiHost, "devices/update/index.php").ToString();
+
+                    var postDatas = new NameValueCollection();
+                    postDatas["token"] = userConfig.SessionToken;
+                    postDatas["sender_id"] = UserManagement.SenderId.Get();
+                    postDatas["devices"] = json;
+
+                    string response = HTTP.POST(url, postDatas);
+                    if (response != null)
+                    {
+                        string[] x = response.Split('(', ')');
+                        if (x != null && x.Length > 1)
+                        {
+                            string error = x[1];
+
+                            Logger.Log("Update Device Failed : Error " + error, Logger.LogLineType.Error);
+                            result = false;
+                        }
+                        else
+                        {
+                            Logger.Log("Update Device Successful", Logger.LogLineType.Notification);
+                            result = true;
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public static bool Update(UserConfiguration userConfig, string deviceUniqueId, DeviceInfo.Row deviceRow)
+        {
+            bool result = false;
+
+            if (userConfig != null)
+            {
+                var infos = new List<DeviceInfo>();
+                infos.Add(new DeviceInfo(deviceUniqueId, deviceRow));
+
+                string json = JSON.FromObject(infos);
+                if (json != null)
+                {
+                    Uri apiHost = ApiConfiguration.ApiHost;
+
+                    string url = new Uri(apiHost, "devices/update/index.php").ToString();
+
+                    var postDatas = new NameValueCollection();
+                    postDatas["token"] = userConfig.SessionToken;
+                    postDatas["sender_id"] = UserManagement.SenderId.Get();
+                    postDatas["devices"] = json;
+
+                    string response = HTTP.POST(url, postDatas);
+                    if (response != null)
+                    {
+                        string[] x = response.Split('(', ')');
+                        if (x != null && x.Length > 1)
+                        {
+                            string error = x[1];
+
+                            Logger.Log("Update Device Failed : Error " + error, Logger.LogLineType.Error);
+                            result = false;
+                        }
+                        else
+                        {
+                            Logger.Log("Update Device Successful", Logger.LogLineType.Notification);
+                            result = true;
                         }
                     }
                 }

@@ -11,7 +11,8 @@
     <AssemblyName>TH_UserManagement</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -82,10 +83,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TH_Configuration\TH_Configuration.csproj">
-      <Project>{147a0360-5f86-4d33-a874-46f785723ead}</Project>
-      <Name>TH_Configuration</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TH_Database\TH_Database.csproj">
       <Project>{00e275c4-3494-4fcc-8781-fd815024117e}</Project>
       <Name>TH_Database</Name>

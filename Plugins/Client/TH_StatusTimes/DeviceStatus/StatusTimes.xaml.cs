@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Controls;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_StatusTimes.DeviceStatus.Controls;
 
 namespace TH_StatusTimes.DeviceStatus

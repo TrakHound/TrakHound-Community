@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Global.Functions;
 
 namespace TH_DeviceTable
@@ -15,7 +15,7 @@ namespace TH_DeviceTable
 
         ObservableCollection<DeviceInfo> _deviceInfos;
         /// <summary>
-        /// Collection of TH_Configuration.Configuration objects that represent the devices
+        /// Collection of TH_Global.TrakHound.Configurations.Configuration objects that represent the devices
         /// </summary>
         public ObservableCollection<DeviceInfo> DeviceInfos
         {

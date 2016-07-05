@@ -11,7 +11,7 @@ using System.Text;
 
 using MTConnect.Application.Streams;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_Database;
 using TH_GeneratedData.GeneratedEvents;
 using TH_Global;

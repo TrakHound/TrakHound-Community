@@ -14,7 +14,7 @@ using System.Windows.Shapes;
 
 using System.Threading;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_UserManagement.Management;
 using TH_Global;
 using TH_Global.Functions;

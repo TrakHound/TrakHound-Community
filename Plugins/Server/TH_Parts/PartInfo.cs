@@ -5,7 +5,7 @@
 
 using System;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 using TH_GeneratedData.GeneratedEvents;
 using TH_Shifts;
 

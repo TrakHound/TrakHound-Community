@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Reflection;
 
-using TH_Configuration;
+using TH_Global.TrakHound.Configurations;
 
 namespace TH_Shifts
 {

@@ -46,14 +46,14 @@ namespace TH_StatusHourTimeline.Controls
 
 
 
-        public TH_Configuration.DeviceConfiguration Configuration
+        public TH_Global.TrakHound.Configurations.DeviceConfiguration Configuration
         {
-            get { return (TH_Configuration.DeviceConfiguration)GetValue(ConfigurationProperty); }
+            get { return (TH_Global.TrakHound.Configurations.DeviceConfiguration)GetValue(ConfigurationProperty); }
             set { SetValue(ConfigurationProperty, value); }
         }
 
         public static readonly DependencyProperty ConfigurationProperty =
-            DependencyProperty.Register("Configuration", typeof(TH_Configuration.DeviceConfiguration), typeof(Row), new PropertyMetadata(null));
+            DependencyProperty.Register("Configuration", typeof(TH_Global.TrakHound.Configurations.DeviceConfiguration), typeof(Row), new PropertyMetadata(null));
 
 
         public string DeviceStatus

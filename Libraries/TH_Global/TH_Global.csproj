@@ -11,7 +11,8 @@
     <AssemblyName>TH_Global</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,6 +51,7 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -111,6 +113,7 @@
     <Compile Include="TrakHound\Data\Update.cs" />
     <Compile Include="TrakHound\Devices\DeviceInfo.cs" />
     <Compile Include="TrakHound\Devices\Get.cs" />
+    <Compile Include="TrakHound\Devices\Remove.cs" />
     <Compile Include="TrakHound\Devices\Update.cs" />
     <Compile Include="TrakHound\Images.cs" />
     <Compile Include="TrakHound\Shifts.cs" />

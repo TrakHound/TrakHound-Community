@@ -14,9 +14,9 @@ using System.Reflection;
 
 using TH_Global;
 
-using TH_Configuration.Converter_Sub_Classes;
+using TH_Global.TrakHound.Configurations.Converter_Sub_Classes;
 
-namespace TH_Configuration
+namespace TH_Global.TrakHound.Configurations
 {
     public static class Converter
     {
