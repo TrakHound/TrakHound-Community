@@ -1,0 +1,792 @@
+﻿<!--Copyright (c) 2016 Feenux LLC, All Rights Reserved.-->
+
+<!--This file is subject to the terms and conditions defined in-->
+<!--file 'LICENSE.txt', which is part of this source code package.-->
+
+<Window x:Class="TrakHound_Dashboard.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        
+        xmlns:local="clr-namespace:TrakHound_Dashboard"
+        xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
+        xmlns:controls="clr-namespace:TrakHound_Dashboard.Controls"
+        
+        xmlns:devconsole="clr-namespace:TrakHound_Dashboard.Controls.Developer_Console"     
+        xmlns:message="clr-namespace:TrakHound_Dashboard.Controls.Message_Center"
+        xmlns:notifications="clr-namespace:TrakHound_Dashboard.Notifications"      
+        xmlns:menus="clr-namespace:TrakHound_Dashboard.Menus"
+
+        xmlns:services="clr-namespace:TrakHound.Tools;assembly=TrakHound-NET"
+        
+        Title="TrakHound Dashboard"
+        
+        Loaded="Main_Window_Loaded"
+        Closing="Main_Window_Closing"
+        Closed="Main_Window_Closed"
+        
+        Height="650"
+        Width="1000"
+        
+        MinHeight="300"
+        MinWidth="300"
+                
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"         
+        SizeChanged="Main_Window_SizeChanged"
+        
+        FontFamily="arial"
+        
+        PreviewMouseDown="Main_Window_PreviewMouseDown"
+        PreviewKeyUp="Main_Window_PreviewKeyUp"
+        AllowDrop="True"
+        
+        Icon="Resources/TrakHound_Logo_Initials_10.ico" ScrollViewer.VerticalScrollBarVisibility="Disabled"
+        >
+
+    <Window.Resources>
+
+        <Style x:Key="TrakHoundFontBold">
+            <Setter Property="TextElement.FontFamily" Value="Fonts/#Alte Haas Grotesk"/>
+            <Setter Property="TextElement.FontWeight" Value="Bold" />
+        </Style>
+
+        <Style x:Key="TrakHoundFont">
+            <Setter Property="TextElement.FontFamily" Value="Fonts/#Alte Haas Grotesk"/>
+        </Style>
+
+        <local:UppercaseConverter x:Key="uppercaseConverter"/>
+
+    </Window.Resources>
+
+    <!--Window Content-->
+    <Grid x:Name="root">
+
+        <DockPanel>
+
+            <!--Top Bar-->
+            <Grid DockPanel.Dock="Top" Grid.Row="0" Height="35">
+                <Grid.Resources>
+                    <Style TargetType="ui:Button">
+                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                        <Setter Property="Width" Value="30"/>
+                        <Setter Property="Height" Value="30"/>
+                        <Setter Property="Padding" Value="2"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+
+                <ItemsControl x:Name="TabPanel" Grid.Column="1" VerticalAlignment="Bottom" ItemsSource="{Binding TabHeaders}" Background="{StaticResource Window_Background}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+
+                <!--Main Menu, etc. Buttons-->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,2,0">
+
+                    <!--User Info-->
+                    <StackPanel Orientation="Horizontal" MouseDown="TopBar_UserInfo_MouseDown">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Opacity" Value="0.6"/>
+                                <Setter Property="ToolTip" Value="Open My Account Page"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Cursor" Value="Hand"/>
+                                        <Setter Property="Opacity" Value="1.0"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+
+                        <!--Profile Image-->
+                        <ui:ImageDisplay Height="30" Width="30" Margin="5,0" Image="{Binding ProfileImageSmall}" VerticalAlignment="Center" BorderBrush="#33ffffff" BorderThickness="1"/>
+
+                        <!--Username-->
+                        <StackPanel VerticalAlignment="Center" Margin="0,0,10,0">
+
+                            <!--<TextBlock Text="Logged in as" FontSize="8" Foreground="#aaa" HorizontalAlignment="Left" Margin="0,0,0,0"/>-->
+
+                            <TextBlock Text="{Binding CurrentUser.Username, Converter={StaticResource uppercaseConverter}}" FontSize="14" Foreground="#333"/>
+
+                        </StackPanel>
+
+                    </StackPanel>
+
+                    <Rectangle Width="1" Fill="{StaticResource Shade_Normal}" Margin="5,2"/>
+
+                    <!--Message Center-->
+                    <StackPanel Orientation="Horizontal" Margin="0">
+
+                        <ui:Button Clicked="MessageCenter_ToolBarItem_Clicked" Image="Resources/Envelope_01.png" ToolTip="Show Message Center">
+                            <ui:Button.Style>
+                                <Style TargetType="ui:Button">
+                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding NotificationsCount}" Value="0">
+                                            <Setter Property="Foreground" Value="#aaa"/>
+                                        </DataTrigger>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                            <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ui:Button.Style>
+                        </ui:Button>
+
+                        <Border CornerRadius="2" Margin="5,6">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding NotificationsCount}" Value="0">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Border.ToolTip>
+                                <TextBlock>
+                                    <Run Text="{Binding NotificationsCount}"/>
+                                    <Run Text="New Messages"/>
+                                </TextBlock>
+                            </Border.ToolTip>
+
+                            <TextBlock Text="{Binding NotificationsCount}" FontSize="12" Foreground="White" Margin="5,0" VerticalAlignment="Center"/>
+                            
+                        </Border>
+
+                    </StackPanel>
+                    
+                    <Rectangle Width="1" Fill="{StaticResource Shade_Normal}" Margin="5,2"/>
+
+                    <!--MainMenu Button-->
+                    <ui:Button x:Name="MainMenu_BT" Image="Resources/Menu_01.png" Clicked="NavigationMenuButton_Clicked" ToolTip="Show Main Menu"/>
+
+                </StackPanel>
+
+            </Grid>
+
+            <!--Status Bar-->
+            <Grid DockPanel.Dock="Bottom" Grid.Row="2" Height="25" Background="{StaticResource Accent_Normal}" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
+                <!--Developer Console Show Button-->
+                <StackPanel HorizontalAlignment="Left">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DevConsole_Shown}" Value="true">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+
+                    <ui:Button Clicked="DeveloperConsole_ToolBarItem_Clicked" Image="Resources/Carrot_Arrow_Up_01.png" HorizontalAlignment="Left" ToolTip="Show Developer Console (F12)">
+                        <ui:Button.Style>
+                            <Style TargetType="ui:Button">
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Height" Value="30"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ui:Button.Style>
+                    </ui:Button>
+
+                </StackPanel>
+
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+
+                    <!--Server Management-->
+                    <StackPanel Orientation="Horizontal" Margin="20,0">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ServerInstalled}" Value="false">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+
+                        <!--Start / Stop Icon-->
+                        <Grid Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,4,5,4">
+                            <Grid.Resources>
+                                <ImageBrush x:Key="Running_IMG" Stretch="Uniform" ImageSource="Resources/Start_01.png"/>
+                                <ImageBrush x:Key="Pause_IMG" Stretch="Uniform" ImageSource="Resources/Pause_01.png"/>
+                                <ImageBrush x:Key="Stop_IMG" Stretch="Uniform" ImageSource="Resources/Stop_01.png"/>
+                                <ImageBrush x:Key="Changing_IMG" Stretch="Uniform" ImageSource="Resources/Generate_01.png"/>
+                            </Grid.Resources>
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="OpacityMask" Value="{StaticResource Pause_IMG}" />
+                                    <Setter Property="Background" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ServerStatus}" Value="{x:Static services:ServiceStatus.Running}">
+                                            <Setter Property="OpacityMask" Value="{StaticResource Running_IMG}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ServerStatus}" Value="{x:Static services:ServiceStatus.Stopped}">
+                                            <Setter Property="OpacityMask" Value="{StaticResource Stop_IMG}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ServerStatus}" Value="{x:Static services:ServiceStatus.Changing}">
+                                            <Setter Property="OpacityMask" Value="{StaticResource Changing_IMG}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                        </Grid>
+
+                        <TextBlock Foreground="{StaticResource Foreground_Opposite_Normal}" FontSize="8pt" VerticalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ServerStatus}" Value="{x:Static services:ServiceStatus.Running}">
+                                            <Setter Property="Text" Value="Server Running" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ServerStatus}" Value="{x:Static services:ServiceStatus.Stopped}">
+                                            <Setter Property="Text" Value="Server Stopped" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ServerStatus}" Value="{x:Static services:ServiceStatus.Changing}">
+                                            <Setter Property="Text" Value="Server Status Changing" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                    </StackPanel>
+
+                </StackPanel>
+
+                <!--Resize Grip Lines-->
+                <Grid Grid.Column="1" Width="25">
+                    <Line X1="2" Y1="20" X2="20" Y2="2" Stroke="#33000000" StrokeThickness="1"/>
+                    <Line X1="8" Y1="22" X2="22" Y2="8" Stroke="#33000000" StrokeThickness="1"/>
+                    <Line X1="15" Y1="22" X2="22" Y2="15" Stroke="#33000000" StrokeThickness="1"/>
+                </Grid>
+
+            </Grid>
+
+            <!--Content-->
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" MinHeight="200"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="{Binding DeveloperConsoleHeight, Mode=TwoWay}"/>
+                </Grid.RowDefinitions>
+
+                <!--Page Content Display-->
+                <ContentControl x:Name="CurrentPage_CONTENT" Grid.Row="0" Content="{Binding CurrentPage}" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                    <ContentControl.LayoutTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="{Binding ZoomLevel}" ScaleY="{Binding ZoomLevel}"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </ContentControl.LayoutTransform>
+                </ContentControl>
+
+                <GridSplitter Grid.Row="1" Background="{StaticResource Accent_Dark}" HorizontalAlignment="Stretch" Height="5">
+                    <GridSplitter.Style>
+                        <Style TargetType="GridSplitter">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Shown, ElementName=developerConsole}" Value="false">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </GridSplitter.Style>
+                </GridSplitter>
+
+                <!--Developer Console-->
+                <devconsole:PopUp x:Name="developerConsole" Grid.Row="2" ShownChanged="developerConsole_ShownChanged"/>
+
+            </Grid>
+
+        </DockPanel>
+
+        <!--Shaded Panel-->
+        <Border Background="#aa000000" MouseDown="ShadedPanel_MouseDown">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Opacity" Value="0"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding NavigationMenuShown}" Value="true">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="00:00:0.2" Storyboard.TargetProperty="Opacity" From="0" To="1" >
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="Opacity" From="1" To="0" >
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseIn"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                        <Trigger Property="Opacity" Value="0">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+        </Border>
+
+        <!--Navigation Menu Panel-->
+        <Border Width="300" Background="{StaticResource Window_Background_Accent_Gradient}" HorizontalAlignment="Left">
+            <Border.RenderTransform>
+                <TranslateTransform X="-320"/>
+            </Border.RenderTransform>
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding NavigationMenuShown}" Value="true">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="00:00:0.2" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" From="-320" To="0" >
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" From="0" To="-320" >
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseIn"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!--Menu Collapse Button-->
+                <ui:Button Clicked="NavigationMenuCollapse_Clicked" HorizontalAlignment="Right" Style="{StaticResource Button_Opposite_Foreground}" Image="Resources/Back_01.png" ToolTip="Collapse Navigation Menu"/>
+
+                <!--TrakHound Logo-->
+                <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,20">
+
+                    <!--Logo Image-->
+                    <Image Source="/TrakHound-Dashboard;component/Resources/TrakHound_Logo_10_150px_White.png" Width="60"/>
+
+                    <!--Trademark Symbol-->
+                    <TextBlock Text="TM" FontSize="2pt" Foreground="#fff" VerticalAlignment="Bottom" Margin="2,0,0,0"/>
+
+                    <StackPanel VerticalAlignment="Center" Margin="15,0,0,0">
+
+                        <!--Title-->
+                        <TextBlock Style="{StaticResource TrakHoundFont}"  VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="#fff">
+                        <Run FontSize="20pt">TrakHound</Run>
+                        <Run FontSize="2pt">TM</Run>
+                        </TextBlock>
+
+                        <!--Sub Title-->
+                        <TextBlock Style="{StaticResource TrakHoundFont}" Text="Dashboard" Foreground="#fff" FontSize="14pt"/>
+
+                    </StackPanel>
+
+                </StackPanel>
+
+                <Rectangle Grid.Row="2" Fill="#33ffffff" Height="1" Margin="10,0"/>
+
+                <!--User Panel-->
+                <Grid Grid.Row="3" Margin="0,10,0,5">
+
+                    <!--Login Panel-->
+                    <StackPanel Margin="20,0,5,0">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding UserLoading}" Value="true">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+
+                        <ui:TextBox Text="{Binding LoginUsername, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Instructions="Username" CornerRadius="2" ShowClear="False" KeyDown="Username_KeyDown" TextChanged="LoginUsername_TextChanged" IsFocused="{Binding IsUsernameFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <ui:PasswordBox PasswordText="{Binding LoginPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Instructions="Password" CornerRadius="2" Margin="0,10,0,0" KeyDown="Password_KeyDown" PasswordChanged="LoginPassword_PasswordChanged"  IsFocused="{Binding IsPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <TextBlock Text="Incorrect Username or Password" Foreground="White" FontSize="10" Margin="0,5" TextAlignment="Center" >
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <!--<DataTrigger Binding="{Binding IsUsernameFocused}" Value="true">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>-->
+                                        <DataTrigger Binding="{Binding UserLoginError}" Value="true">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <Grid>
+
+                            <ui:Button Text="Login" Clicked="Login_Clicked" Width="50" HorizontalAlignment="Left" Margin="2,5">
+                                <ui:Button.Style>
+                                    <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Opposite_Foreground}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding LoginUsername}" Value="{x:Null}">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding LoginUsername}" Value="">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding LoginPassword}" Value="{x:Null}">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding LoginPassword}" Value="">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ui:Button.Style>
+                            </ui:Button>
+
+                            <ui:Button Text="Create Account" Clicked="CreateAccount_Clicked" Style="{StaticResource Button_Opposite_Foreground}" HorizontalAlignment="Right" Margin="2,5,15,5"/>
+
+                        </Grid>
+
+                    </StackPanel>
+
+                    <!--User Info Panel-->
+                    <StackPanel Margin="20,0">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding UserLoading}" Value="true">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+
+                        <!--Logged in as-->
+                        <TextBlock Text="Logged in as" Foreground="#33ffffff" FontSize="10"/>
+
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!--Profile Image-->
+                            <ui:ImageDisplay Height="75" Width="75" Image="{Binding ProfileImage}" Loading="{Binding ProfileImageLoading}" VerticalAlignment="Center" BorderBrush="#33ffffff" BorderThickness="1"/>
+
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="20,0,10,0">
+
+                                <!--Username-->
+                                <Viewbox Height="30" HorizontalAlignment="Left">
+
+                                    <TextBlock Text="{Binding CurrentUser.Username, Converter={StaticResource uppercaseConverter}}" Foreground="#fff"/>
+
+                                </Viewbox>
+
+                                <!--Name (First and Last)-->
+                                <TextBlock Margin="0,5" FontSize="12">
+                                    <TextBlock.Style>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Style.Triggers>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding CurrentUser.FirstName}" Value=""/>
+                                                        <Condition Binding="{Binding CurrentUser.LastName}" Value=""/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </MultiDataTrigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding CurrentUser.FirstName}" Value="{x:Null}"/>
+                                                        <Condition Binding="{Binding CurrentUser.LastName}" Value="{x:Null}"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </MultiDataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                    
+                                    <Run Text="{Binding CurrentUser.FirstName, Converter={StaticResource uppercaseConverter}}" Foreground="#fff"/>
+                                    <Run Text="{Binding CurrentUser.LastName, Converter={StaticResource uppercaseConverter}}" Foreground="#fff"/>
+                                </TextBlock>
+
+                                <!--Company-->
+                                <TextBlock Text="{Binding CurrentUser.Company, Converter={StaticResource uppercaseConverter}}" FontSize="12" Foreground="#fff" Margin="0,2">
+                                    <TextBlock.Style>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Style.Triggers>
+                                                <Trigger Property="Text" Value="">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </Trigger>
+                                                <Trigger Property="Text" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+
+                            </StackPanel>
+
+                        </Grid>
+
+                        <!--Logout Button-->
+                        <ui:Button Text="Logout" Clicked="Logout_Clicked" Width="75"  Style="{StaticResource Button_Opposite_Foreground}" HorizontalAlignment="Left" Margin="2,5"/>
+
+                    </StackPanel>
+
+                    <!--Loading Panel-->
+                    <Border>
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding UserLoading}" Value="true">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="20,40">
+
+                            <ui:Spinner Foreground="#fff" Height="50" Width="50" Margin="0,0,0,10"/>
+
+                            <TextBlock Text="{Binding UserLoadingText, Converter={StaticResource uppercaseConverter}}" Foreground="#fff" FontSize="14"/>
+
+                        </StackPanel>
+                               
+                    </Border>
+
+                </Grid>
+
+                <Grid Grid.Row="4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!--Page Zoom Control-->
+                    <Border BorderBrush="#33ffffff" BorderThickness="0,1" Margin="10,5">
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="3"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="3"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.Resources>
+                                <Style TargetType="Rectangle">
+                                    <Setter Property="Fill" Value="#33ffffff"/>
+                                    <Setter Property="Width" Value="1"/>
+                                    <Setter Property="Margin" Value="0,5"/>
+                                </Style>
+                            </Grid.Resources>
+
+                            <!--Zoom Out-->
+                            <ui:Button Grid.Column="0" Image="Resources/Minus_04.png" Padding="5,9" Style="{StaticResource Button_Opposite_Foreground}" Clicked="ZoomOut_Clicked"/>
+
+                            <Rectangle Grid.Column="1"/>
+
+                            <!--Zoom display and reset button-->
+                            <ui:Button Grid.Column="2" Text="{Binding CurrentPage.ZoomLevel, StringFormat=P0}" Style="{StaticResource Button_Opposite_Foreground}" Clicked="RestoreZoom_Clicked"/>
+
+                            <Rectangle Grid.Column="3"/>
+
+                            <!--Zoom In-->
+                            <ui:Button Grid.Column="4" Image="Resources/Plus_04.png" Padding="5,9" Style="{StaticResource Button_Opposite_Foreground}" Clicked="ZoomIn_Clicked"/>
+
+                        </Grid>
+
+                    </Border>
+
+                    <!--Menu Items-->
+                    <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="0,10">
+
+                        <WrapPanel HorizontalAlignment="Center" Margin="10,0">
+                            <WrapPanel.Resources>
+                                <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Opposite_Foreground}">
+                                    <Setter Property="Width" Value="75"/>
+                                    <Setter Property="Height" Value="75"/>
+                                    <Setter Property="Margin" Value="5"/>
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
+                                    <Setter Property="CornerRadius" Value="1"/>
+                                </Style>
+                            </WrapPanel.Resources>
+
+                            <!--Dashboard-->
+                            <ui:Button Clicked="Dashboard_Clicked">
+                                <ui:Button.ButtonContent>
+                                    <menus:MenuItem Text="Dashboard" Image="Resources/Dashboard_01.png"/>
+                                </ui:Button.ButtonContent>
+                            </ui:Button>
+
+                            <!--Device Manager-->
+                            <ui:Button Clicked="DeviceManager_Clicked">
+                                <ui:Button.ButtonContent>
+                                    <menus:MenuItem Text="Device Manager" Image="Resources/Root.png"/>
+                                </ui:Button.ButtonContent>
+                            </ui:Button>
+
+                            <!--Options-->
+                            <ui:Button Clicked="Options_Clicked">
+                                <ui:Button.ButtonContent>
+                                    <menus:MenuItem Text="Options" Image="Resources/options_gear_30px.png"/>
+                                </ui:Button.ButtonContent>
+                            </ui:Button>
+
+
+                            <!--Plugins-->
+                            <!--<ui:Button Clicked="Plugins_Clicked">
+                                <ui:Button.ButtonContent>
+                                    <menus:MenuItem Text="Plugins" Image="Resources/Rocket_02.png"/>
+                                </ui:Button.ButtonContent>
+                            </ui:Button>-->
+
+                            <!--My Account-->
+                            <ui:Button Clicked="MyAccount_Clicked">
+                                <ui:Button.ButtonContent>
+                                    <menus:MenuItem Text="My Account" Image="Resources/blank_profile_01_sm.png"/>
+                                </ui:Button.ButtonContent>
+                                <ui:Button.Style>
+                                    <Style TargetType="ui:Button" BasedOn="{StaticResource {x:Type ui:Button}}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ui:Button.Style>
+                            </ui:Button>
+
+                            <!--About-->
+                            <ui:Button Clicked="About_Clicked">
+                                <ui:Button.ButtonContent>
+                                    <menus:MenuItem Text="About" Image="Resources/About_01.png"/>
+                                </ui:Button.ButtonContent>
+                            </ui:Button>
+
+                            <!--Fullscreen-->
+                            <ui:Button Clicked="Fullscreen_Clicked">
+                                <ui:Button.ButtonContent>
+                                    <menus:MenuItem Text="Fullscreen" Image="Resources/FullScreen_02_30px.png"/>
+                                </ui:Button.ButtonContent>
+                            </ui:Button>
+
+                            <!--Developer Console-->
+                            <ui:Button Clicked="DeveloperConsole_Clicked">
+                                <ui:Button.ButtonContent>
+                                    <menus:MenuItem Text="Developer Console" Image="Resources/Developer_01.png"/>
+                                </ui:Button.ButtonContent>
+                            </ui:Button>
+
+                            <!--Table Manager-->
+                            <ui:Button Clicked="TableManager_Clicked">
+                                <ui:Button.ButtonContent>
+                                    <menus:MenuItem Text="Table Manager" Image="Resources/Table_01.png"/>
+                                </ui:Button.ButtonContent>
+                            </ui:Button>
+
+                            <!--Report Bug-->
+                            <!--<ui:Button Clicked="ReportBug_Clicked">
+                                <ui:Button.ButtonContent>
+                                    <menus:MenuItem Text="Report Bug" Image="Resources/Bug_01.png"/>
+                                </ui:Button.ButtonContent>
+                            </ui:Button>-->
+
+                        </WrapPanel>
+
+                    </ScrollViewer>
+
+                </Grid>
+
+            </Grid>
+             
+        </Border>
+
+        <!--Message Center-->
+        <message:MessageCenter x:Name="messageCenter" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,40,0,25" Shown="False"/>
+
+    </Grid>
+
+</Window>

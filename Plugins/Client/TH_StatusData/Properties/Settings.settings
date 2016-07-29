@@ -1,9 +1,0 @@
-﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="TH_StatusData.Properties" GeneratedClassName="Settings">
-  <Profiles />
-  <Settings>
-    <Setting Name="DatabaseReadInterval" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">5000</Value>
-    </Setting>
-  </Settings>
-</SettingsFile>

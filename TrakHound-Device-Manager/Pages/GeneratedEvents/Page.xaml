@@ -1,0 +1,135 @@
+﻿<UserControl x:Class="TrakHound_Device_Manager.Pages.GeneratedEvents.Page"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
+             xmlns:controls="clr-namespace:TrakHound_Device_Manager.Pages.GeneratedEvents.Controls"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="800">
+
+    <Grid Margin="20" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--Title and Image-->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+
+                    <!--Image-->
+                    <Grid Height="30" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,0,0" VerticalAlignment="Center">
+                        <Grid.Resources>
+                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TrakHound-Device-Manager;component/Resources/Group_01.png" />
+                        </Grid.Resources>
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                <Setter Property="Background" Value="{StaticResource Foreground_Normal}"/>
+                            </Style>
+                        </Grid.Style>
+                    </Grid>
+
+                    <TextBlock Text="Generated Events" FontSize="20pt" Foreground="{StaticResource Foreground_Normal}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+
+                </StackPanel>
+
+                <TextBlock Grid.Column="1" FontSize="10pt" Foreground="#888" Margin="20,5" MaxWidth="800" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center">
+                Generated Events are used to process raw MTConnect data items. Events are made up of Values and then the Default Value.
+                Values have logical Triggers that define the conditions needed to be met for the Value to be 'True'.
+                </TextBlock>
+
+            </Grid>
+
+            <!--Add Button-->
+            <ui:Button Text="Add Event" Height="35" HorizontalAlignment="Left" Margin="0,15" Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Clicked="AddEvent_Clicked" FocusManager.IsFocusScope="False">
+                <ui:Button.Style>
+                    <Style TargetType="ui:Button">
+                        <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                        <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="Padding" Value="10,5"/>
+                        <Setter Property="ImageTextPadding" Value="10"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ui:Button.Style>
+            </ui:Button>
+
+        </StackPanel>
+
+        <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Shade_Normal}" Margin="0,15,0,0"/>
+
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+
+            <Grid Margin="0,10,0,0">
+
+                <!--Events List-->
+                <ItemsControl ItemsSource="{Binding EventButtons}" Margin="0,20">
+                    <ItemsControl.Resources>
+                        <Style TargetType="ui:CollapseButton">
+                            <Setter Property="Margin" Value="0,10"/>
+                        </Style>
+                    </ItemsControl.Resources>
+                </ItemsControl>
+
+                <!--No Events Text-->
+                <TextBlock FontSize="18pt" Foreground="#888" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DisplayEvents}" Value="true">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>             
+                                No Generated Events are configured <LineBreak/>
+                                Click the 'Add Event' button above
+                </TextBlock>
+
+            </Grid>
+
+        </ScrollViewer>
+
+        <!--Loading-->
+        <Grid Grid.Row="2" Background="{StaticResource Window_Background}">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Loading}" Value="true">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+
+                <ui:Spinner Height="50" Width="50" Foreground="{StaticResource Accent_Normal}"/>
+
+                <TextBlock Text="Loading.." Foreground="{StaticResource Accent_Normal}" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+
+            </StackPanel>
+
+        </Grid>
+
+    </Grid>
+
+</UserControl>

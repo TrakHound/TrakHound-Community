@@ -1,0 +1,75 @@
+﻿<UserControl x:Class="TrakHound_Device_Manager.Pages.GeneratedEvents.Controls.Default"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
+             
+             mc:Ignorable="d" 
+             >
+
+    <Grid FocusManager.IsFocusScope="False">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--Title-->
+        <TextBlock Text="Default Value" FontSize="8pt" Foreground="#aaa" Margin="10,5" FocusManager.IsFocusScope="False"/>
+
+        <!--Value Header-->
+        <Border Grid.Row="1" CornerRadius="2" Background="#0080ff" MinWidth="200" FocusManager.IsFocusScope="False">
+
+            <StackPanel Margin="20,10" VerticalAlignment="Center" FocusManager.IsFocusScope="False">
+
+                <!--Value Name-->
+                <StackPanel FocusManager.IsFocusScope="False">
+
+                    <TextBlock Text="Value" Foreground="#66ffffff" FontSize="10pt"  FocusManager.IsFocusScope="False"/>
+
+                    <Border BorderThickness="1" CornerRadius="1" Margin="0,5,0,5" FocusManager.IsFocusScope="False">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="BorderBrush" Value="#33ffffff"/>
+                                <Setter Property="Background" Value="#00000000"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsFocused, ElementName=valuename_TXT}" Value="true">
+                                        <Setter Property="BorderBrush" Value="#0060ff"/>
+                                        <Setter Property="Background" Value="White"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <Grid Margin="10,0" FocusManager.IsFocusScope="False">
+
+                            <!--User Input-->
+                            <TextBox x:Name="valuename_TXT" Text="{Binding ValueName}" TextChanged="TextBox_TextChanged" GotFocus="TXT_GotFocus" LostFocus="TXT_LostFocus" GotKeyboardFocus="TXT_GotKeyboardFocus" GotMouseCapture="TXT_GotMouseCapture" BorderThickness="0" Background="#00000000"  FontSize="14pt" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black">
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox">
+                                        <Setter Property="Foreground" Value="#fff"/>
+                                        <Setter Property="TextAlignment" Value="Left"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsFocused, ElementName=valuename_TXT}" Value="true">
+                                                <Setter Property="Foreground" Value="#333"/>
+                                                <Setter Property="TextAlignment" Value="Center"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+
+                        </Grid>
+
+                    </Border>
+
+                </StackPanel>
+
+            </StackPanel>
+
+        </Border>
+
+    </Grid>
+
+</UserControl>

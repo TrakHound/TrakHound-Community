@@ -1,0 +1,85 @@
+﻿<UserControl x:Class="TH_DeviceCompare_ProductionStatusTimes.Plugin"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="200">
+    
+    <Grid x:Name="root">
+
+        <!--<ItemsControl ItemsSource="{Binding Times}" >
+            <ItemsControl.Resources>
+                <Style TargetType="ui:TimeProgress">
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                    --><!--<Setter Property="BarBackgroundBrush" Value="#22000000"/>--><!--
+                    <Setter Property="BarHeight" Value="10"/>
+                </Style>
+            </ItemsControl.Resources>
+        </ItemsControl>-->
+
+        <StackPanel>
+
+            <!--Production-->
+            <Border BorderBrush="#ccc" BorderThickness="0,0,0,1">
+
+                <ui:TimeProgress Text="Production" 
+                    Value="{Binding ProductionSeconds}"
+                    Maximum="{Binding TotalSeconds}"
+                    BarBrush="{StaticResource StatusGreen}" 
+                    BarBackgroundBrush="{StaticResource StatusGreen_Hover}"/>
+
+            </Border>
+
+            <!--Setup-->
+            <Border BorderBrush="#ccc" BorderThickness="0,0,0,1">
+
+                <ui:TimeProgress Text="Setup" 
+                    Value="{Binding SetupSeconds}"
+                    Maximum="{Binding TotalSeconds}"
+                    BarBrush="{StaticResource StatusBlue}" 
+                    BarBackgroundBrush="{StaticResource StatusBlue_Hover}"/>
+
+            </Border>
+
+            <!--Teardown-->
+            <Border BorderBrush="#ccc" BorderThickness="0,0,0,1">
+
+                <ui:TimeProgress Text="Teardown" 
+                    Value="{Binding TeardownSeconds}"
+                    Maximum="{Binding TotalSeconds}"
+                    BarBrush="{StaticResource StatusOrange}" 
+                    BarBackgroundBrush="{StaticResource StatusOrange_Hover}"/>
+
+            </Border>
+
+            <!--Maintenance-->
+            <Border BorderBrush="#ccc" BorderThickness="0,0,0,1">
+
+                <ui:TimeProgress Text="Maintenance" 
+                    Value="{Binding MaintenanceSeconds}"
+                    Maximum="{Binding TotalSeconds}"
+                    BarBrush="{StaticResource StatusTeal}" 
+                    BarBackgroundBrush="{StaticResource StatusTeal_Hover}"/>
+
+            </Border>
+
+            <!--Process Development-->
+            <Border>
+
+                <ui:TimeProgress Text="Process Development" 
+                    Value="{Binding ProcessDevelopmentSeconds}"
+                    Maximum="{Binding TotalSeconds}"
+                    BarBrush="{StaticResource StatusPurple}" 
+                    BarBackgroundBrush="{StaticResource StatusPurple_Hover}"/>
+
+            </Border>
+
+        </StackPanel>
+
+    </Grid>
+    
+</UserControl>

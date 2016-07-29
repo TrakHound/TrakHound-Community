@@ -1,0 +1,93 @@
+﻿<!--Copyright (c) 2015 Feenux LLC, All Rights Reserved.-->
+
+<!--This file is subject to the terms and conditions defined in-->
+<!--file 'LICENSE.txt', which is part of this source code package.-->
+    
+<UserControl x:Class="TrakHound_Dashboard.Pages.About.Information.Page"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             MaxWidth="800"
+             >
+
+    <UserControl.Resources>
+
+        <Style x:Key="TrakHoundFont">
+            <Setter Property="TextElement.FontFamily" Value="Fonts/#Alte Haas Grotesk"/>
+        </Style>
+
+    </UserControl.Resources>
+
+    <StackPanel>
+
+        <!--Title-->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Source="/TrakHound-Dashboard;component/Resources/TrakHound_Logo_10.png" Height="75" Margin="20,0"/>
+
+            <StackPanel Grid.Column="1">
+
+                <TextBlock Text="{Binding Build_Version}" FontSize="12" Foreground="{StaticResource Foreground_Normal}" Margin="0,0,0,0"/>
+
+                <TextBlock Margin="0,2,0,2" Foreground="{StaticResource Foreground_Normal}" Style="{StaticResource TrakHoundFont}">
+                    <Run Text="TrakHound" FontSize="30"/>
+                    <Run Text="Dashboard" FontSize="18"/>
+                </TextBlock>
+
+                <TextBlock Text="© 2016 Feenux LLC, All Rights Reserved" FontSize="10" Foreground="{StaticResource Foreground_Normal}" />
+
+            </StackPanel>
+
+        </Grid>
+
+        <!--Separator-->
+        <Rectangle Height="0.5" Margin="5,10" Fill="{StaticResource Shade_Normal}" />
+
+        <!--Designed By-->
+        <TextBlock Margin="5,0" TextWrapping="Wrap" Text="TrakHound is designed by Feenux, a Manufacturing Software Solutions company." FontSize="12" Foreground="{StaticResource Foreground_Normal}" />
+
+        <!--Support-->
+        <TextBlock Margin="5,10" TextWrapping="Wrap" FontSize="10" Foreground="{StaticResource Foreground_Normal}">
+            <Run Text="Help"/>
+            <Run FontWeight="Bold" Text="Support"/>
+            <Run Text="TrakHound by reporting any bugs, suggesting new features, or helping develop new versions yourself. TrakHound is built for the manufacturing community to use as a platform for any 'Machine to PC' application or any Machine Management needs. Please use it and enjoy it!"/>
+        </TextBlock>
+
+        <!--Build Info-->
+        <Grid Margin="5,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Build Information" FontSize="12" Foreground="{StaticResource Foreground_Light}"/>
+
+            <Border Grid.Row="1" Margin="0,5" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" CornerRadius="2">
+
+                <StackPanel Margin="10,10">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="5"/>
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <TextBlock>
+                        <Run Text="Build Version : " Foreground="{StaticResource Foreground_Light}"/>
+                        <Run Text="{Binding Build_Version}" Foreground="{StaticResource Foreground_Normal}"/>
+                    </TextBlock>
+
+                </StackPanel>
+
+            </Border>
+
+        </Grid>
+
+    </StackPanel>
+    
+</UserControl>

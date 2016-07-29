@@ -1,0 +1,81 @@
+﻿<UserControl x:Class="TrakHound_UI.NumberDisplay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+
+             mc:Ignorable="d" 
+             >
+
+    <Grid x:Name="root" Background="{Binding Background}">
+
+        <Grid HorizontalAlignment="Center" Margin="0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Previous Values-->
+            <Grid Grid.Column="0" HorizontalAlignment="Center" Margin="5,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!--Previous Value 3-->
+                <TextBlock Grid.Row="0" Text="{Binding PreviousValue3}" FontSize="10" Foreground="{Binding Foreground}" Opacity="0.25"
+                       FontFamily="{StaticResource RobotoFont}"/>
+
+                <!--Previous Value 2-->
+                <TextBlock Grid.Row="1" Text="{Binding PreviousValue2}" FontSize="10" Foreground="{Binding Foreground}" Opacity="0.5"
+                       FontFamily="{StaticResource RobotoFont}"/>
+
+                <!--Previous Value 1-->
+                <TextBlock Grid.Row="2" Text="{Binding PreviousValue1}" FontSize="10" Foreground="{Binding Foreground}" Opacity="0.75"
+                       FontFamily="{StaticResource RobotoFont}"/>
+            </Grid>
+
+            <!--Number Value-->
+            <TextBlock Grid.Column="1" Text="{Binding ValueText}" FontSize="24"
+                   Foreground="{Binding Foreground}"
+                   VerticalAlignment="Center" HorizontalAlignment="Right"
+                   FontFamily="{StaticResource RobotoFont}"
+                   Margin="5,0"
+                   />
+
+            <!--Trend Arrow-->
+            <Rectangle Grid.Column="2" Width="30" Height="30" Margin="5,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Rectangle.Resources>
+                    <ImageBrush x:Key="UP_Arrow_IMG" ice:Freeze="True" Stretch="Uniform" ImageSource="/TrakHound-UI;component/Resources/Carrot_Arrow_Up_02.png" />
+                    <ImageBrush x:Key="DOWN_Arrow_IMG" ice:Freeze="True" Stretch="Uniform" ImageSource="/TrakHound-UI;component/Resources/Carrot_Arrow_Down_02.png" />
+                </Rectangle.Resources>
+
+                <Rectangle.Style>
+                    <Style TargetType="Rectangle">
+                        <!--<Setter Property="OpacityMask" Value="{StaticResource UP_Arrow_IMG}" />-->
+                        <Setter Property="Fill" Value="{Binding ArrowBrush}"/>
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ValueIncreasing}" Value="true">
+                                <Setter Property="OpacityMask" Value="{StaticResource UP_Arrow_IMG}" />
+                                <!--<Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>-->
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ValueDecreasing}" Value="true">
+                                <Setter Property="OpacityMask" Value="{StaticResource DOWN_Arrow_IMG}" />
+                                <!--<Setter Property="Fill" Value="#ff0000"/>-->
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Rectangle.Style>
+            </Rectangle>
+
+        </Grid>
+
+    </Grid>
+
+</UserControl>

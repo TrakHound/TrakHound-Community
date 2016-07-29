@@ -1,0 +1,86 @@
+﻿<!--Copyright (c) 2015 Feenux LLC, All Rights Reserved.-->
+
+<!--This file is subject to the terms and conditions defined in-->
+<!--file 'LICENSE.txt', which is part of this source code package.-->
+
+<Window x:Class="TrakHound_UI.Windows.BugReportSent"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        
+        xmlns:ui="clr-namespace:TrakHound_UI"
+                
+        Title="TrakHound Bug Reporter"
+              
+        Height="300" Width="400"
+        Padding="0"
+        Margin="0"
+        
+        WindowStartupLocation="CenterScreen"
+
+        x:Name="splash" Icon="/TrakHound-UI;component/Resources/TrakHound_Logo_Initials_10_30px.png" WindowStyle="ToolWindow" ResizeMode="NoResize"
+        >
+
+    <Window.Resources>
+
+        <Style x:Key="TrakHoundFontBold">
+            <Setter Property="TextElement.FontFamily" Value="Fonts/#Alte Haas Grotesk"/>
+            <!--<Setter Property="TextElement.FontWeight" Value="Bold" />-->
+        </Style>
+
+        <Style x:Key="TrakHoundFont">
+            <Setter Property="TextElement.FontFamily" Value="Fonts/#Alte Haas Grotesk"/>
+        </Style>
+
+        <Color x:Key="LightBlue_Color">#FFFFFFFF</Color>
+        <Color x:Key="DarkBlue_Color">#FF65b3ff</Color>
+
+        <SolidColorBrush x:Key="DarkBlue_Text" Color="#FF0070ff" />
+
+    </Window.Resources>
+
+    <Border x:Name="root">
+
+        <Grid>
+
+            <StackPanel VerticalAlignment="Top" Margin="20,10">
+
+                <!--TrakHound Logo-->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+
+                    <!--Logo Image-->
+                    <Image Source="/TrakHound-UI;component/Resources/TrakHound_Logo_10_90px.png" Width="50"/>
+
+                    <StackPanel VerticalAlignment="Center" Margin="15,0,0,0">
+
+                        <!--Title-->
+                        <TextBlock Style="{StaticResource TrakHoundFontBold}"  VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="#333">
+                        <Run FontSize="22">TrakHound</Run>
+                        <Run FontSize="4">TM</Run>
+                        </TextBlock>
+
+                        <!--Sub Title-->
+                        <TextBlock Style="{StaticResource TrakHoundFont}" Text="Bug Reporter" Foreground="#333" FontSize="14"/>
+
+                    </StackPanel>
+
+                </StackPanel>
+
+                <StackPanel HorizontalAlignment="Center" Margin="0,10">
+
+                    <TextBlock Text="Uh oh.." HorizontalAlignment="Left" Foreground="#333" FontSize="50"/>
+
+                    <TextBlock Grid.Column="1" Foreground="#333" TextWrapping="Wrap" FontSize="14" HorizontalAlignment="Left">
+                    Looks like TrakHound had to close for some reason. Don't worry though, a Bug Report has been sent and TrakHound's top talent is on it!
+                    </TextBlock>
+
+                </StackPanel>
+
+                <ui:Button Text="Close" Width="80" Style="{StaticResource Button_Accent_Background}" HorizontalAlignment="Right" Clicked="Close_Clicked"/>
+
+            </StackPanel>
+
+        </Grid>
+
+    </Border>
+
+</Window>

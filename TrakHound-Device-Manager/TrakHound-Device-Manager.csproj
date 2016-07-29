@@ -1,0 +1,396 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{407FE117-E654-4380-AD91-CAE17943E7FD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TrakHound_Device_Manager</RootNamespace>
+    <AssemblyName>TrakHound-Device-Manager</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MTConnect.NET, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\MTConnect.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Version.cs">
+      <Link>Version.cs</Link>
+    </Compile>
+    <Compile Include="AddDevice\DeviceInfo.cs" />
+    <Compile Include="AddDevice\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddDevice\Pages\AutoDetect.xaml.cs">
+      <DependentUpon>AutoDetect.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddDevice\Pages\LoadFromFile.xaml.cs">
+      <DependentUpon>LoadFromFile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddDevice\Pages\Manual.xaml.cs">
+      <DependentUpon>Manual.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DataGrid Controls.cs" />
+    <Compile Include="DeviceList.xaml.cs">
+      <DependentUpon>DeviceList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DeviceManager.cs" />
+    <Compile Include="EditPage.xaml.cs">
+      <DependentUpon>EditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Global.cs" />
+    <Compile Include="Pages\Cycles\Controls\OverrideLinkItem.xaml.cs">
+      <DependentUpon>OverrideLinkItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Cycles\Controls\ProductionTypeItem.xaml.cs">
+      <DependentUpon>ProductionTypeItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Cycles\Info.cs" />
+    <Compile Include="Pages\Cycles\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Databases\Controls\DatabaseItemContainer.xaml.cs">
+      <DependentUpon>DatabaseItemContainer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Databases\Info.cs" />
+    <Compile Include="Pages\Databases\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Databases\Pages\SQLite\Button.xaml.cs">
+      <DependentUpon>Button.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Databases\Pages\SQLite\Info.cs" />
+    <Compile Include="Pages\Databases\Pages\SQLite\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Description\Info.cs" />
+    <Compile Include="Pages\Description\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\GeneratedEvents\Controls\CaptureItem.xaml.cs">
+      <DependentUpon>CaptureItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\GeneratedEvents\Controls\Default.xaml.cs">
+      <DependentUpon>Default.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\GeneratedEvents\Controls\Event.xaml.cs">
+      <DependentUpon>Event.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\GeneratedEvents\Controls\EventButton.xaml.cs">
+      <DependentUpon>EventButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\GeneratedEvents\Controls\MultiTrigger.xaml.cs">
+      <DependentUpon>MultiTrigger.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\GeneratedEvents\Controls\Trigger.xaml.cs">
+      <DependentUpon>Trigger.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\GeneratedEvents\Controls\Value.xaml.cs">
+      <DependentUpon>Value.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\GeneratedEvents\Info.cs" />
+    <Compile Include="Pages\GeneratedEvents\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\InstanceData\Controls\CheckBox.cs" />
+    <Compile Include="Pages\InstanceData\Info.cs" />
+    <Compile Include="Pages\InstanceData\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\MTConnect\Controls\MessageItem.xaml.cs">
+      <DependentUpon>MessageItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\MTConnect\Info.cs" />
+    <Compile Include="Pages\MTConnect\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Parts\Info.cs" />
+    <Compile Include="Pages\Parts\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Shifts\Controls\BreakListItem.xaml.cs">
+      <DependentUpon>BreakListItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Shifts\Controls\ShiftListItem.xaml.cs">
+      <DependentUpon>ShiftListItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Shifts\Info.cs" />
+    <Compile Include="Pages\Shifts\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SnapshotData\Controls\SnapshotItem.xaml.cs">
+      <DependentUpon>SnapshotItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SnapshotData\Info.cs" />
+    <Compile Include="Pages\SnapshotData\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="AddDevice\Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AddDevice\Pages\AutoDetect.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AddDevice\Pages\LoadFromFile.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AddDevice\Pages\Manual.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DeviceList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="EditPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Cycles\Controls\OverrideLinkItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Cycles\Controls\ProductionTypeItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Cycles\Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Databases\Controls\DatabaseItemContainer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Databases\Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Databases\Pages\SQLite\Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Databases\Pages\SQLite\Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Description\Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\GeneratedEvents\Controls\CaptureItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\GeneratedEvents\Controls\Default.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\GeneratedEvents\Controls\Event.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\GeneratedEvents\Controls\EventButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\GeneratedEvents\Controls\MultiTrigger.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\GeneratedEvents\Controls\Trigger.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\GeneratedEvents\Controls\Value.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\GeneratedEvents\Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\InstanceData\Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\MTConnect\Controls\MessageItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\MTConnect\Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Parts\Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Shifts\Controls\BreakListItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Shifts\Controls\ShiftListItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Shifts\Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\SnapshotData\Controls\SnapshotItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\SnapshotData\Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GeneratedEvents.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Add_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Refresh_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Edit_02.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Generate_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Arrow_Down_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Arrow_Up_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\X_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Root.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Disk_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\CheckMark_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\DatabaseConfig_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Warning_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\List_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Options_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\About_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Help_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\MTConnect_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Hourglass_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Group_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Camera_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Cycle_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Block_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Timer_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TrakHound-UI\TrakHound-UI.csproj">
+      <Project>{b4c046ff-4a7d-4059-aaf8-713059ccf0f3}</Project>
+      <Name>TrakHound-UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TrakHound.NET\TrakHound.NET.csproj">
+      <Project>{0621db23-5405-4771-975a-b47dc4b19d6b}</Project>
+      <Name>TrakHound.NET</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\sqlite_logo.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

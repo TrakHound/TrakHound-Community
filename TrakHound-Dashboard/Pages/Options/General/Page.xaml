@@ -1,0 +1,26 @@
+﻿<!--Copyright (c) 2015 Feenux LLC, All Rights Reserved.-->
+
+<!--This file is subject to the terms and conditions defined in-->
+<!--file 'LICENSE.txt', which is part of this source code package.-->
+
+<UserControl x:Class="TrakHound_Dashboard.Pages.Options.General.Page"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:properties="clr-namespace:TrakHound_Dashboard.Properties"
+             xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="800">
+    
+    <StackPanel>
+
+        <CheckBox Height="40" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=AutoBugReport, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Automatically send Crash Report data to TrakHound" FontSize="14" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
+          
+        
+        
+    </StackPanel>
+    
+</UserControl>

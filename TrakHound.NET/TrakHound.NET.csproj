@@ -1,0 +1,287 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0621DB23-5405-4771-975A-B47DC4B19D6B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TrakHound</RootNamespace>
+    <AssemblyName>TrakHound-NET</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MTConnect.NET">
+      <HintPath>..\lib\MTConnect.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\lib\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http">
+      <HintPath>..\lib\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Version.cs">
+      <Link>Version.cs</Link>
+    </Compile>
+    <Compile Include="API\ApiConfiguration.cs" />
+    <Compile Include="API\ApiError.cs" />
+    <Compile Include="API\Bugs\BugInfo.cs" />
+    <Compile Include="API\Bugs\BugType.cs" />
+    <Compile Include="API\Bugs\Send.cs" />
+    <Compile Include="API\Devices\Remove.cs" />
+    <Compile Include="API\Files\Download.cs" />
+    <Compile Include="API\Files\Upload.cs" />
+    <Compile Include="API\ConfigurationServer.cs" />
+    <Compile Include="API\Messages\Get.cs" />
+    <Compile Include="API\Messages\MessageInfo.cs" />
+    <Compile Include="API\Messages\MessageType.cs" />
+    <Compile Include="API\Messages\Remove.cs" />
+    <Compile Include="API\Messages\Send.cs" />
+    <Compile Include="API\Messages\Update.cs" />
+    <Compile Include="ApplicationNames.cs" />
+    <Compile Include="Configurations\AutoGenerate\Agent.cs" />
+    <Compile Include="Configurations\AutoGenerate\Configuration.cs" />
+    <Compile Include="Configurations\AutoGenerate\Cycles.cs" />
+    <Compile Include="Configurations\AutoGenerate\Databases.cs" />
+    <Compile Include="Configurations\AutoGenerate\Description.cs" />
+    <Compile Include="Configurations\AutoGenerate\GeneratedEvents\CycleExecution.cs" />
+    <Compile Include="Configurations\AutoGenerate\GeneratedEvents\DeviceStatus.cs" />
+    <Compile Include="Configurations\AutoGenerate\GeneratedEvents\PartsCount.cs" />
+    <Compile Include="Configurations\AutoGenerate\GeneratedEvents\ProductionStatus.cs" />
+    <Compile Include="Configurations\AutoGenerate\InstanceData.cs" />
+    <Compile Include="Configurations\AutoGenerate\Manufacturers\Okuma.cs" />
+    <Compile Include="Configurations\AutoGenerate\Parts.cs" />
+    <Compile Include="Configurations\AutoGenerate\Shifts.cs" />
+    <Compile Include="Configurations\AutoGenerate\SnapshotData.cs" />
+    <Compile Include="Configurations\Converters\ObjectToXml.cs" />
+    <Compile Include="Configurations\Converters\TableToXml.cs" />
+    <Compile Include="Configurations\Converters\XmlToTable.cs" />
+    <Compile Include="Configurations\Converters\Converter.cs" />
+    <Compile Include="Configurations\Database_Settings.cs" />
+    <Compile Include="Configurations\Description_Settings.cs" />
+    <Compile Include="Configurations\DeviceConfiguration.cs" />
+    <Compile Include="Configurations\FileLocation_Settings.cs" />
+    <Compile Include="Configurations\IConfiguration.cs" />
+    <Compile Include="API\Data\ControllerInfo.cs" />
+    <Compile Include="API\Data\DescriptionInfo.cs" />
+    <Compile Include="API\Data\DeviceInfo.cs" />
+    <Compile Include="API\Data\Get.cs" />
+    <Compile Include="API\Data\OeeInfo.cs" />
+    <Compile Include="API\Data\StatusInfo.cs" />
+    <Compile Include="API\Data\TimersInfo.cs" />
+    <Compile Include="API\Data\Update.cs" />
+    <Compile Include="API\Devices\DeviceInfo.cs" />
+    <Compile Include="API\Devices\Get.cs" />
+    <Compile Include="API\Devices\Update.cs" />
+    <Compile Include="Databases\Database.cs" />
+    <Compile Include="Databases\PluginReader.cs" />
+    <None Include="Databases\Plugins\MySQL\Columns.cs" />
+    <None Include="Databases\Plugins\MySQL\Configuration.cs" />
+    <None Include="Databases\Plugins\MySQL\Database.cs" />
+    <None Include="Databases\Plugins\MySQL\Etc.cs" />
+    <None Include="Databases\Plugins\MySQL\Plugin.cs" />
+    <None Include="Databases\Plugins\MySQL\Rows.cs" />
+    <None Include="Databases\Plugins\MySQL\Table.cs" />
+    <Compile Include="Databases\Plugins\SQLite\Columns.cs" />
+    <Compile Include="Databases\Plugins\SQLite\Configuration.cs" />
+    <Compile Include="Databases\Plugins\SQLite\Databases.cs" />
+    <Compile Include="Databases\Plugins\SQLite\Etc.cs" />
+    <Compile Include="Databases\Plugins\SQLite\Plugin.cs" />
+    <Compile Include="Databases\Plugins\SQLite\Rows.cs" />
+    <Compile Include="Databases\Plugins\SQLite\Tables.cs" />
+    <Compile Include="Databases\TableNames.cs" />
+    <Compile Include="Databases\Tables\Variables.cs" />
+    <Compile Include="FileLocations.cs" />
+    <Compile Include="GitHub\Authentication\Authentication.cs" />
+    <Compile Include="GitHub\Authentication\Tokens.cs" />
+    <Compile Include="GitHub\Issues\Issues.cs" />
+    <Compile Include="IPage.cs" />
+    <Compile Include="Logging\CompilerServices.cs" />
+    <Compile Include="Logging\Line.cs" />
+    <Compile Include="Logging\Logger.cs" />
+    <Compile Include="Logging\LoggerConfiguration.cs" />
+    <Compile Include="Logging\LogLineType.cs" />
+    <Compile Include="Logging\LogReader.cs" />
+    <Compile Include="Logging\Queue.cs" />
+    <Compile Include="Plugins\Client\ClientPlugin.cs" />
+    <Compile Include="Plugins\Client\Configuration.cs" />
+    <Compile Include="Plugins\Client\IClientPlugin.cs" />
+    <Compile Include="Plugins\Database\ConifgurationInfoPlugin.cs" />
+    <Compile Include="Plugins\Database\DatabasePlugin.cs" />
+    <Compile Include="Plugins\Database\IConfigurationInfo.cs" />
+    <Compile Include="Plugins\Database\IConfigurationPage.cs" />
+    <Compile Include="Plugins\Database\IDatabasePlugin.cs" />
+    <Compile Include="Plugins\EventData.cs" />
+    <Compile Include="Plugins\Reader.cs" />
+    <Compile Include="Plugins\Server\ConifgurationInfoPlugin.cs" />
+    <Compile Include="Plugins\Server\ConifgurationPagePlugin.cs" />
+    <Compile Include="Plugins\Server\IConfigurationInfo.cs" />
+    <Compile Include="Plugins\Server\IConfigurationPage.cs" />
+    <Compile Include="Plugins\Server\IServerPlugin.cs" />
+    <Compile Include="Plugins\Server\ServerPlugin.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Server\Devices.cs" />
+    <Compile Include="Server\DeviceServer.cs" />
+    <Compile Include="Server\Header.cs" />
+    <Compile Include="Server\Login.cs" />
+    <Compile Include="Server\Plugins\CloudData\Database.cs" />
+    <Compile Include="Server\Plugins\CloudData\Plugin.cs" />
+    <Compile Include="Server\Plugins\CloudData\UpdateQueue.cs" />
+    <Compile Include="Server\Plugins\Cycles\CycleConfiguration.cs" />
+    <Compile Include="Server\Plugins\Cycles\CycleData.cs" />
+    <Compile Include="Server\Plugins\Cycles\Cycles.cs" />
+    <Compile Include="Server\Plugins\Cycles\Override.cs" />
+    <Compile Include="Server\Plugins\GeneratedEvents\Components\CaptureItem.cs" />
+    <Compile Include="Server\Plugins\GeneratedEvents\Components\Event.cs" />
+    <Compile Include="Server\Plugins\GeneratedEvents\Components\MultiTrigger.cs" />
+    <Compile Include="Server\Plugins\GeneratedEvents\Components\Return.cs" />
+    <Compile Include="Server\Plugins\GeneratedEvents\Components\Trigger.cs" />
+    <Compile Include="Server\Plugins\GeneratedEvents\Components\Value.cs" />
+    <Compile Include="Server\Plugins\GeneratedEvents\Configuration.cs" />
+    <Compile Include="Server\Plugins\GeneratedEvents\Database.cs" />
+    <Compile Include="Server\Plugins\GeneratedEvents\GeneratedEvent.cs" />
+    <Compile Include="Server\Plugins\GeneratedEvents\Plugin.cs" />
+    <Compile Include="Server\Plugins\GeneratedEvents\Tools.cs" />
+    <Compile Include="Server\Plugins\InstanceData\Configuration.cs" />
+    <Compile Include="Server\Plugins\InstanceData\Database.cs" />
+    <Compile Include="Server\Plugins\InstanceData\InstanceData.cs" />
+    <Compile Include="Server\Plugins\InstanceData\Plugin.cs" />
+    <Compile Include="Server\Plugins\InstanceData\Processing.cs" />
+    <Compile Include="Server\Plugins\MTConnectData\AgentConfiguration.cs" />
+    <Compile Include="Server\Plugins\MTConnectData\Current.cs" />
+    <Compile Include="Server\Plugins\MTConnectData\Plugin.cs" />
+    <Compile Include="Server\Plugins\MTConnectData\Probe.cs" />
+    <Compile Include="Server\Plugins\MTConnectData\Requests.cs" />
+    <Compile Include="Server\Plugins\MTConnectData\Sample.cs" />
+    <Compile Include="Server\Plugins\OEE\Database\CycleBased.cs" />
+    <Compile Include="Server\Plugins\OEE\Database\SegmentBased.cs" />
+    <Compile Include="Server\Plugins\OEE\Database\ShiftBased.cs" />
+    <Compile Include="Server\Plugins\OEE\OEE.cs" />
+    <Compile Include="Updates\AppInfo.cs" />
+    <Compile Include="Updates\UpdateConfiguration.cs" />
+    <None Include="Server\Plugins\OEE\OEEConfiguration.cs" />
+    <Compile Include="Server\Plugins\OEE\OEEData.cs" />
+    <Compile Include="Server\Plugins\Parts\Configuration.cs" />
+    <Compile Include="Server\Plugins\Parts\Database.cs" />
+    <Compile Include="Server\Plugins\Parts\PartInfo.cs" />
+    <Compile Include="Server\Plugins\Parts\Plugin.cs" />
+    <Compile Include="Server\Plugins\Shifts\CurrentShiftInfo.cs" />
+    <Compile Include="Server\Plugins\Shifts\GeneratedEvents.cs" />
+    <Compile Include="Server\Plugins\Shifts\RowInfos.cs" />
+    <Compile Include="Server\Plugins\Shifts\ShiftConfiguration.cs" />
+    <Compile Include="Server\Plugins\Shifts\ShiftTable.cs" />
+    <Compile Include="Server\Plugins\Shifts\TimeAndDate.cs" />
+    <Compile Include="Server\Plugins\Shifts\Tools.cs" />
+    <Compile Include="Server\Plugins\SnapshotData\Configuration.cs" />
+    <Compile Include="Server\Plugins\SnapshotData\Database.cs" />
+    <Compile Include="Server\Plugins\SnapshotData\Plugin.cs" />
+    <Compile Include="Server\Plugins\SnapshotData\Snapshot.cs" />
+    <Compile Include="Server\Plugins\Status\Database.cs" />
+    <Compile Include="Server\Plugins\Status\Plugin.cs" />
+    <Compile Include="Server\Plugins\Status\StatusInfo.cs" />
+    <Compile Include="Server\Server.cs" />
+    <Compile Include="API\Users\CreateUserInfo.cs" />
+    <Compile Include="API\Users\EditUserInfo.cs" />
+    <Compile Include="API\Users\UserConfiguration.cs" />
+    <Compile Include="API\Users\UserLoginFile.cs" />
+    <Compile Include="API\Users\UserManagement.cs" />
+    <Compile Include="Shifts\ShiftId.cs" />
+    <Compile Include="Tools\DataTable_Functions.cs" />
+    <Compile Include="Tools\DateTime_Functions.cs" />
+    <Compile Include="Tools\FileSystem_Functions.cs" />
+    <Compile Include="Tools\Image_Functions.cs" />
+    <Compile Include="Tools\List_Functions.cs" />
+    <Compile Include="Tools\Math_Functions.cs" />
+    <Compile Include="Tools\Network_Functions.cs" />
+    <Compile Include="Tools\Object_Functions.cs" />
+    <Compile Include="Tools\Registry_Functions.cs" />
+    <Compile Include="Tools\Service_Functions.cs" />
+    <Compile Include="Tools\String_Functions.cs" />
+    <Compile Include="Tools\TimeSpan_Functions.cs" />
+    <Compile Include="Tools\UI_Functions.cs" />
+    <Compile Include="Tools\WCF_Functions.cs" />
+    <Compile Include="Tools\Web\Download.cs" />
+    <Compile Include="Tools\Web\HTTP.cs" />
+    <Compile Include="Tools\Web\JSON.cs" />
+    <Compile Include="Tools\Web\ProxySettings.cs" />
+    <Compile Include="Tools\Window_Functions.cs" />
+    <Compile Include="Tools\XML\Attributes.cs" />
+    <Compile Include="Tools\XML\Documents.cs" />
+    <Compile Include="Tools\XML\Files.cs" />
+    <Compile Include="Tools\XML\InnerText.cs" />
+    <Compile Include="Tools\XML\Nodes.cs" />
+    <Compile Include="Tools\XML_Functions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Server\Header.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

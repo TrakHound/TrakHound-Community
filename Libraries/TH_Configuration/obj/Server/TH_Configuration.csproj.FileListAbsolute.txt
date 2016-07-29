@@ -1,3 +1,0 @@
-F:\feenux\TrakHound\TrakHound\Libraries\TH_Configuration\bin\Server\LICENSE.txt
-F:\feenux\TrakHound\TrakHound\Libraries\TH_Configuration\bin\Server\TH_Configuration.dll
-F:\feenux\TrakHound\TrakHound\Libraries\TH_Configuration\obj\Server\TH_Configuration.dll

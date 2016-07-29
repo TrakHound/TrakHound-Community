@@ -1,0 +1,379 @@
+﻿<!--Copyright (c) 2015 Feenux LLC, All Rights Reserved.-->
+
+<!--This file is subject to the terms and conditions defined in-->
+<!--file 'LICENSE.txt', which is part of this source code package.-->
+
+<UserControl x:Class="TrakHound_Dashboard.Controls.TabHeader"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:local="clr-namespace:TrakHound_Dashboard.Controls;assembly=TrakHound-Dashboard"
+             xmlns:controls="clr-namespace:TrakHound_Dashboard.Controls"
+             
+             SizeChanged="UserControl_SizeChanged"
+             
+             mc:Ignorable="d"
+             >
+
+    <Border x:Name="root" Height="32" ToolTip="{Binding Text}" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+
+        <Grid>
+
+            <Grid Background="Transparent" MouseEnter="Control_MouseEnter" MouseLeave="Control_MouseLeave">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!--Right Side Shadow-->
+                <Rectangle Grid.Column="0" Width="2" Margin="0,2,0,2">
+                    <Rectangle.Fill>
+                        <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                            <GradientStop Color="#33000000" Offset="0.8"/>
+                            <GradientStop Color="#00000000" Offset="0"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                    <Rectangle.Style>
+                        <Style TargetType="Rectangle">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Rectangle.Style>
+                </Rectangle>
+
+                <!--Left Corner-->
+                <Path Fill="{StaticResource Accent_Normal}">
+                    <Path.Style>
+                        <Style TargetType="Path">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Path.Style>
+                    <Path.Data>
+                        <PathGeometry>
+                            <PathGeometry.Figures>
+                                <PathFigureCollection>
+                                    <PathFigure StartPoint="0,32">
+                                        <PathFigure.Segments>
+                                            <PathSegmentCollection>
+                                                <QuadraticBezierSegment Point1="2,32" Point2="3,29" />
+                                                <LineSegment Point="3,32"/>
+                                            </PathSegmentCollection>
+                                        </PathFigure.Segments>
+                                    </PathFigure>
+                                </PathFigureCollection>
+                            </PathGeometry.Figures>
+                        </PathGeometry>
+                    </Path.Data>
+                </Path>
+
+                <!--Content-->
+                <Border Grid.Column="1" CornerRadius="2,2,0,0" Cursor="Hand">
+
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding MouseOver}" Value="true">
+                                    <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                                    <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" MinWidth="30"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#40ffffff" Offset="0"/>
+                                <GradientStop Color="Transparent" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Grid.Background>
+
+                        <!--Icon and Text-->
+                        <Grid Grid.Column="0" Background="Transparent" PreviewMouseDown="Control_MouseDown">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!--Icon-->
+                            <Rectangle x:Name="content_image" Height="20"  Width="20" Margin="10,0,0,0">
+                                <Rectangle.Resources>
+                                    <ImageBrush x:Key="IMG" ImageSource="{Binding Image}" Stretch="Uniform" />
+                                </Rectangle.Resources>
+
+                                <Rectangle.Style>
+                                    <Style TargetType="Rectangle">
+                                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Setter Property="Fill" Value="{StaticResource Foreground_Normal}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding MouseOver}" Value="true">
+                                                <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                                                <Setter Property="Fill" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Rectangle.Style>
+                            </Rectangle>
+
+                            <!--Text-->
+                            <TextBlock x:Name="txt" Grid.Column="1" Text="{Binding Text}"
+                                    Margin="10,0,10,0"
+                                    MinWidth="50"
+                                    MaxWidth="250"
+                                    HorizontalAlignment="Left" VerticalAlignment="Center"
+                                    FontSize="13"      
+                                    SizeChanged="TextBlock_SizeChanged"
+                                    >
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding MouseOver}" Value="true">
+                                                <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                                                <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+
+                        </Grid>
+
+                        <!--Close Button-->
+                        <Border x:Name="close_BD" Grid.Column="1" DockPanel.Dock="Right" Width="30" CornerRadius="1,1,0,0" MouseDown="TabItemClose_MouseDown" >
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding IsSelected}" Value="false"/>
+                                                <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Background" Value="{StaticResource Accent_Normal}" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+
+                            <Grid>
+
+                                <!--3D Shade-->
+                                <Grid>
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
+                                            <Setter Property="Background" Value="Transparent" />
+                                            <Style.Triggers>
+
+                                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=close_BD}" Value="True">
+                                                    <Setter Property="Background">
+                                                        <Setter.Value>
+                                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                                <GradientStop Color="#40ffffff" Offset="0"/>
+                                                                <GradientStop Color="#20ffffff" Offset="1"/>
+                                                            </LinearGradientBrush>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding IsSelected}" Value="true"/>
+                                                        <Condition Binding="{Binding IsMouseOver, ElementName=close_BD}" Value="true"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Background">
+                                                        <Setter.Value>
+                                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                                <GradientStop Color="#40ffffff" Offset="0"/>
+                                                                <GradientStop Color="#20ffffff" Offset="1"/>
+                                                            </LinearGradientBrush>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </MultiDataTrigger>
+
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+                                </Grid>
+
+                                <Rectangle Width="12" Height="1.5" RenderTransformOrigin="0.5,0.5">
+                                    <Rectangle.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform Angle="135"/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </Rectangle.RenderTransform>
+                                    <Rectangle.Style>
+                                        <Style TargetType="Rectangle">
+                                            <!--<Setter Property="Fill" Value="Transparent"/>-->
+                                            <Setter Property="Fill" Value="{StaticResource Foreground_Light}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding MouseOver}" Value="true">
+                                                    <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=close_BD}" Value="true">
+                                                    <Setter Property="Fill" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                                                    <Setter Property="Fill" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Rectangle.Style>
+                                </Rectangle>
+
+                                <Rectangle Width="12" Height="1.5" RenderTransformOrigin="0.5,0.5">
+                                    <Rectangle.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform Angle="45"/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </Rectangle.RenderTransform>
+                                    <Rectangle.Style>
+                                        <Style TargetType="Rectangle">
+                                            <!--<Setter Property="Fill" Value="Transparent"/>-->
+                                            <Setter Property="Fill" Value="{StaticResource Foreground_Light}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding MouseOver}" Value="true">
+                                                    <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=close_BD}" Value="true">
+                                                    <Setter Property="Fill" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                                                    <Setter Property="Fill" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Rectangle.Style>
+                                </Rectangle>
+
+                            </Grid>
+
+                        </Border>
+
+                    </Grid>
+
+                </Border>
+
+                <!--Right Side Shadow-->
+                <Rectangle Grid.Column="2" Width="2" Margin="0,2,0,2">
+                    <Rectangle.Fill>
+                        <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                            <GradientStop Color="#33000000" Offset="0.2"/>
+                            <GradientStop Color="#00000000" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                    <Rectangle.Style>
+                        <Style TargetType="Rectangle">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Rectangle.Style>
+                </Rectangle>
+
+                <!--Right Corner-->
+                <Path Fill="{StaticResource Accent_Normal}" Grid.Column="2">
+                    <Path.Style>
+                        <Style TargetType="Path">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Path.Style>
+                    <Path.Data>
+                        <PathGeometry>
+                            <PathGeometry.Figures>
+                                <PathFigureCollection>
+                                    <PathFigure StartPoint="3,32">
+                                        <PathFigure.Segments>
+                                            <PathSegmentCollection>
+                                                <QuadraticBezierSegment Point1="1,32" Point2="0,29" />
+                                                <LineSegment Point="0,32"/>
+                                            </PathSegmentCollection>
+                                        </PathFigure.Segments>
+                                    </PathFigure>
+                                </PathFigureCollection>
+                            </PathGeometry.Figures>
+                        </PathGeometry>
+                    </Path.Data>
+                </Path>
+
+            </Grid>
+
+            <!--Gloss Effect-->
+            <Border IsHitTestVisible="False">
+
+                <Grid IsHitTestVisible="False">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="4.5*"/>
+                        <RowDefinition Height="5.5*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.RowSpan="2" IsHitTestVisible="False">
+                        <Border.Background>
+                            <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                                <RadialGradientBrush.GradientStops>
+                                    <GradientStop Color="#22ffffff" Offset="0" />
+                                    <GradientStop Color="#00ffffff" Offset="1.0" />
+                                </RadialGradientBrush.GradientStops>
+                            </RadialGradientBrush>
+                        </Border.Background>
+                    </Border>
+
+                    <Border CornerRadius="0,0,50,50" IsHitTestVisible="False">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#00ffffff" Offset="0.2"/>
+                                <GradientStop Color="#33ffffff" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+
+                </Grid>
+
+            </Border>
+
+        </Grid>
+
+    </Border>
+
+</UserControl>
