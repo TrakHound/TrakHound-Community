@@ -20,6 +20,8 @@
 - All nuget packages were removed in favor of a 'lib' directory (some users had issues when downloading/cloning repo and nuget packages wouldn't update correctly).
 - Part of project consolidation was to separate UI components from projects where the project could need to be run without any UI (TrakHound Server). This should make is easier compile for other platforms (such as using Mono for Linux).
 - **We temporarily removed the MySQL database plugin to update it and we are moving the ability to write to a remote database to only be available with our TrakHound Standard version. We are trying to keep as much as we can free but this feature was chosen to be an upgrade. Please contact sales@trakhound.com for more information.**
+- We temporarily dropped the Bug reporter window and now just displays a message after a bug report was automatically sent (can be disabled in Options menu).
+- We temporarily dropped support for the automatic update feature and will most likely be making this as part of the upgrade to teh TrakHound Standard version.
 - We are about to launch a new website (TrakHound.com) with updated Help documentation for setup, configuration, and development.
 - **This is our first 'Official' release and we want to thank everyone that assisted us in our beta phase with contributions and feedback!** Hopefully we can continue to develop and improve this project into a reliable, customizable, and easy to use monitoring solution that can become the standard data collection app using MTConnect.
  
