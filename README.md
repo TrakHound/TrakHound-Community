@@ -4,11 +4,29 @@
   Author: Feenux LLC
   -->
   
-![TrakHound Logo] (http://feenux.com/github/v2/images/headers/header_01.png)
+![TrakHound Logo] (http://trakhound.com/images/header_03.png)
 
 <p align="center">
   <a href="http://www.trakhound.org/">www.TrakHound.org</a>
 </p>
+
+## News
+**Update 7/29/16** 
+
+- **This repo was renamed 'TrakHound-Community' instead of just 'TrakHound'.** TrakHound Community is the new official name of the open source PC software package for the TrakHound platform. 
+- **'TrakHound Client' was renamed to 'TrakHound Dashboard'** in order to better accomodate future client applications (reports, activity monitor, etc.).
+- The directory structure and projects of this repo were changed to better organize projects and consolidate libraries and plugins into fewer projects (went from ~50 to 8 projects). Plugins are now contained in the TrakHound.NET project (the one exception is the TrakHound-Overview dashboard plugin). 
+- **You may have noticed that we created separate repos for each project, well, that didn't work very well so we're going to not update those but leave them up for a few weeks in case anyone was linked to them.**
+- All nuget packages were removed in favor of a 'lib' directory (some users had issues when downloading/cloning repo and nuget packages wouldn't update correctly).
+- Part of project consolidation was to separate UI components from projects where the project could need to be run without any UI (TrakHound Server). This should make is easier compile for other platforms (such as using Mono for Linux).
+- We are about to launch a new website (TrakHound.com) with updated Help documentation for setup, configuration, and development.
+- **This is our first 'Official' release and we want to thank everyone that assisted us in our beta phase with contributions and feedback!** Hopefully we can continue to develop and improve this project into a reliable, customizable, and easy to use monitoring solution that can become the standard data collection app using MTConnect.
+ 
+
+## Help Needed!
+
+- We are working on our documenation and if anyone has any good screenshots of the TrakHound dashboards or other screens and would like to contribute then please send those to info@trakhound.com.
+
 
 ##About
 TrakHound is an Open Source MDC software package designed to retrieve and store data from CNC and other PLC driven industrial equipment. Data is retrieved using <a href="http://mtconnect.org">MTConnect®</a>, processed, and then stored in a database. 
