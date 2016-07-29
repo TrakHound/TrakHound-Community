@@ -11,7 +11,7 @@
 </p>
 
 ## News
-**Update 7/29/16** 
+**Update 7/29/16 - v1.0.0 Official Release** 
 
 - **This repo was renamed 'TrakHound-Community' instead of just 'TrakHound'.** TrakHound Community is the new official name of the open source PC software package for the TrakHound platform. 
 - **'TrakHound Client' was renamed to 'TrakHound Dashboard'** in order to better accomodate future client applications (reports, activity monitor, etc.).
