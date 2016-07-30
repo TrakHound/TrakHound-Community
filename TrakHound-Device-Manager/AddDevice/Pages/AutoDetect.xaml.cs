@@ -49,7 +49,6 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
         public void Closed() { }
         public bool Closing()
         {
-            Console.WriteLine("Auto Detect : Closing()");
             Cancel();
             return true;
         }
@@ -73,7 +72,7 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
         }
 
         public static readonly DependencyProperty DevicesLoadingProperty =
-            DependencyProperty.Register("DevicesLoading", typeof(bool), typeof(AutoDetect), new PropertyMetadata(true));
+            DependencyProperty.Register("DevicesLoading", typeof(bool), typeof(AutoDetect), new PropertyMetadata(false));
 
         /// <summary>
         /// Number of Devices that were found that have already been added
@@ -461,7 +460,7 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("AutoDetect : Unloaded()");
+
         }
     }
 }

@@ -117,10 +117,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Plugins\CNC\Overrides\Rapidrate\View.xaml">
+    <None Include="Plugins\CNC\Overrides\Rapidrate\View.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
+    </None>
     <Page Include="Plugins\CNC\Overrides\SpindleSpeed\View.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -195,10 +195,10 @@
     <Compile Include="Plugins\CNC\Overrides\Feedrate\View.xaml.cs">
       <DependentUpon>View.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Plugins\CNC\Overrides\Rapidrate\Plugin.cs" />
-    <Compile Include="Plugins\CNC\Overrides\Rapidrate\View.xaml.cs">
+    <None Include="Plugins\CNC\Overrides\Rapidrate\Plugin.cs" />
+    <None Include="Plugins\CNC\Overrides\Rapidrate\View.xaml.cs">
       <DependentUpon>View.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="Plugins\CNC\Overrides\SpindleSpeed\Plugin.cs" />
     <Compile Include="Plugins\CNC\Overrides\SpindleSpeed\View.xaml.cs">
       <DependentUpon>View.xaml</DependentUpon>

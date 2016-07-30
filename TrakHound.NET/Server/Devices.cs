@@ -37,10 +37,10 @@ namespace TrakHound.Server
         {
             config.Index = Devices.Count;
 
-            //var deviceThread = new Thread(new ParameterizedThreadStart(StartDeviceServer));
-            //deviceThread.Start(config);
+            var deviceThread = new Thread(new ParameterizedThreadStart(StartDeviceServer));
+            deviceThread.Start(config);
 
-            ThreadPool.QueueUserWorkItem(new WaitCallback(StartDeviceServer), config);
+            //ThreadPool.QueueUserWorkItem(new WaitCallback(StartDeviceServer), config);
         }
 
         private void StartDeviceServer(object obj)

@@ -84,7 +84,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
 
         public void GetSentData(EventData data)
         {
-
         }
 
         public event SendData_Handler SendData;

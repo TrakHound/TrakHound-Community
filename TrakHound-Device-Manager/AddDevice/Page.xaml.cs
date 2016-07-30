@@ -96,7 +96,6 @@ namespace TrakHound_Device_Manager.AddDevice
             {
                 autoDetectPage = new Pages.AutoDetect();
                 autoDetectPage.ParentPage = this;
-                autoDetectPage.FindDevices();
             }
 
             CurrentPage = autoDetectPage;

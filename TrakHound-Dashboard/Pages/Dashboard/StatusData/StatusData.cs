@@ -39,6 +39,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
 
             foreach (var config in configs)
             {
+               Global.Initialize(config.Databases_Client);
+
                 foreach (var database in config.Databases_Client.Databases)
                 {
                     var group = result.Find(x => x.Database.UniqueId == database.UniqueId);
@@ -162,7 +164,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
                             first = false;
                         }
 
-                        Thread.Sleep(interval);
+                        if (!first) Thread.Sleep(interval);
                     }
                 }
             }
@@ -255,6 +257,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
             string msg = null;
 
             bool ping = TrakHound.Databases.Global.Ping(config, out msg);
+            ping = true; // DEBUG$$
 
             if (ping) { result = true; }
             else Logger.Log("CheckDatabaseConnection() :: Error :: " + config.Type + " :: " + config.UniqueId + " :: " + msg, LogLineType.Error);
