@@ -20,12 +20,13 @@
                 Width="500" HorizontalAlignment="Left"/>
 
         <!--Restore Defaults Button-->
-        <ui:Button Text="Restore Defaults" Clicked="RestoreDefaults_Clicked">
+        <ui:Button Text="Restore Defaults" Clicked="RestoreDefaults_Clicked" Style="{StaticResource Button_Accent_Background}" HorizontalAlignment="Left" Margin="0,40"/>
+        <!--<ui:Button Text="Restore Defaults" Clicked="RestoreDefaults_Clicked">
             <ui:Button.Style>
-                <Style TargetType="ui:Button">
-                    <Setter Property="Visibility" Value="Visible"/>
+                <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Accent_Background}">
+                    --><!--<Setter Property="Visibility" Value="Visible"/>
                     <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                    <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+                    <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>--><!--
                     <Setter Property="Height" Value="30"/>
                     <Setter Property="Padding" Value="10,5"/>
                     <Setter Property="Margin" Value="0,40,0,10"/>
@@ -39,7 +40,7 @@
                     </Style.Triggers>
                 </Style>
             </ui:Button.Style>
-        </ui:Button>
+        </ui:Button>-->
 
     </StackPanel>
 

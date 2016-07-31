@@ -466,6 +466,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Styles\Colors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\Menus.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

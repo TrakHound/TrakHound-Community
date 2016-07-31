@@ -9,13 +9,7 @@
              
              >
 
-    <Grid MouseEnter="Main_GRID_MouseEnter" MouseLeave="Main_GRID_MouseLeave" Margin="1,0,0,0" Cursor="Hand">
-
-        <!--<Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>-->
-        
+    <Grid x:Name="root" MouseEnter="Main_GRID_MouseEnter" MouseLeave="Main_GRID_MouseLeave" Margin="1,0,0,0" Cursor="Hand">
         <Grid.Style>
             <Style TargetType="Grid">
                 <Setter Property="Background">
@@ -45,7 +39,6 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             
-
             <!--Selection Indicator-->
             <Rectangle >
                 <Rectangle.Style>

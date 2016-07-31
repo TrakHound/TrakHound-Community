@@ -39,7 +39,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
 
             foreach (var config in configs)
             {
-               Global.Initialize(config.Databases_Client);
+               //Global.Initialize(config.Databases_Client);
 
                 foreach (var database in config.Databases_Client.Databases)
                 {

@@ -13,10 +13,10 @@
     <Border CornerRadius="2" BorderThickness="1" Background="#00000000" FocusManager.IsFocusScope="False">
         <Border.Style>
             <Style TargetType="Border">
-                <Setter Property="BorderBrush" Value="#ccc"/>
+                <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding IsMouseOver}" Value="true">
-                        <Setter Property="BorderBrush" Value="#0080ff"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource TrakHound_LightBlue}"/>
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
@@ -35,8 +35,8 @@
                 </TextBlock>
 
                 <!--Remove Value Button-->
-                <ui:Button Grid.Column="1" Image="/TrakHound-Device-Manager;component/Resources/X_01.png" Margin="10,0" Height="25" HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="Hand" Clicked="Remove_Clicked" FocusManager.IsFocusScope="False">
-                    <ui:Button.Style>
+                <ui:Button Grid.Column="1" Image="/TrakHound-Device-Manager;component/Resources/X_01.png" Style="{StaticResource Button_Accent_Foreground}" Margin="10,0" Height="25" HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="Hand" Clicked="Remove_Clicked" FocusManager.IsFocusScope="False">
+                    <!--<ui:Button.Style>
                         <Style TargetType="ui:Button">
                             <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                             <Setter Property="Background" Value="Transparent"/>
@@ -46,12 +46,12 @@
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
-                    </ui:Button.Style>
+                    </ui:Button.Style>-->
                 </ui:Button>
 
             </Grid>
 
-            <Rectangle Height="1" Fill="#ccc" Margin="10"/>
+            <Rectangle Height="1" Fill="{StaticResource Shade_Normal}" Margin="10"/>
 
             <StackPanel VerticalAlignment="Center" FocusManager.IsFocusScope="False">
 
@@ -65,8 +65,8 @@
                 </ItemsControl>
 
                 <!--Add Button-->
-                <ui:Button Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Text="Add Trigger" ImageTextPadding="10" VerticalAlignment="Center" HorizontalAlignment="Left" Height="35" Margin="10,5" Clicked="AddTrigger_Clicked" FocusManager.IsFocusScope="False">
-                    <ui:Button.Style>
+                <ui:Button Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Style="{StaticResource Button_Accent_Foreground}" Text="Add Trigger" ImageTextPadding="10" VerticalAlignment="Center" HorizontalAlignment="Left" Height="35" Margin="10,5" Clicked="AddTrigger_Clicked" FocusManager.IsFocusScope="False">
+                    <!--<ui:Button.Style>
                         <Style TargetType="ui:Button">
                             <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                             <Setter Property="Background" Value="Transparent"/>
@@ -76,7 +76,7 @@
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
-                    </ui:Button.Style>
+                    </ui:Button.Style>-->
                 </ui:Button>
 
             </StackPanel>

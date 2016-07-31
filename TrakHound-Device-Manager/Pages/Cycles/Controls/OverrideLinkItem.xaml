@@ -44,7 +44,7 @@
             <ui:Button Grid.Column="1" Image="/TrakHound-Device-Manager;component/Resources/X_01.png" Cursor="Hand" Margin="20,5,5,5" Height="25" Padding="3" Clicked="Removed_Clicked">
                 <ui:Button.Style>
                     <Style TargetType="ui:Button">
-                        <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                        <Setter Property="Foreground" Value="{StaticResource TrakHound_Blue}"/>
                         <Setter Property="Background" Value="Transparent"/>
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">

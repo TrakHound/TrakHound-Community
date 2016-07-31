@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 using TrakHound;
+using TrakHound_UI;
 
 namespace TrakHound_Device_Manager.AddDevice
 {
@@ -22,7 +23,7 @@ namespace TrakHound_Device_Manager.AddDevice
         public Page()
         {
             InitializeComponent();
-            DataContext = this;
+            root.DataContext = this;
         }
 
         #region "IPage"
@@ -87,6 +88,36 @@ namespace TrakHound_Device_Manager.AddDevice
         Pages.Manual manualPage;
         Pages.LoadFromFile loadFromFilePage;
 
+
+
+        public bool AutoDetectSelected
+        {
+            get { return (bool)GetValue(AutoDetectSelectedProperty); }
+            set { SetValue(AutoDetectSelectedProperty, value); }
+        }
+
+        public static readonly DependencyProperty AutoDetectSelectedProperty =
+            DependencyProperty.Register("AutoDetectSelected", typeof(bool), typeof(Page), new PropertyMetadata(true));
+
+        public bool ManualSelected
+        {
+            get { return (bool)GetValue(ManualSelectedProperty); }
+            set { SetValue(ManualSelectedProperty, value); }
+        }
+
+        public static readonly DependencyProperty ManualSelectedProperty =
+            DependencyProperty.Register("ManualSelected", typeof(bool), typeof(Page), new PropertyMetadata(false));
+
+        public bool LoadFromFileSelected
+        {
+            get { return (bool)GetValue(LoadFromFileSelectedProperty); }
+            set { SetValue(LoadFromFileSelectedProperty, value); }
+        }
+
+        public static readonly DependencyProperty LoadFromFileSelectedProperty =
+            DependencyProperty.Register("LoadFromFileSelected", typeof(bool), typeof(Page), new PropertyMetadata(false));
+
+
         public void ShowAutoDetect()
         {
             if (manualPage != null) manualPage.Closing();
@@ -97,6 +128,10 @@ namespace TrakHound_Device_Manager.AddDevice
                 autoDetectPage = new Pages.AutoDetect();
                 autoDetectPage.ParentPage = this;
             }
+
+            AutoDetectSelected = true;
+            ManualSelected = false;
+            LoadFromFileSelected = false;
 
             CurrentPage = autoDetectPage;
         }
@@ -110,8 +145,11 @@ namespace TrakHound_Device_Manager.AddDevice
             {
                 manualPage = new Pages.Manual();
                 manualPage.ParentPage = this;
-                //manualPage.LoadCatalog();
             }
+
+            AutoDetectSelected = false;
+            ManualSelected = true;
+            LoadFromFileSelected = false;
 
             CurrentPage = manualPage;
         }
@@ -126,6 +164,10 @@ namespace TrakHound_Device_Manager.AddDevice
                 loadFromFilePage = new Pages.LoadFromFile();
                 loadFromFilePage.ParentPage = this;
             }
+
+            AutoDetectSelected = false;
+            ManualSelected = false;
+            LoadFromFileSelected = true;
 
             CurrentPage = loadFromFilePage;
         }

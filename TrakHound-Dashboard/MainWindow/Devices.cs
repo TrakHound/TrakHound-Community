@@ -20,6 +20,8 @@ namespace TrakHound_Dashboard
     {
         public DeviceManager DeviceManager { get; set; }
 
+        public List<DeviceConfiguration> Devices { get; set; }
+
         bool addDeviceOpened = false;
 
         private void DeviceManager_Initialize()
@@ -33,8 +35,6 @@ namespace TrakHound_Dashboard
                 DeviceManager.DevicesLoaded += DeviceManager_DevicesLoaded;
             }
         }
-
-        public List<DeviceConfiguration> Devices { get; set; }
 
         private void Devicemanager_DeviceListUpdated(List<DeviceConfiguration> configs)
         {

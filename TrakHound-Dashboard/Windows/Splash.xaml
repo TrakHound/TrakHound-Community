@@ -19,7 +19,7 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         
-        Background="{StaticResource Accent_Normal}"
+        Background="{StaticResource TrakHound_Blue}"
             
         x:Name="splash" Icon="/TrakHound-Dashboard;component/Resources/TrakHound_Logo_Initials_10.ico" 
         >

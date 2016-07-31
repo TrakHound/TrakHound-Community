@@ -8,7 +8,7 @@
              xmlns:controls="clr-namespace:TrakHound_Device_Manager.Pages.GeneratedEvents.Controls"
              
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="800">
+             d:DesignWidth="800">
 
     <Grid FocusManager.IsFocusScope="False">
         <Grid.RowDefinitions>
@@ -24,10 +24,10 @@
             <Border BorderThickness="1" CornerRadius="1" Margin="0,5" FocusManager.IsFocusScope="False">
                 <Border.Style>
                     <Style TargetType="Border">
-                        <Setter Property="BorderBrush" Value="#ccc"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsFocused, ElementName=description_TXT}" Value="true">
-                                <Setter Property="BorderBrush" Value="#0080ff"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource TrakHound_LightBlue}"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -66,11 +66,11 @@
             </ItemsControl>
             
             <!--Add Value Button-->
-            <ui:Button Height="40" Text="Add Value" ImageTextPadding="10" Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Margin="0,20" Clicked="AddValue_Clicked" HorizontalAlignment="Left" FocusManager.IsFocusScope="False">
+            <ui:Button Height="40" Text="Add Value" Style="{StaticResource Button_Accent_Foreground}" ImageTextPadding="10" Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Margin="0,20" Clicked="AddValue_Clicked" HorizontalAlignment="Left" FocusManager.IsFocusScope="False">
                 <ui:Button.ToolTip>
                     Add a new Value to the Event
                 </ui:Button.ToolTip>
-                <ui:Button.Style>
+                <!--<ui:Button.Style>
                     <Style TargetType="ui:Button">
                         <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                         <Setter Property="Background" Value="Transparent"/>
@@ -80,14 +80,14 @@
                             </Trigger>
                         </Style.Triggers>
                     </Style>
-                </ui:Button.Style>
+                </ui:Button.Style>-->
             </ui:Button>
             
             <!--Default Value-->
             <ContentControl Content="{Binding DefaultValue}" HorizontalAlignment="Left" Margin="0,5" FocusManager.IsFocusScope="False"/>
             
             <!--Separator-->
-            <Rectangle Height="1" Fill="#ccc" Margin="0,20" FocusManager.IsFocusScope="False"/>
+            <Rectangle Height="1" Fill="{StaticResource Shade_Normal}" Margin="0,20" FocusManager.IsFocusScope="False"/>
             
             <!--Capture Items Title-->
             <TextBlock Text="Capture Items" FontSize="8pt" Foreground="#aaa" Margin="10,5" FocusManager.IsFocusScope="False"/>
@@ -102,8 +102,8 @@
             </ItemsControl>
 
             <!--Add Capture Item Button-->
-            <ui:Button Height="35" Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Text="Add Capture Item" ImageTextPadding="10" ToolTip="Add Capture Item" Margin="0,20" Clicked="AddCaptureItem_Clicked" HorizontalAlignment="Left" FocusManager.IsFocusScope="False">
-                <ui:Button.Style>
+            <ui:Button Height="35" Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Style="{StaticResource Button_Accent_Foreground}" Text="Add Capture Item" ImageTextPadding="10" ToolTip="Add Capture Item" Margin="0,20" Clicked="AddCaptureItem_Clicked" HorizontalAlignment="Left" FocusManager.IsFocusScope="False">
+                <!--<ui:Button.Style>
                     <Style TargetType="ui:Button">
                         <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                         <Setter Property="Background" Value="Transparent"/>
@@ -113,7 +113,7 @@
                             </Trigger>
                         </Style.Triggers>
                     </Style>
-                </ui:Button.Style>
+                </ui:Button.Style>-->
             </ui:Button>
 
         </StackPanel>

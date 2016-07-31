@@ -15,10 +15,10 @@
     <Border CornerRadius="2" BorderThickness="1" Background="#00000000" FocusManager.IsFocusScope="False">
         <Border.Style>
             <Style TargetType="Border">
-                <Setter Property="BorderBrush" Value="#ccc"/>
+                <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding IsMouseOver}" Value="true">
-                        <Setter Property="BorderBrush" Value="#0080ff"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource TrakHound_LightBlue}"/>
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
@@ -41,10 +41,10 @@
                 <Border Grid.Column="1" BorderThickness="1" CornerRadius="1" Margin="0,5,0,5" MinWidth="100" FocusManager.IsFocusScope="False">
                     <Border.Style>
                         <Style TargetType="Border">
-                            <Setter Property="BorderBrush" Value="#ccc"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsFocused, ElementName=valuename_TXT}" Value="true">
-                                    <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
+                                    <Setter Property="BorderBrush" Value="{StaticResource TrakHound_Blue}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -69,8 +69,8 @@
                 </Border>
 
                 <!--Remove Value Button-->
-                <ui:Button Grid.Column="3" Image="/TrakHound-Device-Manager;component/Resources/X_01.png" Margin="10,0" Height="25" HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="Hand" Clicked="Remove_Clicked" FocusManager.IsFocusScope="False">
-                    <ui:Button.Style>
+                <ui:Button Grid.Column="3" Image="/TrakHound-Device-Manager;component/Resources/X_01.png" Style="{StaticResource Button_Accent_Foreground}" Margin="10,0" Height="25" HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="Hand" Clicked="Remove_Clicked" FocusManager.IsFocusScope="False">
+                    <!--<ui:Button.Style>
                         <Style TargetType="ui:Button">
                             <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                             <Setter Property="Background" Value="Transparent"/>
@@ -80,12 +80,12 @@
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
-                    </ui:Button.Style>
+                    </ui:Button.Style>-->
                 </ui:Button>
 
             </Grid>
 
-            <Rectangle Height="1" Fill="#ccc" Margin="10,20"/>
+            <Rectangle Height="1" Fill="{StaticResource Shade_Normal}" Margin="10,20"/>
 
             <TextBlock Grid.Column="1" FontSize="8pt" Foreground="#888" Margin="10,0,0,10" FocusManager.IsFocusScope="False">
                 Triggers - Value is met when all of the Trigger conditions are met
@@ -108,11 +108,11 @@
                 <StackPanel Orientation="Horizontal">
 
                     <!--Add Trigger Button-->
-                    <ui:Button Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Text="Add Trigger" ImageTextPadding="10" VerticalAlignment="Center" HorizontalAlignment="Left" Height="35" Margin="10,5" Clicked="AddTrigger_Clicked">
+                    <ui:Button Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Style="{StaticResource Button_Accent_Foreground}" Text="Add Trigger" ImageTextPadding="10" VerticalAlignment="Center" HorizontalAlignment="Left" Height="35" Margin="10,5" Clicked="AddTrigger_Clicked">
                         <ui:Button.ToolTip>
                             Add a new Trigger that defines a single condition that must be met (logical AND)
                         </ui:Button.ToolTip>
-                        <ui:Button.Style>
+                        <!--<ui:Button.Style>
                             <Style TargetType="ui:Button">
                                 <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                                 <Setter Property="Background" Value="Transparent"/>
@@ -122,15 +122,15 @@
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
-                        </ui:Button.Style>
+                        </ui:Button.Style>-->
                     </ui:Button>
 
                     <!--Add MultiTrigger Button-->
-                    <ui:Button Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Text="Add MultiTrigger" ImageTextPadding="10" VerticalAlignment="Center" HorizontalAlignment="Left" Height="35" Margin="10,5" Clicked="AddMultiTrigger_Clicked">
+                    <ui:Button Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Text="Add MultiTrigger" Style="{StaticResource Button_Accent_Foreground}" ImageTextPadding="10" VerticalAlignment="Center" HorizontalAlignment="Left" Height="35" Margin="10,5" Clicked="AddMultiTrigger_Clicked">
                         <ui:Button.ToolTip>
                             Add a new MultiTrigger that defines multiple Triggers where only one has to be met (logical AND/OR)
                         </ui:Button.ToolTip>
-                        <ui:Button.Style>
+                        <!--<ui:Button.Style>
                             <Style TargetType="ui:Button">
                                 <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                                 <Setter Property="Background" Value="Transparent"/>
@@ -140,7 +140,7 @@
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
-                        </ui:Button.Style>
+                        </ui:Button.Style>-->
                     </ui:Button>
 
                 </StackPanel>

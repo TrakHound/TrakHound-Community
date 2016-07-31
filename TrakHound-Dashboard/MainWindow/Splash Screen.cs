@@ -36,10 +36,13 @@ namespace TrakHound_Dashboard
 
         void Splash_UpdateStatus_GUI(string status, double loadingProgress) 
         {
-            splsh.Status3 = splsh.Status2;
-            splsh.Status2 = splsh.Status1;
-            splsh.Status1 = status;
-            splsh.LoadingProgress = loadingProgress;
+            if (splsh != null)
+            {
+                splsh.Status3 = splsh.Status2;
+                splsh.Status2 = splsh.Status1;
+                splsh.Status1 = status;
+                splsh.LoadingProgress = loadingProgress;
+            }
         }
 
     }

@@ -36,12 +36,13 @@ namespace TrakHound_Dashboard
 
         public void init()
         {
-            AppDomain currentDomain = AppDomain.CurrentDomain;
-            currentDomain.UnhandledException += currentDomain_UnhandledException;
+            // Set Unhandled Exception handler
+            AppDomain.CurrentDomain.UnhandledException += currentDomain_UnhandledException;
 
+            // Set Animation Framerate
             Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(Timeline), new FrameworkPropertyMetadata { DefaultValue = DEFAULT_ANIMATION_FRAMERATE });
 
-            Log_Initialize();
+            //Log_Initialize();
             Splash_Initialize();
 
             Splash_UpdateStatus("...Initializing", 10);
@@ -75,10 +76,9 @@ namespace TrakHound_Dashboard
             WelcomeMessage();
             CheckVersion();
 
-            // Wait for the minimum splash time to elapse, then close the splash dialog
             Splash_Close();
 
-            ServerMonitor_Initialize();
+            //ServerMonitor_Initialize();
         }
 
         private void Main_Window_Loaded(object sender, RoutedEventArgs e)

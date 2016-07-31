@@ -21,11 +21,11 @@
             <Border CornerRadius="2">
                 <Border.Style>
                 <Style TargetType="Border">
-                        <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+                        <Setter Property="Background" Value="{StaticResource TrakHound_Blue}"/>
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="true">
                             <Setter Property="Cursor" Value="Hand"/>
-                            <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                            <Setter Property="Background" Value="{StaticResource TrakHound_LightBlue}"/>
                         </Trigger>
                     </Style.Triggers>
                 </Style>
@@ -120,10 +120,11 @@
             <Grid Grid.Row="1">
                 <Grid.Style>
                     <Style TargetType="Grid">
-                        <Setter Property="MaxHeight" Value="0"/>
+                        <!--<Setter Property="MaxHeight" Value="0"/>-->
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsExpanded}" Value="true">
-                                <DataTrigger.EnterActions>
+                            <DataTrigger Binding="{Binding IsExpanded}" Value="false">
+                                <Setter Property="MaxHeight" Value="0"/>
+                                <!--<DataTrigger.EnterActions>
                                     <BeginStoryboard>
                                         <Storyboard>
                                             <DoubleAnimation Duration="00:00:0.2" Storyboard.TargetProperty="MaxHeight" From="0" To="1200">
@@ -144,7 +145,7 @@
                                             </DoubleAnimation>
                                         </Storyboard>
                                     </BeginStoryboard>
-                                </DataTrigger.ExitActions>
+                                </DataTrigger.ExitActions>-->
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

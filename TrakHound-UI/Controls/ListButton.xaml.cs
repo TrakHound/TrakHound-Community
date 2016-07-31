@@ -23,7 +23,7 @@ namespace TrakHound_UI
         public ListButton()
         {
             InitializeComponent();
-            DataContext = this;
+            root.DataContext = this;
         }
 
         //public object DataObject;
@@ -129,11 +129,8 @@ namespace TrakHound_UI
             DependencyProperty.Register("HoverBrush", typeof(Brush), typeof(ListButton), new PropertyMetadata(new SolidColorBrush(Color.FromArgb(51, 0, 0, 0))));
 
         
-
-
-
         
-        public delegate void Selected_Handler(ListButton LB);
+        public delegate void Selected_Handler(ListButton bt);
         public event Selected_Handler Selected;
         public event Selected_Handler MultiSelected;
         public event Selected_Handler MultiUnselected;
@@ -151,8 +148,8 @@ namespace TrakHound_UI
 
         public bool IsSelected
         {
-            get { return (bool)this.GetValue(IsSelectedProperty); }
-            set { this.SetValue(IsSelectedProperty, value); }
+            get { return (bool)GetValue(IsSelectedProperty); }
+            set { SetValue(IsSelectedProperty, value); }
         }
 
         public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.RegisterAttached(

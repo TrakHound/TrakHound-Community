@@ -139,7 +139,6 @@
     <Compile Include="Controls\Spinner.xaml.cs">
       <DependentUpon>Spinner.xaml</DependentUpon>
     </Compile>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Fonts\DS-DIGI.TTF" />

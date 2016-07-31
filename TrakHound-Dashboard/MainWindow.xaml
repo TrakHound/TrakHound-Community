@@ -73,11 +73,11 @@
                         <Setter Property="Padding" Value="2"/>
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                                <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                                <Setter Property="Foreground" Value="{StaticResource TrakHound_Blue}"/>
+                                <!--<Setter Property="Background" Value="{StaticResource Accent_Hover}"/>-->
                             </Trigger>
                             <Trigger Property="IsSelected" Value="true">
-                                <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                <Setter Property="Foreground" Value="{StaticResource TrakHound_Blue}"/>
                             </Trigger>
                         </Style.Triggers>
                     </Style>
@@ -103,7 +103,7 @@
                     <StackPanel Orientation="Horizontal" MouseDown="TopBar_UserInfo_MouseDown">
                         <StackPanel.Style>
                             <Style TargetType="StackPanel">
-                                <Setter Property="Opacity" Value="0.6"/>
+                                <!--<Setter Property="Opacity" Value="0.6"/>-->
                                 <Setter Property="ToolTip" Value="Open My Account Page"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
@@ -118,17 +118,33 @@
                         </StackPanel.Style>
 
                         <!--Profile Image-->
-                        <ui:ImageDisplay Height="30" Width="30" Margin="5,0" Image="{Binding ProfileImageSmall}" VerticalAlignment="Center" BorderBrush="#33ffffff" BorderThickness="1"/>
+                        <ui:ImageDisplay Height="30" Width="30" Margin="5,0" Image="{Binding ProfileImageSmall}" VerticalAlignment="Center" BorderBrush="#33ffffff" BorderThickness="1">
+                            <ui:ImageDisplay.Style>
+                                <Style TargetType="ui:ImageDisplay">
+                                    <Setter Property="Opacity" Value="0.6"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=StackPanel, Mode=FindAncestor}}" Value="true">
+                                            <Setter Property="Opacity" Value="1.0"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ui:ImageDisplay.Style>
+                        </ui:ImageDisplay>
 
                         <!--Username-->
-                        <StackPanel VerticalAlignment="Center" Margin="0,0,10,0">
-
-                            <!--<TextBlock Text="Logged in as" FontSize="8" Foreground="#aaa" HorizontalAlignment="Left" Margin="0,0,0,0"/>-->
-
-                            <TextBlock Text="{Binding CurrentUser.Username, Converter={StaticResource uppercaseConverter}}" FontSize="14" Foreground="#333"/>
-
-                        </StackPanel>
-
+                        <TextBlock Text="{Binding CurrentUser.Username, Converter={StaticResource uppercaseConverter}}" FontSize="12" Margin="0,0,10,0" VerticalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=StackPanel, Mode=FindAncestor}}" Value="true">
+                                            <Setter Property="Foreground" Value="{StaticResource TrakHound_Blue}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        
                     </StackPanel>
 
                     <Rectangle Width="1" Fill="{StaticResource Shade_Normal}" Margin="5,2"/>
@@ -138,17 +154,17 @@
 
                         <ui:Button Clicked="MessageCenter_ToolBarItem_Clicked" Image="Resources/Envelope_01.png" ToolTip="Show Message Center">
                             <ui:Button.Style>
-                                <Style TargetType="ui:Button">
-                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                                    <Setter Property="Background" Value="Transparent"/>
+                                <Style TargetType="ui:Button" BasedOn="{StaticResource {x:Type ui:Button}}">
+                                    <!--<Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                    <Setter Property="Background" Value="Transparent"/>-->
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding NotificationsCount}" Value="0">
                                             <Setter Property="Foreground" Value="#aaa"/>
                                         </DataTrigger>
-                                        <Trigger Property="IsMouseOver" Value="true">
+                                        <!--<Trigger Property="IsMouseOver" Value="true">
                                             <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                                             <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
-                                        </Trigger>
+                                        </Trigger>-->
                                     </Style.Triggers>
                                 </Style>
                             </ui:Button.Style>
@@ -157,14 +173,14 @@
                         <Border CornerRadius="2" Margin="5,6">
                             <Border.Style>
                                 <Style TargetType="Border">
-                                    <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+                                    <Setter Property="Background" Value="{StaticResource TrakHound_Blue}"/>
                                     <Setter Property="Visibility" Value="Visible"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding NotificationsCount}" Value="0">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                         <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                                            <Setter Property="Background" Value="{StaticResource TrakHound_LightBlue}"/>
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -379,7 +395,8 @@
         </Border>
 
         <!--Navigation Menu Panel-->
-        <Border Width="300" Background="{StaticResource Window_Background_Accent_Gradient}" HorizontalAlignment="Left">
+        <!--<Border Width="300" Background="{StaticResource Window_Background_Accent_Gradient}" HorizontalAlignment="Left">-->
+        <Border Width="300" Background="{StaticResource Navigation_Menu_Background}" HorizontalAlignment="Left">
             <Border.RenderTransform>
                 <TranslateTransform X="-320"/>
             </Border.RenderTransform>
@@ -480,9 +497,6 @@
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                     <Style.Triggers>
-                                        <!--<DataTrigger Binding="{Binding IsUsernameFocused}" Value="true">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>-->
                                         <DataTrigger Binding="{Binding UserLoginError}" Value="true">
                                             <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
@@ -715,14 +729,6 @@
                                 </ui:Button.ButtonContent>
                             </ui:Button>
 
-
-                            <!--Plugins-->
-                            <!--<ui:Button Clicked="Plugins_Clicked">
-                                <ui:Button.ButtonContent>
-                                    <menus:MenuItem Text="Plugins" Image="Resources/Rocket_02.png"/>
-                                </ui:Button.ButtonContent>
-                            </ui:Button>-->
-
                             <!--My Account-->
                             <ui:Button Clicked="MyAccount_Clicked">
                                 <ui:Button.ButtonContent>
@@ -766,13 +772,6 @@
                                     <menus:MenuItem Text="Table Manager" Image="Resources/Table_01.png"/>
                                 </ui:Button.ButtonContent>
                             </ui:Button>
-
-                            <!--Report Bug-->
-                            <!--<ui:Button Clicked="ReportBug_Clicked">
-                                <ui:Button.ButtonContent>
-                                    <menus:MenuItem Text="Report Bug" Image="Resources/Bug_01.png"/>
-                                </ui:Button.ButtonContent>
-                            </ui:Button>-->
 
                         </WrapPanel>
 

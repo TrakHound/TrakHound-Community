@@ -32,18 +32,8 @@
 
                 <ItemsControl ItemsSource="{Binding Pages}" Margin="0,40">
                     <ItemsControl.Resources>
-                        <Style TargetType="ui:ListButton">
-                            <Setter Property="Foreground" Value="#fff"/>
-                            <Setter Property="Background" Value="Transparent"/>
+                        <Style TargetType="ui:ListButton" BasedOn="{StaticResource ListButton_PageList}">
                             <Setter Property="MinWidth" Value="150"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                                </Trigger>
-                                <Trigger Property="IsSelected" Value="true">
-                                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                                </Trigger>
-                            </Style.Triggers>
                         </Style>
                     </ItemsControl.Resources>
                 </ItemsControl>

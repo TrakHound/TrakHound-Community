@@ -65,7 +65,7 @@
                 </Style>
             </Grid.Style>
 
-            <local:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="30" Height="30" Foreground="{StaticResource Accent_Normal}" />
+            <local:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="30" Height="30" Foreground="{StaticResource TrakHound_Blue}" />
 
         </Grid>
 

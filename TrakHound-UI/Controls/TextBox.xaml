@@ -84,10 +84,10 @@
                         <Setter Property="BorderBrush" Value="{StaticResource Shade_Dark}"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsMouseOver}" Value="true">
-                                <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource TrakHound_LightBlue}"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsFocused, ElementName=txt}" Value="true">
-                                <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource TrakHound_LightBlue}"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -181,7 +181,6 @@
                             <TextBox.Style>
                                 <Style TargetType="TextBox">
                                     <Setter Property="MaxLines" Value="1"/>
-                                    <!--<Setter Property="VerticalAlignment" Value="Center"/>-->
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding TextWrapping}" Value="true">
                                             <Setter Property="TextWrapping" Value="Wrap"/>
@@ -206,7 +205,7 @@
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
                                     <Trigger Property="IsMouseOver" Value="true">
-                                        <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                        <Setter Property="Foreground" Value="{StaticResource TrakHound_Blue}"/>
                                     </Trigger>
                                     <DataTrigger Binding="{Binding TextWrapping}" Value="true">
                                         <Setter Property="VerticalAlignment" Value="Top"/>

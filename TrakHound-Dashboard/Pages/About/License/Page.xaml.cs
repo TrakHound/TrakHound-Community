@@ -36,8 +36,8 @@ namespace TrakHound_Dashboard.Pages.About.License
 
             DataContext = this;
 
-            string LicensePath = AppDomain.CurrentDomain.BaseDirectory + @"\LICENSE";
-            LicenseText = File.ReadAllText(LicensePath);
+            string path = AppDomain.CurrentDomain.BaseDirectory + @"\LICENSE";
+            if (File.Exists(path)) LicenseText = File.ReadAllText(path);
 
             PageContent = this;
         }

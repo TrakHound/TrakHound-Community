@@ -9,7 +9,7 @@
              xmlns:controls="clr-namespace:TrakHound_Device_Manager.Pages.Shifts.Controls"
              
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="800"
+             d:DesignWidth="800"
              >
 
     <Border CornerRadius="2" BorderThickness="1" Background="#00000000">
@@ -110,8 +110,8 @@
                 </StackPanel>
 
                 <!--Remove Button-->
-                <ui:Button Image="/TrakHound-Device-Manager;component/Resources/X_01.png" Cursor="Hand" Height="30" Margin="10" Clicked="RemoveShift_Clicked" HorizontalAlignment="Right" VerticalAlignment="Top" ToolTip="Remove this Shift">
-                    <ui:Button.Style>
+                <ui:Button Image="/TrakHound-Device-Manager;component/Resources/X_01.png" Style="{StaticResource Button_Accent_Foreground}" Cursor="Hand" Height="30" Margin="10" Clicked="RemoveShift_Clicked" HorizontalAlignment="Right" VerticalAlignment="Top" ToolTip="Remove this Shift">
+                    <!--<ui:Button.Style>
                         <Style TargetType="ui:Button">
                             <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                             <Setter Property="Background" Value="Transparent"/>
@@ -121,7 +121,7 @@
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
-                    </ui:Button.Style>
+                    </ui:Button.Style>-->
                 </ui:Button>
 
             </Grid>
@@ -141,8 +141,8 @@
                     </ItemsControl.Resources>
                 </ItemsControl>
 
-                <ui:Button Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Clicked="AddBreak_Clicked" Height="35" ImageTextPadding="10" Text="Add Break" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top">
-                    <ui:Button.Style>
+                <ui:Button Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Style="{StaticResource Button_Accent_Foreground}" Clicked="AddBreak_Clicked" Height="35" ImageTextPadding="10" Text="Add Break" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <!--<ui:Button.Style>
                         <Style TargetType="ui:Button">
                             <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                             <Setter Property="Background" Value="Transparent"/>
@@ -152,7 +152,7 @@
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
-                    </ui:Button.Style>
+                    </ui:Button.Style>-->
                 </ui:Button>
 
             </StackPanel>

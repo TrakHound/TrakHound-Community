@@ -90,17 +90,17 @@
                         <!--Buttton-->
                         <ui:Button Text="Test Connection" Clicked="TestConnection_Clicked" Height="35" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <ui:Button.Style>
-                                <Style TargetType="ui:Button">
-                                    <Setter Property="Visibility" Value="Visible"/>
+                                <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Accent_Background}">
+                                    <!--<Setter Property="Visibility" Value="Visible"/>
                                     <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
                                     <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
                                     <Setter Property="Height" Value="35"/>
                                     <Setter Property="FontSize" Value="14"/>
-                                    <Setter Property="Padding" Value="10,5"/>
+                                    <Setter Property="Padding" Value="10,5"/>-->
                                     <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="true">
+                                        <!--<Trigger Property="IsMouseOver" Value="true">
                                             <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                                        </Trigger>
+                                        </Trigger>-->
                                         <DataTrigger Binding="{Binding Loading}" Value="true">
                                             <Setter Property="Visibility" Value="Hidden"/>
                                         </DataTrigger>

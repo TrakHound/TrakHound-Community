@@ -17,7 +17,7 @@
              d:DesignWidth="600"
              >
 
-    <Grid Background="{StaticResource Window_Background_Accent_Gradient}">
+    <Grid x:Name="root" Background="{StaticResource Window_Background_Accent_Gradient}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
@@ -26,29 +26,19 @@
         <!--Navigation Panel-->
         <StackPanel HorizontalAlignment="Center">
             <StackPanel.Resources>
-                <Style TargetType="ui:ListButton">
+                <Style TargetType="ui:ListButton" BasedOn="{StaticResource ListButton_PageList}">
                     <Setter Property="MinWidth" Value="100"/>
-                    <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                        </Trigger>
-                        <Trigger Property="IsSelected" Value="true">
-                            <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                        </Trigger>
-                    </Style.Triggers>
                 </Style>
             </StackPanel.Resources>
 
             <!--Auto Detect-->
-            <ui:ListButton Text="Auto Detect" Image="/TrakHound-Device-Manager;component/Resources/Options_01.png" Selected="AutoDetect_Clicked"/>
+            <ui:ListButton Text="Auto Detect" Image="/TrakHound-Device-Manager;component/Resources/Options_01.png" Selected="AutoDetect_Clicked" IsSelected="{Binding AutoDetectSelected}"/>
 
             <!--Manual-->
-            <ui:ListButton Text="Manual" Image="/TrakHound-Device-Manager;component/Resources/Edit_02.png" Selected="Manual_Clicked"/>
+            <ui:ListButton Text="Manual" Image="/TrakHound-Device-Manager;component/Resources/Edit_02.png" Selected="Manual_Clicked" IsSelected="{Binding ManualSelected}"/>
 
             <!--Load From File-->
-            <ui:ListButton Text="Load From File" Image="/TrakHound-Device-Manager;component/Resources/List_01.png" Selected="LoadFromFile_Clicked"/>
+            <ui:ListButton Text="Load From File" Image="/TrakHound-Device-Manager;component/Resources/List_01.png" Selected="LoadFromFile_Clicked" IsSelected="{Binding LoadFromFileSelected}"/>
 
         </StackPanel>
 

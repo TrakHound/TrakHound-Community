@@ -81,8 +81,8 @@
             </StackPanel>
 
             <!--Remove Button-->
-            <ui:Button Grid.Column="1" Image="/TrakHound-Device-Manager;component/Resources/X_01.png" Cursor="Hand" Padding="10" Margin="10,0,0,0" Clicked="Remove_Clicked">
-                <ui:Button.Style>
+            <ui:Button Grid.Column="1" Image="/TrakHound-Device-Manager;component/Resources/X_01.png" Style="{StaticResource Button_Accent_Foreground}" Cursor="Hand" Padding="10" Margin="10,0,0,0" Clicked="Remove_Clicked">
+                <!--<ui:Button.Style>
                     <Style TargetType="ui:Button">
                         <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                         <Setter Property="Background" Value="Transparent"/>
@@ -92,7 +92,7 @@
                             </Trigger>
                         </Style.Triggers>
                     </Style>
-                </ui:Button.Style>
+                </ui:Button.Style>-->
             </ui:Button>
 
         </Grid>

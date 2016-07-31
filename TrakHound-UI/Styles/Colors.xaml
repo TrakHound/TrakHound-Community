@@ -2,9 +2,18 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options" >
 
+    <!--TrakHound Colors-->
+    <Color ice:Freeze="True" x:Key="TrakHound_Blue_Color">#0080ff</Color>
+    <Color ice:Freeze="True" x:Key="TrakHound_LightBlue_Color">#40a0ff</Color>
+    
+    <!--TrakHound Brushes-->
+    <SolidColorBrush ice:Freeze="True" x:Key="TrakHound_Blue" Color="{StaticResource TrakHound_Blue_Color}"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="TrakHound_LightBlue" Color="{StaticResource TrakHound_LightBlue_Color}"/>
+    
     <!--Accent Colors-->
-    <Color ice:Freeze="True" x:Key="Accent_Normal_Color">#0080ff</Color>
-    <Color ice:Freeze="True" x:Key="Accent_Light_Color">#40a0ff</Color>
+    <!--<Color ice:Freeze="True" x:Key="Accent_Normal_Color">#0080ff</Color>-->
+    <Color ice:Freeze="True" x:Key="Accent_Normal_Color">#666666</Color>
+    <Color ice:Freeze="True" x:Key="Accent_Light_Color">#888888</Color>
     <Color ice:Freeze="True" x:Key="Accent_Dark_Color">#0060ff</Color>
     <Color ice:Freeze="True" x:Key="Accent_Hover_Color">#200080ff</Color>
     <Color ice:Freeze="True" x:Key="Accent_HoverBorder_Color">#600080ff</Color>

@@ -58,38 +58,38 @@ namespace TrakHound_Dashboard
         }
 
 
-        // List of plugins enabled by default
-        private List<string> defaultEnabledPlugins = new List<string> {
-            "Dashboard", 
+        // List of plugins enabled by default ( Update 7-30-16 : Just enable all plugins )
+        //private List<string> defaultEnabledPlugins = new List<string> {
+        //    "Dashboard", 
 
-            "Device Compare",
-            "OEE",
-            "Availability",
-            "Performance",
-            "Timeline (OEE)",
-            "Production Status",
-            "Program Name",
-            "Feedrate Override",
-            "Rapidrate Override",
-            "Spindle Override",
-            "Emergency Stop",
-            "Controller Mode",
-            "Execution Mode",
-            "Alarm",
-            "Part Count",
+        //    "Device Compare",
+        //    "OEE",
+        //    "Availability",
+        //    "Performance",
+        //    "Timeline (OEE)",
+        //    "Production Status",
+        //    "Program Name",
+        //    "Feedrate Override",
+        //    "Rapidrate Override",
+        //    "Spindle Override",
+        //    "Emergency Stop",
+        //    "Controller Mode",
+        //    "Execution Mode",
+        //    "Alarm",
+        //    "Part Count",
 
-            "Device Table",
+        //    "Device Table",
 
-            "Table Manager",
-            "Status Data",
-            "Status Timeline",
-            "Device Status Hour Timeline",
-            "Controller Status",
-            "Production Status",
-            "OEE Status",
-            "Device Status Times",
-            "Production Status Times"
-        };
+        //    "Table Manager",
+        //    "Status Data",
+        //    "Status Timeline",
+        //    "Device Status Hour Timeline",
+        //    "Controller Status",
+        //    "Production Status",
+        //    "OEE Status",
+        //    "Device Status Times",
+        //    "Production Status Times"
+        //};
 
         private void LoadPlugins()
         {
@@ -390,9 +390,6 @@ namespace TrakHound_Dashboard
 
                         // Initialize plugin
                         plugin.Initialize();
-
-                        // Add to Plugins List Menu
-                        //AddAppToList(plugin);
 
                         // If set to OpenOnStartUp then Open new Tab
                         if (plugin.OpenOnStartUp) AddTab(plugin);

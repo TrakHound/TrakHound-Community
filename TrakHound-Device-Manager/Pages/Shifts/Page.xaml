@@ -53,9 +53,9 @@
             </Grid>
 
             <!--Add Shift Button-->
-            <ui:Button Text="Add Shift" Height="35" HorizontalAlignment="Left" Margin="0,10" Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Clicked="AddShift_Clicked">
-                <ui:Button.Style>
-                    <Style TargetType="ui:Button">
+            <ui:Button Text="Add Shift" Height="35" HorizontalAlignment="Left" Margin="0,10" Style="{StaticResource Button_Accent_Background}" Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Clicked="AddShift_Clicked">
+                <!--<ui:Button.Style>
+                    <Style TargetType="ui:Button" 
                         <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
                         <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
                         <Setter Property="FontSize" Value="14"/>
@@ -67,7 +67,7 @@
                             </Trigger>
                         </Style.Triggers>
                     </Style>
-                </ui:Button.Style>
+                </ui:Button.Style>-->
             </ui:Button>
 
         </StackPanel>

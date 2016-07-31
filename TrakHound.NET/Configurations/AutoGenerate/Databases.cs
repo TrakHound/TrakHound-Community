@@ -26,22 +26,7 @@ namespace TrakHound.Configurations.AutoGenerate
 
             DataTable_Functions.UpdateTableValue(dt, "address", "/Databases_Server/SQLite||00", "attributes", "id||00;");
             DataTable_Functions.UpdateTableValue(dt, "address", "/Databases_Server/SQLite||00/DatabasePath", "value", path);
-
-
-            //AddDatabaseConfiguration("/Databases_Client", dt);
-            //AddDatabaseConfiguration("/Databases_Server", dt);
         }
-
-        //private static void AddDatabaseConfiguration(string prefix, DataTable dt)
-        //{
-
-        //    string id = DeviceConfiguration.GenerateDatabaseId();
-        //    string path = Path.Combine(FileLocations.Databases, Path.ChangeExtension(id, ".db"));
-        //    //string path = Path.Combine(FileLocations.Databases, "TrakHound.db");
-
-        //    DataTable_Functions.UpdateTableValue(dt, "address", prefix + "/SQLite||00", "attributes", "id||00;");
-        //    DataTable_Functions.UpdateTableValue(dt, "address", prefix + "/SQLite||00/DatabasePath", "value", path);
-        //}
 
     }
 }

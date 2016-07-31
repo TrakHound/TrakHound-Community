@@ -105,11 +105,13 @@
 
                         <ItemsControl ItemsSource="{Binding Pages}" Margin="0,20">
                             <ItemsControl.Resources>
-                                <Style TargetType="ui:ListButton">
-                                    <Setter Property="Foreground" Value="#fff"/>
-                                    <Setter Property="Background" Value="Transparent"/>
+                                <Style TargetType="ui:ListButton" BasedOn="{StaticResource ListButton_PageList}">
+                                    <!--<Setter Property="Foreground" Value="#fff"/>
+                                    <Setter Property="Background" Value="Transparent"/>-->
                                     <Setter Property="ShowText" Value="False"/>
                                     <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <!--<Setter Property="Height" Value="35"/>
+                                    <Setter Property="FontSize" Value="12"/>-->
                                     <!--<Setter Property="TextAlignment" Value="Center"/>-->
                                     <Setter Property="ToolTip">
                                         <Setter.Value>
@@ -124,12 +126,12 @@
                                             <Setter Property="ShowText" Value="True"/>
                                             <Setter Property="Width" Value="200"/>
                                         </DataTrigger>
-                                        <Trigger Property="IsMouseOver" Value="true">
-                                            <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                                        <!--<Trigger Property="IsMouseOver" Value="true">
+                                            <Setter Property="Background" Value="{StaticResource TrakHound_Blue}"/>
                                         </Trigger>
                                         <Trigger Property="IsSelected" Value="true">
-                                            <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                                        </Trigger>
+                                            <Setter Property="Background" Value="{StaticResource TrakHound_Blue}"/>
+                                        </Trigger>-->
                                     </Style.Triggers>
                                 </Style>
                             </ItemsControl.Resources>

@@ -36,7 +36,7 @@
 
             <Path Name="Arrow" Grid.Column="1" 
             Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z"
-            HorizontalAlignment="Center" Fill="{StaticResource Accent_Normal}"
+            HorizontalAlignment="Center" Fill="{StaticResource TrakHound_Blue}"
             VerticalAlignment="Center" />
 
             <!--Gloss Effect-->
@@ -86,7 +86,7 @@
         <ControlTemplate.Triggers>
 
             <DataTrigger Binding="{Binding IsMouseOver, ElementName=ToggleShade}" Value="True">
-                <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="{StaticResource Accent_Normal}"/>
+                <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="{StaticResource TrakHound_Blue}"/>
                 <Setter Property="Panel.Background" TargetName="ToggleShade" Value="{StaticResource ShadeGradient}"/>
                 <Setter Property="Visibility" TargetName="gloss" Value="Visible"/>
                 <Setter Property="Shape.Fill" TargetName="Arrow" Value="{StaticResource Window_Background}"/>
@@ -94,7 +94,7 @@
             </DataTrigger>
 
             <DataTrigger Binding="{Binding IsMouseOver, ElementName=ButtonBorder}" Value="True">
-                <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="{StaticResource Accent_Normal}"/>
+                <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="{StaticResource TrakHound_Blue}"/>
                 <Setter Property="Panel.Background" TargetName="ToggleShade" Value="{StaticResource ShadeGradient}"/>
                 <Setter Property="Visibility" TargetName="gloss" Value="Visible"/>
                 <Setter Property="Shape.Fill" TargetName="Arrow" Value="{StaticResource Window_Background}"/>
@@ -102,7 +102,7 @@
             </DataTrigger>
 
             <DataTrigger Binding="{Binding IsMouseOver, ElementName=Arrow}" Value="True">
-                <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="{StaticResource Accent_Normal}"/>
+                <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="{StaticResource TrakHound_Blue}"/>
                 <Setter Property="Panel.Background" TargetName="ToggleShade" Value="{StaticResource ShadeGradient}"/>
                 <Setter Property="Visibility" TargetName="gloss" Value="Visible"/>
                 <Setter Property="Shape.Fill" TargetName="Arrow" Value="{StaticResource Window_Background}"/>
@@ -110,7 +110,7 @@
             </DataTrigger>
 
             <Trigger Property="ToggleButton.IsChecked" Value="True">
-                <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="{StaticResource Accent_Normal}"/>
+                <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="{StaticResource TrakHound_Blue}"/>
                 <Setter Property="Panel.Background" TargetName="ToggleShade" Value="{StaticResource ShadeGradient}"/>
                 <Setter Property="Visibility" TargetName="gloss" Value="Visible"/>
                 <Setter Property="Shape.Fill" TargetName="Arrow" Value="{StaticResource Foreground_Opposite_Normal}"/>

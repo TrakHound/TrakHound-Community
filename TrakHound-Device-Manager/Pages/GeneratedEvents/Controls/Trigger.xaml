@@ -14,10 +14,10 @@
     <Border CornerRadius="2" BorderThickness="1" Background="#00000000" MinWidth="150">
         <Border.Style>
             <Style TargetType="Border">
-                <Setter Property="BorderBrush" Value="#ccc"/>
+                <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding IsMouseOver}" Value="true">
-                        <Setter Property="BorderBrush" Value="#0080ff"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource TrakHound_LightBlue}"/>
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
@@ -175,8 +175,8 @@
             </Grid>
 
             <!--Remove Button-->
-            <ui:Button Grid.Column="4" Image="/TrakHound-Device-Manager;component/Resources/X_01.png" Margin="10,0" Height="25" HorizontalAlignment="Right" Cursor="Hand" ToolTip="Remove this Trigger" Clicked="Remove_Clicked">
-                <ui:Button.Style>
+            <ui:Button Grid.Column="4" Image="/TrakHound-Device-Manager;component/Resources/X_01.png" Style="{StaticResource Button_Accent_Foreground}" Margin="10,0" Height="25" HorizontalAlignment="Right" Cursor="Hand" ToolTip="Remove this Trigger" Clicked="Remove_Clicked">
+                <!--<ui:Button.Style>
                     <Style TargetType="ui:Button">
                         <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                         <Setter Property="Background" Value="Transparent"/>
@@ -186,7 +186,7 @@
                             </Trigger>
                         </Style.Triggers>
                     </Style>
-                </ui:Button.Style>
+                </ui:Button.Style>-->
             </ui:Button>
 
         </Grid>

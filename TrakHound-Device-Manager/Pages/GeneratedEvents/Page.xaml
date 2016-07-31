@@ -53,8 +53,8 @@
             </Grid>
 
             <!--Add Button-->
-            <ui:Button Text="Add Event" Height="35" HorizontalAlignment="Left" Margin="0,15" Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Clicked="AddEvent_Clicked" FocusManager.IsFocusScope="False">
-                <ui:Button.Style>
+            <ui:Button Text="Add Event" Height="35" HorizontalAlignment="Left" Style="{StaticResource Button_Accent_Background}" Margin="0,15" Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Clicked="AddEvent_Clicked" FocusManager.IsFocusScope="False">
+                <!--<ui:Button.Style>
                     <Style TargetType="ui:Button">
                         <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
                         <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
@@ -67,7 +67,7 @@
                             </Trigger>
                         </Style.Triggers>
                     </Style>
-                </ui:Button.Style>
+                </ui:Button.Style>-->
             </ui:Button>
 
         </StackPanel>
@@ -122,7 +122,7 @@
 
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
 
-                <ui:Spinner Height="50" Width="50" Foreground="{StaticResource Accent_Normal}"/>
+                <ui:Spinner Height="50" Width="50" Foreground="{StaticResource TrakHound_Blue}"/>
 
                 <TextBlock Text="Loading.." Foreground="{StaticResource Accent_Normal}" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0"/>
 

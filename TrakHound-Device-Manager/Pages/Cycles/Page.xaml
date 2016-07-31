@@ -445,7 +445,8 @@
                     <ItemsControl ItemsSource="{Binding OverrideLinks}"/>
 
                     <!--Add Value Button-->
-                    <ui:Button Height="40" Text="Add Override Link" ImageTextPadding="10" Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Margin="0,20" Clicked="AddOverrideLink_Clicked" HorizontalAlignment="Left" FocusManager.IsFocusScope="False">
+                    <ui:Button Height="40" Text="Add Override Link" ImageTextPadding="10" Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Margin="0,20" Clicked="AddOverrideLink_Clicked" HorizontalAlignment="Left" Style="{StaticResource Button_Accent_Foreground}"/>
+                    <!--<ui:Button Height="40" Text="Add Override Link" ImageTextPadding="10" Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Margin="0,20" Clicked="AddOverrideLink_Clicked" HorizontalAlignment="Left" FocusManager.IsFocusScope="False">
                         <ui:Button.Style>
                             <Style TargetType="ui:Button">
                                 <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
@@ -457,7 +458,7 @@
                                 </Style.Triggers>
                             </Style>
                         </ui:Button.Style>
-                    </ui:Button>
+                    </ui:Button>-->
 
                 </StackPanel>
 
