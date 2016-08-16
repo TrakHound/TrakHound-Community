@@ -7,7 +7,7 @@
 ![TrakHound Logo] (http://trakhound.com/images/header_03.png)
 
 <p align="center">
-  <a href="http://www.trakhound.org/">www.TrakHound.org</a>
+  <a href="http://www.trakhound.com/">www.TrakHound.com</a>
 </p>
 
 ## News
