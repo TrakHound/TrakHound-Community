@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Configuration;
 using System.Windows.Media.Imaging;
 
@@ -6,13 +11,6 @@ using TrakHound.API;
 
 namespace TrakHound_Dashboard.Controls.Message_Center
 {
-    //public enum MessageType
-    //{
-    //    NOTIFICATION,
-    //    DEVICE_ALERT,
-    //    WARNING,
-    //    ERROR
-    //}
 
     [SettingsSerializeAs(SettingsSerializeAs.Xml)]
     public class MessageData

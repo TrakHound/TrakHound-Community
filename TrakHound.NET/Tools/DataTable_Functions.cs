@@ -40,6 +40,18 @@ namespace TrakHound.Tools
             return result;
         }
 
+        public static int GetIntegerFromRow(string key, DataRow row)
+        {
+            int result = 0;
+
+            string val = null;
+            if (row.Table.Columns.Contains(key)) if (row[key] != null) val = row[key].ToString();
+
+            if (val != null) int.TryParse(val, out result);
+
+            return result;
+        }
+
         public static double GetDoubleFromRow(string key, DataRow row)
         {
             double result = 0;
@@ -120,6 +132,30 @@ namespace TrakHound.Tools
                         if (rows.Length > 0)
                         {
                             result = GetBooleanFromRow(returnColumn, rows[0]);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public static double GetDoubleTableValue(object table, string keyColumn, string key, string returnColumn)
+        {
+            double result = 0;
+
+            DataTable dt = table as DataTable;
+            if (dt != null)
+            {
+                if (dt.Columns.Contains(keyColumn))
+                {
+                    string filter = keyColumn + "='" + key + "'";
+                    var rows = GetRows(dt, filter);
+                    if (rows != null)
+                    {
+                        if (rows.Length > 0)
+                        {
+                            result = GetDoubleFromRow(returnColumn, rows[0]);
                         }
                     }
                 }

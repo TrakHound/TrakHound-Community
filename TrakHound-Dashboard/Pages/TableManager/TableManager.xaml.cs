@@ -14,7 +14,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 using TrakHound.Configurations;
-using TrakHound.Databases;
 using TrakHound.Plugins;
 using TrakHound.Tools;
 using TrakHound_UI;

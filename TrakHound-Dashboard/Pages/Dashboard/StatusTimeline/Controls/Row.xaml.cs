@@ -10,7 +10,6 @@ using TrakHound.Plugins;
 using TrakHound_UI.Timeline;
 
 using TrakHound.Configurations;
-using TrakHound.Databases;
 
 namespace TH_StatusTimeline.Controls
 {
@@ -196,247 +195,247 @@ namespace TH_StatusTimeline.Controls
 
                 var events = new List<TimelineEvent>();
 
-                events.AddRange(UpdateDeviceStatusData(deviceConfig, start, end));
-                events.AddRange(UpdateProductionStatusData(deviceConfig, start, end));
+                //events.AddRange(UpdateDeviceStatusData(deviceConfig, start, end));
+                //events.AddRange(UpdateProductionStatusData(deviceConfig, start, end));
 
                 timeline.ResetEvents(events);
             }
         }
 
 
-        private List<TimelineEvent> UpdateDeviceStatusData(DeviceConfiguration config, DateTime start, DateTime end)
-        {
-            if (end < start) end = end.AddDays(1);
+        //private List<TimelineEvent> UpdateDeviceStatusData(DeviceConfiguration config, DateTime start, DateTime end)
+        //{
+        //    if (end < start) end = end.AddDays(1);
 
-            if (start > DateTime.MinValue && end > DateTime.MinValue)
-            {
-                string filter = "WHERE date(TIMESTAMP) BETWEEN date('" + start.ToString("yyyy-MM-dd HH:mm:ss") + "') AND date('" + end.ToString("yyyy-MM-dd HH:mm:ss") + "')";
+        //    if (start > DateTime.MinValue && end > DateTime.MinValue)
+        //    {
+        //        string filter = "WHERE date(TIMESTAMP) BETWEEN date('" + start.ToString("yyyy-MM-dd HH:mm:ss") + "') AND date('" + end.ToString("yyyy-MM-dd HH:mm:ss") + "')";
 
-                string tableName = TableNames.Gen_Events_TablePrefix + "device_status";
+        //        string tableName = Names.Gen_Events_TablePrefix + "device_status";
 
-                DataTable dt = Table.Get(config.Databases_Client, Global.GetTableName(tableName, config.DatabaseId), filter);
-                if (dt != null)
-                {
-                    // Get list of all infos
-                    var infos = StatusInfo.FromTable(dt, start, end);
+        //        DataTable dt = Table.Get(Database.Configuration, Table.GetName(tableName, config.DatabaseId), filter);
+        //        if (dt != null)
+        //        {
+        //            // Get list of all infos
+        //            var infos = StatusInfo.FromTable(dt, start, end);
 
-                    if (infos.Count == 0 && dt.Rows.Count == 1)
-                    {
-                        // If only one value in table (the current value)
-                        // then create one StatusInfo object using that timestamp and the current timestamp
-                        DateTime timestamp = DataTable_Functions.GetDateTimeFromRow("timestamp", dt.Rows[0]);
-                        if (timestamp < start) timestamp = start;
-                        else if (timestamp > end) timestamp = end;
+        //            if (infos.Count == 0 && dt.Rows.Count == 1)
+        //            {
+        //                // If only one value in table (the current value)
+        //                // then create one StatusInfo object using that timestamp and the current timestamp
+        //                DateTime timestamp = DataTable_Functions.GetDateTimeFromRow("timestamp", dt.Rows[0]);
+        //                if (timestamp < start) timestamp = start;
+        //                else if (timestamp > end) timestamp = end;
 
-                        timestamp = timestamp.ToLocalTime();
+        //                timestamp = timestamp.ToLocalTime();
 
-                        var current = currentTime;
-                        if (current > end) current = end.ToLocalTime();
+        //                var current = currentTime;
+        //                if (current > end) current = end.ToLocalTime();
 
-                        string value = DataTable_Functions.GetRowValue("value", dt.Rows[0]);
+        //                string value = DataTable_Functions.GetRowValue("value", dt.Rows[0]);
 
-                        var info = new StatusInfo();
-                        info.Value = value;
-                        info.Start = timestamp;
-                        info.End = current;
-                        infos.Add(info);
-                    }
-                    else if (dt.Rows.Count > 1)
-                    {
-                        // Filter out infos with duration less than min
-                        infos = infos.FindAll(x => x.Duration >= MIN_DURATION);
+        //                var info = new StatusInfo();
+        //                info.Value = value;
+        //                info.Start = timestamp;
+        //                info.End = current;
+        //                infos.Add(info);
+        //            }
+        //            else if (dt.Rows.Count > 1)
+        //            {
+        //                // Filter out infos with duration less than min
+        //                infos = infos.FindAll(x => x.Duration >= MIN_DURATION);
 
-                        if (infos.Count > 0 && currentTime > DateTime.MinValue && currentTime > infos[infos.Count - 1].End)
-                        {
-                            DateTime timestamp = DataTable_Functions.GetDateTimeFromRow("timestamp", dt.Rows[dt.Rows.Count - 1]);
-                            if (timestamp < start) timestamp = start;
-                            else if (timestamp > end) timestamp = end;
+        //                if (infos.Count > 0 && currentTime > DateTime.MinValue && currentTime > infos[infos.Count - 1].End)
+        //                {
+        //                    DateTime timestamp = DataTable_Functions.GetDateTimeFromRow("timestamp", dt.Rows[dt.Rows.Count - 1]);
+        //                    if (timestamp < start) timestamp = start;
+        //                    else if (timestamp > end) timestamp = end;
 
-                            timestamp = timestamp.ToLocalTime();
+        //                    timestamp = timestamp.ToLocalTime();
 
-                            var current = currentTime;
-                            if (current > end) current = end.ToLocalTime();
+        //                    var current = currentTime;
+        //                    if (current > end) current = end.ToLocalTime();
 
-                            string value = DataTable_Functions.GetRowValue("value", dt.Rows[dt.Rows.Count - 1]);
+        //                    string value = DataTable_Functions.GetRowValue("value", dt.Rows[dt.Rows.Count - 1]);
 
-                            var info = new StatusInfo();
-                            info.Value = value;
-                            info.Start = timestamp;
-                            info.End = current;
-                            infos.Add(info);
-                        }
+        //                    var info = new StatusInfo();
+        //                    info.Value = value;
+        //                    info.Start = timestamp;
+        //                    info.End = current;
+        //                    infos.Add(info);
+        //                }
 
 
-                        // Combine adjacent infos with same values
-                        var combinedInfos = new List<StatusInfo>();
-                        DateTime previousTimestamp = DateTime.MinValue;
-                        for (var x = 0; x < infos.Count; x++)
-                        {
-                            if (x == 0)
-                            {
-                                previousTimestamp = infos[x].Start;
-                            }
-                            else if (x > 0)
-                            {
-                                var newInfo = infos[x];
-                                var oldInfo = infos[x - 1];
+        //                // Combine adjacent infos with same values
+        //                var combinedInfos = new List<StatusInfo>();
+        //                DateTime previousTimestamp = DateTime.MinValue;
+        //                for (var x = 0; x < infos.Count; x++)
+        //                {
+        //                    if (x == 0)
+        //                    {
+        //                        previousTimestamp = infos[x].Start;
+        //                    }
+        //                    else if (x > 0)
+        //                    {
+        //                        var newInfo = infos[x];
+        //                        var oldInfo = infos[x - 1];
 
-                                // If new.Value is different from old.Value
-                                if (newInfo.Value != oldInfo.Value)
-                                {
-                                    var combinedInfo = new StatusInfo();
-                                    combinedInfo.Start = previousTimestamp;
-                                    combinedInfo.End = oldInfo.End;
-                                    combinedInfo.Value = oldInfo.Value;
-                                    combinedInfos.Add(combinedInfo);
+        //                        // If new.Value is different from old.Value
+        //                        if (newInfo.Value != oldInfo.Value)
+        //                        {
+        //                            var combinedInfo = new StatusInfo();
+        //                            combinedInfo.Start = previousTimestamp;
+        //                            combinedInfo.End = oldInfo.End;
+        //                            combinedInfo.Value = oldInfo.Value;
+        //                            combinedInfos.Add(combinedInfo);
 
-                                    previousTimestamp = newInfo.Start;
-                                }
+        //                            previousTimestamp = newInfo.Start;
+        //                        }
 
-                                if (x == infos.Count - 1)
-                                {
-                                    var lastInfo = new StatusInfo();
-                                    lastInfo.Start = previousTimestamp;
-                                    lastInfo.End = newInfo.End;
-                                    lastInfo.Value = newInfo.Value;
-                                    combinedInfos.Add(lastInfo);
-                                }
-                            }
-                        }
+        //                        if (x == infos.Count - 1)
+        //                        {
+        //                            var lastInfo = new StatusInfo();
+        //                            lastInfo.Start = previousTimestamp;
+        //                            lastInfo.End = newInfo.End;
+        //                            lastInfo.Value = newInfo.Value;
+        //                            combinedInfos.Add(lastInfo);
+        //                        }
+        //                    }
+        //                }
 
-                        infos = combinedInfos;
-                    }
+        //                infos = combinedInfos;
+        //            }
 
-                    var events = new List<TimelineEvent>();
+        //            var events = new List<TimelineEvent>();
 
-                    foreach (var info in infos)
-                    {
-                        var e = CreateDeviceStatusEvent(info.Start, info.End, info.Value);
-                        events.Add(e);
-                    }
+        //            foreach (var info in infos)
+        //            {
+        //                var e = CreateDeviceStatusEvent(info.Start, info.End, info.Value);
+        //                events.Add(e);
+        //            }
 
-                    return events;
-                }
-            }
+        //            return events;
+        //        }
+        //    }
 
-            return new List<TimelineEvent>();
-        }
+        //    return new List<TimelineEvent>();
+        //}
 
-        private List<TimelineEvent> UpdateProductionStatusData(DeviceConfiguration config, DateTime start, DateTime end)
-        {
-            if (end < start) end = end.AddDays(1);
+        //private List<TimelineEvent> UpdateProductionStatusData(DeviceConfiguration config, DateTime start, DateTime end)
+        //{
+        //    if (end < start) end = end.AddDays(1);
 
-            if (start > DateTime.MinValue && end > DateTime.MinValue)
-            {
-                string filter = "WHERE date(TIMESTAMP) BETWEEN date('" + start.ToString("yyyy-MM-dd HH:mm:ss") + "') AND date('" + end.ToString("yyyy-MM-dd HH:mm:ss") + "')";
+        //    if (start > DateTime.MinValue && end > DateTime.MinValue)
+        //    {
+        //        string filter = "WHERE date(TIMESTAMP) BETWEEN date('" + start.ToString("yyyy-MM-dd HH:mm:ss") + "') AND date('" + end.ToString("yyyy-MM-dd HH:mm:ss") + "')";
 
-                string tableName = TableNames.Gen_Events_TablePrefix + "production_status";
+        //        string tableName = Names.Gen_Events_TablePrefix + "production_status";
 
-                DataTable dt = Table.Get(config.Databases_Client, Global.GetTableName(tableName, config.DatabaseId), filter);
-                if (dt != null)
-                {
-                    // Get list of all infos
-                    var infos = StatusInfo.FromTable(dt, start, end);
-                    if (infos.Count == 0 && dt.Rows.Count == 1)
-                    {
-                        // If only one value in table (the current value)
-                        // then create one StatusInfo object using that timestamp and the current timestamp
-                        DateTime timestamp = DataTable_Functions.GetDateTimeFromRow("timestamp", dt.Rows[0]);
-                        if (timestamp < start) timestamp = start;
-                        else if (timestamp > end) timestamp = end;
+        //        DataTable dt = Table.Get(Database.Configuration, Table.GetName(tableName, config.DatabaseId), filter);
+        //        if (dt != null)
+        //        {
+        //            // Get list of all infos
+        //            var infos = StatusInfo.FromTable(dt, start, end);
+        //            if (infos.Count == 0 && dt.Rows.Count == 1)
+        //            {
+        //                // If only one value in table (the current value)
+        //                // then create one StatusInfo object using that timestamp and the current timestamp
+        //                DateTime timestamp = DataTable_Functions.GetDateTimeFromRow("timestamp", dt.Rows[0]);
+        //                if (timestamp < start) timestamp = start;
+        //                else if (timestamp > end) timestamp = end;
 
-                        timestamp = timestamp.ToLocalTime();
+        //                timestamp = timestamp.ToLocalTime();
 
-                        var current = currentTime;
-                        if (current > end) current = end.ToLocalTime();
+        //                var current = currentTime;
+        //                if (current > end) current = end.ToLocalTime();
 
-                        string value = DataTable_Functions.GetRowValue("value", dt.Rows[0]);
+        //                string value = DataTable_Functions.GetRowValue("value", dt.Rows[0]);
 
-                        var info = new StatusInfo();
-                        info.Value = value;
-                        info.Start = timestamp;
-                        info.End = current;
-                        infos.Add(info);
-                    }
-                    else if (dt.Rows.Count > 1)
-                    {
-                        // Filter out infos with duration less than min
-                        infos = infos.FindAll(x => x.Duration >= MIN_DURATION);
+        //                var info = new StatusInfo();
+        //                info.Value = value;
+        //                info.Start = timestamp;
+        //                info.End = current;
+        //                infos.Add(info);
+        //            }
+        //            else if (dt.Rows.Count > 1)
+        //            {
+        //                // Filter out infos with duration less than min
+        //                infos = infos.FindAll(x => x.Duration >= MIN_DURATION);
 
-                        if (infos.Count > 0 && currentTime > DateTime.MinValue && currentTime > infos[infos.Count - 1].End)
-                        {
-                            DateTime timestamp = DataTable_Functions.GetDateTimeFromRow("timestamp", dt.Rows[dt.Rows.Count - 1]);
-                            if (timestamp < start) timestamp = start;
-                            else if (timestamp > end) timestamp = end;
+        //                if (infos.Count > 0 && currentTime > DateTime.MinValue && currentTime > infos[infos.Count - 1].End)
+        //                {
+        //                    DateTime timestamp = DataTable_Functions.GetDateTimeFromRow("timestamp", dt.Rows[dt.Rows.Count - 1]);
+        //                    if (timestamp < start) timestamp = start;
+        //                    else if (timestamp > end) timestamp = end;
 
-                            timestamp = timestamp.ToLocalTime();
+        //                    timestamp = timestamp.ToLocalTime();
 
-                            var current = currentTime;
-                            if (current > end) current = end.ToLocalTime();
+        //                    var current = currentTime;
+        //                    if (current > end) current = end.ToLocalTime();
 
-                            string value = DataTable_Functions.GetRowValue("value", dt.Rows[dt.Rows.Count - 1]);
+        //                    string value = DataTable_Functions.GetRowValue("value", dt.Rows[dt.Rows.Count - 1]);
 
-                            var info = new StatusInfo();
-                            info.Value = value;
-                            info.Start = timestamp;
-                            info.End = current;
-                            infos.Add(info);
-                        }
+        //                    var info = new StatusInfo();
+        //                    info.Value = value;
+        //                    info.Start = timestamp;
+        //                    info.End = current;
+        //                    infos.Add(info);
+        //                }
 
-                        // Combine adjacent infos with same values
-                        var combinedInfos = new List<StatusInfo>();
-                        DateTime previousTimestamp = DateTime.MinValue;
-                        for (var x = 0; x < infos.Count; x++)
-                        {
-                            if (x == 0)
-                            {
-                                previousTimestamp = infos[x].Start;
-                            }
-                            else if (x > 0)
-                            {
-                                var newInfo = infos[x];
-                                var oldInfo = infos[x - 1];
+        //                // Combine adjacent infos with same values
+        //                var combinedInfos = new List<StatusInfo>();
+        //                DateTime previousTimestamp = DateTime.MinValue;
+        //                for (var x = 0; x < infos.Count; x++)
+        //                {
+        //                    if (x == 0)
+        //                    {
+        //                        previousTimestamp = infos[x].Start;
+        //                    }
+        //                    else if (x > 0)
+        //                    {
+        //                        var newInfo = infos[x];
+        //                        var oldInfo = infos[x - 1];
 
-                                // If new.Value is different from old.Value
-                                if (newInfo.Value != oldInfo.Value)
-                                {
-                                    var combinedInfo = new StatusInfo();
-                                    combinedInfo.Start = previousTimestamp;
-                                    combinedInfo.End = oldInfo.End;
-                                    combinedInfo.Value = oldInfo.Value;
-                                    combinedInfos.Add(combinedInfo);
+        //                        // If new.Value is different from old.Value
+        //                        if (newInfo.Value != oldInfo.Value)
+        //                        {
+        //                            var combinedInfo = new StatusInfo();
+        //                            combinedInfo.Start = previousTimestamp;
+        //                            combinedInfo.End = oldInfo.End;
+        //                            combinedInfo.Value = oldInfo.Value;
+        //                            combinedInfos.Add(combinedInfo);
 
-                                    previousTimestamp = newInfo.Start;
-                                }
+        //                            previousTimestamp = newInfo.Start;
+        //                        }
 
-                                if (x == infos.Count - 1)
-                                {
-                                    var lastInfo = new StatusInfo();
-                                    lastInfo.Start = previousTimestamp;
-                                    lastInfo.End = newInfo.End;
-                                    lastInfo.Value = newInfo.Value;
-                                    combinedInfos.Add(lastInfo);
-                                }
-                            }
-                        }
+        //                        if (x == infos.Count - 1)
+        //                        {
+        //                            var lastInfo = new StatusInfo();
+        //                            lastInfo.Start = previousTimestamp;
+        //                            lastInfo.End = newInfo.End;
+        //                            lastInfo.Value = newInfo.Value;
+        //                            combinedInfos.Add(lastInfo);
+        //                        }
+        //                    }
+        //                }
 
-                        infos = combinedInfos;
-                    }
+        //                infos = combinedInfos;
+        //            }
 
-                    var events = new List<TimelineEvent>();
+        //            var events = new List<TimelineEvent>();
 
-                    foreach (var info in infos)
-                    {
-                        var e = CreateProductionStatusEvent(info.Start, info.End, info.Value);
-                        events.Add(e);
-                    }
+        //            foreach (var info in infos)
+        //            {
+        //                var e = CreateProductionStatusEvent(info.Start, info.End, info.Value);
+        //                events.Add(e);
+        //            }
 
-                    return events;
-                }
-            }
+        //            return events;
+        //        }
+        //    }
 
-            return new List<TimelineEvent>();
-        }
+        //    return new List<TimelineEvent>();
+        //}
 
 
         private class StatusInfo

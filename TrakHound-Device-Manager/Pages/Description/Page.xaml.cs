@@ -72,6 +72,7 @@ namespace TrakHound_Device_Manager.Pages.Description
                     {
                         deviceManager = (DeviceManager)data.Data02;
                     }
+                    else deviceManager = null;
                 }
             }
         }
@@ -87,13 +88,15 @@ namespace TrakHound_Device_Manager.Pages.Description
             DeviceDescription = DataTable_Functions.GetTableValue(dt, "address", dprefix + "Description", "value");
 
             // Load Type
-            DeviceType = DataTable_Functions.GetTableValue(dt, "address", dprefix + "Device_Type", "value");
+            DeviceType = DataTable_Functions.GetTableValue(dt, "address", dprefix + "DeviceType", "value");
+            if (DeviceId == null) DeviceId = DataTable_Functions.GetTableValue(dt, "address", dprefix + "Device_Type", "value"); // Try deprecated value if not already found
 
             // Load Manufacturer
             Manufacturer = DataTable_Functions.GetTableValue(dt, "address", dprefix + "Manufacturer", "value");
 
             // Load Id
-            DeviceId = DataTable_Functions.GetTableValue(dt, "address", dprefix + "Device_ID", "value");
+            DeviceId = DataTable_Functions.GetTableValue(dt, "address", dprefix + "DeviceId", "value");
+            if (DeviceId == null) DeviceId = DataTable_Functions.GetTableValue(dt, "address", dprefix + "Device_ID", "value"); // Try deprecated value if not already found
 
             // Load Model
             Model = DataTable_Functions.GetTableValue(dt, "address", dprefix + "Model", "value");
@@ -104,19 +107,18 @@ namespace TrakHound_Device_Manager.Pages.Description
             // Load Controller
             Controller = DataTable_Functions.GetTableValue(dt, "address", dprefix + "Controller", "value");
 
-            // Load Company
-            Company = DataTable_Functions.GetTableValue(dt, "address", dprefix + "Company", "value");
-
             // Load Location
             Location = DataTable_Functions.GetTableValue(dt, "address", dprefix + "Location", "value");
 
 
             // Load Manufacturer Logo
-            manufacturerLogoFileName = DataTable_Functions.GetTableValue(dt, "address", fprefix + "Manufacturer_Logo_Path", "value");
+            manufacturerLogoFileName = DataTable_Functions.GetTableValue(dt, "address", dprefix + "LogoUrl", "value");
+            if (manufacturerLogoFileName == null) manufacturerLogoFileName = DataTable_Functions.GetTableValue(dt, "address", dprefix + "Manufacturer_Logo_Path", "value"); // Try deprecated value if not already found
             LoadManufacturerLogo(manufacturerLogoFileName);
 
             // Load Device Image
-            deviceImageFileName = DataTable_Functions.GetTableValue(dt, "address", fprefix + "Image_Path", "value");
+            deviceImageFileName = DataTable_Functions.GetTableValue(dt, "address", dprefix + "ImageUrl", "value");
+            if (deviceImageFileName == null) deviceImageFileName = DataTable_Functions.GetTableValue(dt, "address", dprefix + "Image_Path", "value"); // Try deprecated value if not already found
             LoadDeviceImage(deviceImageFileName);
 
             Loading = false;
@@ -128,13 +130,13 @@ namespace TrakHound_Device_Manager.Pages.Description
             DataTable_Functions.UpdateTableValue(dt, "address", dprefix + "Description", "value", DeviceDescription);
 
             // Save Type
-            DataTable_Functions.UpdateTableValue(dt, "address", dprefix + "Device_Type", "value", DeviceType);
+            DataTable_Functions.UpdateTableValue(dt, "address", dprefix + "DeviceType", "value", DeviceType);
 
             // Save Manufacturer
             DataTable_Functions.UpdateTableValue(dt, "address", dprefix + "Manufacturer", "value", Manufacturer);
 
             // Save Id
-            DataTable_Functions.UpdateTableValue(dt, "address", dprefix + "Device_ID", "value", DeviceId);
+            DataTable_Functions.UpdateTableValue(dt, "address", dprefix + "DeviceId", "value", DeviceId);
 
             // Save Model
             DataTable_Functions.UpdateTableValue(dt, "address", dprefix + "Model", "value", Model);
@@ -145,25 +147,21 @@ namespace TrakHound_Device_Manager.Pages.Description
             // Save Controller
             DataTable_Functions.UpdateTableValue(dt, "address", dprefix + "Controller", "value", Controller);
 
-            // Save Company
-            DataTable_Functions.UpdateTableValue(dt, "address", dprefix + "Company", "value", Company);
-
             // Save Location
             DataTable_Functions.UpdateTableValue(dt, "address", dprefix + "Location", "value", Location);
 
 
-            // Save Manufacturer Logo
-            DataTable_Functions.UpdateTableValue(dt, "address", fprefix + "Manufacturer_Logo_Path", "value", manufacturerLogoFileName);
+            // Save Device Logo
+            DataTable_Functions.UpdateTableValue(dt, "address", dprefix + "LogoUrl", "value", manufacturerLogoFileName);
 
             // Save Device Image
-            DataTable_Functions.UpdateTableValue(dt, "address", fprefix + "Image_Path", "value", deviceImageFileName);
+            DataTable_Functions.UpdateTableValue(dt, "address", dprefix + "ImageUrl", "value", deviceImageFileName);
         }
 
         #endregion
 
 
         string dprefix = "/Description/";
-        string fprefix = "/File_Locations/";
 
         DataTable configurationTable;
 
@@ -186,7 +184,7 @@ namespace TrakHound_Device_Manager.Pages.Description
                 string newVal = val;
                 string oldVal = null;
 
-                if (SettingChanged != null) SettingChanged(name, oldVal, newVal);
+                SettingChanged?.Invoke(name, oldVal, newVal);
             }
         }
 
@@ -261,16 +259,6 @@ namespace TrakHound_Device_Manager.Pages.Description
             DependencyProperty.Register("Controller", typeof(string), typeof(Page), new PropertyMetadata(null));
 
 
-        public string Company
-        {
-            get { return (string)GetValue(CompanyProperty); }
-            set { SetValue(CompanyProperty, value); }
-        }
-
-        public static readonly DependencyProperty CompanyProperty =
-            DependencyProperty.Register("Company", typeof(string), typeof(Page), new PropertyMetadata(null));
-
-
         public string Location
         {
             get { return (string)GetValue(LocationProperty); }
@@ -301,17 +289,17 @@ namespace TrakHound_Device_Manager.Pages.Description
 
         private void devicetype_TXT_TextChanged(object sender, TextChangedEventArgs e)
         {
-            ChangeSetting(dprefix + "Device_Type", ((TrakHound_UI.TextBox)sender).Text);
+            ChangeSetting(dprefix + "DeviceType", ((TrakHound_UI.TextBox)sender).Text);
         }
 
         private void manufacturer_TXT_TextChanged(object sender, TextChangedEventArgs e)
         {
-            ChangeSetting(dprefix + "Manufactuter", ((TrakHound_UI.TextBox)sender).Text);
+            ChangeSetting(dprefix + "Manufacturer", ((TrakHound_UI.TextBox)sender).Text);
         }
 
         private void deviceid_TXT_TextChanged(object sender, TextChangedEventArgs e)
         {
-            ChangeSetting(dprefix + "Device_ID", ((TrakHound_UI.TextBox)sender).Text);
+            ChangeSetting(dprefix + "DeviceId", ((TrakHound_UI.TextBox)sender).Text);
         }
 
         private void model_TXT_TextChanged(object sender, TextChangedEventArgs e)
@@ -329,60 +317,56 @@ namespace TrakHound_Device_Manager.Pages.Description
             ChangeSetting(dprefix + "Controller", ((TrakHound_UI.TextBox)sender).Text);
         }
 
-        private void company_TXT_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            ChangeSetting(dprefix + "Company", ((TrakHound_UI.TextBox)sender).Text);
-        }
 
         private void Help_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            //if (sender.GetType() == typeof(Rectangle))
-            //{
-            //    Rectangle rect = (Rectangle)sender;
+            if (sender.GetType() == typeof(System.Windows.Shapes.Rectangle))
+            {
+                var rect = (System.Windows.Shapes.Rectangle)sender;
 
-            //    if (rect.ToolTip != null)
-            //    {
-            //        if (rect.ToolTip.GetType() == typeof(ToolTip))
-            //        {
-            //            ToolTip tt = (ToolTip)rect.ToolTip;
-            //            tt.IsOpen = true;
-            //        }
-            //    }
-            //}
+                if (rect.ToolTip != null)
+                {
+                    if (rect.ToolTip.GetType() == typeof(ToolTip))
+                    {
+                        ToolTip tt = (ToolTip)rect.ToolTip;
+                        tt.IsOpen = true;
+                    }
+                }
+            }
         }
 
         private void Help_MouseEnter(object sender, MouseEventArgs e)
         {
-            //if (sender.GetType() == typeof(Rectangle))
-            //{
-            //    Rectangle rect = (Rectangle)sender;
+            if (sender.GetType() == typeof(System.Windows.Shapes.Rectangle))
+            {
+                var rect = (System.Windows.Shapes.Rectangle)sender;
 
-            //    if (rect.ToolTip != null)
-            //    {
-            //        if (rect.ToolTip.GetType() == typeof(ToolTip))
-            //        {
-            //            ToolTip tt = (ToolTip)rect.ToolTip;
-            //            tt.IsOpen = true;
-            //        }
-            //    }
-            //}
+                if (rect.ToolTip != null)
+                {
+                    if (rect.ToolTip.GetType() == typeof(ToolTip))
+                    {
+                        ToolTip tt = (ToolTip)rect.ToolTip;
+                        tt.IsOpen = true;
+                    }
+                }
+            }
         }
 
         private void Help_MouseLeave(object sender, MouseEventArgs e)
         {
-            //if (sender.GetType() == typeof(Rectangle))
-            //{
-            //    Rectangle rect = (Rectangle)sender;
+            if (sender.GetType() == typeof(System.Windows.Shapes.Rectangle))
+            {
+                var rect = (System.Windows.Shapes.Rectangle)sender;
 
-            //    if (rect.ToolTip != null)
-            //    {
-            //        if (rect.ToolTip.GetType() == typeof(ToolTip))
-            //        {
-            //            ToolTip tt = (ToolTip)rect.ToolTip;
-            //            tt.IsOpen = false;
-            //        }
-            //    }
-            //}
+                if (rect.ToolTip != null)
+                {
+                    if (rect.ToolTip.GetType() == typeof(ToolTip))
+                    {
+                        ToolTip tt = (ToolTip)rect.ToolTip;
+                        tt.IsOpen = false;
+                    }
+                }
+            }
         }
 
 
@@ -527,7 +511,7 @@ namespace TrakHound_Device_Manager.Pages.Description
 
         private void UploadManufacturerLogo()
         {
-            string imagePath = Images.OpenImageBrowse("Select a Manufacturer Logo");
+            string imagePath = Images.OpenImageBrowse("Select a Device/Manufacturer Logo");
             if (imagePath != null && deviceManager != null)
             {
                 if (File.Exists(imagePath))
@@ -570,8 +554,11 @@ namespace TrakHound_Device_Manager.Pages.Description
                             if (img.Width > img.Height) img = Image_Functions.SetImageSize(img, 300, 300);
                             else img = Image_Functions.SetImageSize(img, 0, 150);
 
-                            string tempPath = Path.ChangeExtension(String_Functions.RandomString(20), ext);
+                            string tempPath = Path.ChangeExtension(Guid.NewGuid().ToString(), ext);
                             tempPath = Path.Combine(FileLocations.TrakHoundTemp, tempPath);
+
+                            // Make sure Temp directory exists
+                            FileLocations.CreateTempDirectory();
 
                             img.Save(tempPath);
                             img.Dispose();
@@ -612,7 +599,7 @@ namespace TrakHound_Device_Manager.Pages.Description
 
                 LoadManufacturerLogo(manufacturerLogoFileName);
 
-                ChangeSetting(fprefix + "Manufacturer_Logo_Path", manufacturerLogoFileName);
+                ChangeSetting(dprefix + "LogoUrl", manufacturerLogoFileName);
             }
             else ManufacturerLogoLoading = false;
         }
@@ -630,7 +617,7 @@ namespace TrakHound_Device_Manager.Pages.Description
             manufacturerLogoFileName = null;
             ManufacturerLogo = null;
             ManufacturerLogoSet = false;
-            ChangeSetting(fprefix + "Manufacturer_Logo_Path", null);
+            ChangeSetting(dprefix + "LogoUrl", null);
         }
 
         #endregion
@@ -812,6 +799,9 @@ namespace TrakHound_Device_Manager.Pages.Description
                             string tempPath = Path.ChangeExtension(String_Functions.RandomString(20), ext);
                             tempPath = Path.Combine(FileLocations.TrakHoundTemp, tempPath);
 
+                            // Make sure Temp directory exists
+                            FileLocations.CreateTempDirectory();
+
                             img.Save(tempPath);
                             img.Dispose();
 
@@ -825,22 +815,6 @@ namespace TrakHound_Device_Manager.Pages.Description
                         }
                     }
                     catch (Exception ex) { Logger.Log("Failed to Upload Image", LogLineType.Error); }
-
-                    //string contentType = null;
-
-                    //string ext = Path.GetExtension(info.FileId);
-
-                    //if (ext == "jpg") contentType = "image/jpeg";
-                    //else if (ext == "png") contentType = "image/png";
-                    //else if (ext == "gif") contentType = "image/gif";
-
-                    //var fileData = new HTTP.FileContentData("uploadImage", info.FileId, contentType);
-
-                    //var fileInfos = Files.Upload(deviceManager.CurrentUser, fileData);
-                    //if (fileInfos != null && fileInfos.Length > 0)
-                    //{
-                    //    fileId = fileInfos[0].Id;
-                    //}
                 }
                 else
                 {
@@ -867,75 +841,17 @@ namespace TrakHound_Device_Manager.Pages.Description
 
                 LoadDeviceImage(deviceImageFileName);
 
-                ChangeSetting(fprefix + "Image_Path", deviceImageFileName);
+                ChangeSetting(dprefix + "ImageUrl", deviceImageFileName);
 
             } else DeviceImageLoading = false;
         }
 
         #endregion
 
-
-
-        //string UploadDeviceImage()
-        //{
-        //    string result = null;
-
-        //    string imagePath = Images.OpenImageBrowse("Select a Device Image");
-        //    if (imagePath != null && deviceManager != null)
-        //    {
-        //        if (File.Exists(imagePath))
-        //        {
-        //            if (deviceManager.CurrentUser != null)
-        //            {
-        //                string contentType = null;
-
-        //                string ext = Path.GetExtension(imagePath);
-
-        //                if (ext == "jpg") contentType = "image/jpeg";
-        //                else if (ext == "png") contentType = "image/png";
-        //                else if (ext == "gif") contentType = "image/gif";
-
-        //                var fileData = new HTTP.FileContentData("uploadImage", imagePath, contentType);
-
-        //                var fileInfos = Files.Upload(deviceManager.CurrentUser, fileData);
-        //                if (fileInfos != null && fileInfos.Length > 0)
-        //                {
-        //                    return fileInfos[0].Id;
-        //                }
-        //            }
-        //            else
-        //            {
-        //                string filename = String_Functions.RandomString(20);
-
-        //                string destinationPath = Path.Combine(FileLocations.Storage, filename);
-
-        //                FileLocations.CreateStorageDirectory();
-
-        //                File.Copy(imagePath, destinationPath);
-
-        //                return filename;
-        //            }
-        //        }
-        //    }
-            
-        //    return result;
-        //}
-
-
+        
         private void DeviceImage_UploadClicked(TrakHound_UI.ImageBox sender)
         {
             UploadDeviceImage();
-
-            //string path = UploadDeviceImage();
-
-            //if (path != null)
-            //{
-            //    deviceImageFileName = path;
-
-            //    LoadDeviceImage(deviceImageFileName);
-
-            //    ChangeSetting(fprefix + "Image_Path", deviceImageFileName);
-            //}
         }
 
         private void DeviceImage_ClearClicked(TrakHound_UI.ImageBox sender)
@@ -943,7 +859,7 @@ namespace TrakHound_Device_Manager.Pages.Description
             deviceImageFileName = null;
             DeviceImage = null;
             DeviceImageSet = false;
-            ChangeSetting(fprefix + "Image_Path", null);
+            ChangeSetting(dprefix + "ImageUrl", null);
         }
 
         #endregion

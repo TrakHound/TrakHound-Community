@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 
 using TrakHound.Plugins.Server;
 
-namespace TrakHound_Devices_Manager.Pages.Cycles
+namespace TrakHound_Device_Manager.Pages.Cycles
 {
     public class Info : IConfigurationInfo
     {

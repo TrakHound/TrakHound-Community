@@ -10,15 +10,6 @@
              >
 
     <Grid x:Name="root">
-        <!--<Grid.Style>
-            <Style TargetType="Grid">
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding Status}" Value="0">
-                        <Setter Property="Background" Value="{StaticResource StatusBlue}"/>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </Grid.Style>-->
 
         <ui:MeterDisplay Value="{Binding Value}" >
             <ui:MeterDisplay.Style>
@@ -26,10 +17,10 @@
                     <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}" />
                     <Setter Property="ActiveLevelBrush" Value="{StaticResource Accent_Normal}"/>
                     <Setter Property="InactiveLevelBrush" Value="{StaticResource Accent_Hover}"/>
-                    <Setter Property="FontSize" Value="24pt"/>
                     <Setter Property="Maximum" Value="1"/>
-                    <Setter Property="ValueFormat" Value="P1"/>
-                    <Setter Property="Width" Value="200"/>
+                    <Setter Property="ValueFormat" Value="P0"/>
+                    <Setter Property="Padding" Value="10,0"/>
+                    <!--<Setter Property="Width" Value="200"/>-->
                     <Setter Property="HorizontalAlignment" Value="Center"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Status}" Value="0">
@@ -44,19 +35,6 @@
                             <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
                             <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
                         </DataTrigger>
-                        <!--<DataTrigger Binding="{Binding Status}" Value="0">
-                            <Setter Property="ActiveLevelBrush" Value="White"/>
-                            <Setter Property="InactiveLevelBrush" Value="#66ffffff"/>
-                            <Setter Property="Foreground" Value="White" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding Status}" Value="1">
-                            <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusBlue}"/>
-                            <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusBlue_Hover}"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding Status}" Value="2">
-                            <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
-                            <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
-                        </DataTrigger>-->
                     </Style.Triggers>
                 </Style>
             </ui:MeterDisplay.Style>

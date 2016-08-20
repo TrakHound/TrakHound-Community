@@ -9,10 +9,8 @@ using System.Data;
 using System.Linq;
 
 using TrakHound.Configurations;
-using TrakHound_Device_Manager;
 using TrakHound.Plugins;
-using TrakHound.Databases;
-using TrakHound.Logging;
+using TrakHound_Device_Manager;
 
 namespace TrakHound_Dashboard
 {
@@ -68,7 +66,7 @@ namespace TrakHound_Dashboard
         {
             // Send message to plugins that Devices have been loaded
             var data = new EventData();
-            data.Id = "DevicesLoaded";
+            data.Id = "DEVICES_LOADED";
             Plugin_SendData(data);
         }
 
@@ -81,7 +79,7 @@ namespace TrakHound_Dashboard
         {
             // Send message to plugins that Devices are being loaded
             var data = new EventData();
-            data.Id = "LoadingDevices";
+            data.Id = "LOADING_DEVICES";
             Plugin_SendData(data);
         }
 
@@ -96,13 +94,12 @@ namespace TrakHound_Dashboard
 
             if (configs != null)
             {
-                var orderedConfigs = configs.OrderBy(x => x.Description.Manufacturer).ThenBy(x => x.Description.Description).ThenBy(x => x.Description.Device_ID);
+                var orderedConfigs = configs.OrderBy(x => x.Description.Manufacturer).ThenBy(x => x.Description.Model).ThenBy(x => x.Description.Description).ThenBy(x => x.Description.DeviceId);
 
                 foreach (DeviceConfiguration config in orderedConfigs)
                 {
-                    if (config.ClientEnabled)
+                    if (config.Enabled)
                     {
-                        Global.Initialize(config.Databases_Client);
                         enabledConfigs.Add(config);
                     }
                 }
@@ -120,14 +117,16 @@ namespace TrakHound_Dashboard
                 }
             }
 
-            Plugins_UpdateDeviceList(enabledConfigs);
+            foreach (var config in enabledConfigs)
+            {
+                AddDevice(config);
+            }
 
             // Send message to plugins that Devices have been loaded
             var data = new EventData();
-            data.Id = "devicesloaded";
+            data.Id = "DEVICES_LOADED";
             Plugin_SendData(data);
         }
-
 
         /// <summary>
         /// Device Manager Added a device so add this device to Devices
@@ -135,15 +134,11 @@ namespace TrakHound_Dashboard
         /// <param name="config"></param>
         private void AddDevice(DeviceConfiguration config)
         {
-            if (!Devices.Exists(x => x.UniqueId == config.UniqueId))
-            {
-                if (config.ClientEnabled)
-                {
-                    Devices.Add(config);
-
-                    Plugins_AddDevice(config);
-                }
-            }
+            // Send message to plugins that Device has been added
+            var data = new EventData();
+            data.Id = "DEVICE_ADDED";
+            data.Data01 = config;
+            Plugin_SendData(data);
         }
 
         /// <summary>
@@ -152,18 +147,11 @@ namespace TrakHound_Dashboard
         /// <param name="config"></param>
         private void UpdateDevice(DeviceConfiguration config)
         {
-            int index = Devices.FindIndex(x => x.UniqueId == config.UniqueId);
-            if (index >= 0)
-            {
-                Devices.RemoveAt(index);
-                if (config.ClientEnabled) Devices.Insert(index, config);
-
-                Plugins_UpdateDevice(config);
-            }
-            else
-            {
-                AddDevice(config);
-            }
+            // Send message to plugins that Device has been updated
+            var data = new EventData();
+            data.Id = "DEVICE_UPDATED";
+            data.Data01 = config;
+            Plugin_SendData(data);
         }
 
         /// <summary>
@@ -172,13 +160,11 @@ namespace TrakHound_Dashboard
         /// <param name="config"></param>
         private void RemoveDevice(DeviceConfiguration config)
         {
-            var match = Devices.Find(x => x.UniqueId == config.UniqueId);
-            if (match != null)
-            {
-                Devices.Remove(match);
-
-                Plugins_RemoveDevice(config);
-            }
+            // Send message to plugins that Device has been removed
+            var data = new EventData();
+            data.Id = "DEVICE_REMOVED";
+            data.Data01 = config;
+            Plugin_SendData(data);
         }
 
     }

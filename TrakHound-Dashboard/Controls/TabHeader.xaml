@@ -1,4 +1,4 @@
-﻿<!--Copyright (c) 2015 Feenux LLC, All Rights Reserved.-->
+﻿<!--Copyright (c) 2016 Feenux LLC, All Rights Reserved.-->
 
 <!--This file is subject to the terms and conditions defined in-->
 <!--file 'LICENSE.txt', which is part of this source code package.-->
@@ -17,7 +17,7 @@
              mc:Ignorable="d"
              >
 
-    <Border x:Name="root" Height="32" ToolTip="{Binding Text}" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+    <Border x:Name="root" Height="28" ToolTip="{Binding Text}" HorizontalAlignment="Left" VerticalAlignment="Bottom">
 
         <Grid>
 
@@ -64,11 +64,11 @@
                         <PathGeometry>
                             <PathGeometry.Figures>
                                 <PathFigureCollection>
-                                    <PathFigure StartPoint="0,32">
+                                    <PathFigure StartPoint="0,28">
                                         <PathFigure.Segments>
                                             <PathSegmentCollection>
-                                                <QuadraticBezierSegment Point1="2,32" Point2="3,29" />
-                                                <LineSegment Point="3,32"/>
+                                                <QuadraticBezierSegment Point1="2,28" Point2="3,25" />
+                                                <LineSegment Point="3,28"/>
                                             </PathSegmentCollection>
                                         </PathFigure.Segments>
                                     </PathFigure>
@@ -177,7 +177,7 @@
                                                 <Condition Binding="{Binding IsSelected}" Value="false"/>
                                                 <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
                                             </MultiDataTrigger.Conditions>
-                                            <Setter Property="Background" Value="{StaticResource Accent_Normal}" />
+                                            <Setter Property="Background" Value="{StaticResource TrakHound_Blue}" />
                                         </MultiDataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -234,7 +234,6 @@
                                     </Rectangle.RenderTransform>
                                     <Rectangle.Style>
                                         <Style TargetType="Rectangle">
-                                            <!--<Setter Property="Fill" Value="Transparent"/>-->
                                             <Setter Property="Fill" Value="{StaticResource Foreground_Light}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding MouseOver}" Value="true">
@@ -262,7 +261,6 @@
                                     </Rectangle.RenderTransform>
                                     <Rectangle.Style>
                                         <Style TargetType="Rectangle">
-                                            <!--<Setter Property="Fill" Value="Transparent"/>-->
                                             <Setter Property="Fill" Value="{StaticResource Foreground_Light}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding MouseOver}" Value="true">
@@ -323,11 +321,11 @@
                         <PathGeometry>
                             <PathGeometry.Figures>
                                 <PathFigureCollection>
-                                    <PathFigure StartPoint="3,32">
+                                    <PathFigure StartPoint="3,28">
                                         <PathFigure.Segments>
                                             <PathSegmentCollection>
-                                                <QuadraticBezierSegment Point1="1,32" Point2="0,29" />
-                                                <LineSegment Point="0,32"/>
+                                                <QuadraticBezierSegment Point1="1,28" Point2="0,25" />
+                                                <LineSegment Point="0,28"/>
                                             </PathSegmentCollection>
                                         </PathFigure.Segments>
                                     </PathFigure>

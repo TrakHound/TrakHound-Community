@@ -12,6 +12,7 @@ using TrakHound.Configurations;
 using TrakHound.Tools;
 using TrakHound.Plugins;
 using TrakHound.Plugins.Client;
+using TrakHound.Server.Plugins.Shifts;
 
 namespace TH_DeviceCompare_OEE.Timeline
 {
@@ -24,11 +25,9 @@ namespace TH_DeviceCompare_OEE.Timeline
         {
             InitializeComponent();
             root.DataContext = this;
+
+            CreateTimelineInfos();
         }
-
-        const System.Windows.Threading.DispatcherPriority Priority_Background = System.Windows.Threading.DispatcherPriority.Background;
-
-        const System.Windows.Threading.DispatcherPriority Priority_Context = System.Windows.Threading.DispatcherPriority.ContextIdle;
 
         void Update(EventData data)
         {
@@ -37,20 +36,20 @@ namespace TH_DeviceCompare_OEE.Timeline
                 // OEE Table Data
                 if (data.Id.ToLower() == "statusdata_oee_segments")
                 {
-                    this.Dispatcher.BeginInvoke(new Action<object>(Update_OEEData), Priority_Context, new object[] { data.Data02 });
+                    this.Dispatcher.BeginInvoke(new Action<object>(Update_OEEData), UI_Functions.PRIORITY_BACKGROUND, new object[] { data.Data02 });
                 }
 
                 // Variables Table Data
                 if (data.Id.ToLower() == "statusdata_variables")
                 {
-                    this.Dispatcher.BeginInvoke(new Action<object>(Update_VariablesData), Priority_Context, new object[] { data.Data02 });
+                    this.Dispatcher.BeginInvoke(new Action<object>(Update_VariablesData), UI_Functions.PRIORITY_BACKGROUND, new object[] { data.Data02 });
                 }
 
-                // Shift Segments Table Data
-                if (data.Id.ToLower() == "statusdata_shiftsegments")
-                {
-                    this.Dispatcher.BeginInvoke(new Action<object>(Update_ShiftSegmentsData), Priority_Context, new object[] { data.Data02 });
-                }
+                //// Shift Segments Table Data
+                //if (data.Id.ToLower() == "statusdata_shiftsegments")
+                //{
+                //    //this.Dispatcher.BeginInvoke(new Action<object>(Update_ShiftSegmentsData), UI_Functions.PRIORITY_BACKGROUND, new object[] { data.Data02 });
+                //}
             }
         }
 
@@ -59,7 +58,7 @@ namespace TH_DeviceCompare_OEE.Timeline
             public OEE_TimelineInfo()
             {
                 HourInfos = new List<HourInfo>();
-                Id = String_Functions.RandomString(20);
+                Id = Guid.NewGuid().ToString();
             }
 
             // Links to Timeline.Databar
@@ -69,24 +68,53 @@ namespace TH_DeviceCompare_OEE.Timeline
             {
                 get
                 {
-                    if (HourInfos != null)
-                    {
-                        var infos = HourInfos.OrderBy(x => x.Start).ToList();
-                        var first = infos[0];
-                        var last = infos[infos.Count - 1];
-
-                        return first.Start.ToShortTimeString() + " - " + last.End.ToShortTimeString();
-                    }
-                    return null;
+                    return Start.ToShortTimeString() + " - " + End.ToShortTimeString();
                 }
             }
 
             public List<HourInfo> HourInfos { get; set; }
 
+            public DateTime Start { get; set; }
+            public DateTime End { get; set; }
+
             public double Oee { get; set; }
             public double Availability { get; set; }
             public double Performance { get; set; }
         }
+
+        //class OEE_TimelineInfo
+        //{
+        //    public OEE_TimelineInfo()
+        //    {
+        //        HourInfos = new List<HourInfo>();
+        //        Id = Guid.NewGuid().ToString();
+        //    }
+
+        //    // Links to Timeline.Databar
+        //    public string Id { get; set; }
+
+        //    public string Title
+        //    {
+        //        get
+        //        {
+        //            if (HourInfos != null)
+        //            {
+        //                var infos = HourInfos.OrderBy(x => x.Start).ToList();
+        //                var first = infos[0];
+        //                var last = infos[infos.Count - 1];
+
+        //                return first.Start.ToShortTimeString() + " - " + last.End.ToShortTimeString();
+        //            }
+        //            return null;
+        //        }
+        //    }
+
+        //    public List<HourInfo> HourInfos { get; set; }
+
+        //    public double Oee { get; set; }
+        //    public double Availability { get; set; }
+        //    public double Performance { get; set; }
+        //}
 
         void Update_OEEData(object oeedata)
         {
@@ -105,17 +133,6 @@ namespace TH_DeviceCompare_OEE.Timeline
                         var matches = oeeData.ShiftSegments.FindAll(x => TestShiftSegment(x.ShiftId, hourInfo.ShiftIdSuffix));
                         oee.ShiftSegments.AddRange(matches);
                     }
-
-                    //foreach (var segment in oee.ShiftSegments) TH_Global.Logger.Log(segment.ShiftId);
-
-                    //foreach (var segment in oeeData.ShiftSegments)
-                    //{
-                    //    var match = info.HourInfos.Find(x => TestShiftSegment(segment.ShiftId, x.ShiftIdSuffix));
-                    //    if (match != null)
-                    //    {
-                    //        oee.ShiftSegments.Add(segment);
-                    //    }
-                    //}
 
                     int index = histogram.DataBars.ToList().FindIndex(x => x.Id == info.Id);
                     if (index >= 0)
@@ -143,6 +160,62 @@ namespace TH_DeviceCompare_OEE.Timeline
                 }
             }
         }
+
+        //void Update_OEEData(object oeedata)
+        //{
+        //    var dt = oeedata as DataTable;
+        //    if (dt != null && timelineInfos != null)
+        //    {
+        //        var oeeData = OEEData.FromDataTable(dt);
+
+        //        foreach (OEE_TimelineInfo info in timelineInfos)
+        //        {
+        //            var oee = new OEEData();
+        //            oee.ConstantQuality = 1;
+
+        //            foreach (var hourInfo in info.HourInfos)
+        //            {
+        //                var matches = oeeData.ShiftSegments.FindAll(x => TestShiftSegment(x.ShiftId, hourInfo.ShiftIdSuffix));
+        //                oee.ShiftSegments.AddRange(matches);
+        //            }
+
+        //            //foreach (var segment in oee.ShiftSegments) TH_Global.Logger.Log(segment.ShiftId);
+
+        //            //foreach (var segment in oeeData.ShiftSegments)
+        //            //{
+        //            //    var match = info.HourInfos.Find(x => TestShiftSegment(segment.ShiftId, x.ShiftIdSuffix));
+        //            //    if (match != null)
+        //            //    {
+        //            //        oee.ShiftSegments.Add(segment);
+        //            //    }
+        //            //}
+
+        //            int index = histogram.DataBars.ToList().FindIndex(x => x.Id == info.Id);
+        //            if (index >= 0)
+        //            {
+        //                var db = histogram.DataBars[index];
+
+        //                db.Value = oee.Oee * 100;
+
+        //                int status = 0;
+        //                if (oee.Oee >= 0.75) status = 2;
+        //                else if (oee.Oee >= 0.5) status = 1;
+        //                else status = 0;
+
+        //                db.DataObject = status;
+
+        //                // Update ToolTip
+        //                if (db.ToolTipData != null)
+        //                {
+        //                    var toolTip = (OeeToolTip)db.ToolTipData;
+        //                    toolTip.Oee = oee.Oee.ToString("P2");
+        //                    toolTip.Availability = oee.Availability.ToString("P2");
+        //                    toolTip.Performance = oee.Performance.ToString("P2");
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
         private List<OEE_TimelineInfo> timelineInfos = new List<OEE_TimelineInfo>();
         private bool newShift = true;
@@ -216,62 +289,123 @@ namespace TH_DeviceCompare_OEE.Timeline
             else return false;
         }
 
-        void Update_ShiftSegmentsData(object shiftSegmentsData)
+        void CreateTimelineInfos()
         {
-            var dt = shiftSegmentsData as DataTable;
-            if (dt != null && currentShiftId != null && currentShiftDate != null && newShift)
+            timelineInfos.Clear();
+
+            var hours = new List<HourInfo>();
+
+            // Get Hour Infos for each Hour
+            for (var x = 0; x < 23; x++)
             {
-                timelineInfos.Clear();
+                var hourInfo = new HourInfo();
+                hourInfo.StartHour = x;
+                hourInfo.EndHour = x + 1;
 
-                var segments = new List<HourInfo>();
+                var now = DateTime.Now;
+                var start = new DateTime(now.Year, now.Month, now.Day, x, 0, 0);
+                var end = start.AddHours(1);
 
-                // Get Hour Infos for each Row / Segment
-                foreach (DataRow row in dt.Rows) segments.Add(HourInfo.Get(row, currentShiftDate));
+                hourInfo.Start = start;
+                hourInfo.End = end;
+                hourInfo.StartText = start.ToShortTimeString();
+                hourInfo.EndText = end.ToShortTimeString();
 
-                //segments = segments.FindAll(x => TestShiftId(currentShiftId, x.ShiftIdTest));
+                hours.Add(hourInfo);
+            }
 
-                var hours = segments.GroupBy(x => x.StartHour, (key, group) => group.First()).ToList();
+            // Create OEE_TimelineInfos for each Hour
+            foreach (var hour in hours)
+            {
+                var info = new OEE_TimelineInfo();
 
-                // Create OEE_TimelineInfos for each Hour
-                foreach (var hour in hours)
+                var sameHours = segments.FindAll(s => s.StartHour == hour.StartHour);
+                if (sameHours != null)
                 {
-                    var info = new OEE_TimelineInfo();
-
-                    var sameHours = segments.FindAll(s => s.StartHour == hour.StartHour);
-                    if (sameHours != null)
+                    foreach (var sameHour in sameHours)
                     {
-                        foreach (var sameHour in sameHours)
-                        {
-                            info.HourInfos.Add(sameHour);
-                        }
-                    }
-
-                    timelineInfos.Add(info);
-                }
-
-                histogram.DataBars.Clear();
-
-                foreach (var info in timelineInfos)
-                {
-                    //TrakHound_UI.Histogram.DataBar db;
-
-                    int dbIndex = histogram.DataBars.ToList().FindIndex(x => x.Id == info.Id);
-                    if (dbIndex < 0)
-                    {
-                        var db = new TrakHound_UI.Histogram.DataBar();
-                        db.Id = info.Id;
-
-                        var tt = new OeeToolTip();
-                        tt.Times = info.Title;
-                        db.ToolTipData = tt;
-
-                        histogram.AddDataBar(db);
+                        info.HourInfos.Add(sameHour);
                     }
                 }
 
-                newShift = false;
-            } 
+                timelineInfos.Add(info);
+            }
+
+            histogram.DataBars.Clear();
+
+            foreach (var info in timelineInfos)
+            {
+                int dbIndex = histogram.DataBars.ToList().FindIndex(x => x.Id == info.Id);
+                if (dbIndex < 0)
+                {
+                    var db = new TrakHound_UI.Histogram.DataBar();
+                    db.Id = info.Id;
+
+                    var tt = new OeeToolTip();
+                    tt.Times = info.Title;
+                    db.ToolTipData = tt;
+
+                    histogram.AddDataBar(db);
+                }
+            }
         }
+
+        //void Update_ShiftSegmentsData(object shiftSegmentsData)
+        //{
+        //    var dt = shiftSegmentsData as DataTable;
+        //    //if (dt != null && currentShiftId != null && currentShiftDate != null && newShift)
+        //    if (dt != null && currentShiftId != null && newShift)
+        //    {
+        //        timelineInfos.Clear();
+
+        //        var segments = new List<HourInfo>();
+
+        //        // Get Hour Infos for each Row / Segment
+        //        foreach (DataRow row in dt.Rows) segments.Add(HourInfo.Get(row, new ShiftDate(DateTime.Now).ToString()));
+        //        //foreach (DataRow row in dt.Rows) segments.Add(HourInfo.Get(row, currentShiftDate));
+
+        //        //segments = segments.FindAll(x => TestShiftId(currentShiftId, x.ShiftIdTest));
+
+        //        var hours = segments.GroupBy(x => x.StartHour, (key, group) => group.First()).ToList();
+
+        //        // Create OEE_TimelineInfos for each Hour
+        //        foreach (var hour in hours)
+        //        {
+        //            var info = new OEE_TimelineInfo();
+
+        //            var sameHours = segments.FindAll(s => s.StartHour == hour.StartHour);
+        //            if (sameHours != null)
+        //            {
+        //                foreach (var sameHour in sameHours)
+        //                {
+        //                    info.HourInfos.Add(sameHour);
+        //                }
+        //            }
+
+        //            timelineInfos.Add(info);
+        //        }
+
+        //        histogram.DataBars.Clear();
+
+        //        foreach (var info in timelineInfos)
+        //        {
+        //            int dbIndex = histogram.DataBars.ToList().FindIndex(x => x.Id == info.Id);
+        //            if (dbIndex < 0)
+        //            {
+        //                var db = new TrakHound_UI.Histogram.DataBar();
+        //                db.Id = info.Id;
+
+        //                var tt = new OeeToolTip();
+        //                tt.Times = info.Title;
+        //                db.ToolTipData = tt;
+
+        //                histogram.AddDataBar(db);
+        //            }
+        //        }
+
+        //        newShift = false;
+        //    } 
+        //}
 
         //void Update_ShiftData(object shiftData)
         //{

@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
+using TrakHound.API;
 using TrakHound.Configurations;
 using TrakHound.Tools;
 using TrakHound.Plugins;
@@ -49,19 +50,29 @@ namespace TH_DeviceCompare_CNC.Text.Controller_Mode
 
         void Update(EventData data)
         {
-            if (data != null && data.Data01 != null && data.Data01.GetType() == typeof(DeviceConfiguration))
+            if (data != null && data.Data01 != null)
             {
-                // Snapshot Table Data
-                if (data.Id.ToLower() == "statusdata_snapshots")
+                if (data != null && data.Id == "STATUS_CONTROLLER")
                 {
-                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateSnapshot), Priority_Context, new object[] { data.Data02 });
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        var info = (Data.ControllerInfo)data.Data02;
+                        ProcessValue(info.ControllerMode);
+
+                    }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
                 }
 
-                // Status Table Data
-                if (data.Id.ToLower() == "statusdata_status" && !snapshotFound)
-                {
-                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateStatus), Priority_Context, new object[] { data.Data02 });
-                }
+                //// Snapshot Table Data
+                //if (data.Id.ToLower() == "statusdata_snapshots")
+                //{
+                //    this.Dispatcher.BeginInvoke(new Action<object>(UpdateSnapshot), Priority_Context, new object[] { data.Data02 });
+                //}
+
+                //// Status Table Data
+                //if (data.Id.ToLower() == "statusdata_status" && !snapshotFound)
+                //{
+                //    this.Dispatcher.BeginInvoke(new Action<object>(UpdateStatus), Priority_Context, new object[] { data.Data02 });
+                //}
             }
         }
 

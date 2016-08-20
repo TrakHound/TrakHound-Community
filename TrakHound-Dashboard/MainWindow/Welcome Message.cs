@@ -1,7 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 
 namespace TrakHound_Dashboard
 {
@@ -16,7 +18,6 @@ namespace TrakHound_Dashboard
                 var message = new Controls.Message_Center.MessageData();
                 message.Title = "Welcome to TrakHound!";
                 message.Text = "Click to view Help on Getting Started";
-                //message.Type = Controls.Message_Center.MessageType.notification;
                 message.Type = TrakHound.API.Messages.MessageType.TRAKHOUND_PRIVATE;
                 message.Image = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/TrakHound_Logo_Initials_10_30px.png"));
                 message.Action = new Action<object>(WelcomeMessage_Clicked);

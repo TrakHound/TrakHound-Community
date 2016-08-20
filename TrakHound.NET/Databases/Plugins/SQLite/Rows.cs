@@ -25,7 +25,8 @@ namespace TrakHound.Databases.Plugins.SQLite
                 if (config != null)
                 {
                     var query = Row_Insert_CreateQuery(tablename, columns, values, update);
-                    result = (bool)ExecuteQuery<bool>(config, query);
+                    //result = (bool)ExecuteQuery<bool>(config, query);
+                    
                 }
             }
 

@@ -4,6 +4,7 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace TrakHound.API
 {
@@ -18,6 +19,9 @@ namespace TrakHound.API
                 Controller = new ControllerInfo();
                 Oee = new OeeInfo();
                 Timers = new TimersInfo();
+                Cycles = new CyclesInfo();
+                Hours = new List<HourInfo>();
+                //Day = new DayInfo();
             }
 
 
@@ -39,6 +43,15 @@ namespace TrakHound.API
 
             [JsonProperty("timers")]
             public TimersInfo Timers { get; set; }
+
+            [JsonProperty("cycles")]
+            public CyclesInfo Cycles { get; set; }
+
+            [JsonProperty("hours")]
+            public List<HourInfo> Hours { get; set; }
+
+            //[JsonProperty("day")]
+            //public DayInfo Day { get; set; }
         }
     }
 }

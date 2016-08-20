@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace TrakHound_Devices_Manager.Pages.Cycles.Controls
+namespace TrakHound_Device_Manager.Pages.Cycles.Controls
 {
     /// <summary>
     /// Interaction logic for ProductionTypeItem.xaml

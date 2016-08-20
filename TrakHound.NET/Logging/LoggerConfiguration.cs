@@ -25,10 +25,10 @@ namespace TrakHound.Logging
     {
         public LoggerConfiguration()
         {
-            QueueWriteInterval = 10000;
+            QueueWriteInterval = 5000;
 
             Debug = false;
-            Error = false;
+            Error = true;
             Notification = false;
             Warning = false;
 
@@ -89,7 +89,7 @@ namespace TrakHound.Logging
         #region "Configuration File"
 
         public const string CONFIG_FILENAME = "logger_config.xml";
-        public static string ConfigFilePath = Path.Combine(FileLocations.Logs, CONFIG_FILENAME);
+        public static string ConfigFilePath = Path.Combine(FileLocations.TrakHound, CONFIG_FILENAME);
         //public static string ConfigFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, CONFIG_FILENAME);
 
         public static bool Create(LoggerConfiguration config)

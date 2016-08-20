@@ -1,26 +1,16 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Globalization;
-using System.Windows.Shapes;
 using System.Windows.Media.Animation;
 
-using TrakHound;
 using TrakHound.Tools;
 
 namespace TrakHound_Dashboard.Controls
@@ -32,7 +22,7 @@ namespace TrakHound_Dashboard.Controls
     {
         public TabHeader()
         {
-            Id = String_Functions.RandomString(20);
+            Id = Guid.NewGuid().ToString();
 
             InitializeComponent();
             DataContext = this;
@@ -82,7 +72,6 @@ namespace TrakHound_Dashboard.Controls
 
         public static readonly DependencyProperty IsSelectedProperty =
             DependencyProperty.Register("IsSelected", typeof(bool), typeof(TabHeader), new PropertyMetadata(false));
-
 
 
 
@@ -353,13 +342,4 @@ namespace TrakHound_Dashboard.Controls
         }
     }
 
-    public class DesignTime_TH_TabHeader_Top : TabHeader
-    {
-        public DesignTime_TH_TabHeader_Top()
-        {
-            //Text = "This is From a Design Time Class";
-            //MouseOver = true;
-            IsSelected = true;
-        }
-    }
 }

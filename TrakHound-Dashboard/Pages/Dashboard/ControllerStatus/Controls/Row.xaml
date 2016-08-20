@@ -93,7 +93,7 @@
                                             </BeginStoryboard>
                                         </DataTrigger.ExitActions>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Available}" Value="true">
+                                    <DataTrigger Binding="{Binding Connected}" Value="true">
                                         <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}"/>
                                     </DataTrigger>
                                     <Trigger Property="Opacity" Value="0">
@@ -480,7 +480,7 @@
                         <!--Icon-->
                         <Grid>
                             <Grid.Resources>
-                                <ImageBrush x:Key="Active_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Start_02.png" />
+                                <ImageBrush x:Key="Started_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Start_02.png" />
                                 <ImageBrush x:Key="Idle_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Pause_02.png" />
                                 <ImageBrush x:Key="Stopped_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Stop_02.png" />
                             </Grid.Resources>
@@ -493,7 +493,7 @@
                                     <Setter Property="Margin" Value="10,0,0,0"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ExecutionMode}" Value="ACTIVE">
-                                            <Setter Property="OpacityMask" Value="{StaticResource Active_IMG}" />
+                                            <Setter Property="OpacityMask" Value="{StaticResource Started_IMG}" />
                                             <Setter Property="Background" Value="#fff"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding ExecutionMode}" Value="STOPPED">
@@ -638,7 +638,7 @@
                                 <Style TargetType="Border">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ControllerMode}" Value="SEMI_AUTOMATIC">
-                                            <Setter Property="Background" Value="#eee"/>
+                                            <Setter Property="Background" Value="{StaticResource TrakHound_Blue}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -655,7 +655,7 @@
                                         <Setter Property="Height" Value="30"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding ControllerMode}" Value="SEMI_AUTOMATIC">
-                                                <Setter Property="Background" Value="#333"/>
+                                                <Setter Property="Background" Value="#fff"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -670,7 +670,7 @@
                                 <Style TargetType="Border">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ControllerMode}" Value="MANUAL_DATA_INPUT">
-                                            <Setter Property="Background" Value="#eee"/>
+                                            <Setter Property="Background" Value="{StaticResource TrakHound_Blue}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -687,7 +687,7 @@
                                         <Setter Property="Height" Value="30"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding ControllerMode}" Value="MANUAL_DATA_INPUT">
-                                                <Setter Property="Background" Value="#333"/>
+                                                <Setter Property="Background" Value="#fff"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -702,7 +702,7 @@
                                 <Style TargetType="Border">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ControllerMode}" Value="MANUAL">
-                                            <Setter Property="Background" Value="#eee"/>
+                                            <Setter Property="Background" Value="{StaticResource TrakHound_Blue}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -710,7 +710,7 @@
 
                             <Grid>
                                 <Grid.Resources>
-                                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Jog_01.png" />
+                                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Manual_01.png" />
                                 </Grid.Resources>
                                 <Grid.Style>
                                     <Style TargetType="Grid">
@@ -719,7 +719,7 @@
                                         <Setter Property="Height" Value="30"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding ControllerMode}" Value="MANUAL">
-                                                <Setter Property="Background" Value="#333"/>
+                                                <Setter Property="Background" Value="#fff"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -734,7 +734,7 @@
                                 <Style TargetType="Border">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ControllerMode}" Value="EDIT">
-                                            <Setter Property="Background" Value="#eee"/>
+                                            <Setter Property="Background" Value="{StaticResource TrakHound_Blue}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -751,7 +751,7 @@
                                         <Setter Property="Height" Value="30"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding ControllerMode}" Value="EDIT">
-                                                <Setter Property="Background" Value="#333"/>
+                                                <Setter Property="Background" Value="#fff"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>

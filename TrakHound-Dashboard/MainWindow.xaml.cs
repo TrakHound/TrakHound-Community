@@ -12,7 +12,6 @@ using System.Windows.Media.Animation;
 using TrakHound;
 using TrakHound_UI.Windows;
 using TrakHound.API;
-using TrakHound.Databases;
 
 namespace TrakHound_Dashboard
 {
@@ -28,7 +27,7 @@ namespace TrakHound_Dashboard
             init();
         }
 
-        private const int DEFAULT_ANIMATION_FRAMERATE = 40;
+        private const int DEFAULT_ANIMATION_FRAMERATE = 60;
 
         public const System.Windows.Threading.DispatcherPriority PRIORITY_BACKGROUND = System.Windows.Threading.DispatcherPriority.Background;
         public const System.Windows.Threading.DispatcherPriority PRIORITY_CONTEXT_IDLE = System.Windows.Threading.DispatcherPriority.ContextIdle;
@@ -54,12 +53,9 @@ namespace TrakHound_Dashboard
             InitializeComponent();
             DataContext = this;
 
-            developerConsole.CurrentOutput = ApplicationNames.TRAKHOUND_DASHBOARD;
+            //developerConsole.CurrentOutput = ApplicationNames.TRAKHOUND_DASHBOARD;
 
             Application.Current.MainWindow = this;
-
-            // Read Database Plugins (stores to static list in TrakHound.Databases.Global.Plugins)
-            DatabasePluginReader.ReadPlugins();
 
             DeviceManager_Initialize();
 
@@ -78,7 +74,7 @@ namespace TrakHound_Dashboard
 
             Splash_Close();
 
-            //ServerMonitor_Initialize();
+            ServerMonitor_Initialize();
         }
 
         private void Main_Window_Loaded(object sender, RoutedEventArgs e)
@@ -138,7 +134,6 @@ namespace TrakHound_Dashboard
                 var message = new Controls.Message_Center.MessageData();
                 message.Title = "TrakHound Updated to " + version.ToString();
                 message.Text = "TrakHound Successfully Updated from " + last + " to " + version.ToString();
-                //message.Type = Controls.Message_Center.MessageType.notification;
                 message.Type = Messages.MessageType.TRAKHOUND_UPDATE;
                 message.Image = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Update_01.png"));
                 messageCenter.AddMessage(message);

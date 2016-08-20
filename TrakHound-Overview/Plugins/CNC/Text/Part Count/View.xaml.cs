@@ -8,6 +8,7 @@ using System.Data;
 using System.Windows;
 using System.Windows.Controls;
 
+using TrakHound.API;
 using TrakHound.Configurations;
 using TrakHound.Tools;
 using TrakHound.Plugins;
@@ -44,52 +45,62 @@ namespace TH_DeviceCompare_CNC.Text.Part_Count
 
         void Update(EventData data)
         {
-            if (data != null && data.Data01 != null && data.Data01.GetType() == typeof(DeviceConfiguration))
+            if (data != null && data.Data01 != null)
             {
+                if (data != null && data.Id == "STATUS_STATUS")
+                {
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        var info = (Data.StatusInfo)data.Data02;
+                        Value = info.PartCount.ToString();
+
+                    }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                }
+
 
                 // Use Snapshot table if Part Count is given as a total for the day
-                if (data.Id.ToLower() == "statusdata_snapshots")
-                {
-                    Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        int count = 0;
+                //if (data.Id.ToLower() == "statusdata_snapshots")
+                //{
+                //    Dispatcher.BeginInvoke(new Action(() =>
+                //    {
+                //        int count = 0;
 
-                        string val = GetTableValue(data.Data02, "Part Count");
-                        if (val != null)
-                        {
-                            useSnapshotForParts = true;
+                //        string val = GetTableValue(data.Data02, "Part Count");
+                //        if (val != null)
+                //        {
+                //            useSnapshotForParts = true;
 
-                            int.TryParse(val, out count);
+                //            int.TryParse(val, out count);
 
-                            //info.PartCount = count;
-                            Value = count.ToString();
-                        }
-                    }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
-                }
+                //            //info.PartCount = count;
+                //            Value = count.ToString();
+                //        }
+                //    }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                //}
 
-                // Use the Parts table is Part Count is given as DISCRETE (number of parts per event) and not the total for the day
-                if (data.Id.ToLower() == "statusdata_parts" && data.Data02 != null && !useSnapshotForParts)
-                {
-                    Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        var dt = data.Data02 as DataTable;
-                        if (dt != null && dt.Columns.Contains("count"))
-                        {
-                            int count = 0;
+                //// Use the Parts table is Part Count is given as DISCRETE (number of parts per event) and not the total for the day
+                //if (data.Id.ToLower() == "statusdata_parts" && data.Data02 != null && !useSnapshotForParts)
+                //{
+                //    Dispatcher.BeginInvoke(new Action(() =>
+                //    {
+                //        var dt = data.Data02 as DataTable;
+                //        if (dt != null && dt.Columns.Contains("count"))
+                //        {
+                //            int count = 0;
 
-                            foreach (DataRow row in dt.Rows)
-                            {
-                                string val = row["count"].ToString();
+                //            foreach (DataRow row in dt.Rows)
+                //            {
+                //                string val = row["count"].ToString();
 
-                                int i = 0;
-                                if (int.TryParse(val, out i)) count += i;
-                            }
+                //                int i = 0;
+                //                if (int.TryParse(val, out i)) count += i;
+                //            }
 
-                            //info.PartCount = count;
-                            Value = count.ToString();
-                        }
-                    }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
-                }
+                //            //info.PartCount = count;
+                //            Value = count.ToString();
+                //        }
+                //    }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                //}
             }
         }
 

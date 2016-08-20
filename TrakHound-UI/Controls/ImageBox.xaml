@@ -57,11 +57,11 @@
                 <Rectangle.Style>
                     <Style TargetType="Rectangle">
                         <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                        <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
+                        <Setter Property="Fill" Value="{StaticResource TrakHound_Blue}"/>
                         <Setter Property="Visibility" Value="Visible"/>
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Fill" Value="{StaticResource Accent_Light}"/>
+                                <Setter Property="Fill" Value="{StaticResource TrakHound_LightBlue}"/>
                             </Trigger>
                             <DataTrigger Binding="{Binding HelpText}" Value="{x:Null}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -127,9 +127,6 @@
                                 <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
                                     <Setter Property="Visibility" Value="Visible"/>
                                 </DataTrigger>
-                                <!--<DataTrigger Binding="{Binding ImageSet, Mode=TwoWay}" Value="true">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>-->
                             </Style.Triggers>
                         </Style>
                     </Rectangle.Style>
@@ -207,21 +204,11 @@
                         <local:Button Clicked="Upload_Clicked" Image="/TrakHound-UI;component/Resources/Camera_01.png" >
                             <local:Button.Style>
                                 <Style TargetType="local:Button" BasedOn="{StaticResource Button_Accent_Background}">
-                                    <!--<Setter Property="Visibility" Value="Visible"/>-->
                                     <Setter Property="HorizontalAlignment" Value="Center"/>
                                     <Setter Property="VerticalAlignment" Value="Center"/>
-                                    <!--<Setter Property="Height" Value="35"/>-->
-                                    <!--<Setter Property="Padding" Value="10,4"/>-->
-                                    <!--<Setter Property="FontSize" Value="14"/>-->
-                                    <!--<Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
-                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>-->
-                                    <!--<Setter Property="CornerRadius" Value="2"/>-->
-                                    <!--<Setter Property="BorderThickness" Value="1"/>-->
                                     <Setter Property="Text" Value="Upload"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
                                     <Style.Triggers>
-                                        <!--<Trigger Property="IsMouseOver" Value="true">
-                                            <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                                        </Trigger>-->
                                         <DataTrigger Binding="{Binding ImageSet}" Value="true">
                                             <Setter Property="Background" Value="#33ffffff"/>
                                             <Setter Property="Foreground" Value="{StaticResource Foreground_Light}"/>

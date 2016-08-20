@@ -20,6 +20,7 @@ namespace TrakHound
         public static string TrakHoundTemp = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TrakHound", "temp");
 
         public static string AppData = Path.Combine(TrakHound, "appdata");
+        public static string Backup = Path.Combine(TrakHound, "Backup");
         public static string Databases = Path.Combine(TrakHound, "Databases");
         public static string Devices = Path.Combine(TrakHound, "Devices");
         public static string Plugins = Path.Combine(TrakHound, "Plugins");
@@ -36,6 +37,7 @@ namespace TrakHound
         public static void CreateAllDirectories()
         {
             CreateAppDataDirectory();
+            CreateBackupDirectory();
             CreateDatabasesDirectory();
             CreateDevicesDirectory();
             CreateLogsDirectory();
@@ -45,6 +47,7 @@ namespace TrakHound
         }
 
         public static void CreateAppDataDirectory() { CreateDirectory(AppData, true); }
+        public static void CreateBackupDirectory() { CreateDirectory(Backup); }
         public static void CreateDatabasesDirectory() { CreateDirectory(Databases); }
         public static void CreateDevicesDirectory() { CreateDirectory(Devices); }
         public static void CreateLogsDirectory()

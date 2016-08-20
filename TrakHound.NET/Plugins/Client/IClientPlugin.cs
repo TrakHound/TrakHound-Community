@@ -37,32 +37,31 @@ namespace TrakHound.Plugins.Client
         /// </summary>
         ImageSource Image { get; }
 
-        /// <summary>
-        /// Author's name
-        /// </summary>
-        string Author { get; }
+        ///// <summary>
+        ///// Author's name
+        ///// </summary>
+        //string Author { get; }
 
-        /// <summary>
-        /// Any other text associated with the author
-        /// (ex. copyright statement)
-        /// </summary>
-        string AuthorText { get; }
+        ///// <summary>
+        ///// Author's copyright statement
+        ///// </summary>
+        //string Copyright { get; }
 
-        /// <summary>
-        /// Image associated with the author
-        /// </summary>
-        ImageSource AuthorImage { get; }
+        ///// <summary>
+        ///// Image associated with the author
+        ///// </summary>
+        //ImageSource AuthorImage { get; }
 
-        /// <summary>
-        /// Name of the software license for the plugin
-        /// (ex. GPLv3)
-        /// </summary>
-        string LicenseName { get; }
+        ///// <summary>
+        ///// Name of the software license for the plugin
+        ///// (ex. GPLv3)
+        ///// </summary>
+        //string LicenseName { get; }
 
-        /// <summary>
-        /// Actual text of the software license for the plugin
-        /// </summary>
-        string LicenseText { get; }
+        ///// <summary>
+        ///// Actual text of the software license for the plugin
+        ///// </summary>
+        //string LicenseText { get; }
 
 
 
@@ -70,27 +69,27 @@ namespace TrakHound.Plugins.Client
         /// <summary>
         /// Url pointing to the 'appinfo' file to use for Automatic Updates (if applicable)
         /// </summary>
-        string UpdateFileURL { get; }
+        //string UpdateFileURL { get; }
 
 
 
 
         /// <summary>
         /// Used to set the default parent plugin's name 
-        /// (ex. if plugin is desiged for Dashboard, DefaultParent should = "Dashboard")
+        /// (ex. if plugin is desiged for Dashboard, ParentPlugin should = "Dashboard")
         /// </summary>
-        string DefaultParent { get; }
+        string ParentPlugin { get; }
 
         /// <summary>
         /// Used to set the default parent plugin's category
-        /// (ex. if plugin is designed for Dashboard's Pages category, DefaultParentCategory should = "Pages")
+        /// (ex. if plugin is designed for Dashboard's Pages category, ParentPluginCategory should = "Pages")
         /// </summary>
-        string DefaultParentCategory { get; }
+        string ParentPluginCategory { get; }
 
         /// <summary>
         /// Used to turn on/off ability for the plugin to accept "child" plugins
         /// </summary>
-        bool AcceptsPlugins { get; }
+        //bool AcceptsPlugins { get; }
 
         /// <summary>
         /// Used to force the plugin to open up when intially loaded/enabled
@@ -100,7 +99,7 @@ namespace TrakHound.Plugins.Client
         /// <summary>
         /// Used to toggle whether to show in App Launcher menu
         /// </summary>
-        bool ShowInAppMenu { get; }
+        //bool ShowInAppMenu { get; }
 
         /// <summary>
         /// Contains the Subcategories for this plugin's "child" plugins
@@ -158,7 +157,7 @@ namespace TrakHound.Plugins.Client
         /// <summary>
         /// List of Device_Client objects
         /// </summary>
-        ObservableCollection<DeviceConfiguration> Devices { get; set; }
+        //ObservableCollection<DeviceConfiguration> Devices { get; set; }
 
         /// <summary>
         /// Sets the OptionsPage object to be displayed in the Clients Options menu as a seperate page

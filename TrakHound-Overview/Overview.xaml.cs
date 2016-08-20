@@ -28,10 +28,5 @@ namespace TrakHound_Overview
         }
 
         public static UserConfiguration CurrentUser { get; set; }
-
-
-        const System.Windows.Threading.DispatcherPriority Priority_Background = System.Windows.Threading.DispatcherPriority.Background;
-
-        const System.Windows.Threading.DispatcherPriority Priority_Context = System.Windows.Threading.DispatcherPriority.ContextIdle;
     }
 }

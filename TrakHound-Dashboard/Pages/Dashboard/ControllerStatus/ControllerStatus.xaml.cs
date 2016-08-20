@@ -1,32 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Collections.ObjectModel;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
-using TrakHound;
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Controls;
+
 using TrakHound.Configurations;
-using TrakHound.Plugins;
-using TrakHound.Plugins.Client;
 
 namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus
 {
     /// <summary>
     /// Interaction logic for StatusTimeline.xaml
     /// </summary>
-    public partial class ControllerStatus : UserControl
+    public partial class Plugin : UserControl
     {
-        public ControllerStatus()
+        public Plugin()
         {
             InitializeComponent();
             root.DataContext = this;
@@ -48,9 +38,22 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus
 
         private void AddRow(DeviceConfiguration config)
         {
-            var row = new Controls.Row();
-            row.Configuration = config;
-            Rows.Add(row);
+            if (config != null && !Rows.ToList().Exists(o => o.Configuration.UniqueId == config.UniqueId))
+            {
+                var row = new Controls.Row();
+                row.Configuration = config;
+                Rows.Add(row);
+            }
+        }
+
+        private void AddRow(DeviceConfiguration config, int index)
+        {
+            if (config != null && !Rows.ToList().Exists(o => o.Configuration.UniqueId == config.UniqueId))
+            {
+                var row = new Controls.Row();
+                row.Configuration = config;
+                Rows.Insert(index, row);
+            }
         }
 
     }

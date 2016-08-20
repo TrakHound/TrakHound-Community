@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Collections.ObjectModel;
 
-using TrakHound.Server.Plugins.SnapshotData;
+using TrakHound_Server.Plugins.SnapshotData;
 using TrakHound.Tools;
 using TrakHound.Logging;
 

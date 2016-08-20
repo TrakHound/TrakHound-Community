@@ -81,6 +81,27 @@
     </None>
     <None Include="Pages\Dashboard\OverrideStatus\Update Data.cs" />
     <Compile Include="Controls\Message Center\MessageData.cs" />
+    <None Include="Pages\Cycles\Controls\FilterCheckBox.cs" />
+    <None Include="Pages\Cycles\CycleRowInfo.cs" />
+    <None Include="Pages\Cycles\Plugin.cs" />
+    <None Include="Pages\Cycles\View.xaml.cs">
+      <DependentUpon>View.xaml</DependentUpon>
+    </None>
+    <Compile Include="Pages\Dashboard\Overview\Controls\Column.xaml.cs">
+      <DependentUpon>Column.xaml</DependentUpon>
+    </Compile>
+    <None Include="Pages\Dashboard\Overview\Controls\TextDisplay.xaml.cs">
+      <DependentUpon>TextDisplay.xaml</DependentUpon>
+    </None>
+    <Compile Include="Pages\Dashboard\Overview\Overview.xaml.cs">
+      <DependentUpon>Overview.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dashboard\StatusGrid\Controls\Item.xaml.cs">
+      <DependentUpon>Item.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dashboard\StatusGrid\StatusGrid.xaml.cs">
+      <DependentUpon>StatusGrid.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -99,18 +120,18 @@
     <Compile Include="Pages\Dashboard\Dashboard.xaml.cs">
       <DependentUpon>Dashboard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Dashboard\DeviceStatusHourTimeline\Controls\Row.xaml.cs">
+    <Compile Include="Pages\Dashboard\OeeHourTimeline\Controls\Row.xaml.cs">
       <DependentUpon>Row.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Dashboard\DeviceStatusHourTimeline\Controls\Segment.xaml.cs">
+    <Compile Include="Pages\Dashboard\OeeHourTimeline\Controls\Segment.xaml.cs">
       <DependentUpon>Segment.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Dashboard\DeviceStatusHourTimeline\HourData.cs" />
-    <Compile Include="Pages\Dashboard\DeviceStatusHourTimeline\Plugin.cs" />
-    <Compile Include="Pages\Dashboard\DeviceStatusHourTimeline\DeviceStatusTimeline.xaml.cs">
-      <DependentUpon>DeviceStatusTimeline.xaml</DependentUpon>
+    <Compile Include="Pages\Dashboard\OeeHourTimeline\HourData.cs" />
+    <Compile Include="Pages\Dashboard\OeeHourTimeline\Plugin.cs" />
+    <Compile Include="Pages\Dashboard\OeeHourTimeline\OeeStatusTimeline.xaml.cs">
+      <DependentUpon>OeeStatusTimeline.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Dashboard\DeviceStatusHourTimeline\Update Data.cs" />
+    <Compile Include="Pages\Dashboard\OeeHourTimeline\Update Data.cs" />
     <Compile Include="Pages\Dashboard\DeviceStatusTimes\Controls\Row.xaml.cs">
       <DependentUpon>Row.xaml</DependentUpon>
     </Compile>
@@ -157,22 +178,22 @@
       <DependentUpon>StatusTimeline.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Dashboard\StatusTimeline\Update Data.cs" />
-    <Compile Include="Pages\Options\API\Controls\ServerItem.xaml.cs">
+    <None Include="Pages\Options\API\Controls\ServerItem.xaml.cs">
       <DependentUpon>ServerItem.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="Pages\Options\API\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\TableManager\Controls\Button.xaml.cs">
+    <None Include="Pages\TableManager\Controls\Button.xaml.cs">
       <DependentUpon>Button.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\TableManager\Controls\DeviceButton.xaml.cs">
+    </None>
+    <None Include="Pages\TableManager\Controls\DeviceButton.xaml.cs">
       <DependentUpon>DeviceButton.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\TableManager\Plugin.cs" />
-    <Compile Include="Pages\TableManager\TableManager.xaml.cs">
+    </None>
+    <None Include="Pages\TableManager\Plugin.cs" />
+    <None Include="Pages\TableManager\TableManager.xaml.cs">
       <DependentUpon>TableManager.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="User\Login.cs" />
     <Compile Include="User\Logout.cs" />
     <Compile Include="User\ProfileImage.cs" />
@@ -216,17 +237,15 @@
     </Compile>
     <Compile Include="MainWindow\Developer Console.cs" />
     <Compile Include="MainWindow\Devices.cs" />
-    <Compile Include="MainWindow\Main Menu.cs" />
     <Compile Include="MainWindow\Message Center.cs" />
     <Compile Include="MainWindow\Pages.cs" />
-    <Compile Include="MainWindow\Plugin Menu.cs" />
     <Compile Include="MainWindow\Plugins.cs" />
     <Compile Include="MainWindow\Report Bug.cs" />
     <Compile Include="MainWindow\Server Management.cs" />
     <Compile Include="MainWindow\Splash Screen.cs" />
     <Compile Include="MainWindow\Welcome Message.cs" />
     <Compile Include="MainWindow\Window.cs" />
-    <Compile Include="Menus\MenuItem.xaml.cs">
+    <Compile Include="Controls\MenuItem.xaml.cs">
       <DependentUpon>MenuItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\About\Information\Page.xaml.cs">
@@ -250,15 +269,15 @@
     <Compile Include="Pages\Options\Updates\UpdateItem.xaml.cs">
       <DependentUpon>UpdateItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Plugins\Installed\ListItem.xaml.cs">
+    <None Include="Pages\Plugins\Installed\ListItem.xaml.cs">
       <DependentUpon>ListItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Plugins\Installed\Page.xaml.cs">
+    </None>
+    <None Include="Pages\Plugins\Installed\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Plugins\Installed\SubCategory.xaml.cs">
+    </None>
+    <None Include="Pages\Plugins\Installed\SubCategory.xaml.cs">
       <DependentUpon>Subcategory.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -326,7 +345,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Menus\MenuItem.xaml">
+    <Page Include="Controls\MenuItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -342,6 +361,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <None Include="Pages\Cycles\View.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </None>
     <Page Include="Pages\Dashboard\ControllerStatus\ControllerStatus.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -354,15 +377,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\Dashboard\DeviceStatusHourTimeline\Controls\Row.xaml">
+    <Page Include="Pages\Dashboard\OeeHourTimeline\Controls\Row.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\Dashboard\DeviceStatusHourTimeline\Controls\Segment.xaml">
+    <Page Include="Pages\Dashboard\OeeHourTimeline\Controls\Segment.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\Dashboard\DeviceStatusHourTimeline\DeviceStatusTimeline.xaml">
+    <Page Include="Pages\Dashboard\OeeHourTimeline\OeeStatusTimeline.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -390,6 +413,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
+    <Page Include="Pages\Dashboard\Overview\Controls\Column.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <None Include="Pages\Dashboard\Overview\Controls\TextDisplay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </None>
+    <Page Include="Pages\Dashboard\Overview\Overview.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Dashboard\ProductionStatusTimes\Controls\Row.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -410,6 +445,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Pages\Dashboard\StatusGrid\Controls\Item.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Dashboard\StatusGrid\StatusGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\Dashboard\StatusTimeline\Controls\Row.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -418,10 +461,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\Options\API\Controls\ServerItem.xaml">
+    <None Include="Pages\Options\API\Controls\ServerItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
+    </None>
     <Page Include="Pages\Options\API\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -442,30 +485,30 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\Plugins\Installed\ListItem.xaml">
+    <None Include="Pages\Plugins\Installed\ListItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\Plugins\Installed\Page.xaml">
+    </None>
+    <None Include="Pages\Plugins\Installed\Page.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\Plugins\Installed\Subcategory.xaml">
+    </None>
+    <None Include="Pages\Plugins\Installed\Subcategory.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\TableManager\Controls\Button.xaml">
+    </None>
+    <None Include="Pages\TableManager\Controls\Button.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\TableManager\Controls\DeviceButton.xaml">
+    </None>
+    <None Include="Pages\TableManager\Controls\DeviceButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\TableManager\TableManager.xaml">
+    </None>
+    <None Include="Pages\TableManager\TableManager.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
+    </None>
     <Page Include="Styles\Colors.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -478,15 +521,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Styles\ToolBars.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Styles\Window.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\UpdateItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -512,7 +547,7 @@
     <Resource Include="Pages\About\License\Key_03.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Pages\Plugins\Installed\Plug_01.png" />
+    <None Include="Pages\Plugins\Installed\Plug_01.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\About_01.png" />
@@ -679,6 +714,51 @@
       <Project>{0621db23-5405-4771-975a-b47dc4b19d6b}</Project>
       <Name>TrakHound.NET</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Expand_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Cloud_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Analyse_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Warning_01_200px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Power_01_200px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Power_01_100px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Warning_01_100px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Manual_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Active_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Active_01_100px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Hourglass_01_100px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Hourglass_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Lab_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Estop_02.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Grid_01.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

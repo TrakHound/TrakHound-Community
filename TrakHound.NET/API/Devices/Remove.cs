@@ -8,9 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 
-using TrakHound.API;
 using TrakHound.API.Users;
-using TrakHound.Logging;
 using TrakHound.Tools.Web;
 
 namespace TrakHound.API
@@ -73,7 +71,7 @@ namespace TrakHound.API
         {
             if (userConfig != null && deviceUniqueIds != null && deviceUniqueIds.Length > 0)
             {
-                Uri apiHost = ApiConfiguration.ApiHost;
+                Uri apiHost = ApiConfiguration.AuthenticationApiHost;
 
                 string url = new Uri(apiHost, "devices/remove/index.php").ToString();
 
@@ -88,20 +86,6 @@ namespace TrakHound.API
                 if (response != null)
                 {
                     return ApiError.ProcessResponse(response, "Remove Devices");
-
-                    //string[] x = response.Split('(', ')');
-                    //if (x != null && x.Length > 1)
-                    //{
-                    //    string error = x[1];
-
-                    //    Logger.Log("Remove Device Failed : Error " + error, LogLineType.Error);
-                    //    return false;
-                    //}
-                    //else
-                    //{
-                    //    Logger.Log("Remove Device Successful", LogLineType.Notification);
-                    //    return true;
-                    //}
                 }
             }
 
@@ -117,7 +101,7 @@ namespace TrakHound.API
         {
             if (userConfig != null)
             {
-                Uri apiHost = ApiConfiguration.ApiHost;
+                Uri apiHost = ApiConfiguration.AuthenticationApiHost;
 
                 string url = new Uri(apiHost, "devices/remove/index.php").ToString();
 
@@ -129,20 +113,6 @@ namespace TrakHound.API
                 if (response != null)
                 {
                     return ApiError.ProcessResponse(response, "Remove Devices");
-
-                    //string[] x = response.Split('(', ')');
-                    //if (x != null && x.Length > 1)
-                    //{
-                    //    string error = x[1];
-
-                    //    Logger.Log("Remove Device Failed : Error " + error, LogLineType.Error);
-                    //    return false;
-                    //}
-                    //else
-                    //{
-                    //    Logger.Log("Remove Device Successful", LogLineType.Notification);
-                    //    return true;
-                    //}
                 }
             }
 

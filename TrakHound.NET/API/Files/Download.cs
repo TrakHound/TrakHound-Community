@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Drawing;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
-using TrakHound.Logging;
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+
 using TrakHound.API.Users;
-using System.Collections.Specialized;
-using TrakHound.API;
+using TrakHound.Logging;
 using TrakHound.Tools.Web;
 
 namespace TrakHound.API
@@ -24,7 +25,7 @@ namespace TrakHound.API
             {
                 if (!File.Exists(destinationPath))
                 {
-                    Uri apiHost = ApiConfiguration.ApiHost;
+                    Uri apiHost = ApiConfiguration.AuthenticationApiHost;
 
                     string url = new Uri(apiHost, "files/download/index.php").ToString();
 
@@ -104,7 +105,7 @@ namespace TrakHound.API
 
             if (userConfig != null)
             {
-                Uri apiHost = ApiConfiguration.ApiHost;
+                Uri apiHost = ApiConfiguration.AuthenticationApiHost;
 
                 string url = new Uri(apiHost, "files/download/index.php").ToString();
 

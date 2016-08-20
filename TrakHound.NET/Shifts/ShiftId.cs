@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using System.Data;
+using TrakHound.Configurations;
 using TrakHound.Tools;
 
 namespace TrakHound.Shifts
@@ -108,11 +109,49 @@ namespace TrakHound.Shifts
             return DataTable_Functions.GetTableValue(segmentsTable, "SHIFT_ID", Shift.ToString(), "SHIFT");
         }
 
+        public string GetSegmentStart(DeviceConfiguration config)
+        {
+            //var sc = TrakHound.Server.Plugins.Shifts.ShiftConfiguration.Get(config);
+            //if (sc != null)
+            //{
+            //    var shift = sc.shifts.Find(x => x.id == Shift);
+            //    if (shift != null)
+            //    {
+            //        var segment = shift.segments.Find(x => x.id == Segment);
+            //        if (segment != null)
+            //        {
+            //            return segment.beginTime.To24HourString();
+            //        }
+            //    }
+            //}
+
+            return null;
+        }
+
         public string GetSegmentStart(DataTable segmentsTable)
         {
             string format = "SHIFT_ID='{0}' AND SEGMENT_ID='{1}'";
             string filter = string.Format(format, Shift, Segment);
             return DataTable_Functions.GetTableValue(segmentsTable, filter, "START");
+        }
+
+        public string GetSegmentEnd(DeviceConfiguration config)
+        {
+            //var sc = TrakHound.Server.Plugins.Shifts.ShiftConfiguration.Get(config);
+            //if (sc != null)
+            //{
+            //    var shift = sc.shifts.Find(x => x.id == Shift);
+            //    if (shift != null)
+            //    {
+            //        var segment = shift.segments.Find(x => x.id == Segment);
+            //        if (segment != null)
+            //        {
+            //            return segment.endTime.To24HourString();
+            //        }
+            //    }
+            //}
+
+            return null;
         }
 
         public string GetSegmentEnd(DataTable segmentsTable)

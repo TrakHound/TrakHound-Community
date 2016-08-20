@@ -1,30 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Collections.ObjectModel;
-using TH_OeeStatus.Controls;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System.Collections.ObjectModel;
+using System.Windows.Controls;
+
+using TrakHound_Dashboard.Pages.Dashboard.OeeStatus.Controls;
 using TrakHound.Configurations;
 
-namespace TH_OeeStatus
+namespace TrakHound_Dashboard.Pages.Dashboard.OeeStatus
 {
     /// <summary>
     /// Interaction logic for StatusTimeline.xaml
     /// </summary>
-    public partial class OeeStatus : UserControl
+    public partial class Plugin : UserControl
     {
-        public OeeStatus()
+        public Plugin()
         {
             InitializeComponent();
             root.DataContext = this;
@@ -49,6 +41,13 @@ namespace TH_OeeStatus
             var row = new Row();
             row.Configuration = config;
             Rows.Add(row);
+        }
+
+        private void AddRow(DeviceConfiguration config, int index)
+        {
+            var row = new Controls.Row();
+            row.Configuration = config;
+            Rows.Insert(index, row);
         }
 
     }

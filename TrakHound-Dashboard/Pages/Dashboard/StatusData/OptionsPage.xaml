@@ -9,7 +9,6 @@
              mc:Ignorable="d" 
              d:DesignWidth="600">
 
-
     <StackPanel>
         
         <!--Database Read Interval-->
@@ -20,27 +19,7 @@
                 Width="500" HorizontalAlignment="Left"/>
 
         <!--Restore Defaults Button-->
-        <ui:Button Text="Restore Defaults" Clicked="RestoreDefaults_Clicked" Style="{StaticResource Button_Accent_Background}" HorizontalAlignment="Left" Margin="0,40"/>
-        <!--<ui:Button Text="Restore Defaults" Clicked="RestoreDefaults_Clicked">
-            <ui:Button.Style>
-                <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Accent_Background}">
-                    --><!--<Setter Property="Visibility" Value="Visible"/>
-                    <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                    <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>--><!--
-                    <Setter Property="Height" Value="30"/>
-                    <Setter Property="Padding" Value="10,5"/>
-                    <Setter Property="Margin" Value="0,40,0,10"/>
-                    <Setter Property="FontSize" Value="12"/>
-                    <Setter Property="HorizontalAlignment" Value="Left"/>
-                    <Setter Property="CornerRadius" Value="2"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </ui:Button.Style>
-        </ui:Button>-->
+        <ui:Button Text="Restore Defaults" Clicked="RestoreDefaults_Clicked" Style="{StaticResource Button_Accent_Background}" HorizontalAlignment="Left" Margin="0,30"/>
 
     </StackPanel>
 

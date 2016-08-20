@@ -60,5 +60,11 @@ namespace TrakHound.Logging
 
             return line;
         }
+
+        public override string ToString()
+        {
+            string format = "{0} {1}.{2} @ Line={3} :: {4}";
+            return string.Format(format, Timestamp.ToString("o"), Assembly, Member, LineNumber, Text);
+        }
     }
 }

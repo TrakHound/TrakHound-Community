@@ -4,17 +4,16 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Threading;
 using System.Configuration.Install;
 using System.Reflection;
 using System.ServiceProcess;
-using TrakHound.Server;
-using TrakHound.Tools;
-using TrakHound;
 
-namespace TrakHound_Server_Service
+using TrakHound;
+using TrakHound.Servers.DataProcessing;
+using TrakHound.Servers.DataStorage;
+using TrakHound.Tools;
+
+namespace TrakHound_Server
 {
     static class Program
     {
@@ -59,12 +58,20 @@ namespace TrakHound_Server_Service
             ManagedInstallerClass.InstallHelper(new string[] { "/u", Assembly.GetExecutingAssembly().Location });
         }
 
-        private static void StartDebug()
+        private static void StartServers()
         {
-            var server = new Server();
+            var server = new ProcessingServer();
             server.Login();
 
             server.Start();
+
+            var dataServer = new LocalStorageServer();
+            dataServer.Start();
+        }
+
+        private static void StartDebug()
+        {
+            StartServers();
 
             Console.ReadLine();
 
@@ -82,9 +89,7 @@ namespace TrakHound_Server_Service
 
             if (StopServerService())
             {
-                var server = new Server();
-                server.Login();
-                server.Start();
+                StartServers();
             }
             else Console.WriteLine("Error :: Server Service Could Not Be Stopped :: Aborting Console");
         }

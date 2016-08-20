@@ -19,7 +19,7 @@
              Focusable="False"
              >
 
-    <Border x:Name="bd" Background="{Binding Background}" CornerRadius="{Binding CornerRadius}" BorderBrush="{Binding BorderBrush}" BorderThickness="{Binding BorderThickness}"  FocusManager.IsFocusScope="False">
+    <Border x:Name="root" Background="{Binding Background}" CornerRadius="{Binding CornerRadius}" BorderBrush="{Binding BorderBrush}" BorderThickness="{Binding BorderThickness}"  FocusManager.IsFocusScope="False">
 
         <Grid FocusManager.IsFocusScope="False">
 
@@ -190,52 +190,6 @@
                 </Grid>
 
             </Border>
-
-            <!--Gloss Effect-->
-            <!--<Border Grid.ColumnSpan="3" IsHitTestVisible="False" FocusManager.IsFocusScope="False">
-                <Border.Style>
-                    <Style TargetType="Border">
-                        <Setter Property="Visibility" Value="Visible"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=bd}" Value="false">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Background}" Value="Transparent">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Border.Style>
-
-                <Grid IsHitTestVisible="False">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="4*"/>
-                        <RowDefinition Height="6*"/>
-                    </Grid.RowDefinitions>
-
-                    <Border Grid.RowSpan="2" IsHitTestVisible="False">
-                        <Border.Background>
-                            <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
-                                <RadialGradientBrush.GradientStops>
-                                    <GradientStop Color="#20ffffff" Offset="0" />
-                                    <GradientStop Color="#00ffffff" Offset="1.0" />
-                                </RadialGradientBrush.GradientStops>
-                            </RadialGradientBrush>
-                        </Border.Background>
-                    </Border>
-
-                    <Border CornerRadius="0,0,200,200" IsHitTestVisible="False">
-                        <Border.Background>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="#00ffffff" Offset="0.2"/>
-                                <GradientStop Color="#66ffffff" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Border.Background>
-                    </Border>
-
-                </Grid>
-
-            </Border>-->
 
         </Grid>
 

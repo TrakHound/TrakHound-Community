@@ -17,7 +17,7 @@
              >
 
     <!--Disable the Vertical ScrollBar and use the one for the Columns and RowHeaders (only applies if Page is zoomed)-->
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Background="{StaticResource Window_Background_Gradient}">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Background="{StaticResource Window_Background_Gradient}" VirtualizingStackPanel.IsVirtualizing="True">
 
         <Grid >
             <Grid.RowDefinitions>
@@ -103,7 +103,7 @@
             <Grid Grid.Row="1">
 
                 <!--Scrolling View-->
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalAlignment="Stretch">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalAlignment="Stretch" VirtualizingStackPanel.IsVirtualizing="True">
 
                     <Grid HorizontalAlignment="Left">
                         <Grid.ColumnDefinitions>

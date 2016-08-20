@@ -14,7 +14,8 @@ using TrakHound.Plugins.Client;
 
 namespace TH_DeviceCompare_CNC.Overrides.SpindleSpeed
 {
-    public partial class Plugin : UserControl, IClientPlugin
+    //public partial class Plugin : UserControl, IClientPlugin
+    public partial class Plugin : UserControl
     {
 
         #region "Descriptive"

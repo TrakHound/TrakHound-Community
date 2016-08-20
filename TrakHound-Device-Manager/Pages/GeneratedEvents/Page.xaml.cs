@@ -116,7 +116,7 @@ namespace TrakHound_Device_Manager.Pages.GeneratedEvents
                 oldVal = DataTable_Functions.GetTableValue(configurationTable, "address", address, "value");
             }
 
-            if (!loading) if (SettingChanged != null) SettingChanged(name, oldVal, newVal);
+            if (!loading) SettingChanged?.Invoke(name, oldVal, newVal);
         }
 
 
@@ -300,9 +300,7 @@ namespace TrakHound_Device_Manager.Pages.GeneratedEvents
             foreach (var eventValue in EventValues)
             {
                 if (!DataItemTypes.ToList().Exists(x => x == eventValue.Type)) DataItemTypes.Add(eventValue.Type);
-            }
-
-            
+            } 
         }
 
         #endregion
@@ -429,62 +427,15 @@ namespace TrakHound_Device_Manager.Pages.GeneratedEvents
         {
             string adr = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00");
             adr += "/Value||" + v.id.ToString("00") + "/Triggers";
-            //adr += "/Trigger";
 
             SaveTrigger(t, v, e, dt, adr);
-
-
-            //if (t.link != null && t.modifier != null)
-            //{
-            //    string adr = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00");
-            //    adr += "/Value||" + v.id.ToString("00") + "/Triggers";
-            //    adr += "/Trigger";
-
-            //    int id = DataTable_Functions.TrakHound.GetUnusedAddressId(adr, dt);
-            //    adr = adr + "||" + id.ToString("00");
-
-            //    t.id = id;
-
-            //    // Save Root
-            //    string attr = "";
-            //    attr += "id||" + t.id.ToString("00") + ";";
-
-            //    string link = t.link;
-            //    List<CollectedItem> linkitems = CollectedItems.ToList();
-            //    CollectedItem dataitem = linkitems.Find(x => x.Display == link);
-            //    if (dataitem != null) link = dataitem.Id;
-
-            //    attr += "link||" + link + ";";
-            //    attr += "link_type||" + t.linkType + ";";
-
-            //    if (t.modifier != null)
-            //    {
-            //        switch (t.modifier)
-            //        {
-            //            case "Not Equal To": attr += "modifier||" + "not" + ";"; break;
-            //            case "Greater Than": attr += "modifier||" + "greater_than" + ";"; break;
-            //            case "Less Than": attr += "modifier||" + "less_than" + ";"; break;
-            //            case "Contains": attr += "modifier||" + "contains" + ";"; break;
-            //            case "Contains Match Case": attr += "modifier||" + "contains_match_case" + ";"; break;
-            //            case "Contains Whole Word": attr += "modifier||" + "contains_whole_word" + ";"; break;
-            //            case "Contains Whole Word Match Case": attr += "modifier||" + "contains_whole_word_match_case" + ";"; break;
-            //        }
-            //    }
-
-            //    attr += "value||" + t.value + ";";
-
-            //    DataTable_Functions.UpdateTableValue(dt, "address", adr, "attributes", attr);
-            //}
         }
 
         void SaveTrigger(Trigger t, Value v, Event e, DataTable dt, string addressPrefix)
         {
             if (t.link != null && t.modifier != null)
             {
-                //string adr = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00");
-                //adr += "/Value||" + v.id.ToString("00") + "/Triggers";
                 string adr = addressPrefix + "/Trigger";
-                //adr += "/Trigger";
 
                 int id = DataTable_Functions.TrakHound.GetUnusedAddressId(adr, dt);
                 adr = adr + "||" + id.ToString("00");
@@ -732,7 +683,6 @@ namespace TrakHound_Device_Manager.Pages.GeneratedEvents
             if (adr.Contains("Default"))
             {
                 string n = DataTable_Functions.TrakHound.GetRowAttribute("numval", row);
-                //string n = Table_Functions.GetAttribute("numval", row);
                 if (n != null)
                 {
                     int numval;
@@ -845,37 +795,6 @@ namespace TrakHound_Device_Manager.Pages.GeneratedEvents
                         }
 
                         result.modifier = modifier;
-
-                        //Trigger t = v.triggers.OfType<Trigger>().ToList().Find(x => x.id == id);
-                        //if (t == null)
-                        //{
-                        //    result = new Trigger();
-                        //    result.id = id;
-
-                        //    result.linkType = DataTable_Functions.TrakHound.GetRowAttribute("link_type", row);
-                        //    if (result.linkType == null) result.linkType = "ID";
-
-                        //    result.link = DataTable_Functions.TrakHound.GetRowAttribute("link", row);
-                        //    result.value = DataTable_Functions.TrakHound.GetRowAttribute("value", row);
-
-                        //    string modifier = "Equal To";
-                        //    string mod = DataTable_Functions.TrakHound.GetRowAttribute("modifier", row);
-                        //    if (mod != null)
-                        //    {
-                        //        switch (mod.ToLower())
-                        //        {
-                        //            case "not": modifier = "Not Equal To"; break;
-                        //            case "greater_than": modifier = "Greater Than"; break;
-                        //            case "less_than": modifier = "Less Than"; break;
-                        //            case "contains": modifier = "Contains"; break;
-                        //            case "contains_match_case": modifier = "Contains Match Case"; break;
-                        //            case "contains_whole_word": modifier = "Contains Whole Word"; break;
-                        //            case "contains_whole_word_match_case": modifier = "Contains Whole Word Match Case"; break;
-                        //        }
-                        //    }
-
-                        //    result.modifier = modifier;
-                        //}
                     }
                 }
             }
@@ -956,7 +875,7 @@ namespace TrakHound_Device_Manager.Pages.GeneratedEvents
 
         void event_bt_SettingChanged()
         {
-            if (!loading) if (SettingChanged != null) SettingChanged(null, null, null);
+            if (!loading) SettingChanged?.Invoke(null, null, null);
         }
 
         #region "Event"
@@ -1006,7 +925,7 @@ namespace TrakHound_Device_Manager.Pages.GeneratedEvents
                 e.CaptureItems.Add(item);
             }
 
-            if (SettingChanged != null) SettingChanged(null, null, null);
+            SettingChanged?.Invoke(null, null, null);
         }
 
         void def_SettingChanged()
@@ -1277,17 +1196,13 @@ namespace TrakHound_Device_Manager.Pages.GeneratedEvents
                             Controls.Value v = e.Values[index];
                             if (v != null)
                             {
-                                //index = v.Triggers.OfType<MultiTrigger>().ToList().FindIndex(x => x.id == sender.ParentMultiTrigger.id);
-                                //if (index >= 0)
-                                //{
-                                    var t = new Trigger();
-                                    Controls.Trigger tr = CreateTrigger(t, sender.ParentValue, sender.ParentEvent);
+                                var t = new Trigger();
+                                Controls.Trigger tr = CreateTrigger(t, sender.ParentValue, sender.ParentEvent);
 
-                               sender.ParentMultiTrigger.triggers.Add(t);
+                                sender.ParentMultiTrigger.triggers.Add(t);
 
                                 tr.modifier_COMBO.SelectedItem = "Equal To";
-                                    sender.Triggers.Add(tr);
-                                //}    
+                                sender.Triggers.Add(tr);
                             }
                         }
                     }
@@ -1364,7 +1279,7 @@ namespace TrakHound_Device_Manager.Pages.GeneratedEvents
                 }
             }
 
-            if (SettingChanged != null) SettingChanged(null, null, null);
+            SettingChanged?.Invoke(null, null, null);
         }
 
         void CaptureItem_UpdateCollectedLink(Controls.CaptureItem item)

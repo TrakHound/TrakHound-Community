@@ -33,7 +33,7 @@
 
             <StackPanel Grid.Column="1">
 
-                <TextBlock Text="{Binding Build_Version}" FontSize="12" Foreground="{StaticResource Foreground_Normal}" Margin="0,0,0,0"/>
+                <TextBlock Text="{Binding BuildVersion}" FontSize="12" Foreground="{StaticResource Foreground_Normal}" Margin="0,0,0,0"/>
 
                 <TextBlock Margin="0,2,0,2" Foreground="{StaticResource Foreground_Normal}" Style="{StaticResource TrakHoundFont}">
                     <Run Text="TrakHound" FontSize="30"/>
@@ -79,7 +79,7 @@
 
                     <TextBlock>
                         <Run Text="Build Version : " Foreground="{StaticResource Foreground_Light}"/>
-                        <Run Text="{Binding Build_Version}" Foreground="{StaticResource Foreground_Normal}"/>
+                        <Run Text="{Binding FullBuildVersion}" Foreground="{StaticResource Foreground_Normal}"/>
                     </TextBlock>
 
                 </StackPanel>

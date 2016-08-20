@@ -283,13 +283,13 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
             public static AgentConfiguration Read(DeviceConfiguration config)
             {
                 var result = new AgentConfiguration();
-                result.Address = XML_Functions.GetInnerText(config.ConfigurationXML, "//Agent/Address");
+                result.Address = XML_Functions.GetInnerText(config.Xml, "//Agent/Address");
 
                 int port = 80;
-                int.TryParse(XML_Functions.GetInnerText(config.ConfigurationXML, "//Agent/Port"), out port);
+                int.TryParse(XML_Functions.GetInnerText(config.Xml, "//Agent/Port"), out port);
                 result.Port = port;
 
-                result.DeviceName = XML_Functions.GetInnerText(config.ConfigurationXML, "//Agent/DeviceName");
+                result.DeviceName = XML_Functions.GetInnerText(config.Xml, "//Agent/DeviceName");
 
                 return result;
             }

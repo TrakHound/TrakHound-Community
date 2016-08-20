@@ -17,20 +17,6 @@
 
     <UserControl.Resources>
 
-            <!--<Style TargetType="ui:Button">
-                <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
-                <Setter Property="FontSize" Value="14"/>
-                <Setter Property="Padding" Value="10,5"/>
-                <Setter Property="MinHeight" Value="35"/>
-                <Setter Property="ImageTextPadding" Value="10"/>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="true">
-                        <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                    </Trigger>
-                </Style.Triggers>
-            </Style>-->
-
             <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
                 <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
                 <Setter Property="BorderThickness" Value="0,1,0,0" />
@@ -154,13 +140,8 @@
                                 <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Accent_Foreground}">
                                     <Setter Property="Visibility" Value="Visible"/>
                                     <Setter Property="Opacity" Value="0.0"/>
-                                    <!--<Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                                    <Setter Property="Background" Value="Transparent"/>-->
                                     <Setter Property="Height" Value="35"/>
                                     <Style.Triggers>
-                                        <!--<Trigger Property="IsMouseOver" Value="true">
-                                            <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
-                                        </Trigger>-->
                                         <DataTrigger Binding="{Binding DevicesLoading}" Value="false">
                                             <DataTrigger.EnterActions>
                                                 <BeginStoryboard>
@@ -197,7 +178,6 @@
                         <Grid>
                             <Grid.Style>
                                 <Style TargetType="Grid">
-                                    <!--<Setter Property="Visibility" Value="Visible"/>-->
                                     <Setter Property="Opacity" Value="0.0"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding DevicesLoading}" Value="true">
@@ -236,15 +216,8 @@
                             <ui:Button Image="/TrakHound-Device-Manager;component/Resources/X_01.png" Clicked="Cancel_Clicked" ToolTip="Cancel">
                                 <ui:Button.Style>
                                     <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Accent_Foreground}">
-                                        <!--<Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                                        <Setter Property="Background" Value="Transparent"/>-->
                                         <Setter Property="Height" Value="20"/>
                                         <Setter Property="Width" Value="20"/>
-                                        <!--<Style.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="true">
-                                                <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
-                                            </Trigger>
-                                        </Style.Triggers>-->
                                     </Style>
                                 </ui:Button.Style>
                             </ui:Button>
@@ -293,10 +266,10 @@
                     </StackPanel.Style>
 
                     <!--Device Manager-->
-                    <ui:Button Text="Device Manager" Margin="40,0,20,0" Image="/TrakHound-Device-Manager;component/Resources/Root.png" Clicked="DeviceManager_Clicked" Style="{StaticResource Button_Accent_Background}"/>
+                    <ui:Button Text="Device Manager" Margin="40,0,20,0" Height="30" Image="/TrakHound-Device-Manager;component/Resources/Root.png" Clicked="DeviceManager_Clicked" Style="{StaticResource Button_Accent_Background}"/>
 
                     <!--Add Devices Manually-->
-                    <ui:Button Grid.Column="1" Text="Add Devices Manually" VerticalAlignment="Center" HorizontalAlignment="Center" Clicked="AddDevicesManually_Clicked" Style="{StaticResource Button_Accent_Background}"/>
+                    <ui:Button Grid.Column="1" Height="30" Text="Add Devices Manually" VerticalAlignment="Center" HorizontalAlignment="Center" Clicked="AddDevicesManually_Clicked" Style="{StaticResource Button_Accent_Background}"/>
 
                 </StackPanel>
 

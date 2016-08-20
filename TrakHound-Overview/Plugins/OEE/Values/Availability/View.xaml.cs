@@ -8,6 +8,8 @@ using System.Data;
 using System.Windows;
 using System.Windows.Controls;
 
+using TrakHound.API;
+using TrakHound.Tools;
 using TrakHound.Configurations;
 using TrakHound.Plugins;
 
@@ -48,19 +50,48 @@ namespace TH_DeviceCompare_OEE.Values.Availability
 
         const System.Windows.Threading.DispatcherPriority Priority_Context = System.Windows.Threading.DispatcherPriority.ContextIdle;
 
-
         void Update(EventData data)
         {
-            if (data != null && data.Data01 != null && data.Data01.GetType() == typeof(DeviceConfiguration))
+            if (data != null && data.Data02 != null)
             {
-                // OEE Table Data
-                if (data.Id.ToLower() == "statusdata_oee_segments")
+                if (data != null && data.Id == "STATUS_OEE")
                 {
-                    // OEE Values
-                    this.Dispatcher.BeginInvoke(new Action<object>(OEEValues_Update), Priority_Context, new object[] { data.Data02 });
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        var info = (Data.OeeInfo)data.Data02;
+
+                        Value = info.Availability;
+
+                        if (Value >= 0.75) Status = 2;
+                        else if (Value >= 0.5) Status = 1;
+                        else Status = 0;
+
+                    }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
                 }
+
+
+
+                // OEE Table Data
+                //if (data.Id.ToLower() == "statusdata_oee_segments")
+                //{
+                //    // OEE Values
+                //    this.Dispatcher.BeginInvoke(new Action<object>(OEEValues_Update), Priority_Context, new object[] { data.Data02 });
+                //}
             }
         }
+
+        //void Update(EventData data)
+        //{
+        //    if (data != null && data.Data01 != null && data.Data01.GetType() == typeof(DeviceConfiguration))
+        //    {
+        //        // OEE Table Data
+        //        if (data.Id.ToLower() == "statusdata_oee_segments")
+        //        {
+        //            // OEE Values
+        //            this.Dispatcher.BeginInvoke(new Action<object>(OEEValues_Update), Priority_Context, new object[] { data.Data02 });
+        //        }
+        //    }
+        //}
 
         void OEEValues_Update(object oeedata)
         {

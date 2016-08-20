@@ -11,12 +11,12 @@ using System.Linq;
 using System.Threading;
 using System.Xml;
 
-using TrakHound.Configurations;
 using TrakHound;
-using TrakHound.Tools;
-using TrakHound.Logging;
-using TrakHound.API.Users;
 using TrakHound.API;
+using TrakHound.API.Users;
+using TrakHound.Configurations;
+using TrakHound.Logging;
+using TrakHound.Tools;
 
 namespace TrakHound_Device_Manager
 {
@@ -133,21 +133,6 @@ namespace TrakHound_Device_Manager
             set { _devices = value; }
         }
 
-        //private List<DeviceConfiguration> _sharedDevices;
-        ///// <summary>
-        ///// List of TrakHound.Configurations.Configuration objects that represent the shared devices that are
-        ///// owned by the current user
-        ///// </summary>
-        //public List<DeviceConfiguration> SharedDevices
-        //{
-        //    get
-        //    {
-        //        if (_sharedDevices == null) _sharedDevices = new List<DeviceConfiguration>();
-        //        return _sharedDevices;
-        //    }
-        //    set { _sharedDevices = value; }
-        //}
-
 
         #region "Load Devices"
 
@@ -168,7 +153,6 @@ namespace TrakHound_Device_Manager
             }
 
             Devices.Clear();
-            //SharedDevices.Clear();
 
             if (loaddevices_THREAD != null) loaddevices_THREAD.Abort();
 
@@ -176,13 +160,12 @@ namespace TrakHound_Device_Manager
             loaddevices_THREAD.Start();
 
             // Raise DevicesLoading Event
-            if (LoadingDevices != null) LoadingDevices();
+            LoadingDevices?.Invoke();
         }
 
         private void LoadDevices_Worker()
         {
             List<DeviceConfiguration> devices = null;
-            //List<DeviceConfiguration> shared = null;
 
             if (_currentuser != null)
             {
@@ -231,12 +214,10 @@ namespace TrakHound_Device_Manager
             }
 
             Devices = devices;
-            //SharedDevices = shared;
 
             UpdateDeviceList();
-            //UpdateSharedDeviceList();
 
-            if (DevicesLoaded != null) DevicesLoaded();
+            DevicesLoaded?.Invoke();
         }
 
         #endregion
@@ -257,31 +238,15 @@ namespace TrakHound_Device_Manager
         }
 
         /// <summary>
-        /// Adds a device to the Shared Device List
-        /// </summary>
-        /// <param name="config">The Device to add</param>
-        //public void AddSharedDevice(DeviceConfiguration config)
-        //{
-        //    SharedDevices.Add(config);
-        //}
-
-        /// <summary>
         /// Raise the DeviceListUpdated event for the Devices List
         /// </summary>
         public void UpdateDeviceList()
         {
             // Raise DevicesLoaded event to update devices for rest of TrakHound 
             // (Client is the only one that uses this for now)
-            if (DeviceListUpdated != null) DeviceListUpdated(Devices);
+            DeviceListUpdated?.Invoke(Devices);
         }
 
-        /// <summary>
-        /// Raise the SharedDeviceListUpdated event for the Shared Device List
-        /// </summary>
-        //public void UpdateSharedDeviceList()
-        //{
-        //    if (SharedDeviceListUpdated != null) SharedDeviceListUpdated(SharedDevices);
-        //}
 
         /// <summary>
         /// Raise the DeviceUpdated event to signal that a device has been Added/Removed/Changed
@@ -290,7 +255,7 @@ namespace TrakHound_Device_Manager
         /// <param name="args">Tells what type of update took place</param>
         public void UpdateDevice(DeviceConfiguration config, DeviceUpdateArgs args)
         {
-            if (DeviceUpdated != null) DeviceUpdated(config, args);
+            DeviceUpdated?.Invoke(config, args);
         }
 
         /// <summary>
@@ -310,7 +275,6 @@ namespace TrakHound_Device_Manager
 
                 result = TrakHound.API.Devices.Remove(_currentuser, uniqueIds);
             }
-            //if (currentuser != null) result = Configurations.RemoveConfigurationTable(config.TableName);
             // If not logged in then delete local configuration file
             else
             {
@@ -357,7 +321,6 @@ namespace TrakHound_Device_Manager
                     foreach (var config in configs) RemoveDeviceFromList(config);
                 }
             }
-            //if (currentuser != null) result = Configurations.RemoveConfigurationTable(config.TableName);
             // If not logged in then delete local configuration file
             else
             {
@@ -394,22 +357,20 @@ namespace TrakHound_Device_Manager
         /// <param name="config">The Device to change</param>
         /// <param name="type">Sets whether the Client or Server is enabled</param>
         /// <returns></returns>
-        public bool EnableDevice(DeviceConfiguration config, ManagementType type)
+        public bool EnableDevice(DeviceConfiguration config)
         {
             bool result = false;
 
             if (_currentuser != null)
             {
-                if (type == ManagementType.Client) result = TrakHound.API.Devices.Update(_currentuser, config.UniqueId, new TrakHound.API.Devices.DeviceInfo.Row("/ClientEnabled", "True", null));
-                else if (type == ManagementType.Server) result = TrakHound.API.Devices.Update(_currentuser, config.UniqueId, new TrakHound.API.Devices.DeviceInfo.Row("/ServerEnabled", "True", null));
-
-                if (result) result = UpdateEnabledXML(config.ConfigurationXML, true, type);
-                if (result) result = ResetUpdateId(config, type);
+                result = TrakHound.API.Devices.Update(_currentuser, config.UniqueId, new Devices.DeviceInfo.Row("/Enabled", "True", null));
+                if (result) result = UpdateEnabledXML(config.Xml, true);
+                if (result) result = ResetUpdateId(config);
             }
             else
             {
-                result = UpdateEnabledXML(config.ConfigurationXML, true, type);
-                if (result) result = ResetUpdateId(config, type);
+                result = UpdateEnabledXML(config.Xml, true);
+                if (result) result = ResetUpdateId(config);
                 if (result) result = DeviceConfiguration.Save(config);
             }
 
@@ -422,28 +383,27 @@ namespace TrakHound_Device_Manager
         /// <param name="config">The Device to change</param>
         /// <param name="type">Sets whether the Client or Server is disabled</param>
         /// <returns></returns>
-        public bool DisableDevice(DeviceConfiguration config, ManagementType type)
+        public bool DisableDevice(DeviceConfiguration config)
         {
             bool result = false;
 
             if (_currentuser != null)
             {
-                if (type == ManagementType.Client) result = TrakHound.API.Devices.Update(_currentuser, config.UniqueId, new TrakHound.API.Devices.DeviceInfo.Row("/ClientEnabled", "False", null));
-                else if (type == ManagementType.Server) result = TrakHound.API.Devices.Update(_currentuser, config.UniqueId, new TrakHound.API.Devices.DeviceInfo.Row("/ServerEnabled", "False", null));
+                result = TrakHound.API.Devices.Update(_currentuser, config.UniqueId, new Devices.DeviceInfo.Row("/Enabled", "False", null));
 
-                if (result) result = UpdateEnabledXML(config.ConfigurationXML, false, type);
-                if (result) result = ResetUpdateId(config, type);
+                if (result) result = UpdateEnabledXML(config.Xml, false);
+                if (result) result = ResetUpdateId(config);
             }
             else
             {
-                result = UpdateEnabledXML(config.ConfigurationXML, false, type);
-                if (result) result = ResetUpdateId(config, type);
+                result = UpdateEnabledXML(config.Xml, false);
+                if (result) result = ResetUpdateId(config);
                 if (result) result = DeviceConfiguration.Save(config);
             }
 
             return result;
         }
-
+        
         /// <summary>
         /// Changes a Device's Index property
         /// </summary>
@@ -457,11 +417,11 @@ namespace TrakHound_Device_Manager
             if (_currentuser != null)
             {
                 result = TrakHound.API.Devices.Update(_currentuser, config.UniqueId, new Devices.DeviceInfo.Row("/Index", newIndex.ToString(), null));
-                if (result) result = XML_Functions.SetInnerText(config.ConfigurationXML, "Index", newIndex.ToString());
+                if (result) result = XML_Functions.SetInnerText(config.Xml, "Index", newIndex.ToString());
             }
             else
             {
-                result = XML_Functions.SetInnerText(config.ConfigurationXML, "Index", newIndex.ToString());
+                result = XML_Functions.SetInnerText(config.Xml, "Index", newIndex.ToString());
                 if (result) result = DeviceConfiguration.Save(config);
             }
 
@@ -483,55 +443,32 @@ namespace TrakHound_Device_Manager
             }
         }
 
-        private bool ResetUpdateId(DeviceConfiguration config, ManagementType type)
+        private bool ResetUpdateId(DeviceConfiguration config)
         {
             bool result = false;
 
-            if (type == ManagementType.Client)
+            var updateId = Guid.NewGuid().ToString();
+
+            if (_currentuser != null) result = TrakHound.API.Devices.Update(_currentuser, config.UniqueId, new Devices.DeviceInfo.Row("/UpdateId", updateId, null));
+            else result = true;
+
+            if (result)
             {
-                var updateId = String_Functions.RandomString(20);
-
-                if (_currentuser != null) result = TrakHound.API.Devices.Update(_currentuser, config.UniqueId, new Devices.DeviceInfo.Row("/ClientUpdateId", updateId, null));
-                else result = true;
-
-                if (result)
-                {
-                    config.ClientUpdateId = updateId;
-                    XML_Functions.SetInnerText(config.ConfigurationXML, "ClientUpdateId", updateId);
-                }
-            }
-            else if (type == ManagementType.Server)
-            {
-                var updateId = String_Functions.RandomString(20);
-
-                if (_currentuser != null) result = TrakHound.API.Devices.Update(_currentuser, config.UniqueId, new Devices.DeviceInfo.Row("/ServerUpdateId", updateId, null));
-                else result = true;
-
-                if (result)
-                {
-                    config.ClientUpdateId = updateId;
-                    XML_Functions.SetInnerText(config.ConfigurationXML, "ServerUpdateId", updateId);
-                }
+                config.UpdateId = updateId;
+                XML_Functions.SetInnerText(config.Xml, "UpdateId", updateId);
             }
 
             return result;
         }
 
-        private static bool UpdateEnabledXML(XmlDocument xml, bool enabled, ManagementType type)
+        private static bool UpdateEnabledXML(XmlDocument xml, bool enabled)
         {
             bool result = false;
 
-            if (type == ManagementType.Client)
-            {
-                result = XML_Functions.SetInnerText(xml, "ClientEnabled", enabled.ToString());
-            }
-            else if (type == ManagementType.Server)
-            {
-                result = XML_Functions.SetInnerText(xml, "ServerEnabled", enabled.ToString());
-            }
+            result = XML_Functions.SetInnerText(xml, "Enabled", enabled.ToString());
 
             return result;
         }
-
+        
     }
 }

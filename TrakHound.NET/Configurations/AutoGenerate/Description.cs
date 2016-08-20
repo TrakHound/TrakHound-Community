@@ -15,10 +15,13 @@ namespace TrakHound.Configurations.AutoGenerate
 
         public static void Add(DataTable dt, Device probeDevice)
         {
-            DataTable_Functions.UpdateTableValue(dt, "address", "/Description/Manufacturer", "value", Trim(probeDevice.Description.Manufacturer));
-            DataTable_Functions.UpdateTableValue(dt, "address", "/Description/Model", "value", Trim(probeDevice.Description.Model));
-            DataTable_Functions.UpdateTableValue(dt, "address", "/Description/Serial", "value", Trim(probeDevice.Description.SerialNumber));
-            DataTable_Functions.UpdateTableValue(dt, "address", "/Description/Description", "value", Trim(probeDevice.Description.CDATA));         
+            if (probeDevice.Description != null)
+            {
+                DataTable_Functions.UpdateTableValue(dt, "address", "/Description/Manufacturer", "value", Trim(probeDevice.Description.Manufacturer));
+                DataTable_Functions.UpdateTableValue(dt, "address", "/Description/Model", "value", Trim(probeDevice.Description.Model));
+                DataTable_Functions.UpdateTableValue(dt, "address", "/Description/Serial", "value", Trim(probeDevice.Description.SerialNumber));
+                DataTable_Functions.UpdateTableValue(dt, "address", "/Description/Description", "value", Trim(probeDevice.Description.CDATA));
+            }
         }
 
         private static string Trim(string s)

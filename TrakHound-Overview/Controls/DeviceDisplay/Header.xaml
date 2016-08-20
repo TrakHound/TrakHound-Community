@@ -44,8 +44,8 @@
             </Style>
         </Border.Style>
 
-        <Grid PreviewMouseDown="Control_MouseDown">
 
+        <Grid PreviewMouseDown="Control_MouseDown">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>

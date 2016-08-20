@@ -43,6 +43,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -77,6 +78,9 @@
     <None Include="Controls\LevelIndicator\BetterSegment.cs" />
     <Compile Include="Controls\LevelIndicator\Indicator.xaml.cs">
       <DependentUpon>Indicator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TimeDisplay.xaml.cs">
+      <DependentUpon>TimeDisplay.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Timeline\Compatibility.cs" />
     <Compile Include="Controls\Timeline\Controls\DataControlNotifier.cs" />
@@ -192,6 +196,10 @@
     <Page Include="Controls\ListButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\TimeDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\BugReportSent.xaml">
       <SubType>Designer</SubType>

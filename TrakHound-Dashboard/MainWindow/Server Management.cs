@@ -6,8 +6,8 @@
 using System;
 using System.Windows;
 
-using TrakHound.Tools;
 using TrakHound;
+using TrakHound.Tools;
 
 namespace TrakHound_Dashboard
 {

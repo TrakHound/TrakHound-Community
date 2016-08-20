@@ -46,7 +46,13 @@ namespace TrakHound_UI.LevelIndicator
         }
 
         public static readonly DependencyProperty TotalLevelCountProperty =
-            DependencyProperty.Register("TotalLevelCount", typeof(int), typeof(Indicator), new PropertyMetadata(0));
+            DependencyProperty.Register("TotalLevelCount", typeof(int), typeof(Indicator), new PropertyMetadata(0, new PropertyChangedCallback(TotalLevelCountPropertyChanged)));
+
+        private static void TotalLevelCountPropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
+        {
+            var o = (Indicator)dependencyObject;
+            o.Init((int)eventArgs.NewValue);
+        }
 
 
         public int ActiveLevelCount
@@ -60,7 +66,13 @@ namespace TrakHound_UI.LevelIndicator
         }
 
         public static readonly DependencyProperty ActiveLevelCountProperty =
-            DependencyProperty.Register("ActiveLevelCount", typeof(int), typeof(Indicator), new PropertyMetadata(0));
+            DependencyProperty.Register("ActiveLevelCount", typeof(int), typeof(Indicator), new PropertyMetadata(0, new PropertyChangedCallback(ActiveLevelCountPropertyChanged)));
+
+        private static void ActiveLevelCountPropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
+        {
+            var o = (Indicator)dependencyObject;
+            o.SetActiveLevels((int)eventArgs.NewValue);
+        }
 
 
 
@@ -117,6 +129,8 @@ namespace TrakHound_UI.LevelIndicator
                 segment.Height += x * (controlHeight * 0.25);
                 Segments.Add(segment);
             }
+
+            SetActiveLevels(ActiveLevelCount);
         }
 
         void SetActiveLevels(int activeLevelCount)

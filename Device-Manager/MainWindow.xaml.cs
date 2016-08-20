@@ -14,7 +14,7 @@ using TrakHound.API.Users;
 using TrakHound.Configurations;
 using TrakHound;
 using TrakHound.Tools;
-using TrakHound.Databases;
+//using TrakHound.Databases;
 using TrakHound_UI;
 
 namespace Device_Manager
@@ -29,7 +29,7 @@ namespace Device_Manager
             InitializeComponent();
             DataContext = this;
 
-            DatabasePluginReader.ReadPlugins();
+            //DatabasePluginReader.ReadPlugins();
 
             deviceManager = new DeviceManager();
             deviceManager.LoadDevices();
@@ -75,8 +75,8 @@ namespace Device_Manager
 
         private void DeviceList_EditSelected(DeviceConfiguration config)
         {
-            var editPage = new EditPage(config);
-            editPage.DeviceManager = deviceManager;
+            var editPage = new EditPage(config, deviceManager);
+            //editPage.DeviceManager = deviceManager;
             AddPage(editPage, "Edit Device - " + config.Description.Description);
         }
 

@@ -4,17 +4,13 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
-using System.Collections.ObjectModel;
 using System.Data;
-using System.Linq;
 using System.Windows;
 
+using TrakHound.API;
 using TrakHound.Configurations;
-using TrakHound.Tools;
 using TrakHound.Plugins;
-using TrakHound.Plugins.Client;
-using TrakHound_UI;
-using TrakHound_UI.Functions;
+using TrakHound.Tools;
 
 namespace TH_DeviceCompare_ProductionStatusTimes
 {
@@ -31,65 +27,115 @@ namespace TH_DeviceCompare_ProductionStatusTimes
 
         #region "Dependency Properties"
 
-        public double TotalSeconds
+        public string ProductionStatus
         {
-            get { return (double)GetValue(TotalSecondsProperty); }
-            set { SetValue(TotalSecondsProperty, value); }
+            get { return (string)GetValue(ProductionStatusProperty); }
+            set { SetValue(ProductionStatusProperty, value); }
         }
 
-        public static readonly DependencyProperty TotalSecondsProperty =
-            DependencyProperty.Register("TotalSeconds", typeof(double), typeof(Plugin), new PropertyMetadata(1d));
+        public static readonly DependencyProperty ProductionStatusProperty =
+            DependencyProperty.Register("ProductionStatus", typeof(string), typeof(Plugin), new PropertyMetadata(null));
 
 
-        public double ProductionSeconds
+
+        public double ProductionPercentage
         {
-            get { return (double)GetValue(ProductionSecondsProperty); }
-            set { SetValue(ProductionSecondsProperty, value); }
+            get { return (double)GetValue(ProductionPercentageProperty); }
+            set { SetValue(ProductionPercentageProperty, value); }
         }
 
-        public static readonly DependencyProperty ProductionSecondsProperty =
-            DependencyProperty.Register("ProductionSeconds", typeof(double), typeof(Plugin), new PropertyMetadata(0d));
+        public static readonly DependencyProperty ProductionPercentageProperty =
+            DependencyProperty.Register("ProductionPercentage", typeof(double), typeof(Plugin), new PropertyMetadata(0d));
 
-
-        public double SetupSeconds
+        public TimeSpan ProductionTime
         {
-            get { return (double)GetValue(SetupSecondsProperty); }
-            set { SetValue(SetupSecondsProperty, value); }
+            get { return (TimeSpan)GetValue(ProductionTimeProperty); }
+            set { SetValue(ProductionTimeProperty, value); }
         }
 
-        public static readonly DependencyProperty SetupSecondsProperty =
-            DependencyProperty.Register("SetupSeconds", typeof(double), typeof(Plugin), new PropertyMetadata(0d));
+        public static readonly DependencyProperty ProductionTimeProperty =
+            DependencyProperty.Register("ProductionTime", typeof(TimeSpan), typeof(Plugin), new PropertyMetadata(TimeSpan.Zero));
 
 
-        public double TeardownSeconds
+
+        public double SetupPercentage
         {
-            get { return (double)GetValue(TeardownSecondsProperty); }
-            set { SetValue(TeardownSecondsProperty, value); }
+            get { return (double)GetValue(SetupPercentageProperty); }
+            set { SetValue(SetupPercentageProperty, value); }
         }
 
-        public static readonly DependencyProperty TeardownSecondsProperty =
-            DependencyProperty.Register("TeardownSeconds", typeof(double), typeof(Plugin), new PropertyMetadata(0d));
+        public static readonly DependencyProperty SetupPercentageProperty =
+            DependencyProperty.Register("SetupPercentage", typeof(double), typeof(Plugin), new PropertyMetadata(0d));
 
-
-        public double MaintenanceSeconds
+        public TimeSpan SetupTime
         {
-            get { return (double)GetValue(MaintenanceSecondsProperty); }
-            set { SetValue(MaintenanceSecondsProperty, value); }
+            get { return (TimeSpan)GetValue(SetupTimeProperty); }
+            set { SetValue(SetupTimeProperty, value); }
         }
 
-        public static readonly DependencyProperty MaintenanceSecondsProperty =
-            DependencyProperty.Register("MaintenanceSeconds", typeof(double), typeof(Plugin), new PropertyMetadata(0d));
+        public static readonly DependencyProperty SetupTimeProperty =
+            DependencyProperty.Register("SetupTime", typeof(TimeSpan), typeof(Plugin), new PropertyMetadata(TimeSpan.Zero));
 
 
-        public double ProcessDevelopmentSeconds
+
+        public double TeardownPercentage
         {
-            get { return (double)GetValue(ProcessDevelopmentSecondsProperty); }
-            set { SetValue(ProcessDevelopmentSecondsProperty, value); }
+            get { return (double)GetValue(TeardownPercentageProperty); }
+            set { SetValue(TeardownPercentageProperty, value); }
         }
 
-        public static readonly DependencyProperty ProcessDevelopmentSecondsProperty =
-            DependencyProperty.Register("ProcessDevelopmentSeconds", typeof(double), typeof(Plugin), new PropertyMetadata(0d));
+        public static readonly DependencyProperty TeardownPercentageProperty =
+            DependencyProperty.Register("TeardownPercentage", typeof(double), typeof(Plugin), new PropertyMetadata(0d));
 
+        public TimeSpan TeardownTime
+        {
+            get { return (TimeSpan)GetValue(TeardownTimeProperty); }
+            set { SetValue(TeardownTimeProperty, value); }
+        }
+
+        public static readonly DependencyProperty TeardownTimeProperty =
+            DependencyProperty.Register("TeardownTime", typeof(TimeSpan), typeof(Plugin), new PropertyMetadata(TimeSpan.Zero));
+
+
+
+        public double MaintenancePercentage
+        {
+            get { return (double)GetValue(MaintenancePercentageProperty); }
+            set { SetValue(MaintenancePercentageProperty, value); }
+        }
+
+        public static readonly DependencyProperty MaintenancePercentageProperty =
+            DependencyProperty.Register("MaintenancePercentage", typeof(double), typeof(Plugin), new PropertyMetadata(0d));
+
+        public TimeSpan MaintenanceTime
+        {
+            get { return (TimeSpan)GetValue(MaintenanceTimeProperty); }
+            set { SetValue(MaintenanceTimeProperty, value); }
+        }
+
+        public static readonly DependencyProperty MaintenanceTimeProperty =
+            DependencyProperty.Register("MaintenanceTime", typeof(TimeSpan), typeof(Plugin), new PropertyMetadata(TimeSpan.Zero));
+
+
+
+        public double ProcessDevelopmentPercentage
+        {
+            get { return (double)GetValue(ProcessDevelopmentPercentageProperty); }
+            set { SetValue(ProcessDevelopmentPercentageProperty, value); }
+        }
+
+        public static readonly DependencyProperty ProcessDevelopmentPercentageProperty =
+            DependencyProperty.Register("ProcessDevelopmentPercentage", typeof(double), typeof(Plugin), new PropertyMetadata(0d));
+
+        public TimeSpan ProcessDevelopmentTime
+        {
+            get { return (TimeSpan)GetValue(ProcessDevelopmentTimeProperty); }
+            set { SetValue(ProcessDevelopmentTimeProperty, value); }
+        }
+
+        public static readonly DependencyProperty ProcessDevelopmentTimeProperty =
+            DependencyProperty.Register("ProcessDevelopmentTime", typeof(TimeSpan), typeof(Plugin), new PropertyMetadata(TimeSpan.Zero));
+        
         #endregion
 
         const System.Windows.Threading.DispatcherPriority Priority_Background = System.Windows.Threading.DispatcherPriority.Background;
@@ -99,185 +145,106 @@ namespace TH_DeviceCompare_ProductionStatusTimes
 
         void Update(EventData data)
         {
-            if (data != null && data.Data01 != null && data.Data01.GetType() == typeof(DeviceConfiguration))
+            if (data != null && data.Data01 != null)
             {
-                //// GenEvent Values
-                //if (data.Id.ToLower() == "statusdata_geneventvalues")
+                if (data != null && data.Id == "STATUS_STATUS")
+                {
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        var info = (Data.StatusInfo)data.Data02;
+                        ProductionStatus = info.ProductionStatus;
+
+                    }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                }
+
+                if (data != null && data.Id == "STATUS_TIMERS" && data.Data02 != null)
+                {
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        var info = (Data.TimersInfo)data.Data02;
+
+                        double total = info.Total;
+                        double production = info.Production;
+                        double setup = info.Setup;
+                        double teardown = info.Teardown;
+                        double maintenance = info.Maintenance;
+                        double processDevelopment = info.ProcessDevelopment;
+
+                        if (total > 0)
+                        {
+                            ProductionPercentage = production / total;
+                            SetupPercentage = setup / total;
+                            TeardownPercentage = teardown / total;
+                            MaintenancePercentage = maintenance / total;
+                            ProcessDevelopmentPercentage = processDevelopment / total;
+                        }
+
+                        ProductionTime = TimeSpan.FromSeconds(production);
+                        SetupTime = TimeSpan.FromSeconds(setup);
+                        TeardownTime = TimeSpan.FromSeconds(teardown);
+                        MaintenanceTime = TimeSpan.FromSeconds(maintenance);
+                        ProcessDevelopmentTime = TimeSpan.FromSeconds(processDevelopment);
+
+                    }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                }
+
+
+                //// Snapshot Table Data
+                //if (data.Id.ToLower() == "statusdata_snapshots")
                 //{
-                //    // Production Status Times
-                //    this.Dispatcher.BeginInvoke(new Action<object>(UpdateProductionStatusTimes_GenEventValues), Priority_Context, new object[] { data.Data02 });
+                //    this.Dispatcher.BeginInvoke(new Action<object>(UpdateSnapshot), UI_Functions.PRIORITY_BACKGROUND, new object[] { data.Data02 });
                 //}
 
-                // Shifts Table Data
-                if (data.Id.ToLower() == "statusdata_shiftdata")
-                {
-                    // Production Status Times
-                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateProductionStatusTimes_ShiftData), Priority_Context, new object[] { data.Data02 });
-                }
-
-                // Snapshot Table Data
-                if (data.Id.ToLower() == "statusdata_snapshots")
-                {
-                    // Production Status Times
-                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateProductionStatusTimes_SnapshotData), Priority_Context, new object[] { data.Data02 });
-                }
-            }
-
-        }
-
-        public string Text
-        {
-            get { return (string)GetValue(TextProperty); }
-            set { SetValue(TextProperty, value); }
-        }
-
-        public static readonly DependencyProperty TextProperty =
-            DependencyProperty.Register("Text", typeof(string), typeof(Plugin), new PropertyMetadata(null));
-
-
-
-        ObservableCollection<TimeProgress> times;
-        public ObservableCollection<TimeProgress> Times
-        {
-            get
-            {
-                if (times == null) times = new ObservableCollection<TimeProgress>();
-                return times;
-            }
-            set
-            {
-                times = value;
+                //// Shifts Table Data
+                //if (data.Id.ToLower() == "statusdata_shiftdata")
+                //{
+                //    // Production Status Times
+                //    this.Dispatcher.BeginInvoke(new Action<object>(UpdateShiftData), Priority_Context, new object[] { data.Data02 });
+                //}
             }
         }
 
-
-        // Get list of Production Status variables and create TimeProgress controls for each 
-        void UpdateProductionStatusTimes_GenEventValues(object geneventvalues)
+        void UpdateSnapshot(object data)
         {
-            DataTable dt = geneventvalues as DataTable;
+            var dt = data as DataTable;
             if (dt != null)
             {
-                DataView dv = dt.AsDataView();
-                dv.RowFilter = "EVENT = 'production_status'";
-                DataTable temp_dt = dv.ToTable();
-
-                if (temp_dt != null)
-                {
-                    foreach (DataRow row in temp_dt.Rows)
-                    {
-                        string val = row["VALUE"].ToString();
-
-                        // Get the Numval 
-                        int numval = -1;
-                        int.TryParse(row["NUMVAL"].ToString(), out numval);
-
-                        if (!Times.ToList().Exists(x => x.Text == val))
-                        {
-                            var timeProgress = new TimeProgress();
-
-                            // Set Text
-                            timeProgress.Text = val;
-                            timeProgress.Index = numval;
-
-                            // Initialize values
-                            timeProgress.Percentage = "0%";
-                            timeProgress.BarValue = 0;
-                            timeProgress.BarMaximum = 1;
-
-                            Times.Add(timeProgress);
-
-                            Times.SortReverse();
-                        } 
-                    }
-
-                    //// Set Bar Colors
-                    //foreach (var time in Times)
-                    //{
-                    //    if (time.Index == Times.Count - 1)
-                    //    {
-                    //        time.BarBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusGreen");
-                    //        time.BarBackgroundBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusGreen_Hover");
-                    //    }
-                    //    else if (time.Index == 0)
-                    //    {
-                    //        time.BarBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusRed");
-                    //        time.BarBackgroundBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusRed_Hover");
-                    //    }
-                    //    else
-                    //    {
-                    //        time.BarBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusYellow");
-                    //        time.BarBackgroundBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusYellow_Hover");
-                    //    }
-                    //}
-
-                    temp_dt.Dispose();
-                }
+                ProductionStatus = DataTable_Functions.GetTableValue(dt, "name", "Production Status", "value");
             }
         }
 
         // Get the Times for each Production Status variable from the 'Shifts' table
-        void UpdateProductionStatusTimes_ShiftData(object shiftData)
+        void UpdateShiftData(object shiftData)
         {
             DataTable dt = shiftData as DataTable;
             if (dt != null)
             {
                 // Get Total Time for this shift (all segments)
-                TotalSeconds = GetTime("TOTALTIME", dt);
+                double total = GetTime("TOTALTIME", dt);
 
-                ProductionSeconds = GetTime("production_status__production", dt);
-                SetupSeconds = GetTime("production_status__setup", dt);
-                TeardownSeconds = GetTime("production_status__teardown", dt);
-                MaintenanceSeconds = GetTime("production_status__maintenance", dt);
-                ProcessDevelopmentSeconds = GetTime("production_status__process_development", dt);
+                double production = GetTime("production_status__production", dt);
+                double setup = GetTime("production_status__setup", dt);
+                double teardown = GetTime("production_status__teardown", dt);
+                double maintenance = GetTime("production_status__maintenance", dt);
+                double processDevelopment = GetTime("production_status__process_development", dt);
 
+                if (total > 0)
+                {
+                    ProductionPercentage = production / total;
+                    SetupPercentage = setup / total;
+                    TeardownPercentage = teardown / total;
+                    MaintenancePercentage = maintenance / total;
+                    ProcessDevelopmentPercentage = processDevelopment / total;
+                }
+
+                ProductionTime = TimeSpan.FromSeconds(production);
+                SetupTime = TimeSpan.FromSeconds(setup);
+                TeardownTime = TimeSpan.FromSeconds(teardown);
+                MaintenanceTime = TimeSpan.FromSeconds(maintenance);
+                ProcessDevelopmentTime = TimeSpan.FromSeconds(processDevelopment);
             }
         }
-
-        //// Get the Times for each Production Status variable from the 'Shifts' table
-        //void UpdateProductionStatusTimes_ShiftData(object shiftData)
-        //{
-        //    DataTable dt = shiftData as DataTable;
-        //    if (dt != null)
-        //    {
-        //        // Get Total Time for this shift (all segments)
-        //        double totalSeconds = GetTime("TOTALTIME", dt);
-
-        //        // Get List of variables from 'Shifts' table and collect the total number of seconds
-        //        foreach (DataColumn column in dt.Columns)
-        //        {
-        //            if (column.ColumnName.Contains("PRODUCTION_STATUS") || column.ColumnName.Contains("Production_Status") || column.ColumnName.Contains("production_status"))
-        //            {
-        //                double seconds = GetTime(column.ColumnName, dt);
-
-        //                // Get Value name from Column Name
-        //                string valueName = null;
-        //                if (column.ColumnName.Contains("__"))
-        //                {
-        //                    int i = column.ColumnName.IndexOf("__") + 2;
-        //                    if (i < column.ColumnName.Length)
-        //                    {
-        //                        string name = column.ColumnName.Substring(i);
-        //                        name = name.Replace('_', ' ');
-
-        //                        valueName = name;
-        //                    }
-        //                }
-
-        //                if (valueName != null)
-        //                {
-        //                    int index = Times.ToList().FindIndex(x => x.Text.ToLower() == valueName.ToLower());
-        //                    if (index >= 0)
-        //                    {
-        //                        var timeDisplay = Times[index];
-        //                        timeDisplay.Maximum = totalSeconds;
-        //                        timeDisplay.Value = seconds;
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
+        
         static double GetTime(string columnName, DataTable dt)
         {
             double result = 0;
@@ -292,24 +259,6 @@ namespace TH_DeviceCompare_ProductionStatusTimes
             }
 
             return result;
-        }
-
-
-        // Highlight the Current Production Status
-        void UpdateProductionStatusTimes_SnapshotData(object snapshotData)
-        {
-            DataTable dt = snapshotData as DataTable;
-            if (dt != null)
-            {
-                string currentValue = DataTable_Functions.GetTableValue(dt, "name", "Production Status", "value");
-
-                foreach (var time in Times)
-                {
-                    if (time.Text != null && currentValue != null && 
-                        time.Text.ToLower() == currentValue.ToLower()) time.IsSelected = true;
-                    else time.IsSelected = false;
-                }
-            }
         }
 
     }

@@ -5,18 +5,34 @@
     <!--TrakHound Colors-->
     <Color ice:Freeze="True" x:Key="TrakHound_Blue_Color">#0080ff</Color>
     <Color ice:Freeze="True" x:Key="TrakHound_LightBlue_Color">#40a0ff</Color>
+    <Color ice:Freeze="True" x:Key="TrakHound_DarkBlue_Color">#0040ff</Color>
+    
     
     <!--TrakHound Brushes-->
     <SolidColorBrush ice:Freeze="True" x:Key="TrakHound_Blue" Color="{StaticResource TrakHound_Blue_Color}"/>
     <SolidColorBrush ice:Freeze="True" x:Key="TrakHound_LightBlue" Color="{StaticResource TrakHound_LightBlue_Color}"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="TrakHound_DarkBlue" Color="{StaticResource TrakHound_DarkBlue_Color}"/>
     
     <!--Accent Colors-->
-    <!--<Color ice:Freeze="True" x:Key="Accent_Normal_Color">#0080ff</Color>-->
-    <Color ice:Freeze="True" x:Key="Accent_Normal_Color">#666666</Color>
-    <Color ice:Freeze="True" x:Key="Accent_Light_Color">#888888</Color>
-    <Color ice:Freeze="True" x:Key="Accent_Dark_Color">#0060ff</Color>
+    <!--<Color ice:Freeze="True" x:Key="Accent_Normal_Color">#0080ff</Color>
+    <Color ice:Freeze="True" x:Key="Accent_Light_Color">#40a0ff</Color>
+    <Color ice:Freeze="True" x:Key="Accent_Dark_Color">#0040ff</Color>
     <Color ice:Freeze="True" x:Key="Accent_Hover_Color">#200080ff</Color>
-    <Color ice:Freeze="True" x:Key="Accent_HoverBorder_Color">#600080ff</Color>
+    <Color ice:Freeze="True" x:Key="Accent_HoverBorder_Color">#600080ff</Color>-->
+
+
+
+    <Color ice:Freeze="True" x:Key="Accent_Normal_Color">#143a5a</Color>
+    <Color ice:Freeze="True" x:Key="Accent_Light_Color">#1d5582</Color>
+    <Color ice:Freeze="True" x:Key="Accent_Dark_Color">#0a1e2d</Color>
+    <Color ice:Freeze="True" x:Key="Accent_Hover_Color">#20143a5a</Color>
+    <Color ice:Freeze="True" x:Key="Accent_HoverBorder_Color">#60143a5a</Color>
+
+    <!--<Color ice:Freeze="True" x:Key="Accent_Normal_Color">#555555</Color>
+    <Color ice:Freeze="True" x:Key="Accent_Light_Color">#666666</Color>
+    <Color ice:Freeze="True" x:Key="Accent_Dark_Color">#333333</Color>
+    <Color ice:Freeze="True" x:Key="Accent_Hover_Color">#20555555</Color>
+    <Color ice:Freeze="True" x:Key="Accent_HoverBorder_Color">#60555555</Color>-->
 
     <!--Window Backgrounds-->
     <Color ice:Freeze="True" x:Key="Window_Background_Color">#fff</Color>
@@ -68,11 +84,9 @@
     <SolidColorBrush ice:Freeze="True" x:Key="Shade_Dark" Color="#66000000"/>
 
     <!--Status Colors-->
-    <!--<SolidColorBrush ice:Freeze="True" x:Key="StatusBlue" Color="#00B4FF"/>-->
-
     <SolidColorBrush ice:Freeze="True" x:Key="StatusWhite" Color="#FFF"/>
     <SolidColorBrush ice:Freeze="True" x:Key="StatusGreen" Color="#FF19B419"/>
-    <SolidColorBrush ice:Freeze="True" x:Key="StatusYellow" Color="Yellow"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusYellow" Color="#ffeb00"/>
     <SolidColorBrush ice:Freeze="True" x:Key="StatusRed" Color="Red"/>
     <SolidColorBrush ice:Freeze="True" x:Key="StatusBlue" Color="#FF0046FF"/>
     <SolidColorBrush ice:Freeze="True" x:Key="StatusOrange" Color="#FFFF8B00"/>
@@ -98,6 +112,38 @@
     <SolidColorBrush ice:Freeze="True" x:Key="StatusOrange_Hover" Color="#10FF8B00"/>
     <SolidColorBrush ice:Freeze="True" x:Key="StatusPurple_Hover" Color="#10C300C3"/>
     <SolidColorBrush ice:Freeze="True" x:Key="StatusTeal_Hover" Color="#1000FFF3"/>
+
+
+    <!--<SolidColorBrush ice:Freeze="True" x:Key="StatusBlue" Color="#00B4FF"/>-->
+
+    <!--<SolidColorBrush ice:Freeze="True" x:Key="StatusWhite" Color="#FFF"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusGreen" Color="#FF19B419"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusYellow" Color="Yellow"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusRed" Color="Red"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusBlue" Color="#FF0046FF"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusOrange" Color="#FFFF8B00"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusPurple" Color="#FFC300C3"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusTeal" Color="#FF00FFF3"/>
+
+    --><!--<SolidColorBrush ice:Freeze="True" x:Key="StatusBlue_Light" Color="#8000B4FF"/>--><!--
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusWhite_Light" Color="#80FFFFFF"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusGreen_Light" Color="#8019B419"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusYellow_Light" Color="#60FFFF00"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusRed_Light" Color="#60FF0000"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusBlue_Light" Color="#600046FF"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusOrange_Light" Color="#60FF8B00"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusPurple_Light" Color="#60C300C3"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusTeal_Light" Color="#6000FFF3"/>
+
+    --><!--<SolidColorBrush ice:Freeze="True" x:Key="StatusBlue_Hover" Color="#2000B4FF"/>--><!--
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusWhite_Hover" Color="#20FFFFFF"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusGreen_Hover" Color="#2019B419"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusYellow_Hover" Color="#10FFFF00"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusRed_Hover" Color="#10FF0000"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusBlue_Hover" Color="#100046FF"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusOrange_Hover" Color="#10FF8B00"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusPurple_Hover" Color="#10C300C3"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusTeal_Hover" Color="#1000FFF3"/>-->
 
     <!--Status Colors--><!--
     <SolidColorBrush ice:Freeze="True" x:Key="StatusBlue" Color="#00B4FF"/>

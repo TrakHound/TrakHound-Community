@@ -7,16 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.Media;
 using System.Reflection;
+using System.Windows.Media;
 
-using TrakHound.Configurations;
+using TrakHound;
 using TrakHound.API.Users;
+using TrakHound.Logging;
 using TrakHound.Plugins;
 using TrakHound.Plugins.Client;
-using TrakHound_UI;
-using TrakHound.Logging;
-using TrakHound;
 
 namespace TrakHound_Dashboard
 {
@@ -56,41 +54,7 @@ namespace TrakHound_Dashboard
                 _pluginConfigurations = value;
             }
         }
-
-
-        // List of plugins enabled by default ( Update 7-30-16 : Just enable all plugins )
-        //private List<string> defaultEnabledPlugins = new List<string> {
-        //    "Dashboard", 
-
-        //    "Device Compare",
-        //    "OEE",
-        //    "Availability",
-        //    "Performance",
-        //    "Timeline (OEE)",
-        //    "Production Status",
-        //    "Program Name",
-        //    "Feedrate Override",
-        //    "Rapidrate Override",
-        //    "Spindle Override",
-        //    "Emergency Stop",
-        //    "Controller Mode",
-        //    "Execution Mode",
-        //    "Alarm",
-        //    "Part Count",
-
-        //    "Device Table",
-
-        //    "Table Manager",
-        //    "Status Data",
-        //    "Status Timeline",
-        //    "Device Status Hour Timeline",
-        //    "Controller Status",
-        //    "Production Status",
-        //    "OEE Status",
-        //    "Device Status Times",
-        //    "Production Status Times"
-        //};
-
+        
         private void LoadPlugins()
         {
             Plugins = GetPlugins();
@@ -106,7 +70,39 @@ namespace TrakHound_Dashboard
             Properties.Settings.Default.Save();
         }
 
+        // Debug Omit Plugins (any plugin listed won't be loaded)
+        static string[] debugOmitPlugins = new string[]
+        {
+            //"Dashboard",
 
+            //"Device Compare",
+            //"OEE",
+            //"Availability",
+            //"Performance",
+            //"Timeline (OEE)",
+            //"Production Status",
+            //"Program Name",
+            //"Feedrate Override",
+            //"Rapidrate Override",
+            //"Spindle Override",
+            //"Emergency Stop",
+            //"Controller Mode",
+            //"Execution Mode",
+            //"Alarm",
+            //"Part Count",
+
+            //"Device Table",
+
+            //"Table Manager",
+            //"Status Data",
+            ////"Status Timeline",
+            ////"Device Status Hour Timeline",
+            ////"Controller Status",
+            ////"Production Status",
+            ////"OEE Status",
+            ////"Device Status Times",
+            ////"Production Status Times"
+        };
 
         #region "IClientPlugins"
 
@@ -121,7 +117,7 @@ namespace TrakHound_Dashboard
             string path;
 
             // Load from System Directory first (easier for user to navigate to 'C:\TrakHound\')
-            path = FileLocations.TrakHound + @"\Plugins\";
+            path = Path.Combine(FileLocations.TrakHound, "Plugins");
             if (Directory.Exists(path)) AddPlugins(GetPlugins(path), result);
 
             // Load from App root Directory (doesn't overwrite plugins found in System Directory)
@@ -133,6 +129,12 @@ namespace TrakHound_Dashboard
             foreach (var plugin in result)
             {
                 Logger.Log(plugin.Title + " Loaded", LogLineType.Notification);
+            }
+
+            foreach (var debugOmitPlugin in debugOmitPlugins)
+            {
+                var p = result.Find(x => x.Title == debugOmitPlugin);
+                if (p != null) result.Remove(p);
             }
 
             return result;
@@ -153,8 +155,8 @@ namespace TrakHound_Dashboard
                 // Only add if not already in returned list
                 if (result.Find(x =>
                     x.Title == plugin.Title &&
-                    x.DefaultParent == plugin.DefaultParent &&
-                    x.DefaultParentCategory == plugin.DefaultParentCategory
+                    x.ParentPlugin == plugin.ParentPlugin &&
+                    x.ParentPluginCategory == plugin.ParentPluginCategory
                     ) == null)
                 {
                     result.Add(plugin);
@@ -189,8 +191,8 @@ namespace TrakHound_Dashboard
                 // Only add if not already in returned list
                 if (result.Find(x =>
                     x.Title == plugin.Title &&
-                    x.DefaultParent == plugin.DefaultParent &&
-                    x.DefaultParentCategory == plugin.DefaultParentCategory
+                    x.ParentPlugin == plugin.ParentPlugin &&
+                    x.ParentPluginCategory == plugin.ParentPluginCategory
                     ) == null)
                 {
                     result.Add(plugin);
@@ -211,8 +213,8 @@ namespace TrakHound_Dashboard
             {
                 if (oldPlugins.Find(x =>
                     x.Title == plugin.Title &&
-                    x.DefaultParent == plugin.DefaultParent && 
-                    x.DefaultParentCategory == plugin.DefaultParentCategory
+                    x.ParentPlugin == plugin.ParentPlugin && 
+                    x.ParentPluginCategory == plugin.ParentPluginCategory
                     ) == null) 
                     oldPlugins.Add(plugin);
             }
@@ -246,35 +248,20 @@ namespace TrakHound_Dashboard
                     config = new PluginConfiguration();
                     config.Name = plugin.Title;
                     config.Description = plugin.Description;
-                    //config.SubCategories = plugin.SubCategories;
-
                     config.Enabled = true;
-
-                    // Automatically enable basic Plugins by TrakHound
-                    //if (defaultEnabledPlugins.Find(x => x.ToLower() == config.Name.ToLower()) != null)
-                    //{
-                    //    config.Enabled = true;
-                    //}
-                    //else config.Enabled = false;
                 }
 
                 config.SubCategories = plugin.SubCategories;
 
                 config.EnabledChanged += config_EnabledChanged;
 
-                config.Parent = plugin.DefaultParent;
-                config.Category = plugin.DefaultParentCategory;
+                config.Parent = plugin.ParentPlugin;
+                config.Category = plugin.ParentPluginCategory;
 
                 if (FindPluginConfiguration(plugin, result) == null) result.Add(config);
             }
 
             result = ProcessPluginConfigurations(result);
-
-            // Add Buttons for Plugins on Plugin Options page
-            if (pluginsPage != null)
-            {
-                Plugins_AddItems(result);
-            }
 
             return result;
         }
@@ -294,8 +281,8 @@ namespace TrakHound_Dashboard
             {
                 // See if root is a match
                 if (config.Name == plugin.Title &&
-                    config.Parent == plugin.DefaultParent &&
-                    config.Category == plugin.DefaultParentCategory 
+                    config.Parent == plugin.ParentPlugin &&
+                    config.Category == plugin.ParentPluginCategory 
                     ) result = config;
                 // if root is not a match, then search subconfigs
                 else
@@ -374,8 +361,8 @@ namespace TrakHound_Dashboard
             {
                 var plugin = Plugins.Find(x =>
                     x.Title == config.Name &&
-                    x.DefaultParent == config.Parent &&
-                    x.DefaultParentCategory == config.Category
+                    x.ParentPlugin == config.Parent &&
+                    x.ParentPluginCategory == config.Category
                     );
                 if (plugin != null)
                 {
@@ -404,7 +391,6 @@ namespace TrakHound_Dashboard
                         mData.Text = "Error during plugin load";
                         mData.AdditionalInfo = ex.Message;
                         mData.Type = TrakHound.API.Messages.MessageType.TRAKHOUND_ALERT;
-                        //mData.Type = Controls.Message_Center.MessageType.error;
 
                         messageCenter.AddMessage(mData);
                     }
@@ -428,8 +414,8 @@ namespace TrakHound_Dashboard
                     {
                         var subplugin = Plugins.Find(x =>
                             x.Title == subConfig.Name &&
-                            x.DefaultParent == subConfig.Parent &&
-                            x.DefaultParentCategory == subConfig.Category
+                            x.ParentPlugin == subConfig.Parent &&
+                            x.ParentPluginCategory == subConfig.Category
                             );
                         if (subplugin != null)
                         {
@@ -450,8 +436,8 @@ namespace TrakHound_Dashboard
         {
             var plugin = Plugins.Find(x =>
                 x.Title == config.Name &&
-                x.DefaultParent == config.Parent &&
-                x.DefaultParentCategory == config.Category
+                x.ParentPlugin == config.Parent &&
+                x.ParentPluginCategory == config.Category
                 );
             if (plugin != null)
             {
@@ -465,8 +451,8 @@ namespace TrakHound_Dashboard
                         {
                             var subplugin = Plugins.Find(x =>
                                 x.Title == subConfig.Name &&
-                                x.DefaultParent == subConfig.Parent &&
-                                x.DefaultParentCategory == subConfig.Category
+                                x.ParentPlugin == subConfig.Parent &&
+                                x.ParentPluginCategory == subConfig.Category
                                 );
                             if (subplugin != null)
                             {
@@ -488,6 +474,7 @@ namespace TrakHound_Dashboard
         /// <param name="de_d"></param>
         private void Plugin_SendData(EventData data)
         {
+            Plugin_ShowDeviceManager(data);
             Plugin_ShowRequested(data);
 
             foreach (var config in PluginConfigurations)
@@ -496,8 +483,8 @@ namespace TrakHound_Dashboard
                 {
                     var plugin = Plugins.Find(x =>
                         x.Title == config.Name &&
-                        x.DefaultParent == config.Parent &&
-                        x.DefaultParentCategory == config.Category
+                        x.ParentPlugin == config.Parent &&
+                        x.ParentPluginCategory == config.Category
                         );
                     if (plugin != null)
                     {
@@ -506,6 +493,18 @@ namespace TrakHound_Dashboard
                 }
             }
         }
+
+        private void Plugin_ShowDeviceManager(EventData data)
+        {
+            if (data != null && data.Id != null)
+            {
+                if (data.Id == "SHOW_DEVICE_MANAGER")
+                {
+                    DeviceManager_DeviceList_Open();
+                }
+            }
+        }
+
 
         /// <summary>
         /// Plugin has sent a message requesting to be shown as a tab
@@ -582,11 +581,6 @@ namespace TrakHound_Dashboard
             }
         }
 
-        //private static bool TestForTabHeaderPlugin(TabHeader tab, string pluginName)
-        //{
-
-        //}
-
         /// <summary>
         /// Create an Options page for the plugin and add it to the Options Manager
         /// </summary>
@@ -594,93 +588,6 @@ namespace TrakHound_Dashboard
         private void Plugin_CreateOptionsPage(IClientPlugin plugin)
         {
             if (plugin.Options != null) Options_AddPage(plugin.Options);
-        }
-
-        /// <summary>
-        /// Update the devices list for each plugin
-        /// </summary>
-        /// <param name="devices"></param>
-        private void Plugins_UpdateDeviceList(List<DeviceConfiguration> configs)
-        {
-            foreach (var plugin in Plugins)
-            {
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    if (plugin.Devices != null)
-                    {
-                        plugin.Devices.Clear();
-                        foreach (var config in configs) plugin.Devices.Add(config);
-                    }
-                }
-                ), MainWindow.PRIORITY_BACKGROUND, new object[] { });      
-            }
-        }
-
-        /// <summary>
-        /// Update device for each plugin
-        /// </summary>
-        /// <param name="config"></param>
-        private void Plugins_UpdateDevice(DeviceConfiguration config)
-        {
-            foreach (var plugin in Plugins)
-            {
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    if (plugin.Devices != null)
-                    {
-                        int index = plugin.Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
-                        if (index >= 0)
-                        {
-                            var oldConfig = plugin.Devices[index];
-
-                            if (oldConfig.ClientUpdateId != config.ClientUpdateId) plugin.Devices.RemoveAt(index);                           
-
-                            if (config.ClientEnabled) plugin.Devices.Insert(index, config);
-                        }
-                    }
-                }
-                ), MainWindow.PRIORITY_BACKGROUND, new object[] { });
-            }
-        }
-
-        /// <summary>
-        /// Add device for each plugin
-        /// </summary>
-        /// <param name="config"></param>
-        private void Plugins_AddDevice(DeviceConfiguration config)
-        {
-            foreach (var plugin in Plugins)
-            {
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    if (plugin.Devices != null)
-                    {
-                        int index = plugin.Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
-                        if (index < 0) plugin.Devices.Add(config);
-                    }
-                }
-                ), MainWindow.PRIORITY_BACKGROUND, new object[] { });
-            }
-        }
-
-        /// <summary>
-        /// Remove device for each plugin
-        /// </summary>
-        /// <param name="config"></param>
-        private void Plugins_RemoveDevice(DeviceConfiguration config)
-        {
-            foreach (var plugin in Plugins)
-            {
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    if (plugin.Devices != null)
-                    {
-                        int index = plugin.Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
-                        if (index >= 0) plugin.Devices.RemoveAt(index);
-                    }
-                }
-                ), MainWindow.PRIORITY_BACKGROUND, new object[] { });
-            }
         }
 
         /// <summary>
@@ -693,12 +600,12 @@ namespace TrakHound_Dashboard
 
             if (userConfig != null)
             {
-                data.Id = "userloggedin";
+                data.Id = "USER_LOGIN";
                 data.Data01 = userConfig;
             }
             else
             {
-                data.Id = "userloggedout";
+                data.Id = "USER_LOGOUT";
             }
 
             Plugin_SendData(data);

@@ -8,7 +8,7 @@
              xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
              
              mc:Ignorable="d" 
-             d:DesignHeight="300" MinWidth="400">
+             MinWidth="400">
     
     <Grid x:Name="root">
         <Grid.RowDefinitions>
@@ -18,26 +18,28 @@
         </Grid.RowDefinitions>
 
         <!--Current Configuration-->
-        <StackPanel Margin="0,20">
+        <StackPanel Margin="0,0,0,20">
 
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,30">
 
-                <TextBlock Text="Current API Host" Foreground="#888" FontSize="12" VerticalAlignment="Center"/>
+                <ui:Button Text="Local" Margin="0,0,20,0" Clicked="Local_Clicked" Style="{StaticResource Button_Accent_Background}"/>
+                
+                <ui:Button Text="TrakHound Cloud" Clicked="TrakHoundCloud_Clicked" Style="{StaticResource Button_Accent_Background}" Image="/TrakHound-Dashboard;component/Resources/Cloud_01.png"/>
 
-                <ui:Button Grid.Column="1" Text="Reset to Default" Clicked="ResetDefault_Clicked" Style="{StaticResource Button_Accent_Background}"/>
+            </StackPanel>
 
-            </Grid>
+            <TextBlock Text="Current Data API Host" Foreground="#888" FontSize="12" VerticalAlignment="Center"/>
 
-            <TextBlock Text="{Binding CurrentHost}" Foreground="#333" FontSize="18" Margin="0,10"/>
+            <TextBlock Text="{Binding CurrentDataHost}" Foreground="#333" FontSize="18" Margin="0,10"/>
+
+            <TextBlock Text="Current Authentication API Host" Foreground="#888" FontSize="12" VerticalAlignment="Center"/>
+
+            <TextBlock Text="{Binding CurrentAuthenticationHost}" Foreground="#333" FontSize="18" Margin="0,10"/>
 
         </StackPanel>
 
 
-        <Grid Grid.Row="1">
+        <!--<Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
@@ -45,10 +47,10 @@
 
             <TextBlock Text="API Server List" Foreground="#888" FontSize="12" VerticalAlignment="Center"/>
 
-            <!--Refresh / Loading-->
+            --><!--Refresh / Loading--><!--
             <Grid Grid.Column="1">
 
-                <!--Refresh Button-->
+                --><!--Refresh Button--><!--
                 <ui:Button Image="/TrakHound-Dashboard;component/Resources/Refresh_01.png" Clicked="Refresh_Clicked" ToolTip="Refresh Available API Servers on the Network" VerticalAlignment="Center">
                     <ui:Button.Style>
                         <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Accent_Foreground}">
@@ -86,7 +88,7 @@
                     </ui:Button.Style>
                 </ui:Button>
 
-                <!--Loading Animation-->
+                --><!--Loading Animation--><!--
                 <ui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="35" Height="35" Foreground="{StaticResource Accent_Normal}">
                     <ui:Spinner.Style>
                         <Style TargetType="ui:Spinner">
@@ -128,8 +130,8 @@
 
         </Grid>
 
-        <!--API Servers List-->
-        <ItemsControl Grid.Row="2" ItemsSource="{Binding Servers}" Margin="0,20"/>
+        --><!--API Servers List--><!--
+        <ItemsControl Grid.Row="2" ItemsSource="{Binding Servers}" Margin="0,20"/>-->
         
     </Grid>
     

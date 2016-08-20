@@ -25,6 +25,9 @@ namespace TrakHound.API
 
             [JsonProperty("production_status_timer")]
             public double ProductionStatusTimer { get; set; }
+
+            [JsonProperty("part_count")]
+            public int PartCount { get; set; }
         }
     }
 }

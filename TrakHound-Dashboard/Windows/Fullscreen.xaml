@@ -1,4 +1,9 @@
-﻿<Window x:Class="TrakHound_Dashboard.Windows.Fullscreen"
+﻿<!--Copyright (c) 2016 Feenux LLC, All Rights Reserved.-->
+
+<!--This file is subject to the terms and conditions defined in-->
+<!--file 'LICENSE.txt', which is part of this source code package.-->
+
+<Window x:Class="TrakHound_Dashboard.Windows.Fullscreen"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         
@@ -9,8 +14,7 @@
         
         Closing="Window_Closing" WindowStyle="None"
         
-        PreviewKeyDown="Window_PreviewKeyDown"
-        
+        PreviewKeyDown="Window_PreviewKeyDown"       
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
         WindowState="Maximized"
@@ -89,13 +93,6 @@
 
                 <!--Zoom Level-->
                 <ComboBox x:Name="zoom_COMBO" ItemsSource="{Binding ZoomLevels}" TextBoxBase.TextChanged="zoom_COMBO_TextChanged" Text="100%" Cursor="Hand" IsEditable="True" IsReadOnly="True"/>
-                <!--<ComboBox ItemsSource="{Binding ZoomLevels}"
-                          SelectionChanged="Zoom_SelectionChanged"
-                          SelectedValue="{Binding ZoomLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                          SelectedValuePath="Value"
-                          DisplayMemberPath="Text"
-                          Cursor="Hand" IsEditable="False" IsReadOnly="True"
-                          />-->  
 
                 <Rectangle Width="1" Fill="#aaffffff" Margin="0,2"/>
 

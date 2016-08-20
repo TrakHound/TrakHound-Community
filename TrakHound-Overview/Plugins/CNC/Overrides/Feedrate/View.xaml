@@ -35,10 +35,11 @@
                     <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}" />
                     <Setter Property="ActiveLevelBrush" Value="#333"/>
                     <Setter Property="InactiveLevelBrush" Value="#33000000"/>
-                    <Setter Property="FontSize" Value="24pt"/>
+                    <!--<Setter Property="FontSize" Value="24pt"/>-->
                     <Setter Property="ValueFormat" Value="P1"/>
-                    <Setter Property="Width" Value="200"/>
+                    <!--<Setter Property="Width" Value="200"/>-->
                     <Setter Property="Height" Value="50"/>
+                    <Setter Property="Padding" Value="10,0"/>
                 </Style>
 
             </ItemsControl.Resources>

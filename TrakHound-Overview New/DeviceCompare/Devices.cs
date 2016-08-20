@@ -20,43 +20,43 @@ namespace TrakHound_Overview
         /// <param name="e"></param>
         public void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
-            {
-                ClearDeviceList();
-            }
+            //if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
+            //{
+            //    ClearDeviceList();
+            //}
 
-            if (e.NewItems != null)
-            {
-                foreach (DeviceConfiguration newConfig in e.NewItems)
-                {
-                    if (newConfig != null) AddDevice(newConfig);
-                }
+            //if (e.NewItems != null)
+            //{
+            //    foreach (DeviceConfiguration newConfig in e.NewItems)
+            //    {
+            //        if (newConfig != null) AddDevice(newConfig);
+            //    }
 
-                SortDataItems();
-                LoadHeaderView();
-                SortDeviceDisplays();
-            }
+            //    SortDataItems();
+            //    LoadHeaderView();
+            //    SortDeviceDisplays();
+            //}
 
-            if (e.OldItems != null)
-            {
-                foreach (DeviceConfiguration oldConfig in e.OldItems)
-                {
-                    Devices.Remove(oldConfig);
+            //if (e.OldItems != null)
+            //{
+            //    foreach (DeviceConfiguration oldConfig in e.OldItems)
+            //    {
+            //        Devices.Remove(oldConfig);
 
-                    int index = DeviceDisplays.FindIndex(x => x.UniqueId == oldConfig.UniqueId);
-                    if (index >= 0)
-                    {
-                        var dd = DeviceDisplays[index];
-                        Headers.Remove(dd.Group.Header);
-                        Columns.Remove(dd.Group.Column);
-                        dd.CellAdded -= Display_CellAdded;
-                        dd.CellSizeChanged -= display_CellSizeChanged;
+            //        int index = DeviceDisplays.FindIndex(x => x.UniqueId == oldConfig.UniqueId);
+            //        if (index >= 0)
+            //        {
+            //            var dd = DeviceDisplays[index];
+            //            Headers.Remove(dd.Group.Header);
+            //            Columns.Remove(dd.Group.Column);
+            //            dd.CellAdded -= Display_CellAdded;
+            //            dd.CellSizeChanged -= display_CellSizeChanged;
 
-                        //Overlays.Remove(dd.Group.Overlay);
-                        DeviceDisplays.Remove(dd);
-                    }
-                }
-            }
+            //            //Overlays.Remove(dd.Group.Overlay);
+            //            DeviceDisplays.Remove(dd);
+            //        }
+            //    }
+            //}
         }
 
         /// <summary>

@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 using Newtonsoft.Json;
 
@@ -75,7 +76,16 @@ namespace TrakHound.Tools.Web
 
         public static string FromList<T>(List<T> data)
         {
-            return JsonConvert.SerializeObject(data);
+            try
+            {
+                return JsonConvert.SerializeObject(data.ToList());
+            }
+            catch (Exception ex)
+            {
+                Logger.Log("Error During Serialization :: " + ex.Message, LogLineType.Error);
+            }
+
+            return null;
         }
 
         public static string FromObject(object data)

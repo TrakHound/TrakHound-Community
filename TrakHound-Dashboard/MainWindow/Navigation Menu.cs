@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
@@ -129,6 +134,14 @@ namespace TrakHound_Dashboard
             NavigationMenu_Hide();
         }
 
+        private void Cycles_Clicked(TrakHound_UI.Button bt)
+        {
+            var plugin = Plugins.Find(x => x.Title == "Cycles");
+            if (plugin != null) AddTab(plugin);
+
+            NavigationMenu_Hide();
+        }
+
         private void DeviceManager_Clicked(TrakHound_UI.Button bt)
         {
             DeviceManager_DeviceList_Open();
@@ -138,12 +151,6 @@ namespace TrakHound_Dashboard
         private void Options_Clicked(TrakHound_UI.Button bt)
         {
             Options_Open();
-            NavigationMenu_Hide();
-        }
-
-        private void Plugins_Clicked(TrakHound_UI.Button bt)
-        {
-            Plugins_Open();
             NavigationMenu_Hide();
         }
 
@@ -173,10 +180,10 @@ namespace TrakHound_Dashboard
             NavigationMenu_Hide();
         }
 
-        private void DeveloperConsole_Clicked(TrakHound_UI.Button bt)
-        {
-            developerConsole.Shown = !developerConsole.Shown;
-        }
+        //private void DeveloperConsole_Clicked(TrakHound_UI.Button bt)
+        //{
+        //    developerConsole.Shown = !developerConsole.Shown;
+        //}
 
         private void ReportBug_Clicked(TrakHound_UI.Button bt)
         {
@@ -230,104 +237,6 @@ namespace TrakHound_Dashboard
             return null;
         }
     }
-
-
-
-    //public static class FocusExtension
-    //{
-    //    public static bool GetIsFocused(DependencyObject obj)
-    //    {
-    //        return (bool)obj.GetValue(IsFocusedProperty);
-    //    }
-
-    //    public static void SetIsFocused(DependencyObject obj, bool value)
-    //    {
-    //        obj.SetValue(IsFocusedProperty, value);
-    //    }
-
-    //    public static readonly DependencyProperty IsFocusedProperty =
-    //        DependencyProperty.RegisterAttached(
-    //            "IsFocused", typeof(bool), typeof(FocusExtension),
-    //            new UIPropertyMetadata(false, OnIsFocusedPropertyChanged));
-
-    //    private static void OnIsFocusedPropertyChanged(
-    //        DependencyObject d,
-    //        DependencyPropertyChangedEventArgs e)
-    //    {
-    //        var uie = (UIElement)d;
-    //        if ((bool)e.NewValue)
-    //        {
-    //            uie.Focus(); // Don't care about false values.
-    //        }
-    //    }
-    //}
-
-    //public static class FocusExtension
-    //{
-    //    public static readonly DependencyProperty IsFocusedProperty =
-    //        DependencyProperty.RegisterAttached("IsFocused", typeof(bool?), typeof(FocusExtension), new FrameworkPropertyMetadata(IsFocusedChanged));
-
-    //    public static bool? GetIsFocused(DependencyObject element)
-    //    {
-    //        if (element == null)
-    //        {
-    //            throw new ArgumentNullException("element");
-    //        }
-
-    //        return (bool?)element.GetValue(IsFocusedProperty);
-    //    }
-
-    //    public static void SetIsFocused(DependencyObject element, bool? value)
-    //    {
-    //        if (element == null)
-    //        {
-    //            throw new ArgumentNullException("element");
-    //        }
-
-    //        element.SetValue(IsFocusedProperty, value);
-    //    }
-
-    //    private static void IsFocusedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    //    {
-    //        var fe = (FrameworkElement)d;
-
-    //        if (e.OldValue == null)
-    //        {
-    //            fe.GotFocus += FrameworkElement_GotFocus;
-    //            fe.LostFocus += FrameworkElement_LostFocus;
-    //        }
-
-    //        if (!fe.IsVisible)
-    //        {
-    //            fe.IsVisibleChanged += new DependencyPropertyChangedEventHandler(fe_IsVisibleChanged);
-    //        }
-
-    //        if ((bool)e.NewValue)
-    //        {
-    //            fe.Focus();
-    //        }
-    //    }
-
-    //    private static void fe_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-    //    {
-    //        var fe = (FrameworkElement)sender;
-    //        if (fe.IsVisible && (bool)((FrameworkElement)sender).GetValue(IsFocusedProperty))
-    //        {
-    //            fe.IsVisibleChanged -= fe_IsVisibleChanged;
-    //            fe.Focus();
-    //        }
-    //    }
-
-    //    private static void FrameworkElement_GotFocus(object sender, RoutedEventArgs e)
-    //    {
-    //        ((FrameworkElement)sender).SetValue(IsFocusedProperty, true);
-    //    }
-
-    //    private static void FrameworkElement_LostFocus(object sender, RoutedEventArgs e)
-    //    {
-    //        ((FrameworkElement)sender).SetValue(IsFocusedProperty, false);
-    //    }
-    //}
 
 }
 

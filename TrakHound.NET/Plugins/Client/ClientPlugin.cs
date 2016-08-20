@@ -11,8 +11,6 @@ namespace TrakHound.Plugins.Client
 {
     public static class ClientPlugin
     {
-        //public const string PLUGIN_EXTENSION = ".cplugin";
-
         public class PluginContainer : ReaderContainer
         {
             [ImportMany(typeof(IClientPlugin))]

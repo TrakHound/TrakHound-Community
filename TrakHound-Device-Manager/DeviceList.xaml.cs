@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -14,12 +15,12 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-using TrakHound.Configurations;
-using TrakHound_Device_Manager.Controls;
 using TrakHound;
-using TrakHound.Tools;
-using TrakHound_UI;
+using TrakHound.Configurations;
 using TrakHound.Logging;
+using TrakHound.Tools;
+using TrakHound_Device_Manager.Controls;
+using TrakHound_UI;
 
 namespace TrakHound_Device_Manager
 {
@@ -43,7 +44,7 @@ namespace TrakHound_Device_Manager
         public void Opened() { }
         public bool Opening() { return true; }
 
-        public void Closed() { if (PageClosed != null) PageClosed(); }
+        public void Closed() { PageClosed?.Invoke(); }
         public bool Closing() { return true; }
 
         #endregion
@@ -65,10 +66,8 @@ namespace TrakHound_Device_Manager
                 if (_deviceManager != null)
                 {
                     AddDevices(_deviceManager.Devices);
-                    //AddSharedDevices(_deviceManager.SharedDevices);
 
                     _deviceManager.DeviceListUpdated += _deviceManager_DeviceListUpdated;
-                    //_deviceManager.SharedDeviceListUpdated += _deviceManager_SharedDeviceListUpdated;
                     _deviceManager.DeviceUpdated += _deviceManager_DeviceUpdated;
                     _deviceManager.LoadingDevices += _deviceManager_LoadingDevices;
                     _deviceManager.DevicesLoaded += _deviceManager_DevicesLoaded;
@@ -89,19 +88,9 @@ namespace TrakHound_Device_Manager
         public event DeviceSelected_Handler EditTableSelected;
 
         /// <summary>
-        /// Event to request to open the Share Device Page
-        /// </summary>
-        //public event DeviceSelected_Handler ShareDeviceSelected;
-
-        /// <summary>
         /// Event to request to open the Copy Device Page
         /// </summary>
         public event DeviceSelected_Handler CopyDeviceSelected;
-
-        /// <summary>
-        /// Event to request to open the Device List Page
-        /// </summary>
-        //public event PageSelected_Handler DeviceListSelected;
 
         /// <summary>
         /// Event to request to open the Add Device Page
@@ -121,8 +110,6 @@ namespace TrakHound_Device_Manager
         #region "Device Manager Event Handlers"
 
         private void _deviceManager_DeviceListUpdated(List<DeviceConfiguration> configs) { AddDevices(configs); }
-
-        private void _deviceManager_SharedDeviceListUpdated(List<DeviceConfiguration> configs) { AddSharedDevices(configs); }
 
         private void _deviceManager_DeviceUpdated(DeviceConfiguration config, DeviceManager.DeviceUpdateArgs args)
         {
@@ -166,7 +153,7 @@ namespace TrakHound_Device_Manager
 
         private void OpenEditTable(DeviceConfiguration config)
         {
-            if (EditTableSelected != null) EditTableSelected(config);
+            EditTableSelected?.Invoke(config);
         }
 
 
@@ -191,26 +178,6 @@ namespace TrakHound_Device_Manager
             }
         }
 
-        ObservableCollection<DeviceConfiguration> _sharedDevices;
-        /// <summary>
-        /// Collection of TrakHound.Configurations.Configuration objects that represent the shared devices
-        /// that are owned by the current user
-        /// </summary>
-        public ObservableCollection<DeviceConfiguration> SharedDevices
-        {
-            get
-            {
-                if (_sharedDevices == null)
-                    _sharedDevices = new ObservableCollection<DeviceConfiguration>();
-                return _sharedDevices;
-            }
-
-            set
-            {
-                _sharedDevices = value;
-            }
-        }
-
         private void AddDeviceToList(DeviceConfiguration config, int index = -1)
         {
             Dispatcher.BeginInvoke(new Action(() =>
@@ -220,7 +187,7 @@ namespace TrakHound_Device_Manager
 
                 Devices.Sort();
             }
-            ), PRIORITY_BACKGROUND, new object[] { });
+            ), UI_Functions.PRIORITY_DATA_BIND, new object[] { });
         }
 
         private void ReplaceDeviceInList(DeviceConfiguration config)
@@ -234,7 +201,7 @@ namespace TrakHound_Device_Manager
                     AddDeviceToList(config, index);
                 }
             }
-            ), PRIORITY_BACKGROUND, new object[] { });
+            ), UI_Functions.PRIORITY_DATA_BIND, new object[] { });
         }
 
         private void RemoveDeviceFromList(DeviceConfiguration config)
@@ -244,7 +211,7 @@ namespace TrakHound_Device_Manager
                 var index = Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
                 if (index >= 0) Devices.RemoveAt(index);
             }
-            ));
+            ), UI_Functions.PRIORITY_DATA_BIND, new object[] { });
         }
 
         private void ClearDevices()
@@ -253,26 +220,7 @@ namespace TrakHound_Device_Manager
             {
                 Devices.Clear();
             }
-            ), PRIORITY_BACKGROUND, new object[] { });
-        }
-
-
-        private void AddSharedDeviceToList(DeviceConfiguration config)
-        {
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                SharedDevices.Add(config);
-            }
-            ), PRIORITY_BACKGROUND, new object[] { });
-        }
-
-        private void ClearSharedDevices()
-        {
-            Dispatcher.BeginInvoke(new Action(() => 
-            {
-                SharedDevices.Clear();
-            }
-            ));
+            ), UI_Functions.PRIORITY_DATA_BIND, new object[] { });
         }
 
         #endregion
@@ -286,19 +234,6 @@ namespace TrakHound_Device_Manager
             if (configs != null)
             {
                 foreach (var config in configs) AddDeviceToList(config);
-            }
-        }
-
-        private void AddSharedDevices(List<DeviceConfiguration> configs)
-        {
-            ClearSharedDevices();
-
-            if (configs != null)
-            {
-                foreach (var config in configs)
-                {
-                    AddSharedDeviceToList(config);
-                }
             }
         }
 
@@ -376,15 +311,13 @@ namespace TrakHound_Device_Manager
         {
             public DataGridCellCheckBox Sender { get; set; }
             public bool Success { get; set; }
-            public ManagementType Type { get; set; }
             public object DataObject { get; set; }
         }
 
-        private void EnableDevice(DataGridCellCheckBox chk, ManagementType type)
+        private void EnableDevice(DataGridCellCheckBox chk)
         {
-            EnableDevice_Info info = new EnableDevice_Info();
+            var info = new EnableDevice_Info();
             info.Sender = chk;
-            info.Type = type;
             info.DataObject = chk.DataObject;
 
             if (info.DataObject != null)
@@ -397,18 +330,17 @@ namespace TrakHound_Device_Manager
         {
             if (o != null)
             {
-                EnableDevice_Info info = (EnableDevice_Info)o;
+                var info = (EnableDevice_Info)o;
 
                 var config = ((DeviceConfiguration)info.DataObject);
 
                 // Enable Device using DeviceManager
-                if (DeviceManager != null) info.Success = DeviceManager.EnableDevice(config, info.Type);
+                if (DeviceManager != null) info.Success = DeviceManager.EnableDevice(config);
 
                 // If changes were successful, then update DeviceManager's Congifuration
                 if (info.Success)
                 {
-                    if (info.Type == ManagementType.Client) config.ClientEnabled = true;
-                    else if (info.Type == ManagementType.Server) config.ServerEnabled = true;
+                    config.Enabled = true;
                 }
 
                 Dispatcher.BeginInvoke(new Action<EnableDevice_Info>(EnableDevice_Finished), PRIORITY_BACKGROUND, new object[] { info });
@@ -438,11 +370,10 @@ namespace TrakHound_Device_Manager
 
         #region "Disable Device"
 
-        private void DisableDevice(DataGridCellCheckBox chk, ManagementType type)
+        private void DisableDevice(DataGridCellCheckBox chk)
         {
-            EnableDevice_Info info = new EnableDevice_Info();
+            var info = new EnableDevice_Info();
             info.Sender = chk;
-            info.Type = type;
             info.DataObject = chk.DataObject;
 
             if (info.DataObject != null)
@@ -455,20 +386,16 @@ namespace TrakHound_Device_Manager
         {
             if (o != null)
             {
-                EnableDevice_Info info = (EnableDevice_Info)o;
+                var info = (EnableDevice_Info)o;
 
                 var config = ((DeviceConfiguration)info.DataObject);
 
                 // Disable Device using DeviceManager
-                if (DeviceManager != null) info.Success = DeviceManager.DisableDevice(config, info.Type);
+                if (DeviceManager != null) info.Success = DeviceManager.DisableDevice(config);
 
                 // If changes were successful, then update DeviceManager's Congifuration
-                if (info.Success)
-                {
-                    if (info.Type == ManagementType.Client) config.ClientEnabled = false;
-                    else if (info.Type == ManagementType.Server) config.ServerEnabled = false;
-                }
-
+                if (info.Success) config.Enabled = false;
+                
                 Dispatcher.BeginInvoke(new Action<EnableDevice_Info>(DisableDevice_Finished), PRIORITY_BACKGROUND, new object[] { info });
             }
         }
@@ -631,8 +558,7 @@ namespace TrakHound_Device_Manager
                 if (row != null)
                 {
                     DataGridCell cell = GetCell(dataGrid, row, 0);
-                    if (cell != null)
-                        cell.Focus();
+                    if (cell != null) cell.Focus();
                 }
             }
         }
@@ -690,7 +616,7 @@ namespace TrakHound_Device_Manager
 
         private void AddClicked()
         {
-            if (AddDeviceSelected != null) AddDeviceSelected();
+            AddDeviceSelected?.Invoke();
         }
 
         private void EditClicked()
@@ -699,7 +625,7 @@ namespace TrakHound_Device_Manager
             {
                 var config = (DeviceConfiguration)device;
 
-                if (EditSelected != null) EditSelected(config);
+                EditSelected?.Invoke(config);
             }
         }
 
@@ -709,7 +635,7 @@ namespace TrakHound_Device_Manager
             {
                 var config = (DeviceConfiguration)device;
 
-                if (EditTableSelected != null) EditTableSelected(config);
+                EditTableSelected?.Invoke(config);
             }
         }
 
@@ -726,7 +652,7 @@ namespace TrakHound_Device_Manager
 
                 if (config != null)
                 {
-                    if (CopyDeviceSelected != null) CopyDeviceSelected(config);
+                    CopyDeviceSelected?.Invoke(config);
                 }
             }
         }
@@ -747,34 +673,21 @@ namespace TrakHound_Device_Manager
             }
         }
 
-        //private void ShareClicked()
-        //{
-        //    if (Devices_DG.SelectedItem != null)
-        //    {
-        //        var config = (DeviceConfiguration)Devices_DG.SelectedItem;
-
-        //        if (config != null)
-        //        {
-        //            if (ShareDeviceSelected != null) ShareDeviceSelected(config);
-        //        }
-        //    }
-        //}
-
-        /// <summary>
-        /// Save a copy of this file to the Local Devices Directory (ex. C:\TrakHound\Devices\)
-        /// </summary>
-        private void SaveClicked()
+        private void BackupClicked()
         {
+            string backupPath = Path.Combine(FileLocations.Backup, "DeviceBackup-" + DateTime.Now.ToString("yyyy-MM-dd--hh-mm-ss"));
+            if (!Directory.Exists(backupPath)) Directory.CreateDirectory(backupPath);
+
             foreach (var device in Devices_DG.SelectedItems)
             {
                 var config = (DeviceConfiguration)device;
 
-                DeviceConfiguration.Save(config);
+                DeviceConfiguration.Save(config, backupPath);
             }
 
             try
             {
-                System.Diagnostics.Process.Start("explorer", FileLocations.Devices);
+                System.Diagnostics.Process.Start("explorer", backupPath);
             }
             catch (Exception ex)
             {
@@ -786,24 +699,14 @@ namespace TrakHound_Device_Manager
 
         #region "Datarow Buttons"
 
-        private void ClientEnabled_Checked(object sender, RoutedEventArgs e)
+        private void Enabled_Checked(object sender, RoutedEventArgs e)
         {
-            EnableDevice((DataGridCellCheckBox)sender, ManagementType.Client);
+            EnableDevice((DataGridCellCheckBox)sender);
         }
 
-        private void ClientEnabled_Unchecked(object sender, RoutedEventArgs e)
+        private void Enabled_Unchecked(object sender, RoutedEventArgs e)
         {
-            DisableDevice((DataGridCellCheckBox)sender, ManagementType.Client);
-        }
-
-        private void ServerEnabled_Checked(object sender, RoutedEventArgs e)
-        {
-            EnableDevice((DataGridCellCheckBox)sender, ManagementType.Server);
-        }
-
-        private void ServerEnabled_Unchecked(object sender, RoutedEventArgs e)
-        {
-            DisableDevice((DataGridCellCheckBox)sender, ManagementType.Server);
+            DisableDevice((DataGridCellCheckBox)sender);
         }
 
         private void Edit_Clicked(TrakHound_UI.Button bt)
@@ -812,7 +715,7 @@ namespace TrakHound_Device_Manager
             {
                 var config = (DeviceConfiguration)bt.DataObject;
 
-                if (EditSelected != null) EditSelected(config);
+                EditSelected?.Invoke(config);
             }
         }
 
@@ -836,7 +739,7 @@ namespace TrakHound_Device_Manager
 
         private void Remove_Toolbar_Clicked(TrakHound_UI.Button bt) { RemoveClicked(); }
 
-        //private void Share_Toolbar_Clicked(TrakHound_UI.Button bt) { ShareClicked(); }
+        private void Backup_Toolbar_Clicked(TrakHound_UI.Button bt) { BackupClicked(); }
 
         #endregion
 
@@ -852,9 +755,7 @@ namespace TrakHound_Device_Manager
 
         private void Remove_DataGridRowContextMenu_Click(object sender, RoutedEventArgs e) { RemoveClicked(); }
 
-        //private void Share_DataGridRowContextMenu_Click(object sender, RoutedEventArgs e) { ShareClicked(); }
-
-        private void Save_DataGridRowContextMenu_Click(object sender, RoutedEventArgs e) { SaveClicked(); }
+        private void Backup_DataGridRowContextMenu_Click(object sender, RoutedEventArgs e) { BackupClicked(); }
 
         #endregion
 

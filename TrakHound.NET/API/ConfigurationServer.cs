@@ -38,23 +38,10 @@ namespace TrakHound.API
             {
                 try
                 {
-                    var serverEndPoint = new IPEndPoint(address, PORT);
-
-                    using (var client = new TcpClient())
+                    string response = HTTP.GET("http://" + address.ToString() + ":" + PORT + "/api/config");
+                    if (response != null)
                     {
-                        client.Connect(serverEndPoint);
-
-                        using (var clientStream = client.GetStream())
-                        {
-                            // Read Response
-                            byte[] response = GetResponse(clientStream);
-                            if (response != null)
-                            {
-                                string json = Encoding.ASCII.GetString(response);
-
-                                return JSON.ToType<ApiConfiguration>(json);
-                            }
-                        }
+                        return JSON.ToType<ApiConfiguration>(response);
                     }
                 }
                 catch (Exception ex)

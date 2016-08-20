@@ -22,7 +22,7 @@ namespace TrakHound_Dashboard
 
             Version version = assembly.GetName().Version;
 
-            splsh.Version = version.Major.ToString() + "." + version.Minor.ToString() + "." + version.Build.ToString() + "." + version.Revision.ToString();
+            splsh.Version = version.Major.ToString() + "." + version.Minor.ToString() + "." + version.Build.ToString();
         }
 
         void Splash_Show() { this.Dispatcher.Invoke(new Action(Splash_Show_GUI), MainWindow.PRIORITY_BACKGROUND, new object[] { }); }
@@ -38,8 +38,6 @@ namespace TrakHound_Dashboard
         {
             if (splsh != null)
             {
-                splsh.Status3 = splsh.Status2;
-                splsh.Status2 = splsh.Status1;
                 splsh.Status1 = status;
                 splsh.LoadingProgress = loadingProgress;
             }

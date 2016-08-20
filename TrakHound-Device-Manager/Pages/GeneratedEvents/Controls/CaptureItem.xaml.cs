@@ -64,7 +64,7 @@ namespace TrakHound_Device_Manager.Pages.GeneratedEvents.Controls
 
             if (ParentCaptureItem != null) ParentCaptureItem.name = txt.Text;
 
-            if (txt.IsKeyboardFocused) if (SettingChanged != null) SettingChanged();
+            if (txt.IsKeyboardFocused) SettingChanged?.Invoke();
         }
 
         private void link_COMBO_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -76,7 +76,7 @@ namespace TrakHound_Device_Manager.Pages.GeneratedEvents.Controls
                 if (ParentCaptureItem != null) ParentCaptureItem.link = combo.SelectedItem.ToString();
             }
 
-            if (combo.IsKeyboardFocused || combo.IsMouseCaptured) if (SettingChanged != null) SettingChanged();
+            if (combo.IsKeyboardFocused || combo.IsMouseCaptured) SettingChanged?.Invoke();
             
         }
 
@@ -89,7 +89,7 @@ namespace TrakHound_Device_Manager.Pages.GeneratedEvents.Controls
                 if (ParentCaptureItem != null) ParentCaptureItem.link = combo.SelectedItem.ToString();
             }
 
-            if (combo.IsKeyboardFocused || combo.IsMouseCaptured) if (SettingChanged != null) SettingChanged();
+            if (combo.IsKeyboardFocused || combo.IsMouseCaptured) SettingChanged?.Invoke();
         }
 
         public delegate void RemoveClicked_Handler(CaptureItem ci);

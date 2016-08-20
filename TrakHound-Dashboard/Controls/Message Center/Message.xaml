@@ -1,4 +1,4 @@
-﻿<!--Copyright (c) 2015 Feenux LLC, All Rights Reserved.-->
+﻿<!--Copyright (c) 2016 Feenux LLC, All Rights Reserved.-->
 
 <!--This file is subject to the terms and conditions defined in-->
 <!--file 'LICENSE.txt', which is part of this source code package.-->
@@ -90,12 +90,6 @@
                                     <DataTrigger Binding="{Binding Data.Image}" Value="{x:Null}">
                                         <Setter Property="Visibility" Value="Collapsed"/>
                                     </DataTrigger>
-                                    <!--<DataTrigger Binding="{Binding Data.Read}" Value="True">
-                                        <Setter Property="Opacity" Value="0.3"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=root}" Value="True">
-                                        <Setter Property="Opacity" Value="1.0"/>
-                                    </DataTrigger>-->
                                 </Style.Triggers>
                             </Style>
                         </Image.Style>
@@ -120,12 +114,6 @@
                                     <DataTrigger Binding="{Binding Data.Image}" Value="{x:Null}">
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
-                                    <!--<DataTrigger Binding="{Binding Data.Read}" Value="True">
-                                        <Setter Property="Fill" Value="#66ffffff"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=root}" Value="True">
-                                        <Setter Property="Fill" Value="#aaffffff"/>
-                                    </DataTrigger>-->
                                 </Style.Triggers>
                             </Style>
                         </Rectangle.Style>
@@ -145,14 +133,6 @@
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
                                 <Setter Property="Foreground" Value="#aaffffff"/>
-                                <!--<Style.Triggers>
-                                    <DataTrigger Binding="{Binding Data.Read}" Value="True">
-                                        <Setter Property="Foreground" Value="#66ffffff"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=root}" Value="True">
-                                        <Setter Property="Foreground" Value="#aaffffff"/>
-                                    </DataTrigger>
-                                </Style.Triggers>-->
                             </Style>
                         </TextBlock.Style>
                     </TextBlock>
@@ -162,42 +142,9 @@
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
                                 <Setter Property="Foreground" Value="#aaffffff"/>
-                                <!--<Style.Triggers>
-                                    <DataTrigger Binding="{Binding Data.Read}" Value="True">
-                                        <Setter Property="Foreground" Value="#66ffffff"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=root}" Value="True">
-                                        <Setter Property="Foreground" Value="#aaffffff"/>
-                                    </DataTrigger>
-                                </Style.Triggers>-->
                             </Style>
                         </TextBlock.Style>
                     </TextBlock>
-
-                    <!--More Info-->
-                    <!--<TextBlock Grid.Row="2" Text="More Info" FontSize="8" Margin="0,2" MouseDown="MoreInfo_MouseDown">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Foreground" Value="#aaffffff"/>
-                                <Setter Property="Visibility" Value="Visible"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="true">
-                                        <Setter Property="Foreground" Value="#ffffff"/>
-                                        <Setter Property="Cursor" Value="Hand"/>
-                                    </Trigger>
-                                    <DataTrigger Binding="{Binding Data.AdditionalInfo}" Value="{x:Null}">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Read}" Value="True">
-                                        <Setter Property="Foreground" Value="#33ffffff"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=root}" Value="True">
-                                        <Setter Property="Foreground" Value="#66ffffff"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>-->
 
                 </Grid>
                 

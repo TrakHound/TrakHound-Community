@@ -27,28 +27,7 @@ namespace TrakHound_Dashboard.Windows
         public static readonly DependencyProperty Status1Property =
             DependencyProperty.Register("Status1", typeof(string), typeof(Splash), new PropertyMetadata(null));
 
-
-        public string Status2
-        {
-            get { return (string)GetValue(Status2Property); }
-            set { SetValue(Status2Property, value); }
-        }
-
-        public static readonly DependencyProperty Status2Property =
-            DependencyProperty.Register("Status2", typeof(string), typeof(Splash), new PropertyMetadata(null));
-
-
-        public string Status3
-        {
-            get { return (string)GetValue(Status3Property); }
-            set { SetValue(Status3Property, value); }
-        }
-
-        public static readonly DependencyProperty Status3Property =
-            DependencyProperty.Register("Status3", typeof(string), typeof(Splash), new PropertyMetadata(null));
-
-
-
+        
         public string Version
         {
             get { return (string)GetValue(VersionProperty); }
@@ -67,7 +46,6 @@ namespace TrakHound_Dashboard.Windows
 
         public static readonly DependencyProperty LoadingProgressProperty =
             DependencyProperty.Register("LoadingProgress", typeof(double), typeof(Splash), new PropertyMetadata(0d));
-
 
     }
 }

@@ -36,7 +36,9 @@
                     <ColumnDefinition Width="150"/>
                     <ColumnDefinition Width="150"/>
                     <ColumnDefinition Width="150"/>
-                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="150"/>
                 </Grid.ColumnDefinitions>
 
                 <!--Status Indicator-->
@@ -90,7 +92,7 @@
                                             </BeginStoryboard>
                                         </DataTrigger.ExitActions>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Available}" Value="true">
+                                    <DataTrigger Binding="{Binding Connected}" Value="true">
                                         <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}"/>
                                     </DataTrigger>
                                     <Trigger Property="Opacity" Value="0">
@@ -275,181 +277,132 @@
                         </Style>
                     </Border.Style>
 
-                    <TextBlock Text="{Binding ProductionStatus}" Foreground="#fff" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Style.Triggers>
-                                    <Trigger Property="Text" Value="{x:Null}">
-                                        <Setter Property="Foreground" Value="#ccc"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
+                    <Viewbox MaxHeight="26" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Center">
+
+                        <TextBlock Text="{Binding ProductionStatus}" Foreground="#fff">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="{x:Null}">
+                                            <Setter Property="Foreground" Value="#ccc"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                    </Viewbox>
 
                 </Border>
 
-                <!--Functional Mode-->
+                <!--Run Time-->
                 <Border Grid.Column="4" BorderBrush="#ccc" BorderThickness="0,0,1,0">
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding FunctionalMode}" Value="Production">
-                                    <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding FunctionalMode}" Value="Setup">
-                                    <Setter Property="Background" Value="{StaticResource StatusBlue}"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding FunctionalMode}" Value="Teardown">
-                                    <Setter Property="Background" Value="{StaticResource StatusOrange}"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding FunctionalMode}" Value="Maintenance">
-                                    <Setter Property="Background" Value="{StaticResource StatusTeal}"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding FunctionalMode}" Value="Process Development">
-                                    <Setter Property="Background" Value="{StaticResource StatusPurple}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
 
-                    <TextBlock Text="{Binding FunctionalMode}" Foreground="#333" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Style.Triggers>
-                                    <Trigger Property="Text" Value="{x:Null}">
-                                        <Setter Property="Foreground" Value="#ccc"/>
-                                    </Trigger>
-                                    <DataTrigger Binding="{Binding FunctionalMode}" Value="Production">
-                                        <Setter Property="Foreground" Value="#fff"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding FunctionalMode}" Value="Setup">
-                                        <Setter Property="Foreground" Value="#fff"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding FunctionalMode}" Value="Teardown">
-                                        <Setter Property="Foreground" Value="#fff"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding FunctionalMode}" Value="Maintenance">
-                                        <Setter Property="Foreground" Value="#fff"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding FunctionalMode}" Value="Process Development">
-                                        <Setter Property="Foreground" Value="#fff"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-
-                </Border>
-
-                <!--Part Count-->
-                <Border Grid.Column="5" BorderBrush="#ccc" BorderThickness="0,0,1,0">
-                    
-                    <TextBlock Text="{Binding PartCount}" Foreground="#333" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Style.Triggers>
-                                    <Trigger Property="Text" Value="{x:Null}">
-                                        <Setter Property="Foreground" Value="#ccc"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-
-                </Border>
-
-
-                <!--System Status-->
-                <Border Grid.Column="6" BorderBrush="#ccc" BorderThickness="0,0,1,0">
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SystemStatus}" Value="Fault">
-                                    <Setter Property="Background" Value="{StaticResource StatusRed}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-
-                    <Grid Margin="20,5" VerticalAlignment="Center">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="7*"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="3*"/>
+                        </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <!--Icon-->
-                        <Grid VerticalAlignment="Center">
-                            <Grid.Resources>
-                                <ImageBrush x:Key="Warning_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Warning_01.png" />
-                                <ImageBrush x:Key="Check_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/CheckMark_01.png" />
-                            </Grid.Resources>
-                            <Grid.Style>
-                                <Style TargetType="Grid">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Setter Property="Height" Value="30"/>
-                                    <Setter Property="Width" Value="30"/>
-                                    <Setter Property="Margin" Value="0,0,10,0"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding SystemStatus}" Value="Warning">
-                                            <Setter Property="OpacityMask" Value="{StaticResource Warning_IMG}" />
-                                            <Setter Property="Background" Value="Orange"/>
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding SystemStatus}" Value="Fault">
-                                            <Setter Property="OpacityMask" Value="{StaticResource Warning_IMG}" />
-                                            <Setter Property="Background" Value="#fff"/>
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
-                        </Grid>
+                        <TextBlock Text="Day" FontSize="10" Foreground="#888" VerticalAlignment="Center" Margin="5"/>
+                        <ui:NumberDisplay Grid.Column="1" Value="{Binding DayRunTime}" ValueFormat="N1" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
-                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Fill="{StaticResource Shade_Normal}" Height="1" Margin="0,2"/>
 
-                            <!--System Condition Text-->
-                            <TextBlock Text="{Binding SystemStatus}" FontSize="16" Margin="0,0,0,2">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="#333"/>
-                                        <Style.Triggers>
-                                            <Trigger Property="Text" Value="Normal">
-                                                <Setter Property="Foreground" Value="{StaticResource StatusGreen}"/>
-                                            </Trigger>
-                                            <Trigger Property="Text" Value="Fault">
-                                                <Setter Property="Foreground" Value="#fff"/>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-
-                            <TextBlock Text="{Binding SystemMessage}" FontSize="12" TextWrapping="Wrap" MaxHeight="30" >
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="#333"/>
-                                        <Style.Triggers>
-                                            <Trigger Property="Text" Value="{x:Null}">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </Trigger>
-                                            <Trigger Property="Text" Value="">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </Trigger>
-                                            <DataTrigger Binding="{Binding SystemStatus}" Value="Fault">
-                                                <Setter Property="Foreground" Value="#fff"/>
-                                            </DataTrigger>
-                                            <Trigger Property="Text" Value="UNAVAILABLE">
-                                                <Setter Property="Foreground" Value="#ccc"/>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-
-                        </StackPanel>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Total" FontSize="10" Foreground="#888" VerticalAlignment="Center" Margin="5"/>
+                        <ui:NumberDisplay Grid.Row="2" Grid.Column="1" Value="{Binding TotalRunTime}" ValueFormat="N1" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
                     </Grid>
+                    
+                </Border>
+
+                <!--Operating Time-->
+                <Border Grid.Column="5" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="7*"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="3*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="Day" FontSize="10" Foreground="#888" VerticalAlignment="Center" Margin="5"/>
+                        <ui:NumberDisplay Grid.Column="1" Value="{Binding DayOperatingTime}" ValueFormat="N1" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                        <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Fill="{StaticResource Shade_Normal}" Height="1" Margin="0,2"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Total" FontSize="10" Foreground="#888" VerticalAlignment="Center" Margin="5"/>
+                        <ui:NumberDisplay Grid.Row="2" Grid.Column="1" Value="{Binding TotalOperatingTime}" ValueFormat="N1" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                    </Grid>
+                    
+                </Border>
+
+                <!--Cutting Time-->
+                <Border Grid.Column="6" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="7*"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="3*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="Day" FontSize="10" Foreground="#888" VerticalAlignment="Center" Margin="5"/>
+                        <ui:NumberDisplay Grid.Column="1" Value="{Binding DayCuttingTime}" ValueFormat="N1" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                        <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Fill="{StaticResource Shade_Normal}" Height="1" Margin="0,2"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Total" FontSize="10" Foreground="#888" VerticalAlignment="Center" Margin="5"/>
+                        <ui:NumberDisplay Grid.Row="2" Grid.Column="1" Value="{Binding TotalCuttingTime}" ValueFormat="N1" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                    </Grid>
+                    
+                </Border>
+
+                <!--Spindle Run Time-->
+                <Border Grid.Column="7" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="7*"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="3*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="Day" FontSize="10" Foreground="#888" VerticalAlignment="Center" Margin="5"/>
+                        <ui:NumberDisplay Grid.Column="1" Value="{Binding DaySpindleTime}" ValueFormat="N1" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                        <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Fill="{StaticResource Shade_Normal}" Height="1" Margin="0,2"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Total" FontSize="10" Foreground="#888" VerticalAlignment="Center" Margin="5"/>
+                        <ui:NumberDisplay Grid.Row="2" Grid.Column="1" Value="{Binding TotalSpindleTime}" ValueFormat="N1" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                    </Grid>
+                    
+                </Border>
+
+                <!--Part Count-->
+                <Border Grid.Column="8" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+
+                    <ui:NumberDisplay Value="{Binding PartCount}" ValueFormat="N0" Foreground="#333" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
                 </Border>
 

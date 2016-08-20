@@ -6,11 +6,12 @@
 using System.Windows;
 using System.Windows.Input;
 
+using TrakHound.Plugins;
+
 namespace TrakHound_Dashboard
 {
     public partial class MainWindow
     {
-
 
         private void Main_Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -34,12 +35,17 @@ namespace TrakHound_Dashboard
             }
 
             // Toggle Developer Console with F12
-            if (key == Key.F12) developerConsole.Shown = !developerConsole.Shown;
+            //if (key == Key.F12) developerConsole.Shown = !developerConsole.Shown;
         }
 
         private void Main_Window_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             messageCenter.Hide();
+
+            // Send message to plugins that Devices have been loaded
+            var data = new EventData();
+            data.Id = "WINDOW_CLICKED";
+            Plugin_SendData(data);
         }
 
     }

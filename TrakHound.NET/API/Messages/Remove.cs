@@ -1,9 +1,15 @@
-﻿using System;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 
 using TrakHound.API.Users;
 using TrakHound.Tools.Web;
+
 namespace TrakHound.API
 {
     public static partial class Messages
@@ -16,7 +22,7 @@ namespace TrakHound.API
         public static bool Remove(UserConfiguration userConfig, List<MessageInfo> messageInfos)
         {
 
-            Uri apiHost = ApiConfiguration.ApiHost;
+            Uri apiHost = ApiConfiguration.AuthenticationApiHost;
 
             string url = new Uri(apiHost, "messages/remove/index.php").ToString();
 

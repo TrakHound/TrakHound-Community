@@ -241,6 +241,8 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
 
         private void AddDevice()
         {
+            Loading = true;
+
             var info = new AddDeviceInfo();
             info.Address = Address;
             info.DeviceName = DeviceName;

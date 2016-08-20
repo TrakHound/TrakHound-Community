@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 
@@ -15,7 +20,7 @@ namespace TrakHound.API
             string json = JSON.FromList<MessageInfo>(messageInfos);
             if (!string.IsNullOrEmpty(json))
             {
-                Uri apiHost = ApiConfiguration.ApiHost;
+                Uri apiHost = ApiConfiguration.AuthenticationApiHost;
 
                 string url = new Uri(apiHost, "messages/send/index.php").ToString();
 

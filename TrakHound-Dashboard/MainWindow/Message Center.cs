@@ -1,6 +1,11 @@
-﻿using System;
-using System.Windows;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Linq;
+using System.Windows;
 
 using TrakHound.API;
 using TrakHound.Tools;
@@ -28,16 +33,16 @@ namespace TrakHound_Dashboard
         private void StartMessageMonitor()
         {
             var timer = new System.Timers.Timer();
-            timer.Interval = 1000;
+            timer.Interval = 10000;
             timer.Elapsed += Timer_Elapsed;
             timer.Enabled = true;
         }
 
         private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-
             var timer = (System.Timers.Timer)sender;
             timer.Interval = 30000;
+            timer.Enabled = false;
 
             if (_currentuser != null)
             {
@@ -68,6 +73,8 @@ namespace TrakHound_Dashboard
 
                     }
                 }
+
+                timer.Enabled = true;
             }
             else
             {

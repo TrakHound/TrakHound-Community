@@ -13,7 +13,6 @@
              xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
                           
              mc:Ignorable="d" 
-             d:DesignHeight="150" 
              d:DesignWidth="800"
                         
              Loaded="UserControl_Loaded"
@@ -106,32 +105,21 @@
                         <ItemsControl ItemsSource="{Binding Pages}" Margin="0,20">
                             <ItemsControl.Resources>
                                 <Style TargetType="ui:ListButton" BasedOn="{StaticResource ListButton_PageList}">
-                                    <!--<Setter Property="Foreground" Value="#fff"/>
-                                    <Setter Property="Background" Value="Transparent"/>-->
                                     <Setter Property="ShowText" Value="False"/>
                                     <Setter Property="TextWrapping" Value="Wrap"/>
-                                    <!--<Setter Property="Height" Value="35"/>
-                                    <Setter Property="FontSize" Value="12"/>-->
-                                    <!--<Setter Property="TextAlignment" Value="Center"/>-->
-                                    <Setter Property="ToolTip">
+                                    <!--<Setter Property="ToolTip">
                                         <Setter.Value>
-                                            <StackPanel MaxWidth="300">
+                                            <StackPanel Width="300" Height="400">
                                                 <TextBlock Text="{Binding DataObject.Title}" FontWeight="Bold"/>
                                                 <TextBlock Text="{Binding DataObject.Description}" TextWrapping="Wrap"/>
                                             </StackPanel>
                                         </Setter.Value>
-                                    </Setter>
+                                    </Setter>-->
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType={x:Type local:Dashboard}}}" Value="true">
                                             <Setter Property="ShowText" Value="True"/>
                                             <Setter Property="Width" Value="200"/>
                                         </DataTrigger>
-                                        <!--<Trigger Property="IsMouseOver" Value="true">
-                                            <Setter Property="Background" Value="{StaticResource TrakHound_Blue}"/>
-                                        </Trigger>
-                                        <Trigger Property="IsSelected" Value="true">
-                                            <Setter Property="Background" Value="{StaticResource TrakHound_Blue}"/>
-                                        </Trigger>-->
                                     </Style.Triggers>
                                 </Style>
                             </ItemsControl.Resources>
@@ -145,6 +133,41 @@
 
             <!--Page Content-->
             <Border Grid.Column="1">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Opacity" Value="0"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding LoadingDevices}" Value="false">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="00:00:0.4" Storyboard.TargetProperty="Opacity" From="0" To="1" >
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="00:00:0.2" Storyboard.TargetProperty="Opacity" From="1" To="0" >
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseIn"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                            <Trigger Property="Opacity" Value="0">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
 
                 <Grid>
                     <Grid.RowDefinitions>
@@ -190,9 +213,9 @@
             </Border>
 
             <!--No Devices-->
-            <Grid Grid.Column="1">
-                <Grid.Style>
-                    <Style TargetType="Grid">
+            <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
                         <Setter Property="Visibility" Value="Collapsed"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Devices.Count}" Value="0">
@@ -203,24 +226,50 @@
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </Grid.Style>
+                </StackPanel.Style>
 
-                <TextBlock FontSize="16pt" Foreground="{StaticResource Foreground_Opposite_Normal}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">     
+                <TextBlock FontSize="16pt" Foreground="{StaticResource Foreground_Opposite_Normal}" TextAlignment="Center" HorizontalAlignment="Center">     
                 No Devices Found <LineBreak/>
-                Click on the 'Main Menu' button and open 'Device Manager'
+                Click the button below to open Device Manager
                 </TextBlock>
 
-            </Grid>
+                <ui:Button Text="Device Manager" Style="{StaticResource Button_Accent_Background}" HorizontalAlignment="Center" Margin="0,20,0,0" Clicked="OpenDeviceManager_Clicked" Image="/TrakHound-Dashboard;component/Resources/Root.png"/>
+
+            </StackPanel>
 
             <!--Loading Devices-->
             <Grid Grid.Column="1">
                 <Grid.Style>
                     <Style TargetType="Grid">
-                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Setter Property="Opacity" Value="0"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding LoadingDevices}" Value="true">
-                                <Setter Property="Visibility" Value="Visible"/>
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="00:00:0.4" Storyboard.TargetProperty="Opacity" From="0" To="1" >
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="00:00:0.2" Storyboard.TargetProperty="Opacity" From="1" To="0" >
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseIn"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
                             </DataTrigger>
+                            <Trigger Property="Opacity" Value="0">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
                         </Style.Triggers>
                     </Style>
                 </Grid.Style>
@@ -240,12 +289,13 @@
         </Grid>
 
         <!--Info Bar-->
-        <Border Grid.Row="1" BorderBrush="{StaticResource Shade_Light}" BorderThickness="0,1,0,1">
+        <Border Grid.Row="1" BorderBrush="{StaticResource Shade_Light}" BorderThickness="0,1,0,1" Height="45">
 
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
 
@@ -307,18 +357,66 @@
 
                 </StackPanel>
 
-                <!--Date Information-->
-                <StackPanel Grid.Column="2" Margin="10,2">
+                <Rectangle Grid.Column="2" Width="1" Fill="#33ffffff" Margin="5,2,0,2"/>
 
+                <StackPanel Grid.Column="3" Margin="10,0" VerticalAlignment="Center">
                     <TextBlock Text="Currently Displaying Data for" FontSize="10" Foreground="#88ffffff" Margin="0,0,0,2"/>
-
-                    <TextBlock Text="{Binding CurrentDate}" FontSize="16" Foreground="#fff" HorizontalAlignment="Right"/>
-
+                    <TextBlock Text="{Binding CurrentDate, RelativeSource={RelativeSource AncestorType=local:Dashboard, Mode=FindAncestor}}" FontSize="16" Foreground="#fff" HorizontalAlignment="Right"/>
                 </StackPanel>
+
+                <!--Select Date Button-->
+                <!--<ui:Button Grid.Column="3" Width="200" Clicked="SelectDate_Clicked" Style="{StaticResource Button_Opposite_Foreground}" Height="auto">
+                    <ui:Button.ButtonContent>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Text="Currently Displaying Data for" FontSize="10" Foreground="#88ffffff" Margin="0,0,0,2"/>
+                                <TextBlock Text="{Binding CurrentDate, RelativeSource={RelativeSource AncestorType=local:Dashboard, Mode=FindAncestor}}" FontSize="16" Foreground="#fff" HorizontalAlignment="Right"/>
+                            </StackPanel>
+                            <Border Grid.Column="1" Width="20" Height="20" Margin="10,0,5,0">
+                                <Border.Resources>
+                                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Carrot_Arrow_Down_01.png"  />
+                                </Border.Resources>
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                        <Setter Property="Background" Value="#fff"/>
+                                    </Style>
+                                </Border.Style>
+                            </Border>
+                        </Grid>
+                    </ui:Button.ButtonContent>
+                </ui:Button>-->
 
             </Grid>
 
         </Border>
+
+        <!--<Border Background="#cc000000" Width="200" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,0">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding DateMenuShown}" Value="false">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+            <StackPanel>
+
+                <ui:Button Text="7/29/16" Style="{StaticResource Button_Opposite_Foreground}" FontSize="18"/>
+                <ui:Button Text="7/30/16" Style="{StaticResource Button_Opposite_Foreground}" FontSize="18"/>
+                <ui:Button Text="7/31/16" Style="{StaticResource Button_Opposite_Foreground}" FontSize="18"/>
+                <ui:Button Text="8/1/16" Style="{StaticResource Button_Opposite_Foreground}" FontSize="18"/>
+                <ui:Button Text="8/2/16" Style="{StaticResource Button_Opposite_Foreground}" FontSize="18"/>
+
+            </StackPanel>
+            
+        </Border>-->
 
     </Grid>
 

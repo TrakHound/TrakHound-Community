@@ -87,7 +87,7 @@
                                             </BeginStoryboard>
                                         </DataTrigger.ExitActions>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Available}" Value="true">
+                                    <DataTrigger Binding="{Binding Connected}" Value="true">
                                         <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}"/>
                                     </DataTrigger>
                                     <Trigger Property="Opacity" Value="0">

@@ -93,7 +93,7 @@ namespace TrakHound_UI
         }
 
         public static readonly DependencyProperty ShowClearProperty =
-            DependencyProperty.Register("ShowClear", typeof(bool), typeof(TextBox), new PropertyMetadata(true));
+            DependencyProperty.Register("ShowClear", typeof(bool), typeof(TextBox), new PropertyMetadata(false));
 
         public bool Required
         {

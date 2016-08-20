@@ -33,7 +33,7 @@
                     <ColumnDefinition Width="30"/>
                     <ColumnDefinition Width="200"/>
                     <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="750"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
                 <!--Status Indicator-->
@@ -87,7 +87,7 @@
                                             </BeginStoryboard>
                                         </DataTrigger.ExitActions>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Available}" Value="true">
+                                    <DataTrigger Binding="{Binding Connected}" Value="true">
                                         <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}"/>
                                     </DataTrigger>
                                     <Trigger Property="Opacity" Value="0">
@@ -249,34 +249,117 @@
 
                     <!--Active-->
                     <Border BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Status}" Value="2">
+                                        <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
 
-                        <ui:TimeProgress Text="Active" 
-                    Value="{Binding ActiveSeconds}"
-                    Maximum="{Binding TotalSeconds}"
-                    BarBrush="{StaticResource StatusGreen}" 
-                    BarBackgroundBrush="{StaticResource StatusGreen_Hover}"/>
+                        <StackPanel Margin="20,0" Orientation="Horizontal" HorizontalAlignment="Center">
+
+                            <ui:TimeDisplay Time="{Binding ActiveTime}" MaxHeight="25">
+                                <ui:TimeDisplay.Style>
+                                    <Style TargetType="ui:TimeDisplay">
+                                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Status}" Value="2">
+                                                <Setter Property="Foreground" Value="#fff"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ui:TimeDisplay.Style>
+                            </ui:TimeDisplay>
+
+                            <Rectangle Grid.Column="1" Fill="{StaticResource Shade_Normal}" Width="1" Margin="10"/>
+
+                            <ui:NumberDisplay Grid.Column="2" Value="{Binding ActivePercentage}" ValueFormat="P1">
+                                <ui:NumberDisplay.Style>
+                                    <Style TargetType="ui:NumberDisplay">
+                                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Status}" Value="2">
+                                                <Setter Property="Foreground" Value="#fff"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ui:NumberDisplay.Style>
+                            </ui:NumberDisplay>
+
+                        </StackPanel>
 
                     </Border>
 
                     <!--Idle-->
                     <Border BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Status}" Value="1">
+                                        <Setter Property="Background" Value="{StaticResource StatusYellow}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
 
-                        <ui:TimeProgress Text="Idle" 
-                    Value="{Binding IdleSeconds}"
-                    Maximum="{Binding TotalSeconds}"
-                    BarBrush="{StaticResource StatusYellow}" 
-                    BarBackgroundBrush="{StaticResource StatusYellow_Hover}"/>
+                        <StackPanel Margin="20,0" Orientation="Horizontal" HorizontalAlignment="Center">
+
+                            <ui:TimeDisplay Time="{Binding IdleTime}" Foreground="{StaticResource Foreground_Normal}" MaxHeight="25"/>
+
+                            <Rectangle Grid.Column="1" Fill="{StaticResource Shade_Normal}" Width="1" Margin="10"/>
+
+                            <ui:NumberDisplay Grid.Column="2" Value="{Binding IdlePercentage}" ValueFormat="P1" Foreground="{StaticResource Foreground_Normal}"/>
+
+                        </StackPanel>
 
                     </Border>
 
                     <!--Alert-->
                     <Border BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Status}" Value="0">
+                                        <Setter Property="Background" Value="{StaticResource StatusRed}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
 
-                        <ui:TimeProgress Text="Alert" 
-                    Value="{Binding AlertSeconds}"
-                    Maximum="{Binding TotalSeconds}"
-                    BarBrush="{StaticResource StatusRed}" 
-                    BarBackgroundBrush="{StaticResource StatusRed_Hover}"/>
+                        <StackPanel Margin="20,0" Orientation="Horizontal" HorizontalAlignment="Center">
+
+                            <ui:TimeDisplay Time="{Binding AlertTime}" MaxHeight="25">
+                                <ui:TimeDisplay.Style>
+                                    <Style TargetType="ui:TimeDisplay">
+                                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Status}" Value="0">
+                                                <Setter Property="Foreground" Value="#fff"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ui:TimeDisplay.Style>
+                            </ui:TimeDisplay>
+
+                            <Rectangle Grid.Column="1" Fill="{StaticResource Shade_Normal}" Width="1" Margin="10"/>
+
+                            <ui:NumberDisplay Grid.Column="2" Value="{Binding AlertPercentage}" ValueFormat="P1">
+                                <ui:NumberDisplay.Style>
+                                    <Style TargetType="ui:NumberDisplay">
+                                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Status}" Value="0">
+                                                <Setter Property="Foreground" Value="#fff"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ui:NumberDisplay.Style>
+                            </ui:NumberDisplay>
+
+                        </StackPanel>
 
                     </Border>
 

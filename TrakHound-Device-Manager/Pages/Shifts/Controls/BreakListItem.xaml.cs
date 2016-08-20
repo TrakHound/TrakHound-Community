@@ -2,8 +2,6 @@
 using System.Windows;
 using System.Windows.Controls;
 
-using TrakHound.Server.Plugins.Shifts;
-
 namespace TrakHound_Device_Manager.Pages.Shifts.Controls
 {
     /// <summary>

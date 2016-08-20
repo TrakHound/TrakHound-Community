@@ -7,6 +7,7 @@ using System;
 using System.Collections.Specialized;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web;
@@ -50,13 +51,38 @@ namespace TrakHound.Tools.Web
             {
                 var result = new List<PostContentData>();
 
-                foreach (var key in nvc.AllKeys)
+                try
                 {
-                    var vals = "";
-                    foreach (var val in nvc.GetValues(key)) vals += val;
+                    if (nvc != null && nvc.Count > 0 && nvc.HasKeys())
+                    {
+                        var keys = nvc.AllKeys.ToList();
 
-                    result.Add(new PostContentData(key, vals));
+                        foreach (var key in keys)
+                        {
+                            var vals = "";
+                            foreach (var val in nvc.GetValues(key)) vals += val;
+
+                            result.Add(new PostContentData(key, vals));
+                        }
+
+                        //foreach (string key in nvc.)
+                        //{
+                        //    var vals = "";
+                        //    foreach (var val in nvc.GetValues(key)) vals += val;
+
+                        //    result.Add(new PostContentData(key, vals));
+                        //}
+
+                        //foreach (var key in nvc.AllKeys)
+                        //{
+                        //    var vals = "";
+                        //    foreach (var val in nvc.GetValues(key)) vals += val;
+
+                        //    result.Add(new PostContentData(key, vals));
+                        //}
+                    }
                 }
+                catch (Exception ex) { }
 
                 return result.ToArray();
             }
@@ -455,6 +481,48 @@ namespace TrakHound.Tools.Web
             return Encoding.ASCII.GetBytes(s);
         }
         
+        public static string GetPostValue(string body, string parameterName)
+        {
+            string response = null;
+
+            int i = body.IndexOf(Environment.NewLine, 1);
+            if (i >= 0)
+            {
+                string boundary = body.Substring(0, i);
+
+                i = body.IndexOf(Environment.NewLine, i + 1);
+                if (i >= 0)
+                {
+                    string contentHeader = body.Substring(0, i);
+                    string n = "name=\"";
+                    int x = contentHeader.IndexOf(n);
+                    if (x >= 0)
+                    {
+                        x += n.Length;
+
+                        int l = contentHeader.IndexOf("\"", x + 1);
+                        if (l >= 0)
+                        {
+                            string name = contentHeader.Substring(x, l - x).Trim();
+
+                            if (name == parameterName)
+                            {
+                                x = body.IndexOf(boundary, i + 1);
+                                if (x >= 0)
+                                {
+                                    string value = body.Substring(i, x - i).Trim();
+
+                                    response = HttpUtility.UrlDecode(value);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return response;
+        }
+
     }
 }
 

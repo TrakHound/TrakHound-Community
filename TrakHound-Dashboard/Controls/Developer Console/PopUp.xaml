@@ -17,8 +17,8 @@
 
     <UserControl.Resources>
 
-        <SolidColorBrush x:Key="ConsoleHeader" Color="#00274d"/>
-        <SolidColorBrush x:Key="ConsoleBackground" Color="#1a2f44"/>
+        <SolidColorBrush x:Key="ConsoleHeader" Color="#111"/>
+        <SolidColorBrush x:Key="ConsoleBackground" Color="#111"/>
 
     </UserControl.Resources>
 

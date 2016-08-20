@@ -59,11 +59,60 @@
     <Compile Include="..\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
+    <Compile Include="Plugins\CloudData\Plugin.cs" />
+    <Compile Include="Plugins\CloudData\UpdateQueue.cs" />
+    <Compile Include="Plugins\Cycles\Configuration.cs" />
+    <Compile Include="Plugins\Cycles\CycleData.cs" />
+    <Compile Include="Plugins\Cycles\CycleProductionType.cs" />
+    <Compile Include="Plugins\Cycles\Cycles.cs" />
+    <Compile Include="Plugins\Cycles\Override.cs" />
+    <Compile Include="Plugins\GeneratedEvents\Components\CaptureItem.cs" />
+    <Compile Include="Plugins\GeneratedEvents\Components\Event.cs" />
+    <Compile Include="Plugins\GeneratedEvents\Components\MultiTrigger.cs" />
+    <Compile Include="Plugins\GeneratedEvents\Components\Return.cs" />
+    <Compile Include="Plugins\GeneratedEvents\Components\Trigger.cs" />
+    <Compile Include="Plugins\GeneratedEvents\Components\Value.cs" />
+    <Compile Include="Plugins\GeneratedEvents\Configuration.cs" />
+    <Compile Include="Plugins\GeneratedEvents\GeneratedEvent.cs" />
+    <Compile Include="Plugins\GeneratedEvents\Plugin.cs" />
+    <Compile Include="Plugins\GeneratedEvents\Tools.cs" />
+    <Compile Include="Plugins\InstanceData\Configuration.cs" />
+    <Compile Include="Plugins\InstanceData\InstanceData.cs" />
+    <Compile Include="Plugins\InstanceData\Plugin.cs" />
+    <Compile Include="Plugins\InstanceData\Processing.cs" />
+    <Compile Include="Plugins\MTConnectData\Configuration.cs" />
+    <Compile Include="Plugins\MTConnectData\Current.cs" />
+    <Compile Include="Plugins\MTConnectData\Plugin.cs" />
+    <Compile Include="Plugins\MTConnectData\Probe.cs" />
+    <Compile Include="Plugins\MTConnectData\Requests.cs" />
+    <Compile Include="Plugins\MTConnectData\Sample.cs" />
+    <None Include="Plugins\OEE\Configuration.cs" />
+    <None Include="Plugins\OEE\Database\CycleBased.cs" />
+    <None Include="Plugins\OEE\Database\SegmentBased.cs" />
+    <None Include="Plugins\OEE\Database\ShiftBased.cs" />
+    <Compile Include="Plugins\OEE\OEE.cs" />
+    <Compile Include="Plugins\OEE\OEEData.cs" />
+    <Compile Include="Plugins\Parts\Configuration.cs" />
+    <None Include="Plugins\Parts\Database.cs" />
+    <Compile Include="Plugins\Parts\PartInfo.cs" />
+    <Compile Include="Plugins\Parts\Plugin.cs" />
+    <Compile Include="Plugins\SnapshotData\Configuration.cs" />
+    <None Include="Plugins\SnapshotData\Database.cs" />
+    <Compile Include="Plugins\SnapshotData\Plugin.cs" />
+    <Compile Include="Plugins\SnapshotData\Snapshot.cs" />
+    <None Include="Plugins\Status\Database.cs" />
+    <Compile Include="Plugins\Status\Plugin.cs" />
+    <Compile Include="Plugins\Status\StatusInfo.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ProjectInstaller.Designer.cs">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Service1.cs">
       <SubType>Component</SubType>
@@ -73,6 +122,10 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

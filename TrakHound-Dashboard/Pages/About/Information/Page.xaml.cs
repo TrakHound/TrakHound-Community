@@ -4,25 +4,12 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-using System.Diagnostics;
 
 using TrakHound;
-using TrakHound.Tools;
 
 namespace TrakHound_Dashboard.Pages.About.Information
 {
@@ -44,7 +31,8 @@ namespace TrakHound_Dashboard.Pages.About.Information
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
             Version version = assembly.GetName().Version;
 
-            Build_Version = "v" + version.Major.ToString() + "." + version.Minor.ToString() + "." + version.Build.ToString() + "." + version.Revision.ToString();
+            BuildVersion = "v" + version.Major.ToString() + "." + version.Minor.ToString() + "." + version.Build.ToString();
+            FullBuildVersion = "v" + version.Major.ToString() + "." + version.Minor.ToString() + "." + version.Build.ToString() + "." + version.Revision.ToString();
 
         }
 
@@ -62,14 +50,24 @@ namespace TrakHound_Dashboard.Pages.About.Information
         public object PageContent { get; set; }
 
 
-        public string Build_Version
+        public string BuildVersion
         {
-            get { return (string)GetValue(Build_VersionProperty); }
-            set { SetValue(Build_VersionProperty, value); }
+            get { return (string)GetValue(BuildVersionProperty); }
+            set { SetValue(BuildVersionProperty, value); }
         }
 
-        public static readonly DependencyProperty Build_VersionProperty =
-            DependencyProperty.Register("Build_Version", typeof(string), typeof(Page), new PropertyMetadata(null));
+        public static readonly DependencyProperty BuildVersionProperty =
+            DependencyProperty.Register("BuildVersion", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+        public string FullBuildVersion
+        {
+            get { return (string)GetValue(FullBuildVersionProperty); }
+            set { SetValue(FullBuildVersionProperty, value); }
+        }
+
+        public static readonly DependencyProperty FullBuildVersionProperty =
+            DependencyProperty.Register("FullBuildVersion", typeof(string), typeof(Page), new PropertyMetadata(null));
 
 
     }

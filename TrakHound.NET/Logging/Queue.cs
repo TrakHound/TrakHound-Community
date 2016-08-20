@@ -30,7 +30,7 @@ namespace TrakHound.Logging
 
         private List<Line> queue;
 
-        private LoggerConfiguration configuration;
+        internal LoggerConfiguration configuration;
 
         public LogQueue()
         {
@@ -141,7 +141,7 @@ namespace TrakHound.Logging
                 {
                     if (!Directory.Exists(Logger.OutputLogPath)) Directory.CreateDirectory(Logger.OutputLogPath);
 
-                    string filename = "Log-" + Logger.FormatDate(DateTime.Now) + ".xml";
+                    string filename = "Log-" + Logger.FormatDate(DateTime.Now) + ".log";
 
                     string path = null;
 
@@ -153,19 +153,56 @@ namespace TrakHound.Logging
                         case LogLineType.Warning: path = Path.Combine(Logger.OutputLogPath, Logger.OUTPUT_DIRECTORY_WARNING, filename); break;
                     }
 
-                    // Create Log (XmlDocument)
-                    XmlDocument doc = CreateDocument(path);
-
-                    foreach (Line line in lines)
+                    // Write to Log File
+                    using (var stream = new FileStream(path, FileMode.Append, FileAccess.Write, FileShare.Write))
                     {
-                        AddToLog(doc, line);
+                        using (var writer = new StreamWriter(stream))
+                        {
+                            foreach (Line line in lines)
+                            {
+                                writer.WriteLine(line);
+                            }
+                        }
                     }
-
-                    Files.WriteDocument(doc, path);
                 }
                 catch (Exception ex) { Console.WriteLine("ProcessQueue(LogLineType) :: Exception :: " + type.ToString() + " :: " + ex.Message); }
             }
         }
+
+        //private void ProcessQueue(LogLineType type)
+        //{
+        //    var lines = queue.FindAll(x => x.Type == type);
+        //    if (lines != null && lines.Count > 0)
+        //    {
+        //        try
+        //        {
+        //            if (!Directory.Exists(Logger.OutputLogPath)) Directory.CreateDirectory(Logger.OutputLogPath);
+
+        //            string filename = "Log-" + Logger.FormatDate(DateTime.Now) + ".xml";
+
+        //            string path = null;
+
+        //            switch (type)
+        //            {
+        //                case LogLineType.Debug: path = Path.Combine(Logger.OutputLogPath, Logger.OUTPUT_DIRECTORY_DEBUG, filename); break;
+        //                case LogLineType.Error: path = Path.Combine(Logger.OutputLogPath, Logger.OUTPUT_DIRECTORY_ERROR, filename); break;
+        //                case LogLineType.Notification: path = Path.Combine(Logger.OutputLogPath, Logger.OUTPUT_DIRECTORY_NOTIFICATION, filename); break;
+        //                case LogLineType.Warning: path = Path.Combine(Logger.OutputLogPath, Logger.OUTPUT_DIRECTORY_WARNING, filename); break;
+        //            }
+
+        //            // Create Log (XmlDocument)
+        //            XmlDocument doc = CreateDocument(path);
+
+        //            foreach (Line line in lines)
+        //            {
+        //                AddToLog(doc, line);
+        //            }
+
+        //            Files.WriteDocument(doc, path);
+        //        }
+        //        catch (Exception ex) { Console.WriteLine("ProcessQueue(LogLineType) :: Exception :: " + type.ToString() + " :: " + ex.Message); }
+        //    }
+        //}
 
         private static XmlDocument CreateDocument(string path)
         {

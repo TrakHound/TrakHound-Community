@@ -88,8 +88,8 @@ namespace TrakHound_Dashboard.Pages.Plugins.Installed
             {
                 var plugin = mw.Plugins.Find(x =>
                     x.Title == config.Name &&
-                    x.DefaultParent == config.Parent &&
-                    x.DefaultParentCategory == config.Category
+                    x.ParentPlugin == config.Parent &&
+                    x.ParentPluginCategory == config.Category
                     );
                 if (plugin != null)
                 {
@@ -122,8 +122,8 @@ namespace TrakHound_Dashboard.Pages.Plugins.Installed
             {
                 var plugin = mw.Plugins.Find(x =>
                     x.Title == config.Name &&
-                    x.DefaultParent == config.Parent &&
-                    x.DefaultParentCategory == config.Category
+                    x.ParentPlugin == config.Parent &&
+                    x.ParentPluginCategory == config.Category
                     );
                 if (plugin != null)
                 {

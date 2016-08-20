@@ -54,5 +54,13 @@ namespace TH_StatusTimeline
             Rows.Add(row);
         }
 
+        private void AddRow(DeviceConfiguration config, int index)
+        {
+            var row = new Controls.Row();
+            row.Configuration = config;
+            row.LastTimelineUpdate.Add(TimeSpan.FromSeconds(rnd.Next(5, 30)));
+            Rows.Insert(index, row);
+        }
+
     }
 }

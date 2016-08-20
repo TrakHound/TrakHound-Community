@@ -1,29 +1,18 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace TrakHound_Dashboard.Controls.Message_Center
 {
     /// <summary>
     /// Interaction logic for Message.xaml
     /// </summary>
-    
+
     public partial class Message : UserControl
     {
         public Message(MessageData data)
@@ -80,12 +69,6 @@ namespace TrakHound_Dashboard.Controls.Message_Center
             if (CloseClicked != null) CloseClicked(this);
         }
 
-        //private void Border_MouseUp(object sender, MouseButtonEventArgs e)
-        //{
-        //    Read = true;
-        //    if (Clicked != null) Clicked(this);
-        //}
-
         private void MoreInfo_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (Data != null)
@@ -128,7 +111,6 @@ namespace TrakHound_Dashboard.Controls.Message_Center
             Read = true;
             if (Clicked != null) Clicked(this);
         }
-
     }
 
 }

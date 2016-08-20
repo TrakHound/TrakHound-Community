@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
-using TrakHound.Logging;
-using TrakHound.API.Users;
-using System.Collections.Specialized;
-using TrakHound.API;
-using TrakHound.Tools.Web;
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+
+using TrakHound.API.Users;
+using TrakHound.Tools.Web;
 
 namespace TrakHound.API
 {
@@ -33,7 +34,7 @@ namespace TrakHound.API
         {
             if (userConfig != null)
             {
-                Uri apiHost = ApiConfiguration.ApiHost;
+                Uri apiHost = ApiConfiguration.AuthenticationApiHost;
 
                 string url = new Uri(apiHost, "files/upload/index.php").ToString();
 
@@ -58,24 +59,6 @@ namespace TrakHound.API
                             return uploadFileInfos.ToArray();
                         }
                     }
-
-                    //string[] x = response.Split('(', ')');
-                    //if (x != null && x.Length > 1)
-                    //{
-                    //    string error = x[1];
-
-                    //    Logger.Log("Upload File Failed : Error " + error, LogLineType.Error);
-                    //}
-                    //else
-                    //{
-                    //    Logger.Log("Upload File Successful", LogLineType.Notification);
-
-                    //    var uploadFileInfos = JSON.ToType<List<UploadFileInfo>>(response);
-                    //    if (uploadFileInfos != null)
-                    //    {
-                    //        return uploadFileInfos.ToArray();
-                    //    }
-                    //}
                 }
             }
 

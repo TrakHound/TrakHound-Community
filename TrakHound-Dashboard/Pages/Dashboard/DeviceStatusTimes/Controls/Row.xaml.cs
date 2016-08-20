@@ -1,10 +1,14 @@
-﻿using System;
-using System.Data;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
-using TrakHound.Tools;
-using TrakHound.Plugins;
+using TrakHound.API;
+using TrakHound.Configurations;
 
 namespace TH_StatusTimes.DeviceStatus.Controls
 {
@@ -21,6 +25,15 @@ namespace TH_StatusTimes.DeviceStatus.Controls
 
         #region "Dependency Properties"
 
+        public DeviceConfiguration Configuration
+        {
+            get { return (DeviceConfiguration)GetValue(ConfigurationProperty); }
+            set { SetValue(ConfigurationProperty, value); }
+        }
+
+        public static readonly DependencyProperty ConfigurationProperty =
+            DependencyProperty.Register("Configuration", typeof(DeviceConfiguration), typeof(Row), new PropertyMetadata(null));
+
         public bool Connected
         {
             get { return (bool)GetValue(ConnectedProperty); }
@@ -30,26 +43,6 @@ namespace TH_StatusTimes.DeviceStatus.Controls
         public static readonly DependencyProperty ConnectedProperty =
             DependencyProperty.Register("Connected", typeof(bool), typeof(Row), new PropertyMetadata(false));
 
-
-        public bool Available
-        {
-            get { return (bool)GetValue(AvailableProperty); }
-            set { SetValue(AvailableProperty, value); }
-        }
-
-        public static readonly DependencyProperty AvailableProperty =
-            DependencyProperty.Register("Available", typeof(bool), typeof(Row), new PropertyMetadata(false));
-
-
-
-        public TrakHound.Configurations.DeviceConfiguration Configuration
-        {
-            get { return (TrakHound.Configurations.DeviceConfiguration)GetValue(ConfigurationProperty); }
-            set { SetValue(ConfigurationProperty, value); }
-        }
-
-        public static readonly DependencyProperty ConfigurationProperty =
-            DependencyProperty.Register("Configuration", typeof(TrakHound.Configurations.DeviceConfiguration), typeof(Row), new PropertyMetadata(null));
 
         public string DeviceStatus
         {
@@ -61,201 +54,113 @@ namespace TH_StatusTimes.DeviceStatus.Controls
             DependencyProperty.Register("DeviceStatus", typeof(string), typeof(Row), new PropertyMetadata(null));
 
 
-        //public bool Active
-        //{
-        //    get { return (bool)GetValue(ActiveProperty); }
-        //    set { SetValue(ActiveProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty ActiveProperty =
-        //    DependencyProperty.Register("Active", typeof(bool), typeof(Row), new PropertyMetadata(false));
-
-
-
-        ////public bool Production
-        ////{
-        ////    get { return (bool)GetValue(ProductionProperty); }
-        ////    set { SetValue(ProductionProperty, value); }
-        ////}
-
-        ////public static readonly DependencyProperty ProductionProperty =
-        ////    DependencyProperty.Register("Production", typeof(bool), typeof(Row), new PropertyMetadata(false));
-
-
-        //public bool Idle
-        //{
-        //    get { return (bool)GetValue(IdleProperty); }
-        //    set { SetValue(IdleProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty IdleProperty =
-        //    DependencyProperty.Register("Idle", typeof(bool), typeof(Row), new PropertyMetadata(false));
-
-
-        //public bool Alert
-        //{
-        //    get { return (bool)GetValue(AlertProperty); }
-        //    set { SetValue(AlertProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty AlertProperty =
-        //    DependencyProperty.Register("Alert", typeof(bool), typeof(Row), new PropertyMetadata(false));
-
-
-
-        public double TotalSeconds
+        public int Status
         {
-            get { return (double)GetValue(TotalSecondsProperty); }
-            set { SetValue(TotalSecondsProperty, value); }
+            get { return (int)GetValue(StatusProperty); }
+            set { SetValue(StatusProperty, value); }
         }
 
-        public static readonly DependencyProperty TotalSecondsProperty =
-            DependencyProperty.Register("TotalSeconds", typeof(double), typeof(Row), new PropertyMetadata(0d));
+        public static readonly DependencyProperty StatusProperty =
+            DependencyProperty.Register("Status", typeof(int), typeof(Row), new PropertyMetadata(-1));
 
 
-        public double ActiveSeconds
+
+        public double ActivePercentage
         {
-            get { return (double)GetValue(ActiveSecondsProperty); }
-            set { SetValue(ActiveSecondsProperty, value); }
+            get { return (double)GetValue(ActivePercentageProperty); }
+            set { SetValue(ActivePercentageProperty, value); }
         }
 
-        public static readonly DependencyProperty ActiveSecondsProperty =
-            DependencyProperty.Register("ActiveSeconds", typeof(double), typeof(Row), new PropertyMetadata(0d));
+        public static readonly DependencyProperty ActivePercentageProperty =
+            DependencyProperty.Register("ActivePercentage", typeof(double), typeof(Row), new PropertyMetadata(0d));
 
 
-        //public double ProductionSeconds
-        //{
-        //    get { return (double)GetValue(ProductionSecondsProperty); }
-        //    set { SetValue(ProductionSecondsProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty ProductionSecondsProperty =
-        //    DependencyProperty.Register("ProductionSeconds", typeof(double), typeof(Row), new PropertyMetadata(0d));
-
-
-        public double IdleSeconds
+        public double IdlePercentage
         {
-            get { return (double)GetValue(IdleSecondsProperty); }
-            set { SetValue(IdleSecondsProperty, value); }
+            get { return (double)GetValue(IdlePercentageProperty); }
+            set { SetValue(IdlePercentageProperty, value); }
         }
 
-        public static readonly DependencyProperty IdleSecondsProperty =
-            DependencyProperty.Register("IdleSeconds", typeof(double), typeof(Row), new PropertyMetadata(0d));
+        public static readonly DependencyProperty IdlePercentageProperty =
+            DependencyProperty.Register("IdlePercentage", typeof(double), typeof(Row), new PropertyMetadata(0d));
 
 
-        public double AlertSeconds
+        public double AlertPercentage
         {
-            get { return (double)GetValue(AlertSecondsProperty); }
-            set { SetValue(AlertSecondsProperty, value); }
+            get { return (double)GetValue(AlertPercentageProperty); }
+            set { SetValue(AlertPercentageProperty, value); }
         }
 
-        public static readonly DependencyProperty AlertSecondsProperty =
-            DependencyProperty.Register("AlertSeconds", typeof(double), typeof(Row), new PropertyMetadata(0d));
+        public static readonly DependencyProperty AlertPercentageProperty =
+            DependencyProperty.Register("AlertPercentage", typeof(double), typeof(Row), new PropertyMetadata(0d));
 
+
+
+
+        public TimeSpan ActiveTime
+        {
+            get { return (TimeSpan)GetValue(ActiveTimeProperty); }
+            set { SetValue(ActiveTimeProperty, value); }
+        }
+
+        public static readonly DependencyProperty ActiveTimeProperty =
+            DependencyProperty.Register("ActiveTime", typeof(TimeSpan), typeof(Row), new PropertyMetadata(TimeSpan.Zero));
+
+
+        public TimeSpan IdleTime
+        {
+            get { return (TimeSpan)GetValue(IdleTimeProperty); }
+            set { SetValue(IdleTimeProperty, value); }
+        }
+
+        public static readonly DependencyProperty IdleTimeProperty =
+            DependencyProperty.Register("IdleTime", typeof(TimeSpan), typeof(Row), new PropertyMetadata(TimeSpan.Zero));
+
+
+        public TimeSpan AlertTime
+        {
+            get { return (TimeSpan)GetValue(AlertTimeProperty); }
+            set { SetValue(AlertTimeProperty, value); }
+        }
+
+        public static readonly DependencyProperty AlertTimeProperty =
+            DependencyProperty.Register("AlertTime", typeof(TimeSpan), typeof(Row), new PropertyMetadata(TimeSpan.Zero));
 
         #endregion
 
         public DateTime CurrentTime { get; set; }
 
-        public void UpdateData(EventData data)
+        public void UpdateData(Data.StatusInfo info)
         {
-            UpdateDatabaseConnection(data);
-            UpdateAvailability(data);
-            UpdateSnapshots(data);
-            UpdateVariables(data);
-            UpdateShiftData(data);
+            Connected = info.Connected == 1;
+            DeviceStatus = info.DeviceStatus;
         }
 
-        private void UpdateDatabaseConnection(EventData data)
+        public void UpdateData(Data.TimersInfo info)
         {
-            if (data.Id.ToLower() == "statusdata_connection")
+            if (info != null)
             {
-                if (data.Data02.GetType() == typeof(bool))
+                double total = info.Total;
+                double active = info.Active;
+                double idle = info.Idle;
+                double alert = info.Alert;
+
+                if (total > 0)
                 {
-                    Connected = (bool)data.Data02;
+                    ActivePercentage = active / total;
+                    IdlePercentage = idle / total;
+                    AlertPercentage = alert / total;
                 }
+
+                if (active > idle && active > alert) Status = 2;
+                else if (idle > alert && idle > active) Status = 1;
+                else Status = 0;
+
+                ActiveTime = TimeSpan.FromSeconds(active);
+                IdleTime = TimeSpan.FromSeconds(idle);
+                AlertTime = TimeSpan.FromSeconds(alert);
             }
         }
-
-        private void UpdateAvailability(EventData data)
-        {
-            if (data.Id.ToLower() == "statusdata_availability")
-            {
-                if (data.Data02.GetType() == typeof(bool))
-                {
-                    Available = (bool)data.Data02;
-                }
-            }
-        }
-
-        private void UpdateVariables(EventData data)
-        {
-            if (data.Id.ToLower() == "statusdata_variables")
-            {
-                if (data.Data02 != null)
-                {
-                    var currentTime = DataTable_Functions.GetTableValue(data.Data02, "variable", "shift_currenttime", "value");
-                    if (currentTime != null)
-                    {
-                        DateTime time = DateTime.MinValue;
-                        if (DateTime.TryParse(currentTime, out time))
-                        {
-                            CurrentTime = time;
-                        }
-                    }
-                }
-            }
-        }
-
-        private void UpdateSnapshots(EventData data)
-        {
-            if (data.Id.ToLower() == "statusdata_snapshots")
-            {
-                if (data.Data02 != null)
-                {
-                    DeviceStatus = DataTable_Functions.GetTableValue(data.Data02, "name", "Device Status", "value");
-
-                    //var deviceStatus = DataTable_Functions.GetTableValue(data.Data02, "name", "Device Status", "value");
-                    //if (deviceStatus != null)
-                    //{
-                    //    switch (deviceStatus.ToLower())
-                    //    {
-                    //        case "active": Active = true; Idle = false; Alert = false; break;
-                    //        case "idle": Active = false; Idle = true; Alert = false; break;
-                    //        case "alert": Active = false; Idle = false; Alert = true; break;
-                    //    }
-                    //}
-                }
-            }
-        }
-
-        private void UpdateShiftData(EventData data)
-        {
-            if (data.Id.ToLower() == "statusdata_shiftdata")
-            {
-                var dt = data.Data02 as DataTable;
-                if (dt != null)
-                {
-                    double total = 0;
-                    double active = 0;
-                    double idle = 0;
-                    double alert = 0;
-
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        total += DataTable_Functions.GetDoubleFromRow("totaltime", row);
-                        active += DataTable_Functions.GetDoubleFromRow("device_status__active", row);
-                        idle += DataTable_Functions.GetDoubleFromRow("device_status__idle", row);
-                        alert += DataTable_Functions.GetDoubleFromRow("device_status__alert", row);
-                    }
-
-                    TotalSeconds = total;
-                    ActiveSeconds = active;
-                    IdleSeconds = idle;
-                    AlertSeconds = alert;
-                }
-            }
-        }
-
+        
     }
 }

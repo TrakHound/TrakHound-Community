@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 
 using TrakHound;
+using TrakHound.API;
 using TrakHound.Configurations;
 using TrakHound.Tools;
 
@@ -122,15 +123,14 @@ namespace TrakHound_Overview.Controls.DeviceDisplay
         /// Update data using the Snapshots Table
         /// </summary>
         /// <param name="snapshotData"></param>
+        //public void UpdateData_Status(Data.StatusInfo info)
+        //{
+        //    DeviceStatus = info.DeviceStatus;
+        //}
+            
         public void UpdateData_Snapshots(object snapshotData)
         {
             DeviceStatus = DataTable_Functions.GetTableValue(snapshotData, "name", "Device Status", "value");
-
-            //Update_Alert(snapshotData);
-
-            //Update_Idle(snapshotData);
-
-            //Update_Production(snapshotData);
         }
 
         /// <summary>

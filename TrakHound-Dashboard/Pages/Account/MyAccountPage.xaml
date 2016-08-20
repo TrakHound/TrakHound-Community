@@ -19,356 +19,346 @@
 
     </UserControl.Resources>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <!--<ScrollViewer VerticalScrollBarVisibility="Auto">-->
 
-        <StackPanel >
+    <StackPanel >
 
-            <!--Description-->
-            <StackPanel IsHitTestVisible="False">
-                <StackPanel.Style>
-                    <Style TargetType="StackPanel">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </StackPanel.Style>
+        <!--Description-->
+        <StackPanel IsHitTestVisible="False">
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
 
-                <TextBlock Foreground="{StaticResource Foreground_Light}" TextWrapping="Wrap" Margin="0,0,0,5" MaxWidth="600" HorizontalAlignment="Left">
+            <TextBlock Foreground="{StaticResource Foreground_Light}" TextWrapping="Wrap" Margin="0,0,0,5" MaxWidth="600" HorizontalAlignment="Left">
                 Create a Free TrakHound User Account so you can easily reach your devices from anywhere, remotely manage your configurations, and much more!
-                </TextBlock>
+            </TextBlock>
 
-                <TextBlock Foreground="{StaticResource Foreground_Light}" TextWrapping="Wrap" Margin="0,0,0,5" MaxWidth="600" HorizontalAlignment="Left">
+            <TextBlock Foreground="{StaticResource Foreground_Light}" TextWrapping="Wrap" Margin="0,0,0,5" MaxWidth="600" HorizontalAlignment="Left">
                 Enter only the information you want below, all we require is a username and a secure password.
-                </TextBlock>
+            </TextBlock>
 
-                <TextBlock Foreground="{StaticResource Foreground_Light}" TextWrapping="Wrap" Margin="0,0,0,20" MaxWidth="600" HorizontalAlignment="Left">
+            <TextBlock Foreground="{StaticResource Foreground_Light}" TextWrapping="Wrap" Margin="0,0,0,20" MaxWidth="600" HorizontalAlignment="Left">
                 If you enter your contact information we will only use it to contact you if you have requested assistance from us, we need to inform you about information regarding your account, or we have an update to our policies.
-                </TextBlock>
+            </TextBlock>
 
-            </StackPanel>
+        </StackPanel>
 
-            <!--Form-->
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="400"/>
-                    <ColumnDefinition Width="200"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.Resources>
-                    <Style TargetType="ui:TextBox">
-                        <Setter Property="Margin" Value="0,10"/>
-                    </Style>
-                    <Style TargetType="ui:PasswordBox">
-                        <Setter Property="Margin" Value="0,10"/>
-                    </Style>
-                </Grid.Resources>
+        <!--Form-->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="400"/>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.Resources>
+                <Style TargetType="ui:TextBox">
+                    <Setter Property="Margin" Value="0,10"/>
+                </Style>
+                <Style TargetType="ui:PasswordBox">
+                    <Setter Property="Margin" Value="0,10"/>
+                </Style>
+            </Grid.Resources>
 
-                <!--User Configuration-->
-                <Grid Width="315" HorizontalAlignment="Left" Margin="0,0,0,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+            <!--User Configuration-->
+            <Grid Width="315" HorizontalAlignment="Left" Margin="0,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-                    <!--Set Username (Logged Out)-->
-                    <StackPanel>
-                        <StackPanel.Style>
-                            <Style TargetType="StackPanel">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </StackPanel.Style>
-
-                        <!--Choose your username-->
-                        <ui:TextBox Text="{Binding Username, Mode=TwoWay}" Title="Choose your username" Instructions="Username" TextChanged="username_TXT_TextChanged" Required="True" TabIndex="0"/>
-
-                        <!--Verify Username-->
-                        <Grid Margin="10,0,10,10">
-                            <Grid.Style>
-                                <Style TargetType="Grid">
+                <!--Set Username (Logged Out)-->
+                <StackPanel>
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
                                     <Setter Property="Visibility" Value="Visible"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Username}" Value="">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Username}" Value="{x:Null}">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
 
-                            <TextBlock Text="{Binding UsernameMessage}" TextWrapping="Wrap">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="Red"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding UsernameVerified}" Value="true">
-                                                <Setter Property="Foreground" Value="Green"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </Grid>
+                    <!--Choose your username-->
+                    <ui:TextBox Text="{Binding Username, Mode=TwoWay}" Title="Choose your username" Instructions="Username" TextChanged="username_TXT_TextChanged" Required="True" TabIndex="0"/>
 
-                    </StackPanel>
-
-                    <!--Logged In (Display Username and Change Password Button-->
-                    <StackPanel Grid.Row="2">
-                        <StackPanel.Style>
-                            <Style TargetType="StackPanel">
-                                <Setter Property="Visibility" Value="Visible"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </StackPanel.Style>
-
-                        <!--Username-->
-                        <StackPanel Margin="0,20,0,10">
-                            <TextBlock Text="Username" Foreground="{StaticResource Foreground_Light}" FontSize="10pt" Margin="0,0,0,5"/>
-                            <TextBlock Text="{Binding CurrentUser.Username, Converter={StaticResource uppercaseConverter}}" FontSize="14pt" Foreground="{StaticResource Accent_Normal}"/>
-                        </StackPanel>
-
-                        <!--Password-->
-                        <ui:Button Grid.Column="1" Text="Change Password" HorizontalAlignment="Left" Height="40" Margin="0,0,0,20" Clicked="ChangePassword_Clicked">
-                            <ui:Button.Style>
-                                <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Transparent_Background}">
-                                    <!--<Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                                    <Setter Property="Background" Value="#00000000"/>
-                                    <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>-->
-                                    <!--<Setter Property="BorderThickness" Value="1"/>-->
-                                    <!--<Setter Property="FontSize" Value="14"/>-->
-                                    <Setter Property="MinWidth" Value="100"/>
-                                    <Setter Property="Height" Value="40"/>
-                                    <Setter Property="Padding" Value="10,5"/>
-                                    <Style.Triggers>
-                                        <!--<Trigger Property="IsMouseOver" Value="true">
-                                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                                            <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
-                                            <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
-                                        </Trigger>-->
-                                        <DataTrigger Binding="{Binding ShowChangePassword}" Value="true">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ui:Button.Style>
-                        </ui:Button>
-
-                    </StackPanel>
-
-                    <!--Change Password Boxes-->
-                    <StackPanel>
-                        <StackPanel.Style>
-                            <Style TargetType="StackPanel">
-                                <Setter Property="Grid.Row" Value="3"/>
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
-                                        <Setter Property="Grid.Row" Value="1"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ShowChangePassword}" Value="true">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </StackPanel.Style>
-
-                        <!--Password-->
-                        <ui:PasswordBox x:Name="password_TXT" PasswordChanged="password_TXT_PasswordChanged" Required="True" TabIndex="1">
-                            <ui:PasswordBox.Style>
-                                <Style TargetType="ui:PasswordBox">
-                                    <Setter Property="Title" Value="Enter new password"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
-                                            <Setter Property="Title" Value="Create a password"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ui:PasswordBox.Style>
-                        </ui:PasswordBox>
-
-                        <!--Verify Password -->
-                        <Grid Margin="10,0,10,10">
-                            <Grid.Style>
-                                <Style TargetType="Grid">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding PasswordEntered}" Value="false">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
-
-                            <!--Too Short-->
-                            <TextBlock Text="Password must have at least 8 characters. Try another?" Foreground="Red" TextWrapping="Wrap">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding PasswordShort}" Value="true">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-
-                            <!--Too Long-->
-                            <TextBlock Text="Password must have at most 100 characters. Try another?" Foreground="Red" TextWrapping="Wrap">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding PasswordLong}" Value="true">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-
-                        </Grid>
-
-
-                        <!--Confirm Password-->
-                        <ui:PasswordBox x:Name="confirmpassword_TXT" Title="Confirm your password" PasswordChanged="confirmpassword_TXT_PasswordChanged" Required="True" TabIndex="2"/>
-
-                        <!--Verify Confirm Password -->
-                        <Grid Margin="10,0,10,10">
-                            <Grid.Style>
-                                <Style TargetType="Grid">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Style.Triggers>
-
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding ConfirmPasswordEntered}" Value="true"/>
-                                                <Condition Binding="{Binding PasswordVerified}" Value="false"/>
-                                            </MultiDataTrigger.Conditions>
-
-                                            <Setter Property="Visibility" Value="Visible"/>
-
-                                        </MultiDataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
-
-                            <!--Don't Match-->
-                            <TextBlock Text="These passwords don't match. Try again?" Foreground="Red" TextWrapping="Wrap"/>
-
-                        </Grid>
-
-                    </StackPanel>
-
-                    <!--Name (Set First and Last)-->
-                    <Grid Margin="0,0,0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                    <!--Verify Username-->
+                    <Grid Margin="10,0,10,10">
                         <Grid.Style>
                             <Style TargetType="Grid">
-                                <Setter Property="Grid.Row" Value="1"/>
+                                <Setter Property="Visibility" Value="Visible"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
-                                        <Setter Property="Grid.Row" Value="2"/>
+                                    <DataTrigger Binding="{Binding Username}" Value="">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Username}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>
-                        <Grid.Resources>
-                            <Style TargetType="ui:TextBox">
-                                <Setter Property="VerticalAlignment" Value="Bottom"/>
-                            </Style>
-                        </Grid.Resources>
 
-                        <!--First Name-->
-                        <ui:TextBox Text="{Binding FirstName, Mode=TwoWay}" Title="Name" Instructions="First" Margin="0,0,0,0"/>
-
-                        <!--Last Name-->
-                        <ui:TextBox Grid.Column="1" Text="{Binding LastName, Mode=TwoWay}" Instructions="Last"/>
-
+                        <TextBlock Text="{Binding UsernameMessage}" TextWrapping="Wrap">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="Red"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding UsernameVerified}" Value="true">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
                     </Grid>
 
-                    <StackPanel Grid.Row="4">
+                </StackPanel>
 
-                        <!--Company-->
-                        <ui:TextBox Text="{Binding Company, Mode=TwoWay}" Title="Company"/>
+                <!--Logged In (Display Username and Change Password Button-->
+                <StackPanel Grid.Row="2">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
 
+                    <!--Username-->
+                    <StackPanel Margin="0,20,0,10">
+                        <TextBlock Text="Username" Foreground="{StaticResource Foreground_Light}" FontSize="10pt" Margin="0,0,0,5"/>
+                        <TextBlock Text="{Binding CurrentUser.Username, Converter={StaticResource uppercaseConverter}}" FontSize="14pt" Foreground="{StaticResource Accent_Normal}"/>
+                    </StackPanel>
 
-                        <!--Email-->
-                        <ui:TextBox Text="{Binding Email, Mode=TwoWay}" Title="Email"/>
+                    <!--Password-->
+                    <ui:Button Grid.Column="1" Text="Change Password" HorizontalAlignment="Left" Height="40" Margin="0,0,0,20" Clicked="ChangePassword_Clicked">
+                        <ui:Button.Style>
+                            <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Transparent_Background}">
+                                <Setter Property="MinWidth" Value="100"/>
+                                <Setter Property="Height" Value="40"/>
+                                <Setter Property="Padding" Value="10,5"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ShowChangePassword}" Value="true">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ui:Button.Style>
+                    </ui:Button>
 
+                </StackPanel>
 
-                        <!--Phone-->
-                        <ui:TextBox Text="{Binding Phone, Mode=TwoWay}" Title="Phone"/>
+                <!--Change Password Boxes-->
+                <StackPanel>
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Grid.Row" Value="3"/>
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
+                                    <Setter Property="Grid.Row" Value="1"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ShowChangePassword}" Value="true">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
 
+                    <!--Password-->
+                    <ui:PasswordBox x:Name="password_TXT" PasswordChanged="password_TXT_PasswordChanged" Required="True" TabIndex="1">
+                        <ui:PasswordBox.Style>
+                            <Style TargetType="ui:PasswordBox">
+                                <Setter Property="Title" Value="Enter new password"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
+                                        <Setter Property="Title" Value="Create a password"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ui:PasswordBox.Style>
+                    </ui:PasswordBox>
 
-                        <!--Address-->
-                        <ui:TextBox Text="{Binding Address1, Mode=TwoWay}" Title="Address"/>
+                    <!--Verify Password -->
+                    <Grid Margin="10,0,10,10">
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding PasswordEntered}" Value="false">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
 
-                        <ui:TextBox Text="{Binding Address2, Mode=TwoWay}"/>
-
-
-                        <!--City-->
-                        <ui:TextBox Text="{Binding City, Mode=TwoWay}" Title="City"/>
-
-
-                        <!--Country-->
-                        <TextBlock Text="Country" Foreground="{StaticResource Foreground_Normal}" Margin="0,0" FontSize="12pt"/>
-
-                        <ComboBox x:Name="country_COMBO" Height="35" Margin="0,5,15,5" ItemsSource="{Binding CountryList}" SelectionChanged="country_COMBO_SelectionChanged" VerticalContentAlignment="Center" FontSize="14" IsTextSearchEnabled="True" IsEditable="True"/>
-
-                        <!--State-->
-                        <StackPanel>
-                            <StackPanel.Style>
-                                <Style TargetType="StackPanel">
+                        <!--Too Short-->
+                        <TextBlock Text="Password must have at least 8 characters. Try another?" Foreground="Red" TextWrapping="Wrap">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ShowStates}" Value="true">
+                                        <DataTrigger Binding="{Binding PasswordShort}" Value="true">
                                             <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </StackPanel.Style>
+                            </TextBlock.Style>
+                        </TextBlock>
 
-                            <TextBlock Text="State" Foreground="{StaticResource Foreground_Normal}" Margin="0,0" FontSize="12pt"/>
+                        <!--Too Long-->
+                        <TextBlock Text="Password must have at most 100 characters. Try another?" Foreground="Red" TextWrapping="Wrap">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding PasswordLong}" Value="true">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
 
-                            <ComboBox x:Name="state_COMBO" Height="35" Margin="0,5,15,5" ItemsSource="{Binding StateList}" VerticalContentAlignment="Center" FontSize="14" IsTextSearchEnabled="True" IsEditable="True"/>
+                    </Grid>
 
-                        </StackPanel>
 
-                        <!--Zip Code-->
-                        <ui:TextBox Text="{Binding ZipCode, Mode=TwoWay}" Title="Zip Code"/>
+                    <!--Confirm Password-->
+                    <ui:PasswordBox x:Name="confirmpassword_TXT" Title="Confirm your password" PasswordChanged="confirmpassword_TXT_PasswordChanged" Required="True" TabIndex="2"/>
 
-                    </StackPanel>
+                    <!--Verify Confirm Password -->
+                    <Grid Margin="10,0,10,10">
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding ConfirmPasswordEntered}" Value="true"/>
+                                            <Condition Binding="{Binding PasswordVerified}" Value="false"/>
+                                        </MultiDataTrigger.Conditions>
+
+                                        <Setter Property="Visibility" Value="Visible"/>
+
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <!--Don't Match-->
+                        <TextBlock Text="These passwords don't match. Try again?" Foreground="Red" TextWrapping="Wrap"/>
+
+                    </Grid>
+
+                </StackPanel>
+
+                <!--Name (Set First and Last)-->
+                <Grid Margin="0,0,0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Grid.Row" Value="1"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
+                                    <Setter Property="Grid.Row" Value="2"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    <Grid.Resources>
+                        <Style TargetType="ui:TextBox">
+                            <Setter Property="VerticalAlignment" Value="Bottom"/>
+                        </Style>
+                    </Grid.Resources>
+
+                    <!--First Name-->
+                    <ui:TextBox Text="{Binding FirstName, Mode=TwoWay}" Title="Name" Instructions="First" Margin="0,0,0,0"/>
+
+                    <!--Last Name-->
+                    <ui:TextBox Grid.Column="1" Text="{Binding LastName, Mode=TwoWay}" Instructions="Last"/>
 
                 </Grid>
 
-                <!--Side Panel-->
-                <StackPanel Grid.Column="1">
+                <StackPanel Grid.Row="4">
 
-                    <!--Profile Image-->
-                    <ui:ImageBox Title="Profile Image"
+                    <!--Company-->
+                    <ui:TextBox Text="{Binding Company, Mode=TwoWay}" Title="Company"/>
+
+
+                    <!--Email-->
+                    <ui:TextBox Text="{Binding Email, Mode=TwoWay}" Title="Email"/>
+
+
+                    <!--Phone-->
+                    <ui:TextBox Text="{Binding Phone, Mode=TwoWay}" Title="Phone"/>
+
+
+                    <!--Address-->
+                    <ui:TextBox Text="{Binding Address1, Mode=TwoWay}" Title="Address"/>
+
+                    <ui:TextBox Text="{Binding Address2, Mode=TwoWay}"/>
+
+
+                    <!--City-->
+                    <ui:TextBox Text="{Binding City, Mode=TwoWay}" Title="City"/>
+
+
+                    <!--Country-->
+                    <TextBlock Text="Country" Foreground="{StaticResource Foreground_Normal}" Margin="0,0" FontSize="12pt"/>
+
+                    <ComboBox x:Name="country_COMBO" Height="35" Margin="0,5,15,5" ItemsSource="{Binding CountryList}" SelectionChanged="country_COMBO_SelectionChanged" VerticalContentAlignment="Center" FontSize="14" IsTextSearchEnabled="True" IsEditable="True"/>
+
+                    <!--State-->
+                    <StackPanel>
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ShowStates}" Value="true">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+
+                        <TextBlock Text="State" Foreground="{StaticResource Foreground_Normal}" Margin="0,0" FontSize="12pt"/>
+
+                        <ComboBox x:Name="state_COMBO" Height="35" Margin="0,5,15,5" ItemsSource="{Binding StateList}" VerticalContentAlignment="Center" FontSize="14" IsTextSearchEnabled="True" IsEditable="True"/>
+
+                    </StackPanel>
+
+                    <!--Zip Code-->
+                    <ui:TextBox Text="{Binding ZipCode, Mode=TwoWay}" Title="Zip Code"/>
+
+                </StackPanel>
+
+            </Grid>
+
+            <!--Side Panel-->
+            <StackPanel Grid.Column="1">
+
+                <!--Profile Image-->
+                <ui:ImageBox Title="Profile Image"
                                  Height="255" 
                                  Width="200"
                                  UploadClicked="ProfileImage_UploadClicked" 
@@ -378,41 +368,41 @@
                                  Loading="{Binding ProfileImageLoading}"
                                  ShowBorder="True"
                                  >
-                        <ui:ImageBox.Style>
-                            <Style TargetType="ui:ImageBox">
-                                <Setter Property="Visibility" Value="Visible"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ui:ImageBox.Style>
-                    </ui:ImageBox>
+                    <ui:ImageBox.Style>
+                        <Style TargetType="ui:ImageBox">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ui:ImageBox.Style>
+                </ui:ImageBox>
 
-                    <!--Legend-->
-                    <StackPanel Margin="0,10,0,0">
+                <!--Legend-->
+                <StackPanel Margin="0,10,0,0">
 
-                        <!--Required-->
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <!--Required-->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 
-                            <TextBlock Text="Required Fields are indicated with" Foreground="{StaticResource Foreground_Light}" FontSize="8pt" VerticalAlignment="Center"/>
+                        <TextBlock Text="Required Fields are indicated with" Foreground="{StaticResource Foreground_Light}" FontSize="8pt" VerticalAlignment="Center"/>
 
-                            <TextBlock Text="*" Foreground="Red" FontSize="16pt" Margin="5,7,0,0"/>
-
-                        </StackPanel>
+                        <TextBlock Text="*" Foreground="Red" FontSize="16pt" Margin="5,7,0,0"/>
 
                     </StackPanel>
 
-                    <!--Apply Button-->
-                    <Grid Margin="10,10,10,0">
+                </StackPanel>
 
-                        <StackPanel>
+                <!--Apply Button-->
+                <Grid Margin="10,10,10,0">
 
-                            <!--Privacy Policy Statement-->
-                            <Grid Margin="0,0,0,10">
+                    <StackPanel>
 
-                                <TextBlock TextWrapping="Wrap" Foreground="{StaticResource Foreground_Light}" FontSize="8pt">
+                        <!--Privacy Policy Statement-->
+                        <Grid Margin="0,0,0,10">
+
+                            <TextBlock TextWrapping="Wrap" Foreground="{StaticResource Foreground_Light}" FontSize="8pt">
                                     <Run Text="By clicking"/>
                                     <Run>
                                         <Run.Style>
@@ -430,88 +420,86 @@
                                     <Hyperlink NavigateUri="http://www.feenux.com/trakhound/docs/privacypolicy_desktopapp.html" RequestNavigate="PrivacyPolicy_RequestNavigate">
                                         Privacy Policy
                                     </Hyperlink>
-                                </TextBlock>
+                            </TextBlock>
 
-                            </Grid>
+                        </Grid>
 
-                            <!--Apply / Create Button-->
-                            <ui:Button Clicked="Apply_Clicked">
-                                <ui:Button.Style>
-                                    <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Accent_Background}">
-                                        <Setter Property="Text" Value="Apply Changes"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
-                                                <Setter Property="Text" Value="Create Account"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding ShowChangePassword}" Value="true">
-                                                <Setter Property="IsEnabled" Value="false"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
-                                                <Setter Property="IsEnabled" Value="false"/>
-                                            </DataTrigger>
-                                            <MultiDataTrigger>
-                                                <MultiDataTrigger.Conditions>
-                                                    <Condition Binding="{Binding CurrentUser}" Value="{x:Null}"/>
-                                                    <Condition Binding="{Binding UsernameVerified}" Value="true"/>
-                                                    <Condition Binding="{Binding PasswordEntered}" Value="true"/>
-                                                    <Condition Binding="{Binding ConfirmPasswordEntered}" Value="true"/>
-                                                    <Condition Binding="{Binding PasswordVerified}" Value="true"/>
-                                                </MultiDataTrigger.Conditions>
-                                                <Setter Property="IsEnabled" Value="true"/>
-                                            </MultiDataTrigger>
-                                            <MultiDataTrigger>
-                                                <MultiDataTrigger.Conditions>
-                                                    <Condition Binding="{Binding PasswordEntered}" Value="true"/>
-                                                    <Condition Binding="{Binding ConfirmPasswordEntered}" Value="true"/>
-                                                    <Condition Binding="{Binding PasswordVerified}" Value="true"/>
-                                                </MultiDataTrigger.Conditions>
-                                                <Setter Property="IsEnabled" Value="true"/>
-                                            </MultiDataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ui:Button.Style>
-                            </ui:Button>
+                        <!--Apply / Create Button-->
+                        <ui:Button Clicked="Apply_Clicked">
+                            <ui:Button.Style>
+                                <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Accent_Background}">
+                                    <Setter Property="Text" Value="Apply Changes"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
+                                            <Setter Property="Text" Value="Create Account"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ShowChangePassword}" Value="true">
+                                            <Setter Property="IsEnabled" Value="false"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
+                                            <Setter Property="IsEnabled" Value="false"/>
+                                        </DataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding CurrentUser}" Value="{x:Null}"/>
+                                                <Condition Binding="{Binding UsernameVerified}" Value="true"/>
+                                                <Condition Binding="{Binding PasswordEntered}" Value="true"/>
+                                                <Condition Binding="{Binding ConfirmPasswordEntered}" Value="true"/>
+                                                <Condition Binding="{Binding PasswordVerified}" Value="true"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="IsEnabled" Value="true"/>
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding PasswordEntered}" Value="true"/>
+                                                <Condition Binding="{Binding ConfirmPasswordEntered}" Value="true"/>
+                                                <Condition Binding="{Binding PasswordVerified}" Value="true"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="IsEnabled" Value="true"/>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ui:Button.Style>
+                        </ui:Button>
 
-                        </StackPanel>
+                    </StackPanel>
 
-                    </Grid>
+                </Grid>
 
-                    <!--Saving-->
-                    <Grid>
-                        <Grid.Style>
-                            <Style TargetType="Grid">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Saving}" Value="true">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
+                <!--Saving-->
+                <Grid>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Saving}" Value="true">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
 
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
 
-                            <!--Loading Wheel-->
-                            <ui:Spinner Height="30" Width="30" Foreground="{StaticResource Accent_Normal}" Margin="0,0,20,0"/>
+                        <!--Loading Wheel-->
+                        <ui:Spinner Height="30" Width="30" Foreground="{StaticResource Accent_Normal}" Margin="0,0,20,0"/>
 
-                            <!--Saving Text-->
-                            <StackPanel>
+                        <!--Saving Text-->
+                        <StackPanel>
 
-                                <TextBlock Text="Saving" Foreground="{StaticResource Foreground_Normal}"/>
-                                <TextBlock Text="Please wait.." Foreground="{StaticResource Foreground_Light}"/>
-
-                            </StackPanel>
+                            <TextBlock Text="Saving" Foreground="{StaticResource Foreground_Normal}"/>
+                            <TextBlock Text="Please wait.." Foreground="{StaticResource Foreground_Light}"/>
 
                         </StackPanel>
 
-                    </Grid>
+                    </StackPanel>
 
-                </StackPanel>
+                </Grid>
 
-            </Grid>
+            </StackPanel>
 
-        </StackPanel>
+        </Grid>
 
-    </ScrollViewer>
+    </StackPanel>
 
 </UserControl>

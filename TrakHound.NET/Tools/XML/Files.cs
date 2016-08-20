@@ -32,29 +32,50 @@ namespace TrakHound.Tools.XML
             int maxAttempts = 3;
             bool success = false;
 
-            while (!success && attempt < maxAttempts)
+            try
             {
-                try
+                if (!string.IsNullOrEmpty(path))
                 {
-                    FileMode mode = FileMode.OpenOrCreate;
-                    if (overwrite) mode = FileMode.Create;
+                    // Create Temporary Backup (journal file)
+                    string tempFilename = Path.ChangeExtension(Guid.NewGuid().ToString(), ".xml");
+                    string tempPath = Path.Combine(Path.GetDirectoryName(path), tempFilename);
+                    if (File.Exists(path)) File.Copy(path, tempPath);
 
-                    using (var fs = new FileStream(path, mode, FileAccess.Write, FileShare.ReadWrite))
+                    while (!success && attempt < maxAttempts)
                     {
-                        using (var writer = XmlWriter.Create(fs, settings))
+                        try
                         {
-                            doc.Save(writer);
-                            success = true;
+                            FileMode mode = FileMode.OpenOrCreate;
+                            if (overwrite) mode = FileMode.Create;
+
+                            using (var fs = new FileStream(path, mode, FileAccess.Write, FileShare.Read))
+                            {
+                                using (var writer = XmlWriter.Create(fs, settings))
+                                {
+                                    doc.Save(writer);
+                                    success = true;
+                                }
+                            }
                         }
+                        catch (XmlException ex) { Logger.Log("XmlException :: " + ex.Message); }
+                        catch (Exception ex) { Logger.Log("Exception :: " + ex.Message); }
+
+                        if (!success)
+                        {
+                            // Restore using backup file
+                            if (File.Exists(tempPath)) File.Copy(tempPath, path);
+
+                            System.Threading.Thread.Sleep(50);
+                        }
+
+                        attempt++;
                     }
+
+                    // Delete backup file
+                    if (File.Exists(tempPath)) File.Delete(tempPath);
                 }
-                catch (XmlException ex) { Logger.Log("XmlException :: " + ex.Message); }
-                catch (Exception ex) { Logger.Log("Exception :: " + ex.Message); }
-
-                if (!success) System.Threading.Thread.Sleep(50);
-
-                attempt++;
             }
+            catch (Exception ex) { Logger.Log("Error Writing XMl Document :: " + ex.Message, LogLineType.Error); }
 
             return success;
         }

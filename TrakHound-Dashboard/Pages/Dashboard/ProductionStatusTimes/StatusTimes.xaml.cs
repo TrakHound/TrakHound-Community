@@ -38,5 +38,12 @@ namespace TH_StatusTimes.ProductionStatus
             Rows.Add(row);
         }
 
+        private void AddRow(DeviceConfiguration config, int index)
+        {
+            var row = new Controls.Row();
+            row.Configuration = config;
+            Rows.Insert(index, row);
+        }
+
     }
 }

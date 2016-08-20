@@ -12,7 +12,6 @@ using System.Windows.Media.Imaging;
 
 using TrakHound;
 using TrakHound.Configurations;
-using TrakHound.Databases;
 using TrakHound.Plugins;
 using TrakHound.Plugins.Client;
 using TrakHound_UI;
@@ -67,8 +66,8 @@ namespace TrakHound_Dashboard.Pages.TableManager
 
         #region "Plugin Properties/Options"
 
-        public string DefaultParent { get { return null; } }
-        public string DefaultParentCategory { get { return null; } }
+        public string ParentPlugin { get { return null; } }
+        public string ParentPluginCategory { get { return null; } }
 
         public bool AcceptsPlugins { get { return true; } }
 
@@ -168,7 +167,7 @@ namespace TrakHound_Dashboard.Pages.TableManager
 
         private void AddDeviceButton(DeviceConfiguration config)
         {
-            Global.Initialize(config.Databases_Client);
+            //Global.Initialize(config.Databases_Client);
 
             Controls.DeviceButton db = new DeviceButton();
             db.Description = config.Description.Description;

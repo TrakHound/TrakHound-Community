@@ -6,15 +6,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
+using TrakHound;
 using TrakHound.Configurations;
 using TrakHound.Plugins;
 using TrakHound.Plugins.Client;
-using TrakHound;
+using TrakHound.Tools;
 
 namespace TrakHound_Dashboard.Pages.Dashboard
 {
@@ -65,14 +64,14 @@ namespace TrakHound_Dashboard.Pages.Dashboard
 
         public string LicenseName { get { return "GPLv3"; } }
 
-        public string LicenseText { get { return File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"\License\" + "License.txt"); } }
+        public string LicenseText { get { return null; } }
 
         #endregion
 
         #region "Plugin Properties/Options"
 
-        public string DefaultParent { get { return null; } }
-        public string DefaultParentCategory { get { return null; } }
+        public string ParentPlugin { get { return null; } }
+        public string ParentPluginCategory { get { return null; } }
 
         public bool AcceptsPlugins { get { return true; } }
 
@@ -123,17 +122,22 @@ namespace TrakHound_Dashboard.Pages.Dashboard
 
         public void GetSentData(EventData data)
         {
-            this.Dispatcher.BeginInvoke(new Action(UpdateCurrentDate), Priority, new object[] { });
+            Dispatcher.BeginInvoke(new Action(UpdateCurrentDate), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
 
-            this.Dispatcher.BeginInvoke(new Action<EventData>(UpdateLoggedInChanged), Priority, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateLoggedInChanged), UI_Functions.PRIORITY_BACKGROUND, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateWindowClick), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDevicesLoading), UI_Functions.PRIORITY_BACKGROUND, new object[] { data });
 
-            this.Dispatcher.BeginInvoke(new Action<EventData>(UpdateDevicesLoading), Priority, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceAdded), UI_Functions.PRIORITY_BACKGROUND, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceUpdated), UI_Functions.PRIORITY_BACKGROUND, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceRemoved), UI_Functions.PRIORITY_BACKGROUND, new object[] { data });
 
             if (Plugins != null)
             {
                 foreach (IClientPlugin plugin in Plugins)
                 {
-                    this.Dispatcher.BeginInvoke(new Action<EventData>(plugin.GetSentData), Priority, new object[] { data });
+                    //ThreadPool.QueueUserWorkItem(o => plugin.GetSentData(data));
+                    Dispatcher.BeginInvoke(new Action<EventData>(plugin.GetSentData), UI_Functions.PRIORITY_BACKGROUND, new object[] { data });
                 }
             }
         }
@@ -152,7 +156,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard
                 if (_devices == null)
                 {
                     _devices = new ObservableCollection<DeviceConfiguration>();
-                    _devices.CollectionChanged += Devices_CollectionChanged;
                 }
                 return _devices;
             }
@@ -162,69 +165,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard
             }
         }
 
-        public void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                //if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
-                //{
-                //    foreach (var plugin in Plugins)
-                //    {
-                //        plugin.Devices.Clear();
-                //    }
-                //}
-
-                if (e.NewItems != null)
-                {
-                    foreach (DeviceConfiguration newConfig in e.NewItems)
-                    {
-                        if (Plugins != null)
-                        {
-                            foreach (var plugin in Plugins)
-                            {
-                                bool exists = plugin.Devices.ToList().Exists(x => x.UniqueId == newConfig.UniqueId);
-                                if (!exists) plugin.Devices.Add(newConfig);
-                            }
-                        }
-                    }
-                }
-
-                if (e.OldItems != null)
-                {
-                    foreach (DeviceConfiguration oldConfig in e.OldItems)
-                    {
-                        Devices.Remove(oldConfig);
-
-                        if (Plugins != null)
-                        {
-                            foreach (var plugin in Plugins)
-                            {
-                                bool exists = plugin.Devices.ToList().Exists(x => x.UniqueId == oldConfig.UniqueId);
-                                if (!exists) plugin.Devices.Remove(oldConfig);
-                            }
-                        }
-                    }
-                }
-            }), TrakHound.Tools.UI_Functions.PRIORITY_BACKGROUND, new object[] { });
-        }
-
-        //private ObservableCollection<DeviceConfiguration> _devices;
-        //public ObservableCollection<DeviceConfiguration> Devices
-        //{
-        //    get
-        //    {
-        //        if (_devices == null)
-        //        {
-        //            _devices = new ObservableCollection<DeviceConfiguration>();
-        //        }
-        //        return _devices;
-        //    }
-        //    set
-        //    {
-        //        _devices = value;
-        //    }
-        //}
-
         #endregion
 
         #region "Options"
@@ -232,7 +172,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard
         public IPage Options { get; set; }
 
         #endregion
-
 
     }
 }

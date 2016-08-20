@@ -63,20 +63,9 @@ namespace TrakHound_UI
             {
                 double val = value;
 
-                // Adjust value to have whole numbers (in case value is a decimal (ex. 0.01))
-                double adjuster = 1;
-                double adj = 10;
-                while (val < 1 && val > 0)
-                {
-                    adjuster = adj;
-                    val = val * adjuster;
-
-                    adj = adj * 10;
-                }
-
                 if (totalLevels > 1)
                 {
-                    double increment = (Maximum * adjuster) / (totalLevels - 1);
+                    double increment = (Maximum) / (totalLevels - 1);
 
                     val = val / increment;
 
@@ -90,9 +79,7 @@ namespace TrakHound_UI
             {
                 activeLevels = totalLevels;
             }
-
             
-
             indicator.ActiveLevelCount = activeLevels;
         }
 
@@ -129,7 +116,7 @@ namespace TrakHound_UI
         }
 
         public static readonly DependencyProperty ValueFormatProperty =
-            DependencyProperty.Register("ValueFormat", typeof(string), typeof(MeterDisplay), new PropertyMetadata(null, new PropertyChangedCallback(ValueFormatPropertyChanged)));
+            DependencyProperty.Register("ValueFormat", typeof(string), typeof(MeterDisplay), new PropertyMetadata("N1", new PropertyChangedCallback(ValueFormatPropertyChanged)));
 
         private static void ValueFormatPropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
         {
@@ -178,6 +165,17 @@ namespace TrakHound_UI
 
         public static readonly DependencyProperty IndicatorWidthProperty =
             DependencyProperty.Register("IndicatorWidth", typeof(double), typeof(MeterDisplay), new PropertyMetadata(75d));
+
+
+
+        public new Brush Foreground
+        {
+            get { return (Brush)GetValue(ForegroundProperty); }
+            set { SetValue(ForegroundProperty, value); }
+        }
+
+        public new static readonly DependencyProperty ForegroundProperty =
+            DependencyProperty.Register("Foreground", typeof(Brush), typeof(MeterDisplay), new PropertyMetadata(new SolidColorBrush(Colors.Black)));
 
 
     }

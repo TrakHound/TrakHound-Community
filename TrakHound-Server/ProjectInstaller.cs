@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration.Install;
-using System.Linq;
-using System.Threading.Tasks;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
-namespace TrakHound_Server_Service
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System.ComponentModel;
+
+namespace TrakHound_Server
 {
     [RunInstaller(true)]
     public partial class ProjectInstaller : System.Configuration.Install.Installer

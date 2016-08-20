@@ -1,8 +1,14 @@
-﻿using System;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Data;
 using System.Windows;
 using System.Windows.Controls;
 
+using TrakHound.API;
 using TrakHound.Tools;
 using TrakHound.Plugins;
 
@@ -31,17 +37,6 @@ namespace TH_StatusTimes.ProductionStatus.Controls
             DependencyProperty.Register("Connected", typeof(bool), typeof(Row), new PropertyMetadata(false));
 
 
-        public bool Available
-        {
-            get { return (bool)GetValue(AvailableProperty); }
-            set { SetValue(AvailableProperty, value); }
-        }
-
-        public static readonly DependencyProperty AvailableProperty =
-            DependencyProperty.Register("Available", typeof(bool), typeof(Row), new PropertyMetadata(false));
-
-
-
         public TrakHound.Configurations.DeviceConfiguration Configuration
         {
             get { return (TrakHound.Configurations.DeviceConfiguration)GetValue(ConfigurationProperty); }
@@ -60,35 +55,7 @@ namespace TH_StatusTimes.ProductionStatus.Controls
         public static readonly DependencyProperty DeviceStatusProperty =
             DependencyProperty.Register("DeviceStatus", typeof(string), typeof(Row), new PropertyMetadata(null));
 
-
-        //public bool Active
-        //{
-        //    get { return (bool)GetValue(ActiveProperty); }
-        //    set { SetValue(ActiveProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty ActiveProperty =
-        //    DependencyProperty.Register("Active", typeof(bool), typeof(Row), new PropertyMetadata(false));
-
-        //public bool Idle
-        //{
-        //    get { return (bool)GetValue(IdleProperty); }
-        //    set { SetValue(IdleProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty IdleProperty =
-        //    DependencyProperty.Register("Idle", typeof(bool), typeof(Row), new PropertyMetadata(false));
-
-
-        //public bool Alert
-        //{
-        //    get { return (bool)GetValue(AlertProperty); }
-        //    set { SetValue(AlertProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty AlertProperty =
-        //    DependencyProperty.Register("Alert", typeof(bool), typeof(Row), new PropertyMetadata(false));
-
+        
 
 
         public double TotalSeconds
@@ -164,114 +131,123 @@ namespace TH_StatusTimes.ProductionStatus.Controls
 
         public DateTime CurrentTime { get; set; }
 
-        public void UpdateData(EventData data)
+        public void UpdateData(Data.StatusInfo info)
         {
-            UpdateDatabaseConnection(data);
-            UpdateAvailability(data);
-            UpdateSnapshots(data);
-            UpdateVariables(data);
-            UpdateShiftData(data);
+            Connected = info.Connected == 1;
+            DeviceStatus = info.DeviceStatus;
         }
 
-        private void UpdateDatabaseConnection(EventData data)
+        public void UpdateData(Data.TimersInfo info)
         {
-            if (data.Id.ToLower() == "statusdata_connection")
+            if (info != null)
             {
-                if (data.Data02.GetType() == typeof(bool))
-                {
-                    Connected = (bool)data.Data02;
-                }
+                TotalSeconds = info.Total;
+
+                ProductionSeconds = info.Production;
+                SetupSeconds = info.Setup;
+                TeardownSeconds = info.Teardown;
+                MaintenanceSeconds = info.Maintenance;
+                ProcessDevelopmentSeconds = info.ProcessDevelopment;
             }
         }
 
-        private void UpdateAvailability(EventData data)
-        {
-            if (data.Id.ToLower() == "statusdata_availability")
-            {
-                if (data.Data02.GetType() == typeof(bool))
-                {
-                    Available = (bool)data.Data02;
-                }
-            }
-        }
+        //public void UpdateData(EventData data)
+        //{
+        //    UpdateDatabaseConnection(data);
+        //    UpdateAvailability(data);
+        //    UpdateSnapshots(data);
+        //    UpdateVariables(data);
+        //    UpdateShiftData(data);
+        //}
 
-        private void UpdateVariables(EventData data)
-        {
-            if (data.Id.ToLower() == "statusdata_variables")
-            {
-                if (data.Data02 != null)
-                {
-                    var currentTime = DataTable_Functions.GetTableValue(data.Data02, "variable", "shift_currenttime", "value");
-                    if (currentTime != null)
-                    {
-                        DateTime time = DateTime.MinValue;
-                        if (DateTime.TryParse(currentTime, out time))
-                        {
-                            CurrentTime = time;
-                        }
-                    }
-                }
-            }
-        }
+        //private void UpdateDatabaseConnection(EventData data)
+        //{
+        //    if (data.Id.ToLower() == "statusdata_connection")
+        //    {
+        //        if (data.Data02.GetType() == typeof(bool))
+        //        {
+        //            Connected = (bool)data.Data02;
+        //        }
+        //    }
+        //}
 
-        private void UpdateSnapshots(EventData data)
-        {
-            if (data.Id.ToLower() == "statusdata_snapshots")
-            {
-                if (data.Data02 != null)
-                {
-                    DeviceStatus = DataTable_Functions.GetTableValue(data.Data02, "name", "Device Status", "value");
+        //private void UpdateAvailability(EventData data)
+        //{
+        //    if (data.Id.ToLower() == "statusdata_availability")
+        //    {
+        //        if (data.Data02.GetType() == typeof(bool))
+        //        {
+        //            Available = (bool)data.Data02;
+        //        }
+        //    }
+        //}
 
-                    //var deviceStatus = DataTable_Functions.GetTableValue(data.Data02, "name", "Device Status", "value");
-                    //if (deviceStatus != null)
-                    //{
-                    //    switch (deviceStatus.ToLower())
-                    //    {
-                    //        case "active": Active = true; Idle = false; Alert = false; break;
-                    //        case "idle": Active = false; Idle = true; Alert = false; break;
-                    //        case "alert": Active = false; Idle = false; Alert = true; break;
-                    //    }
-                    //}
-                }
-            }
-        }
+        //private void UpdateVariables(EventData data)
+        //{
+        //    if (data.Id.ToLower() == "statusdata_variables")
+        //    {
+        //        if (data.Data02 != null)
+        //        {
+        //            var currentTime = DataTable_Functions.GetTableValue(data.Data02, "variable", "shift_currenttime", "value");
+        //            if (currentTime != null)
+        //            {
+        //                DateTime time = DateTime.MinValue;
+        //                if (DateTime.TryParse(currentTime, out time))
+        //                {
+        //                    CurrentTime = time;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
-        private void UpdateShiftData(EventData data)
-        {
-            if (data.Id.ToLower() == "statusdata_shiftdata")
-            {
-                var dt = data.Data02 as DataTable;
-                if (dt != null)
-                {
-                    double total = 0;
-                    double production = 0;
-                    double alarm = 0;
-                    double setup = 0;
-                    double teardown = 0;
-                    double maintenance = 0;
-                    double processDevelopment = 0;
+        //private void UpdateSnapshots(EventData data)
+        //{
+        //    if (data.Id.ToLower() == "statusdata_snapshots")
+        //    {
+        //        if (data.Data02 != null)
+        //        {
+        //            DeviceStatus = DataTable_Functions.GetTableValue(data.Data02, "name", "Device Status", "value");
+        //        }
+        //    }
+        //}
 
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        total += DataTable_Functions.GetDoubleFromRow("totaltime", row);
-                        production += DataTable_Functions.GetDoubleFromRow("production_status__production", row);
-                        alarm += DataTable_Functions.GetDoubleFromRow("production_status__alarm", row);
-                        setup += DataTable_Functions.GetDoubleFromRow("production_status__setup", row);
-                        teardown += DataTable_Functions.GetDoubleFromRow("production_status__teardown", row);
-                        maintenance += DataTable_Functions.GetDoubleFromRow("production_status__maintenance", row);
-                        processDevelopment += DataTable_Functions.GetDoubleFromRow("production_status__process_development", row);
-                    }
+        //private void UpdateShiftData(EventData data)
+        //{
+        //    if (data.Id.ToLower() == "statusdata_shiftdata")
+        //    {
+        //        var dt = data.Data02 as DataTable;
+        //        if (dt != null)
+        //        {
+        //            double total = 0;
+        //            double production = 0;
+        //            double alarm = 0;
+        //            double setup = 0;
+        //            double teardown = 0;
+        //            double maintenance = 0;
+        //            double processDevelopment = 0;
 
-                    TotalSeconds = total;
-                    ProductionSeconds = production;
-                    AlarmSeconds = alarm;
-                    SetupSeconds = setup;
-                    TeardownSeconds = teardown;
-                    MaintenanceSeconds = maintenance;
-                    ProcessDevelopmentSeconds = processDevelopment;
-                }
-            }
-        }
+        //            foreach (DataRow row in dt.Rows)
+        //            {
+        //                total += DataTable_Functions.GetDoubleFromRow("totaltime", row);
+        //                production += DataTable_Functions.GetDoubleFromRow("production_status__production", row);
+        //                alarm += DataTable_Functions.GetDoubleFromRow("production_status__alarm", row);
+        //                setup += DataTable_Functions.GetDoubleFromRow("production_status__setup", row);
+        //                teardown += DataTable_Functions.GetDoubleFromRow("production_status__teardown", row);
+        //                maintenance += DataTable_Functions.GetDoubleFromRow("production_status__maintenance", row);
+        //                processDevelopment += DataTable_Functions.GetDoubleFromRow("production_status__process_development", row);
+        //            }
+
+        //            TotalSeconds = total;
+        //            ProductionSeconds = production;
+        //            AlarmSeconds = alarm;
+        //            SetupSeconds = setup;
+        //            TeardownSeconds = teardown;
+        //            MaintenanceSeconds = maintenance;
+        //            ProcessDevelopmentSeconds = processDevelopment;
+        //        }
+        //    }
+        //}
 
     }
 }

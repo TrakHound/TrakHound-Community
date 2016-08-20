@@ -1,21 +1,13 @@
-﻿using System;
-using System.IO;
-using System.Threading;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Collections.Specialized;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
-using TrakHound.Configurations;
-using TrakHound;
-using TrakHound.Tools;
-using TrakHound.API;
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
+using System.Threading;
+
 using TrakHound.API.Users;
-using TrakHound.Tools.Web;
-using TrakHound_UI;
+using TrakHound.Tools;
 
 namespace TrakHound_Dashboard
 {

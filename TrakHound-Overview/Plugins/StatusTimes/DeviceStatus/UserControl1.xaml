@@ -7,7 +7,7 @@
              xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
              
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="200">
+             d:DesignWidth="200">
     
     <Grid x:Name="root">
 
@@ -15,34 +15,216 @@
 
             <!--Active-->
             <Border BorderBrush="#ccc" BorderThickness="0,0,0,1">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
+                                <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
 
-                <ui:TimeProgress Text="Active" 
-                    Value="{Binding ActiveSeconds}"
-                    Maximum="{Binding TotalSeconds}"
-                    BarBrush="{StaticResource StatusGreen}" 
-                    BarBackgroundBrush="{StaticResource StatusGreen_Hover}"/>
+                <Grid Height="60">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--Label-->
+                    <Border>
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ActivePercentage}" Value="0">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <TextBlock Text="Active" FontSize="18" TextAlignment="Center" Padding="0,2" VerticalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="#fff"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ActivePercentage}" Value="0">
+                                            <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                    </Border>
+
+                    <!--Separator-->
+                    <Rectangle Grid.Column="1" Width="1" Margin="0,10">
+                        <Rectangle.Style>
+                            <Style TargetType="Rectangle">
+                                <Setter Property="Fill" Value="{StaticResource Shade_Normal}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
+                                        <Setter Property="Fill" Value="{StaticResource Shade_Light}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Rectangle.Style>
+                    </Rectangle>
+
+                    <!--Percentage-->
+                    <ui:NumberDisplay Grid.Column="2" Value="{Binding ActivePercentage}" ValueFormat="P0" Margin="5,0" MaxHeight="45">
+                        <ui:NumberDisplay.Style>
+                            <Style TargetType="ui:NumberDisplay">
+                                <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
+                                        <Setter Property="Foreground" Value="#fff"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ui:NumberDisplay.Style>
+                    </ui:NumberDisplay>
+
+                </Grid>
 
             </Border>
 
             <!--Idle-->
             <Border BorderBrush="#ccc" BorderThickness="0,0,0,1">
+                 <Border.Style>
+                    <Style TargetType="Border">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DeviceStatus}" Value="Idle">
+                                <Setter Property="Background" Value="{StaticResource StatusYellow}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
 
-                <ui:TimeProgress Text="Idle" 
-                    Value="{Binding IdleSeconds}"
-                    Maximum="{Binding TotalSeconds}"
-                    BarBrush="{StaticResource StatusYellow}" 
-                    BarBackgroundBrush="{StaticResource StatusYellow_Hover}"/>
+                <Grid Height="60">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--Label-->
+                    <Border>
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="{StaticResource StatusYellow}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IdlePercentage}" Value="0">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <TextBlock Text="Idle" FontSize="18" TextAlignment="Center" Padding="0,2" VerticalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IdlePercentage}" Value="0">
+                                            <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                    </Border>
+
+                    <!--Separator-->
+                    <Rectangle Grid.Column="1" Width="1" Fill="{StaticResource Shade_Normal}" Margin="0,10"/>
+
+                    <!--Percentage-->
+                    <ui:NumberDisplay Grid.Column="2" Value="{Binding IdlePercentage}" ValueFormat="P0" Foreground="{StaticResource Foreground_Normal}" Margin="5,0" MaxHeight="45"/>
+
+                </Grid>
 
             </Border>
 
             <!--Alert-->
             <Border BorderBrush="#ccc" BorderThickness="0,0,0,1">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
+                                <Setter Property="Background" Value="{StaticResource StatusRed}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
 
-                <ui:TimeProgress Text="Alert" 
-                    Value="{Binding AlertSeconds}"
-                    Maximum="{Binding TotalSeconds}"
-                    BarBrush="{StaticResource StatusRed}" 
-                    BarBackgroundBrush="{StaticResource StatusRed_Hover}"/>
+                <Grid Height="60">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--Label-->
+                    <Border>
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="{StaticResource StatusRed}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding AlertPercentage}" Value="0">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <TextBlock Text="Active" FontSize="18" TextAlignment="Center" Padding="0,2" VerticalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="#fff"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding AlertPercentage}" Value="0">
+                                            <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                    </Border>
+
+                    <!--Separator-->
+                    <Rectangle Grid.Column="1" Width="1" Margin="0,10">
+                        <Rectangle.Style>
+                            <Style TargetType="Rectangle">
+                                <Setter Property="Fill" Value="{StaticResource Shade_Normal}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
+                                        <Setter Property="Fill" Value="{StaticResource Shade_Light}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Rectangle.Style>
+                    </Rectangle>
+
+                    <!--Percentage-->
+                    <ui:NumberDisplay Grid.Column="2" Value="{Binding AlertPercentage}" ValueFormat="P0" Margin="5,0" MaxHeight="45">
+                        <ui:NumberDisplay.Style>
+                            <Style TargetType="ui:NumberDisplay">
+                                <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
+                                        <Setter Property="Foreground" Value="#fff"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ui:NumberDisplay.Style>
+                    </ui:NumberDisplay>
+
+                </Grid>
 
             </Border>
 

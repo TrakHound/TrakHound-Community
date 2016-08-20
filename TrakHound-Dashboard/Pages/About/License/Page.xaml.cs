@@ -4,22 +4,11 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-using System.IO;
 
 using TrakHound;
 
@@ -36,7 +25,7 @@ namespace TrakHound_Dashboard.Pages.About.License
 
             DataContext = this;
 
-            string path = AppDomain.CurrentDomain.BaseDirectory + @"\LICENSE";
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LICENSE.txt");
             if (File.Exists(path)) LicenseText = File.ReadAllText(path);
 
             PageContent = this;

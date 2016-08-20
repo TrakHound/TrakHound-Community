@@ -21,10 +21,20 @@ namespace TrakHound.Logging
     {
         public string AppicationName { get; set; }
 
+        public delegate void LineAdded_Handler(Line line);
+        public event LineAdded_Handler LineAdded;
+
         private DateTime lastDebugTimestamp = DateTime.MinValue;
         private DateTime lastErrorTimestamp = DateTime.MinValue;
         private DateTime lastNotificationTimestamp = DateTime.MinValue;
         private DateTime lastWarningTimestamp = DateTime.MinValue;
+
+        private System.Timers.Timer debugDelayTimer;
+        private System.Timers.Timer errorDelayTimer;
+        private System.Timers.Timer notificationDelayTimer;
+        private System.Timers.Timer warningDelayTimer;
+
+        private const int READ_DELAY = 2000;
 
         public LogReader(string applicationName, DateTime StartTimestamp)
         {
@@ -104,7 +114,73 @@ namespace TrakHound.Logging
 
         private void ReadChanged(LogLineType type)
         {
+            switch (type)
+            {
+                case LogLineType.Debug:
+
+                    if (debugDelayTimer != null) debugDelayTimer.Enabled = false;
+
+                    debugDelayTimer = new System.Timers.Timer();
+                    debugDelayTimer.Interval = READ_DELAY;
+                    debugDelayTimer.Elapsed += DebugDelayTimer_Elapsed;
+                    debugDelayTimer.Enabled = true;
+                    break;
+
+                case LogLineType.Error:
+
+                    if (errorDelayTimer != null) errorDelayTimer.Enabled = false;
+
+                    errorDelayTimer = new System.Timers.Timer();
+                    errorDelayTimer.Interval = READ_DELAY;
+                    errorDelayTimer.Elapsed += ErrorDelayTimer_Elapsed;
+                    errorDelayTimer.Enabled = true;
+                    break;
+
+                case LogLineType.Notification:
+
+                    if (notificationDelayTimer != null) notificationDelayTimer.Stop();
+                    else
+                    {
+                        notificationDelayTimer = new System.Timers.Timer();
+                        notificationDelayTimer.Interval = READ_DELAY;
+                        notificationDelayTimer.Elapsed += NotificationDelayTimer_Elapsed;
+                    }
+
+                    notificationDelayTimer.Start();
+
+                    break;
+
+                case LogLineType.Warning:
+
+                    if (warningDelayTimer != null) warningDelayTimer.Enabled = false;
+
+                    warningDelayTimer = new System.Timers.Timer();
+                    warningDelayTimer.Interval = READ_DELAY;
+                    warningDelayTimer.Elapsed += WarningDelayTimer_Elapsed;
+                    warningDelayTimer.Enabled = true;
+                    break;
+            }
+        }
+
+        private void DebugDelayTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) { CloseTimer(sender); ReadLog(LogLineType.Debug); }
+
+        private void ErrorDelayTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) { CloseTimer(sender); ReadLog(LogLineType.Error); }
+
+        private void NotificationDelayTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) { CloseTimer(sender); ReadLog(LogLineType.Notification); }
+
+        private void WarningDelayTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) { CloseTimer(sender); ReadLog(LogLineType.Warning); }
+
+        private void CloseTimer(object sender)
+        {
+            var timer = (System.Timers.Timer)sender;
+            timer.Stop();
+        }
+
+
+        private void ReadLog(LogLineType type)
+        {
             DateTime time = DateTime.MinValue;
+
             switch (type)
             {
                 case LogLineType.Debug: time = lastDebugTimestamp; break;
@@ -129,12 +205,10 @@ namespace TrakHound.Logging
                     }
 
                     line.Type = type;
-                    if (LineAdded != null) LineAdded(line);
+                    LineAdded?.Invoke(line);
                 }
             }
         }
 
-        public delegate void LineAdded_Handler(Line line);
-        public event LineAdded_Handler LineAdded;
     }
 }

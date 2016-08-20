@@ -3,6 +3,7 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+using MTConnect.Application.Components;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,13 +16,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-using MTConnect.Application.Components;
-
-using TrakHound.Tools;
 using TrakHound.Plugins;
 using TrakHound.Plugins.Server;
+using TrakHound.Tools;
 
-namespace TrakHound_Devices_Manager.Pages.Cycles
+namespace TrakHound_Device_Manager.Pages.Cycles
 {
     /// <summary>
     /// Interaction logic for Page.xaml
@@ -69,10 +68,7 @@ namespace TrakHound_Devices_Manager.Pages.Cycles
             configurationTable = dt;
 
             LoadGeneratedEventItems(dt);
-
             GetProductionTypeValues();
-            //LoadProductionTypes(dt);
-            //LoadOverrideLinks(dt);
 
             ClearData();
             LoadData(dt);
@@ -330,7 +326,7 @@ namespace TrakHound_Devices_Manager.Pages.Cycles
             {
                 LoadProductionTypes();
 
-                if (SettingChanged != null) SettingChanged("Cycle Event Name", null, null);
+                SettingChanged?.Invoke("Cycle Event Name", null, null);
             }
         }
 
@@ -355,7 +351,6 @@ namespace TrakHound_Devices_Manager.Pages.Cycles
             if (SelectedCycleEventName != null) val = SelectedCycleEventName.ToString();
 
             if (val != null) DataTable_Functions.UpdateTableValue(dt, "address", prefix + "CycleEventName", "value", val.Replace(' ', '_').ToLower());
-            //if (val != null) Table_Functions.UpdateTableValue(val.Replace(' ', '_').ToLower(), prefix + "CycleEventName", dt);
         }
 
         #endregion
@@ -398,7 +393,6 @@ namespace TrakHound_Devices_Manager.Pages.Cycles
             if (SelectedStoppedEventValue != null) val = SelectedStoppedEventValue.ToString();
 
             if (val != null) DataTable_Functions.UpdateTableValue(dt, "address", prefix + "StoppedEventValue", "value", val);
-            //if (val != null) Table_Functions.UpdateTableValue(val, prefix + "StoppedEventValue", dt);
         }
 
         #endregion
@@ -441,7 +435,6 @@ namespace TrakHound_Devices_Manager.Pages.Cycles
             if (SelectedCycleNameLink != null) val = SelectedCycleNameLink.ToString();
 
             if (val != null) DataTable_Functions.UpdateTableValue(dt, "address", prefix + "CycleNameLink", "value", val);
-            //if (val != null) Table_Functions.UpdateTableValue(val, prefix + "CycleNameLink", dt);
         }
 
         #endregion
@@ -539,7 +532,7 @@ namespace TrakHound_Devices_Manager.Pages.Cycles
 
         void ProductionTypeItem_SettingChanged()
         {
-            if (SettingChanged != null) SettingChanged("Production Type", null, null);
+            SettingChanged?.Invoke("Production Type", null, null);
         }
 
         void SaveProductionTypes(DataTable dt)

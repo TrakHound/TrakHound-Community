@@ -1,4 +1,4 @@
-﻿namespace TrakHound_Server_Service
+﻿namespace TrakHound_Server
 {
     partial class ProjectInstaller
     {

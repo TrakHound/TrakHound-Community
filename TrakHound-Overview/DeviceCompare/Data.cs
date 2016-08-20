@@ -8,6 +8,7 @@ using System;
 using TrakHound.API.Users;
 using TrakHound.Configurations;
 using TrakHound.Plugins;
+using TrakHound.Tools;
 
 namespace TrakHound_Overview
 {
@@ -28,17 +29,25 @@ namespace TrakHound_Overview
 
         void UpdateData(EventData data)
         {
-            if (data != null)
+            if (data != null && data.Data01 != null)
             {
-                var config = data.Data01 as DeviceConfiguration;
-                if (config != null)
+                string uniqueId = data.Data01.ToString();
+                DeviceDisplay dd = DeviceDisplays.Find(x => x.UniqueId == uniqueId);
+                if (dd != null)
                 {
-                    DeviceDisplay dd = DeviceDisplays.Find(x => x.UniqueId == config.UniqueId);
-                    if (dd != null)
-                    {
-                        this.Dispatcher.BeginInvoke(new Action<EventData>(dd.UpdateData), Priority_Background, new object[] { data });
-                    }
+                    this.Dispatcher.BeginInvoke(new Action<EventData>(dd.UpdateData), UI_Functions.PRIORITY_BACKGROUND, new object[] { data });
                 }
+
+
+                //var config = data.Data01 as DeviceConfiguration;
+                //if (config != null)
+                //{
+                //    DeviceDisplay dd = DeviceDisplays.Find(x => x.UniqueId == config.UniqueId);
+                //    if (dd != null)
+                //    {
+                //        this.Dispatcher.BeginInvoke(new Action<EventData>(dd.UpdateData), UI_Functions.PRIORITY_BACKGROUND, new object[] { data });
+                //    }
+                //}
             }
         }
 

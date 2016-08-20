@@ -15,39 +15,80 @@ namespace TrakHound.API
 {
     public class ApiConfiguration
     {
-        private const string DEFAULT_API_HOST = "http://TrakHound.com/api/";
-        public static Uri ApiHost = new Uri(DEFAULT_API_HOST);
+       
+        public const string LOCAL_API_HOST = "http://localhost:8472/api/";
+        public const string CLOUD_API_HOST = "http://TrakHound.com/api/";
 
-        [JsonProperty("host")]
-        public string Host { get; set; }
+        public static Uri DataApiHost = new Uri(LOCAL_API_HOST);
+        public static Uri AuthenticationApiHost = new Uri(CLOUD_API_HOST);
 
-        [JsonProperty("path")]
-        public string Path { get; set; }
+        [JsonProperty("data_host")]
+        public string DataHost { get; set; }
+
+        [JsonProperty("authentication_host")]
+        public string AuthenticationHost { get; set; }
 
 
         private const string CONFIG_FILENAME = "api_config.xml";
-        private static string CONFIG_FILEPATH = System.IO.Path.Combine(FileLocations.TrakHound, CONFIG_FILENAME);
+        private static string CONFIG_FILEPATH = Path.Combine(FileLocations.TrakHound, CONFIG_FILENAME);
+
+        public static void SetTrakHoundCloud()
+        {
+            var apiConfig = new ApiConfiguration();
+            apiConfig.DataHost = CLOUD_API_HOST;
+            apiConfig.AuthenticationHost = CLOUD_API_HOST;
+            Set(apiConfig);
+        }
+
+        public static void SetLocal()
+        {
+            var apiConfig = new ApiConfiguration();
+            apiConfig.DataHost = LOCAL_API_HOST;
+            apiConfig.AuthenticationHost = CLOUD_API_HOST;
+            Set(apiConfig);
+        }
 
         public static void Set(ApiConfiguration apiConfig)
         {
-            if (apiConfig != null && !string.IsNullOrEmpty(apiConfig.Host) && !string.IsNullOrEmpty(apiConfig.Path))
+            SetDataHost(apiConfig);
+            SetAuthenticationHost(apiConfig);
+            Create(apiConfig);
+        }
+
+        public static void SetDataHost(ApiConfiguration apiConfig)
+        {
+            if (apiConfig != null && !string.IsNullOrEmpty(apiConfig.DataHost))
             {
                 try
                 {
-                    var baseUri = new Uri(apiConfig.Host);
-
-                    if (!apiConfig.Path.EndsWith("/")) apiConfig.Path += "/";
-
-                    ApiHost = new Uri(baseUri, apiConfig.Path);
+                    DataApiHost = new Uri(apiConfig.DataHost);
                 }
-                catch (Exception ex) { Logger.Log("API Configuration Error : Exception : " + ex.Message); }
+                catch (Exception ex) { Logger.Log("API Data Host Configuration Error : Exception : " + ex.Message); }
             }
             else
             {
-                ApiHost = new Uri(DEFAULT_API_HOST);
+                DataApiHost = new Uri(LOCAL_API_HOST);
             }
 
-            Logger.Log("TrakHound API Configuration Host set to " + ApiHost);
+            Logger.Log("TrakHound Data API Host set to " + DataApiHost);
+        }
+
+        public static void SetAuthenticationHost(ApiConfiguration apiConfig)
+        {
+            if (apiConfig != null && !string.IsNullOrEmpty(apiConfig.AuthenticationHost))
+            {
+                try
+                {
+                    AuthenticationApiHost = new Uri(apiConfig.AuthenticationHost);
+                }
+                catch (Exception ex) { Logger.Log("API Authentication Host Configuration Error : Exception : " + ex.Message); }
+            }
+            else
+            {
+                AuthenticationApiHost = new Uri(CLOUD_API_HOST);
+            }
+
+            Logger.Log("TrakHound Authentication API Host set to " + AuthenticationApiHost);
         }
 
         public static bool Create(ApiConfiguration config)
@@ -143,10 +184,31 @@ namespace TrakHound.API
                 watcher.EnableRaisingEvents = true;
             }
 
+            private System.Timers.Timer delayTimer = new System.Timers.Timer();
+
             private void File_Changed(object sender, FileSystemEventArgs e)
             {
-                var apiConfig = Read();
+                StartDelayTimer();
+            }
 
+            private void StartDelayTimer()
+            {
+                if (delayTimer != null) delayTimer.Stop();
+                else
+                {
+                    delayTimer.Interval = 500;
+                    delayTimer.Elapsed += DelayTimer_Elapsed;
+                }
+
+                delayTimer.Start();
+            }
+
+            private void DelayTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+            {
+                var timer = (System.Timers.Timer)sender;
+                timer.Stop();
+
+                var apiConfig = Read();
                 if (ApiConfigurationChanged != null) ApiConfigurationChanged(apiConfig);
             }
         }

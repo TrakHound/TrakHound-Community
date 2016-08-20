@@ -36,6 +36,50 @@ namespace TH_StatusTimeline
                 }
             }
         }
-        
+
+        void UpdateDeviceAdded(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id == "DEVICE_ADDED" && data.Data01 != null)
+                {
+                    var config = (DeviceConfiguration)data.Data01;
+                    AddRow(config);
+                }
+            }
+        }
+
+        void UpdateDeviceUpdated(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id == "DEVICE_UPDATED" && data.Data01 != null)
+                {
+                    var config = (DeviceConfiguration)data.Data01;
+
+                    int index = Rows.ToList().FindIndex(x => GetUniqueIdFromDeviceInfo(x) == config.UniqueId);
+                    if (index >= 0)
+                    {
+                        Rows.RemoveAt(index);
+                        AddRow(config, index);
+                    }
+                }
+            }
+        }
+
+        void UpdateDeviceRemoved(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id == "DEVICE_REMOVED" && data.Data01 != null)
+                {
+                    var config = (DeviceConfiguration)data.Data01;
+
+                    int index = Rows.ToList().FindIndex(x => GetUniqueIdFromDeviceInfo(x) == config.UniqueId);
+                    if (index >= 0) Rows.RemoveAt(index);
+                }
+            }
+        }
+
     }
 }

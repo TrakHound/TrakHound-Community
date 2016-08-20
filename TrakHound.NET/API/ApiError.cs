@@ -1,6 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
 using System.Text;
 
 using TrakHound.Logging;
@@ -23,7 +25,7 @@ namespace TrakHound.API
                 }
                 else
                 {
-                    Logger.Log(label + " Successful", LogLineType.Notification);
+                    Logger.Log(label + " Successful", LogLineType.Console);
                     return true;
                 }
             }

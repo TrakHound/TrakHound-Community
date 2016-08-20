@@ -47,8 +47,8 @@ namespace TH_ProductionStatus
 
         #region "Plugin Properties/Options"
 
-        public string DefaultParent { get { return "Dashboard"; } }
-        public string DefaultParentCategory { get { return "Pages"; } }
+        public string ParentPlugin { get { return "Dashboard"; } }
+        public string ParentPluginCategory { get { return "Pages"; } }
 
         public bool AcceptsPlugins { get { return false; } }
 
@@ -81,6 +81,10 @@ namespace TH_ProductionStatus
         public void GetSentData(EventData data)
         {
             Update(data);
+
+            this.Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceAdded), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+            this.Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceUpdated), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+            this.Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceRemoved), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
         }
 
         public event SendData_Handler SendData;
@@ -107,32 +111,32 @@ namespace TH_ProductionStatus
 
         public void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
-                {
-                    Rows.Clear();
-                }
+            //Dispatcher.BeginInvoke(new Action(() =>
+            //{
+            //    if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
+            //    {
+            //        Rows.Clear();
+            //    }
 
-                if (e.NewItems != null)
-                {
-                    foreach (DeviceConfiguration newConfig in e.NewItems)
-                    {
-                        if (newConfig != null) AddRow(newConfig);
-                    }
-                }
+            //    if (e.NewItems != null)
+            //    {
+            //        foreach (DeviceConfiguration newConfig in e.NewItems)
+            //        {
+            //            if (newConfig != null) AddRow(newConfig);
+            //        }
+            //    }
 
-                if (e.OldItems != null)
-                {
-                    foreach (DeviceConfiguration oldConfig in e.OldItems)
-                    {
-                        Devices.Remove(oldConfig);
+            //    if (e.OldItems != null)
+            //    {
+            //        foreach (DeviceConfiguration oldConfig in e.OldItems)
+            //        {
+            //            Devices.Remove(oldConfig);
 
-                        int index = Rows.ToList().FindIndex(x => GetUniqueIdFromDeviceInfo(x) == oldConfig.UniqueId);
-                        if (index >= 0) Rows.RemoveAt(index);
-                    }
-                }
-            }));
+            //            int index = Rows.ToList().FindIndex(x => GetUniqueIdFromDeviceInfo(x) == oldConfig.UniqueId);
+            //            if (index >= 0) Rows.RemoveAt(index);
+            //        }
+            //    }
+            //}));
         }
 
         private static string GetUniqueIdFromDeviceInfo(Controls.Row row)

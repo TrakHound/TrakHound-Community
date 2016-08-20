@@ -10,8 +10,6 @@ using System.Collections.Specialized;
 using TrakHound.API.Users;
 using TrakHound.Tools.Web;
 
-using TrakHound.Logging;
-
 namespace TrakHound.API
 {
     public static partial class Data
@@ -31,7 +29,7 @@ namespace TrakHound.API
             string json = JSON.FromList<DeviceInfo>(deviceInfos);
             if (!string.IsNullOrEmpty(json))
             {
-                Uri apiHost = ApiConfiguration.ApiHost;
+                Uri apiHost = ApiConfiguration.DataApiHost;
 
                 string url = new Uri(apiHost, "data/update/index.php").ToString();
 
@@ -44,20 +42,6 @@ namespace TrakHound.API
                 if (response != null)
                 {
                     return ApiError.ProcessResponse(response, "Update Device Data");
-
-                    //string[] x = response.Split('(', ')');
-                    //if (x != null && x.Length > 1)
-                    //{
-                    //    string error = x[1];
-
-                    //    Logger.Log("Update Data Failed : Error " + error, LogLineType.Warning);
-                    //    return false;
-                    //}
-                    //else
-                    //{
-                    //    Logger.Log("Update Data Successful", LogLineType.Notification);
-                    //    return true;
-                    //}
                 }
             }
 

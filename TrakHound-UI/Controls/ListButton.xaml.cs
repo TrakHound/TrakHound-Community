@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace TrakHound_UI
 {
@@ -26,8 +22,6 @@ namespace TrakHound_UI
             root.DataContext = this;
         }
 
-        //public object DataObject;
-
         public object DataObject
         {
             get { return (object)GetValue(DataObjectProperty); }
@@ -36,7 +30,6 @@ namespace TrakHound_UI
 
         public static readonly DependencyProperty DataObjectProperty =
             DependencyProperty.Register("DataObject", typeof(object), typeof(ListButton), new PropertyMetadata(null));
-
 
 
         public bool AlternateStyle
@@ -139,7 +132,7 @@ namespace TrakHound_UI
         {
             if (e.ChangedButton == MouseButton.Left)
             {
-                if (MultiSelected != null) MultiSelected(this);
+                MultiSelected?.Invoke(this);
 
                 Selected_Handler handler = Selected;
                 if (handler != null) Selected(this);
@@ -172,11 +165,11 @@ namespace TrakHound_UI
             {
                 if (!IsSelected)
                 {
-                    if (MultiSelected != null) MultiSelected(this);
+                    MultiSelected?.Invoke(this);
                 }
                 else
                 {
-                    if (MultiUnselected != null) MultiUnselected(this);
+                    MultiUnselected?.Invoke(this);
                 }
             }
                 

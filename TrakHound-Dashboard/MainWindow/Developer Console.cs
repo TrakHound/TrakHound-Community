@@ -1,4 +1,10 @@
-﻿using System;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
+using System.IO;
 using System.Windows;
 
 using TrakHound;
@@ -36,7 +42,7 @@ namespace TrakHound_Dashboard
 
         private void DeveloperConsole_ToolBarItem_Clicked(TrakHound_UI.Button bt)
         {
-            developerConsole.Shown = !developerConsole.Shown;
+            //developerConsole.Shown = !developerConsole.Shown;
         }
 
         private void developerConsole_ShownChanged(bool shown)
@@ -45,8 +51,7 @@ namespace TrakHound_Dashboard
 
             if (shown)
             {
-                developerConsole.ScrollLastIntoView();
-
+                //developerConsole.ScrollLastIntoView();
                 DeveloperConsoleHeight = new GridLength(lastHeight);
             }
             else
@@ -56,15 +61,41 @@ namespace TrakHound_Dashboard
             }  
         }
 
+        LogReader clientReader;
+        LogReader serverReader;
+
         void Log_Initialize()
         {
             Logger.AppicationName = ApplicationNames.TRAKHOUND_DASHBOARD;
 
-            var clientReader = new LogReader(ApplicationNames.TRAKHOUND_DASHBOARD, DateTime.Now);
+            StartLogReaders();
+            LoggerConfigurationFileMonitor_Start();
+        }
+
+        void StartLogReaders()
+        {
+            clientReader = new LogReader(ApplicationNames.TRAKHOUND_DASHBOARD, DateTime.Now);
             clientReader.LineAdded += ClientReader_LineAdded;
 
-            var serverReader = new LogReader(ApplicationNames.TRAKHOUND_SERVER, DateTime.Now);
+            serverReader = new LogReader(ApplicationNames.TRAKHOUND_SERVER, DateTime.Now);
             serverReader.LineAdded += ServerReader_LineAdded;
+        }
+
+        private void LoggerConfigurationFileMonitor_Start()
+        {
+            string dir = FileLocations.TrakHound;
+            string filename = LoggerConfiguration.CONFIG_FILENAME;
+
+            var watcher = new FileSystemWatcher(dir, filename);
+            watcher.Changed += LoggerConfigurationFileMonitor_Changed;
+            watcher.Created += LoggerConfigurationFileMonitor_Changed;
+            watcher.Deleted += LoggerConfigurationFileMonitor_Changed;
+            watcher.EnableRaisingEvents = true;
+        }
+
+        private void LoggerConfigurationFileMonitor_Changed(object sender, FileSystemEventArgs e)
+        {
+            Logger.LoggerConfiguration = LoggerConfiguration.Read();
         }
 
         private void ClientReader_LineAdded(Line line)
@@ -79,7 +110,7 @@ namespace TrakHound_Dashboard
 
         void Log_Updated_GUI(Line line, string applicationName)
         {
-            if (developerConsole != null) developerConsole.AddLine(line, applicationName);
+            //if (developerConsole != null) developerConsole.AddLine(line, applicationName);
         }
 
     }

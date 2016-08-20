@@ -60,6 +60,9 @@
     <Compile Include="..\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\DeviceDisplay\BetterCell.cs" />
     <Compile Include="Controls\DeviceDisplay\BetterColumn.cs" />
     <Compile Include="Controls\DeviceDisplay\Overlay.xaml.cs">
@@ -78,6 +81,10 @@
       <Generator>MSBuild:Compile</Generator>
     </None>
     <None Include="app.config" />
+    <Page Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\DeviceDisplay\Overlay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -153,14 +160,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Plugins\OEE\Timeline\ToolTip.xaml">
+    <None Include="Plugins\OEE\Timeline\ToolTip.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Plugins\OEE\Timeline\View.xaml">
+    </None>
+    <None Include="Plugins\OEE\Timeline\View.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
+    </None>
     <Page Include="Plugins\OEE\Values\Availability\View.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -231,13 +238,13 @@
       <DependentUpon>TextDisplay.xaml</DependentUpon>
     </Compile>
     <Compile Include="Plugins\OEE\OEEData.cs" />
-    <Compile Include="Plugins\OEE\Timeline\Plugin.cs" />
-    <Compile Include="Plugins\OEE\Timeline\ToolTip.xaml.cs">
+    <None Include="Plugins\OEE\Timeline\Plugin.cs" />
+    <None Include="Plugins\OEE\Timeline\ToolTip.xaml.cs">
       <DependentUpon>ToolTip.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Plugins\OEE\Timeline\View.xaml.cs">
+    </None>
+    <None Include="Plugins\OEE\Timeline\View.xaml.cs">
       <DependentUpon>View.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="Plugins\OEE\Tools.cs" />
     <Compile Include="Plugins\OEE\Values\Availability\Plugin.cs" />
     <Compile Include="Plugins\OEE\Values\Availability\View.xaml.cs">

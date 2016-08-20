@@ -1,24 +1,11 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-using System.Collections.ObjectModel;
 
 using TrakHound;
 
@@ -79,32 +66,6 @@ namespace TrakHound_Dashboard.Controls
         public static readonly DependencyProperty ZoomLevelProperty =
             DependencyProperty.Register("ZoomLevel", typeof(double), typeof(TabPage), new PropertyMetadata(1D));
 
-
-        //public string ZoomLevelText
-        //{
-        //    get { return (string)GetValue(ZoomLevelTextProperty); }
-        //    set { SetValue(ZoomLevelTextProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty ZoomLevelTextProperty =
-        //    DependencyProperty.Register("ZoomLevelText", typeof(string), typeof(TabPage), new PropertyMetadata(null));
-
-        //ObservableCollection<string> zoomlevels;
-        //public ObservableCollection<string> ZoomLevels
-        //{
-        //    get
-        //    {
-        //        if (zoomlevels == null)
-        //            zoomlevels = new ObservableCollection<string>();
-        //        return zoomlevels;
-        //    }
-
-        //    set
-        //    {
-        //        zoomlevels = value;
-        //    }
-        //}
-
         public void SetZoom(double zoom)
         {
             ZoomLevel = zoom;
@@ -112,22 +73,13 @@ namespace TrakHound_Dashboard.Controls
 
         public void ZoomOut()
         {
-            ZoomLevel = Math.Max(ZoomLevel - 0.1, 0.5);
+            ZoomLevel = Math.Max(ZoomLevel - 0.05, 0.25);
         }
 
         public void ZoomIn()
         {
-            ZoomLevel = Math.Min(ZoomLevel + 0.1, 2.0);
+            ZoomLevel = Math.Min(ZoomLevel + 0.05, 3.0);
         }
-
-        //private void ZoomOut_Clicked(TrakHound_UI.Button bt) { ZoomOut(); }
-
-        //private void ZoomIn_Clicked(TrakHound_UI.Button bt) { ZoomIn(); }
-
-        //private void Fullscreen_Clicked(TrakHound_UI.Button bt)
-        //{
-        //    FullScreen();
-        //}
 
         public void FullScreen()
         {
@@ -152,26 +104,6 @@ namespace TrakHound_Dashboard.Controls
                 PageContent = (IPage)o;
             }
         }
-
-        //private void zoom_COMBO_TextChanged(object sender, TextChangedEventArgs e)
-        //{
-
-        //    ComboBox combo = (ComboBox)sender;
-
-        //    if (combo.Text != null)
-        //    {
-        //        string val = combo.Text;
-
-        //        if (val.Contains('%')) val = val.Substring(0, val.IndexOf('%'));
-
-        //        double zoom;
-        //        if (double.TryParse(val, out zoom))
-        //        {
-        //            this.Dispatcher.BeginInvoke(new Action<double>(SetZoom), new object[] { zoom / 100 });
-        //        }
-        //    }
-
-        //}
 
         #endregion
 

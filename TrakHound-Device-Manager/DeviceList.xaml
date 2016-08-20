@@ -26,7 +26,7 @@
             <Separator/>
             <controls:DataGridMenuItem Header="Remove" DataObject="{Binding}" Click="Remove_DataGridRowContextMenu_Click"/>
             <Separator/>
-            <controls:DataGridMenuItem Header="Save to File.." DataObject="{Binding}" Click="Save_DataGridRowContextMenu_Click"/>
+            <controls:DataGridMenuItem Header="Backup.." DataObject="{Binding}" Click="Backup_DataGridRowContextMenu_Click"/>
         </ContextMenu>
 
         <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
@@ -51,16 +51,8 @@
 
         <!--Individual Add Device Buttons-->
         <Style x:Key="Add_Button_Style" TargetType="ui:Button" BasedOn="{StaticResource Button_Accent_Background}">
-            <!--<Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-            <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
-            <Setter Property="FontSize" Value="14"/>-->
             <Setter Property="Padding" Value="10,0"/>
             <Setter Property="MinHeight" Value="25"/>
-            <!--<Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="true">
-                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                </Trigger>
-            </Style.Triggers>-->
         </Style>
 
         <Style TargetType="controls:DataGridCellCheckBox" BasedOn="{StaticResource {x:Type CheckBox}}"/>
@@ -79,20 +71,9 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
                 <StackPanel.Resources>
                     <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Opposite_Foreground}">
-                        <!--<Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>-->
-                        <!--<Setter Property="Background" Value="Transparent"/>-->
-                        <!--<Setter Property="FontSize" Value="12"/>-->
                         <Setter Property="Height" Value="30"/>
                         <Setter Property="Margin" Value="1,2"/>
                         <Setter Property="Padding" Value="5"/>
-                        <!--<Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Foreground" Value="{StaticResource Shade_Normal}"/>
-                            </Trigger>
-                        </Style.Triggers>-->
                     </Style>
                     <Style TargetType="Rectangle">
                         <Setter Property="Fill" Value="{StaticResource Shade_Light}"/>
@@ -126,17 +107,7 @@
                 <StackPanel Orientation="Horizontal">
                     <StackPanel.Resources>
                         <Style TargetType="ui:Button" BasedOn="{StaticResource {x:Type ui:Button}}">
-                            <!--<Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>-->
-                            <!--<Setter Property="Background" Value="Transparent"/>-->
-                            <!--<Setter Property="FontSize" Value="12"/>
-                            <Setter Property="Height" Value="30"/>-->
                             <Style.Triggers>
-                                <!--<Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" Value="#33ffffff"/>
-                                </Trigger>-->
-                                <!--<Trigger Property="IsEnabled" Value="false">
-                                    <Setter Property="Foreground" Value="{StaticResource Shade_Normal}"/>
-                                </Trigger>-->
                                 <DataTrigger Binding="{Binding SelectedItems, ElementName=Devices_DG}" Value="{x:Null}">
                                     <Setter Property="IsEnabled" Value="False"/>
                                 </DataTrigger>
@@ -167,6 +138,9 @@
 
                     <!--Separator-->
                     <Rectangle />
+
+                    <!--Backup Device(s)-->
+                    <ui:Button Image="Resources/Disk_01.png" Text="Backup" ToolTip="Create a Backup of Device(s)" Clicked="Backup_Toolbar_Clicked"/>
 
                 </StackPanel>
 
@@ -236,20 +210,11 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
 
-                        <!--Enable Client CheckBox-->
-                        <DataGridTemplateColumn Header="Client Enabled">
+                        <!--Enable CheckBox-->
+                        <DataGridTemplateColumn Header="Enabled">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <controls:DataGridCellCheckBox DataObject="{Binding}" IsChecked="{Binding ClientEnabled}" Checked="ClientEnabled_Checked" Unchecked="ClientEnabled_Unchecked"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-
-                        <!--Enable Server CheckBox-->
-                        <DataGridTemplateColumn Header="Server Enabled">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <controls:DataGridCellCheckBox DataObject="{Binding}" IsChecked="{Binding ServerEnabled}" Checked="ServerEnabled_Checked" Unchecked="ServerEnabled_Unchecked"/>
+                                    <controls:DataGridCellCheckBox DataObject="{Binding}" IsChecked="{Binding Enabled}" Checked="Enabled_Checked" Unchecked="Enabled_Unchecked"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -259,7 +224,7 @@
                         <DataGridTextColumn Header="Manufacturer" Binding="{Binding Description.Manufacturer}"/>
                         <DataGridTextColumn Header="Model" Binding="{Binding Description.Model}"/>
                         <DataGridTextColumn Header="Serial" Binding="{Binding Description.Serial}"/>
-                        <DataGridTextColumn Header="Device ID" Binding="{Binding Description.Device_ID}"/>
+                        <DataGridTextColumn Header="Device ID" Binding="{Binding Description.DeviceId}"/>
 
                     </DataGrid.Columns>
 
@@ -347,7 +312,7 @@
 
 
             <!--Add Device Button-->
-            <ui:Button Style="{StaticResource Button_Accent_Background}" Text="Add Device" Clicked="Add_Toolbar_Clicked" ImageTextPadding="10" Padding="10,5" Height="35" Image="Resources/Add_01.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <ui:Button Style="{StaticResource Button_Accent_Background}" Text="Add Device" Clicked="Add_Toolbar_Clicked" Image="Resources/Add_01.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
         </StackPanel>
 
@@ -390,7 +355,7 @@
 
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 
-                <ui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" Height="75" Foreground="{StaticResource TrakHound_Blue}" />
+                <ui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource TrakHound_Blue}" />
 
                 <TextBlock Text="Loading Devices.." Foreground="{StaticResource Foreground_Normal}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,20,0,0" FontSize="14pt"/>
 

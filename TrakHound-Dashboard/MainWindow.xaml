@@ -74,7 +74,6 @@
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
                                 <Setter Property="Foreground" Value="{StaticResource TrakHound_Blue}"/>
-                                <!--<Setter Property="Background" Value="{StaticResource Accent_Hover}"/>-->
                             </Trigger>
                             <Trigger Property="IsSelected" Value="true">
                                 <Setter Property="Foreground" Value="{StaticResource TrakHound_Blue}"/>
@@ -103,7 +102,6 @@
                     <StackPanel Orientation="Horizontal" MouseDown="TopBar_UserInfo_MouseDown">
                         <StackPanel.Style>
                             <Style TargetType="StackPanel">
-                                <!--<Setter Property="Opacity" Value="0.6"/>-->
                                 <Setter Property="ToolTip" Value="Open My Account Page"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
@@ -155,16 +153,11 @@
                         <ui:Button Clicked="MessageCenter_ToolBarItem_Clicked" Image="Resources/Envelope_01.png" ToolTip="Show Message Center">
                             <ui:Button.Style>
                                 <Style TargetType="ui:Button" BasedOn="{StaticResource {x:Type ui:Button}}">
-                                    <!--<Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                                    <Setter Property="Background" Value="Transparent"/>-->
+                                    <Setter Property="Padding" Value="6"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding NotificationsCount}" Value="0">
                                             <Setter Property="Foreground" Value="#aaa"/>
                                         </DataTrigger>
-                                        <!--<Trigger Property="IsMouseOver" Value="true">
-                                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                                            <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
-                                        </Trigger>-->
                                     </Style.Triggers>
                                 </Style>
                             </ui:Button.Style>
@@ -215,7 +208,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!--Developer Console Show Button-->
-                <StackPanel HorizontalAlignment="Left">
+                <!--<StackPanel HorizontalAlignment="Left">
                     <StackPanel.Style>
                         <Style TargetType="StackPanel">
                             <Setter Property="Visibility" Value="Visible"/>
@@ -242,7 +235,7 @@
                         </ui:Button.Style>
                     </ui:Button>
 
-                </StackPanel>
+                </StackPanel>-->
 
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
@@ -337,7 +330,7 @@
                     </ContentControl.LayoutTransform>
                 </ContentControl>
 
-                <GridSplitter Grid.Row="1" Background="{StaticResource Accent_Dark}" HorizontalAlignment="Stretch" Height="5">
+                <!--<GridSplitter Grid.Row="1" Background="{StaticResource Accent_Dark}" HorizontalAlignment="Stretch" Height="5">
                     <GridSplitter.Style>
                         <Style TargetType="GridSplitter">
                             <Style.Triggers>
@@ -347,10 +340,10 @@
                             </Style.Triggers>
                         </Style>
                     </GridSplitter.Style>
-                </GridSplitter>
+                </GridSplitter>-->
 
                 <!--Developer Console-->
-                <devconsole:PopUp x:Name="developerConsole" Grid.Row="2" ShownChanged="developerConsole_ShownChanged"/>
+                <!--<devconsole:PopUp x:Name="developerConsole" Grid.Row="2" ShownChanged="developerConsole_ShownChanged"/>-->
 
             </Grid>
 
@@ -395,7 +388,6 @@
         </Border>
 
         <!--Navigation Menu Panel-->
-        <!--<Border Width="300" Background="{StaticResource Window_Background_Accent_Gradient}" HorizontalAlignment="Left">-->
         <Border Width="300" Background="{StaticResource Navigation_Menu_Background}" HorizontalAlignment="Left">
             <Border.RenderTransform>
                 <TranslateTransform X="-320"/>
@@ -760,18 +752,11 @@
                             </ui:Button>
 
                             <!--Developer Console-->
-                            <ui:Button Clicked="DeveloperConsole_Clicked">
+                            <!--<ui:Button Clicked="DeveloperConsole_Clicked">
                                 <ui:Button.ButtonContent>
                                     <menus:MenuItem Text="Developer Console" Image="Resources/Developer_01.png"/>
                                 </ui:Button.ButtonContent>
-                            </ui:Button>
-
-                            <!--Table Manager-->
-                            <ui:Button Clicked="TableManager_Clicked">
-                                <ui:Button.ButtonContent>
-                                    <menus:MenuItem Text="Table Manager" Image="Resources/Table_01.png"/>
-                                </ui:Button.ButtonContent>
-                            </ui:Button>
+                            </ui:Button>-->
 
                         </WrapPanel>
 

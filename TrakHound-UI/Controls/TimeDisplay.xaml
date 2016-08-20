@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="TrakHound_UI.TimeDisplay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TrakHound_UI"
+             mc:Ignorable="d"
+             Height="50"
+             >
+
+    <Grid x:Name="root">
+        <Grid.RowDefinitions>
+            <RowDefinition>
+                <RowDefinition.Style>
+                    <Style TargetType="RowDefinition">
+                        <Setter Property="Height" Value="*"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ShowDate}" Value="true">
+                                <Setter Property="Height" Value="7*"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </RowDefinition.Style>
+            </RowDefinition>
+            <RowDefinition>
+                <RowDefinition.Style>
+                    <Style TargetType="RowDefinition">
+                        <Setter Property="Height" Value="0"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ShowDate}" Value="true">
+                                <Setter Property="Height" Value="3*"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </RowDefinition.Style>
+            </RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Viewbox>
+
+            <TextBlock Text="{Binding Time, StringFormat=hh\\:mm\\:ss}" FontFamily="{StaticResource RobotoFont}" Foreground="{Binding Foreground}"/>
+
+        </Viewbox>
+
+        <Viewbox Grid.Row="1" HorizontalAlignment="Center">
+
+            <TextBlock Text="{Binding Time, StringFormat=d\\ \\D\\a\\y\\s}" FontFamily="{StaticResource RobotoFont}" Foreground="{Binding Foreground}"/>
+            
+        </Viewbox>
+
+    </Grid>
+
+</UserControl>

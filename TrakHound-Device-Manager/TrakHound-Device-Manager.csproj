@@ -85,20 +85,6 @@
     <Compile Include="Pages\Cycles\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Databases\Controls\DatabaseItemContainer.xaml.cs">
-      <DependentUpon>DatabaseItemContainer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Databases\Info.cs" />
-    <Compile Include="Pages\Databases\Page.xaml.cs">
-      <DependentUpon>Page.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Databases\Pages\SQLite\Button.xaml.cs">
-      <DependentUpon>Button.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Databases\Pages\SQLite\Info.cs" />
-    <Compile Include="Pages\Databases\Pages\SQLite\Page.xaml.cs">
-      <DependentUpon>Page.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\Description\Info.cs" />
     <Compile Include="Pages\Description\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
@@ -144,23 +130,23 @@
     <Compile Include="Pages\Parts\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Shifts\Controls\BreakListItem.xaml.cs">
+    <None Include="Pages\Shifts\Controls\BreakListItem.xaml.cs">
       <DependentUpon>BreakListItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Shifts\Controls\ShiftListItem.xaml.cs">
+    </None>
+    <None Include="Pages\Shifts\Controls\ShiftListItem.xaml.cs">
       <DependentUpon>ShiftListItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Shifts\Info.cs" />
-    <Compile Include="Pages\Shifts\Page.xaml.cs">
+    </None>
+    <None Include="Pages\Shifts\Info.cs" />
+    <None Include="Pages\Shifts\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\SnapshotData\Controls\SnapshotItem.xaml.cs">
+    </None>
+    <None Include="Pages\SnapshotData\Controls\SnapshotItem.xaml.cs">
       <DependentUpon>SnapshotItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\SnapshotData\Info.cs" />
-    <Compile Include="Pages\SnapshotData\Page.xaml.cs">
+    </None>
+    <None Include="Pages\SnapshotData\Info.cs" />
+    <None Include="Pages\SnapshotData\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -202,22 +188,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\Cycles\Page.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\Databases\Controls\DatabaseItemContainer.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\Databases\Page.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\Databases\Pages\SQLite\Button.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\Databases\Pages\SQLite\Page.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -273,26 +243,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\Shifts\Controls\BreakListItem.xaml">
+    <None Include="Pages\Shifts\Controls\BreakListItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\Shifts\Controls\ShiftListItem.xaml">
+    </None>
+    <None Include="Pages\Shifts\Controls\ShiftListItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\Shifts\Page.xaml">
+    </None>
+    <None Include="Pages\Shifts\Page.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\SnapshotData\Controls\SnapshotItem.xaml">
+    </None>
+    <None Include="Pages\SnapshotData\Controls\SnapshotItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\SnapshotData\Page.xaml">
+    </None>
+    <None Include="Pages\SnapshotData\Page.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="GeneratedEvents.xml" />
@@ -373,6 +343,10 @@
     <Resource Include="Resources\Timer_01.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TrakHound-Server\TrakHound-Server.csproj">
+      <Project>{9fcdabec-b317-4375-ae19-f605d836801c}</Project>
+      <Name>TrakHound-Server</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TrakHound-UI\TrakHound-UI.csproj">
       <Project>{b4c046ff-4a7d-4059-aaf8-713059ccf0f3}</Project>
       <Name>TrakHound-UI</Name>

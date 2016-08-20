@@ -8,7 +8,7 @@
 
     <Grid x:Name="root">
 
-        <TextBlock Text="Unavailable" Foreground="{StaticResource Foreground_Light}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0" FontSize="10pt">
+        <!--<TextBlock Text="Unavailable" Foreground="{StaticResource Foreground_Light}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0" FontSize="10pt">
             <TextBlock.Style>
                 <Style TargetType="TextBlock">
                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -25,10 +25,10 @@
                     </Style.Triggers>
                 </Style>
             </TextBlock.Style>
-        </TextBlock>
+        </TextBlock>-->
 
         <Viewbox MaxHeight="25" VerticalAlignment="Center">
-            <Viewbox.Style>
+            <!--<Viewbox.Style>
                 <Style TargetType="Viewbox">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Text}" Value="UNAVAILABLE">
@@ -36,7 +36,7 @@
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </Viewbox.Style>
+            </Viewbox.Style>-->
 
             <!--Text Value-->
             <TextBlock Text="{Binding Text}" Foreground="{Binding Foreground}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="20,0"/>

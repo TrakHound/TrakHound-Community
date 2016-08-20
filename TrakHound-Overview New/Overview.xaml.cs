@@ -15,6 +15,7 @@ using TrakHound.API.Users;
 using TrakHound.Configurations;
 using TrakHound.Plugins;
 using TrakHound.Plugins.Client;
+using TrakHound.Tools;
 
 namespace TrakHound_Overview
 {
@@ -113,6 +114,74 @@ namespace TrakHound_Overview
             UpdateCurrentUser(data);
 
             UpdateData(data);
+
+            this.Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceAdded), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+            this.Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceUpdated), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+            this.Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceRemoved), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+        }
+
+        void UpdateDeviceAdded(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id.ToLower() == "deviceadded" && data.Data01 != null)
+                {
+                    var config = (DeviceConfiguration)data.Data01;
+
+                    AddDevice(config);
+
+                    SortDataItems();
+                    LoadHeaderView();
+                    SortDeviceDisplays();
+                }
+            }
+        }
+
+        void UpdateDeviceUpdated(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id.ToLower() == "deviceupdated" && data.Data01 != null)
+                {
+                    var config = (DeviceConfiguration)data.Data01;
+
+                    int index = DeviceDisplays.FindIndex(x => x.UniqueId == config.UniqueId);
+                    if (index >= 0)
+                    {
+                        var dd = DeviceDisplays[index];
+                        Headers.Remove(dd.Group.Header);
+                        Columns.Remove(dd.Group.Column);
+                        dd.CellAdded -= Display_CellAdded;
+                        dd.CellSizeChanged -= display_CellSizeChanged;
+
+                        DeviceDisplays.RemoveAt(index);
+                        DeviceDisplays.Insert(index, dd);
+                    }
+                }
+            }
+        }
+
+        void UpdateDeviceRemoved(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id.ToLower() == "deviceremoved" && data.Data01 != null)
+                {
+                    var config = (DeviceConfiguration)data.Data01;
+
+                    int index = DeviceDisplays.FindIndex(x => x.UniqueId == config.UniqueId);
+                    if (index >= 0)
+                    {
+                        var dd = DeviceDisplays[index];
+                        Headers.Remove(dd.Group.Header);
+                        Columns.Remove(dd.Group.Column);
+                        dd.CellAdded -= Display_CellAdded;
+                        dd.CellSizeChanged -= display_CellSizeChanged;
+
+                        DeviceDisplays.Remove(dd);
+                    }
+                }
+            }
         }
 
         public event SendData_Handler SendData;

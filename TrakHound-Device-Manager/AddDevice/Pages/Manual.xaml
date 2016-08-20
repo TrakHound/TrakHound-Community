@@ -55,19 +55,10 @@
                 </Grid.ColumnDefinitions>
 
                 <!--Buttton-->
-                <ui:Button Grid.Column="2" Text="Test Connection" Clicked="TestConnection_Clicked" Height="35" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <ui:Button Grid.Column="2" Text="Test Connection" Clicked="TestConnection_Clicked" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center">
                     <ui:Button.Style>
-                        <Style TargetType="ui:Button">
-                            <Setter Property="Visibility" Value="Visible"/>
-                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                            <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
-                            <Setter Property="Height" Value="35"/>
-                            <Setter Property="FontSize" Value="14"/>
-                            <Setter Property="Padding" Value="10,5"/>
+                        <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Accent_Background}">
                             <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                                </Trigger>
                                 <DataTrigger Binding="{Binding ConnectionTestLoading}" Value="true">
                                     <Setter Property="Visibility" Value="Hidden"/>
                                 </DataTrigger>
@@ -117,16 +108,16 @@
 
                     <ui:Button Image="/TrakHound-Device-Manager;component/Resources/X_01.png" Clicked="TestConnectionCancel_Clicked" ToolTip="Cancel">
                         <ui:Button.Style>
-                            <Style TargetType="ui:Button">
-                                <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                                <Setter Property="Background" Value="Transparent"/>
+                            <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Accent_Background}">
+                                <!--<Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                <Setter Property="Background" Value="Transparent"/>-->
                                 <Setter Property="Height" Value="20"/>
                                 <Setter Property="Width" Value="20"/>
-                                <Style.Triggers>
+                                <!--<Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="true">
                                         <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
                                     </Trigger>
-                                </Style.Triggers>
+                                </Style.Triggers>-->
                             </Style>
                         </ui:Button.Style>
                     </ui:Button>
@@ -172,25 +163,12 @@
             </Grid>
 
             <!--Add Buttton-->
-            <ui:Button Text="Add Device" Clicked="AddDevice_Clicked" Height="35" HorizontalAlignment="Right" VerticalAlignment="Center" Image="/TrakHound-Device-Manager;component/Resources/Add_01.png">
+            <ui:Button Text="Add Device" Clicked="AddDevice_Clicked" Height="30" HorizontalAlignment="Right" VerticalAlignment="Center" Image="/TrakHound-Device-Manager;component/Resources/Add_01.png">
                 <ui:Button.Style>
-                    <Style TargetType="ui:Button">
+                    <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Accent_Background}">
                         <Setter Property="Visibility" Value="Visible"/>
-                        <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                        <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
-                        <Setter Property="Height" Value="35"/>
-                        <Setter Property="FontSize" Value="14"/>
-                        <Setter Property="Padding" Value="10,5"/>
-                        <Setter Property="ImageTextPadding" Value="10"/>
                         <Setter Property="IsEnabled" Value="false"/>
                         <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Background" Value="#aaa"/>
-                                <Setter Property="Foreground" Value="#ccc"/>
-                            </Trigger>
                             <DataTrigger Binding="{Binding ConnectionTestLoading}" Value="true">
                                 <Setter Property="Visibility" Value="Hidden"/>
                             </DataTrigger>

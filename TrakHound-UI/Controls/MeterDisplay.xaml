@@ -7,24 +7,55 @@
              xmlns:levelindicator="clr-namespace:TrakHound_UI.LevelIndicator"
              
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             Height="65"
+             >
 
-    <Grid x:Name="root" HorizontalAlignment="Center">
+    <Grid x:Name="root">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="85"/>
+            <ColumnDefinition Width="*" MinWidth="50"/>
+            <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0" >
+        <Grid Margin="0,0,10,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-            <TextBlock Text="{Binding Title}" Foreground="{StaticResource Foreground_Normal}" FontSize="10"/>
+            <TextBlock Text="{Binding Title}" Foreground="{Binding Foreground}" FontSize="10">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Style.Triggers>
+                            <Trigger Property="Text" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
+                            <Trigger Property="Text" Value="">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
 
-            <TextBlock Text="{Binding ValueText}" Foreground="{Binding Foreground}" FontSize="{Binding FontSize}" FontFamily="{StaticResource RobotoFont}"/>
+            <Viewbox Grid.Row="1">
 
-        </StackPanel>
+                <TextBlock Text="{Binding ValueText}" Foreground="{Binding Foreground}" FontFamily="{StaticResource RobotoFont}"/>
 
-        <levelindicator:Indicator x:Name="indicator" Grid.Column="1" Width="{Binding IndicatorWidth}" Margin="5" ActiveLevelBrush="{Binding ActiveLevelBrush}" InactiveLevelBrush="{Binding InactiveLevelBrush}"/>
+            </Viewbox>
 
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1.5*"/>
+                <RowDefinition Height="7*"/>
+                <RowDefinition Height="1.5*"/>
+            </Grid.RowDefinitions>
+
+            <levelindicator:Indicator x:Name="indicator" Grid.Row="1" Width="{Binding IndicatorWidth}" ActiveLevelBrush="{Binding ActiveLevelBrush}" InactiveLevelBrush="{Binding InactiveLevelBrush}"/>
+
+        </Grid>
+        
     </Grid>
 
 </UserControl>

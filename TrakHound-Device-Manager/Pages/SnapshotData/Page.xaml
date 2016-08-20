@@ -45,22 +45,7 @@
             </StackPanel>
 
             <!--Add Item-->
-            <ui:Button Text="Add Item" Clicked="Add_Clicked" Style="{StaticResource Button_Accent_Background}" Height="35" HorizontalAlignment="Left" Margin="0,20,0,0" Image="/TrakHound-Device-Manager;component/Resources/Add_01.png">
-                <!--<ui:Button.Style>
-                    <Style TargetType="ui:Button">
-                        <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                        <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
-                        <Setter Property="FontSize" Value="14"/>
-                        <Setter Property="Padding" Value="10,5"/>
-                        <Setter Property="ImageTextPadding" Value="10"/>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </ui:Button.Style>-->
-            </ui:Button>
+            <ui:Button Text="Add Item" Clicked="Add_Clicked" Style="{StaticResource Button_Accent_Background}" Height="35" HorizontalAlignment="Left" Margin="0,20,0,0" Image="/TrakHound-Device-Manager;component/Resources/Add_01.png"/>
 
         </StackPanel>
 

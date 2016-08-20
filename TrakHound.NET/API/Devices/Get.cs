@@ -6,11 +6,10 @@
 using System;
 using System.Collections.Generic;
 
-using TrakHound.Configurations;
 using TrakHound.API.Users;
-using TrakHound.Tools.Web;
-
+using TrakHound.Configurations;
 using TrakHound.Configurations.Converters;
+using TrakHound.Tools.Web;
 
 namespace TrakHound.API
 {
@@ -53,7 +52,7 @@ namespace TrakHound.API
         {
             if (!string.IsNullOrEmpty(deviceUniqueId))
             {
-                Uri apiHost = ApiConfiguration.ApiHost;
+                Uri apiHost = ApiConfiguration.AuthenticationApiHost;
 
                 string url = new Uri(apiHost, "devices/get/index.php").ToString();
 
@@ -102,7 +101,7 @@ namespace TrakHound.API
         /// <returns></returns>
         public static List<DeviceConfiguration> Get(UserConfiguration userConfig)
         {
-            Uri apiHost = ApiConfiguration.ApiHost;
+            Uri apiHost = ApiConfiguration.AuthenticationApiHost;
 
             string url = new Uri(apiHost, "devices/get/index.php").ToString();
 

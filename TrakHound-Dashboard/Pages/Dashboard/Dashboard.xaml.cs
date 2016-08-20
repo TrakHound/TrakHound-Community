@@ -11,10 +11,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
+using TrakHound.Configurations;
 using TrakHound.Plugins;
 using TrakHound.Plugins.Client;
-using TrakHound_UI;
 using TrakHound.Tools;
+using TrakHound_UI;
 
 namespace TrakHound_Dashboard.Pages.Dashboard
 {
@@ -27,29 +28,29 @@ namespace TrakHound_Dashboard.Pages.Dashboard
         public Dashboard()
         {
             InitializeComponent();
-            DataContext = this;
+            root.DataContext = this;
 
             SubCategories = new List<PluginConfigurationCategory>();
-            PluginConfigurationCategory pages = new PluginConfigurationCategory();
+            var pages = new PluginConfigurationCategory();
             pages.Name = "Pages";
             SubCategories.Add(pages);
 
             IsExpanded = Properties.Settings.Default.DashboardIsExpanded;
         }
 
-        ObservableCollection<ListButton> pages;
+        private ObservableCollection<ListButton> _pages;
         public ObservableCollection<ListButton> Pages
         {
             get
             {
-                if (pages == null)
-                    pages = new ObservableCollection<ListButton>();
-                return pages;
+                if (_pages == null)
+                    _pages = new ObservableCollection<ListButton>();
+                return _pages;
             }
 
             set
             {
-                pages = value;
+                _pages = value;
             }
         }
 
@@ -103,9 +104,34 @@ namespace TrakHound_Dashboard.Pages.Dashboard
         public static readonly DependencyProperty CurrentDateProperty =
             DependencyProperty.Register("CurrentDate", typeof(string), typeof(Dashboard), new PropertyMetadata(null));
 
+        public bool DateMenuShown
+        {
+            get { return (bool)GetValue(DateMenuShownProperty); }
+            set { SetValue(DateMenuShownProperty, value); }
+        }
+
+        public static readonly DependencyProperty DateMenuShownProperty =
+            DependencyProperty.Register("DateMenuShown", typeof(bool), typeof(Dashboard), new PropertyMetadata(false));
+
         private void UpdateCurrentDate()
         {
             CurrentDate = DateTime.Now.ToShortDateString();
+        }
+
+        void UpdateWindowClick(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id == "WINDOW_CLICKED")
+                {
+                    if (!dateClicked)
+                    {
+                        DateMenuShown = false;
+                    }
+
+                    dateClicked = false;
+                }
+            }
         }
 
         void UpdateLoggedInChanged(EventData data)
@@ -128,16 +154,69 @@ namespace TrakHound_Dashboard.Pages.Dashboard
         {
             if (data != null)
             {
-                if (data.Id.ToLower() == "loadingdevices")
+                if (data.Id == "LOADING_DEVICES")
                 {
                     LoadingDevices = true;
                 }
 
-                if (data.Id.ToLower() == "devicesloaded")
+                if (data.Id == "DEVICES_LOADED")
                 {
                     LoadingDevices = false;
                 }
             }
+        }
+
+        void UpdateDeviceAdded(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id == "DEVICE_ADDED" && data.Data01 != null)
+                {
+                    Devices.Add((DeviceConfiguration)data.Data01);
+                }
+            }
+        }
+
+        void UpdateDeviceUpdated(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id == "DEVICE_UPDATED" && data.Data01 != null)
+                {
+                    var config = (DeviceConfiguration)data.Data01;
+
+                    int i = Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
+                    if (i >= 0)
+                    {
+                        Devices.RemoveAt(i);
+                        Devices.Insert(i, config);
+                    }
+                }
+            }
+        }
+
+        void UpdateDeviceRemoved(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id == "DEVICE_REMOVED" && data.Data01 != null)
+                {
+                    var config = (DeviceConfiguration)data.Data01;
+
+                    int i = Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
+                    if (i >= 0)
+                    {
+                        Devices.RemoveAt(i);
+                    }
+                }
+            }
+        }
+
+        private void OpenDeviceManager_Clicked(TrakHound_UI.Button bt)
+        {
+            var data = new EventData();
+            data.Id = "SHOW_DEVICE_MANAGER";
+            SendData(data);
         }
 
         #region "Child PlugIns"
@@ -162,13 +241,12 @@ namespace TrakHound_Dashboard.Pages.Dashboard
                             
                             plugin.Initialize();
                         }
-
                         catch { }
 
                         var bt = new ListButton();
                         bt.Image = plugin.Image;
                         bt.Text = plugin.Title;
-                        bt.Selected += lb_Selected;
+                        bt.Selected += PageSelected;
                         bt.DataObject = plugin;
                         Pages.Add(bt);
 
@@ -215,7 +293,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard
 
         void Plugin_SendData(EventData data)
         {
-            if (SendData != null) SendData(data);
+            SendData?.Invoke(data);
         }
 
         public void Plugins_Unload(PluginConfiguration config)
@@ -243,7 +321,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard
             return s;
         }
 
-        private void lb_Selected(ListButton lb)
+        private void PageSelected(ListButton lb)
         {
             StopSlideshow();
 
@@ -416,5 +494,12 @@ namespace TrakHound_Dashboard.Pages.Dashboard
             Properties.Settings.Default.Save();
         }
 
+        bool dateClicked = false;
+
+        private void SelectDate_Clicked(TrakHound_UI.Button bt)
+        {
+            dateClicked = true;
+            DateMenuShown = !DateMenuShown;
+        }
     }
 }

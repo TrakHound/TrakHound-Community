@@ -15,8 +15,8 @@
     <Border PreviewMouseDown="Control_MouseDown" BorderBrush="#33000000" BorderThickness="0,0,1,0">
 
         <!--Cells-->
-        <ItemsControl ItemsSource="{Binding Cells}" DataContext="{Binding ParentDisplay}"/>
-
+        <!--<ItemsControl ItemsSource="{Binding Cells}" DataContext="{Binding ParentDisplay}"/>-->
+        
     </Border>  
     
 </UserControl>

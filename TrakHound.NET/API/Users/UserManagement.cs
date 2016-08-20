@@ -6,12 +6,11 @@
 using System;
 using System.Collections.Specialized;
 using System.DirectoryServices;
-using System.Linq;
-using System.Security.Principal;
 using System.Drawing;
-
-using System.Net;
 using System.IO;
+using System.Linq;
+using System.Net;
+using System.Security.Principal;
 
 using TrakHound.Logging;
 using TrakHound.Tools;
@@ -31,7 +30,7 @@ namespace TrakHound.API.Users
             {
                 UserConfiguration result = null;
 
-                string url = new Uri(ApiConfiguration.ApiHost, "users/create/").ToString();
+                string url = new Uri(ApiConfiguration.AuthenticationApiHost, "users/create/").ToString();
 
                 var postDatas = new NameValueCollection();
                 postDatas["sender_id"] = UserManagement.SenderId.Get();
@@ -64,7 +63,7 @@ namespace TrakHound.API.Users
             {
                 UserConfiguration result = null;
 
-                string url = new Uri(ApiConfiguration.ApiHost, "users/edit/index.php").ToString();
+                string url = new Uri(ApiConfiguration.AuthenticationApiHost, "users/edit/index.php").ToString();
 
                 var postDatas = new NameValueCollection();
                 postDatas["user"] = json;
@@ -97,7 +96,7 @@ namespace TrakHound.API.Users
 
             if (id != null && id.Length > 0)
             {
-                string url = new Uri(ApiConfiguration.ApiHost, "users/login/index.php").ToString();
+                string url = new Uri(ApiConfiguration.AuthenticationApiHost, "users/login/index.php").ToString();
 
                 var postDatas = new NameValueCollection();
                 postDatas["id"] = id;
@@ -128,7 +127,7 @@ namespace TrakHound.API.Users
 
             if (id != null && id.Length > 0)
             {
-                string url = new Uri(ApiConfiguration.ApiHost, "users/login/index.php").ToString();
+                string url = new Uri(ApiConfiguration.AuthenticationApiHost, "users/login/index.php").ToString();
 
                 string senderId = SenderId.Get();
 
@@ -161,7 +160,7 @@ namespace TrakHound.API.Users
             {
                 string senderId = SenderId.Get();
 
-                string url = new Uri(ApiConfiguration.ApiHost, "users/login/?token=" + token + "&sender_id=" + senderId + "&note=" + note).ToString();
+                string url = new Uri(ApiConfiguration.AuthenticationApiHost, "users/login/?token=" + token + "&sender_id=" + senderId + "&note=" + note).ToString();
 
                 string response = HTTP.GET(url);
                 if (response != null)
@@ -184,7 +183,7 @@ namespace TrakHound.API.Users
         {
             bool result = false;
 
-            string url = new Uri(ApiConfiguration.ApiHost, "users/logout/index.php").ToString();
+            string url = new Uri(ApiConfiguration.AuthenticationApiHost, "users/logout/index.php").ToString();
 
             string senderId = SenderId.Get();
 
@@ -206,7 +205,7 @@ namespace TrakHound.API.Users
 
             if (!string.IsNullOrEmpty(username))
             {
-                string url = new Uri(ApiConfiguration.ApiHost, "users/checkusername/index.php").ToString();
+                string url = new Uri(ApiConfiguration.AuthenticationApiHost, "users/checkusername/index.php").ToString();
                 url += "?username=" + username;
 
                 string response = HTTP.GET(url);
@@ -234,14 +233,6 @@ namespace TrakHound.API.Users
                     var postDatas = new NameValueCollection();
                     postDatas["token"] = token;
                     postDatas["sender_id"] = SenderId.Get();
-
-                    //string response = HTTP.UploadFile(url, path, "file", "image/jpeg", postDatas);
-                    //if (response != null)
-                    //{
-                    //    result = UserConfiguration.Get(response);
-
-                    //    return result;
-                    //}
                 }
 
                 return result;

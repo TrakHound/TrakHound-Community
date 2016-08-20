@@ -13,6 +13,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
+using TrakHound.API;
 using TrakHound.Configurations;
 using TrakHound.Tools;
 using TrakHound.Plugins;
@@ -62,10 +63,6 @@ namespace TrakHound_Overview
             } 
         }
 
-        const System.Windows.Threading.DispatcherPriority Priority_Background = System.Windows.Threading.DispatcherPriority.Background;
-
-        const System.Windows.Threading.DispatcherPriority Priority_Context = System.Windows.Threading.DispatcherPriority.ContextIdle;
-
         public DeviceConfiguration Configuration { get; set; }
 
         /// <summary>
@@ -83,8 +80,6 @@ namespace TrakHound_Overview
             public Header Header { get; set; }
 
             public Column Column { get; set; }
-
-            //public Overlay Overlay { get; set; }
         }
 
 
@@ -121,89 +116,121 @@ namespace TrakHound_Overview
             // Update Last Updated Timestamp
             if (Group.Header != null) Group.Header.LastUpdatedTimestamp = DateTime.Now.ToString();
 
-            // Update Connection Status
-            if (data.Id.ToLower() == "statusdata_connection")
+            if (data != null && data.Id == "STATUS_STATUS")
             {
-                bool connected;
-                bool.TryParse(data.Data02.ToString(), out connected);
+                var info = (Data.StatusInfo)data.Data02;
 
-                // If connection attempt failed
-                if (!connected)
+                bool connected = info.Connected == 1;
+                var header = Group.Header;
+                if (header != null)
                 {
-                    // Increment connection attempts
-                    connectionAttempts++;
-
-                    var header = Group.Header;
-                    if (header != null)
-                    {
-                        header.Connected = false;
-
-                        // if still retrying
-                        if (connectionAttempts < maxConnectionAttempts)
-                        {
-                            header.Loading = true;
-                            header.ConnectionText = "Retrying..." + Environment.NewLine + "Attempt #" + connectionAttempts.ToString();
-                        }
-                        // if max retries have been exceeded
-                        else
-                        {
-                            header.Loading = false;
-                            header.ConnectionText = "Could Not Connect To Database";
-                        }
-                    }
-
-                    Connected = connected;
+                    header.Connected = connected;
+                    header.DeviceStatus = info.DeviceStatus;
                 }
-                else
-                {
-                    // Reset connectionAttempts
-                    connectionAttempts = 0;
-
-                    if (connected != Connected)
-                    {
-                        Connected = connected;
-                    }
-                }
+                Connected = connected;
             }
 
-            if (Connected)
-            {
-                // Availability Data
-                if (data.Id.ToLower() == "statusdata_availability")
-                {
-                    if (data.Data02.GetType() == typeof(bool))
-                    {
-                        bool avail = (bool)data.Data02;
 
-                        var header = Group.Header;
-                        if (header != null)
-                        {
-                            header.Connected = avail;
+            ////Update Connection Status
+            //if (data.Id.ToLower() == "statusdata_connection")
+            //{
+            //    bool connected;
+            //    bool.TryParse(data.Data02.ToString(), out connected);
 
-                            header.Loading = false;
-                            header.ConnectionText = null;
-                        }
-                    }
-                }
+            //    //var header = Group.Header;
+            //    //if (header != null) header.Connected = connected;
 
-                // Snapshot Table Data
-                if (data.Id.ToLower() == "statusdata_snapshots")
-                {
-                    // Update Header Data
-                    if (Group.Header != null) Group.Header.UpdateData_Snapshots(data.Data02);
-                }
+            //    //Connected = connected;
+            //}
 
-                // Variables Table Data
-                if (data.Id.ToLower() == "statusdata_variables")
-                {
-                    // Update Header Data
-                    if (Group.Header != null) Group.Header.UpdateData_Variables(data.Data02);
-                }
+            //// Availability Data
+            //if (data.Id.ToLower() == "statusdata_availability")
+            //{
+            //    if (data.Data02.GetType() == typeof(bool))
+            //    {
+            //        bool avail = (bool)data.Data02;
 
-                // Update Child Plugins
-                UpdatePlugins(data);
-            }
+            //        var header = Group.Header;
+            //        if (header != null)
+            //        {
+            //            header.Connected = avail;
+
+            //            header.Loading = false;
+            //            header.ConnectionText = null;
+            //        }
+            //    }
+            //}
+
+            // Snapshot Table Data
+            //if (data.Id.ToLower() == "statusdata_snapshots")
+            //{
+            //    // Update Header Data
+            //    if (Group.Header != null) Group.Header.UpdateData_Snapshots(data.Data02);
+            //}
+
+            //// Variables Table Data
+            //if (data.Id.ToLower() == "statusdata_variables")
+            //{
+            //    // Update Header Data
+            //    if (Group.Header != null) Group.Header.UpdateData_Variables(data.Data02);
+            //}
+
+            // Update Child Plugins
+            UpdatePlugins(data);
         }
+
+        //public void UpdateData(EventData data)
+        //{
+        //    // Update Last Updated Timestamp
+        //    if (Group.Header != null) Group.Header.LastUpdatedTimestamp = DateTime.Now.ToString();
+
+        //    //Update Connection Status
+        //    if (data.Id.ToLower() == "statusdata_connection")
+        //    {
+        //        bool connected;
+        //        bool.TryParse(data.Data02.ToString(), out connected);
+
+        //        //var header = Group.Header;
+        //        //if (header != null) header.Connected = connected;
+
+        //        //Connected = connected;
+        //    }
+
+        //    // Availability Data
+        //    if (data.Id.ToLower() == "statusdata_availability")
+        //    {
+        //        if (data.Data02.GetType() == typeof(bool))
+        //        {
+        //            bool avail = (bool)data.Data02;
+
+        //            var header = Group.Header;
+        //            if (header != null)
+        //            {
+        //                header.Connected = avail;
+
+        //                header.Loading = false;
+        //                header.ConnectionText = null;
+        //            }
+        //        }
+        //    }
+
+        //    // Snapshot Table Data
+        //    if (data.Id.ToLower() == "statusdata_snapshots")
+        //    {
+        //        // Update Header Data
+        //        if (Group.Header != null) Group.Header.UpdateData_Snapshots(data.Data02);
+        //    }
+
+        //    // Variables Table Data
+        //    if (data.Id.ToLower() == "statusdata_variables")
+        //    {
+        //        // Update Header Data
+        //        if (Group.Header != null) Group.Header.UpdateData_Variables(data.Data02);
+        //    }
+
+        //    // Update Child Plugins
+        //    UpdatePlugins(data);
+        //}
 
         /// <summary>
         /// Update each Plugin related to each Cell
@@ -251,7 +278,7 @@ namespace TrakHound_Overview
                     {
                         AddPlugin(plugin, configs);
                     }
-                }), Priority_Background, new object[] { });
+                }), UI_Functions.PRIORITY_DATA_BIND, new object[] { });
             }
         }
 

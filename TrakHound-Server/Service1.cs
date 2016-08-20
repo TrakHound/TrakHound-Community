@@ -4,27 +4,29 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.ServiceProcess;
-
-using TrakHound;
-using TrakHound.Server;
 using TrakHound.Logging;
 
-namespace TrakHound_Server_Service
+using TrakHound.Servers.DataProcessing;
+using TrakHound.Servers.DataStorage;
+
+namespace TrakHound_Server
 {
     public partial class Service1 : ServiceBase
     {
   
-        private Server server;
+        private ProcessingServer server;
 
         public Service1()
         {
             InitializeComponent();
 
-            server = new Server();
+            server = new ProcessingServer();
             server.Login();
+
+            var dataServer = new LocalStorageServer();
+            dataServer.Start();
         }
 
 

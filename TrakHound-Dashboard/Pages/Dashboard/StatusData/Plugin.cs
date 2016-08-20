@@ -5,9 +5,11 @@
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Media;
 
 using TrakHound;
+using TrakHound.API.Users;
 using TrakHound.Tools;
 using TrakHound.Logging;
 using TrakHound.Configurations;
@@ -49,8 +51,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
 
         #region "Plugin Properties/Options"
 
-        public string DefaultParent { get { return null; } }
-        public string DefaultParentCategory { get { return null; } }
+        public string ParentPlugin { get { return null; } }
+        public string ParentPluginCategory { get { return null; } }
 
         public bool AcceptsPlugins { get { return false; } }
 
@@ -84,7 +86,32 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
 
         public void GetSentData(EventData data)
         {
+            UpdateLogin(data);
+
+            UpdateDeviceAdded(data);
+            UpdateDeviceUpdated(data);
+            UpdateDeviceRemoved(data);
         }
+
+        public UserConfiguration UserConfiguration { get; set; }
+
+        private void UpdateLogin(EventData data)
+        {
+            if (data != null && data.Id == "USER_LOGIN")
+            {
+                if (data.Data01.GetType() == typeof(UserConfiguration))
+                {
+                    UserConfiguration = (UserConfiguration)data.Data01;
+                }
+            }
+        }
+
+        //public void GetSentData(EventData data)
+        //{
+        //    UpdateDeviceAdded(data);
+        //    UpdateDeviceUpdated(data);
+        //    UpdateDeviceRemoved(data);
+        //}
 
         public event SendData_Handler SendData;
 
@@ -112,7 +139,73 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
 
         public void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            Start();
+            //StartDelayTimer();
+        }
+
+        //private System.Timers.Timer startDelayTimer;
+
+        //private void StartDelayTimer()
+        //{
+        //    if (startDelayTimer != null) startDelayTimer.Enabled = false;
+
+        //    startDelayTimer = new System.Timers.Timer();
+        //    startDelayTimer.Interval = 1000;
+        //    startDelayTimer.Elapsed += StartDelayTimer_Elapsed;
+        //    startDelayTimer.Enabled = true;
+        //}
+
+        //private void StartDelayTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        //{
+        //    var timer = (System.Timers.Timer)sender;
+        //    timer.Enabled = false;
+
+        //    Start();
+        //}
+
+        void UpdateDeviceAdded(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id == "DEVICE_ADDED" && data.Data01 != null)
+                {
+                    Devices.Add((DeviceConfiguration)data.Data01);
+                }
+            }
+        }
+
+        void UpdateDeviceUpdated(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id == "DEVICE_UPDATED" && data.Data01 != null)
+                {
+                    var config = (DeviceConfiguration)data.Data01;
+
+                    int i = Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
+                    if (i >= 0)
+                    {
+                        Devices.RemoveAt(i);
+                        Devices.Insert(i, config);
+                    }
+                }
+            }
+        }
+
+        void UpdateDeviceRemoved(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id == "DEVICE_REMOVED" && data.Data01 != null)
+                {
+                    var config = (DeviceConfiguration)data.Data01;
+
+                    int i = Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
+                    if (i >= 0)
+                    {
+                        Devices.RemoveAt(i);
+                    }
+                }
+            }
         }
 
         #endregion

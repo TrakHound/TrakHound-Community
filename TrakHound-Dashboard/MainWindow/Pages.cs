@@ -4,23 +4,19 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Controls;
-using System.Collections.ObjectModel;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 
-using TrakHound.Configurations;
 using TrakHound;
-using TrakHound_Device_Manager;
-using TrakHound_Device_Manager.AddDevice;
-using TrakHound_Device_Manager.Pages;
 using TrakHound.API.Users;
-
+using TrakHound.Configurations;
+using TrakHound.Tools;
 using TrakHound_Dashboard.Controls;
+using TrakHound_Device_Manager;
 
 namespace TrakHound_Dashboard
 {
@@ -171,7 +167,7 @@ namespace TrakHound_Dashboard
                             tabsWidth = GetTabPanelWidth();
                         }
                     }
-                }), MainWindow.PRIORITY_CONTEXT_IDLE, new object[] { });
+                }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
             }
         }
 
@@ -387,50 +383,6 @@ namespace TrakHound_Dashboard
             }
         }
 
-        #region "Zoom"
-
-        public double ZoomLevel
-        {
-            get { return (double)GetValue(ZoomLevelProperty); }
-            set
-            {
-                SetValue(ZoomLevelProperty, value);
-
-                //if (Pages_TABCONTROL.SelectedIndex >= 0)
-                //{
-                //    TH_TabItem tab = (TH_TabItem)Pages_TABCONTROL.Items[Pages_TABCONTROL.SelectedIndex];
-
-                //    Controls.Page page = (Controls.Page)tab.Content;
-                //    page.ZoomLevel = value;
-
-                //    ZoomLevelDisplay = value.ToString("P0");
-
-                //    if (ZoomLevelChanged != null) ZoomLevelChanged(value);
-                //}
-
-            }
-        }
-
-        public static readonly DependencyProperty ZoomLevelProperty =
-            DependencyProperty.Register("ZoomLevel", typeof(double), typeof(MainWindow), new PropertyMetadata(1D));
-
-
-        public string ZoomLevelDisplay
-        {
-            get { return (string)GetValue(ZoomLevelDisplayProperty); }
-            set
-            {
-                SetValue(ZoomLevelDisplayProperty, value);
-            }
-        }
-
-        public static readonly DependencyProperty ZoomLevelDisplayProperty =
-            DependencyProperty.Register("ZoomLevelDisplay", typeof(string), typeof(MainWindow), new PropertyMetadata("100%"));
-
-        public delegate void ZoomLevelChanged_Handler(double zoomlevel);
-        public event ZoomLevelChanged_Handler ZoomLevelChanged;
-
-        #endregion
 
         #region "About"
 
@@ -549,15 +501,14 @@ namespace TrakHound_Dashboard
         public void DeviceManager_EditDevice_Open(DeviceConfiguration config)
         {
             string title = "Edit Device - " + config.Description.Description;
-            if (config.Description.Device_ID != null) title += " (" + config.Description.Device_ID + ")";
+            if (config.Description.DeviceId != null) title += " (" + config.Description.DeviceId + ")";
 
             string tag = config.UniqueId;
 
             var tab = FindTab(title, tag);
             if (tab == null)
             {
-                var page = new EditPage(config);
-                page.DeviceManager = DeviceManager;
+                var page = new EditPage(config, DeviceManager);
 
                 page.DeviceListSelected += DeviceManager_EditDevice_DeviceListSelected;
 
@@ -570,25 +521,6 @@ namespace TrakHound_Dashboard
         }
 
         private void DeviceManager_EditDevice_DeviceListSelected() { DeviceManager_DeviceList_Open(); }
-
-        public void DeviceManager_EditDeviceTable_Open(DeviceConfiguration config)
-        {
-            //string title = "Edit Device Table - " + config.Description.Description;
-            //if (config.Description.Device_ID != null) title += " (" + config.Description.Device_ID + ")";
-
-            //var tab = FindTab(title);
-            //if (tab == null)
-            //{
-            //    var page = new EditTablePage(config, ManagementType.Client);
-            //    page.DeviceManager = DeviceManager;
-
-            //    AddTab(page, title);
-            //}
-            //else
-            //{
-            //    SelectTab(tab);
-            //}
-        }
 
         #endregion
 
@@ -639,7 +571,6 @@ namespace TrakHound_Dashboard
                 optionsManager.TabTitle = "Options";
                 optionsManager.TabImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/options_gear_30px.png"));
                 optionsManager.AddPage(new Pages.Options.General.Page());
-                //optionsManager.AddPage(new Pages.Options.Updates.Page());
                 optionsManager.AddPage(new Pages.Options.API.Page());
                 optionsManager.AddPage(new Pages.Options.Logger.Page());
             }
@@ -656,47 +587,6 @@ namespace TrakHound_Dashboard
             Options_Initialize();
 
             AddTab(optionsManager);
-        }
-
-        #endregion
-
-        #region "Plugins"
-
-        PageManager pluginsManager;
-
-        Pages.Plugins.Installed.Page pluginsPage;
-
-        void Plugins_Initialize()
-        {
-            if (pluginsManager == null)
-            {
-                pluginsManager = new PageManager();
-                pluginsManager.TabTitle = "Plugins";
-                pluginsManager.TabImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Rocket_02.png"));
-                pluginsPage = new Pages.Plugins.Installed.Page();
-                pluginsManager.AddPage(pluginsPage);
-
-                if (PluginConfigurations != null) Plugins_AddItems(PluginConfigurations);
-            }
-        }
-
-        private void Plugins_AddItems(List<TrakHound.Plugins.Client.PluginConfiguration> configs)
-        {
-            pluginsPage.ClearInstalledItems();
-
-            configs.Sort((a, b) => a.Name.CompareTo(b.Name));
-
-            foreach (var config in configs)
-            {
-                pluginsPage.AddPlugin(config);
-            }
-        }
-
-        public void Plugins_Open()
-        {
-            Plugins_Initialize();
-
-            AddTab(pluginsManager);
         }
 
         #endregion
