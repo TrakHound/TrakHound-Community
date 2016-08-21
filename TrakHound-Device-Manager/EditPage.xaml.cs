@@ -306,55 +306,9 @@ namespace TrakHound_Device_Manager
             AddPage(new Pages.GeneratedEvents.Info());
             AddPage(new Pages.InstanceData.Info());
             AddPage(new Pages.Parts.Info());
-            //AddPage(new Pages.SnapshotData.Info());
 
-            //var types = GetPluginPageTypes();
-
-            //foreach (var info in pluginInfos)
-            //{
-            //    Dispatcher.BeginInvoke(new Action(() =>
-            //    {
-            //        AddPage(info);
-
-            //    }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
-            //}
-
-            LoadPages_Finished();
-
-            //if (pluginPageTypes == null || (pluginPageTypes != null && pluginPageTypes.Count == 0))
-            //{
-            //    ThreadPool.QueueUserWorkItem(new WaitCallback(LoadPages_Worker));
-            //}
-            //else
-            //{
-            //    foreach (var info in pluginInfos)
-            //    {
-            //        Dispatcher.BeginInvoke(new Action(() =>
-            //        {
-            //            AddPage(info);
-
-            //        }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
-            //    }
-
-            //    LoadPages_Finished();
-            //}            
+            LoadPages_Finished();          
         }
-
-        //private void LoadPages_Worker(object o)
-        //{
-        //    var types = GetPluginPageTypes();
-
-        //    foreach (var info in pluginInfos)
-        //    {
-        //        Dispatcher.BeginInvoke(new Action(() =>
-        //        {
-        //            AddPage(info);
-
-        //        }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
-        //    }
-
-        //    Dispatcher.BeginInvoke(new Action(LoadPages_Finished), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
-        //}
 
         private void LoadPages_Finished()
         {
@@ -369,11 +323,7 @@ namespace TrakHound_Device_Manager
             data.Id = "DeviceManager";
             data.Data02 = DeviceManager;
 
-            //Dispatcher.BeginInvoke(new Action(() =>
-            //{
-                page.GetSentData(data);
-
-            //}), PRIORITY_BACKGROUND, new object[] { });
+            page.GetSentData(data);
         }
 
         private static IConfigurationPage CreatePage(IConfigurationInfo info)
