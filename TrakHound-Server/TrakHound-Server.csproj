@@ -100,7 +100,6 @@
     <None Include="Plugins\SnapshotData\Database.cs" />
     <Compile Include="Plugins\SnapshotData\Plugin.cs" />
     <Compile Include="Plugins\SnapshotData\Snapshot.cs" />
-    <None Include="Plugins\Status\Database.cs" />
     <Compile Include="Plugins\Status\Plugin.cs" />
     <Compile Include="Plugins\Status\StatusInfo.cs" />
     <Compile Include="ProjectInstaller.cs">
