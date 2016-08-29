@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 using TrakHound;
+using TrakHound.API.Users;
 using TrakHound.Configurations;
 using TrakHound.Plugins;
 using TrakHound.Plugins.Client;
@@ -52,6 +53,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
 
         public event SendData_Handler SendData;
 
+        private UserConfiguration userConfiguration;
+
 
         public void Initialize() { }
 
@@ -70,21 +73,18 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceUpdated), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceRemoved), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
 
-            //if (data != null && data.Id == "STATUS_CONTROLLER")
-            //{
-            //    Dispatcher.BeginInvoke(new Action(() =>
-            //    {
-            //        string uniqueId = data.Data01.ToString();
-            //        var info = (TrakHound.API.Data.ControllerInfo)data.Data02;
+            if (data != null && data.Id == "USER_LOGIN")
+            {
+                if (data.Data01.GetType() == typeof(UserConfiguration))
+                {
+                    userConfiguration = (UserConfiguration)data.Data01;
+                }
+            }
 
-            //        int index = Items.ToList().FindIndex(x => x.UniqueId == uniqueId);
-            //        if (index >= 0)
-            //        {
-            //            var column = Items[index];
-            //            column.UpdateData(info);
-            //        }
-            //    }), UI_Functions.PRIORITY_DATA_BIND, new object[] { });
-            //}
+            if (data != null && data.Id == "USER_LOGOUT")
+            {
+                userConfiguration = null;
+            }
 
             if (data != null && data.Id == "STATUS_STATUS")
             {
@@ -101,38 +101,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
                     }
                 }), UI_Functions.PRIORITY_DATA_BIND, new object[] { });
             }
-
-            //if (data != null && data.Id == "STATUS_OEE")
-            //{
-            //    Dispatcher.BeginInvoke(new Action(() =>
-            //    {
-            //        string uniqueId = data.Data01.ToString();
-            //        var info = (TrakHound.API.Data.OeeInfo)data.Data02;
-
-            //        int index = Items.ToList().FindIndex(x => x.UniqueId == uniqueId);
-            //        if (index >= 0)
-            //        {
-            //            var column = Items[index];
-            //            column.UpdateData(info);
-            //        }
-            //    }), UI_Functions.PRIORITY_DATA_BIND, new object[] { });
-            //}
-
-            //if (data != null && data.Id == "STATUS_TIMERS")
-            //{
-            //    Dispatcher.BeginInvoke(new Action(() =>
-            //    {
-            //        string uniqueId = data.Data01.ToString();
-            //        var info = (TrakHound.API.Data.TimersInfo)data.Data02;
-
-            //        int index = Items.ToList().FindIndex(x => x.UniqueId == uniqueId);
-            //        if (index >= 0)
-            //        {
-            //            var column = Items[index];
-            //            column.UpdateData(info);
-            //        }
-            //    }), UI_Functions.PRIORITY_DATA_BIND, new object[] { });
-            //}
         }
 
 
@@ -164,7 +132,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
 
                     if (config != null && !Items.ToList().Exists(o => o.UniqueId == config.UniqueId))
                     {
-                        var column = new Controls.Item(config);
+                        var column = new Controls.Item(config, userConfiguration);
                         Items.Add(column);
                     }
                 }
@@ -186,7 +154,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
 
                         if (config != null && !Items.ToList().Exists(o => o.UniqueId == config.UniqueId))
                         {
-                            var column = new Controls.Item(config);
+                            var column = new Controls.Item(config, userConfiguration);
                             Items.Insert(index, column);
                         }
                     }

@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Xml;
 
 using TrakHound.API;
+using TrakHound.Configurations;
 using TrakHound.Logging;
 using TrakHound.Tools;
 
@@ -56,7 +57,7 @@ namespace TrakHound.Servers.DataStorage
             }
         }
 
-        public static List<Data.DeviceInfo> Load()
+        public static List<Data.DeviceInfo> Load(DeviceConfiguration[] deviceConfigs)
         {
             var config = Configuration.Read();
 
@@ -65,7 +66,7 @@ namespace TrakHound.Servers.DataStorage
                 var connection = Connection.Create(config);
                 if (connection != null)
                 {
-                    DataTable hoursTable = Table.GetHours(connection);
+                    DataTable hoursTable = Table.GetHours(connection, deviceConfigs);
                     if (hoursTable != null)
                     {
                         var hourRowInfos = new List<Row.HourRowInfo>();
@@ -390,9 +391,15 @@ namespace TrakHound.Servers.DataStorage
                 Query.Run(connection, query);
             }
 
-            public static DataTable GetHours(SQLiteConnection connection)
+            public static DataTable GetHours(SQLiteConnection connection, DeviceConfiguration[] deviceConfigs)
             {
-                string query = "SELECT * FROM `hours`";
+                string query = "SELECT * FROM `hours` WHERE ";
+
+                for (var x = 0; x < deviceConfigs.Length; x++)
+                {
+                    query += "`unique_id`='" + deviceConfigs[x].UniqueId + "'";
+                    if (x < deviceConfigs.Length - 1) query += " OR ";
+                }
 
                 return Query.GetDataTable(connection, query);
             }

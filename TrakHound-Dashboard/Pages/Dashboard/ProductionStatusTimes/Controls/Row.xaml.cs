@@ -133,8 +133,11 @@ namespace TH_StatusTimes.ProductionStatus.Controls
 
         public void UpdateData(Data.StatusInfo info)
         {
-            Connected = info.Connected == 1;
-            DeviceStatus = info.DeviceStatus;
+            if (info != null)
+            {
+                Connected = info.Connected == 1;
+                DeviceStatus = info.DeviceStatus;
+            }
         }
 
         public void UpdateData(Data.TimersInfo info)
@@ -150,104 +153,6 @@ namespace TH_StatusTimes.ProductionStatus.Controls
                 ProcessDevelopmentSeconds = info.ProcessDevelopment;
             }
         }
-
-        //public void UpdateData(EventData data)
-        //{
-        //    UpdateDatabaseConnection(data);
-        //    UpdateAvailability(data);
-        //    UpdateSnapshots(data);
-        //    UpdateVariables(data);
-        //    UpdateShiftData(data);
-        //}
-
-        //private void UpdateDatabaseConnection(EventData data)
-        //{
-        //    if (data.Id.ToLower() == "statusdata_connection")
-        //    {
-        //        if (data.Data02.GetType() == typeof(bool))
-        //        {
-        //            Connected = (bool)data.Data02;
-        //        }
-        //    }
-        //}
-
-        //private void UpdateAvailability(EventData data)
-        //{
-        //    if (data.Id.ToLower() == "statusdata_availability")
-        //    {
-        //        if (data.Data02.GetType() == typeof(bool))
-        //        {
-        //            Available = (bool)data.Data02;
-        //        }
-        //    }
-        //}
-
-        //private void UpdateVariables(EventData data)
-        //{
-        //    if (data.Id.ToLower() == "statusdata_variables")
-        //    {
-        //        if (data.Data02 != null)
-        //        {
-        //            var currentTime = DataTable_Functions.GetTableValue(data.Data02, "variable", "shift_currenttime", "value");
-        //            if (currentTime != null)
-        //            {
-        //                DateTime time = DateTime.MinValue;
-        //                if (DateTime.TryParse(currentTime, out time))
-        //                {
-        //                    CurrentTime = time;
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
-        //private void UpdateSnapshots(EventData data)
-        //{
-        //    if (data.Id.ToLower() == "statusdata_snapshots")
-        //    {
-        //        if (data.Data02 != null)
-        //        {
-        //            DeviceStatus = DataTable_Functions.GetTableValue(data.Data02, "name", "Device Status", "value");
-        //        }
-        //    }
-        //}
-
-        //private void UpdateShiftData(EventData data)
-        //{
-        //    if (data.Id.ToLower() == "statusdata_shiftdata")
-        //    {
-        //        var dt = data.Data02 as DataTable;
-        //        if (dt != null)
-        //        {
-        //            double total = 0;
-        //            double production = 0;
-        //            double alarm = 0;
-        //            double setup = 0;
-        //            double teardown = 0;
-        //            double maintenance = 0;
-        //            double processDevelopment = 0;
-
-        //            foreach (DataRow row in dt.Rows)
-        //            {
-        //                total += DataTable_Functions.GetDoubleFromRow("totaltime", row);
-        //                production += DataTable_Functions.GetDoubleFromRow("production_status__production", row);
-        //                alarm += DataTable_Functions.GetDoubleFromRow("production_status__alarm", row);
-        //                setup += DataTable_Functions.GetDoubleFromRow("production_status__setup", row);
-        //                teardown += DataTable_Functions.GetDoubleFromRow("production_status__teardown", row);
-        //                maintenance += DataTable_Functions.GetDoubleFromRow("production_status__maintenance", row);
-        //                processDevelopment += DataTable_Functions.GetDoubleFromRow("production_status__process_development", row);
-        //            }
-
-        //            TotalSeconds = total;
-        //            ProductionSeconds = production;
-        //            AlarmSeconds = alarm;
-        //            SetupSeconds = setup;
-        //            TeardownSeconds = teardown;
-        //            MaintenanceSeconds = maintenance;
-        //            ProcessDevelopmentSeconds = processDevelopment;
-        //        }
-        //    }
-        //}
 
     }
 }

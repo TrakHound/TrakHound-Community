@@ -66,40 +66,48 @@ namespace TrakHound.Tools
         /// <returns></returns>
         public static Image SetImageSize(Image image, int width, int height)
         {
-            // Make sure the image stays in proportion
-            if (image.Width != image.Height)
+            Image result = null;
+
+            try
             {
-                if (image.Width > image.Height)
+                // Make sure the image stays in proportion
+                if (image.Width != image.Height)
                 {
-                    height = (width * image.Height) / image.Width;
+                    if (image.Width > image.Height)
+                    {
+                        height = (width * image.Height) / image.Width;
+                    }
+                    else if (image.Height > image.Width)
+                    {
+                        width = (height * image.Width) / image.Height;
+                    }
                 }
-                else if (image.Height > image.Width)
+
+                var destRect = new Rectangle(0, 0, width, height);
+                var destImage = new Bitmap(width, height);
+
+                destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+
+                using (var graphics = Graphics.FromImage(destImage))
                 {
-                    width = (height * image.Width) / image.Height;
+                    graphics.CompositingMode = CompositingMode.SourceCopy;
+                    graphics.CompositingQuality = CompositingQuality.HighQuality;
+                    graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                    graphics.SmoothingMode = SmoothingMode.HighQuality;
+                    graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+                    using (var wrapMode = new ImageAttributes())
+                    {
+                        wrapMode.SetWrapMode(WrapMode.TileFlipXY);
+                        graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
+                    }
                 }
+
+                result = image;
             }
+            catch (Exception ex) { Logger.Log("SetImageSize Failed :: " + ex.Message); }
 
-            var destRect = new Rectangle(0, 0, width, height);
-            var destImage = new Bitmap(width, height);
-
-            destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
-
-            using (var graphics = Graphics.FromImage(destImage))
-            {
-                graphics.CompositingMode = CompositingMode.SourceCopy;
-                graphics.CompositingQuality = CompositingQuality.HighQuality;
-                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                graphics.SmoothingMode = SmoothingMode.HighQuality;
-                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-
-                using (var wrapMode = new ImageAttributes())
-                {
-                    wrapMode.SetWrapMode(WrapMode.TileFlipXY);
-                    graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
-                }
-            }
-
-            return destImage;
+            return result;
         }
 
 

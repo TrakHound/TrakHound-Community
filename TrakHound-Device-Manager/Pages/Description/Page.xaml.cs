@@ -64,9 +64,10 @@ namespace TrakHound_Device_Manager.Pages.Description
 
         public void GetSentData(EventData data)
         {
+            // Temporarily Disabled to allow all images to load locally
             if (data != null && data.Id != null)
             {
-                if (data.Id.ToLower() == "devicemanager")
+                if (data.Id == "DEVICE_MANAGER")
                 {
                     if (data.Data02 != null)
                     {
@@ -425,14 +426,14 @@ namespace TrakHound_Device_Manager.Pages.Description
 
         void LoadManufacturerLogo(string fileId)
         {
-            if (!string.IsNullOrEmpty(fileId) && deviceManager != null)
+            if (!string.IsNullOrEmpty(fileId))
             {
                 ManufacturerLogoLoading = true;
                 ManufacturerLogoLoadingText = "Downloading..";
 
                 var info = new ImageInfo();
                 info.FileId = fileId;
-                info.UserConfig = deviceManager.CurrentUser;
+                if (deviceManager != null) info.UserConfig = deviceManager.CurrentUser;
 
                 ThreadPool.QueueUserWorkItem(new WaitCallback(LoadManufacturerLogo_Worker), info);
             }
@@ -512,12 +513,12 @@ namespace TrakHound_Device_Manager.Pages.Description
         private void UploadManufacturerLogo()
         {
             string imagePath = Images.OpenImageBrowse("Select a Device/Manufacturer Logo");
-            if (imagePath != null && deviceManager != null)
+            if (imagePath != null)
             {
                 if (File.Exists(imagePath))
                 {
                     var info = new ImageInfo();
-                    info.UserConfig = deviceManager.CurrentUser;
+                    if (deviceManager != null) info.UserConfig = deviceManager.CurrentUser;
                     info.FileId = imagePath;
 
                     ManufacturerLogoLoading = true;
@@ -551,8 +552,8 @@ namespace TrakHound_Device_Manager.Pages.Description
                         var img = System.Drawing.Image.FromFile(info.FileId);
                         if (img != null)
                         {
-                            if (img.Width > img.Height) img = Image_Functions.SetImageSize(img, 300, 300);
-                            else img = Image_Functions.SetImageSize(img, 0, 150);
+                            if (img.Width > img.Height) img = Image_Functions.SetImageSize(img, Math.Min(300, img.Width), Math.Min(300, img.Height));
+                            else img = Image_Functions.SetImageSize(img, 0, Math.Min(150, img.Height));
 
                             string tempPath = Path.ChangeExtension(Guid.NewGuid().ToString(), ext);
                             tempPath = Path.Combine(FileLocations.TrakHoundTemp, tempPath);
@@ -667,14 +668,14 @@ namespace TrakHound_Device_Manager.Pages.Description
 
         void LoadDeviceImage(string fileId)
         {
-            if (!string.IsNullOrEmpty(fileId) && deviceManager != null)
+            if (!string.IsNullOrEmpty(fileId))
             {
                 DeviceImageLoading = true;
                 DeviceImageLoadingText = "Downloading..";
 
                 var info = new ImageInfo();
                 info.FileId = fileId;
-                info.UserConfig = deviceManager.CurrentUser;
+                if (deviceManager != null) info.UserConfig = deviceManager.CurrentUser;
 
                 ThreadPool.QueueUserWorkItem(new WaitCallback(LoadDeviceImage_Worker), info);
             }
@@ -754,12 +755,12 @@ namespace TrakHound_Device_Manager.Pages.Description
         private void UploadDeviceImage()
         {
             string imagePath = Images.OpenImageBrowse("Select a Device Image");
-            if (imagePath != null && deviceManager != null)
+            if (imagePath != null)
             {
                 if (File.Exists(imagePath))
                 {
                     var info = new ImageInfo();
-                    info.UserConfig = deviceManager.CurrentUser;
+                    if (deviceManager != null) info.UserConfig = deviceManager.CurrentUser;
                     info.FileId = imagePath;
 
                     DeviceImageLoading = true;

@@ -132,8 +132,11 @@ namespace TH_StatusTimes.DeviceStatus.Controls
 
         public void UpdateData(Data.StatusInfo info)
         {
-            Connected = info.Connected == 1;
-            DeviceStatus = info.DeviceStatus;
+            if (info != null)
+            {
+                Connected = info.Connected == 1;
+                DeviceStatus = info.DeviceStatus;
+            }
         }
 
         public void UpdateData(Data.TimersInfo info)

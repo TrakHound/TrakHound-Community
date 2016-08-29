@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 using TrakHound;
+using TrakHound.API.Users;
 using TrakHound.Configurations;
 using TrakHound.Plugins;
 using TrakHound.Plugins.Client;
@@ -33,7 +34,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
 
         public string Title { get { return "Overview"; } }
 
-        public string Description { get { return "View Controller Status Variables for each Device"; } }
+        public string Description { get { return "View basic overview data for each device"; } }
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Analyse_01.png")); } }
 
@@ -49,6 +50,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
         public List<IClientPlugin> Plugins { get; set; }
 
         public IPage Options { get; set; }
+
+        private UserConfiguration userConfiguration;
 
 
         public int WidthStatus
@@ -85,6 +88,19 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceAdded), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceUpdated), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceRemoved), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+
+            if (data != null && data.Id == "USER_LOGIN")
+            {
+                if (data.Data01.GetType() == typeof(UserConfiguration))
+                {
+                    userConfiguration = (UserConfiguration)data.Data01;
+                }
+            }
+
+            if (data != null && data.Id == "USER_LOGOUT")
+            {
+                userConfiguration = null;
+            }
 
             if (data != null && data.Id == "STATUS_CONTROLLER")
             {
@@ -185,7 +201,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
 
                     if (config != null && !Columns.ToList().Exists(o => o.UniqueId == config.UniqueId))
                     {
-                        var column = new Controls.Column(config);
+                        var column = new Controls.Column(config, userConfiguration);
                         Columns.Add(column);
                     }
                 }
@@ -207,7 +223,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
 
                         if (config != null && !Columns.ToList().Exists(o => o.UniqueId == config.UniqueId))
                         {
-                            var column = new Controls.Column(config);
+                            var column = new Controls.Column(config, userConfiguration);
                             Columns.Insert(index, column);
                         }
                     }

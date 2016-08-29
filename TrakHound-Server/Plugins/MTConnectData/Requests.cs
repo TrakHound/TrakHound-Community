@@ -3,13 +3,11 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
-using System;
 using System.Threading;
 
 using TrakHound.Configurations;
 using TrakHound.Logging;
 using TrakHound.Plugins;
-using TrakHound.Tables;
 
 namespace TrakHound_Server.Plugins.MTConnectData
 {
@@ -115,23 +113,11 @@ namespace TrakHound_Server.Plugins.MTConnectData
 
         private void UpdateAvailability(bool available, DeviceConfiguration config)
         {
-            //string tablePrefix;
-            //if (config.DatabaseId != null) tablePrefix = config.DatabaseId + "_";
-            //else tablePrefix = "";
-
-            //var v = new Variables.VariableData();
-            //v.UniqueId = config.UniqueId;
-            //v.Variable = "device_available";
-            //v.Value = available.ToString();
-            //v.Timestamp = DateTime.UtcNow;
-
-            //Variables.Update(v, tablePrefix);
-
             var data = new EventData();
-            data.Id = "DeviceAvailability";
+            data.Id = "DEVICE_AVAILABILITY";
             data.Data01 = config;
             data.Data02 = available;
-            if (SendData != null) SendData(data);
+            SendData?.Invoke(data);
         }
 
         private bool GetAvailability(MTConnect.Application.Streams.ReturnData data)

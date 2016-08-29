@@ -92,7 +92,11 @@
                         <Setter Property="Height" Value="200"/>
                         <Setter Property="Background" Value="#60000000"/>
                         <Style.Triggers>
-                            
+
+                            <DataTrigger Binding="{Binding Connected}" Value="false">
+                                <Setter Property="Background" Value="#888"/>
+                            </DataTrigger>
+
                             <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
                                 <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
                             </DataTrigger>
@@ -207,7 +211,7 @@
                     <Image Source="{Binding DeviceLogo}" HorizontalAlignment="Center" Stretch="Uniform" VerticalAlignment="Top">
                         <Image.Style>
                             <Style TargetType="Image">
-                                <Setter Property="Height" Value="50"/>
+                                <Setter Property="MaxHeight" Value="50"/>
                                 <Setter Property="MaxWidth" Value="300"/>
                                 <Setter Property="Margin" Value="10,15,10,5"/>
                                 <Style.Triggers>

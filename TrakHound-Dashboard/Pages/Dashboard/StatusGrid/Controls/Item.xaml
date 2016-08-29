@@ -50,6 +50,10 @@
                 <Setter Property="Background" Value="#60000000"/>
                 <Style.Triggers>
 
+                    <DataTrigger Binding="{Binding Connected}" Value="false">
+                        <Setter Property="Background" Value="#888"/>
+                    </DataTrigger>
+
                     <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
                         <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
                     </DataTrigger>

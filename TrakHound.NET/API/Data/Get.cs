@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 using TrakHound.API.Users;
 using TrakHound.Tools.Web;
@@ -55,10 +56,14 @@ namespace TrakHound.API
             // If no devices are listed then ALL devices are retrieved
             if (uniqueIds != null)
             {
-                string json = JSON.FromList<string>(uniqueIds);
+                var deviceItems = new List<DeviceListItem>();
+
+                foreach (var uniqueId in uniqueIds) deviceItems.Add(new DeviceListItem(uniqueId));
+
+                string json = JSON.FromList<DeviceListItem>(deviceItems);
                 if (!string.IsNullOrEmpty(json))
                 {
-                    devices = "devices=" + json;
+                    devices = "&devices=" + json;
                 }
             }
 
@@ -103,6 +108,17 @@ namespace TrakHound.API
             }
 
             return null;
+        }
+
+        public class DeviceListItem
+        {
+            public DeviceListItem(string uniqueId)
+            {
+                UniqueId = uniqueId;
+            }
+
+            [JsonProperty("unique_id")]
+            public string UniqueId { get; set; }
         }
 
     }

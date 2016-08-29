@@ -110,7 +110,7 @@ namespace TrakHound_Server.Plugins.CloudData
                 if (json != null)
                 {
                     var values = new NameValueCollection();
-                    values["token"] = userConfig.SessionToken;
+                    if (userConfig != null) values["token"] = userConfig.SessionToken;
                     values["sender_id"] = UserManagement.SenderId.Get();
                     values["devices"] = json;
 

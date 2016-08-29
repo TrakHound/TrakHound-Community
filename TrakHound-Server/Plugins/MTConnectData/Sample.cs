@@ -68,15 +68,15 @@ namespace TrakHound_Server.Plugins.MTConnectData
 
         private void SendSampleData(ReturnData returnData, DeviceConfiguration config)
         {
-            if (returnData != null)
-            {
+            //if (returnData != null)
+            //{
                 var data = new EventData();
                 data.Id = "MTCONNECT_SAMPLE";
                 data.Data01 = config;
                 data.Data02 = returnData;
 
                 SendData?.Invoke(data);
-            }
+            //}
         }
 
         private class SampleInfo

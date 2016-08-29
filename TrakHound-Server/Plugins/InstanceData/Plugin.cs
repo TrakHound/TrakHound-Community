@@ -27,12 +27,28 @@ namespace TrakHound_Server.Plugins.Instances
 
         public void GetSentData(EventData data)
         {
-            if (data != null && data.Id != null & data.Data02 != null)
+            if (data != null && data.Id != null)
             {
                 switch (data.Id)
                 {
-                    case "MTCONNECT_CURRENT": Update_Current((MTConnect.Application.Streams.ReturnData)data.Data02); break;
-                    case "MTCONNECT_SAMPLE": Update_Sample((MTConnect.Application.Streams.ReturnData)data.Data02); break;
+                    case "DEVICE_AVAILABILITY":
+
+                        //System.Console.WriteLine("DEVICE NOT AVAILABLE!!!!!!!!!!!!!");
+                        //Update_Unavailable();
+
+                        break;
+
+                    case "MTCONNECT_CURRENT":
+
+                        if (data.Data02 != null) Update_Current((MTConnect.Application.Streams.ReturnData)data.Data02);
+
+                        break;
+
+                    case "MTCONNECT_SAMPLE":
+
+                        if (data.Data02 != null) Update_Sample((MTConnect.Application.Streams.ReturnData)data.Data02);
+
+                        break;
                 }
             }
         }

@@ -24,10 +24,12 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
     /// </summary>
     public partial class Item : UserControl
     {
-        public Item(DeviceConfiguration config)
+        public Item(DeviceConfiguration config, UserConfiguration userConfig)
         {
             InitializeComponent();
             root.DataContext = this;
+
+            UserConfiguration = userConfig;
 
             UniqueId = config.UniqueId;
 
@@ -652,22 +654,28 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
 
         public void UpdateData(Data.ControllerInfo info)
         {
-            EmergencyStop = info.EmergencyStop;
-            ControllerMode = info.ControllerMode;
-            ExecutionMode = info.ExecutionMode;
-            Program = info.ProgramName;
-            SystemStatus = info.SystemStatus;
-            SystemMessage = info.SystemMessage;
+            if (info != null)
+            {
+                EmergencyStop = info.EmergencyStop;
+                ControllerMode = info.ControllerMode;
+                ExecutionMode = info.ExecutionMode;
+                Program = info.ProgramName;
+                SystemStatus = info.SystemStatus;
+                SystemMessage = info.SystemMessage;
+            }
         }
 
         public void UpdateData(Data.StatusInfo info)
         {
-            Connected = info.Connected == 1;
-            DeviceStatus = info.DeviceStatus;
-            ProductionStatus = info.ProductionStatus;
-            PartCount = info.PartCount;
+            if (info != null)
+            {
+                Connected = info.Connected == 1;
+                DeviceStatus = info.DeviceStatus;
+                ProductionStatus = info.ProductionStatus;
+                PartCount = info.PartCount;
 
-            DeviceStatusTime = TimeSpan.FromSeconds(info.DeviceStatusTimer);
+                DeviceStatusTime = TimeSpan.FromSeconds(info.DeviceStatusTimer);
+            }
         }
 
         public void UpdateData(Data.OeeInfo info)

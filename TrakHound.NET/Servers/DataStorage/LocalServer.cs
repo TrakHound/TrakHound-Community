@@ -13,6 +13,7 @@ using System.Threading;
 using System.Web;
 
 using TrakHound.API;
+using TrakHound.Configurations;
 using TrakHound.Logging;
 using TrakHound.Tools.Web;
 
@@ -180,10 +181,14 @@ namespace TrakHound.Servers.DataStorage
         {
             try
             {
-                var backupInfos = Backup.Load();
-                if (backupInfos != null && backupInfos.Count > 0)
+                var configs = DeviceConfiguration.ReadAll(FileLocations.Devices);
+                if (configs != null)
                 {
-                    Data.DeviceInfos.AddRange(backupInfos);
+                    var backupInfos = Backup.Load(configs);
+                    if (backupInfos != null && backupInfos.Count > 0)
+                    {
+                        Data.DeviceInfos.AddRange(backupInfos);
+                    }
                 }
 
                 if (backupTimer != null) backupTimer.Stop();
@@ -226,14 +231,14 @@ namespace TrakHound.Servers.DataStorage
                     string json = HttpUtility.ParseQueryString(uri.Query).Get("devices");
                     if (!string.IsNullOrEmpty(json))
                     {
-                        var devices = JSON.ToType<List<string>>(json);
+                        var devices = JSON.ToType<List<API.Data.DeviceListItem>>(json);
                         if (devices != null)
                         {
                             var deviceInfos = new List<API.Data.DeviceInfo>();
 
                             foreach (var device in devices)
                             {
-                                var deviceInfo = DeviceInfos.Find(o => o.UniqueId == device);
+                                var deviceInfo = DeviceInfos.Find(o => o.UniqueId == device.UniqueId);
                                 if (deviceInfo != null) deviceInfos.Add(deviceInfo);
                             }
 
@@ -336,14 +341,17 @@ namespace TrakHound.Servers.DataStorage
             private static bool TestHourDate(API.Data.HourInfo hourInfo)
             {
                 // Probably a more elegant way of getting the Time Zone Offset could be done here
-                int timeZoneOffset = (DateTime.UtcNow - DateTime.Now).Hours;
+                int timeZoneOffset = Convert.ToInt32((DateTime.UtcNow - DateTime.Now).TotalHours);
 
                 string currentLocalDay = DateTime.Now.ToString(API.Data.HourInfo.DateFormat);
                 string currentUtcDay = DateTime.UtcNow.ToString(API.Data.HourInfo.DateFormat);
 
+                // Get the adjusted hour based on the timezone
+                int adjHourEnd = 24 - timeZoneOffset;
+
                 if (currentLocalDay != currentUtcDay)
                 {
-                    return hourInfo.Date == currentUtcDay || (hourInfo.Date == currentLocalDay && hourInfo.Hour > 24 - timeZoneOffset);
+                    return hourInfo.Date == currentUtcDay || (hourInfo.Date == currentLocalDay && hourInfo.Hour >= adjHourEnd);
                 }
                 else return hourInfo.Date == currentUtcDay;
             }

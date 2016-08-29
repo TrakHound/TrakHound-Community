@@ -104,6 +104,11 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
                     UserConfiguration = (UserConfiguration)data.Data01;
                 }
             }
+
+            if (data != null && data.Id == "USER_LOGOUT")
+            {
+                UserConfiguration = null;
+            }
         }
 
         //public void GetSentData(EventData data)

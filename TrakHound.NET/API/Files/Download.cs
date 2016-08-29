@@ -4,6 +4,7 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -16,7 +17,6 @@ namespace TrakHound.API
 {
     public static partial class Files
     {
-
         public static bool Download(UserConfiguration userConfig, string fileId, string destinationPath)
         {
             bool result = false;
@@ -99,11 +99,31 @@ namespace TrakHound.API
             return result;
         }
 
+
+        private class CachedImage
+        {
+            public string Id { get; set; }
+            public Image Image { get; set; }
+        } 
+
+        private static List<CachedImage> cachedImages = new List<CachedImage>();
+
         public static Image DownloadImage(UserConfiguration userConfig, string fileId)
+        {
+            return DownloadImage(userConfig, fileId, true);
+        }
+
+        public static Image DownloadImage(UserConfiguration userConfig, string fileId, bool useCache)
         {
             Image result = null;
 
-            if (userConfig != null)
+            if (useCache)
+            {
+                var cachedImage = cachedImages.Find(o => o.Id == fileId);
+                if (cachedImage != null) result = cachedImage.Image;
+            }
+
+            if (result == null && userConfig != null)
             {
                 Uri apiHost = ApiConfiguration.AuthenticationApiHost;
 
@@ -121,13 +141,15 @@ namespace TrakHound.API
                 {
                     bool success = false;
 
+                    string dummy = System.Text.Encoding.ASCII.GetString(response.Body);
+
                     // Takes forever to process an image
                     if (response.Body.Length < 500)
                     {
                         success = ApiError.ProcessResponse(response, "Download File");
                     }
                     else success = true;
-                    
+
                     if (success)
                     {
                         try

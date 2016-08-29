@@ -74,8 +74,11 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline.Controls
 
         public void UpdateData(Data.StatusInfo info)
         {
-            Connected = info.Connected == 1;
-            DeviceStatus = info.DeviceStatus;
+            if (info != null)
+            {
+                Connected = info.Connected == 1;
+                DeviceStatus = info.DeviceStatus;
+            }
         }
 
         public void UpdateData(List<Data.HourInfo> hours)

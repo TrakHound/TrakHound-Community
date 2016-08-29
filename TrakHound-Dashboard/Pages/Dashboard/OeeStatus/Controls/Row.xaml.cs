@@ -182,8 +182,11 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeStatus.Controls
 
         public void UpdateData(Data.StatusInfo info)
         {
-            Connected = info.Connected == 1;
-            DeviceStatus = info.DeviceStatus;
+            if (info != null)
+            {
+                Connected = info.Connected == 1;
+                DeviceStatus = info.DeviceStatus;
+            }
         }
 
     }

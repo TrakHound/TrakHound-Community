@@ -151,19 +151,25 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus.Controls
 
         public void UpdateData(Data.ControllerInfo info)
         {
-            Availability = info.Availability;
-            EmergencyStop = info.EmergencyStop;
-            ControllerMode = info.ControllerMode;
-            ExecutionMode = info.ExecutionMode;
-            Program = info.ProgramName;
-            SystemStatus = info.SystemStatus;
-            SystemMessage = info.SystemMessage;
+            if (info != null)
+            {
+                Availability = info.Availability;
+                EmergencyStop = info.EmergencyStop;
+                ControllerMode = info.ControllerMode;
+                ExecutionMode = info.ExecutionMode;
+                Program = info.ProgramName;
+                SystemStatus = info.SystemStatus;
+                SystemMessage = info.SystemMessage;
+            }
         }
 
         public void UpdateData(Data.StatusInfo info)
         {
-            Connected = info.Connected == 1;
-            DeviceStatus = info.DeviceStatus;
+            if (info != null)
+            {
+                Connected = info.Connected == 1;
+                DeviceStatus = info.DeviceStatus;
+            }
         }
 
     }

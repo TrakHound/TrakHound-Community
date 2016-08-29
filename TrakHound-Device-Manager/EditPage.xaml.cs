@@ -7,9 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,7 +18,6 @@ using System.Xml;
 using TrakHound;
 using TrakHound.Configurations;
 using TrakHound.Configurations.Converters;
-using TrakHound.Logging;
 using TrakHound.Plugins;
 using TrakHound.Plugins.Server;
 using TrakHound.Tools;
@@ -320,7 +317,7 @@ namespace TrakHound_Device_Manager
         private void SendDeviceManagerData(IConfigurationPage page)
         {
             var data = new EventData();
-            data.Id = "DeviceManager";
+            data.Id = "DEVICE_MANAGER";
             data.Data02 = DeviceManager;
 
             page.GetSentData(data);
