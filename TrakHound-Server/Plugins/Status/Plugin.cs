@@ -30,12 +30,19 @@ namespace TrakHound_Server.Plugins.Status
         {
             if (data != null)
             {
-                if (data.Id == "MTCONNECT_PROBE" && data.Data02 != null)
+                if (data.Id == "MTCONNECT_PROBE")
                 {
-                    var infos = StatusInfo.GetList((MTConnect.Application.Components.ReturnData)data.Data02);
-                    if (infos.Count > 0)
+                    if (data.Data02 != null)
                     {
-                        statusInfos = infos;
+                        var infos = StatusInfo.GetList((MTConnect.Application.Components.ReturnData)data.Data02);
+                        if (infos.Count > 0)
+                        {
+                            statusInfos = infos;
+                        }
+                    }
+                    else
+                    {
+                        SendStatusData(null);
                     }
                 }
                 else if (data.Id == "MTCONNECT_CURRENT" && data.Data02 != null)
@@ -61,7 +68,7 @@ namespace TrakHound_Server.Plugins.Status
             data.Data01 = configuration;
             data.Data02 = infos;
 
-            if (SendData != null) SendData(data);
+            SendData?.Invoke(data);
         }
 
     }

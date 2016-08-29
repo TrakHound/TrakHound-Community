@@ -63,7 +63,7 @@ namespace TrakHound_Server.Plugins.GeneratedEvents
             data.Id = "GENERATED_EVENTS";
             data.Data01 = configuration;
             data.Data02 = events.ToList();
-            if (SendData != null) SendData(data);
+            SendData?.Invoke(data);
         }
         
     }

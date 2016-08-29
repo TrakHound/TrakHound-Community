@@ -91,6 +91,22 @@ namespace TrakHound_Server.Plugins.Cycles
                     }
                 }
             }
+            else
+            {
+                if (storedCycle == null || storedCycle.ProductionType != CycleProductionType.STOPPED)
+                {
+                    storedCycle = new CycleData();
+                    storedCycle.CycleId = Guid.NewGuid().ToString();
+                    storedCycle.InstanceId = Guid.NewGuid().ToString();
+                    storedCycle.ProductionType = CycleProductionType.STOPPED;
+                    storedCycle.Name = "UNAVAILABLE";
+                    storedCycle.Event = "UNAVAILABLE";
+                    storedCycle.Start = DateTime.UtcNow;
+                }
+
+                storedCycle.Stop = DateTime.UtcNow;
+                result.Add(storedCycle.Copy());
+            }
 
             return result;
         }
@@ -259,7 +275,7 @@ namespace TrakHound_Server.Plugins.Cycles
             data.Id = "CYCLES";
             data.Data01 = configuration;
             data.Data02 = cycleData;
-            if (SendData != null) SendData(data);
+            SendData?.Invoke(data);
         }
     }
     

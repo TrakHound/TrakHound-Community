@@ -59,47 +59,62 @@ namespace TrakHound_Server.Plugins.GeneratedEvents
             var gec = Configuration.Get(config);
             if (gec != null)
             {
-                // Loop through each InstanceData object in instanceDatas
-                foreach (var instanceData in instanceDatas)
+                if (instanceDatas != null)
                 {
-                    // Loop through all of the Events and process Event using instanceData object
+                    // Loop through each InstanceData object in instanceDatas
+                    foreach (var instanceData in instanceDatas)
+                    {
+                        // Loop through all of the Events and process Event using instanceData object
+                        foreach (var e in gec.Events)
+                        {
+                            var genEvent = ProcessEvent(e, instanceData);
+                            result.Add(genEvent);
+                        }
+                    }
+                }
+                else
+                {
                     foreach (var e in gec.Events)
                     {
-                        var genEvent = new GeneratedEvent();
-                        genEvent.EventName = e.Name;
-
-                        if (e.CurrentValue != null)
-                        {
-                            genEvent.CurrentValue = new ValueData(e.CurrentValue);
-                        }
-                        
-                        Return eventReturn = e.Process(instanceData);
-
-                        e.PreviousValue = e.CurrentValue;
-                        e.CurrentValue = eventReturn;
-
-                        if (e.PreviousValue != null)
-                        {
-                            if (e.CurrentValue.Value != e.PreviousValue.Value)
-                            {
-                                TimeSpan ts = e.CurrentValue.TimeStamp - e.PreviousValue.TimeStamp;
-                                eventReturn.Duration = ts.TotalSeconds;
-                            }
-
-                            genEvent.PreviousValue = new ValueData(e.PreviousValue);
-                        }
-
-                        if (e.CurrentValue != null)
-                        {
-                            genEvent.CurrentValue = new ValueData(e.CurrentValue);
-                            genEvent.CaptureItems.AddRange(e.CurrentValue.CaptureItems);
-                        }
-
-                        // Just add all of the events even if they are the same (that way variables for a User Interface
-                        // are able to be seen (and graphed) in real time even if they dont change for a while)
+                        var genEvent = ProcessEvent(e, null);
                         result.Add(genEvent);
                     }
                 }
+            }
+
+            return result;
+        }
+
+        private static GeneratedEvent ProcessEvent(Event e, InstanceData instanceData)
+        {
+            var result = new GeneratedEvent();
+            result.EventName = e.Name;
+
+            if (e.CurrentValue != null)
+            {
+                result.CurrentValue = new ValueData(e.CurrentValue);
+            }
+
+            Return eventReturn = e.Process(instanceData);
+
+            e.PreviousValue = e.CurrentValue;
+            e.CurrentValue = eventReturn;
+
+            if (e.PreviousValue != null)
+            {
+                if (e.CurrentValue.Value != e.PreviousValue.Value)
+                {
+                    TimeSpan ts = e.CurrentValue.TimeStamp - e.PreviousValue.TimeStamp;
+                    eventReturn.Duration = ts.TotalSeconds;
+                }
+
+                result.PreviousValue = new ValueData(e.PreviousValue);
+            }
+
+            if (e.CurrentValue != null)
+            {
+                result.CurrentValue = new ValueData(e.CurrentValue);
+                result.CaptureItems.AddRange(e.CurrentValue.CaptureItems);
             }
 
             return result;

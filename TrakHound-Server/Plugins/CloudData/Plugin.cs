@@ -286,7 +286,7 @@ namespace TrakHound_Server.Plugins.CloudData
 
         private void UpdateMTConnectStatus(EventData data)
         {
-            if (data.Data01 != null && data.Data02 != null)
+            if (data.Data02 != null)
             {
                 var infos = (List<StatusInfo>)data.Data02;
                 StatusInfo info = null;
@@ -319,9 +319,20 @@ namespace TrakHound_Server.Plugins.CloudData
                 // Program Name
                 info = infos.Find(x => x.Type == "PROGRAM");
                 if (info != null) deviceInfo.Controller.ProgramName = info.Value1;
-
-                queue.Add(deviceInfo);
             }
+            else
+            {
+                deviceInfo.Status.Connected = 0;
+                deviceInfo.Controller.Availability = "UNAVAILABLE";
+                deviceInfo.Controller.ControllerMode = "UNAVAILABLE";
+                deviceInfo.Controller.EmergencyStop = "UNAVAILABLE";
+                deviceInfo.Controller.ExecutionMode = "UNAVAILABLE";
+                deviceInfo.Controller.SystemMessage = "UNAVAILABLE";
+                deviceInfo.Controller.SystemStatus = "UNAVAILABLE";
+                deviceInfo.Controller.ProgramName = "UNAVAILABLE";
+            }
+
+            queue.Add(deviceInfo);
         }
 
 

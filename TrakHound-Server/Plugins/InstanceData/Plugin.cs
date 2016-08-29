@@ -31,10 +31,16 @@ namespace TrakHound_Server.Plugins.Instances
             {
                 switch (data.Id)
                 {
-                    case "DEVICE_AVAILABILITY":
+                    case "MTCONNECT_PROBE":
 
                         //System.Console.WriteLine("DEVICE NOT AVAILABLE!!!!!!!!!!!!!");
                         //Update_Unavailable();
+
+                        if (data.Data02 == null)
+                        {
+                            SendInstanceData(configuration, null);
+                        }
+                        
 
                         break;
 

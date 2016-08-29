@@ -85,7 +85,7 @@ namespace TrakHound_Server.Plugins.Instances
             data.Data01 = config;
             data.Data02 = instanceDatas;
 
-            if (SendData != null) SendData(data);
+            SendData?.Invoke(data);
         }
 
         private void SendCurrentInstanceData(DeviceConfiguration config, CurrentInstanceData instanceData)
@@ -95,7 +95,7 @@ namespace TrakHound_Server.Plugins.Instances
             data.Data01 = configuration;
             data.Data02 = instanceData;
 
-            if (SendData != null) SendData(data);    
+            SendData?.Invoke(data);    
         }
 
 
