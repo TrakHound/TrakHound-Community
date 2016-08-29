@@ -68,28 +68,31 @@ namespace TrakHound_Server.Plugins.Cycles
         {
             var result = new List<CycleData>();
 
-            if (data != null && data.Count > 0)
+            if (data != null)
             {
-                // Insure that InstanceData list is sorted by Timestamp ASC
-                var orderedData = data.OrderBy(x => x.Timestamp).ToList();
-
-                // Filter out data that has already been processed
-                var latestData = orderedData.FindAll(x => x.Timestamp > lastTimestamp);
-
-                if (configuration != null)
+                if (data.Count > 0)
                 {
-                    foreach (var instanceData in latestData)
+                    // Insure that InstanceData list is sorted by Timestamp ASC
+                    var orderedData = data.OrderBy(x => x.Timestamp).ToList();
+
+                    // Filter out data that has already been processed
+                    var latestData = orderedData.FindAll(x => x.Timestamp > lastTimestamp);
+
+                    if (configuration != null)
                     {
-                        // Get list of new / updated CycleData objects
-                        var cycleDatas = Process(instanceData);
+                        foreach (var instanceData in latestData)
+                        {
+                            // Get list of new / updated CycleData objects
+                            var cycleDatas = Process(instanceData);
 
-                        // Update last timestamp for filtering
-                        lastTimestamp = instanceData.Timestamp;
+                            // Update last timestamp for filtering
+                            lastTimestamp = instanceData.Timestamp;
 
-                        // Add new CycleData objects to returned list
-                        result.AddRange(cycleDatas);
+                            // Add new CycleData objects to returned list
+                            result.AddRange(cycleDatas);
+                        }
                     }
-                }
+                }             
             }
             else
             {

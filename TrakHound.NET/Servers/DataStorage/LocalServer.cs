@@ -287,10 +287,10 @@ namespace TrakHound.Servers.DataStorage
 
                                     info.Status = device.Status;
                                     info.Controller = device.Controller;
-                                    info.Timers = device.Timers;
+                                    //info.Timers = device.Timers;
 
                                     // Get HourInfos for current day
-                                    //info.Hours = info.Hours.FindAll(o => o.Date == DateTime.UtcNow.ToString(API.Data.HourInfo.DateFormat));
+                                    // info.Hours = info.Hours.FindAll(o => o.Date == DateTime.UtcNow.ToString(API.Data.HourInfo.DateFormat));
                                     info.Hours = info.Hours.FindAll(o => TestHourDate(o));
 
                                     // Add new HourInfo objects and then combine them into the current list

@@ -36,19 +36,26 @@ namespace TrakHound_Server.Plugins.SnapshotData
             {
                 if (data.Id == "CURRENT_INSTANCE_DATA")
                 {
-                    var sdc = Configuration.Get(configuration);
-                    if (sdc != null)
+                    if (data.Data02 != null)
                     {
-                        var currentInstanceData = (CurrentInstanceData)data.Data02;
+                        var sdc = Configuration.Get(configuration);
+                        if (sdc != null)
+                        {
+                            var currentInstanceData = (CurrentInstanceData)data.Data02;
 
-                        var info = new Snapshot.ProcessInfo();
-                        info.CurrentData = currentInstanceData.CurrentData;
-                        info.CurrentInstanceData = currentInstanceData.Data;
+                            var info = new Snapshot.ProcessInfo();
+                            info.CurrentData = currentInstanceData.CurrentData;
+                            info.CurrentInstanceData = currentInstanceData.Data;
 
-                        Snapshot.Process(configuration, info);
+                            Snapshot.Process(configuration, info);
 
-                        // Send List of SnapShotItems to other Plugins
-                        SendSnapShotItems(sdc.Snapshots);
+                            // Send List of SnapShotItems to other Plugins
+                            SendSnapShotItems(sdc.Snapshots);
+                        }
+                    }
+                    else
+                    {
+                        SendSnapShotItems(null);
                     }
                 }
             }
@@ -66,7 +73,7 @@ namespace TrakHound_Server.Plugins.SnapshotData
             data.Id = "SNAPSHOTS";
             data.Data01 = configuration;
             data.Data02 = snapshots;
-            if (SendData != null) SendData(data);
+            SendData?.Invoke(data);
         }
 
     }

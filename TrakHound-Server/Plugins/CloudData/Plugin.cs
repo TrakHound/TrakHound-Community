@@ -86,9 +86,12 @@ namespace TrakHound_Server.Plugins.CloudData
             queue.Start();
         }
 
+        private DateTime previousDeviceStatusTimestamp = DateTime.MinValue;
+        private DateTime previousProductionStatusTimestamp = DateTime.MinValue;
+
         private void UpdateSnapshots(EventData data)
         {
-            if (data.Data01 != null && data.Data02 != null)
+            if (data.Data02 != null)
             {
                 var snapshots = (List<SnapshotData.Snapshot>)data.Data02;
 
@@ -98,6 +101,7 @@ namespace TrakHound_Server.Plugins.CloudData
                 {
                     deviceInfo.Status.DeviceStatus = snapshot.Value;
                     deviceInfo.Status.DeviceStatusTimer = Math.Max(0, Convert.ToInt32((snapshot.Timestamp - snapshot.PreviousTimestamp).TotalSeconds));
+                    previousDeviceStatusTimestamp = snapshot.Timestamp;
                 }
 
                 // Production Status
@@ -106,6 +110,7 @@ namespace TrakHound_Server.Plugins.CloudData
                 {
                     deviceInfo.Status.ProductionStatus = snapshot.Value;
                     deviceInfo.Status.ProductionStatusTimer = Math.Max(0, Convert.ToInt32((snapshot.Timestamp - snapshot.PreviousTimestamp).TotalSeconds));
+                    previousProductionStatusTimestamp = snapshot.Timestamp;
                 }
 
 
@@ -183,6 +188,20 @@ namespace TrakHound_Server.Plugins.CloudData
                 }
 
                 queue.Add(deviceInfo);
+            }
+            else
+            {
+                deviceInfo.Status.DeviceStatus = "Alert";
+                deviceInfo.Status.ProductionStatus = "Production";
+
+                if (previousDeviceStatusTimestamp > DateTime.MinValue)
+                {
+                    deviceInfo.Status.DeviceStatusTimer += (DateTime.UtcNow - previousDeviceStatusTimestamp).TotalSeconds;
+                }
+
+                previousDeviceStatusTimestamp = DateTime.UtcNow;
+
+                
             }
         }
         
