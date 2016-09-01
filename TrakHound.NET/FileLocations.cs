@@ -7,7 +7,6 @@ using System;
 using System.IO;
 
 using TrakHound.Logging;
-
 using TrakHound.Tools;
 
 namespace TrakHound

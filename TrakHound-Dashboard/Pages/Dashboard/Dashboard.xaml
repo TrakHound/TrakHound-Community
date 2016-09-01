@@ -30,7 +30,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" BorderBrush="{StaticResource Shade_Light}" BorderThickness="0,0,1,0">
+            <Border Grid.Column="0" BorderBrush="#aaa" BorderThickness="0,0,1,0">
                 <Border.Style>
                     <Style TargetType="Border">
                         <Setter Property="MinWidth" Value="45"/>
@@ -64,7 +64,7 @@
                         <Rectangle.Style>
                             <Style TargetType="Rectangle">
                                 <Setter Property="OpacityMask" Value="{StaticResource Expand_IMG}" />
-                                <Setter Property="Fill" Value="#ccffffff"/>
+                                <Setter Property="Fill" Value="{StaticResource TrakHound_Blue}"/>
                                 <Setter Property="ToolTip" Value="Expand Page List (Show Page Titles)"/>
                                 <Setter Property="HorizontalAlignment" Value="Left"/>
                                 <Style.Triggers>
@@ -90,7 +90,7 @@
                                     </DataTrigger>
 
                                     <Trigger Property="IsMouseOver" Value="true">
-                                        <Setter Property="Fill" Value="#fff"/>
+                                        <Setter Property="Fill" Value="{StaticResource TrakHound_LightBlue}"/>
                                     </Trigger>
 
                                 </Style.Triggers>
@@ -107,14 +107,6 @@
                                 <Style TargetType="ui:ListButton" BasedOn="{StaticResource ListButton_PageList}">
                                     <Setter Property="ShowText" Value="False"/>
                                     <Setter Property="TextWrapping" Value="Wrap"/>
-                                    <!--<Setter Property="ToolTip">
-                                        <Setter.Value>
-                                            <StackPanel Width="300" Height="400">
-                                                <TextBlock Text="{Binding DataObject.Title}" FontWeight="Bold"/>
-                                                <TextBlock Text="{Binding DataObject.Description}" TextWrapping="Wrap"/>
-                                            </StackPanel>
-                                        </Setter.Value>
-                                    </Setter>-->
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType={x:Type local:Dashboard}}}" Value="true">
                                             <Setter Property="ShowText" Value="True"/>
@@ -168,7 +160,6 @@
                     </Style>
                 </Border.Style>
 
-
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -176,7 +167,7 @@
                     </Grid.RowDefinitions>
 
                     <!--Selected Page Info-->
-                    <Border BorderBrush="#33ffffff" BorderThickness="0,0,0,1" Margin="0,0,0,5">
+                    <Border BorderBrush="#aaa" BorderThickness="0,0,0,1" Margin="0,0,0,0">
 
                         <Grid Margin="10">
                             <Grid.ColumnDefinitions>
@@ -184,9 +175,9 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="{Binding PageContent.Title}" Foreground="#fff" FontSize="14" FontWeight="Bold" Margin="0,0,20,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding PageContent.Title}" Foreground="#333" FontSize="14" FontWeight="Bold" Margin="0,0,20,0" VerticalAlignment="Center"/>
 
-                            <TextBlock Grid.Column="1" Text="{Binding PageContent.Description}" Foreground="#fff" FontSize="10" TextWrapping="Wrap" MaxWidth="500" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="1" Text="{Binding PageContent.Description}" Foreground="#666666" FontSize="10" TextWrapping="Wrap" MaxWidth="500" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
                         </Grid>
 
@@ -228,7 +219,7 @@
                     </Style>
                 </StackPanel.Style>
 
-                <TextBlock FontSize="16pt" Foreground="{StaticResource Foreground_Opposite_Normal}" TextAlignment="Center" HorizontalAlignment="Center">     
+                <TextBlock FontSize="16pt" Foreground="#333" TextAlignment="Center" HorizontalAlignment="Center">     
                 No Devices Found <LineBreak/>
                 Click the button below to open Device Manager
                 </TextBlock>
@@ -276,9 +267,9 @@
 
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 
-                    <ui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource Foreground_Opposite_Normal}" />
+                    <ui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource TrakHound_Blue}" />
 
-                    <TextBlock FontSize="16pt" Foreground="{StaticResource Foreground_Opposite_Normal}" TextAlignment="Center" Margin="0,20,0,0">     
+                    <TextBlock FontSize="16pt" Foreground="#333" TextAlignment="Center" Margin="0,20,0,0">     
                 Loading Devices...
                     </TextBlock>
 
@@ -289,7 +280,7 @@
         </Grid>
 
         <!--Info Bar-->
-        <Border Grid.Row="1" BorderBrush="{StaticResource Shade_Light}" BorderThickness="0,1,0,1" Height="45">
+        <Border Grid.Row="1" BorderBrush="#aaa" BorderThickness="0,1,0,1" Height="45">
 
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -302,23 +293,23 @@
                 <!--Slideshow Controls-->
                 <StackPanel Orientation="Horizontal" Margin="10,0">
 
-                    <TextBlock Text="Slideshow" Foreground="#fff" FontSize="10" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBlock Text="Slideshow" Foreground="#333" FontSize="10" VerticalAlignment="Center" Margin="0,0,10,0"/>
 
                     <!--Start Button-->
                     <ui:Button Image="/TrakHound-Dashboard;component/Resources/Start_02.png" Clicked="StartSlideshow_Clicked">
                         <ui:Button.Style>
                             <Style TargetType="ui:Button">
                                 <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="Foreground" Value="#ccffffff"/>
+                                <Setter Property="Foreground" Value="{StaticResource TrakHound_Blue}"/>
                                 <Setter Property="Text" Value="{x:Null}"/>
                                 <Setter Property="Height" Value="30"/>
                                 <Setter Property="ToolTip" Value="Start Slideshow"/>
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="true">
-                                        <Setter Property="Foreground" Value="#fff"/>
+                                        <Setter Property="Foreground" Value="{StaticResource TrakHound_LightBlue}"/>
                                     </Trigger>
                                     <Trigger Property="IsEnabled" Value="false">
-                                        <Setter Property="Foreground" Value="#33ffffff"/>
+                                        <Setter Property="Foreground" Value="#aaa"/>
                                     </Trigger>
                                     <DataTrigger Binding="{Binding SlideshowRunning}" Value="true">
                                         <Setter Property="IsEnabled" Value="false"/>
@@ -333,17 +324,17 @@
                         <ui:Button.Style>
                             <Style TargetType="ui:Button">
                                 <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="Foreground" Value="#ccffffff"/>
+                                <Setter Property="Foreground" Value="{StaticResource TrakHound_Blue}"/>
                                 <Setter Property="Text" Value="{x:Null}"/>
                                 <Setter Property="Height" Value="30"/>
                                 <Setter Property="IsEnabled" Value="false"/>
                                 <Setter Property="ToolTip" Value="Stop Slideshow"/>
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="true">
-                                        <Setter Property="Foreground" Value="#fff"/>
+                                        <Setter Property="Foreground" Value="{StaticResource TrakHound_LightBlue}"/>
                                     </Trigger>
                                     <Trigger Property="IsEnabled" Value="false">
-                                        <Setter Property="Foreground" Value="#33ffffff"/>
+                                        <Setter Property="Foreground" Value="#aaa"/>
                                     </Trigger>
                                     <DataTrigger Binding="{Binding SlideshowRunning}" Value="true">
                                         <Setter Property="IsEnabled" Value="true"/>
@@ -353,70 +344,20 @@
                         </ui:Button.Style>
                     </ui:Button>
 
-                    <Rectangle Width="1" Fill="#33ffffff" Margin="5,2"/>
+                    <Rectangle Width="1" Fill="#aaa" Margin="5,2"/>
 
                 </StackPanel>
 
-                <Rectangle Grid.Column="2" Width="1" Fill="#33ffffff" Margin="5,2,0,2"/>
+                <Rectangle Grid.Column="2" Width="1" Fill="#aaa" Margin="5,2,0,2"/>
 
                 <StackPanel Grid.Column="3" Margin="10,0" VerticalAlignment="Center">
-                    <TextBlock Text="Currently Displaying Data for" FontSize="10" Foreground="#88ffffff" Margin="0,0,0,2"/>
-                    <TextBlock Text="{Binding CurrentDate, RelativeSource={RelativeSource AncestorType=local:Dashboard, Mode=FindAncestor}}" FontSize="16" Foreground="#fff" HorizontalAlignment="Right"/>
+                    <TextBlock Text="Currently Displaying Data for" FontSize="10" Foreground="#333" Margin="0,0,0,2"/>
+                    <TextBlock Text="{Binding CurrentDate, RelativeSource={RelativeSource AncestorType=local:Dashboard, Mode=FindAncestor}}" FontSize="16" Foreground="#333" HorizontalAlignment="Right"/>
                 </StackPanel>
-
-                <!--Select Date Button-->
-                <!--<ui:Button Grid.Column="3" Width="200" Clicked="SelectDate_Clicked" Style="{StaticResource Button_Opposite_Foreground}" Height="auto">
-                    <ui:Button.ButtonContent>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel>
-                                <TextBlock Text="Currently Displaying Data for" FontSize="10" Foreground="#88ffffff" Margin="0,0,0,2"/>
-                                <TextBlock Text="{Binding CurrentDate, RelativeSource={RelativeSource AncestorType=local:Dashboard, Mode=FindAncestor}}" FontSize="16" Foreground="#fff" HorizontalAlignment="Right"/>
-                            </StackPanel>
-                            <Border Grid.Column="1" Width="20" Height="20" Margin="10,0,5,0">
-                                <Border.Resources>
-                                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Carrot_Arrow_Down_01.png"  />
-                                </Border.Resources>
-                                <Border.Style>
-                                    <Style TargetType="Border">
-                                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                        <Setter Property="Background" Value="#fff"/>
-                                    </Style>
-                                </Border.Style>
-                            </Border>
-                        </Grid>
-                    </ui:Button.ButtonContent>
-                </ui:Button>-->
 
             </Grid>
 
         </Border>
-
-        <!--<Border Background="#cc000000" Width="200" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,0">
-            <Border.Style>
-                <Style TargetType="Border">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding DateMenuShown}" Value="false">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
-
-            <StackPanel>
-
-                <ui:Button Text="7/29/16" Style="{StaticResource Button_Opposite_Foreground}" FontSize="18"/>
-                <ui:Button Text="7/30/16" Style="{StaticResource Button_Opposite_Foreground}" FontSize="18"/>
-                <ui:Button Text="7/31/16" Style="{StaticResource Button_Opposite_Foreground}" FontSize="18"/>
-                <ui:Button Text="8/1/16" Style="{StaticResource Button_Opposite_Foreground}" FontSize="18"/>
-                <ui:Button Text="8/2/16" Style="{StaticResource Button_Opposite_Foreground}" FontSize="18"/>
-
-            </StackPanel>
-            
-        </Border>-->
 
     </Grid>
 

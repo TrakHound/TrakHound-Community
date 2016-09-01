@@ -10,72 +10,71 @@
     <Grid x:Name="root" >
 
         <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+            <!--Headers-->
+            <Grid Background="{StaticResource TrakHound_Blue}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="150"/>
+                </Grid.ColumnDefinitions>
+                <Grid.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                        <Setter Property="TextAlignment" Value="Center"/>
+                        <Setter Property="Foreground" Value="#fff"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="TextWrapping" Value="Wrap"/>
+                        <Setter Property="Margin" Value="5"/>
+                    </Style>
+                </Grid.Resources>
 
-                <!--Headers-->
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition Width="100"/>
-                        <ColumnDefinition Width="150"/>
-                        <ColumnDefinition Width="150"/>
-                        <ColumnDefinition Width="150"/>
-                        <ColumnDefinition Width="150"/>
-                        <ColumnDefinition Width="150"/>
-                        <ColumnDefinition Width="150"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.Resources>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                            <Setter Property="HorizontalAlignment" Value="Center"/>
-                            <Setter Property="TextAlignment" Value="Center"/>
-                            <Setter Property="Foreground" Value="#fff"/>
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="TextWrapping" Value="Wrap"/>
-                            <Setter Property="Margin" Value="5"/>
-                        </Style>
-                    </Grid.Resources>
+                <TextBlock Grid.Column="0" Text="S" ToolTip="Displays the Device's current status whether it is in Production, Idle, or Alert."/>
 
-                    <TextBlock Grid.Column="0" Text="S" ToolTip="Displays the Device's current status whether it is in Production, Idle, or Alert."/>
+                <TextBlock Grid.Column="1" Text="Device Description"/>
 
-                    <TextBlock Grid.Column="1" Text="Device Description"/>
+                <TextBlock Grid.Column="2" Text="Device ID"/>
 
-                    <TextBlock Grid.Column="2" Text="Device ID"/>
+                <TextBlock Grid.Column="3" Text="Production Status"/>
 
-                    <TextBlock Grid.Column="3" Text="Production Status"/>
+                <TextBlock Grid.Column="4" Text="Power On Time">
+                    <TextBlock.ToolTip>
+                        Hours that the device has been Powered On
+                    </TextBlock.ToolTip>
+                </TextBlock>
 
-                    <TextBlock Grid.Column="4" Text="Power On Time">
-                        <TextBlock.ToolTip>
-                            Hours that the device has been Powered On
-                        </TextBlock.ToolTip>
-                    </TextBlock>
+                <TextBlock Grid.Column="5" Text="Program Run Time">
+                    <TextBlock.ToolTip>
+                        Hours that the device has been Running a Program
+                    </TextBlock.ToolTip>
+                </TextBlock>
 
-                    <TextBlock Grid.Column="5" Text="Program Run Time">
-                        <TextBlock.ToolTip>
-                            Hours that the device has been Running a Program
-                        </TextBlock.ToolTip>
-                    </TextBlock>
+                <TextBlock Grid.Column="6" Text="Cutting Time">
+                    <TextBlock.ToolTip>
+                        Hours that the device has been Cutting Material
+                    </TextBlock.ToolTip>
+                </TextBlock>
 
-                    <TextBlock Grid.Column="6" Text="Cutting Time">
-                        <TextBlock.ToolTip>
-                            Hours that the device has been Cutting Material
-                        </TextBlock.ToolTip>
-                    </TextBlock>
+                <TextBlock Grid.Column="7" Text="Spindle Run Time">
+                    <TextBlock.ToolTip>
+                        Hours that the device's Spindle has been running
+                    </TextBlock.ToolTip>
+                </TextBlock>
 
-                    <TextBlock Grid.Column="7" Text="Spindle Run Time">
-                        <TextBlock.ToolTip>
-                            Hours that the device's Spindle has been running
-                        </TextBlock.ToolTip>
-                    </TextBlock>
+                <TextBlock Grid.Column="8" Text="Part Count"/>
 
-                    <TextBlock Grid.Column="8" Text="Part Count"/>
-
-                </Grid>
+            </Grid>
 
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" PanningMode="Both">
 
@@ -87,5 +86,5 @@
         </Grid>
 
     </Grid>
-    
+
 </UserControl>

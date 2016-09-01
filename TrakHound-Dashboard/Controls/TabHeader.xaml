@@ -49,7 +49,7 @@
                 </Rectangle>
 
                 <!--Left Corner-->
-                <Path Fill="{StaticResource Accent_Normal}">
+                <Path Fill="{StaticResource TrakHound_Blue}">
                     <Path.Style>
                         <Style TargetType="Path">
                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -89,7 +89,7 @@
                                     <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                    <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+                                    <Setter Property="Background" Value="{StaticResource TrakHound_Blue}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -130,7 +130,7 @@
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding MouseOver}" Value="true">
-                                                <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
+                                                <Setter Property="Fill" Value="{StaticResource TrakHound_Blue}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding IsSelected}" Value="true">
                                                 <Setter Property="Fill" Value="{StaticResource Foreground_Opposite_Normal}"/>
@@ -154,7 +154,7 @@
                                         <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding MouseOver}" Value="true">
-                                                <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                                <Setter Property="Foreground" Value="{StaticResource TrakHound_Blue}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding IsSelected}" Value="true">
                                                 <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
@@ -237,7 +237,7 @@
                                             <Setter Property="Fill" Value="{StaticResource Foreground_Light}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding MouseOver}" Value="true">
-                                                    <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
+                                                    <Setter Property="Fill" Value="{StaticResource TrakHound_Blue}"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding IsMouseOver, ElementName=close_BD}" Value="true">
                                                     <Setter Property="Fill" Value="{StaticResource Foreground_Opposite_Normal}"/>
@@ -264,7 +264,7 @@
                                             <Setter Property="Fill" Value="{StaticResource Foreground_Light}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding MouseOver}" Value="true">
-                                                    <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
+                                                    <Setter Property="Fill" Value="{StaticResource TrakHound_Blue}"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding IsMouseOver, ElementName=close_BD}" Value="true">
                                                     <Setter Property="Fill" Value="{StaticResource Foreground_Opposite_Normal}"/>
@@ -306,7 +306,7 @@
                 </Rectangle>
 
                 <!--Right Corner-->
-                <Path Fill="{StaticResource Accent_Normal}" Grid.Column="2">
+                <Path Fill="{StaticResource TrakHound_Blue}" Grid.Column="2">
                     <Path.Style>
                         <Style TargetType="Path">
                             <Setter Property="Visibility" Value="Collapsed"/>

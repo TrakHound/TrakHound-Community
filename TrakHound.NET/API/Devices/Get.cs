@@ -3,8 +3,10 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 
 using TrakHound.API.Users;
 using TrakHound.Configurations;
@@ -85,6 +87,74 @@ namespace TrakHound.API
                                         return deviceConfig;
                                     }
                                 }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        private class GetDeviceInfo
+        {
+            public GetDeviceInfo(string uniqueId)
+            {
+                UniqueId = uniqueId;
+            }
+
+            [JsonProperty("unique_id")]
+            public string UniqueId { get; set; }
+        }
+
+        public static List<DeviceConfiguration> Get(UserConfiguration userConfig, string[] deviceUniqueIds)
+        {
+            if (deviceUniqueIds != null && deviceUniqueIds.Length > 0)
+            {
+                Uri apiHost = ApiConfiguration.AuthenticationApiHost;
+
+                string url = new Uri(apiHost, "devices/get/index.php").ToString();
+
+                var getDeviceInfos = new List<GetDeviceInfo>();
+                foreach (var deviceUniqueId in deviceUniqueIds) getDeviceInfos.Add(new GetDeviceInfo(deviceUniqueId));
+
+                string json = JSON.FromObject(getDeviceInfos);
+                if (json != null)
+                {
+                    var postDatas = new NameValueCollection();
+                    postDatas["token"] = userConfig.SessionToken;
+                    postDatas["sender_id"] = UserManagement.SenderId.Get();
+                    postDatas["devices"] = json;
+
+                    string response = HTTP.POST(url, postDatas);
+                    if (response != null)
+                    {
+                        bool success = ApiError.ProcessResponse(response, "Get Devices");
+                        if (success)
+                        {
+                            var deviceInfos = JSON.ToType<List<DeviceInfo>>(response);
+                            if (deviceInfos != null)
+                            {
+                                var deviceConfigs = new List<DeviceConfiguration>();
+
+                                foreach (var deviceInfo in deviceInfos)
+                                {
+                                    var table = deviceInfo.ToTable();
+                                    if (table != null)
+                                    {
+                                        var xml = DeviceConfigurationConverter.TableToXML(table);
+                                        if (xml != null)
+                                        {
+                                            var deviceConfig = DeviceConfiguration.Read(xml);
+                                            if (deviceConfig != null && !string.IsNullOrEmpty(deviceConfig.UniqueId))
+                                            {
+                                                deviceConfigs.Add(deviceConfig);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                return deviceConfigs;
                             }
                         }
                     }

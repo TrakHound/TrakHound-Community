@@ -76,6 +76,8 @@
     <Compile Include="API\Bugs\BugInfo.cs" />
     <Compile Include="API\Bugs\BugType.cs" />
     <Compile Include="API\Bugs\Send.cs" />
+    <Compile Include="API\Devices\Check.cs" />
+    <Compile Include="API\Devices\CheckInfo.cs" />
     <Compile Include="Servers\DataStorage\Backup.cs" />
     <Compile Include="Servers\DataStorage\LocalServer.cs" />
     <Compile Include="API\Data\CyclesInfo.cs" />
@@ -127,7 +129,6 @@
     <Compile Include="API\Devices\DeviceInfo.cs" />
     <Compile Include="API\Devices\Get.cs" />
     <Compile Include="API\Devices\Update.cs" />
-    <None Include="ClassDiagram1.cd" />
     <None Include="Databases\Database.cs" />
     <None Include="Databases\PluginReader.cs" />
     <None Include="Databases\Plugins\MySQL\Columns.cs" />

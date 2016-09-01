@@ -14,7 +14,7 @@
             </Grid.RowDefinitions>
 
             <!--Headers-->
-            <Grid>
+            <Grid Background="{StaticResource TrakHound_Blue}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="30"/>
                     <ColumnDefinition Width="200"/>

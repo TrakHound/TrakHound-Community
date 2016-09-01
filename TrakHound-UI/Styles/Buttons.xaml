@@ -81,6 +81,24 @@
 
     <!--Page List Button-->
     <Style x:Key="ListButton_PageList" TargetType="ui:ListButton">
+        <Setter Property="Foreground" Value="#333"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter Property="Background" Value="{StaticResource TrakHound_Blue}"/>
+                <Setter Property="Foreground" Value="#fff"/>
+            </Trigger>
+            <Trigger Property="IsSelected" Value="true">
+                <Setter Property="Background" Value="{StaticResource TrakHound_Blue}"/>
+                <Setter Property="Foreground" Value="#fff"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <!--<Style x:Key="ListButton_PageList" TargetType="ui:ListButton">
         <Setter Property="Foreground" Value="#fff"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Height" Value="35"/>
@@ -94,6 +112,6 @@
                 <Setter Property="Background" Value="{StaticResource TrakHound_Blue}"/>
             </Trigger>
         </Style.Triggers>
-    </Style>
+    </Style>-->
 
 </ResourceDictionary>

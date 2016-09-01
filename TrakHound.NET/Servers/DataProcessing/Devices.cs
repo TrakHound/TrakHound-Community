@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 
+using TrakHound.API.Users;
 using TrakHound.Configurations;
 using TrakHound.Logging;
 using TrakHound.Plugins.Server;
@@ -114,21 +115,76 @@ namespace TrakHound.Servers.DataProcessing
 
         private int attempts = 0;
 
-        void DevicesMonitor_Worker()
+        private void CheckUserDevices(UserConfiguration userConfig)
         {
-            // Retrieves a list of devices either by an API request (if user is logged in) or by reading the local 'Devices' folder (if not logged in)
-            // If user is logged in, request is sent to API to Get Devices and if after three consecutive request failures all devices are removed
+            // Get CheckInfo objects from TrakHound API (each object contains the device's UniqueId and UpdateId)
+            var checkInfos = API.Devices.Check(userConfig);
+            if (checkInfos != null)
+            {
+                // List of Devices to Get
+                var getIds = new List<string>();
 
-            List<DeviceConfiguration> configs = null;
+                foreach (var checkInfo in checkInfos)
+                {
+                    int index = -1;
 
-            // Get Devices from either API or Device folder
-            if (CurrentUser != null) configs = API.Devices.Get(CurrentUser);
-            else configs = DeviceConfiguration.ReadAll(FileLocations.Devices).ToList();
+                    index = Devices.FindIndex(x => x.Configuration.UniqueId == checkInfo.UniqueId);
+                    if (index >= 0) // Server is already part of list
+                    {
+                        var server = Devices[index];
 
+                        // Check if Configuration has changed
+                        if (server.Configuration.UpdateId != checkInfo.UpdateId || !server.IsRunning)
+                        {
+                            // If changed at all then stop the current server
+                            server.Stop();
+
+                            // If changed and still enabled then restart server
+                            if (checkInfo.Enabled) getIds.Add(checkInfo.UniqueId);
+                            else 
+                            {
+                                // Remove from List
+                                Devices.RemoveAt(index);
+                                Logger.Log("Device Removed :: " + server.Configuration.Description.Description + " [" + server.Configuration.Description.DeviceId + "]");
+                            }
+                        }
+                    }
+                    else if (checkInfo.Enabled) getIds.Add(checkInfo.UniqueId);
+                }
+
+                // Get full DeviceConfigurations for each device that has been changed or added
+                if (getIds.Count > 0)
+                {
+                    var configs = API.Devices.Get(userConfig, getIds.ToArray());
+                    foreach (var config in configs)
+                    {
+                        int index = Devices.FindIndex(x => x.Configuration.UniqueId == config.UniqueId);
+                        if (index >= 0)
+                        {
+                            var server = Devices[index];
+                            server.Stop();
+
+                            server.Configuration = config;
+                            server.Start();
+
+                            UpdateLoginInformation(server);
+                        }
+                        else
+                        {
+                            AddDevice(config);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void CheckLocalDevices()
+        {
+            // Retrieves a list of devices by reading the local 'Devices' folder (if not logged in)
+
+            var configs = DeviceConfiguration.ReadAll(FileLocations.Devices).ToList();
             if (configs != null)
             {
-                attempts = 0;
-
                 if (configs.Count > 0)
                 {
                     foreach (DeviceConfiguration config in configs)
@@ -137,9 +193,7 @@ namespace TrakHound.Servers.DataProcessing
                         {
                             int index = -1;
 
-                            if (CurrentUser != null) index = Devices.FindIndex(x => x.Configuration.UniqueId == config.UniqueId);
-                            else index = Devices.FindIndex(x => x.Configuration.FilePath == config.FilePath);
-
+                            index = Devices.FindIndex(x => x.Configuration.FilePath == config.FilePath);
                             if (index >= 0) // Server is already part of list
                             {
                                 var server = Devices[index];
@@ -189,15 +243,102 @@ namespace TrakHound.Servers.DataProcessing
                 }
                 else RemoveAllDevices();
             }
-            else if (CurrentUser == null || attempts > 2)
+            else
             {
                 RemoveAllDevices();
             }
-            else
-            {
-                attempts++;
-            }         
         }
+
+        void DevicesMonitor_Worker()
+        {
+            if (CurrentUser != null) CheckUserDevices(CurrentUser);
+            else CheckLocalDevices();
+        }
+
+        //void DevicesMonitor_Worker()
+        //{
+        //    // Retrieves a list of devices either by an API request (if user is logged in) or by reading the local 'Devices' folder (if not logged in)
+        //    // If user is logged in, request is sent to API to Get Devices and if after three consecutive request failures all devices are removed
+
+        //    List<DeviceConfiguration> configs = null;
+
+        //    // Get Devices from either API or Device folder
+        //    if (CurrentUser != null) configs = API.Devices.Get(CurrentUser);
+        //    else configs = DeviceConfiguration.ReadAll(FileLocations.Devices).ToList();
+
+        //    if (configs != null)
+        //    {
+        //        attempts = 0;
+
+        //        if (configs.Count > 0)
+        //        {
+        //            foreach (DeviceConfiguration config in configs)
+        //            {
+        //                if (config != null)
+        //                {
+        //                    int index = -1;
+
+        //                    if (CurrentUser != null) index = Devices.FindIndex(x => x.Configuration.UniqueId == config.UniqueId);
+        //                    else index = Devices.FindIndex(x => x.Configuration.FilePath == config.FilePath);
+
+        //                    if (index >= 0) // Server is already part of list
+        //                    {
+        //                        var server = Devices[index];
+
+        //                        // Check if Configuration has changed
+        //                        if (server.Configuration.UpdateId != config.UpdateId || !server.IsRunning)
+        //                        {
+        //                            // If changed at all then stop the current server
+        //                            server.Stop();
+
+        //                            // If changed and still enabled then restart server
+        //                            if (config.Enabled)
+        //                            {
+        //                                server.Configuration = config;
+        //                                server.Start();
+
+        //                                UpdateLoginInformation(server);
+        //                            }
+        //                            else // Remove from List
+        //                            {
+        //                                Devices.RemoveAt(index);
+        //                                Logger.Log("Device Removed :: " + server.Configuration.Description.Description + " [" + server.Configuration.Description.DeviceId + "]");
+        //                            }
+        //                        }
+        //                    }
+        //                    else // Create & Add Device Server
+        //                    {
+        //                        if (config.Enabled) AddDevice(config);
+        //                    }
+        //                }
+        //            }
+
+        //            // Find devices that were removed
+        //            foreach (var device in Devices.ToList())
+        //            {
+        //                if (!configs.Exists(x => x.UniqueId == device.Configuration.UniqueId))
+        //                {
+        //                    var d = Devices.Find(x => x.Configuration.UniqueId == device.Configuration.UniqueId);
+        //                    if (d != null)
+        //                    {
+        //                        d.Stop();
+
+        //                        Devices.Remove(d);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        else RemoveAllDevices();
+        //    }
+        //    else if (CurrentUser == null || attempts > 2)
+        //    {
+        //        RemoveAllDevices();
+        //    }
+        //    else
+        //    {
+        //        attempts++;
+        //    }         
+        //}
 
         private void RemoveAllDevices()
         {

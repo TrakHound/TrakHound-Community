@@ -201,7 +201,7 @@
             </Grid>
 
             <!--Status Bar-->
-            <Grid DockPanel.Dock="Bottom" Grid.Row="2" Height="25" Background="{StaticResource Accent_Normal}" >
+            <Grid DockPanel.Dock="Bottom" Grid.Row="2" Height="25" Background="#aaa" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="auto" />

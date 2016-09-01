@@ -16,53 +16,50 @@
              d:DesignHeight="400" d:DesignWidth="800"
              >
 
-    <Grid Background="{StaticResource Window_Background_Accent_Gradient}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="10"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <!--<Grid Background="{StaticResource Window_Background_Accent_Gradient}">-->
+    <Border BorderBrush="{StaticResource TrakHound_Blue}" BorderThickness="0,5,0,0">
 
-        <Grid.Style>
-            <Style TargetType="Grid">
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding Closing}" Value="true">
-                        <DataTrigger.EnterActions>
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <DoubleAnimation Duration="00:00:0.2" Storyboard.TargetProperty="Opacity" From="1" To="0" By="0.1">
-                                        <DoubleAnimation.EasingFunction>
-                                            <CubicEase EasingMode="EaseOut"/>
-                                        </DoubleAnimation.EasingFunction>
-                                    </DoubleAnimation>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.EnterActions>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </Grid.Style>
+        <Grid>
+            <!--<Grid.RowDefinitions>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>-->
 
-        <Border/>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Closing}" Value="true">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="00:00:0.2" Storyboard.TargetProperty="Opacity" From="1" To="0" By="0.1">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
 
-        <!--<ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
+            <Border/>
 
-            <Grid>-->
+            <ContentControl Grid.Row="1" Content="{Binding PageContent}" Opacity="1">
+                <ContentControl.LayoutTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="{Binding ZoomLevel}" ScaleY="{Binding ZoomLevel}"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </ContentControl.LayoutTransform>
+            </ContentControl>
 
-                <ContentControl Grid.Row="1" Content="{Binding PageContent}" Opacity="1">
-                    <ContentControl.LayoutTransform>
-                        <TransformGroup>
-                            <ScaleTransform ScaleX="{Binding ZoomLevel}" ScaleY="{Binding ZoomLevel}"/>
-                            <SkewTransform/>
-                            <RotateTransform/>
-                            <TranslateTransform/>
-                        </TransformGroup>
-                    </ContentControl.LayoutTransform>
-                </ContentControl>
- 
-            <!--</Grid>
+        </Grid>
 
-        </ScrollViewer>-->
-
-    </Grid>
-
+    </Border>
+    
 </UserControl>

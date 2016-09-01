@@ -8,64 +8,63 @@
              d:DesignHeight="100">
 
     <Grid x:Name="root" >
-        
 
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+            <!--Headers-->
+            <Grid Background="{StaticResource TrakHound_Blue}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="1200"/>
+                </Grid.ColumnDefinitions>
+                <Grid.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                        <Setter Property="TextAlignment" Value="Center"/>
+                        <Setter Property="Foreground" Value="#fff"/>
+                        <Setter Property="TextWrapping" Value="Wrap"/>
+                        <Setter Property="Margin" Value="5"/>
+                    </Style>
+                </Grid.Resources>
 
-                <!--Headers-->
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition Width="100"/>
-                        <ColumnDefinition Width="1200"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.Resources>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                            <Setter Property="HorizontalAlignment" Value="Center"/>
-                            <Setter Property="TextAlignment" Value="Center"/>
-                            <Setter Property="Foreground" Value="#fff"/>
-                            <Setter Property="TextWrapping" Value="Wrap"/>
-                            <Setter Property="Margin" Value="5"/>
-                        </Style>
-                    </Grid.Resources>
+                <TextBlock Grid.Column="0" Text="S" ToolTip="Displays the Device's current Production Status whether it is in Production, Alarm, Setup, Teardown, Maintenance, or Process Development"/>
 
-                    <TextBlock Grid.Column="0" Text="S" ToolTip="Displays the Device's current Production Status whether it is in Production, Alarm, Setup, Teardown, Maintenance, or Process Development"/>
+                <TextBlock Grid.Column="1" Text="Device Description"/>
 
-                    <TextBlock Grid.Column="1" Text="Device Description"/>
+                <TextBlock Grid.Column="2" Text="Device ID"/>
 
-                    <TextBlock Grid.Column="2" Text="Device ID"/>
+                <UniformGrid Grid.Column="3" Columns="5">
 
-                    <UniformGrid Grid.Column="3" Columns="5">
+                    <TextBlock Text="Production"/>
 
-                        <TextBlock Text="Production"/>
+                    <TextBlock Text="Setup"/>
 
-                        <TextBlock Text="Setup"/>
+                    <TextBlock Text="TearDown"/>
 
-                        <TextBlock Text="TearDown"/>
+                    <TextBlock Text="Maintenance"/>
 
-                        <TextBlock Text="Maintenance"/>
+                    <TextBlock Text="Process Development"/>
 
-                        <TextBlock Text="Process Development"/>
-
-                    </UniformGrid>
-
-                </Grid>
-
-                <!--Rows-->
-                <ItemsControl Grid.Row="1" ItemsSource="{Binding Rows}" Background="{StaticResource Window_Background}"/>
+                </UniformGrid>
 
             </Grid>
-            
-        </ScrollViewer>
+
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" PanningMode="Both">
+
+                <!--Rows-->
+                <ItemsControl ItemsSource="{Binding Rows}" Background="{StaticResource Window_Background}"/>
+
+            </ScrollViewer>
+
+        </Grid>
 
     </Grid>
-    
+
 </UserControl>

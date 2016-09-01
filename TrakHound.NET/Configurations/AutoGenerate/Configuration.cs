@@ -62,7 +62,7 @@ namespace TrakHound.Configurations.AutoGenerate
         private static void SetIds(DataTable dt)
         {
             DataTable_Functions.UpdateTableValue(dt, "address", "/UniqueId", "value", DeviceConfiguration.GenerateUniqueID());
-            DataTable_Functions.UpdateTableValue(dt, "address", "/tUpdateId", "value", DeviceConfiguration.GenerateUniqueID());
+            DataTable_Functions.UpdateTableValue(dt, "address", "/UpdateId", "value", DeviceConfiguration.GenerateUniqueID());
         }
 
         private static void SetEnabled(DataTable dt)
