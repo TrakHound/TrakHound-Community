@@ -71,7 +71,7 @@ namespace TH_StatusTimes.DeviceStatus
                 {
                     var config = (DeviceConfiguration)data.Data01;
 
-                    int index = Rows.ToList().FindIndex(x => GetUniqueIdFromDeviceInfo(x) == config.UniqueId);
+                    int index = Rows.ToList().FindIndex(x => x.Configuration.UniqueId == config.UniqueId);
                     if (index >= 0)
                     {
                         Rows.RemoveAt(index);
@@ -89,7 +89,7 @@ namespace TH_StatusTimes.DeviceStatus
                 {
                     var config = (DeviceConfiguration)data.Data01;
 
-                    int index = Rows.ToList().FindIndex(x => GetUniqueIdFromDeviceInfo(x) == config.UniqueId);
+                    int index = Rows.ToList().FindIndex(x => x.Configuration.UniqueId == config.UniqueId);
                     if (index >= 0) Rows.RemoveAt(index);
                 }
             }

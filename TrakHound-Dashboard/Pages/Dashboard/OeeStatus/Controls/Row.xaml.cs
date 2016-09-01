@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 
 using TrakHound.API;
+using TrakHound.Configurations;
 
 namespace TrakHound_Dashboard.Pages.Dashboard.OeeStatus.Controls
 {
@@ -16,22 +17,24 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeStatus.Controls
     /// </summary>
     public partial class Row : UserControl
     {
-        public Row()
+        public Row(DeviceConfiguration config)
         {
             InitializeComponent();
             root.DataContext = this;
+
+            Configuration = config;
         }
 
         #region "Dependency Properties"
 
-        public TrakHound.Configurations.DeviceConfiguration Configuration
+        public DeviceConfiguration Configuration
         {
-            get { return (TrakHound.Configurations.DeviceConfiguration)GetValue(ConfigurationProperty); }
+            get { return (DeviceConfiguration)GetValue(ConfigurationProperty); }
             set { SetValue(ConfigurationProperty, value); }
         }
 
         public static readonly DependencyProperty ConfigurationProperty =
-            DependencyProperty.Register("Configuration", typeof(TrakHound.Configurations.DeviceConfiguration), typeof(Row), new PropertyMetadata(null));
+            DependencyProperty.Register("Configuration", typeof(DeviceConfiguration), typeof(Row), new PropertyMetadata(null));
 
         public bool Connected
         {

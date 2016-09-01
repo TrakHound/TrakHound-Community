@@ -44,7 +44,11 @@ namespace TrakHound.API
 
             url = string.Format(format, url, token, senderId, devices);
 
-            string response = HTTP.GET(url);
+            var httpInfo = new HTTP.HTTPInfo();
+            httpInfo.Url = url;
+            httpInfo.MaxAttempts = 1;
+
+            string response = HTTP.GET(httpInfo);
             if (response != null)
             {
                 bool success = ApiError.ProcessResponse(response, "Get Messages");

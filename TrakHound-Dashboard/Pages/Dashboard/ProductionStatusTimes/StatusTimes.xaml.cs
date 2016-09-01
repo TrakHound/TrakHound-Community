@@ -1,8 +1,9 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Controls;
+using TH_StatusTimes.ProductionStatus.Controls;
 
 using TrakHound.Configurations;
-using TH_StatusTimes.ProductionStatus.Controls;
 
 namespace TH_StatusTimes.ProductionStatus
 {
@@ -33,16 +34,20 @@ namespace TH_StatusTimes.ProductionStatus
 
         private void AddRow(DeviceConfiguration config)
         {
-            var row = new Row();
-            row.Configuration = config;
-            Rows.Add(row);
+            if (config != null && !Rows.ToList().Exists(o => o.Configuration.UniqueId == config.UniqueId))
+            {
+                var row = new Row(config);
+                Rows.Add(row);
+            }
         }
 
         private void AddRow(DeviceConfiguration config, int index)
         {
-            var row = new Controls.Row();
-            row.Configuration = config;
-            Rows.Insert(index, row);
+            if (config != null && !Rows.ToList().Exists(o => o.Configuration.UniqueId == config.UniqueId))
+            {
+                var row = new Row(config);
+                Rows.Insert(index, row);
+            }
         }
 
     }

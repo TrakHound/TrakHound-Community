@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 
 using TrakHound.API;
+using TrakHound.Configurations;
 
 namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline.Controls
 {
@@ -17,10 +18,12 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline.Controls
     /// </summary>
     public partial class Row : UserControl
     {
-        public Row()
+        public Row(DeviceConfiguration config)
         {
             InitializeComponent();
             root.DataContext = this;
+
+            Configuration = config;
 
             HourDatas = new List<HourData>();
             for (var x = 0; x < 24; x++) HourDatas.Add(new HourData(x, x + 1));
@@ -89,8 +92,10 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline.Controls
                 {
                     // Probably a more elegant way of getting the Time Zone Offset could be done here
                     int timeZoneOffset = (DateTime.UtcNow - DateTime.Now).Hours;
+                    int h = hour.Hour - timeZoneOffset;
+                    if (h < 0) h = 24 - Math.Abs(h);
 
-                    var match = HourDatas.Find(o => o.StartHour == hour.Hour - timeZoneOffset);
+                    var match = HourDatas.Find(o => o.StartHour == h);
                     if (match != null)
                     {
                         match.Oee = hour.Oee;

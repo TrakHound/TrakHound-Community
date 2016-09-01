@@ -44,16 +44,20 @@ namespace TH_ProductionStatus
 
         private void AddRow(DeviceConfiguration config)
         {
-            var row = new Row();
-            row.Configuration = config;
-            Rows.Add(row);
+            if (config != null && !Rows.ToList().Exists(o => o.Configuration.UniqueId == config.UniqueId))
+            {
+                var row = new Row(config);
+                Rows.Add(row);
+            }
         }
 
         private void AddRow(DeviceConfiguration config, int index)
         {
-            var row = new Controls.Row();
-            row.Configuration = config;
-            Rows.Insert(index, row);
+            if (config != null && !Rows.ToList().Exists(o => o.Configuration.UniqueId == config.UniqueId))
+            {
+                var row = new Row(config);
+                Rows.Insert(index, row);
+            }
         }
 
     }

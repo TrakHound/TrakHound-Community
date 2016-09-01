@@ -59,8 +59,12 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
 
                 string command = "011111";
 
-                if (UserConfiguration != null) deviceInfos = Data.Get(UserConfiguration, devices, 2000, command);
-                else deviceInfos = Data.Get(null, devices, 2000, command);
+                var now = DateTime.Now;
+                DateTime from = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);
+                DateTime to = from.AddDays(1);
+
+                if (UserConfiguration != null) deviceInfos = Data.Get(UserConfiguration, devices, from.ToUniversalTime(), to.ToUniversalTime(), 2000, command);
+                else deviceInfos = Data.Get(null, devices, from, to, 2000, command);
                 if (deviceInfos != null)
                 {
                     foreach (var deviceInfo in deviceInfos)

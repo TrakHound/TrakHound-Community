@@ -22,33 +22,35 @@ namespace TrakHound.API
         // 4 = Timers
         // 5 = Hours
 
-        public static List<DeviceInfo> Get() { return Get(null, null, 5000, null); }
+        public static List<DeviceInfo> Get(DateTime from, DateTime to) { return Get(null, null, from, to, 5000, null); }
 
-        public static List<DeviceInfo> Get(string command) { return Get(null, null, 5000, command); }
+        public static List<DeviceInfo> Get(DateTime from, DateTime to, string command) { return Get(null, null, from, to, 5000, command); }
 
-        public static List<DeviceInfo> Get(int timeout) { return Get(null, null, timeout, null); }
+        public static List<DeviceInfo> Get(DateTime from, DateTime to, int timeout) { return Get(null, null, from, to, timeout, null); }
 
-        public static List<DeviceInfo> Get(int timeout, string command) { return Get(null, null, timeout, command); }
+        public static List<DeviceInfo> Get(DateTime from, DateTime to, int timeout, string command) { return Get(null, null, from, to, timeout, command); }
 
-        public static List<DeviceInfo> Get(UserConfiguration userConfig, int timeout) { return Get(userConfig, null, timeout, null); }
+        public static List<DeviceInfo> Get(UserConfiguration userConfig, DateTime from, DateTime to, int timeout) { return Get(userConfig, null, from, to, timeout, null); }
 
-        public static List<DeviceInfo> Get(UserConfiguration userConfig, int timeout, string command) { return Get(userConfig, null, timeout, command); }
+        public static List<DeviceInfo> Get(UserConfiguration userConfig, DateTime from, DateTime to, int timeout, string command) { return Get(userConfig, null, from, to, timeout, command); }
 
-        public static List<DeviceInfo> Get(List<string> uniqueIds) { return Get(null, uniqueIds, 5000, null); }
+        public static List<DeviceInfo> Get(List<string> uniqueIds, DateTime from, DateTime to) { return Get(null, uniqueIds, from, to, 5000, null); }
 
-        public static List<DeviceInfo> Get(List<string> uniqueIds, string command) { return Get(null, uniqueIds, 5000, command); }
+        public static List<DeviceInfo> Get(List<string> uniqueIds, DateTime from, DateTime to, string command) { return Get(null, uniqueIds, from, to, 5000, command); }
 
-        public static List<DeviceInfo> Get(List<string> uniqueIds, int timeout) { return Get(null, uniqueIds, timeout, null); }
+        public static List<DeviceInfo> Get(List<string> uniqueIds, DateTime from, DateTime to, int timeout) { return Get(null, uniqueIds, from, to, timeout, null); }
 
-        public static List<DeviceInfo> Get(List<string> uniqueIds, int timeout, string command) { return Get(null, uniqueIds, timeout, command); }
+        public static List<DeviceInfo> Get(List<string> uniqueIds, DateTime from, DateTime to, int timeout, string command) { return Get(null, uniqueIds, from, to, timeout, command); }
 
-        public static List<DeviceInfo> Get(UserConfiguration userConfig, List<string> uniqueIds, int timeout) { return Get(userConfig, uniqueIds, timeout, null); }
+        public static List<DeviceInfo> Get(UserConfiguration userConfig, List<string> uniqueIds, DateTime from, DateTime to, int timeout) { return Get(userConfig, uniqueIds, from, to, timeout, null); }
 
-        public static List<DeviceInfo> Get(UserConfiguration userConfig, List<string> uniqueIds, int timeout, string command)
+        public static List<DeviceInfo> Get(UserConfiguration userConfig, List<string> uniqueIds, DateTime from, DateTime to, int timeout, string command)
         {
             Uri apiHost = ApiConfiguration.DataApiHost;
 
             string url = new Uri(apiHost, "data/get/index.php").ToString();
+
+            string times = "&from=" + from.ToString("o") + "&to=" + to.ToString("o");
 
             string devices = "";
 
@@ -73,17 +75,17 @@ namespace TrakHound.API
             // Create GET request parameters
             if (userConfig != null)
             {
-                string format = "{0}?token={1}&sender_id={2}{3}{4}";
+                string format = "{0}?token={1}&sender_id={2}{3}{4}{5}";
 
                 string token = userConfig.SessionToken;
                 string senderId = UserManagement.SenderId.Get();
                 
-                url = string.Format(format, url, token, senderId, devices, cmd);
+                url = string.Format(format, url, token, senderId, devices, cmd, times);
             }
             else
             {
-                string format = "{0}?{1}{2}";
-                url = string.Format(format, url, devices, cmd);
+                string format = "{0}?{1}{2}{3}";
+                url = string.Format(format, url, devices, cmd, times);
             }
            
             // Setup HTTP Information for GET request

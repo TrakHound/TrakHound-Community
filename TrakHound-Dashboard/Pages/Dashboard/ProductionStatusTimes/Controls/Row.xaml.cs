@@ -4,13 +4,11 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
-using System.Data;
 using System.Windows;
 using System.Windows.Controls;
 
 using TrakHound.API;
-using TrakHound.Tools;
-using TrakHound.Plugins;
+using TrakHound.Configurations;
 
 namespace TH_StatusTimes.ProductionStatus.Controls
 {
@@ -19,10 +17,12 @@ namespace TH_StatusTimes.ProductionStatus.Controls
     /// </summary>
     public partial class Row : UserControl
     {
-        public Row()
+        public Row(DeviceConfiguration config)
         {
             InitializeComponent();
             root.DataContext = this;
+
+            Configuration = config;
         }
 
         #region "Dependency Properties"
@@ -37,14 +37,14 @@ namespace TH_StatusTimes.ProductionStatus.Controls
             DependencyProperty.Register("Connected", typeof(bool), typeof(Row), new PropertyMetadata(false));
 
 
-        public TrakHound.Configurations.DeviceConfiguration Configuration
+        public DeviceConfiguration Configuration
         {
-            get { return (TrakHound.Configurations.DeviceConfiguration)GetValue(ConfigurationProperty); }
+            get { return (DeviceConfiguration)GetValue(ConfigurationProperty); }
             set { SetValue(ConfigurationProperty, value); }
         }
 
         public static readonly DependencyProperty ConfigurationProperty =
-            DependencyProperty.Register("Configuration", typeof(TrakHound.Configurations.DeviceConfiguration), typeof(Row), new PropertyMetadata(null));
+            DependencyProperty.Register("Configuration", typeof(DeviceConfiguration), typeof(Row), new PropertyMetadata(null));
 
         public string DeviceStatus
         {

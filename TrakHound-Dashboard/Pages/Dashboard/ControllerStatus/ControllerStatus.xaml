@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="TrakHound_Dashboard.Pages.Dashboard.ControllerStatus.Plugin"
+﻿<UserControl x:Class="TrakHound_Dashboard.Pages.Dashboard.ControllerStatus.ControllerStatus"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 

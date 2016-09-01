@@ -17,10 +17,12 @@ namespace TH_StatusTimes.DeviceStatus.Controls
     /// </summary>
     public partial class Row : UserControl
     {
-        public Row()
+        public Row(DeviceConfiguration config)
         {
             InitializeComponent();
             root.DataContext = this;
+
+            Configuration = config;
         }
 
         #region "Dependency Properties"

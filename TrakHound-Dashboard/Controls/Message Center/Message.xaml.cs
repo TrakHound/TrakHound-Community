@@ -66,7 +66,7 @@ namespace TrakHound_Dashboard.Controls.Message_Center
 
         private void Close_Clicked(TrakHound_UI.Button bt)
         {
-            if (CloseClicked != null) CloseClicked(this);
+            CloseClicked?.Invoke(this);
         }
 
         private void MoreInfo_MouseDown(object sender, MouseButtonEventArgs e)
@@ -109,7 +109,7 @@ namespace TrakHound_Dashboard.Controls.Message_Center
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Read = true;
-            if (Clicked != null) Clicked(this);
+            Clicked?.Invoke(this);
         }
     }
 

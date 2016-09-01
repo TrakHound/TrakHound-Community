@@ -55,12 +55,12 @@ namespace TrakHound_Dashboard.Notifications
 
         private void close_BD_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (CloseClicked != null) CloseClicked(this);
+            CloseClicked?.Invoke(this);
         }
 
         private void Grid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (Clicked != null) Clicked(this);
+            Clicked?.Invoke(this);
         }
 
         private void MoreInfo_MouseDown(object sender, MouseButtonEventArgs e)
