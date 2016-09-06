@@ -30,16 +30,16 @@
             <Image Source="/TrakHound-Dashboard;component/Resources/gplv3-127x51.png" Height="30" HorizontalAlignment="Left"/>
 
             <!--License Note-->
-            <TextBlock Grid.Column="1" Margin="20,0,0,0" FontSize="12" Foreground="{StaticResource Foreground_Normal}" VerticalAlignment="Center" TextWrapping="Wrap" 
+            <TextBlock Grid.Column="1" Margin="20,0,0,0" FontSize="12" Foreground="{StaticResource Text}" VerticalAlignment="Center" TextWrapping="Wrap" 
                        Text="TrakHound is licensed under the GPLv3 software license."/>
 
         </Grid>
 
         <!--Plugins Note-->
-        <TextBlock Grid.Row="1" Margin="0,0,0,20" FontSize="12" FontWeight="Bold" Foreground="{StaticResource Foreground_Normal}" VerticalAlignment="Center" TextWrapping="Wrap" 
+        <TextBlock Grid.Row="1" Margin="0,0,0,20" FontSize="12" FontWeight="Bold" Foreground="{StaticResource Text}" VerticalAlignment="Center" TextWrapping="Wrap" 
                        Text="Note that plugins may be licensed differently than TrakHound itself."/>
 
-        <TextBlock Grid.Row="2" Text="{Binding LicenseText}" TextWrapping="Wrap" Foreground="{StaticResource Foreground_Normal}"/>
+        <TextBlock Grid.Row="2" Text="{Binding LicenseText}" TextWrapping="Wrap" Foreground="{StaticResource Text}"/>
         
     </Grid>
     

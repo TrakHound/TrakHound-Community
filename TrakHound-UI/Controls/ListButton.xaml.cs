@@ -112,6 +112,26 @@ namespace TrakHound_UI
 
 
 
+        public Brush SelectorForeground
+        {
+            get { return (Brush)GetValue(SelectorForegroundProperty); }
+            set { SetValue(SelectorForegroundProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectorForegroundProperty =
+            DependencyProperty.Register("SelectorForeground", typeof(Brush), typeof(ListButton), new PropertyMetadata(new SolidColorBrush(Colors.Black)));
+
+
+        public double SelectorWidth
+        {
+            get { return (double)GetValue(SelectorWidthProperty); }
+            set { SetValue(SelectorWidthProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectorWidthProperty =
+            DependencyProperty.Register("SelectorWidth", typeof(double), typeof(ListButton), new PropertyMetadata(3d));
+
+
         public Brush HoverBrush
         {
             get { return (Brush)GetValue(HoverBrushProperty); }

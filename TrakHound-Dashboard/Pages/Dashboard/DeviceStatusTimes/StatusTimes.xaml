@@ -16,41 +16,61 @@
             </Grid.RowDefinitions>
 
             <!--Headers-->
-            <Grid Background="{StaticResource TrakHound_Blue}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="30"/>
-                    <ColumnDefinition Width="200"/>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.Resources>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                        <Setter Property="TextAlignment" Value="Center"/>
-                        <Setter Property="Foreground" Value="#fff"/>
-                        <Setter Property="TextWrapping" Value="Wrap"/>
-                        <Setter Property="Margin" Value="5"/>
-                    </Style>
-                </Grid.Resources>
+            <Border BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
 
-                <TextBlock Grid.Column="0" Text="S" ToolTip="Displays the Device's current status whether it is Active, Idle, or Alert."/>
+                <Grid Background="{StaticResource Background_Alternate}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="TextAlignment" Value="Center"/>
+                            <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                            <Setter Property="TextWrapping" Value="Wrap"/>
+                            <Setter Property="Margin" Value="5"/>
+                        </Style>
+                        <Style TargetType="Rectangle">
+                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                            <Setter Property="Fill" Value="{StaticResource Border}"/>
+                            <Setter Property="Width" Value="1"/>
+                        </Style>
+                    </Grid.Resources>
 
-                <TextBlock Grid.Column="1" Text="Device Description"/>
+                    <TextBlock Grid.Column="0" Text="S" ToolTip="Displays the Device's current status whether it is Active, Idle, or Alert."/>
+                    <Rectangle Grid.Column="0"/>
 
-                <TextBlock Grid.Column="2" Text="Device ID"/>
+                    <TextBlock Grid.Column="1" Text="Device Description"/>
+                    <Rectangle Grid.Column="1"/>
 
-                <UniformGrid Grid.Column="3" Columns="3">
+                    <TextBlock Grid.Column="2" Text="Device ID"/>
+                    <Rectangle Grid.Column="2"/>
 
-                    <TextBlock Text="Active"/>
+                    <UniformGrid Grid.Column="3" Columns="3">
 
-                    <TextBlock Text="Idle"/>
+                        <Grid>
+                            <TextBlock Text="Active"/>
+                            <Rectangle/>
+                        </Grid>
 
-                    <TextBlock Text="Alert"/>
+                        <Grid>
+                            <TextBlock Text="Idle"/>
+                            <Rectangle/>
+                        </Grid>
 
-                </UniformGrid>
+                        <Grid>
+                            <TextBlock Text="Alert"/>
+                            <Rectangle/>
+                        </Grid>
 
-            </Grid>
+                    </UniformGrid>
+
+                </Grid>
+
+            </Border>
 
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" PanningMode="Both">
 

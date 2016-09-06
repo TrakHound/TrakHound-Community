@@ -33,27 +33,27 @@
 
             <StackPanel Grid.Column="1">
 
-                <TextBlock Text="{Binding BuildVersion}" FontSize="12" Foreground="{StaticResource Foreground_Normal}" Margin="0,0,0,0"/>
+                <TextBlock Text="{Binding BuildVersion}" FontSize="12" Foreground="{StaticResource Text}" Margin="0,0,0,0"/>
 
-                <TextBlock Margin="0,2,0,2" Foreground="{StaticResource Foreground_Normal}" Style="{StaticResource TrakHoundFont}">
+                <TextBlock Margin="0,2,0,2" Foreground="{StaticResource Text}" Style="{StaticResource TrakHoundFont}">
                     <Run Text="TrakHound" FontSize="30"/>
                     <Run Text="Dashboard" FontSize="18"/>
                 </TextBlock>
 
-                <TextBlock Text="© 2016 Feenux LLC, All Rights Reserved" FontSize="10" Foreground="{StaticResource Foreground_Normal}" />
+                <TextBlock Text="© 2016 Feenux LLC, All Rights Reserved" FontSize="10" Foreground="{StaticResource Text}" />
 
             </StackPanel>
 
         </Grid>
 
         <!--Separator-->
-        <Rectangle Height="0.5" Margin="5,10" Fill="{StaticResource Shade_Normal}" />
+        <Rectangle Height="0.5" Margin="5,10" Fill="{StaticResource Border}" />
 
         <!--Designed By-->
-        <TextBlock Margin="5,0" TextWrapping="Wrap" Text="TrakHound is designed by Feenux, a Manufacturing Software Solutions company." FontSize="12" Foreground="{StaticResource Foreground_Normal}" />
+        <TextBlock Margin="5,0" TextWrapping="Wrap" Text="TrakHound is designed by Feenux, a Manufacturing Software Solutions company." FontSize="12" Foreground="{StaticResource Text}" />
 
         <!--Support-->
-        <TextBlock Margin="5,10" TextWrapping="Wrap" FontSize="10" Foreground="{StaticResource Foreground_Normal}">
+        <TextBlock Margin="5,10" TextWrapping="Wrap" FontSize="10" Foreground="{StaticResource Text}">
             <Run Text="Help"/>
             <Run FontWeight="Bold" Text="Support"/>
             <Run Text="TrakHound by reporting any bugs, suggesting new features, or helping develop new versions yourself. TrakHound is built for the manufacturing community to use as a platform for any 'Machine to PC' application or any Machine Management needs. Please use it and enjoy it!"/>
@@ -66,9 +66,9 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="Build Information" FontSize="12" Foreground="{StaticResource Foreground_Light}"/>
+            <TextBlock Text="Build Information" FontSize="12" Foreground="{StaticResource Text}"/>
 
-            <Border Grid.Row="1" Margin="0,5" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" CornerRadius="2">
+            <Border Grid.Row="1" Margin="0,5" BorderBrush="{StaticResource Border}" BorderThickness="1" CornerRadius="2">
 
                 <StackPanel Margin="10,10">
                     <StackPanel.Resources>
@@ -78,8 +78,8 @@
                     </StackPanel.Resources>
 
                     <TextBlock>
-                        <Run Text="Build Version : " Foreground="{StaticResource Foreground_Light}"/>
-                        <Run Text="{Binding FullBuildVersion}" Foreground="{StaticResource Foreground_Normal}"/>
+                        <Run Text="Build Version : " Foreground="{StaticResource Text}"/>
+                        <Run Text="{Binding FullBuildVersion}" Foreground="{StaticResource Text}"/>
                     </TextBlock>
 
                 </StackPanel>

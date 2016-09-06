@@ -86,7 +86,7 @@
                             <Setter Property="Background" Value="Transparent"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding MouseOver}" Value="true">
-                                    <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                                    <Setter Property="Background" Value="#10000000"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding IsSelected}" Value="true">
                                     <Setter Property="Background" Value="{StaticResource TrakHound_Blue}"/>
@@ -124,7 +124,7 @@
                                     <Style TargetType="Rectangle">
                                         <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
                                         <Setter Property="Visibility" Value="Visible"/>
-                                        <Setter Property="Fill" Value="{StaticResource Foreground_Normal}"/>
+                                        <Setter Property="Fill" Value="{StaticResource Text}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -133,7 +133,7 @@
                                                 <Setter Property="Fill" Value="{StaticResource TrakHound_Blue}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                                <Setter Property="Fill" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                                <Setter Property="Fill" Value="#FFFFFF"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -151,13 +151,13 @@
                                     >
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding MouseOver}" Value="true">
                                                 <Setter Property="Foreground" Value="{StaticResource TrakHound_Blue}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                                <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                                <Setter Property="Foreground" Value="#FFFFFF"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -234,16 +234,16 @@
                                     </Rectangle.RenderTransform>
                                     <Rectangle.Style>
                                         <Style TargetType="Rectangle">
-                                            <Setter Property="Fill" Value="{StaticResource Foreground_Light}"/>
+                                            <Setter Property="Fill" Value="{StaticResource Text}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding MouseOver}" Value="true">
                                                     <Setter Property="Fill" Value="{StaticResource TrakHound_Blue}"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding IsMouseOver, ElementName=close_BD}" Value="true">
-                                                    <Setter Property="Fill" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                                    <Setter Property="Fill" Value="{StaticResource Text_Alternate}"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                                    <Setter Property="Fill" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                                    <Setter Property="Fill" Value="#FFFFFF"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -261,16 +261,16 @@
                                     </Rectangle.RenderTransform>
                                     <Rectangle.Style>
                                         <Style TargetType="Rectangle">
-                                            <Setter Property="Fill" Value="{StaticResource Foreground_Light}"/>
+                                            <Setter Property="Fill" Value="{StaticResource Text}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding MouseOver}" Value="true">
                                                     <Setter Property="Fill" Value="{StaticResource TrakHound_Blue}"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding IsMouseOver, ElementName=close_BD}" Value="true">
-                                                    <Setter Property="Fill" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                                    <Setter Property="Fill" Value="{StaticResource Text_Alternate}"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                                    <Setter Property="Fill" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                                    <Setter Property="Fill" Value="#FFFFFF"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>

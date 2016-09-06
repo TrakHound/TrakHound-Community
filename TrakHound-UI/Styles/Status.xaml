@@ -1,0 +1,33 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options">
+
+    <!--Status Colors-->
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusWhite" Color="#FFF"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusGreen" Color="#FF19B419"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusYellow" Color="#ffeb00"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusRed" Color="Red"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusBlue" Color="#FF0046FF"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusOrange" Color="#FFFF8B00"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusPurple" Color="#FFC300C3"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusTeal" Color="#FF00FFF3"/>
+
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusWhite_Light" Color="#80FFFFFF"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusGreen_Light" Color="#8019B419"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusYellow_Light" Color="#60FFFF00"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusRed_Light" Color="#60FF0000"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusBlue_Light" Color="#600046FF"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusOrange_Light" Color="#60FF8B00"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusPurple_Light" Color="#60C300C3"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusTeal_Light" Color="#6000FFF3"/>
+
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusWhite_Hover" Color="#20FFFFFF"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusGreen_Hover" Color="#2019B419"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusYellow_Hover" Color="#10FFFF00"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusRed_Hover" Color="#10FF0000"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusBlue_Hover" Color="#100046FF"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusOrange_Hover" Color="#10FF8B00"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusPurple_Hover" Color="#10C300C3"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="StatusTeal_Hover" Color="#1000FFF3"/>
+
+</ResourceDictionary>

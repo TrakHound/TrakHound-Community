@@ -39,7 +39,7 @@
             </StackPanel.Style>
 
             <!--Title-->
-            <TextBlock Text="{Binding Title}" Foreground="{StaticResource Foreground_Normal}" Margin="0,0,10,0" FontSize="{Binding FontSize}" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding Title}" Foreground="{DynamicResource Text}" Margin="0,0,10,0" FontSize="{Binding FontSize}" VerticalAlignment="Center"/>
 
             <!--Help-->
             <Rectangle Width="15" Height="15" VerticalAlignment="Center" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
@@ -81,7 +81,7 @@
             <Border BorderThickness="1" CornerRadius="{Binding CornerRadius}" Background="{Binding Background}">
                 <Border.Style>
                     <Style TargetType="Border">
-                        <Setter Property="BorderBrush" Value="{StaticResource Shade_Dark}"/>
+                        <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsMouseOver}" Value="true">
                                 <Setter Property="BorderBrush" Value="{StaticResource TrakHound_LightBlue}"/>
@@ -102,7 +102,7 @@
                     <Grid Margin="10,0">
 
                         <!--Example-->
-                        <TextBlock FontSize="{Binding FontSize}" FontStyle="Italic" Foreground="{StaticResource Foreground_Light}" VerticalAlignment="Center" Margin="2,0" >
+                        <TextBlock FontSize="{Binding FontSize}" FontStyle="Italic" Foreground="#aaa" VerticalAlignment="Center" Margin="2,0" >
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -140,7 +140,7 @@
                         </TextBlock>
 
                         <!--Instructions-->
-                        <TextBlock Text="{Binding Instructions}" FontSize="{Binding FontSize}" Foreground="{StaticResource Foreground_Light}" >
+                        <TextBlock Text="{Binding Instructions}" FontSize="{Binding FontSize}" Foreground="#aaa" >
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -166,7 +166,7 @@
                              BorderThickness="0"
                              Background="Transparent"
                              FontSize="{Binding FontSize}"
-                             Foreground="{StaticResource Foreground_Normal}"
+                             Foreground="#333"
                              Padding="0,8"
                              CaretBrush="Black"
                              Focusable="True"
@@ -199,7 +199,7 @@
                         <ui:Button.Style>
                             <Style TargetType="ui:Button">
                                 <Setter Property="Visibility" Value="Collapsed"/>
-                                <Setter Property="Foreground" Value="{StaticResource Shade_Normal}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource Border}"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsMouseOver, ElementName=root}" Value="true">
                                         <Setter Property="Visibility" Value="Visible"/>

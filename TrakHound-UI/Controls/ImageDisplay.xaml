@@ -28,7 +28,7 @@
         </Border>
 
         <!--Loading Animation-->
-        <Grid Background="{StaticResource Window_Background}">
+        <Grid Background="{DynamicResource Background}">
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Opacity" Value="0.0"/>

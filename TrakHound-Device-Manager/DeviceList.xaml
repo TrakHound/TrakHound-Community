@@ -30,7 +30,7 @@
         </ContextMenu>
 
         <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
-            <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource Border}" />
             <Setter Property="BorderThickness" Value="0,1,0,0" />
             <Setter Property="Background" Value="{StaticResource Window_Background}"/>
             <Style.Triggers>
@@ -59,24 +59,24 @@
         
     </UserControl.Resources>
 
-    <Grid Background="{StaticResource Window_Background}">
+    <Grid Background="{DynamicResource Background}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--Tool Bar-->
-        <Border Grid.Row="0" Background="{StaticResource Accent_Normal}">
+        <Border Grid.Row="0" BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
                 <StackPanel.Resources>
-                    <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Opposite_Foreground}">
+                    <Style TargetType="ui:Button" BasedOn="{StaticResource ToolBar_Button}">
                         <Setter Property="Height" Value="30"/>
                         <Setter Property="Margin" Value="1,2"/>
                         <Setter Property="Padding" Value="5"/>
                     </Style>
                     <Style TargetType="Rectangle">
-                        <Setter Property="Fill" Value="{StaticResource Shade_Light}"/>
+                        <Setter Property="Fill" Value="#aaa"/>
                         <Setter Property="Width" Value="1"/>
                         <Setter Property="Margin" Value="5,2"/>
                     </Style>
@@ -182,7 +182,6 @@
                 <DataGrid x:Name="Devices_DG" Grid.Row="0" ItemsSource="{Binding Devices}"
                   AutoGenerateColumns="False"
                   VerticalScrollBarVisibility="Disabled"
-                  SelectionChanged="Devices_DG_SelectionChanged"
                   HeadersVisibility="Column"
                   SelectionMode="Extended"
                   >
@@ -248,40 +247,6 @@
                         </Style>
                     </StackPanel.Style>
 
-                    <Rectangle Fill="{StaticResource Shade_Normal}" Height="1"/>
-
-                    <!--Title-->
-                    <TextBlock Text="Shared Devices" Foreground="{StaticResource Foreground_Light}" FontSize="10pt" Margin="10,20,0,10"/>
-
-                    <!--Shared Devices Table-->
-                    <DataGrid x:Name="SharedDevices_DG" ItemsSource="{Binding SharedDevices}"
-                    AutoGenerateColumns="False"
-                    VerticalScrollBarVisibility="Disabled"  
-                    SelectionChanged="SharedDevices_DG_SelectionChanged"
-                    >
-
-                        <DataGrid.Columns>
-
-                            <!--Edit Button-->
-                            <DataGridTemplateColumn>
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ui:Button Text="Edit" DataObject="{Binding}" Clicked="Edit_Clicked"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-
-                            <!--Description Columns-->
-                            <DataGridTextColumn Header="Description" Binding="{Binding Description.Description}"/>
-                            <DataGridTextColumn Header="Device Link" Binding="{Binding Description.DeviceLink}"/>
-                            <DataGridTextColumn Header="Manufacturer" Binding="{Binding Description.Manufacturer}"/>
-                            <DataGridTextColumn Header="Model" Binding="{Binding Description.Model}"/>
-                            <DataGridTextColumn Header="Controller" Binding="{Binding Description.Manufacturer}"/>
-
-                        </DataGrid.Columns>
-
-                    </DataGrid>
-
                 </StackPanel>
 
             </Grid>
@@ -305,10 +270,10 @@
             </StackPanel.Style>
 
             <!--No Devices Found-->
-            <TextBlock Text="No Devices Found" Foreground="{StaticResource Foreground_Light}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,0" FontSize="14pt"/>
+            <TextBlock Text="No Devices Found" Foreground="{StaticResource Text}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,0" FontSize="14pt"/>
 
             <!--Click Below-->
-            <TextBlock Text="Click below to Add a Device" Foreground="{StaticResource Foreground_Light}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,20" FontSize="14pt"/>
+            <TextBlock Text="Click below to Add a Device" Foreground="{StaticResource Text}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,20" FontSize="14pt"/>
 
 
             <!--Add Device Button-->
@@ -317,7 +282,7 @@
         </StackPanel>
 
         <!--Loading Animation-->
-        <Grid Grid.Row="1" Background="{StaticResource Window_Background}">
+        <Grid Grid.Row="1" Background="{StaticResource Background}">
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Opacity" Value="0.0"/>
@@ -355,9 +320,9 @@
 
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 
-                <ui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource TrakHound_Blue}" />
+                <ui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource Spinner}" />
 
-                <TextBlock Text="Loading Devices.." Foreground="{StaticResource Foreground_Normal}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,20,0,0" FontSize="14pt"/>
+                <TextBlock Text="Loading Devices.." Foreground="{StaticResource Text}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,20,0,0" FontSize="14pt"/>
 
             </StackPanel>
 

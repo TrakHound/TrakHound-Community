@@ -12,9 +12,13 @@
 
     <UserControl.Resources>
 
+        <!--<ImageBrush x:Key="Active_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Active_01.png"  />
+
+        <ImageBrush x:Key="Idle_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Hourglass_01.png"  />
+
         <ImageBrush x:Key="Power_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Power_01.png"  />
 
-        <ImageBrush x:Key="Alert_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Warning_01.png"  />
+        <ImageBrush x:Key="Alert_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Warning_01.png"  />-->
 
     </UserControl.Resources>
 
@@ -36,10 +40,9 @@
                     <ColumnDefinition Width="120"/>
                     <ColumnDefinition Width="150"/>
                     <ColumnDefinition Width="150"/>
-                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="*" MinWidth="200"/>
                     <ColumnDefinition Width="300"/>
-                    <ColumnDefinition Width="400"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="300"/>
                 </Grid.ColumnDefinitions>
 
                 <!--Status Indicator-->
@@ -51,63 +54,17 @@
                                     <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding DeviceStatus}" Value="Idle">
-                                    <Setter Property="Background" Value="{StaticResource StatusYellow}"/>
+                                    <Setter Property="Background" Value="{StaticResource StatusOrange}"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
                                     <Setter Property="Background" Value="{StaticResource StatusRed}"/>
                                 </DataTrigger>
+                                <DataTrigger Binding="{Binding Connected}" Value="false">
+                                    <Setter Property="Background" Value="{StaticResource Disabled}"/>
+                                </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </Border.Style>
-
-                    <Rectangle HorizontalAlignment="Center" VerticalAlignment="Center" Fill="White">
-                        <Rectangle.Style>
-                            <Style TargetType="Rectangle">
-                                <Setter Property="Height" Value="20"/>
-                                <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"/>
-                                <Setter Property="Margin" Value="0"/>
-                                <Setter Property="OpacityMask" Value="{StaticResource Power_IMG}"/>
-                                <Setter Property="Opacity" Value="0"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
-                                        <DataTrigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation Duration="00:00:1.0" Storyboard.TargetProperty="Opacity" From="0" To="1" >
-                                                        <DoubleAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseOut"/>
-                                                        </DoubleAnimation.EasingFunction>
-                                                    </DoubleAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.EnterActions>
-                                        <DataTrigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation Duration="00:00:1.0" Storyboard.TargetProperty="Opacity" From="1" To="0" >
-                                                        <DoubleAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseOut"/>
-                                                        </DoubleAnimation.EasingFunction>
-                                                    </DoubleAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.ExitActions>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Connected}" Value="true">
-                                        <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}"/>
-                                    </DataTrigger>
-                                    <Trigger Property="Opacity" Value="0">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Rectangle.Style>
-                    </Rectangle>
-
-                </Border>
-
-                <!--Mouse Over Panel w/ ToolTip-->
-                <Border Grid.Column="0">
                     <Border.ToolTip>
                         <StackPanel MaxWidth="300">
                             <TextBlock Text="Device Status" FontWeight="Bold"/>
@@ -130,20 +87,73 @@
                             </TextBlock>
                         </StackPanel>
                     </Border.ToolTip>
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" Value="#33ffffff"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
+
+                    <Rectangle HorizontalAlignment="Center" VerticalAlignment="Center" Fill="White">
+                        <Rectangle.Style>
+                            <Style TargetType="Rectangle">
+                                <Setter Property="Height" Value="20"/>
+                                <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"/>
+                                <Setter Property="Margin" Value="0"/>
+                                <Setter Property="OpacityMask" Value="{StaticResource Power_IMG}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Connected}" Value="true">
+                                        <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding DeviceStatus}" Value="Idle">
+                                        <Setter Property="OpacityMask" Value="{StaticResource Idle_IMG}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
+                                        <Setter Property="OpacityMask" Value="{StaticResource Active_IMG}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Rectangle.Style>
+                    </Rectangle>
+
                 </Border>
-                
+
                 <!--Description-->
-                <Border Grid.Column="1" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                <Border Grid.Column="1" BorderBrush="#ccc" BorderThickness="0,0,1,0" Background="Transparent">
+                    <Border.ToolTip>
+                        <StackPanel Width="300">
+                            <StackPanel.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontSize" Value="12"/>
+                                    <Setter Property="Margin" Value="0,2"/>
+                                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                                </Style>
+                            </StackPanel.Resources>
+
+                            <TextBlock Text="{Binding Configuration.Description.Description}" Foreground="{StaticResource Foreground_Normal}" FontSize="14" FontWeight="Bold" TextWrapping="Wrap"/>
+
+                            <TextBlock>
+                                <Run Text="Manufacturer :" Foreground="{StaticResource Foreground_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Manufacturer}" Foreground="{StaticResource Foreground_Normal}"/>
+                            </TextBlock>
+
+                            <TextBlock>
+                                <Run Text="Model :" Foreground="{StaticResource Foreground_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Model}" Foreground="{StaticResource Foreground_Normal}"/>
+                            </TextBlock>
+
+                            <TextBlock>
+                                <Run Text="Serial :" Foreground="{StaticResource Foreground_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Serial}" Foreground="{StaticResource Foreground_Normal}"/>
+                            </TextBlock>
+
+                            <TextBlock>
+                                <Run Text="Controller :" Foreground="{StaticResource Foreground_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Controller}" Foreground="{StaticResource Foreground_Normal}"/>
+                            </TextBlock>
+
+                            <TextBlock>
+                                <Run Text="Location :" Foreground="{StaticResource Foreground_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Location}" Foreground="{StaticResource Foreground_Normal}"/>
+                            </TextBlock>
+
+                        </StackPanel>
+
+                    </Border.ToolTip>
 
                     <StackPanel VerticalAlignment="Center" Margin="10,2">
                         <StackPanel.Resources>
@@ -186,60 +196,6 @@
 
                     </StackPanel>
 
-                </Border>
-
-                <!--Mouse Over Panel w/ ToolTip-->
-                <Border Grid.Column="1">
-                    <Border.ToolTip>
-                        <StackPanel Width="300">
-                            <StackPanel.Resources>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="FontSize" Value="12"/>
-                                    <Setter Property="Margin" Value="0,2"/>
-                                    <Setter Property="HorizontalAlignment" Value="Left"/>
-                                </Style>
-                            </StackPanel.Resources>
-
-                            <TextBlock Text="{Binding Configuration.Description.Description}" Foreground="{StaticResource Foreground_Normal}" FontSize="14" FontWeight="Bold" TextWrapping="Wrap"/>
-
-                            <TextBlock>
-                                <Run Text="Manufacturer :" Foreground="{StaticResource Foreground_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Manufacturer}" Foreground="{StaticResource Foreground_Normal}"/>
-                            </TextBlock>
-
-                            <TextBlock>
-                                <Run Text="Model :" Foreground="{StaticResource Foreground_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Model}" Foreground="{StaticResource Foreground_Normal}"/>
-                            </TextBlock>
-
-                            <TextBlock>
-                                <Run Text="Serial :" Foreground="{StaticResource Foreground_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Serial}" Foreground="{StaticResource Foreground_Normal}"/>
-                            </TextBlock>
-
-                            <TextBlock>
-                                <Run Text="Controller :" Foreground="{StaticResource Foreground_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Controller}" Foreground="{StaticResource Foreground_Normal}"/>
-                            </TextBlock>
-
-                            <TextBlock>
-                                <Run Text="Location :" Foreground="{StaticResource Foreground_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Location}" Foreground="{StaticResource Foreground_Normal}"/>
-                            </TextBlock>
-
-                        </StackPanel>
-                        
-                    </Border.ToolTip>
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" Value="#100080ff"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
                 </Border>
 
                 <!--Device ID-->
@@ -619,7 +575,7 @@
                                 <Grid.Style>
                                     <Style TargetType="Grid">
                                         <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                        <Setter Property="Background" Value="#ccc"/>
+                                        <Setter Property="Background" Value="{StaticResource Disabled_Text}"/>
                                         <Setter Property="Height" Value="30"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding ControllerMode}" Value="AUTOMATIC">
@@ -651,7 +607,7 @@
                                 <Grid.Style>
                                     <Style TargetType="Grid">
                                         <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                        <Setter Property="Background" Value="#ccc"/>
+                                        <Setter Property="Background" Value="{StaticResource Disabled_Text}"/>
                                         <Setter Property="Height" Value="30"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding ControllerMode}" Value="SEMI_AUTOMATIC">
@@ -683,7 +639,7 @@
                                 <Grid.Style>
                                     <Style TargetType="Grid">
                                         <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                        <Setter Property="Background" Value="#ccc"/>
+                                        <Setter Property="Background" Value="{StaticResource Disabled_Text}"/>
                                         <Setter Property="Height" Value="30"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding ControllerMode}" Value="MANUAL_DATA_INPUT">
@@ -715,7 +671,7 @@
                                 <Grid.Style>
                                     <Style TargetType="Grid">
                                         <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                        <Setter Property="Background" Value="#ccc"/>
+                                        <Setter Property="Background" Value="{StaticResource Disabled_Text}"/>
                                         <Setter Property="Height" Value="30"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding ControllerMode}" Value="MANUAL">
@@ -747,7 +703,7 @@
                                 <Grid.Style>
                                     <Style TargetType="Grid">
                                         <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                        <Setter Property="Background" Value="#ccc"/>
+                                        <Setter Property="Background" Value="{StaticResource Disabled_Text}"/>
                                         <Setter Property="Height" Value="30"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding ControllerMode}" Value="EDIT">

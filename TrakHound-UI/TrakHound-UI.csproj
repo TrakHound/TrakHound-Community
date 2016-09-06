@@ -110,6 +110,7 @@
     <Compile Include="Controls\ListButton.xaml.cs">
       <DependentUpon>ListButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ThemeSelector.cs" />
     <Compile Include="Windows\BugReportSent.xaml.cs">
       <DependentUpon>BugReportSent.xaml</DependentUpon>
     </Compile>
@@ -201,6 +202,26 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Resource Include="Styles\Theme_Light.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Styles\TrakHound.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Styles\Status.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Styles\Theme_Dark.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Styles\Buttons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
     <Page Include="Windows\BugReportSent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -301,7 +322,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Resource>
-    <Resource Include="Styles\Buttons.xaml">
+    <Resource Include="Styles\Buttons_Old.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Resource>

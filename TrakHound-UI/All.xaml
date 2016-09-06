@@ -3,31 +3,36 @@
     
     <ResourceDictionary.MergedDictionaries>
 
+        <ResourceDictionary Source="Styles/TrakHound.Xaml" />
+
+        <ResourceDictionary Source="Styles/Status.Xaml" />
+
+        <!--<ResourceDictionary Source="Styles/Buttons.Xaml" />-->
+
         <ResourceDictionary Source="Styles/Colors.Xaml" />
 
-        <!--<ResourceDictionary Source="Styles/Alert.Xaml" />-->
+ 
 
-        <ResourceDictionary Source="Styles/Buttons.Xaml" />
+        <!--<ResourceDictionary Source="Styles/CheckBoxes.Xaml" />-->
 
-        <ResourceDictionary Source="Styles/CheckBoxes.Xaml" />
-
-        <ResourceDictionary Source="Styles/DataGrid.Xaml" />
+        <!--<ResourceDictionary Source="Styles/DataGrid.Xaml" />-->
 
         <ResourceDictionary Source="Styles/ToggleButtons.Xaml" />
 
-        <!--<ResourceDictionary Source="Styles/ComboBox1.Xaml" />-->
+        <!--<ResourceDictionary Source="Styles/ComboBox3.Xaml" />-->
 
-        <ResourceDictionary Source="Styles/ComboBox3.Xaml" />
+        <!--<ResourceDictionary Source="Styles/RadioButtons.Xaml" />-->
 
-        <ResourceDictionary Source="Styles/RadioButtons.Xaml" />
-
-        <ResourceDictionary Source="Styles/Text.Xaml" />
+        <!--<ResourceDictionary Source="Styles/Text.Xaml" />-->
         
-        <!--<ResourceDictionary Source="Styles/Borders.Xaml" />-->
-
         <ResourceDictionary Source="Styles/ScrollBars.Xaml" />
 
-        <!--<ResourceDictionary Source="Styles/Windows.Xaml" />-->
+        <ResourceDictionary>
+
+            <!--Fonts-->
+            <FontFamily x:Key="RobotoFont">/TrakHound-UI;component/Fonts/#DS-Digital</FontFamily>
+
+        </ResourceDictionary>
 
     </ResourceDictionary.MergedDictionaries>
 

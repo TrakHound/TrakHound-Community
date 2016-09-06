@@ -16,45 +16,71 @@
             </Grid.RowDefinitions>
 
             <!--Headers-->
-            <Grid Background="{StaticResource TrakHound_Blue}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="30"/>
-                    <ColumnDefinition Width="200"/>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="1200"/>
-                </Grid.ColumnDefinitions>
-                <Grid.Resources>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                        <Setter Property="TextAlignment" Value="Center"/>
-                        <Setter Property="Foreground" Value="#fff"/>
-                        <Setter Property="TextWrapping" Value="Wrap"/>
-                        <Setter Property="Margin" Value="5"/>
-                    </Style>
-                </Grid.Resources>
+            <Border BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
 
-                <TextBlock Grid.Column="0" Text="S" ToolTip="Displays the Device's current Production Status whether it is in Production, Alarm, Setup, Teardown, Maintenance, or Process Development"/>
+                <Grid Background="{StaticResource Background_Alternate}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*" MinWidth="1100"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="TextAlignment" Value="Center"/>
+                            <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                            <Setter Property="TextWrapping" Value="Wrap"/>
+                            <Setter Property="Margin" Value="5"/>
+                        </Style>
+                        <Style TargetType="Rectangle">
+                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                            <Setter Property="Fill" Value="{StaticResource Border}"/>
+                            <Setter Property="Width" Value="1"/>
+                        </Style>
+                    </Grid.Resources>
 
-                <TextBlock Grid.Column="1" Text="Device Description"/>
+                    <TextBlock Grid.Column="0" Text="S" ToolTip="Displays the Device's current Production Status whether it is in Production, Alarm, Setup, Teardown, Maintenance, or Process Development"/>
+                    <Rectangle Grid.Column="0"/>
 
-                <TextBlock Grid.Column="2" Text="Device ID"/>
+                    <TextBlock Grid.Column="1" Text="Device Description"/>
+                    <Rectangle Grid.Column="1"/>
 
-                <UniformGrid Grid.Column="3" Columns="5">
+                    <TextBlock Grid.Column="2" Text="Device ID"/>
+                    <Rectangle Grid.Column="2"/>
 
-                    <TextBlock Text="Production"/>
+                    <UniformGrid Grid.Column="3" Columns="5">
 
-                    <TextBlock Text="Setup"/>
+                        <Grid>
+                            <TextBlock Text="Production"/>
+                            <Rectangle/>
+                        </Grid>
 
-                    <TextBlock Text="TearDown"/>
+                        <Grid>
+                            <TextBlock Text="Setup"/>
+                            <Rectangle/>
+                        </Grid>
 
-                    <TextBlock Text="Maintenance"/>
+                        <Grid>
+                            <TextBlock Text="TearDown"/>
+                            <Rectangle/>
+                        </Grid>
 
-                    <TextBlock Text="Process Development"/>
+                        <Grid>
+                            <TextBlock Text="Maintenance"/>
+                            <Rectangle/>
+                        </Grid>
 
-                </UniformGrid>
+                        <Grid>
+                            <TextBlock Text="Process Development"/>
+                            <Rectangle/>
+                        </Grid>
 
-            </Grid>
+                    </UniformGrid>
+
+                </Grid>
+
+            </Border>
 
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" PanningMode="Both">
 

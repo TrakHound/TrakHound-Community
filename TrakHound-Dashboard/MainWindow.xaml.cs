@@ -96,10 +96,10 @@ namespace TrakHound_Dashboard
 
         void currentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            SendBugReport((Exception)e.ExceptionObject);
+            //SendBugReport((Exception)e.ExceptionObject);
 
-            Program.CloseApp = true;
-            if (e.IsTerminating) Close();
+            //Program.CloseApp = true;
+            //if (e.IsTerminating) Close();
         }
 
         private void SendBugReport(Exception ex)

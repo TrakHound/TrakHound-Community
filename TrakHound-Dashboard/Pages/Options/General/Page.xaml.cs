@@ -6,6 +6,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Collections.ObjectModel;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -22,6 +23,9 @@ namespace TrakHound_Dashboard.Pages.Options.General
         {
             InitializeComponent();
             DataContext = this;
+
+            Themes.Add("Light");
+            Themes.Add("Dark");
 
             mw = Application.Current.MainWindow as MainWindow;
         }
@@ -42,5 +46,83 @@ namespace TrakHound_Dashboard.Pages.Options.General
         {
             Properties.Settings.Default.Save();
         }
+
+
+        public ResourceDictionary ThemeDictionary
+        {
+            // You could probably get it via its name with some query logic as well.
+            get
+            {
+                return Application.Current.Resources.MergedDictionaries[0];
+            }
+        }
+
+        public void ChangeTheme(Uri uri)
+        {
+            //ThemeDictionary.MergedDictionaries.Clear();
+            ThemeDictionary.MergedDictionaries.RemoveAt(1);
+            ThemeDictionary.MergedDictionaries.Insert(1, new ResourceDictionary() { Source = uri });
+        }
+
+        private ObservableCollection<string> _themes;
+        public ObservableCollection<string> Themes
+        {
+            get
+            {
+                if (_themes == null)
+                    _themes = new ObservableCollection<string>();
+                return _themes;
+            }
+
+            set
+            {
+                _themes = value;
+            }
+        }
+
+        public string SelectedTheme
+        {
+            get { return (string)GetValue(SelectedThemeProperty); }
+            set
+            {
+                SetValue(SelectedThemeProperty, value);
+
+                UpdateTheme(value);
+            }
+        }
+
+        public static readonly DependencyProperty SelectedThemeProperty =
+            DependencyProperty.Register("SelectedTheme", typeof(string), typeof(Page), new PropertyMetadata("Light", new PropertyChangedCallback(SelectedTheme_PropertyChanged)));
+
+
+        private static void SelectedTheme_PropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        {
+            var o = obj as Page;
+            if (o != null) o.UpdateTheme(e.NewValue.ToString());
+        }
+
+
+        private void UpdateTheme(string key)
+        {
+            switch (key)
+            {
+                case "Light":
+
+                    ChangeTheme(new Uri("/TrakHound-UI;component/Styles/Theme_Light.xaml", UriKind.RelativeOrAbsolute));
+                    //TrakHound_UI.MkThemeSelector.SetCurrentThemeDictionary(this, new Uri("/TrakHound-Dashboard;component/Styles/Dashboard_Light.xaml"));
+
+                    break;
+
+                case "Dark":
+
+                    ChangeTheme(new Uri("/TrakHound-UI;component/Styles/Theme_Dark.xaml", UriKind.RelativeOrAbsolute));
+                    //TrakHound_UI.MkThemeSelector.SetCurrentThemeDictionary(this, new Uri("/TrakHound-Dashboard;component/Styles/Dashboard_Dark.xaml"));
+
+                    break;
+            }
+
+
+        }
+
     }
 }

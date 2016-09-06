@@ -10,6 +10,14 @@
              
              >
 
+    <UserControl.Resources>
+
+        <Style TargetType="Rectangle">
+            <Setter Property="Fill" Value="#ccc"/>
+        </Style>
+
+    </UserControl.Resources>
+
     <Grid x:Name="root" >
 
         <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" PanningMode="Both">
@@ -58,14 +66,14 @@
                             <Setter Property="VerticalAlignment" Value="Center"/>
                             <Setter Property="HorizontalAlignment" Value="Center"/>
                             <Setter Property="TextAlignment" Value="Center"/>
-                            <Setter Property="Foreground" Value="#fff"/>
+                            <Setter Property="Foreground" Value="{StaticResource Text}"/>
                             <Setter Property="TextWrapping" Value="Wrap"/>
                             <Setter Property="Margin" Value="5"/>
                         </Style>
                     </Grid.Resources>
 
-                    <Rectangle Grid.Row="0" Fill="#60000000"/>
-                    <Rectangle Grid.Row="0" Fill="{StaticResource Shade_Light}" Height="1" VerticalAlignment="Bottom"/>
+                    <Rectangle Grid.Row="0" Fill="#10000000"/>
+                    <Rectangle Grid.Row="0" Height="1" VerticalAlignment="Bottom"/>
                     <!--Gloss Effect-->
                     <Border Grid.Row="0" IsHitTestVisible="False">
 
@@ -108,7 +116,7 @@
                     </Border>
 
                     <TextBlock Grid.Row="1" Text="OEE (%)"/>
-                    <Rectangle Grid.Row="1" Fill="{StaticResource Shade_Light}" Height="1" VerticalAlignment="Bottom"/>
+                    <Rectangle Grid.Row="1" Height="1" VerticalAlignment="Bottom"/>
                     <!--Gloss Effect-->
                     <Border Grid.Row="1" IsHitTestVisible="False">
 
@@ -151,7 +159,7 @@
                     </Border>
 
                     <TextBlock Grid.Row="2" Text="Availability (%)"/>
-                    <Rectangle Grid.Row="2" Fill="{StaticResource Shade_Light}" Height="1" VerticalAlignment="Bottom"/>
+                    <Rectangle Grid.Row="2" Height="1" VerticalAlignment="Bottom"/>
                     <!--Gloss Effect-->
                     <Border Grid.Row="2" IsHitTestVisible="False">
 
@@ -194,7 +202,7 @@
                     </Border>
 
                     <TextBlock Grid.Row="3" Text="Performance (%)"/>
-                    <Rectangle Grid.Row="3" Fill="{StaticResource Shade_Light}" Height="1" VerticalAlignment="Bottom"/>
+                    <Rectangle Grid.Row="3" Height="1" VerticalAlignment="Bottom"/>
                     <!--Gloss Effect-->
                     <Border Grid.Row="3" IsHitTestVisible="False">
 
@@ -237,7 +245,7 @@
                     </Border>
 
                     <TextBlock Grid.Row="4" Text="Part Count"/>
-                    <Rectangle Grid.Row="4" Fill="{StaticResource Shade_Light}" Height="1" VerticalAlignment="Bottom"/>
+                    <Rectangle Grid.Row="4" Height="1" VerticalAlignment="Bottom"/>
                     <!--Gloss Effect-->
                     <Border Grid.Row="4" IsHitTestVisible="False">
 
@@ -298,7 +306,7 @@
                             </TextBlock.LayoutTransform>
                         </TextBlock>
 
-                        <Rectangle Fill="{StaticResource Shade_Light}" Width="1" Grid.Column="1"/>
+                        <Rectangle Width="1" Grid.Column="1"/>
 
                         <Grid Grid.Column="2">
                             <Grid.RowDefinitions>
@@ -308,18 +316,18 @@
                             </Grid.RowDefinitions>
 
                             <TextBlock Text="Active"/>
-                            <Rectangle Grid.Row="0" Fill="{StaticResource Shade_Light}" Height="1" VerticalAlignment="Bottom"/>
+                            <Rectangle Grid.Row="0" Height="1" VerticalAlignment="Bottom"/>
 
                             <TextBlock Text="Idle" Grid.Row="1"/>
-                            <Rectangle Grid.Row="1" Fill="{StaticResource Shade_Light}" Height="1" VerticalAlignment="Bottom"/>
+                            <Rectangle Grid.Row="1" Height="1" VerticalAlignment="Bottom"/>
 
                             <TextBlock Text="Alert" Grid.Row="2"/>
-                            <Rectangle Grid.Row="2" Fill="{StaticResource Shade_Light}" Height="1" VerticalAlignment="Bottom"/>
+                            <Rectangle Grid.Row="2" Height="1" VerticalAlignment="Bottom"/>
 
                         </Grid>
 
                     </Grid>
-                    <Rectangle Grid.Row="5" Fill="{StaticResource Shade_Light}" Height="1" VerticalAlignment="Bottom"/>
+                    <Rectangle Grid.Row="5" Height="1" VerticalAlignment="Bottom"/>
                     <!--Gloss Effect-->
                     <Border Grid.Row="5" IsHitTestVisible="False">
 
@@ -380,7 +388,7 @@
                             </TextBlock.LayoutTransform>
                         </TextBlock>
 
-                        <Rectangle Fill="{StaticResource Shade_Light}" Width="1" Grid.Column="1"/>
+                        <Rectangle Width="1" Grid.Column="1"/>
 
                         <Grid Grid.Column="2">
                             <Grid.RowDefinitions>
@@ -392,24 +400,24 @@
                             </Grid.RowDefinitions>
 
                             <TextBlock Text="Production"/>
-                            <Rectangle Grid.Row="0" Fill="{StaticResource Shade_Light}" Height="1" VerticalAlignment="Bottom"/>
+                            <Rectangle Grid.Row="0" Height="1" VerticalAlignment="Bottom"/>
 
                             <TextBlock Text="Setup" Grid.Row="1"/>
-                            <Rectangle Grid.Row="1" Fill="{StaticResource Shade_Light}" Height="1" VerticalAlignment="Bottom"/>
+                            <Rectangle Grid.Row="1" Height="1" VerticalAlignment="Bottom"/>
 
                             <TextBlock Text="Teardown" Grid.Row="2"/>
-                            <Rectangle Grid.Row="2" Fill="{StaticResource Shade_Light}" Height="1" VerticalAlignment="Bottom"/>
+                            <Rectangle Grid.Row="2" Height="1" VerticalAlignment="Bottom"/>
 
                             <TextBlock Text="Maintenance" Grid.Row="3"/>
-                            <Rectangle Grid.Row="3" Fill="{StaticResource Shade_Light}" Height="1" VerticalAlignment="Bottom"/>
+                            <Rectangle Grid.Row="3" Height="1" VerticalAlignment="Bottom"/>
 
                             <TextBlock Text="Process Development" Grid.Row="4"/>
-                            <Rectangle Grid.Row="4" Fill="{StaticResource Shade_Light}" Height="1" VerticalAlignment="Bottom"/>
+                            <Rectangle Grid.Row="4" Height="1" VerticalAlignment="Bottom"/>
 
                         </Grid>
 
                     </Grid>
-                    <Rectangle Grid.Row="6" Fill="{StaticResource Shade_Light}" Height="1" VerticalAlignment="Bottom"/>
+                    <Rectangle Grid.Row="6" Height="1" VerticalAlignment="Bottom"/>
                     <!--Gloss Effect-->
                     <Border Grid.Row="6" IsHitTestVisible="False">
 
@@ -452,7 +460,7 @@
                     </Border>
 
                     <TextBlock Grid.Row="7" Text="Program"/>
-                    <Rectangle Grid.Row="7" Fill="{StaticResource Shade_Light}" Height="1" VerticalAlignment="Bottom"/>
+                    <Rectangle Grid.Row="7" Height="1" VerticalAlignment="Bottom"/>
                     <!--Gloss Effect-->
                     <Border Grid.Row="7" IsHitTestVisible="False">
 
@@ -495,7 +503,7 @@
                     </Border>
 
                     <TextBlock Grid.Row="8" Text="Emergency Stop"/>
-                    <Rectangle Grid.Row="8" Fill="{StaticResource Shade_Light}" Height="1" VerticalAlignment="Bottom"/>
+                    <Rectangle Grid.Row="8" Height="1" VerticalAlignment="Bottom"/>
                     <!--Gloss Effect-->
                     <Border Grid.Row="8" IsHitTestVisible="False">
 
@@ -538,7 +546,7 @@
                     </Border>
 
                     <TextBlock Grid.Row="9" Text="Controller Mode"/>
-                    <Rectangle Grid.Row="9" Fill="{StaticResource Shade_Light}" Height="1" VerticalAlignment="Bottom"/>
+                    <Rectangle Grid.Row="9" Height="1" VerticalAlignment="Bottom"/>
                     <!--Gloss Effect-->
                     <Border Grid.Row="9" IsHitTestVisible="False">
 
@@ -581,7 +589,7 @@
                     </Border>
 
                     <TextBlock Grid.Row="10" Text="Execution Mode"/>
-                    <Rectangle Grid.Row="10" Fill="{StaticResource Shade_Light}" Height="1" VerticalAlignment="Bottom"/>
+                    <Rectangle Grid.Row="10" Height="1" VerticalAlignment="Bottom"/>
                     <!--Gloss Effect-->
                     <Border Grid.Row="10" IsHitTestVisible="False">
 
@@ -624,7 +632,7 @@
                     </Border>
 
                     <TextBlock Grid.Row="11" Text="System Status"/>
-                    <Rectangle Grid.Row="11" Fill="{StaticResource Shade_Light}" Height="1" VerticalAlignment="Bottom"/>
+                    <Rectangle Grid.Row="11" Height="1" VerticalAlignment="Bottom"/>
                     <!--Gloss Effect-->
                     <Border Grid.Row="11" IsHitTestVisible="False">
 
@@ -667,7 +675,7 @@
                     </Border>
 
                     <TextBlock Grid.Row="12" Text="System Message"/>
-                    <Rectangle Grid.Row="12" Fill="{StaticResource Shade_Light}" Height="1" VerticalAlignment="Bottom"/>
+                    <Rectangle Grid.Row="12" Height="1" VerticalAlignment="Bottom"/>
                     <!--Gloss Effect-->
                     <Border Grid.Row="12" IsHitTestVisible="False">
 
@@ -711,7 +719,7 @@
 
                 </Grid>
 
-                <Rectangle Grid.Column="1" Fill="{StaticResource Shade_Light}" Width="1"/>
+                <Rectangle Grid.Column="1" Width="1"/>
 
                 <ItemsControl Grid.Column="2" ItemsSource="{Binding Columns}">
                     <ItemsControl.ItemsPanel>

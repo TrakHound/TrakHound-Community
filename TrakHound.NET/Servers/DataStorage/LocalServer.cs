@@ -99,8 +99,6 @@ namespace TrakHound.Servers.DataStorage
 
             try
             {
-                Console.WriteLine("Processing '" + context.Request.Url + "'..");
-
                 string path = context.Request.Url.AbsolutePath;
                 if (!string.IsNullOrEmpty(path) && path.Length > 1)
                 {
@@ -269,6 +267,7 @@ namespace TrakHound.Servers.DataStorage
                         if (!string.IsNullOrEmpty(json))
                         {
                             var devices = JSON.ToType<List<API.Data.DeviceInfo>>(json);
+                            //var devices = API.Data.DeviceInfo.FromJson(json);
                             if (devices != null && devices.Count > 0)
                             {
                                 foreach (var device in devices)
@@ -285,50 +284,94 @@ namespace TrakHound.Servers.DataStorage
 
                                     var info = DeviceInfos[i];
 
-                                    info.Status = device.Status;
-                                    info.Controller = device.Controller;
+                                    API.Data.StatusInfo status = null;
+                                    //var controller = new API.Data.ControllerInfo();
+                                    //var hours = new List<API.Data.HourInfo>();
+                                    //var timers = new API.Data.TimersInfo();
+
+                                    object obj = null;
+
+                                    obj = device.GetClass("status");
+                                    if (obj != null)
+                                    {
+                                        info.AddClass("status", obj);
+                                        status = (API.Data.StatusInfo)obj;
+                                    }
+                                    //info.Status = device.Status;
+
+                                    obj = device.GetClass("controller");
+                                    if (obj != null) info.AddClass("controller", obj);
+                                    //info.Controller = device.Controller;
+
+                                    //obj = device.GetClass("timers");
+                                    //if (obj != null) info.AddClass("timers", obj);
                                     //info.Timers = device.Timers;
 
                                     // Get HourInfos for current day
-                                    // info.Hours = info.Hours.FindAll(o => o.Date == DateTime.UtcNow.ToString(API.Data.HourInfo.DateFormat));
-                                    info.Hours = info.Hours.FindAll(o => TestHourDate(o));
+                                    List<API.Data.HourInfo> hours = null;
+                                    obj = info.GetClass("hours");
+                                    if (obj != null)
+                                    {
+                                        info.RemoveClass("hours");
+                                        hours = (List<API.Data.HourInfo>)obj;
+
+                                        hours = hours.FindAll(o => TestHourDate(o));
+                                    }
 
                                     // Add new HourInfo objects and then combine them into the current list
-                                    info.Hours.AddRange(device.Hours);
-                                    info.Hours = API.Data.HourInfo.CombineHours(info.Hours);
-
-                                    // Set DeviceInfo's OeeInfo to new values
-                                    info.Oee = API.Data.HourInfo.GetOeeInfo(info.Hours);
-
-                                    // Set DeviceInfo's TimersInfo to new values
-                                    info.Timers.Total = info.Hours.Select(o => o.TotalTime).Sum();
-
-                                    info.Timers.Active = info.Hours.Select(o => o.Active).Sum();
-                                    info.Timers.Idle = info.Hours.Select(o => o.Idle).Sum();
-                                    info.Timers.Alert = info.Hours.Select(o => o.Alert).Sum();
-
-                                    info.Timers.Production = info.Hours.Select(o => o.Production).Sum();
-                                    info.Timers.Setup = info.Hours.Select(o => o.Setup).Sum();
-                                    info.Timers.Teardown = info.Hours.Select(o => o.Teardown).Sum();
-                                    info.Timers.Maintenance = info.Hours.Select(o => o.Maintenance).Sum();
-                                    info.Timers.ProcessDevelopment = info.Hours.Select(o => o.ProcessDevelopment).Sum();
-
-                                    // Update Part Count
-                                    for (var x = 0; x < info.Hours.Count; x++)
+                                    obj = device.GetClass("hours");
+                                    if (obj != null)
                                     {
-                                        if (newInfo)
-                                        {
-                                            if (x < info.Hours.Count - 1 || info.Hours[x].TotalPieces == 0) info.Status.PartCount += info.Hours[x].TotalPieces;
-                                        }
-                                        else
-                                        {
-                                            info.Status.PartCount += info.Hours[x].TotalPieces;
-                                        }
-                                    }
-                                    //info.Status.PartCount = info.Hours.Select(o => o.TotalPieces).Sum();
-                                }
+                                        if (hours == null) hours = new List<API.Data.HourInfo>();
 
-                                response = "Devices Updated Successfully";
+                                        hours.AddRange((List<API.Data.HourInfo>)obj);
+                                        hours = API.Data.HourInfo.CombineHours(hours);
+                                    }
+
+                                    if (hours != null)
+                                    {
+                                        // Add Hours
+                                        info.AddClass("hours", hours);
+
+                                        // Add OEE
+                                        var oee = API.Data.HourInfo.GetOeeInfo(hours);
+                                        if (oee != null) info.AddClass("oee", oee);
+
+                                        // Add Timers
+                                        var timers = new API.Data.TimersInfo();
+                                        timers.Total = hours.Select(o => o.TotalTime).Sum();
+
+                                        timers.Active = hours.Select(o => o.Active).Sum();
+                                        timers.Idle = hours.Select(o => o.Idle).Sum();
+                                        timers.Alert = hours.Select(o => o.Alert).Sum();
+
+                                        timers.Production = hours.Select(o => o.Production).Sum();
+                                        timers.Setup = hours.Select(o => o.Setup).Sum();
+                                        timers.Teardown = hours.Select(o => o.Teardown).Sum();
+                                        timers.Maintenance = hours.Select(o => o.Maintenance).Sum();
+                                        timers.ProcessDevelopment = hours.Select(o => o.ProcessDevelopment).Sum();
+
+                                        info.AddClass("timers", timers);
+
+                                        // Set Part Count
+                                        if (status != null)
+                                        {
+                                            for (var x = 0; x < hours.Count; x++)
+                                            {
+                                                if (newInfo)
+                                                {
+                                                    if (x < hours.Count - 1 || hours[x].TotalPieces == 0) status.PartCount += hours[x].TotalPieces;
+                                                }
+                                                else
+                                                {
+                                                    status.PartCount += hours[x].TotalPieces;
+                                                }
+                                            }
+                                        }
+
+                                        response = "Devices Updated Successfully";
+                                    }
+                                }
                             }
                         }
                     }
@@ -337,6 +380,165 @@ namespace TrakHound.Servers.DataStorage
 
                 return response;
             }
+
+            //public static string Update(HttpListenerContext context)
+            //{
+            //    string response = null;
+
+            //    try
+            //    {
+            //        using (var reader = new StreamReader(context.Request.InputStream))
+            //        {
+            //            var body = reader.ReadToEnd();
+
+            //            string json = HTTP.GetPostValue(body, "devices");
+            //            if (!string.IsNullOrEmpty(json))
+            //            {
+            //                var devices = JSON.ToType<List<API.Data.DeviceInfo>>(json);
+            //                if (devices != null && devices.Count > 0)
+            //                {
+            //                    foreach (var device in devices)
+            //                    {
+            //                        bool newInfo = false;
+
+            //                        int i = DeviceInfos.FindIndex(o => o.UniqueId == device.UniqueId);
+            //                        if (i < 0)
+            //                        {
+            //                            DeviceInfos.Add(device);
+            //                            i = DeviceInfos.FindIndex(o => o.UniqueId == device.UniqueId);
+            //                            newInfo = true;
+            //                        }
+
+            //                        var info = DeviceInfos[i];
+
+            //                        API.Data.StatusInfo status = null;
+            //                        //var controller = new API.Data.ControllerInfo();
+            //                        //var hours = new List<API.Data.HourInfo>();
+            //                        //var timers = new API.Data.TimersInfo();
+
+            //                        object obj = null;
+
+            //                        obj = device.GetClass("status");
+            //                        if (obj != null)
+            //                        {
+            //                            info.AddClass("status", obj);
+            //                            status = (API.Data.StatusInfo)obj;
+            //                        }
+            //                        //info.Status = device.Status;
+
+            //                        obj = device.GetClass("controller");
+            //                        if (obj != null) info.AddClass("controller", obj);
+            //                        //info.Controller = device.Controller;
+
+            //                        //obj = device.GetClass("timers");
+            //                        //if (obj != null) info.AddClass("timers", obj);
+            //                        //info.Timers = device.Timers;
+
+            //                        // Get HourInfos for current day
+            //                        List<API.Data.HourInfo> hours = null;
+            //                        obj = info.GetClass("hours");
+            //                        if (obj != null)
+            //                        {
+            //                            info.RemoveClass("hours");
+            //                            hours = (List<API.Data.HourInfo>)obj;
+
+            //                            hours = hours.FindAll(o => TestHourDate(o));
+            //                        }
+
+            //                        // Add new HourInfo objects and then combine them into the current list
+            //                        obj = info.GetClass("hours");
+            //                        if (obj != null)
+            //                        {
+            //                            if (hours == null) hours = new List<API.Data.HourInfo>();
+
+            //                            hours.AddRange((List<API.Data.HourInfo>)obj);
+            //                            hours = API.Data.HourInfo.CombineHours(hours);
+            //                        }
+
+            //                        if (hours != null)
+            //                        {
+            //                            // Add OEE
+            //                            var oee = API.Data.HourInfo.GetOeeInfo(hours);
+            //                            if (oee != null) info.AddClass("oee", oee);
+
+            //                            // Add Timers
+            //                            var timers = new API.Data.TimersInfo();
+            //                            timers.Total = hours.Select(o => o.TotalTime).Sum();
+
+            //                            timers.Active = hours.Select(o => o.Active).Sum();
+            //                            timers.Idle = hours.Select(o => o.Idle).Sum();
+            //                            timers.Alert = hours.Select(o => o.Alert).Sum();
+
+            //                            timers.Production = hours.Select(o => o.Production).Sum();
+            //                            timers.Setup = hours.Select(o => o.Setup).Sum();
+            //                            timers.Teardown = hours.Select(o => o.Teardown).Sum();
+            //                            timers.Maintenance = hours.Select(o => o.Maintenance).Sum();
+            //                            timers.ProcessDevelopment = hours.Select(o => o.ProcessDevelopment).Sum();
+
+            //                            // Set Part Count
+            //                            if (status != null)
+            //                            {
+            //                                for (var x = 0; x < hours.Count; x++)
+            //                                {
+            //                                    if (newInfo)
+            //                                    {
+            //                                        if (x < hours.Count - 1 || hours[x].TotalPieces == 0) status.PartCount += hours[x].TotalPieces;
+            //                                    }
+            //                                    else
+            //                                    {
+            //                                        status.PartCount += hours[x].TotalPieces;
+            //                                    }
+            //                                }
+            //                            }
+
+
+            //                                // info.Hours = info.Hours.FindAll(o => o.Date == DateTime.UtcNow.ToString(API.Data.HourInfo.DateFormat));
+            //                                //info.Hours = info.Hours.FindAll(o => TestHourDate(o));
+
+
+            //                                //info.Hours.AddRange(device.Hours);
+            //                                //info.Hours = API.Data.HourInfo.CombineHours(info.Hours);
+
+            //                                // Set DeviceInfo's OeeInfo to new values
+            //                                //info.Oee = API.Data.HourInfo.GetOeeInfo(info.Hours);
+
+            //                                // Set DeviceInfo's TimersInfo to new values
+            //                                //info.Timers.Total = info.Hours.Select(o => o.TotalTime).Sum();
+
+            //                                //info.Timers.Active = info.Hours.Select(o => o.Active).Sum();
+            //                                //info.Timers.Idle = info.Hours.Select(o => o.Idle).Sum();
+            //                                //info.Timers.Alert = info.Hours.Select(o => o.Alert).Sum();
+
+            //                                //info.Timers.Production = info.Hours.Select(o => o.Production).Sum();
+            //                                //info.Timers.Setup = info.Hours.Select(o => o.Setup).Sum();
+            //                                //info.Timers.Teardown = info.Hours.Select(o => o.Teardown).Sum();
+            //                                //info.Timers.Maintenance = info.Hours.Select(o => o.Maintenance).Sum();
+            //                                //info.Timers.ProcessDevelopment = info.Hours.Select(o => o.ProcessDevelopment).Sum();
+
+            //                                // Update Part Count
+            //                                //for (var x = 0; x < info.Hours.Count; x++)
+            //                                //{
+            //                                //    if (newInfo)
+            //                                //    {
+            //                                //        if (x < info.Hours.Count - 1 || info.Hours[x].TotalPieces == 0) info.Status.PartCount += info.Hours[x].TotalPieces;
+            //                                //    }
+            //                                //    else
+            //                                //    {
+            //                                //        info.Status.PartCount += info.Hours[x].TotalPieces;
+            //                                //    }
+
+            //                        //info.Status.PartCount = info.Hours.Select(o => o.TotalPieces).Sum();
+
+
+            //                    response = "Devices Updated Successfully";
+            //                }
+            //            }
+            //        }
+            //    }
+            //    catch (Exception ex) { Logger.Log("Error Updating Local Server Data :: " + ex.Message, LogLineType.Error); }
+
+            //    return response;
+            //}
 
             private static bool TestHourDate(API.Data.HourInfo hourInfo)
             {

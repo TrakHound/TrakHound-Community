@@ -57,7 +57,7 @@
             <Color x:Key="inside">#22000000</Color>
             <GradientStopCollection x:Key="gradient">
                 <GradientStop Color="#00000000" Offset="1"/>
-                <GradientStop Color="{DynamicResource inside}" Offset="0.1"/>
+                <GradientStop Color="{StaticResource inside}" Offset="0.1"/>
             </GradientStopCollection>
         </Grid.Resources>
         <Grid.RowDefinitions>
@@ -100,20 +100,20 @@
             
         <Rectangle Grid.Column="0">
                 <Rectangle.Fill>
-                    <RadialGradientBrush Center="1,1" RadiusX="1" RadiusY="1" GradientOrigin="1,1" GradientStops="{DynamicResource gradient}" />
+                    <RadialGradientBrush Center="1,1" RadiusX="1" RadiusY="1" GradientOrigin="1,1" GradientStops="{StaticResource gradient}" />
                 </Rectangle.Fill>
             </Rectangle>
         
 
             <Rectangle Grid.Column="1">
                 <Rectangle.Fill>
-                    <LinearGradientBrush EndPoint="0,0" MappingMode="RelativeToBoundingBox" StartPoint="0,1" GradientStops="{DynamicResource gradient}" />
+                    <LinearGradientBrush EndPoint="0,0" MappingMode="RelativeToBoundingBox" StartPoint="0,1" GradientStops="{StaticResource gradient}" />
                 </Rectangle.Fill>
             </Rectangle>
 
             <Rectangle Grid.Column="2">
                 <Rectangle.Fill>
-                    <RadialGradientBrush Center="0,1" RadiusX="1" RadiusY="1" GradientOrigin="0,1" GradientStops="{DynamicResource gradient}" />
+                    <RadialGradientBrush Center="0,1" RadiusX="1" RadiusY="1" GradientOrigin="0,1" GradientStops="{StaticResource gradient}" />
                 </Rectangle.Fill>
             </Rectangle>
 
@@ -133,7 +133,7 @@
 
             <Rectangle Grid.Column="0">
                 <Rectangle.Fill>
-                    <LinearGradientBrush EndPoint="0,0" MappingMode="RelativeToBoundingBox" StartPoint="1,0" GradientStops="{DynamicResource gradient}" />
+                    <LinearGradientBrush EndPoint="0,0" MappingMode="RelativeToBoundingBox" StartPoint="1,0" GradientStops="{StaticResource gradient}" />
                 </Rectangle.Fill>
             </Rectangle>
 
@@ -447,13 +447,13 @@
 
             <Rectangle Grid.Column="0">
                 <Rectangle.Fill>
-                    <RadialGradientBrush Center="1,0" RadiusX="1" RadiusY="1" GradientOrigin="1,0" GradientStops="{DynamicResource gradient}" />
+                    <RadialGradientBrush Center="1,0" RadiusX="1" RadiusY="1" GradientOrigin="1,0" GradientStops="{StaticResource gradient}" />
                 </Rectangle.Fill>
             </Rectangle>
 
             <Rectangle Grid.Column="1">
                 <Rectangle.Fill>
-                    <LinearGradientBrush EndPoint="0,1" MappingMode="RelativeToBoundingBox" StartPoint="0,0" GradientStops="{DynamicResource gradient}" />
+                    <LinearGradientBrush EndPoint="0,1" MappingMode="RelativeToBoundingBox" StartPoint="0,0" GradientStops="{StaticResource gradient}" />
                 </Rectangle.Fill>
             </Rectangle>
 

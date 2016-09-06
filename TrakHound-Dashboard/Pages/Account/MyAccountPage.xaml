@@ -19,8 +19,6 @@
 
     </UserControl.Resources>
 
-    <!--<ScrollViewer VerticalScrollBarVisibility="Auto">-->
-
     <StackPanel >
 
         <!--Description-->
@@ -36,15 +34,15 @@
                 </Style>
             </StackPanel.Style>
 
-            <TextBlock Foreground="{StaticResource Foreground_Light}" TextWrapping="Wrap" Margin="0,0,0,5" MaxWidth="600" HorizontalAlignment="Left">
+            <TextBlock Foreground="{StaticResource Text}" TextWrapping="Wrap" Margin="0,0,0,5" MaxWidth="600" HorizontalAlignment="Left">
                 Create a Free TrakHound User Account so you can easily reach your devices from anywhere, remotely manage your configurations, and much more!
             </TextBlock>
 
-            <TextBlock Foreground="{StaticResource Foreground_Light}" TextWrapping="Wrap" Margin="0,0,0,5" MaxWidth="600" HorizontalAlignment="Left">
+            <TextBlock Foreground="{StaticResource Text}" TextWrapping="Wrap" Margin="0,0,0,5" MaxWidth="600" HorizontalAlignment="Left">
                 Enter only the information you want below, all we require is a username and a secure password.
             </TextBlock>
 
-            <TextBlock Foreground="{StaticResource Foreground_Light}" TextWrapping="Wrap" Margin="0,0,0,20" MaxWidth="600" HorizontalAlignment="Left">
+            <TextBlock Foreground="{StaticResource Text}" TextWrapping="Wrap" Margin="0,0,0,20" MaxWidth="600" HorizontalAlignment="Left">
                 If you enter your contact information we will only use it to contact you if you have requested assistance from us, we need to inform you about information regarding your account, or we have an update to our policies.
             </TextBlock>
 
@@ -139,8 +137,8 @@
 
                     <!--Username-->
                     <StackPanel Margin="0,20,0,10">
-                        <TextBlock Text="Username" Foreground="{StaticResource Foreground_Light}" FontSize="10pt" Margin="0,0,0,5"/>
-                        <TextBlock Text="{Binding CurrentUser.Username, Converter={StaticResource uppercaseConverter}}" FontSize="14pt" Foreground="{StaticResource Accent_Normal}"/>
+                        <TextBlock Text="Username" Foreground="{StaticResource Text}" FontSize="10pt" Margin="0,0,0,5"/>
+                        <TextBlock Text="{Binding CurrentUser.Username, Converter={StaticResource uppercaseConverter}}" FontSize="14pt" Foreground="{StaticResource Text}"/>
                     </StackPanel>
 
                     <!--Password-->
@@ -324,7 +322,7 @@
 
 
                     <!--Country-->
-                    <TextBlock Text="Country" Foreground="{StaticResource Foreground_Normal}" Margin="0,0" FontSize="12pt"/>
+                    <TextBlock Text="Country" Foreground="{StaticResource Text}" Margin="0,0" FontSize="12pt"/>
 
                     <ComboBox x:Name="country_COMBO" Height="35" Margin="0,5,15,5" ItemsSource="{Binding CountryList}" SelectionChanged="country_COMBO_SelectionChanged" VerticalContentAlignment="Center" FontSize="14" IsTextSearchEnabled="True" IsEditable="True"/>
 
@@ -341,7 +339,7 @@
                             </Style>
                         </StackPanel.Style>
 
-                        <TextBlock Text="State" Foreground="{StaticResource Foreground_Normal}" Margin="0,0" FontSize="12pt"/>
+                        <TextBlock Text="State" Foreground="{StaticResource Text}" Margin="0,0" FontSize="12pt"/>
 
                         <ComboBox x:Name="state_COMBO" Height="35" Margin="0,5,15,5" ItemsSource="{Binding StateList}" VerticalContentAlignment="Center" FontSize="14" IsTextSearchEnabled="True" IsEditable="True"/>
 
@@ -386,7 +384,7 @@
                     <!--Required-->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 
-                        <TextBlock Text="Required Fields are indicated with" Foreground="{StaticResource Foreground_Light}" FontSize="8pt" VerticalAlignment="Center"/>
+                        <TextBlock Text="Required Fields are indicated with" Foreground="{StaticResource Text}" FontSize="8pt" VerticalAlignment="Center"/>
 
                         <TextBlock Text="*" Foreground="Red" FontSize="16pt" Margin="5,7,0,0"/>
 
@@ -402,7 +400,7 @@
                         <!--Privacy Policy Statement-->
                         <Grid Margin="0,0,0,10">
 
-                            <TextBlock TextWrapping="Wrap" Foreground="{StaticResource Foreground_Light}" FontSize="8pt">
+                            <TextBlock TextWrapping="Wrap" Foreground="{StaticResource Text}" FontSize="8pt">
                                     <Run Text="By clicking"/>
                                     <Run>
                                         <Run.Style>
@@ -482,13 +480,13 @@
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
 
                         <!--Loading Wheel-->
-                        <ui:Spinner Height="30" Width="30" Foreground="{StaticResource Accent_Normal}" Margin="0,0,20,0"/>
+                        <ui:Spinner Height="30" Width="30" Foreground="{StaticResource Spinner}" Margin="0,0,20,0"/>
 
                         <!--Saving Text-->
                         <StackPanel>
 
-                            <TextBlock Text="Saving" Foreground="{StaticResource Foreground_Normal}"/>
-                            <TextBlock Text="Please wait.." Foreground="{StaticResource Foreground_Light}"/>
+                            <TextBlock Text="Saving" Foreground="{StaticResource Text}"/>
+                            <TextBlock Text="Please wait.." Foreground="{StaticResource Text}"/>
 
                         </StackPanel>
 

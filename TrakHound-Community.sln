@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server-Login", "Server-Logi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Device-Manager", "Device-Manager\Device-Manager.csproj", "{0EB86538-7605-4BFB-8535-BDAAFEDFBF21}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApplication1", "WpfApplication1\WpfApplication1.csproj", "{E0BD0E97-3EFC-4AB6-8812-7AE7F10491BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,12 @@ Global
 		{0EB86538-7605-4BFB-8535-BDAAFEDFBF21}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0EB86538-7605-4BFB-8535-BDAAFEDFBF21}.Server|Any CPU.ActiveCfg = Release|Any CPU
 		{0EB86538-7605-4BFB-8535-BDAAFEDFBF21}.Server|Any CPU.Build.0 = Release|Any CPU
+		{E0BD0E97-3EFC-4AB6-8812-7AE7F10491BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0BD0E97-3EFC-4AB6-8812-7AE7F10491BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0BD0E97-3EFC-4AB6-8812-7AE7F10491BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0BD0E97-3EFC-4AB6-8812-7AE7F10491BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0BD0E97-3EFC-4AB6-8812-7AE7F10491BA}.Server|Any CPU.ActiveCfg = Release|Any CPU
+		{E0BD0E97-3EFC-4AB6-8812-7AE7F10491BA}.Server|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,5 +95,6 @@ Global
 		{9837E557-8123-4B5F-8B99-B8926F92479C} = {403377D6-8033-4587-B1D5-D77D22B3B628}
 		{00EA8291-3359-4BFB-ADA3-BA7B70B312BC} = {403377D6-8033-4587-B1D5-D77D22B3B628}
 		{0EB86538-7605-4BFB-8535-BDAAFEDFBF21} = {403377D6-8033-4587-B1D5-D77D22B3B628}
+		{E0BD0E97-3EFC-4AB6-8812-7AE7F10491BA} = {9B44A03C-062B-4CA6-AFF4-DBA5EEEF46CC}
 	EndGlobalSection
 EndGlobal

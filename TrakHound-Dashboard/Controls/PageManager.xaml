@@ -37,9 +37,9 @@
 
                 <ScrollViewer VerticalScrollBarVisibility="Auto" PanningMode="Both">
 
-                    <ItemsControl ItemsSource="{Binding Pages}" Margin="0,40">
+                    <ItemsControl ItemsSource="{Binding Pages}">
                         <ItemsControl.Resources>
-                            <Style TargetType="ui:ListButton" BasedOn="{StaticResource ListButton_PageList}">
+                            <Style TargetType="ui:ListButton" BasedOn="{StaticResource {x:Type ui:ListButton}}">
                                 <Setter Property="MinWidth" Value="150"/>
                             </Style>
                         </ItemsControl.Resources>
@@ -49,9 +49,9 @@
 
             </Border>
 
-            <Border Grid.Column="1" BorderBrush="{StaticResource Accent_Dark}" BorderThickness="1">
+            <Border Grid.Column="1" BorderBrush="#aaa" BorderThickness="1,0,0,0">
 
-                <Grid Background="{StaticResource Window_Background}" >
+                <Grid Background="{StaticResource Background}" >
 
                     <Grid Margin="40,0,0,0">
                         <Grid.RowDefinitions>
@@ -76,7 +76,7 @@
                                         <Style TargetType="Grid">
                                             <Setter Property="Visibility" Value="Visible"/>
                                             <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                            <Setter Property="Background" Value="{StaticResource Foreground_Normal}"/>
+                                            <Setter Property="Background" Value="{StaticResource Text}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding PageContent.Image}" Value="{x:Null}">
                                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -87,11 +87,11 @@
                                 </Grid>
 
                                 <!--Title-->
-                                <TextBlock Text="{Binding PageContent.Title}" Foreground="{StaticResource Foreground_Normal}" FontSize="30" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding PageContent.Title}" Foreground="{StaticResource Text}" FontSize="30" VerticalAlignment="Center"/>
 
                             </StackPanel>
 
-                            <Rectangle Grid.Row="1" Fill="{StaticResource Shade_Normal}" Height="0.5" Margin="0,5"/>
+                            <Rectangle Grid.Row="1" Fill="{StaticResource Border}" Height="0.5" Margin="0,5"/>
 
                         </Grid>
 

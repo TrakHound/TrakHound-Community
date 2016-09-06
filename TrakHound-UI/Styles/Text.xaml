@@ -13,7 +13,6 @@
     <SolidColorBrush x:Key="VeryLightText" Color="{StaticResource VeryLightText_Color}" />
     <SolidColorBrush x:Key="VeryVeryLightText" Color="{StaticResource VeryVeryLightText_Color}" />-->
     
-    <!--Fonts-->
-    <FontFamily x:Key="RobotoFont">/TrakHound-UI;component/Fonts/#DS-Digital</FontFamily>
+
 
 </ResourceDictionary>

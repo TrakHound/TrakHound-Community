@@ -45,6 +45,160 @@
                                     <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding DeviceStatus}" Value="Idle">
+                                    <Setter Property="Background" Value="{StaticResource StatusOrange}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
+                                    <Setter Property="Background" Value="{StaticResource StatusRed}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Connected}" Value="false">
+                                    <Setter Property="Background" Value="{StaticResource Disabled}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <Border.ToolTip>
+                        <StackPanel MaxWidth="300">
+                            <TextBlock Text="Device Status" FontWeight="Bold"/>
+                            <TextBlock TextWrapping="Wrap">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
+                                                <Setter Property="Text" Value="Device is currently Active"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding DeviceStatus}" Value="Idle">
+                                                <Setter Property="Text" Value="Device is currently Idle"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
+                                                <Setter Property="Text" Value="Device currently needs Attention"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border.ToolTip>
+
+                    <Rectangle HorizontalAlignment="Center" VerticalAlignment="Center" Fill="White">
+                        <Rectangle.Style>
+                            <Style TargetType="Rectangle">
+                                <Setter Property="Height" Value="20"/>
+                                <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"/>
+                                <Setter Property="Margin" Value="0"/>
+                                <Setter Property="OpacityMask" Value="{StaticResource Power_IMG}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Connected}" Value="true">
+                                        <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding DeviceStatus}" Value="Idle">
+                                        <Setter Property="OpacityMask" Value="{StaticResource Idle_IMG}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
+                                        <Setter Property="OpacityMask" Value="{StaticResource Active_IMG}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Rectangle.Style>
+                    </Rectangle>
+
+                </Border>
+
+                <!--Description-->
+                <Border Grid.Column="1" BorderBrush="#ccc" BorderThickness="0,0,1,0" Background="Transparent">
+                    <Border.ToolTip>
+                        <StackPanel Width="300">
+                            <StackPanel.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontSize" Value="12"/>
+                                    <Setter Property="Margin" Value="0,2"/>
+                                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                                </Style>
+                            </StackPanel.Resources>
+
+                            <TextBlock Text="{Binding Configuration.Description.Description}" Foreground="{StaticResource Foreground_Normal}" FontSize="14" FontWeight="Bold" TextWrapping="Wrap"/>
+
+                            <TextBlock>
+                                <Run Text="Manufacturer :" Foreground="{StaticResource Foreground_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Manufacturer}" Foreground="{StaticResource Foreground_Normal}"/>
+                            </TextBlock>
+
+                            <TextBlock>
+                                <Run Text="Model :" Foreground="{StaticResource Foreground_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Model}" Foreground="{StaticResource Foreground_Normal}"/>
+                            </TextBlock>
+
+                            <TextBlock>
+                                <Run Text="Serial :" Foreground="{StaticResource Foreground_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Serial}" Foreground="{StaticResource Foreground_Normal}"/>
+                            </TextBlock>
+
+                            <TextBlock>
+                                <Run Text="Controller :" Foreground="{StaticResource Foreground_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Controller}" Foreground="{StaticResource Foreground_Normal}"/>
+                            </TextBlock>
+
+                            <TextBlock>
+                                <Run Text="Location :" Foreground="{StaticResource Foreground_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Location}" Foreground="{StaticResource Foreground_Normal}"/>
+                            </TextBlock>
+
+                        </StackPanel>
+
+                    </Border.ToolTip>
+
+                    <StackPanel VerticalAlignment="Center" Margin="10,2">
+                        <StackPanel.Resources>
+                            <Style TargetType="TextBlock">
+                                <Style.Triggers>
+                                    <Trigger Property="Text" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </Trigger>
+                                    <Trigger Property="Text" Value="">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Resources>
+
+                        <!--Device Description-->
+                        <TextBlock Text="{Binding Configuration.Description.Description}" Foreground="{StaticResource Foreground_Normal}" FontSize="10"  Margin="0,2" HorizontalAlignment="Left"/>
+
+                        <!--Manufacturer-->
+                        <TextBlock Foreground="{StaticResource Foreground_Normal}" FontSize="12" FontWeight="Bold" Margin="0,2" HorizontalAlignment="Left">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Configuration.Description.Manufacturer}" Value="{x:Null}"/>
+                                                <Condition Binding="{Binding Configuration.Description.Model}" Value="{x:Null}"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                            <Run Text="{Binding Configuration.Description.Manufacturer}"/>
+                            <Run Text="{Binding Configuration.Description.Model}"/>
+                        </TextBlock>
+
+                        <!--Serial-->
+                        <TextBlock Text="{Binding Configuration.Description.Serial}" Foreground="{StaticResource Foreground_Normal}" FontSize="10" Margin="0,2" HorizontalAlignment="Left"/>
+
+                    </StackPanel>
+
+                </Border>
+
+
+                <!--Status Indicator-->
+                <!--<Border Grid.Column="0" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
+                                    <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding DeviceStatus}" Value="Idle">
                                     <Setter Property="Background" Value="{StaticResource StatusYellow}"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
@@ -98,10 +252,10 @@
                         </Rectangle.Style>
                     </Rectangle>
 
-                </Border>
+                </Border>-->
 
                 <!--Mouse Over Panel w/ ToolTip-->
-                <Border Grid.Column="0">
+                <!--<Border Grid.Column="0">
                     <Border.ToolTip>
                         <StackPanel MaxWidth="300">
                             <TextBlock Text="Device Status" FontWeight="Bold"/>
@@ -134,11 +288,11 @@
                             </Style.Triggers>
                         </Style>
                     </Border.Style>
-                </Border>
+                </Border>-->
 
 
                 <!--Description-->
-                <Border Grid.Column="1" Background="Transparent" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                <!--<Border Grid.Column="1" Background="Transparent" BorderBrush="#ccc" BorderThickness="0,0,1,0">
                     <Border.ToolTip>
                         <StackPanel Width="300">
                             <StackPanel.Resources>
@@ -195,10 +349,10 @@
                             </Style>
                         </StackPanel.Resources>
 
-                        <!--Device Description-->
+                        --><!--Device Description--><!--
                         <TextBlock Text="{Binding Configuration.Description.Description}" Foreground="{StaticResource Foreground_Normal}" FontSize="10"  Margin="0,2" HorizontalAlignment="Left"/>
 
-                        <!--Manufacturer-->
+                        --><!--Manufacturer--><!--
                         <TextBlock Foreground="{StaticResource Foreground_Normal}" FontSize="12" FontWeight="Bold" Margin="0,2" HorizontalAlignment="Left">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
@@ -217,12 +371,12 @@
                             <Run Text="{Binding Configuration.Description.Model}"/>
                         </TextBlock>
                         
-                        <!--Serial-->
+                        --><!--Serial--><!--
                         <TextBlock Text="{Binding Configuration.Description.Serial}" Foreground="{StaticResource Foreground_Normal}" FontSize="10" Margin="0,2" HorizontalAlignment="Left"/>
 
                     </StackPanel>
 
-                </Border>
+                </Border>-->
 
                 <!--Mouse Over Panel w/ ToolTip-->
                 <!--<Border Grid.Column="1">

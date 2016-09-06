@@ -12,7 +12,7 @@
     <StackPanel>
         
         <!--Database Read Interval-->
-        <ui:TimeSlider Title="Database Read Interval" 
+        <ui:TimeSlider Title="Device Data Read Interval" 
                 HelpText="Sets the interval that the database is read from"
                 Value="{Binding DatabaseReadInterval, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 Maximum="30000" Minimum="500" LargeChange="500" TickFrequency="500"

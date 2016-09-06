@@ -23,7 +23,7 @@
         <StackPanel Orientation="Horizontal" Margin="0,20,0,10">
 
             <!--Title-->
-            <TextBlock Text="Log Types" Foreground="{StaticResource Foreground_Normal}" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
+            <TextBlock Text="Log Types" Foreground="{StaticResource Text}" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
 
             <!--Help-->
             <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
@@ -55,10 +55,10 @@
                 <Rectangle.Style>
                     <Style TargetType="Rectangle">
                         <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                        <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
+                        <Setter Property="Fill" Value="{StaticResource TrakHound_Blue}"/>
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Fill" Value="{StaticResource Accent_Light}"/>
+                                <Setter Property="Fill" Value="{StaticResource TrakHound_LightBlue}"/>
                             </Trigger>
                         </Style.Triggers>
                     </Style>
@@ -69,7 +69,7 @@
         </StackPanel>
 
         <!--Log Types-->
-        <Border Margin="0,0" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" CornerRadius="2" HorizontalAlignment="Left">
+        <Border Margin="0,0" BorderBrush="{StaticResource Border}" BorderThickness="1" CornerRadius="2" HorizontalAlignment="Left">
 
             <StackPanel Margin="20,10">
 

@@ -7,7 +7,7 @@
              xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
              >
 
-    <Border Name="bd" Background="#00000000">
+    <Border Name="bd" Background="Transparent">
 
         <Grid>
             <Grid.ColumnDefinitions>
@@ -22,7 +22,7 @@
 
                     <Grid MinWidth="150">
 
-                        <TextBlock Text="{Binding ValueName}" FontSize="10pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,0,20,0"  VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        <TextBlock Text="{Binding ValueName}" FontSize="10pt" Foreground="{StaticResource Text}" Margin="0,0,20,0"  VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
                     </Grid>
 

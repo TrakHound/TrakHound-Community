@@ -234,7 +234,8 @@ namespace TrakHound_Device_Manager
             // Raise DeviceUpdated Event
             var args = new DeviceUpdateArgs();
             args.Event = DeviceUpdateEvent.Added;
-            UpdateDevice(config, args);
+            DeviceUpdated?.Invoke(config, args);
+            //UpdateDevice(config, args);
         }
 
         /// <summary>
@@ -255,7 +256,15 @@ namespace TrakHound_Device_Manager
         /// <param name="args">Tells what type of update took place</param>
         public void UpdateDevice(DeviceConfiguration config, DeviceUpdateArgs args)
         {
-            DeviceUpdated?.Invoke(config, args);
+            int i = Devices.FindIndex(o => o.UniqueId == config.UniqueId);
+            if (i >= 0)
+            {
+                Devices[i] = config;
+
+                DeviceUpdated?.Invoke(config, args);
+            }
+
+            //DeviceUpdated?.Invoke(config, args);
         }
 
         /// <summary>
@@ -439,7 +448,8 @@ namespace TrakHound_Device_Manager
                 // Raise DeviceUpdated Event
                 var args = new DeviceUpdateArgs();
                 args.Event = DeviceUpdateEvent.Removed;
-                UpdateDevice(config, args);
+                DeviceUpdated?.Invoke(config, args);
+                //UpdateDevice(config, args);
             }
         }
 

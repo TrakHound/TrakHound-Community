@@ -15,6 +15,7 @@ using TrakHound;
 using TrakHound.API;
 using TrakHound.API.Users;
 using TrakHound.Configurations;
+using TrakHound.Logging;
 using TrakHound.Tools;
 
 namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
@@ -560,25 +561,29 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
 
                 if (img != null)
                 {
-                    var bmp = new System.Drawing.Bitmap(img);
-                    if (bmp != null)
+                    try
                     {
-                        IntPtr bmpPt = bmp.GetHbitmap();
-                        result = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                        if (result != null)
+                        var bmp = new System.Drawing.Bitmap(img);
+                        if (bmp != null)
                         {
-                            if (result.PixelWidth > result.PixelHeight)
+                            IntPtr bmpPt = bmp.GetHbitmap();
+                            result = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                            if (result != null)
                             {
-                                result = Image_Functions.SetImageSize(result, 300);
-                            }
-                            else
-                            {
-                                result = Image_Functions.SetImageSize(result, 0, 80);
-                            }
+                                if (result.PixelWidth > result.PixelHeight)
+                                {
+                                    result = Image_Functions.SetImageSize(result, 300);
+                                }
+                                else
+                                {
+                                    result = Image_Functions.SetImageSize(result, 0, 80);
+                                }
 
-                            result.Freeze();
+                                result.Freeze();
+                            }
                         }
                     }
+                    catch (Exception ex) { Logger.Log("Error Loading Device Image :: " + ex.Message, LogLineType.Error); }
                 }
             }
 
@@ -618,25 +623,29 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
 
                 if (img != null)
                 {
-                    var bmp = new System.Drawing.Bitmap(img);
-                    if (bmp != null)
+                    try
                     {
-                        IntPtr bmpPt = bmp.GetHbitmap();
-                        result = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                        if (result != null)
+                        var bmp = new System.Drawing.Bitmap(img);
+                        if (bmp != null)
                         {
-                            if (result.PixelWidth > result.PixelHeight)
+                            IntPtr bmpPt = bmp.GetHbitmap();
+                            result = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                            if (result != null)
                             {
-                                result = Image_Functions.SetImageSize(result, 300);
-                            }
-                            else
-                            {
-                                result = Image_Functions.SetImageSize(result, 0, 150);
-                            }
+                                if (result.PixelWidth > result.PixelHeight)
+                                {
+                                    result = Image_Functions.SetImageSize(result, 300);
+                                }
+                                else
+                                {
+                                    result = Image_Functions.SetImageSize(result, 0, 150);
+                                }
 
-                            result.Freeze();
+                                result.Freeze();
+                            }
                         }
                     }
+                    catch (Exception ex) { Logger.Log("Error Loading Device Image :: " + ex.Message, LogLineType.Error); }
                 }
             }
 

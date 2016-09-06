@@ -26,7 +26,7 @@
             </StackPanel.Style>
 
             <!--Title-->
-            <TextBlock Text="{Binding Title}" Foreground="{StaticResource Foreground_Normal}" Margin="0,0,10,0" FontSize="{Binding FontSize}" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding Title}" Foreground="{DynamicResource Text}" Margin="0,0,10,0" FontSize="{Binding FontSize}" VerticalAlignment="Center"/>
 
             <!--Help-->
             <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
@@ -46,10 +46,10 @@
                 <Rectangle.Style>
                     <Style TargetType="Rectangle">
                         <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                        <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
+                        <Setter Property="Fill" Value="{StaticResource TrakHound_Blue}"/>
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Fill" Value="{StaticResource Accent_Light}"/>
+                                <Setter Property="Fill" Value="{StaticResource TrakHound_LightBlue}"/>
                             </Trigger>
                         </Style.Triggers>
                     </Style>
@@ -79,13 +79,13 @@
             <Border BorderThickness="1" CornerRadius="1" Margin="0,0,10,0" Background="#fff" MinWidth="75">
                 <Border.Style>
                     <Style TargetType="Border">
-                        <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
+                        <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource TrakHound_Blue}"/>
                             </Trigger>
                             <DataTrigger Binding="{Binding IsFocused, ElementName=value_TXT}" Value="true">
-                                <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource TrakHound_LightBlue}"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -95,7 +95,7 @@
 
                     <!--User Input-->
                     <TextBox Text="{Binding Value_Text}" 
-                            BorderThickness="0" Background="Transparent" Foreground="{StaticResource Foreground_Normal}"
+                            BorderThickness="0" Background="Transparent" Foreground="#333"
                             FontSize="{Binding FontSize}" Height="35"
                             VerticalAlignment="Center" VerticalContentAlignment="Center"
                             MaxLines="1" CaretBrush="Black"

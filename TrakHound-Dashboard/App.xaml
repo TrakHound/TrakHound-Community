@@ -4,11 +4,53 @@
              xmlns:local="clr-namespace:TrakHound_Dashboard"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TrakHound-UI;component/All.xaml" />
-                <ResourceDictionary Source="Styles/Colors.xaml" />
+                <ResourceDictionary x:Name="ThemeDictionary">
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="/TrakHound-UI;component/All.xaml" />
+                        <ResourceDictionary Source="/TrakHound-UI;component/Styles/Theme_Light.xaml" />
+                        <ResourceDictionary Source="Styles/Colors.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+
+                <!--Icons-->
+                <ResourceDictionary>
+
+                    <ImageBrush x:Key="Power_Large_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Power_01_100px.png"/>
+                    <ImageBrush x:Key="Power_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Power_01.png"  />
+                    <ImageBrush x:Key="Status_Normal_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/CheckMark_01.png" />
+                    
+                    <!--Device Status Icons-->
+                    <ImageBrush x:Key="Active_Large_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Active_01_100px.png" />
+                    <ImageBrush x:Key="Idle_Large_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Hourglass_01_100px.png" />
+                    <ImageBrush x:Key="Alert_Large_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Warning_01_100px.png" />
+                    <ImageBrush x:Key="Active_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Active_01.png" />
+                    <ImageBrush x:Key="Idle_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Hourglass_01.png" />
+                    <ImageBrush x:Key="Alert_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Warning_01.png" />
+
+                    <!--Production Status Icons-->
+                    <ImageBrush x:Key="Production_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Cycle_01.png" />
+                    <ImageBrush x:Key="Setup_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Carrot_Arrow_Up_01.png" />
+                    <ImageBrush x:Key="Teardown_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Carrot_Arrow_Down_01.png" />
+                    <ImageBrush x:Key="Maintenance_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/options_gear_30px.png" />
+                    <ImageBrush x:Key="ProcessDevelopment_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Lab_01.png" />
+
+                    <!--Controller Mode Icons-->
+                    <ImageBrush x:Key="Auto_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Auto_01.png" />
+                    <ImageBrush x:Key="SemiAuto_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/SingleBlock_01.png" />
+                    <ImageBrush x:Key="MDI_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/MDI_01.png" />
+                    <ImageBrush x:Key="Manual_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Manual_01.png" />
+                    <ImageBrush x:Key="Edit_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Edit_01.png" />
+
+                    <!--Emergency Stop Icon-->
+                    <ImageBrush x:Key="Estop_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Estop_02.png" />
+
+                </ResourceDictionary>
+
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
+
     </Application.Resources>
 </Application>

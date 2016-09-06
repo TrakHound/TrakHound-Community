@@ -37,7 +37,7 @@
             </StackPanel.Style>
 
             <!--Title-->
-            <TextBlock Text="{Binding Title}" Foreground="{StaticResource Foreground_Normal}" Margin="0,0,10,5" FontSize="12pt" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding Title}" Foreground="{DynamicResource Text}" Margin="0,0,10,5" FontSize="12pt" VerticalAlignment="Center"/>
 
             <!--Help-->
             <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
@@ -119,7 +119,7 @@
                 </Grid.Style>
                 
                 <!--Dashed Outline (Empty Image)-->
-                <Rectangle Stroke="{StaticResource Shade_Normal}" StrokeThickness="2" SnapsToDevicePixels="True" StrokeDashArray="2" Margin="2">
+                <Rectangle Stroke="{DynamicResource Border}" StrokeThickness="2" SnapsToDevicePixels="True" StrokeDashArray="2" Margin="2">
                     <Rectangle.Style>
                         <Style TargetType="Rectangle">
                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -155,7 +155,7 @@
                                 <Style TargetType="Border">
                                     <Setter Property="Opacity" Value="0.0"/>
                                     <Setter Property="Visibility" Value="Visible"/>
-                                    <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
                                     <Setter Property="BorderThickness" Value="1"/>
                                     <Style.Triggers>
 
@@ -211,7 +211,7 @@
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ImageSet}" Value="true">
                                             <Setter Property="Background" Value="#33ffffff"/>
-                                            <Setter Property="Foreground" Value="{StaticResource Foreground_Light}"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource Text}"/>
                                             <Setter Property="HorizontalAlignment" Value="Right"/>
                                             <Setter Property="VerticalAlignment" Value="Top"/>
                                             <Setter Property="Margin" Value="0,5,5,0"/>
@@ -224,8 +224,8 @@
                                                 <Condition Binding="{Binding ImageSet}" Value="true"/>
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Background" Value="#aaffffff"/>
-                                            <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                                            <Setter Property="BorderBrush" Value="{StaticResource Accent_Light}"/>             
+                                            <Setter Property="Foreground" Value="{DynamicResource TrakHound_Blue}"/>
+                                            <Setter Property="BorderBrush" Value="{StaticResource TrakHound_LightBlue}"/>             
                                         </MultiDataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -239,7 +239,7 @@
             </Grid>
 
             <!--Loading Animation-->
-            <Grid Background="{StaticResource Window_Background}">
+            <Grid Background="{DynamicResource Background}">
                 <Grid.Style>
                     <Style TargetType="Grid">
                         <Setter Property="Opacity" Value="0.0"/>
@@ -280,7 +280,7 @@
 
                     <local:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="40" Height="40" Foreground="{StaticResource TrakHound_Blue}" />
 
-                    <TextBlock Text="{Binding LoadingText}" Foreground="{StaticResource Accent_Normal}" FontSize="10pt" Margin="0,10,0,0"/>
+                    <TextBlock Text="{Binding LoadingText}" Foreground="{DynamicResource Text}" FontSize="10pt" Margin="0,10,0,0"/>
 
                 </StackPanel>
 

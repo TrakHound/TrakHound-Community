@@ -22,28 +22,17 @@
         </Grid.RowDefinitions>
 
         <!--Tool Bar-->
-        <Border Grid.Row="0" Background="{StaticResource Accent_Normal}">
+        <Border Grid.Row="0" BorderBrush="#aaa" BorderThickness="0,0,0,1">
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
                 <StackPanel.Resources>
-                    <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Opposite_Foreground}">
-                        <!--<Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>-->
-                        <!--<Setter Property="Background" Value="Transparent"/>-->
-                        <!--<Setter Property="FontSize" Value="12"/>-->
+                    <Style TargetType="ui:Button" BasedOn="{StaticResource ToolBar_Button}">
                         <Setter Property="Height" Value="30"/>
                         <Setter Property="Margin" Value="1,2"/>
                         <Setter Property="Padding" Value="5"/>
-                        <!--<Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Foreground" Value="{StaticResource Shade_Normal}"/>
-                            </Trigger>
-                        </Style.Triggers>-->
                     </Style>
                     <Style TargetType="Rectangle">
-                        <Setter Property="Fill" Value="{StaticResource Shade_Light}"/>
+                        <Setter Property="Fill" Value="#aaa"/>
                         <Setter Property="Width" Value="1"/>
                         <Setter Property="Margin" Value="5,2"/>
                     </Style>
@@ -53,27 +42,27 @@
                 <Grid>
 
                     <!--Save Button-->
-                    <Grid Margin="0">
-                        <Grid.Style>
-                            <Style TargetType="Grid">
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="Opacity" Value="0.3"/>
+                    <ui:Button Text="Save" Clicked="Save_Clicked" Padding="10,5" Image="/TrakHound-Device-Manager;component/Resources/Disk_01.png">
+                        <ui:Button.Style>
+                            <Style TargetType="ui:Button" BasedOn="{StaticResource ToolBar_Button}">
                                 <Setter Property="IsEnabled" Value="false"/>
                                 <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Saving}" Value="true">
+                                        <Setter Property="Visibility" Value="Hidden"/>
+                                    </DataTrigger>
                                     <DataTrigger Binding="{Binding SaveNeeded}" Value="true">
-                                        <Setter Property="Opacity" Value="1.0"/>
                                         <Setter Property="IsEnabled" Value="true"/>
                                         <DataTrigger.EnterActions>
                                             <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="Background.Color">
+                                                <Storyboard FillBehavior="Stop">
+                                                    <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground.Color">
                                                         <ColorAnimationUsingKeyFrames.KeyFrames>
-                                                            <DiscreteColorKeyFrame KeyTime="0:0:0" Value="#66ffffff"/>
-                                                            <DiscreteColorKeyFrame KeyTime="0:0:0.5" Value="#00000000"/>
-                                                            <DiscreteColorKeyFrame KeyTime="0:0:1" Value="#66ffffff"/>
-                                                            <DiscreteColorKeyFrame KeyTime="0:0:1.5" Value="#00000000"/>
-                                                            <DiscreteColorKeyFrame KeyTime="0:0:2" Value="#66ffffff"/>
-                                                            <DiscreteColorKeyFrame KeyTime="0:0:2.5" Value="#00000000"/>
+                                                            <DiscreteColorKeyFrame KeyTime="0:0:0" Value="{StaticResource TrakHound_Blue_Color}"/>
+                                                            <DiscreteColorKeyFrame KeyTime="0:0:0.25" Value="{StaticResource Text_Color}"/>
+                                                            <DiscreteColorKeyFrame KeyTime="0:0:0.5" Value="{StaticResource TrakHound_Blue_Color}"/>
+                                                            <DiscreteColorKeyFrame KeyTime="0:0:0.75" Value="{StaticResource Text_Color}"/>
+                                                            <DiscreteColorKeyFrame KeyTime="0:0:1" Value="{StaticResource TrakHound_Blue_Color}"/>
+                                                            <DiscreteColorKeyFrame KeyTime="0:0:1.25" Value="{StaticResource Text_Color}"/>
                                                         </ColorAnimationUsingKeyFrames.KeyFrames>
                                                     </ColorAnimationUsingKeyFrames>
                                                 </Storyboard>
@@ -82,14 +71,11 @@
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </Grid.Style>
-
-                        <ui:Button Text="Save" Clicked="Save_Clicked" Padding="10,5" Image="/TrakHound-Device-Manager;component/Resources/Disk_01.png"/>
-
-                    </Grid>
+                        </ui:Button.Style>
+                    </ui:Button>
 
                     <!--Saving Animation-->
-                    <Grid Background="{StaticResource Accent_Normal}">
+                    <Grid>
                         <Grid.Style>
                             <Style TargetType="Grid">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -104,10 +90,10 @@
                         <StackPanel Orientation="Horizontal" Margin="0,5">
 
                             <!--Animation-->
-                            <ui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="20" Height="20" Foreground="{StaticResource Foreground_Opposite_Normal}" Margin="5,0" />
+                            <ui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="20" Height="20" Foreground="{StaticResource Spinner}" Margin="5,0" />
 
                             <!--Text-->
-                            <TextBlock Text="Saving.." Foreground="{StaticResource Foreground_Opposite_Normal}" FontSize="12" VerticalAlignment="Center" Margin="5,0,10,0"/>
+                            <TextBlock Text="Saving.." Foreground="{StaticResource Text}" FontSize="10" VerticalAlignment="Center" Margin="5,0,10,0"/>
 
                         </StackPanel>
 
@@ -136,13 +122,13 @@
             </Grid.ColumnDefinitions>
 
             <!--Page List-->
-            <Grid Background="{StaticResource Accent_Normal}">
+            <Grid >
 
                 <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
                     
-                    <ItemsControl ItemsSource="{Binding PageList}" Margin="5,0" HorizontalAlignment="Center">
+                    <ItemsControl ItemsSource="{Binding PageList}" Margin="0,0" HorizontalAlignment="Center">
                         <ItemsControl.Resources>
-                            <Style TargetType="ui:ListButton" BasedOn="{StaticResource ListButton_PageList}">
+                            <Style TargetType="ui:ListButton" BasedOn="{StaticResource {x:Type ui:ListButton}}">
                                 <Setter Property="MinWidth" Value="100"/>
                             </Style>
                         </ItemsControl.Resources>
@@ -151,7 +137,7 @@
                 </ScrollViewer>
 
                 <!--Loading Animation-->
-                <Grid Background="{StaticResource Accent_Normal}">
+                <Grid>
                     <Grid.Style>
                         <Style TargetType="Grid">
                             <Setter Property="Opacity" Value="0.0"/>
@@ -189,9 +175,9 @@
 
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 
-                        <ui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource Foreground_Opposite_Normal}" />
+                        <ui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource TrakHound_Blue}" />
 
-                        <TextBlock Text="Loading.." Foreground="{StaticResource Foreground_Opposite_Normal}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,20,0,0" FontSize="10pt"/>
+                        <TextBlock Text="Loading.." Foreground="#333" TextAlignment="Center" TextWrapping="Wrap" Margin="0,20,0,0" FontSize="10pt"/>
                         
                     </StackPanel>
 
@@ -200,7 +186,7 @@
             </Grid>
 
             <!--Page Content-->
-            <Border Grid.Column="1" Background="{StaticResource Window_Background}" BorderBrush="{StaticResource Accent_Dark}" BorderThickness="1,1,0,1">
+            <Border Grid.Column="1" Background="{StaticResource Window_Background}" BorderBrush="#aaa" BorderThickness="1,0,0,0">
 
                 <ContentControl Content="{Binding CurrentPage}"/>
 

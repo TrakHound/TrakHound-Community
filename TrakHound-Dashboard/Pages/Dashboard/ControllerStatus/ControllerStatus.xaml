@@ -7,14 +7,16 @@
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="1000">
 
-        <Grid x:Name="root" >
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+    <Grid x:Name="root" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-            <!--Headers-->
-            <Grid Background="{StaticResource TrakHound_Blue}">
+        <!--Headers-->
+        <Border BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
+
+            <Grid Background="{StaticResource Background_Alternate}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="30"/>
                     <ColumnDefinition Width="200"/>
@@ -22,49 +24,64 @@
                     <ColumnDefinition Width="120"/>
                     <ColumnDefinition Width="150"/>
                     <ColumnDefinition Width="150"/>
-                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="*" MinWidth="200"/>
                     <ColumnDefinition Width="300"/>
-                    <ColumnDefinition Width="400"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="300"/>
+                    <!--<ColumnDefinition Width="*"/>-->
                 </Grid.ColumnDefinitions>
                 <Grid.Resources>
                     <Style TargetType="TextBlock">
                         <Setter Property="VerticalAlignment" Value="Center"/>
-                        <Setter Property="HorizontalAlignment" Value="Center"/>
                         <Setter Property="TextAlignment" Value="Center"/>
-                        <Setter Property="Foreground" Value="#fff"/>
+                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
                         <Setter Property="TextWrapping" Value="Wrap"/>
                         <Setter Property="Margin" Value="5"/>
+                    </Style>
+                    <Style TargetType="Rectangle">
+                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                        <Setter Property="Fill" Value="{StaticResource Border}"/>
+                        <Setter Property="Width" Value="1"/>
                     </Style>
                 </Grid.Resources>
 
                 <TextBlock Grid.Column="0" Text="S" ToolTip="Displays the Device's current status whether it is in Production, Idle, or Alert."/>
+                <Rectangle Grid.Column="0"/>
 
                 <TextBlock Grid.Column="1" Text="Device Description"/>
+                <Rectangle Grid.Column="1"/>
 
                 <TextBlock Grid.Column="2" Text="Device ID"/>
+                <Rectangle Grid.Column="2"/>
 
                 <TextBlock Grid.Column="3" Text="Availability"/>
+                <Rectangle Grid.Column="3"/>
 
                 <TextBlock Grid.Column="4" Text="Emergency Stop"/>
+                <Rectangle Grid.Column="4"/>
 
                 <TextBlock Grid.Column="5" Text="Execution Mode"/>
+                <Rectangle Grid.Column="5"/>
 
                 <TextBlock Grid.Column="6" Text="Mode"/>
+                <Rectangle Grid.Column="6"/>
 
                 <TextBlock Grid.Column="7" Text="Program"/>
+                <Rectangle Grid.Column="7"/>
 
                 <TextBlock Grid.Column="8" Text="System Status"/>
+                <Rectangle Grid.Column="8"/>
 
             </Grid>
 
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" PanningMode="VerticalOnly">
+        </Border>
+        
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" PanningMode="VerticalOnly">
 
-                <!--Rows-->
-                <ItemsControl Grid.Row="1" ItemsSource="{Binding Rows}" Background="{StaticResource Window_Background}"/>
+            <!--Rows-->
+            <ItemsControl Grid.Row="1" ItemsSource="{Binding Rows}"/>
 
-            </ScrollViewer>
+        </ScrollViewer>
 
-        </Grid>
+    </Grid>
 
 </UserControl>

@@ -102,11 +102,91 @@ namespace TrakHound.API
 
         private class CachedImage
         {
-            public string Id { get; set; }
-            public Image Image { get; set; }
-        } 
+            public CachedImage(string id, Image image)
+            {
+                Id = id;
 
-        private static List<CachedImage> cachedImages = new List<CachedImage>();
+                FileLocations.CreateStorageDirectory();
+
+                try
+                {
+                    string filename = System.IO.Path.ChangeExtension(Id, ".image");
+
+                    Path = System.IO.Path.Combine(FileLocations.Storage, filename);
+
+                    image.Save(Path);
+                }
+                catch (Exception ex) { Logger.Log("Error Adding Image to Cache :: " + ex.Message, LogLineType.Error); }
+
+            }
+
+            public string Id { get; set; }
+            public string Path { get; set; }
+            public Image Image
+            {
+                get
+                {
+                    if (!string.IsNullOrEmpty(Path))
+                    {
+                        try
+                        {
+                            if (File.Exists(Path)) return System.Drawing.Image.FromFile(Path);
+                        }
+                        catch (Exception ex) { Logger.Log("Error Loading Image from Cache :: " + ex.Message, LogLineType.Error); }
+                    }
+
+                    return null;
+                }
+            }
+        }
+
+        private static List<CachedImage> cachedImages;
+
+        private static void AddImageToCache(CachedImage cachedImage)
+        {
+            if (!cachedImages.Exists(o => o.Id == cachedImage.Id))
+            {
+                cachedImages.Add(cachedImage);
+
+                //FileLocations.CreateStorageDirectory();
+
+                //try
+                //{
+                //    string savePath = Path.Combine(FileLocations.Storage, cachedImage.Id);
+                //    savePath = Path.ChangeExtension(savePath, ".image");
+
+                //    cachedImage.Image.Save(savePath);
+                //}
+                //catch (Exception ex) { Logger.Log("Image Cache Error :: " + ex.Message, LogLineType.Error); }
+            }
+        }
+
+        private static void LoadCachedImages()
+        {
+            cachedImages = new List<CachedImage>();
+
+            if (Directory.Exists(FileLocations.Storage))
+            {
+                var files = Directory.GetFiles(FileLocations.Storage, "*.image");
+                if (files != null)
+                {
+                    foreach (var file in files)
+                    {
+                        try
+                        {
+                            string id = Path.GetFileNameWithoutExtension(file);
+
+                            var img = Image.FromFile(file);
+                            if (img != null)
+                            {
+                                cachedImages.Add(new CachedImage(id, img));
+                            }
+                        }
+                        catch (Exception ex) { Logger.Log("Image Cache Load Error :: " + ex.Message); }
+                    }
+                }
+            }
+        }
 
         public static Image DownloadImage(UserConfiguration userConfig, string fileId)
         {
@@ -119,6 +199,8 @@ namespace TrakHound.API
 
             if (useCache)
             {
+                if (cachedImages == null) LoadCachedImages();
+
                 var cachedImage = cachedImages.Find(o => o.Id == fileId);
                 if (cachedImage != null) result = cachedImage.Image;
             }
@@ -162,6 +244,12 @@ namespace TrakHound.API
                             }
                         }
                         catch (Exception ex) { Logger.Log("Response Not an Image : Exception : " + ex.Message); }
+                    }
+
+                    // Add Image to Cache
+                    if (useCache && result != null)
+                    {
+                        AddImageToCache(new CachedImage(fileId, result));
                     }
                 }
             }

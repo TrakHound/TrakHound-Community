@@ -17,7 +17,7 @@
              d:DesignWidth="600"
              >
 
-    <Grid x:Name="root" Background="{StaticResource Window_Background_Accent_Gradient}">
+    <Grid x:Name="root">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
@@ -26,7 +26,7 @@
         <!--Navigation Panel-->
         <StackPanel HorizontalAlignment="Center">
             <StackPanel.Resources>
-                <Style TargetType="ui:ListButton" BasedOn="{StaticResource ListButton_PageList}">
+                <Style TargetType="ui:ListButton" BasedOn="{StaticResource {x:Type ui:ListButton}}">
                     <Setter Property="MinWidth" Value="100"/>
                 </Style>
             </StackPanel.Resources>
@@ -42,7 +42,7 @@
 
         </StackPanel>
 
-        <Border Grid.Column="1" BorderBrush="{StaticResource Accent_Dark}" BorderThickness="1,0,0,0">
+        <Border Grid.Column="1" BorderBrush="#aaa" BorderThickness="1,0,0,0">
 
             <Grid Background="{StaticResource Window_Background}" >
 

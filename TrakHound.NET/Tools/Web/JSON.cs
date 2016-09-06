@@ -67,6 +67,48 @@ namespace TrakHound.Tools.Web
             return default(T);
         }
 
+        public static Dictionary<string, dynamic> ToDictionary(string json)
+        {
+            if (!string.IsNullOrEmpty(json))
+            {
+                try
+                {
+                    var jss = new JsonSerializerSettings();
+                    jss.DateFormatHandling = DateFormatHandling.IsoDateFormat;
+                    jss.DateParseHandling = DateParseHandling.DateTime;
+                    jss.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+
+                    json = ConvertToSafe(json);
+
+                    return JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(json, jss);
+                }
+                catch (JsonException jex) { Logger.Log(jex.Message); }
+                catch (Exception ex) { Logger.Log(ex.Message); }
+            }
+
+            return null;
+
+            //if (data != null)
+            //    if (data.Trim() != "")
+            //    {
+            //        try
+            //        {
+            //            var jss = new JsonSerializerSettings();
+            //            jss.DateFormatHandling = DateFormatHandling.IsoDateFormat;
+            //            jss.DateParseHandling = DateParseHandling.DateTime;
+            //            jss.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+
+            //            data = ConvertToSafe(data);
+
+            //            return (T)JsonConvert.DeserializeObject(data, (typeof(T)), jss);
+            //        }
+            //        catch (JsonException jex) { Logger.Log(jex.Message); }
+            //        catch (Exception ex) { Logger.Log(ex.Message); }
+            //    }
+
+            //return default(T);
+        }
+
         private static string ConvertToSafe(string s)
         {
             //if (s.Contains("%")) s = s.Replace("%", "%25");

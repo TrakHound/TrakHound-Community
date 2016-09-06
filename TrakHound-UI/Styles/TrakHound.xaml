@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options">
+
+    <!--TrakHound Colors-->
+    <Color ice:Freeze="True" x:Key="TrakHound_Blue_Color">#0080ff</Color>
+    <Color ice:Freeze="True" x:Key="TrakHound_LightBlue_Color">#40a0ff</Color>
+    <Color ice:Freeze="True" x:Key="TrakHound_DarkBlue_Color">#0040ff</Color>
+
+    <!--TrakHound Brushes-->
+    <SolidColorBrush ice:Freeze="True" x:Key="TrakHound_Blue" Color="{StaticResource TrakHound_Blue_Color}"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="TrakHound_LightBlue" Color="{StaticResource TrakHound_LightBlue_Color}"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="TrakHound_DarkBlue" Color="{StaticResource TrakHound_DarkBlue_Color}"/>
+
+</ResourceDictionary>

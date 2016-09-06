@@ -37,14 +37,16 @@ namespace TrakHound_Server.Plugins.CloudData
             deviceInfo = new Data.DeviceInfo();
             deviceInfo.UniqueId = config.UniqueId;
 
-            deviceInfo.Description.Description = config.Description.Description;
-            deviceInfo.Description.DeviceId = config.Description.DeviceId;
-            deviceInfo.Description.Manufacturer = config.Description.Manufacturer;
-            deviceInfo.Description.Model = config.Description.Model;
-            deviceInfo.Description.Serial = config.Description.Serial;
-            deviceInfo.Description.Controller = config.Description.Controller;
-            deviceInfo.Description.LogoUrl = config.Description.LogoUrl;
-            deviceInfo.Description.ImageUrl = config.Description.ImageUrl;
+            deviceInfo.AddClass("description", config.Description);
+
+            //deviceInfo.Description.Description = config.Description.Description;
+            //deviceInfo.Description.DeviceId = config.Description.DeviceId;
+            //deviceInfo.Description.Manufacturer = config.Description.Manufacturer;
+            //deviceInfo.Description.Model = config.Description.Model;
+            //deviceInfo.Description.Serial = config.Description.Serial;
+            //deviceInfo.Description.Controller = config.Description.Controller;
+            //deviceInfo.Description.LogoUrl = config.Description.LogoUrl;
+            //deviceInfo.Description.ImageUrl = config.Description.ImageUrl;
 
             queue.Add(deviceInfo);
         }
@@ -74,7 +76,9 @@ namespace TrakHound_Server.Plugins.CloudData
                     case "GENERATED_EVENTS": UpdateGeneratedEvents(data); break;
 
                     // Get Cycle Data
-                    case "CYCLES": UpdateCycleData(data); break;
+                    //case "CYCLES": UpdateCycleData(data); break;
+
+                    case "ADD_DEVICE_DATA": AddData(data); break;
                 }
             }
         }
@@ -86,6 +90,14 @@ namespace TrakHound_Server.Plugins.CloudData
             queue.Start();
         }
 
+        private void AddData(EventData data)
+        {
+            if (data.Data02 != null && data.Data03 != null)
+            {
+                deviceInfo.AddClass(data.Data02.ToString(), data.Data03);
+            }
+        }
+
         private DateTime previousDeviceStatusTimestamp = DateTime.MinValue;
         private DateTime previousProductionStatusTimestamp = DateTime.MinValue;
 
@@ -95,22 +107,30 @@ namespace TrakHound_Server.Plugins.CloudData
             {
                 var snapshots = (List<SnapshotData.Snapshot>)data.Data02;
 
+                var status = deviceInfo.Status;
+                bool statusSet = false;
+
+                var timers = deviceInfo.Timers;
+                bool timersSet = false;
+
                 // Device Status
                 var snapshot = snapshots.Find(o => o.Name == "Device Status");
                 if (snapshot != null)
                 {
-                    deviceInfo.Status.DeviceStatus = snapshot.Value;
-                    deviceInfo.Status.DeviceStatusTimer = Math.Max(0, Convert.ToInt32((snapshot.Timestamp - snapshot.PreviousTimestamp).TotalSeconds));
+                    status.DeviceStatus = snapshot.Value;
+                    status.DeviceStatusTimer = Math.Max(0, Convert.ToInt32((snapshot.Timestamp - snapshot.PreviousTimestamp).TotalSeconds));
                     previousDeviceStatusTimestamp = snapshot.Timestamp;
+                    statusSet = true;
                 }
 
                 // Production Status
                 snapshot = snapshots.Find(o => o.Name == "Production Status");
                 if (snapshot != null)
                 {
-                    deviceInfo.Status.ProductionStatus = snapshot.Value;
-                    deviceInfo.Status.ProductionStatusTimer = Math.Max(0, Convert.ToInt32((snapshot.Timestamp - snapshot.PreviousTimestamp).TotalSeconds));
+                    status.ProductionStatus = snapshot.Value;
+                    status.ProductionStatusTimer = Math.Max(0, Convert.ToInt32((snapshot.Timestamp - snapshot.PreviousTimestamp).TotalSeconds));
                     previousProductionStatusTimestamp = snapshot.Timestamp;
+                    statusSet = true;
                 }
 
 
@@ -120,7 +140,8 @@ namespace TrakHound_Server.Plugins.CloudData
                 {
                     double val = 0;
                     double.TryParse(snapshot.Value, out val);
-                    deviceInfo.Timers.DayRun = val;
+                    timers.DayRun = val;
+                    timersSet = true;
                 }
 
                 // Day Operating Time
@@ -129,7 +150,8 @@ namespace TrakHound_Server.Plugins.CloudData
                 {
                     double val = 0;
                     double.TryParse(snapshot.Value, out val);
-                    deviceInfo.Timers.DayOperating = val;
+                    timers.DayOperating = val;
+                    timersSet = true;
                 }
 
                 // Day Cutting Time
@@ -138,7 +160,8 @@ namespace TrakHound_Server.Plugins.CloudData
                 {
                     double val = 0;
                     double.TryParse(snapshot.Value, out val);
-                    deviceInfo.Timers.DayCutting = val;
+                    timers.DayCutting = val;
+                    timersSet = true;
                 }
 
                 // Day Spindle Time
@@ -147,7 +170,8 @@ namespace TrakHound_Server.Plugins.CloudData
                 {
                     double val = 0;
                     double.TryParse(snapshot.Value, out val);
-                    deviceInfo.Timers.DaySpindle = val;
+                    timers.DaySpindle = val;
+                    timersSet = true;
                 }
 
 
@@ -157,7 +181,8 @@ namespace TrakHound_Server.Plugins.CloudData
                 {
                     double val = 0;
                     double.TryParse(snapshot.Value, out val);
-                    deviceInfo.Timers.TotalRun = val;
+                    timers.TotalRun = val;
+                    timersSet = true;
                 }
 
                 // Total Operating Time
@@ -166,7 +191,8 @@ namespace TrakHound_Server.Plugins.CloudData
                 {
                     double val = 0;
                     double.TryParse(snapshot.Value, out val);
-                    deviceInfo.Timers.TotalOperating = val;
+                    timers.TotalOperating = val;
+                    timersSet = true;
                 }
 
                 // Total Cutting Time
@@ -175,7 +201,8 @@ namespace TrakHound_Server.Plugins.CloudData
                 {
                     double val = 0;
                     double.TryParse(snapshot.Value, out val);
-                    deviceInfo.Timers.TotalCutting = val;
+                    timers.TotalCutting = val;
+                    timersSet = true;
                 }
 
                 // Total Spindle Time
@@ -184,24 +211,30 @@ namespace TrakHound_Server.Plugins.CloudData
                 {
                     double val = 0;
                     double.TryParse(snapshot.Value, out val);
-                    deviceInfo.Timers.TotalSpindle = val;
+                    timers.TotalSpindle = val;
+                    timersSet = true;
                 }
+
+                if (statusSet) deviceInfo.AddClass("status", status);
+                if (timersSet) deviceInfo.AddClass("timers", timers);
 
                 queue.Add(deviceInfo);
             }
             else
             {
-                deviceInfo.Status.DeviceStatus = "Alert";
-                deviceInfo.Status.ProductionStatus = "Production";
+                var status = new Data.StatusInfo();
+
+                status.DeviceStatus = "Alert";
+                status.ProductionStatus = "Production";
 
                 if (previousDeviceStatusTimestamp > DateTime.MinValue)
                 {
-                    deviceInfo.Status.DeviceStatusTimer += (DateTime.UtcNow - previousDeviceStatusTimestamp).TotalSeconds;
+                    status.DeviceStatusTimer += (DateTime.UtcNow - previousDeviceStatusTimestamp).TotalSeconds;
                 }
 
                 previousDeviceStatusTimestamp = DateTime.UtcNow;
 
-                
+                queue.Add(deviceInfo);
             }
         }
         
@@ -262,6 +295,8 @@ namespace TrakHound_Server.Plugins.CloudData
                     }
                 }
 
+                var hours = new List<Data.HourInfo>();
+
                 // Add HourInfo objects for each GeneratedEventTime in list
                 foreach (var eventTime in eventTimes)
                 {
@@ -297,14 +332,19 @@ namespace TrakHound_Server.Plugins.CloudData
                         }
                     }
 
-                    deviceInfo.Hours.Add(hourInfo);
+                    hours.Add(hourInfo);
                 }
+
+                deviceInfo.AddClass("hours", hours);
             }
         }
 
 
         private void UpdateMTConnectStatus(EventData data)
         {
+            var status = new Data.StatusInfo();
+            var controller = new Data.ControllerInfo();
+
             if (data.Data02 != null)
             {
                 var infos = (List<StatusInfo>)data.Data02;
@@ -314,42 +354,45 @@ namespace TrakHound_Server.Plugins.CloudData
                 info = infos.Find(x => x.Type == "AVAILABILITY");
                 if (info != null)
                 {
-                    deviceInfo.Status.Connected = info.Value1 == "AVAILABLE" ? 1 : 0;
-                    deviceInfo.Controller.Availability = info.Value1;
+                    status.Connected = info.Value1 == "AVAILABLE" ? 1 : 0;
+                    controller.Availability = info.Value1;
                 }
 
                 // Controller Mode
                 info = infos.Find(x => x.Type == "CONTROLLER_MODE");
-                if (info != null) deviceInfo.Controller.ControllerMode = info.Value1;
+                if (info != null) controller.ControllerMode = info.Value1;
 
                 // Emergency Stop
                 info = infos.Find(x => x.Type == "EMERGENCY_STOP");
-                if (info != null) deviceInfo.Controller.EmergencyStop = info.Value1;
+                if (info != null) controller.EmergencyStop = info.Value1;
 
                 // Execution Mode
                 info = infos.Find(x => x.Type == "EXECUTION");
-                if (info != null) deviceInfo.Controller.ExecutionMode = info.Value1;
+                if (info != null) controller.ExecutionMode = info.Value1;
 
                 // System status
                 info = infos.Find(x => x.Type == "SYSTEM");
-                if (info != null) deviceInfo.Controller.SystemMessage = info.Value1;
-                if (info != null) deviceInfo.Controller.SystemStatus = info.Value2;
+                if (info != null) controller.SystemMessage = info.Value1;
+                if (info != null) controller.SystemStatus = info.Value2;
 
                 // Program Name
                 info = infos.Find(x => x.Type == "PROGRAM");
-                if (info != null) deviceInfo.Controller.ProgramName = info.Value1;
+                if (info != null) controller.ProgramName = info.Value1;
             }
             else
             {
-                deviceInfo.Status.Connected = 0;
-                deviceInfo.Controller.Availability = "UNAVAILABLE";
-                deviceInfo.Controller.ControllerMode = "UNAVAILABLE";
-                deviceInfo.Controller.EmergencyStop = "UNAVAILABLE";
-                deviceInfo.Controller.ExecutionMode = "UNAVAILABLE";
-                deviceInfo.Controller.SystemMessage = "UNAVAILABLE";
-                deviceInfo.Controller.SystemStatus = "UNAVAILABLE";
-                deviceInfo.Controller.ProgramName = "UNAVAILABLE";
+                status.Connected = 0;
+                controller.Availability = "UNAVAILABLE";
+                controller.ControllerMode = "UNAVAILABLE";
+                controller.EmergencyStop = "UNAVAILABLE";
+                controller.ExecutionMode = "UNAVAILABLE";
+                controller.SystemMessage = "UNAVAILABLE";
+                controller.SystemStatus = "UNAVAILABLE";
+                controller.ProgramName = "UNAVAILABLE";
             }
+
+            deviceInfo.AddClass("status", status);
+            deviceInfo.AddClass("controller", controller);
 
             queue.Add(deviceInfo);
         }
@@ -389,7 +432,8 @@ namespace TrakHound_Server.Plugins.CloudData
                         int i = storedOeeDatas.FindIndex(o => o.Start.Hour == oeeData.Start.Hour && o.CycleId == oeeData.CycleId && o.CycleInstanceId == oeeData.CycleInstanceId);
                         if (i >= 0) storedOeeDatas[i] = oeeData;
 
-                        deviceInfo.Hours.Add(hourInfo);
+                        deviceInfo.AddHourInfo(hourInfo);
+                        //deviceInfo.Hours.Add(hourInfo);
                     }
 
                     queue.Add(deviceInfo);
@@ -420,7 +464,8 @@ namespace TrakHound_Server.Plugins.CloudData
                             {
                                 hourInfo.TotalPieces = info.Count;
 
-                                deviceInfo.Hours.Add(hourInfo);
+                                deviceInfo.AddHourInfo(hourInfo);
+                                //deviceInfo.Hours.Add(hourInfo);
                             }
                             else
                             {
@@ -428,7 +473,8 @@ namespace TrakHound_Server.Plugins.CloudData
                                 {
                                     hourInfo.TotalPieces = info.Count - storedPartCount;
 
-                                    deviceInfo.Hours.Add(hourInfo);
+                                    deviceInfo.AddHourInfo(hourInfo);
+                                    //deviceInfo.Hours.Add(hourInfo);
                                     storedPartCount = info.Count;
                                 }
                             }                         
@@ -463,7 +509,8 @@ namespace TrakHound_Server.Plugins.CloudData
                         cyclesInfo.Cycles.Add(cycleInfo);
                     }
 
-                    deviceInfo.Cycles = cyclesInfo;
+                    deviceInfo.AddClass("cycles", cyclesInfo);
+                    //deviceInfo.Cycles = cyclesInfo;
 
                     queue.Add(deviceInfo);
                 }

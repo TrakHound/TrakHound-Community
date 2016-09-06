@@ -451,7 +451,8 @@ namespace TrakHound_Device_Manager.Pages.Description
                 if (info.FileId != null)
                 {
                     System.Drawing.Image img = null;
-                    if (info.UserConfig != null) img = Files.DownloadImage(info.UserConfig, info.FileId);
+
+                    if (img == null && info.UserConfig != null) img = Files.DownloadImage(info.UserConfig, info.FileId);
                     else
                     {
                         string path = Path.Combine(FileLocations.Storage, info.FileId);
@@ -460,29 +461,33 @@ namespace TrakHound_Device_Manager.Pages.Description
 
                     if (img != null)
                     {
-                        var bmp = new System.Drawing.Bitmap(img);
-                        if (bmp != null)
+                        try
                         {
-                            IntPtr bmpPt = bmp.GetHbitmap();
-                            result = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                            if (result != null)
+                            var bmp = new System.Drawing.Bitmap(img);
+                            if (bmp != null)
                             {
-                                if (result.PixelWidth > result.PixelHeight)
+                                IntPtr bmpPt = bmp.GetHbitmap();
+                                result = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                                if (result != null)
                                 {
-                                    result = Image_Functions.SetImageSize(result, 180);
-                                }
-                                else
-                                {
-                                    result = Image_Functions.SetImageSize(result, 0, 80);
+                                    if (result.PixelWidth > result.PixelHeight)
+                                    {
+                                        result = Image_Functions.SetImageSize(result, 180);
+                                    }
+                                    else
+                                    {
+                                        result = Image_Functions.SetImageSize(result, 0, 80);
+                                    }
+
+                                    result.Freeze();
                                 }
 
-                                result.Freeze();
+                                bmp.Dispose();
                             }
 
-                            bmp.Dispose();
+                            img.Dispose();
                         }
-
-                        img.Dispose();
+                        catch (Exception ex) { Logger.Log("Error Loading Device Logo :: " + ex.Message, LogLineType.Error); }
                     }
                 }
             }
@@ -577,7 +582,7 @@ namespace TrakHound_Device_Manager.Pages.Description
                 }
                 else
                 {
-                    string filename = String_Functions.RandomString(20);
+                    string filename = Path.ChangeExtension(Guid.NewGuid().ToString(), ".image");
 
                     string destinationPath = Path.Combine(FileLocations.Storage, filename);
 
@@ -702,29 +707,33 @@ namespace TrakHound_Device_Manager.Pages.Description
 
                     if (img != null)
                     {
-                        var bmp = new System.Drawing.Bitmap(img);
-                        if (bmp != null)
+                        try
                         {
-                            IntPtr bmpPt = bmp.GetHbitmap();
-                            result = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                            if (result != null)
+                            var bmp = new System.Drawing.Bitmap(img);
+                            if (bmp != null)
                             {
-                                if (result.PixelWidth > result.PixelHeight)
+                                IntPtr bmpPt = bmp.GetHbitmap();
+                                result = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                                if (result != null)
                                 {
-                                    result = Image_Functions.SetImageSize(result, 180);
-                                }
-                                else
-                                {
-                                    result = Image_Functions.SetImageSize(result, 0, 80);
+                                    if (result.PixelWidth > result.PixelHeight)
+                                    {
+                                        result = Image_Functions.SetImageSize(result, 180);
+                                    }
+                                    else
+                                    {
+                                        result = Image_Functions.SetImageSize(result, 0, 80);
+                                    }
+
+                                    result.Freeze();
                                 }
 
-                                result.Freeze();
+                                bmp.Dispose();
                             }
 
-                            bmp.Dispose();
+                            img.Dispose();
                         }
-
-                        img.Dispose();
+                        catch (Exception ex) { Logger.Log("Error Loading Device Image :: " + ex.Message, LogLineType.Error); }
                     }
                 }
             }
@@ -819,7 +828,8 @@ namespace TrakHound_Device_Manager.Pages.Description
                 }
                 else
                 {
-                    string filename = String_Functions.RandomString(20);
+                    //string filename = String_Functions.RandomString(20);
+                    string filename = Path.ChangeExtension(Guid.NewGuid().ToString(), ".image");
 
                     string destinationPath = Path.Combine(FileLocations.Storage, filename);
 
@@ -844,12 +854,13 @@ namespace TrakHound_Device_Manager.Pages.Description
 
                 ChangeSetting(dprefix + "ImageUrl", deviceImageFileName);
 
-            } else DeviceImageLoading = false;
+            }
+            else DeviceImageLoading = false;
         }
 
         #endregion
 
-        
+
         private void DeviceImage_UploadClicked(TrakHound_UI.ImageBox sender)
         {
             UploadDeviceImage();

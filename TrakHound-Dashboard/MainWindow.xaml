@@ -41,6 +41,8 @@
         AllowDrop="True"
         
         Icon="Resources/TrakHound_Logo_Initials_10.ico" ScrollViewer.VerticalScrollBarVisibility="Disabled"
+        
+        Background="{StaticResource Background}"
         >
 
     <Window.Resources>
@@ -65,29 +67,13 @@
 
             <!--Top Bar-->
             <Grid DockPanel.Dock="Top" Grid.Row="0" Height="35">
-                <Grid.Resources>
-                    <Style TargetType="ui:Button">
-                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                        <Setter Property="Width" Value="30"/>
-                        <Setter Property="Height" Value="30"/>
-                        <Setter Property="Padding" Value="2"/>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Foreground" Value="{StaticResource TrakHound_Blue}"/>
-                            </Trigger>
-                            <Trigger Property="IsSelected" Value="true">
-                                <Setter Property="Foreground" Value="{StaticResource TrakHound_Blue}"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Resources>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
 
-                <ItemsControl x:Name="TabPanel" Grid.Column="1" VerticalAlignment="Bottom" ItemsSource="{Binding TabHeaders}" Background="{StaticResource Window_Background}">
+                <ItemsControl x:Name="TabPanel" Grid.Column="1" VerticalAlignment="Bottom" ItemsSource="{Binding TabHeaders}" Background="{StaticResource Background}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal"/>
@@ -133,7 +119,7 @@
                         <TextBlock Text="{Binding CurrentUser.Username, Converter={StaticResource uppercaseConverter}}" FontSize="12" Margin="0,0,10,0" VerticalAlignment="Center">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Text}"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=StackPanel, Mode=FindAncestor}}" Value="true">
                                             <Setter Property="Foreground" Value="{StaticResource TrakHound_Blue}"/>
@@ -145,14 +131,14 @@
                         
                     </StackPanel>
 
-                    <Rectangle Width="1" Fill="{StaticResource Shade_Normal}" Margin="5,2"/>
+                    <Rectangle Width="1" Fill="{StaticResource Border}" Margin="5,2"/>
 
                     <!--Message Center-->
                     <StackPanel Orientation="Horizontal" Margin="0">
 
                         <ui:Button Clicked="MessageCenter_ToolBarItem_Clicked" Image="Resources/Envelope_01.png" ToolTip="Show Message Center">
                             <ui:Button.Style>
-                                <Style TargetType="ui:Button" BasedOn="{StaticResource {x:Type ui:Button}}">
+                                <Style TargetType="ui:Button" BasedOn="{StaticResource ToolBar_Button}">
                                     <Setter Property="Padding" Value="6"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding NotificationsCount}" Value="0">
@@ -190,11 +176,11 @@
                         </Border>
 
                     </StackPanel>
-                    
-                    <Rectangle Width="1" Fill="{StaticResource Shade_Normal}" Margin="5,2"/>
+
+                    <Rectangle Width="1" Fill="{StaticResource Border}" Margin="5,2"/>
 
                     <!--MainMenu Button-->
-                    <ui:Button x:Name="MainMenu_BT" Image="Resources/Menu_01.png" Clicked="NavigationMenuButton_Clicked" ToolTip="Show Main Menu"/>
+                    <ui:Button x:Name="MainMenu_BT" Image="Resources/Menu_01.png" Clicked="NavigationMenuButton_Clicked" ToolTip="Show Main Menu" Style="{StaticResource ToolBar_Button}"/>
 
                 </StackPanel>
 
@@ -206,37 +192,6 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
-
-                <!--Developer Console Show Button-->
-                <!--<StackPanel HorizontalAlignment="Left">
-                    <StackPanel.Style>
-                        <Style TargetType="StackPanel">
-                            <Setter Property="Visibility" Value="Visible"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding DevConsole_Shown}" Value="true">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </StackPanel.Style>
-
-                    <ui:Button Clicked="DeveloperConsole_ToolBarItem_Clicked" Image="Resources/Carrot_Arrow_Up_01.png" HorizontalAlignment="Left" ToolTip="Show Developer Console (F12)">
-                        <ui:Button.Style>
-                            <Style TargetType="ui:Button">
-                                <Setter Property="Foreground" Value="White"/>
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="Height" Value="30"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="true">
-                                        <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ui:Button.Style>
-                    </ui:Button>
-
-                </StackPanel>-->
-
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
 
@@ -263,7 +218,7 @@
                             <Grid.Style>
                                 <Style TargetType="Grid">
                                     <Setter Property="OpacityMask" Value="{StaticResource Pause_IMG}" />
-                                    <Setter Property="Background" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                    <Setter Property="Background" Value="{StaticResource Text}"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ServerStatus}" Value="{x:Static services:ServiceStatus.Running}">
                                             <Setter Property="OpacityMask" Value="{StaticResource Running_IMG}" />
@@ -279,7 +234,7 @@
                             </Grid.Style>
                         </Grid>
 
-                        <TextBlock Foreground="{StaticResource Foreground_Opposite_Normal}" FontSize="8pt" VerticalAlignment="Center">
+                        <TextBlock Foreground="{StaticResource Text}" FontSize="8pt" VerticalAlignment="Center">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Style.Triggers>
@@ -329,21 +284,6 @@
                         </TransformGroup>
                     </ContentControl.LayoutTransform>
                 </ContentControl>
-
-                <!--<GridSplitter Grid.Row="1" Background="{StaticResource Accent_Dark}" HorizontalAlignment="Stretch" Height="5">
-                    <GridSplitter.Style>
-                        <Style TargetType="GridSplitter">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Shown, ElementName=developerConsole}" Value="false">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </GridSplitter.Style>
-                </GridSplitter>-->
-
-                <!--Developer Console-->
-                <!--<devconsole:PopUp x:Name="developerConsole" Grid.Row="2" ShownChanged="developerConsole_ShownChanged"/>-->
 
             </Grid>
 
@@ -750,13 +690,6 @@
                                     <menus:MenuItem Text="Fullscreen" Image="Resources/FullScreen_02_30px.png"/>
                                 </ui:Button.ButtonContent>
                             </ui:Button>
-
-                            <!--Developer Console-->
-                            <!--<ui:Button Clicked="DeveloperConsole_Clicked">
-                                <ui:Button.ButtonContent>
-                                    <menus:MenuItem Text="Developer Console" Image="Resources/Developer_01.png"/>
-                                </ui:Button.ButtonContent>
-                            </ui:Button>-->
 
                         </WrapPanel>
 

@@ -44,9 +44,15 @@ namespace TrakHound.Servers.DataStorage
                 // Insert each of the HourInfos into the Hours table
                 foreach (var deviceInfo in deviceInfos)
                 {
-                    foreach (var hourInfo in deviceInfo.Hours)
+                    var obj = deviceInfo.GetClass("hours");
+                    if (obj != null)
                     {
-                        Row.InsertHourInfo(connection, deviceInfo.UniqueId, hourInfo);
+                        var hours = (List<Data.HourInfo>)obj;
+
+                        foreach (var hour in hours)
+                        {
+                            Row.InsertHourInfo(connection, deviceInfo.UniqueId, hour);
+                        }
                     }
                 }
 
@@ -92,7 +98,12 @@ namespace TrakHound.Servers.DataStorage
                                 result.Add(deviceInfo);
                             }
 
-                            deviceInfo.Hours.Add(hourRowInfo.HourInfo);
+                            var hours = new List<Data.HourInfo>();
+                            hours.Add(hourRowInfo.HourInfo);
+
+                            deviceInfo.AddClass("hours", hours);
+
+                            //deviceInfo.Hours.Add(hourRowInfo.HourInfo);
                         }
 
                         return result;

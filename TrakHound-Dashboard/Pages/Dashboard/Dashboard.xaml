@@ -18,7 +18,14 @@
              Loaded="UserControl_Loaded"
              >
 
-    <Grid x:Name="root">
+    <UserControl.Resources>
+
+        <ImageBrush x:Key="Expand_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Forward_01.png" />
+
+    </UserControl.Resources>
+
+    <Grid x:Name="root" Background="{StaticResource Background}">
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
@@ -51,60 +58,18 @@
                     </Grid.RowDefinitions>
 
                     <!--Collapse/Expand Image-->
-                    <Rectangle Width="25" Height="25" Margin="10,5" RenderTransformOrigin="0.5, 0.5" Cursor="Hand" MouseDown="Expand_MouseDown">
-
-                        <Rectangle.Resources>
-                            <ImageBrush x:Key="Expand_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Forward_01.png" />
-                        </Rectangle.Resources>
-
+                    <Rectangle Width="25" Height="25" Margin="10,5" RenderTransformOrigin="0.5, 0.5" Cursor="Hand" MouseDown="Expand_MouseDown" HorizontalAlignment="Left" ToolTip="Expand Page List (Show Page Titles)" OpacityMask="{StaticResource Expand_IMG}" Style="{StaticResource RotatingButton}">
                         <Rectangle.RenderTransform>
                             <RotateTransform/>
                         </Rectangle.RenderTransform>
-
-                        <Rectangle.Style>
-                            <Style TargetType="Rectangle">
-                                <Setter Property="OpacityMask" Value="{StaticResource Expand_IMG}" />
-                                <Setter Property="Fill" Value="{StaticResource TrakHound_Blue}"/>
-                                <Setter Property="ToolTip" Value="Expand Page List (Show Page Titles)"/>
-                                <Setter Property="HorizontalAlignment" Value="Left"/>
-                                <Style.Triggers>
-
-                                    <DataTrigger Binding="{Binding IsExpanded}" Value="true">
-
-                                        <Setter Property="ToolTip" Value="Collapse Page List (Hide Page Titles)"/>
-
-                                        <DataTrigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation Storyboard.TargetProperty="(Rectangle.RenderTransform).(RotateTransform.Angle)" From="0" To="-180" Duration="0:0:0.2"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.EnterActions>
-                                        <DataTrigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation Storyboard.TargetProperty="(Rectangle.RenderTransform).(RotateTransform.Angle)" From="-180" To="0" Duration="0:0:0.2"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.ExitActions>
-                                    </DataTrigger>
-
-                                    <Trigger Property="IsMouseOver" Value="true">
-                                        <Setter Property="Fill" Value="{StaticResource TrakHound_LightBlue}"/>
-                                    </Trigger>
-
-                                </Style.Triggers>
-                            </Style>
-                        </Rectangle.Style>
-
                     </Rectangle>
 
                     <!--Page List-->
                     <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
 
-                        <ItemsControl ItemsSource="{Binding Pages}" Margin="0,20">
+                        <ItemsControl ItemsSource="{Binding Pages}" Margin="0,0,0,20">
                             <ItemsControl.Resources>
-                                <Style TargetType="ui:ListButton" BasedOn="{StaticResource ListButton_PageList}">
+                                <Style TargetType="ui:ListButton" BasedOn="{StaticResource {x:Type ui:ListButton}}">
                                     <Setter Property="ShowText" Value="False"/>
                                     <Setter Property="TextWrapping" Value="Wrap"/>
                                     <Style.Triggers>
@@ -219,7 +184,7 @@
                     </Style>
                 </StackPanel.Style>
 
-                <TextBlock FontSize="16pt" Foreground="#333" TextAlignment="Center" HorizontalAlignment="Center">     
+                <TextBlock FontSize="14pt" Foreground="{StaticResource Text}" TextAlignment="Center" HorizontalAlignment="Center">     
                 No Devices Found <LineBreak/>
                 Click the button below to open Device Manager
                 </TextBlock>
@@ -267,9 +232,9 @@
 
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 
-                    <ui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource TrakHound_Blue}" />
+                    <ui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource Spinner}" />
 
-                    <TextBlock FontSize="16pt" Foreground="#333" TextAlignment="Center" Margin="0,20,0,0">     
+                    <TextBlock FontSize="16pt" Foreground="{StaticResource Text}" TextAlignment="Center" Margin="0,20,0,0">     
                 Loading Devices...
                     </TextBlock>
 
@@ -298,19 +263,10 @@
                     <!--Start Button-->
                     <ui:Button Image="/TrakHound-Dashboard;component/Resources/Start_02.png" Clicked="StartSlideshow_Clicked">
                         <ui:Button.Style>
-                            <Style TargetType="ui:Button">
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="Foreground" Value="{StaticResource TrakHound_Blue}"/>
-                                <Setter Property="Text" Value="{x:Null}"/>
+                            <Style TargetType="ui:Button" BasedOn="{StaticResource ToolBar_Button}">
                                 <Setter Property="Height" Value="30"/>
                                 <Setter Property="ToolTip" Value="Start Slideshow"/>
                                 <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="true">
-                                        <Setter Property="Foreground" Value="{StaticResource TrakHound_LightBlue}"/>
-                                    </Trigger>
-                                    <Trigger Property="IsEnabled" Value="false">
-                                        <Setter Property="Foreground" Value="#aaa"/>
-                                    </Trigger>
                                     <DataTrigger Binding="{Binding SlideshowRunning}" Value="true">
                                         <Setter Property="IsEnabled" Value="false"/>
                                     </DataTrigger>
@@ -322,20 +278,11 @@
                     <!--Stop Button-->
                     <ui:Button Image="/TrakHound-Dashboard;component/Resources/Stop_02.png" Clicked="StopSlideshow_Clicked">
                         <ui:Button.Style>
-                            <Style TargetType="ui:Button">
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="Foreground" Value="{StaticResource TrakHound_Blue}"/>
-                                <Setter Property="Text" Value="{x:Null}"/>
+                            <Style TargetType="ui:Button" BasedOn="{StaticResource ToolBar_Button}">
                                 <Setter Property="Height" Value="30"/>
                                 <Setter Property="IsEnabled" Value="false"/>
                                 <Setter Property="ToolTip" Value="Stop Slideshow"/>
                                 <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="true">
-                                        <Setter Property="Foreground" Value="{StaticResource TrakHound_LightBlue}"/>
-                                    </Trigger>
-                                    <Trigger Property="IsEnabled" Value="false">
-                                        <Setter Property="Foreground" Value="#aaa"/>
-                                    </Trigger>
                                     <DataTrigger Binding="{Binding SlideshowRunning}" Value="true">
                                         <Setter Property="IsEnabled" Value="true"/>
                                     </DataTrigger>
@@ -351,8 +298,8 @@
                 <Rectangle Grid.Column="2" Width="1" Fill="#aaa" Margin="5,2,0,2"/>
 
                 <StackPanel Grid.Column="3" Margin="10,0" VerticalAlignment="Center">
-                    <TextBlock Text="Currently Displaying Data for" FontSize="10" Foreground="#333" Margin="0,0,0,2"/>
-                    <TextBlock Text="{Binding CurrentDate, RelativeSource={RelativeSource AncestorType=local:Dashboard, Mode=FindAncestor}}" FontSize="16" Foreground="#333" HorizontalAlignment="Right"/>
+                    <TextBlock Text="Currently Displaying Data for" FontSize="10" Foreground="{StaticResource Text}" Margin="0,0,0,2"/>
+                    <TextBlock Text="{Binding CurrentDate, RelativeSource={RelativeSource AncestorType=local:Dashboard, Mode=FindAncestor}}" FontSize="16" Foreground="{StaticResource Text}" HorizontalAlignment="Right"/>
                 </StackPanel>
 
             </Grid>

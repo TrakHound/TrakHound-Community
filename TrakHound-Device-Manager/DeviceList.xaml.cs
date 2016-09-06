@@ -761,10 +761,6 @@ namespace TrakHound_Device_Manager
 
         private void Grid_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) { Devices_DG.SelectedItems.Clear(); }
 
-        private void Devices_DG_SelectionChanged(object sender, SelectionChangedEventArgs e) { SharedDevices_DG.UnselectAll(); }
-
-        private void SharedDevices_DG_SelectionChanged(object sender, SelectionChangedEventArgs e) { Devices_DG.UnselectAll(); }
-
     }
 
 }

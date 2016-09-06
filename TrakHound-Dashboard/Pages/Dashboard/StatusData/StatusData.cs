@@ -57,23 +57,34 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
 
                 var devices = Devices.ToList().Select(o => o.UniqueId).ToList();
 
-                string command = "011111";
+                //string command = "011111";
 
                 var now = DateTime.Now;
                 DateTime from = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);
                 DateTime to = from.AddDays(1);
 
-                if (UserConfiguration != null) deviceInfos = Data.Get(UserConfiguration, devices, from.ToUniversalTime(), to.ToUniversalTime(), 2000, command);
-                else deviceInfos = Data.Get(null, devices, from, to, 2000, command);
+                if (UserConfiguration != null) deviceInfos = Data.Get(UserConfiguration, devices, from.ToUniversalTime(), to.ToUniversalTime(), 2000);
+                else deviceInfos = Data.Get(null, devices, from, to, 2000);
                 if (deviceInfos != null)
                 {
                     foreach (var deviceInfo in deviceInfos)
                     {
-                        SendControllerInfo(deviceInfo);
-                        SendOeeInfo(deviceInfo);
-                        SendStatusInfo(deviceInfo);
-                        SendTimersInfo(deviceInfo);
-                        SendDayInfo(deviceInfo);
+                        foreach (var c in deviceInfo.Classes)
+                        {
+                            var data = new EventData();
+                            data.Id = "STATUS_" + c.Key.ToUpper();
+                            data.Data01 = deviceInfo.UniqueId;
+                            data.Data02 = c.Value;
+                            SendDataEvent(data);
+                        }
+
+
+
+                        //SendControllerInfo(deviceInfo);
+                        //SendOeeInfo(deviceInfo);
+                        //SendStatusInfo(deviceInfo);
+                        //SendTimersInfo(deviceInfo);
+                        //SendDayInfo(deviceInfo);
                     }
                 }
 
@@ -83,47 +94,67 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
 
         private void SendControllerInfo(Data.DeviceInfo info)
         {
-            var data = new EventData();
-            data.Id = "STATUS_CONTROLLER";
-            data.Data01 = info.UniqueId;
-            data.Data02 = info.Controller;
-            SendDataEvent(data);
+            var obj = info.GetClass("controller");
+            if (obj != null)
+            {
+                var data = new EventData();
+                data.Id = "STATUS_CONTROLLER";
+                data.Data01 = info.UniqueId;
+                data.Data02 = obj;
+                SendDataEvent(data);
+            }
         }
 
         private void SendOeeInfo(Data.DeviceInfo info)
         {
-            var data = new EventData();
-            data.Id = "STATUS_OEE";
-            data.Data01 = info.UniqueId;
-            data.Data02 = info.Oee;
-            SendDataEvent(data);
+            var obj = info.GetClass("oee");
+            if (obj != null)
+            {
+                var data = new EventData();
+                data.Id = "STATUS_OEE";
+                data.Data01 = info.UniqueId;
+                data.Data02 = obj;
+                SendDataEvent(data);
+            }
         }
 
         private void SendStatusInfo(Data.DeviceInfo info)
         {
-            var data = new EventData();
-            data.Id = "STATUS_STATUS";
-            data.Data01 = info.UniqueId;
-            data.Data02 = info.Status;
-            SendDataEvent(data);
+            var obj = info.GetClass("status");
+            if (obj != null)
+            {
+                var data = new EventData();
+                data.Id = "STATUS_STATUS";
+                data.Data01 = info.UniqueId;
+                data.Data02 = obj;
+                SendDataEvent(data);
+            }
         }
 
         private void SendTimersInfo(Data.DeviceInfo info)
         {
-            var data = new EventData();
-            data.Id = "STATUS_TIMERS";
-            data.Data01 = info.UniqueId;
-            data.Data02 = info.Timers;
-            SendDataEvent(data);
+            var obj = info.GetClass("timers");
+            if (obj != null)
+            {
+                var data = new EventData();
+                data.Id = "STATUS_TIMERS";
+                data.Data01 = info.UniqueId;
+                data.Data02 = obj;
+                SendDataEvent(data);
+            }
         }
 
         private void SendDayInfo(Data.DeviceInfo info)
         {
-            var data = new EventData();
-            data.Id = "STATUS_HOURS";
-            data.Data01 = info.UniqueId;
-            data.Data02 = info.Hours;
-            SendDataEvent(data);
+            var obj = info.GetClass("hours");
+            if (obj != null)
+            {
+                var data = new EventData();
+                data.Id = "STATUS_HOURS";
+                data.Data01 = info.UniqueId;
+                data.Data02 = obj;
+                SendDataEvent(data);
+            }
         }
 
         private void SendDataEvent(EventData data)
