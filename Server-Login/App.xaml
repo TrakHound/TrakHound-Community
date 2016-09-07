@@ -4,6 +4,11 @@
              xmlns:local="clr-namespace:TrakHound_Server_Login"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary x:Name="ThemeDictionary">
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TrakHound-UI;component/All.xaml" />
+                <ResourceDictionary Source="/TrakHound-UI;component/Styles/Theme_Light.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

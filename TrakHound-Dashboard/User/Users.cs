@@ -50,7 +50,7 @@ namespace TrakHound_Dashboard
                 LoadProfileImage(_currentuser);
 
                 // Raise CurrentUserChanged Event
-                if (CurrentUserChanged != null) CurrentUserChanged(_currentuser);
+                CurrentUserChanged?.Invoke(_currentuser);
             }
         }
 

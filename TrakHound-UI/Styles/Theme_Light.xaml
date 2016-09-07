@@ -16,11 +16,13 @@
     <SolidColorBrush ice:Freeze="True" x:Key="Foreground_Alternate" Color="{StaticResource Foreground_Alternate_Color}"/>
 
     <!--Text Colors-->
-    <Color ice:Freeze="True" x:Key="Text_Color">#333333</Color>
+    <Color ice:Freeze="True" x:Key="Text_Color">#000000</Color>
+    <Color ice:Freeze="True" x:Key="Text_Light_Color">#888888</Color>
     <Color ice:Freeze="True" x:Key="Text_Alternate_Color">#FFFFFF</Color>
 
     <!--Text Brushes-->
     <SolidColorBrush ice:Freeze="True" x:Key="Text" Color="{StaticResource Text_Color}"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="Text_Light" Color="{StaticResource Text_Light_Color}"/>
     <SolidColorBrush ice:Freeze="True" x:Key="Text_Alternate" Color="{StaticResource Text_Alternate_Color}"/>
 
     <SolidColorBrush ice:Freeze="True" x:Key="Spinner" Color="{StaticResource TrakHound_Blue_Color}"/>

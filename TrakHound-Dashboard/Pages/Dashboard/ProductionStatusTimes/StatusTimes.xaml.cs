@@ -1,11 +1,16 @@
-﻿using System.Collections.ObjectModel;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Controls;
-using TH_StatusTimes.ProductionStatus.Controls;
+using TrakHound_Dashboard.Pages.Dashboard.ProductionStatusTimes.Controls;
 
 using TrakHound.Configurations;
 
-namespace TH_StatusTimes.ProductionStatus
+namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatusTimes
 {
     /// <summary>
     /// Interaction logic for StatusTimeline.xaml

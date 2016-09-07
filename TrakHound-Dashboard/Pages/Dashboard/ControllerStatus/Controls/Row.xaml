@@ -10,18 +10,6 @@
              mc:Ignorable="d" 
              Height="65">
 
-    <UserControl.Resources>
-
-        <!--<ImageBrush x:Key="Active_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Active_01.png"  />
-
-        <ImageBrush x:Key="Idle_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Hourglass_01.png"  />
-
-        <ImageBrush x:Key="Power_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Power_01.png"  />
-
-        <ImageBrush x:Key="Alert_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Warning_01.png"  />-->
-
-    </UserControl.Resources>
-
     <Border x:Name="root">
         <Border.Style>
             <Style TargetType="Border">

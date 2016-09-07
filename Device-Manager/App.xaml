@@ -3,9 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <ResourceDictionary>
+        <ResourceDictionary x:Name="ThemeDictionary">
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/TrakHound-UI;component/All.xaml" />
+                <ResourceDictionary Source="/TrakHound-UI;component/Styles/Theme_Light.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

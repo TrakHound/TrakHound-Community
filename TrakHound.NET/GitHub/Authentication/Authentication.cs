@@ -9,7 +9,7 @@ using System.Text;
 
 using TrakHound.Tools.Web;
 
-namespace TH_GitHub
+namespace TrakHound.GitHub
 {
     public static class Authentication
     {

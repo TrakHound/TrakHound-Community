@@ -10,8 +10,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 
 using TrakHound;
-using TrakHound.Tools;
 using TrakHound.API.Users;
+using TrakHound.Tools;
 using TrakHound.Tools.Web;
 using TrakHound_UI;
 
@@ -801,7 +801,6 @@ namespace TrakHound_Dashboard.Pages.Account
 
                 if (userConfig != null && !string.IsNullOrEmpty(userConfig.ImageUrl))
                 {
-                    //var img = UserManagement.ProfileImage.Get(userConfig.ImageUrl);
                     var img = TrakHound.API.Files.DownloadImage(userConfig, userConfig.ImageUrl);
                     if (img != null)
                     {

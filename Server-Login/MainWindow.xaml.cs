@@ -6,14 +6,11 @@
 using System;
 using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
 
+using TrakHound.API;
+using TrakHound.API.Users;
 using TrakHound.Configurations;
 using TrakHound.Tools;
-using TrakHound.Logging;
-using TrakHound.API.Users;
-using TrakHound.API;
 
 namespace Server_Login
 {
@@ -40,7 +37,7 @@ namespace Server_Login
             {
                 currentuser = value;
 
-                if (CurrentUserChanged != null) CurrentUserChanged(currentuser);
+                CurrentUserChanged?.Invoke(currentuser);
             }
         }
 
@@ -58,32 +55,54 @@ namespace Server_Login
 
         #region "Properties"
 
-        public bool UsernameEntered
+        public string LoginUsername
         {
-            get { return (bool)GetValue(UsernameEnteredProperty); }
-            set { SetValue(UsernameEnteredProperty, value); }
+            get { return (string)GetValue(LoginUsernameProperty); }
+            set { SetValue(LoginUsernameProperty, value); }
         }
 
-        public static readonly DependencyProperty UsernameEnteredProperty =
-            DependencyProperty.Register("UsernameEntered", typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+        public static readonly DependencyProperty LoginUsernameProperty =
+            DependencyProperty.Register("LoginUsername", typeof(string), typeof(MainWindow), new PropertyMetadata(null));
 
 
-        public bool PasswordEntered
+        public string LoginPassword
         {
-            get { return (bool)GetValue(PasswordEnteredProperty); }
-            set { SetValue(PasswordEnteredProperty, value); }
+            get { return (string)GetValue(LoginPasswordProperty); }
+            set { SetValue(LoginPasswordProperty, value); }
         }
 
-        public static readonly DependencyProperty PasswordEnteredProperty =
-            DependencyProperty.Register("PasswordEntered", typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+        public static readonly DependencyProperty LoginPasswordProperty =
+            DependencyProperty.Register("LoginPassword", typeof(string), typeof(MainWindow), new PropertyMetadata(null));
 
 
-
-        private void password_TXT_PasswordChanged(object sender, RoutedEventArgs e)
+        public bool IsUsernameFocused
         {
-            if (password_TXT.Password != "") PasswordEntered = true;
-            else PasswordEntered = false;
+            get { return (bool)GetValue(IsUsernameFocusedProperty); }
+            set { SetValue(IsUsernameFocusedProperty, value); }
         }
+
+        public static readonly DependencyProperty IsUsernameFocusedProperty =
+            DependencyProperty.Register("IsUsernameFocused", typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+
+
+        public bool IsPasswordFocused
+        {
+            get { return (bool)GetValue(IsPasswordFocusedProperty); }
+            set { SetValue(IsPasswordFocusedProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsPasswordFocusedProperty =
+            DependencyProperty.Register("IsPasswordFocused", typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+
+        public bool UserLoginError
+        {
+            get { return (bool)GetValue(UserLoginErrorProperty); }
+            set { SetValue(UserLoginErrorProperty, value); }
+        }
+
+        public static readonly DependencyProperty UserLoginErrorProperty =
+            DependencyProperty.Register("UserLoginError", typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+        
 
         public bool Loading
         {
@@ -119,45 +138,15 @@ namespace Server_Login
 
         #endregion
 
-        const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
-
-
         #region "Login"
-
-        //RememberMeType rememberMeType { get { return RememberMeType.Server; } }
-
-        public bool RememberMe
-        {
-            get { return (bool)GetValue(RememberMeProperty); }
-            set { SetValue(RememberMeProperty, value); }
-        }
-
-        public static readonly DependencyProperty RememberMeProperty =
-            DependencyProperty.Register("RememberMe", typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
-
-
-        private void CheckBox_Checked(object sender, RoutedEventArgs e) { RememberMe = true; }
-
-        private void CheckBox_Unchecked(object sender, RoutedEventArgs e) { RememberMe = false; }
-
-
-
-        private void Login_Clicked(TrakHound_UI.Button bt)
-        {
-            LoginUser(username_TXT.Text, password_TXT.Password);
-            password_TXT.Clear();
-        }
 
         class Login_Info
         {
             public string Username { get; set; }
             public string Password { get; set; }
-            public bool RememberMe { get; set; }
         }
 
-        //Thread login_THREAD;
-
-        public void LoginUser(string username, string password)
+        public void Login(string username, string password)
         {
             Loading = true;
             LoadingMessage = String_Functions.UppercaseFirst(username);
@@ -166,14 +155,8 @@ namespace Server_Login
             Login_Info info = new Login_Info();
             info.Username = username;
             info.Password = password;
-            info.RememberMe = RememberMe;
 
             ThreadPool.QueueUserWorkItem(new WaitCallback(Login_Worker), info);
-
-            //if (login_THREAD != null) login_THREAD.Abort();
-
-            //login_THREAD = new Thread(new ParameterizedThreadStart(Login_Worker));
-            //login_THREAD.Start(info);
         }
 
         void Login_Worker(object o)
@@ -187,7 +170,7 @@ namespace Server_Login
                 if (userConfig != null) UserLoginFile.Create(userConfig);
                 else UserLoginFile.Remove();
 
-                Dispatcher.BeginInvoke(new Action<UserConfiguration>(Login_Finished), priority, new object[] { userConfig });
+                Dispatcher.BeginInvoke(new Action<UserConfiguration>(Login_Finished), UI_Functions.PRIORITY_BACKGROUND, new object[] { userConfig });
             }
         }
 
@@ -202,8 +185,8 @@ namespace Server_Login
             else
             {
                 LoginError = true;
-                username_TXT.Clear();
-                password_TXT.Clear();
+                LoginUsername = null;
+                LoginPassword = null;
             }
 
             Loading = false;
@@ -216,63 +199,25 @@ namespace Server_Login
 
         #endregion
 
-
-        private void UserControl_PreviewKeyDown(object sender, KeyEventArgs e)
+        private void Login_Clicked(TrakHound_UI.Button bt)
         {
-            if (e.Key == Key.Enter)
-            {
-                if (username_TXT.IsFocused)
-                {
-                    password_TXT.Focus();
-                }
-
-                if (password_TXT.IsFocused)
-                {
-                    LoginUser(username_TXT.Text, password_TXT.Password);
-                    password_TXT.Clear();
-                }
-            }
+            Login(LoginUsername, LoginPassword);
+            LoginPassword = null;
         }
 
-        private void username_TXT_TextChanged(object sender, TextChangedEventArgs e)
+        private void Username_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (username_TXT.Text != String.Empty) UsernameEntered = true;
-            else UsernameEntered = false;
+            if (e.Key == System.Windows.Input.Key.Enter) IsUsernameFocused = true;
         }
 
-        private void password_TXT_GotFocus(object sender, RoutedEventArgs e)
+        private void Password_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            password_TXT.Password = "";
+            if (e.Key == System.Windows.Input.Key.Enter) Login(LoginUsername, LoginPassword);
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            UsernameFocus();
-        }
+        private void LoginUsername_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) { UserLoginError = false; }
 
-        System.Timers.Timer focus_TIMER;
-
-        void UsernameFocus()
-        {
-            if (focus_TIMER != null) focus_TIMER.Enabled = false;
-
-            focus_TIMER = new System.Timers.Timer();
-            focus_TIMER.Interval = 200;
-            focus_TIMER.Elapsed += focus_TIMER_Elapsed;
-            focus_TIMER.Enabled = true;
-        }
-
-        void focus_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            focus_TIMER.Enabled = false;
-
-            this.Dispatcher.BeginInvoke(new Action(UsernameFocus_GUI));
-        }
-
-        void UsernameFocus_GUI()
-        {
-            username_TXT.Focus();
-        }
+        private void LoginPassword_PasswordChanged(object sender, RoutedEventArgs e) { UserLoginError = false; }
 
     }
 }

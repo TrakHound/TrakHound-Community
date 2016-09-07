@@ -1,16 +1,7 @@
-﻿//  Copyright 2016 Feenux LLC
-//
-//  Licensed under the Apache License, Version 2.0 (the "License");
-//  you may not use this file except in compliance with the License.
-//  You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-//  Unless required by applicable law or agreed to in writing, software
-//  distributed under the License is distributed on an "AS IS" BASIS,
-//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//  See the License for the specific language governing permissions and
-//  limitations under the License.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
 
 using System;
 using System.Collections.Generic;
@@ -168,41 +159,6 @@ namespace TrakHound.Logging
                 catch (Exception ex) { Console.WriteLine("ProcessQueue(LogLineType) :: Exception :: " + type.ToString() + " :: " + ex.Message); }
             }
         }
-
-        //private void ProcessQueue(LogLineType type)
-        //{
-        //    var lines = queue.FindAll(x => x.Type == type);
-        //    if (lines != null && lines.Count > 0)
-        //    {
-        //        try
-        //        {
-        //            if (!Directory.Exists(Logger.OutputLogPath)) Directory.CreateDirectory(Logger.OutputLogPath);
-
-        //            string filename = "Log-" + Logger.FormatDate(DateTime.Now) + ".xml";
-
-        //            string path = null;
-
-        //            switch (type)
-        //            {
-        //                case LogLineType.Debug: path = Path.Combine(Logger.OutputLogPath, Logger.OUTPUT_DIRECTORY_DEBUG, filename); break;
-        //                case LogLineType.Error: path = Path.Combine(Logger.OutputLogPath, Logger.OUTPUT_DIRECTORY_ERROR, filename); break;
-        //                case LogLineType.Notification: path = Path.Combine(Logger.OutputLogPath, Logger.OUTPUT_DIRECTORY_NOTIFICATION, filename); break;
-        //                case LogLineType.Warning: path = Path.Combine(Logger.OutputLogPath, Logger.OUTPUT_DIRECTORY_WARNING, filename); break;
-        //            }
-
-        //            // Create Log (XmlDocument)
-        //            XmlDocument doc = CreateDocument(path);
-
-        //            foreach (Line line in lines)
-        //            {
-        //                AddToLog(doc, line);
-        //            }
-
-        //            Files.WriteDocument(doc, path);
-        //        }
-        //        catch (Exception ex) { Console.WriteLine("ProcessQueue(LogLineType) :: Exception :: " + type.ToString() + " :: " + ex.Message); }
-        //    }
-        //}
 
         private static XmlDocument CreateDocument(string path)
         {

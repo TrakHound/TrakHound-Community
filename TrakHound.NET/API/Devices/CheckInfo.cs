@@ -11,7 +11,6 @@ namespace TrakHound.API
     {
         public class CheckInfo
         {
-
             [JsonProperty("unique_id")]
             public string UniqueId { get; set; }
 
@@ -20,7 +19,6 @@ namespace TrakHound.API
 
             [JsonProperty("enabled")]
             public bool Enabled { get; set; }
-
         }
     }
 }

@@ -18,38 +18,11 @@
         </Grid.ColumnDefinitions>
 
         <!--Page List-->
-        <Border Grid.Column="0" BorderBrush="{StaticResource Accent_Dark}" BorderThickness="0,0,1,0" Background="{StaticResource Window_Background_Accent_Gradient}">
+        <Border Grid.Column="0" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0" Background="{StaticResource Background}">
 
-            <ScrollViewer VerticalScrollBarVisibility="auto" >
+            <ScrollViewer VerticalScrollBarVisibility="auto" Margin="0,5">
 
-                <ItemsControl ItemsSource="{Binding Pages}" Margin="0,45">
-                    <ItemsControl.Resources>
-                        <Style TargetType="ui:ListButton">
-                            <Setter Property="Foreground" Value="#fff"/>
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="MinWidth" Value="150"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                                </Trigger>
-                                <Trigger Property="IsSelected" Value="true">
-                                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                            <!--<Setter Property="Foreground" Value="{StaticResource Foreground_Normal_Opposite}"/>
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="MinWidth" Value="150"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
-                                </Trigger>
-                                <Trigger Property="IsSelected" Value="true">
-                                    <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
-                                </Trigger>
-                            </Style.Triggers>-->
-                        </Style>
-                    </ItemsControl.Resources>
-                </ItemsControl>
+                <ItemsControl ItemsSource="{Binding Pages}"/>
 
             </ScrollViewer>
 
@@ -63,7 +36,7 @@
         </ScrollViewer>
 
         <!--Loading Animation-->
-        <Grid Grid.Column="1" Background="{StaticResource Window_Background}">
+        <Grid Grid.Column="1" Background="{StaticResource Background}">
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Opacity" Value="0.0"/>
@@ -101,9 +74,9 @@
 
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 
-                <ui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" Height="75" Foreground="{StaticResource Accent_Normal}" />
+                <ui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" Height="75" Foreground="{StaticResource Spinner}" />
 
-                <TextBlock Text="Logging in.." Foreground="{StaticResource Accent_Normal}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,20,0,0" FontSize="14pt"/>
+                <TextBlock Text="Logging in.." Foreground="{StaticResource Text}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,20,0,0" FontSize="14pt"/>
 
             </StackPanel>
 

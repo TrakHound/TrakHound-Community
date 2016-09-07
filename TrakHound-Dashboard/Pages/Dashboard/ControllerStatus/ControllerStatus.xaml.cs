@@ -183,6 +183,5 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus
             }
         }
 
-
     }
 }

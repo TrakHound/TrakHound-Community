@@ -4,9 +4,9 @@ using System.Windows.Controls;
 using System.Linq;
 
 using TrakHound.Configurations;
-using TH_StatusTimes.DeviceStatus.Controls;
+using TrakHound_Dashboard.Pages.Dashboard.DeviceStatusTimes.Controls;
 
-namespace TH_StatusTimes.DeviceStatus
+namespace TrakHound_Dashboard.Pages.Dashboard.DeviceStatusTimes
 {
     /// <summary>
     /// Interaction logic for StatusTimeline.xaml

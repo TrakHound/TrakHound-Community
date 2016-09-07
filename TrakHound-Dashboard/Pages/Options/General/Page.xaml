@@ -1,4 +1,4 @@
-﻿<!--Copyright (c) 2015 Feenux LLC, All Rights Reserved.-->
+﻿<!--Copyright (c) 2016 Feenux LLC, All Rights Reserved.-->
 
 <!--This file is subject to the terms and conditions defined in-->
 <!--file 'LICENSE.txt', which is part of this source code package.-->
@@ -18,6 +18,12 @@
     <StackPanel>
 
         <CheckBox Height="40" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=AutoBugReport, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Automatically send Crash Report data to TrakHound" FontSize="14" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
+
+        <!--<StackPanel>
+
+            <ComboBox ItemsSource="{Binding Themes}" SelectedValue="{Binding SelectedTheme, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="150" HorizontalAlignment="Left"/>
+
+        </StackPanel>-->
         
     </StackPanel>
     

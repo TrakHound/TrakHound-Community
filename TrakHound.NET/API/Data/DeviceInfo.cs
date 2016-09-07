@@ -4,9 +4,7 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using TrakHound.Tools.Web;
 
@@ -16,91 +14,10 @@ namespace TrakHound.API
     {
         public class DeviceInfo
         {
-            private Dictionary<string, object> classes = new Dictionary<string, object>();
-
-            public Dictionary<string, object> Classes { get { return classes; } }
-
-            public void AddClass(string id, object obj)
-            {
-                var o = GetClass(id);
-                if (o == null) classes.Add(id, obj);
-                else
-                {
-                    RemoveClass(id);
-                    AddClass(id, obj);
-                }
-            }
-
-            public object GetClass(string id)
-            {
-                object obj = null;
-                classes.TryGetValue(id, out obj);
-
-                return obj;
-            }
-
-            public void RemoveClass(string id)
-            {
-                if (id != null) classes.Remove(id);
-            }
-
-            public void ClearClasses()
-            {
-                classes.Clear();
-            }
-
-            public void AddHourInfo(Data.HourInfo hour)
-            {
-                var obj = GetClass("hours");
-                if (obj == null)
-                {
-                    obj = new List<Data.HourInfo>();
-                    AddClass("hours", obj);
-                }
-
-                var hours = (List<Data.HourInfo>)obj;
-
-                hours.Add(hour);
-            }
-
-            public string ToJson()
-            {
-                return JSON.FromObject(ToJsonObject());
-            }
-
-            private object ToJsonObject()
-            {
-                var data = new Dictionary<string, object>();
-
-                data.Add("unique_id", UniqueId);
-
-                foreach (var c in classes) data.Add(c.Key, c.Value);
-
-                if (data.Count > 1) return data;
-                else return null;
-            }
-
-            public static string ListToJson(List<DeviceInfo> deviceInfos)
-            {
-                var datas = new List<object>();
-
-                foreach (var deviceInfo in deviceInfos)
-                {
-                    var data = deviceInfo.ToJsonObject();
-                    if (data != null) datas.Add(data);
-                    //datas.Add(deviceInfo.ToJsonObject());
-                }
-
-                if (datas.Count > 0) return JSON.FromList<object>(datas);
-                else return null;
-            }
-
-
             [JsonProperty("unique_id")]
             public string UniqueId { get; set; }
 
 
-            private DescriptionInfo _description;
             [JsonProperty("description")]
             public DescriptionInfo Description
             {
@@ -268,6 +185,88 @@ namespace TrakHound.API
                     }
                 }
             }
+
+
+            private Dictionary<string, object> classes = new Dictionary<string, object>();
+
+            public Dictionary<string, object> Classes { get { return classes; } }
+
+
+            public void AddClass(string id, object obj)
+            {
+                var o = GetClass(id);
+                if (o == null) classes.Add(id, obj);
+                else
+                {
+                    RemoveClass(id);
+                    AddClass(id, obj);
+                }
+            }
+
+            public object GetClass(string id)
+            {
+                object obj = null;
+                classes.TryGetValue(id, out obj);
+
+                return obj;
+            }
+
+            public void RemoveClass(string id)
+            {
+                if (id != null) classes.Remove(id);
+            }
+
+            public void ClearClasses()
+            {
+                classes.Clear();
+            }
+
+            public void AddHourInfo(Data.HourInfo hour)
+            {
+                var obj = GetClass("hours");
+                if (obj == null)
+                {
+                    obj = new List<Data.HourInfo>();
+                    AddClass("hours", obj);
+                }
+
+                var hours = (List<Data.HourInfo>)obj;
+
+                hours.Add(hour);
+            }
+
+
+            public string ToJson()
+            {
+                return JSON.FromObject(ToJsonObject());
+            }
+
+            private object ToJsonObject()
+            {
+                var data = new Dictionary<string, object>();
+
+                data.Add("unique_id", UniqueId);
+
+                foreach (var c in classes) data.Add(c.Key, c.Value);
+
+                if (data.Count > 1) return data;
+                else return null;
+            }
+
+            public static string ListToJson(List<DeviceInfo> deviceInfos)
+            {
+                var datas = new List<object>();
+
+                foreach (var deviceInfo in deviceInfos)
+                {
+                    var data = deviceInfo.ToJsonObject();
+                    if (data != null) datas.Add(data);
+                }
+
+                if (datas.Count > 0) return JSON.FromList<object>(datas);
+                else return null;
+            }
+
         }
     }
 }

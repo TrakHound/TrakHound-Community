@@ -25,8 +25,6 @@ namespace TrakHound.API
         
         public static bool Update(UserConfiguration userConfig, List<DeviceInfo> deviceInfos)
         {
-
-            //string json = JSON.FromList<DeviceInfo>(deviceInfos);
             var json = Data.DeviceInfo.ListToJson(deviceInfos);
             if (!string.IsNullOrEmpty(json))
             {

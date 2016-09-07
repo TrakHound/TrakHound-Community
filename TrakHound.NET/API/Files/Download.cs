@@ -147,17 +147,6 @@ namespace TrakHound.API
             if (!cachedImages.Exists(o => o.Id == cachedImage.Id))
             {
                 cachedImages.Add(cachedImage);
-
-                //FileLocations.CreateStorageDirectory();
-
-                //try
-                //{
-                //    string savePath = Path.Combine(FileLocations.Storage, cachedImage.Id);
-                //    savePath = Path.ChangeExtension(savePath, ".image");
-
-                //    cachedImage.Image.Save(savePath);
-                //}
-                //catch (Exception ex) { Logger.Log("Image Cache Error :: " + ex.Message, LogLineType.Error); }
             }
         }
 

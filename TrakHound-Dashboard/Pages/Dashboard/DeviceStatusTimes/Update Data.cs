@@ -11,7 +11,7 @@ using TrakHound.Configurations;
 using TrakHound.Plugins;
 using TrakHound.Tools;
 
-namespace TH_StatusTimes.DeviceStatus
+namespace TrakHound_Dashboard.Pages.Dashboard.DeviceStatusTimes
 {
     public partial class DeviceStatusTimes
     {

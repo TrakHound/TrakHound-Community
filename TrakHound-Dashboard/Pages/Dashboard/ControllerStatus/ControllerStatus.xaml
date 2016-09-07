@@ -27,7 +27,6 @@
                     <ColumnDefinition Width="*" MinWidth="200"/>
                     <ColumnDefinition Width="300"/>
                     <ColumnDefinition Width="300"/>
-                    <!--<ColumnDefinition Width="*"/>-->
                 </Grid.ColumnDefinitions>
                 <Grid.Resources>
                     <Style TargetType="TextBlock">

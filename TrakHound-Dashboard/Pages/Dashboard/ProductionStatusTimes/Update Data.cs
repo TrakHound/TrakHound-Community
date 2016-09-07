@@ -11,7 +11,7 @@ using TrakHound.Configurations;
 using TrakHound.Plugins;
 using TrakHound.Tools;
 
-namespace TH_StatusTimes.ProductionStatus
+namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatusTimes
 {
     public partial class ProductionStatusTimes
     {

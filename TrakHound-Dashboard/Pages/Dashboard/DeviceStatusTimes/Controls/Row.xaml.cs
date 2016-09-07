@@ -10,7 +10,7 @@ using System.Windows.Controls;
 using TrakHound.API;
 using TrakHound.Configurations;
 
-namespace TH_StatusTimes.DeviceStatus.Controls
+namespace TrakHound_Dashboard.Pages.Dashboard.DeviceStatusTimes.Controls
 {
     /// <summary>
     /// Interaction logic for Row.xaml

@@ -16,8 +16,15 @@ namespace Device_Manager.Controls
             root.DataContext = this;
         }
 
-        //public IPage Page { get; set; }
-        public TrakHound_UI.ListButton ParentButton { get; set; }
+        public TrakHound_UI.ListButton ParentButton
+        {
+            get { return (TrakHound_UI.ListButton)GetValue(ParentButtonProperty); }
+            set { SetValue(ParentButtonProperty, value); }
+        }
+
+        public static readonly DependencyProperty ParentButtonProperty =
+            DependencyProperty.Register("ParentButton", typeof(TrakHound_UI.ListButton), typeof(PageButton), new PropertyMetadata(null));
+
 
         public string Title
         {
@@ -46,12 +53,12 @@ namespace Device_Manager.Controls
 
         private void CloseButton_Clicked(TrakHound_UI.Button bt)
         {
-            if (CloseClicked != null) CloseClicked(ParentButton);
+            CloseClicked?.Invoke(ParentButton);
         }
 
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (Clicked != null) Clicked(ParentButton);
+            Clicked?.Invoke(ParentButton);
         }
     }
 }

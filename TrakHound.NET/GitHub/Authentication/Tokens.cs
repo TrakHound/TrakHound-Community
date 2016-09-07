@@ -11,7 +11,7 @@ using TrakHound.Logging;
 using TrakHound.Tools;
 using TrakHound.Tools.Web;
 
-namespace TH_GitHub
+namespace TrakHound.GitHub
 {
 
     public enum TokenReturnType

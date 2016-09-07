@@ -30,28 +30,54 @@
                 <Grid.Style>
                     <Style TargetType="Grid">
                         <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                        <Setter Property="Background" Value="#fff"/>
+                        <Setter Property="Background" Value="{StaticResource Text}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=root}" Value="true">
+                                <Setter Property="Background" Value="{StaticResource TrakHound_Blue}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ParentButton.IsSelected}" Value="true">
+                                <Setter Property="Background" Value="#FFFFFF"/>
+                            </DataTrigger>
+                        </Style.Triggers>
                     </Style>
                 </Grid.Style>
             </Grid>
 
             <!--Page Title-->
-            <TextBlock Grid.Column="1" Text="{Binding Title}" Foreground="#fff" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" TextWrapping="Wrap"/>
+            <TextBlock Grid.Column="1" Text="{Binding Title}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" TextWrapping="Wrap">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=root}" Value="true">
+                                <Setter Property="Foreground" Value="{StaticResource TrakHound_Blue}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ParentButton.IsSelected}" Value="true">
+                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
 
         </Grid>
 
         <!--Close Button-->
-        <ui:Button Grid.Column="1" Clicked="CloseButton_Clicked" Width="20" Height="20" Margin="10,0,0,0" Foreground="#fff" VerticalAlignment="Top" Image="/TrakHound-Device-Manager;component/Resources/X_01.png">
+        <ui:Button Grid.Column="1" Clicked="CloseButton_Clicked" Width="20" Height="20" Margin="10,0,0,0" VerticalAlignment="Top" Image="/TrakHound-Device-Manager;component/Resources/X_01.png">
             <ui:Button.Style>
                 <Style TargetType="ui:Button">
                     <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="{StaticResource Text}"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Title}" Value="Device Manager">
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                            <Setter Property="Foreground" Value="{StaticResource TrakHound_Blue}"/>
                         </Trigger>
+                        <DataTrigger Binding="{Binding ParentButton.IsSelected}" Value="true">
+                            <Setter Property="Foreground" Value="#FFFFFF"/>
+                        </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </ui:Button.Style>

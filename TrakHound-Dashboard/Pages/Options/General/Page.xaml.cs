@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
@@ -28,6 +28,9 @@ namespace TrakHound_Dashboard.Pages.Options.General
             Themes.Add("Dark");
 
             mw = Application.Current.MainWindow as MainWindow;
+
+            //ChangeTheme(Properties.Settings.Default.SavedTheme);
+            //SelectedTheme = Properties.Settings.Default.SavedTheme;
         }
 
         MainWindow mw;
@@ -57,13 +60,6 @@ namespace TrakHound_Dashboard.Pages.Options.General
             }
         }
 
-        public void ChangeTheme(Uri uri)
-        {
-            //ThemeDictionary.MergedDictionaries.Clear();
-            ThemeDictionary.MergedDictionaries.RemoveAt(1);
-            ThemeDictionary.MergedDictionaries.Insert(1, new ResourceDictionary() { Source = uri });
-        }
-
         private ObservableCollection<string> _themes;
         public ObservableCollection<string> Themes
         {
@@ -87,7 +83,7 @@ namespace TrakHound_Dashboard.Pages.Options.General
             {
                 SetValue(SelectedThemeProperty, value);
 
-                UpdateTheme(value);
+                SaveTheme(value);
             }
         }
 
@@ -98,31 +94,62 @@ namespace TrakHound_Dashboard.Pages.Options.General
         private static void SelectedTheme_PropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
             var o = obj as Page;
-            if (o != null) o.UpdateTheme(e.NewValue.ToString());
+            if (o != null) o.SaveTheme(e.NewValue.ToString());
         }
 
 
-        private void UpdateTheme(string key)
+        private void ChangeTheme(string key)
         {
             switch (key)
             {
-                case "Light":
-
-                    ChangeTheme(new Uri("/TrakHound-UI;component/Styles/Theme_Light.xaml", UriKind.RelativeOrAbsolute));
-                    //TrakHound_UI.MkThemeSelector.SetCurrentThemeDictionary(this, new Uri("/TrakHound-Dashboard;component/Styles/Dashboard_Light.xaml"));
-
-                    break;
-
                 case "Dark":
 
                     ChangeTheme(new Uri("/TrakHound-UI;component/Styles/Theme_Dark.xaml", UriKind.RelativeOrAbsolute));
-                    //TrakHound_UI.MkThemeSelector.SetCurrentThemeDictionary(this, new Uri("/TrakHound-Dashboard;component/Styles/Dashboard_Dark.xaml"));
+
+                    break;
+
+                default:
+
+                    ChangeTheme(new Uri("/TrakHound-UI;component/Styles/Theme_Light.xaml", UriKind.RelativeOrAbsolute));
 
                     break;
             }
 
-
+            Console.WriteLine("Theme Loaded : " + key);
         }
+
+        public void ChangeTheme(Uri uri)
+        {
+            ThemeDictionary.MergedDictionaries.RemoveAt(1);
+            ThemeDictionary.MergedDictionaries.Insert(1, new ResourceDictionary() { Source = uri });
+        }
+
+        private void SaveTheme(string key)
+        {
+            //switch (key)
+            //{
+            //    case "Dark":
+
+            //        Properties.Settings.Default.SavedTheme = new Uri("/TrakHound-UI;component/Styles/Theme_Dark.xaml", UriKind.RelativeOrAbsolute).ToString();
+
+            //        break;
+
+            //    default:
+
+            //        Properties.Settings.Default.SavedTheme = new Uri("/TrakHound-UI;component/Styles/Theme_Light.xaml", UriKind.RelativeOrAbsolute).ToString();
+
+            //        break;
+            //}
+
+            Properties.Settings.Default.SavedTheme = key;
+            Properties.Settings.Default.Save();
+        }
+
+        //public void SetTheme(Uri uri)
+        //{
+        //    Properties.Settings.Default.SavedTheme = uri.ToString();
+        //    Properties.Settings.Default.Save();
+        //}
 
     }
 }

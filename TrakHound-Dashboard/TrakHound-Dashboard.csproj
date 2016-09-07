@@ -108,8 +108,6 @@
     <Compile Include="Pages\Dashboard\ControllerStatus\Controls\Row.xaml.cs">
       <DependentUpon>Row.xaml</DependentUpon>
     </Compile>
-    <None Include="Pages\Dashboard\ControllerStatus\Plugin.cs" />
-    <None Include="Pages\Dashboard\ControllerStatus\Update Data.cs" />
     <Compile Include="Pages\Dashboard\Dashboard.xaml.cs">
       <DependentUpon>Dashboard.xaml</DependentUpon>
     </Compile>

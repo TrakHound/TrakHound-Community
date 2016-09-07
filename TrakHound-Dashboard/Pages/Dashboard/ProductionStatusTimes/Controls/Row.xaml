@@ -1,22 +1,14 @@
-﻿<UserControl x:Class="TH_StatusTimes.ProductionStatus.Controls.Row"
+﻿<UserControl x:Class="TrakHound_Dashboard.Pages.Dashboard.ProductionStatusTimes.Controls.Row"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:TH_StatusTimes.ProductionStatus.Controls"
+             xmlns:local="clr-namespace:TrakHound_Dashboard.Pages.Dashboard.ProductionStatusTimes.Controls"
              
              xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
              
              mc:Ignorable="d" 
              Height="65">
-
-    <UserControl.Resources>
-
-        <ImageBrush x:Key="Power_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Power_01.png"  />
-
-        <ImageBrush x:Key="Alert_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Warning_01.png"  />
-
-    </UserControl.Resources>
 
     <Border x:Name="root">
         <Border.Style>

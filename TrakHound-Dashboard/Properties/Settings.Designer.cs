@@ -153,5 +153,17 @@ namespace TrakHound_Dashboard.Properties {
                 this["AutoBugReport"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Light")]
+        public string SavedTheme {
+            get {
+                return ((string)(this["SavedTheme"]));
+            }
+            set {
+                this["SavedTheme"] = value;
+            }
+        }
     }
 }

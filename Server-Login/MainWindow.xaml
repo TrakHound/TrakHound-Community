@@ -14,16 +14,7 @@
         ResizeMode="NoResize" 
         WindowStartupLocation="CenterScreen" 
         Icon="Resources/TrakHound.ico"
-        PreviewKeyDown="UserControl_PreviewKeyDown" 
         >   
-
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TrakHound-UI;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -35,14 +26,14 @@
         <StackPanel>
 
             <!--Header Info-->
-            <Grid Margin="10,5">
+            <Grid Margin="10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
                 <!--Profile Icon-->
-                <Rectangle Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0">
+                <Rectangle Width="30" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0">
                     <Rectangle.Resources>
                         <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="Resources/blank_profile_01_sm.png" />
                     </Rectangle.Resources>
@@ -50,91 +41,40 @@
                     <Rectangle.Style>
                         <Style TargetType="Rectangle">
                             <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                            <Setter Property="Fill" Value="{StaticResource Shade_Dark}"/>
+                            <Setter Property="Fill" Value="{StaticResource Border}"/>
                         </Style>
                     </Rectangle.Style>
                 </Rectangle>
 
-                <TextBlock Grid.Column="1" Margin="0,0,0,0" Text="Sign in to TrakHound to access your saved devices" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="1" Margin="0,0,0,0" Text="Sign in to TrakHound to access your saved devices" FontSize="12" Foreground="{StaticResource Text}" TextWrapping="Wrap" VerticalAlignment="Center"/>
 
             </Grid>
 
-            <!--Username-->
-            <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
-                <Border.Style>
-                    <Style TargetType="Border">
-                        <Setter Property="BorderBrush" Value="{StaticResource Foreground_Light}"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsFocused, ElementName=username_TXT}" Value="true">
-                                <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Border.Style>
+            <StackPanel Margin="10,0,0,0">
 
-                <Grid Margin="10,0">
+                <ui:TextBox Text="{Binding LoginUsername, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Instructions="Username" CornerRadius="2" ShowClear="False" KeyDown="Username_KeyDown" TextChanged="LoginUsername_TextChanged" IsFocused="{Binding IsUsernameFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    <!--Instructions-->
-                    <TextBlock Text="Enter your username or email" FontSize="12pt" Foreground="{StaticResource Foreground_Light}" VerticalAlignment="Center" Margin="2,0" >
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Text, ElementName=username_TXT}" Value="">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
+                <ui:PasswordBox PasswordText="{Binding LoginPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Instructions="Password" CornerRadius="2" Margin="0,10,0,0" KeyDown="Password_KeyDown" PasswordChanged="LoginPassword_PasswordChanged"  IsFocused="{Binding IsPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    <!--User Input-->
-                    <TextBox x:Name="username_TXT" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="{StaticResource Foreground_Normal}" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black" TextChanged="username_TXT_TextChanged"/>
+                <TextBlock Text="Incorrect Username or Password" Foreground="White" FontSize="10" Margin="0,5" TextAlignment="Center" >
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding UserLoginError}" Value="true">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
 
-                </Grid>
-
-            </Border>
-
-            <!--Password-->
-            <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
-                <Border.Style>
-                    <Style TargetType="Border">
-                        <Setter Property="BorderBrush" Value="{StaticResource Foreground_Light}"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsFocused, ElementName=password_TXT}" Value="true">
-                                <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Border.Style>
-
-                <Grid Margin="10,0">
-
-                    <!--Instructions-->
-                    <TextBlock Text="Password" FontSize="12pt" Foreground="{StaticResource Foreground_Light}" VerticalAlignment="Center" Margin="2,0">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding PasswordEntered}" Value="false">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-
-                    <!--User Input-->
-                    <PasswordBox x:Name="password_TXT" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="{StaticResource Foreground_Normal}" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" CaretBrush="Black" PasswordChanged="password_TXT_PasswordChanged" GotFocus="password_TXT_GotFocus"/>
-
-                </Grid>
-
-            </Border>
+            </StackPanel>
 
         </StackPanel>
 
         <!--Loading Cover-->
-        <Grid Background="{StaticResource Window_Background}">
+        <Grid Background="{StaticResource Background}">
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Opacity" Value="0"/>
@@ -223,20 +163,20 @@
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,30,0,0" Orientation="Horizontal">
 
                 <!--Loading Wheel-->
-                <ui:Spinner Width="50" Height="50" Foreground="{StaticResource Accent_Normal}" />
+                <ui:Spinner Width="50" Height="50" Foreground="{StaticResource Spinner}" />
 
                 <!--Loading Text-->
-                <TextBlock Text="{Binding LoadingMessage}" FontSize="12pt" Foreground="{StaticResource Accent_Normal}" HorizontalAlignment="Center" Margin="20,0" VerticalAlignment="Center" TextAlignment="Center"/>
+                <TextBlock Text="{Binding LoadingMessage}" FontSize="12pt" Foreground="{StaticResource Text}" HorizontalAlignment="Center" Margin="20,0" VerticalAlignment="Center" TextAlignment="Center"/>
 
             </StackPanel>
 
         </Grid>
 
         <!--Seperator-->
-        <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Foreground_Light}"/>
+        <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Border}"/>
 
         <!--Bottom Bar-->
-        <Grid Grid.Row="2" Height="59" Background="{StaticResource Window_Background_Dark}">
+        <Grid Grid.Row="2" Height="59" Background="{StaticResource Background}">
 
             <Grid>
                 <Grid.Style>
@@ -273,62 +213,23 @@
                 </Grid>
 
                 <!--Login-->
-                <Grid Grid.Column="2" Margin="10,0" Height="40">
-                    <Grid.Style>
-                        <Style TargetType="Grid">
-                            <Setter Property="IsEnabled" Value="false"/>
+                <ui:Button Clicked="Login_Clicked" Text="Login" Grid.Column="2" Margin="10,0" Height="40" HorizontalAlignment="Right" >
+                    <ui:Button.Style>
+                        <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Accent_Background}">
                             <Style.Triggers>
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding UsernameEntered}" Value="true"/>
-                                        <Condition Binding="{Binding PasswordEntered}" Value="true"/>
-                                    </MultiDataTrigger.Conditions>
 
-                                    <Setter Property="IsEnabled" Value="true"/>
+                                <DataTrigger Binding="{Binding LoginUsername}" Value="{x:Null}">
+                                    <Setter Property="IsEnabled" Value="false"/>
+                                </DataTrigger>
 
-                                </MultiDataTrigger>
+                                <DataTrigger Binding="{Binding LoginPassword}" Value="{x:Null}">
+                                    <Setter Property="IsEnabled" Value="false"/>
+                                </DataTrigger>
+
                             </Style.Triggers>
                         </Style>
-                    </Grid.Style>
-
-                    <ui:Button Clicked="Login_Clicked" Text="Login"
-                                               BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" 
-                                               Height="40" HorizontalAlignment="Right" >
-                        <ui:Button.Style>
-                            <Style TargetType="ui:Button">
-                                <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                                <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
-                                <Setter Property="FontSize" Value="14"/>
-                                <Setter Property="Padding" Value="10,0"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="true">
-                                        <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ui:Button.Style>
-                    </ui:Button>
-
-                    <Grid>
-                        <Grid.Style>
-                            <Style TargetType="Grid">
-                                <Setter Property="Background" Value="#88000000"/>
-                                <Style.Triggers>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding UsernameEntered}" Value="true"/>
-                                            <Condition Binding="{Binding PasswordEntered}" Value="true"/>
-                                        </MultiDataTrigger.Conditions>
-
-                                        <Setter Property="Background" Value="{x:Null}"/>
-
-                                    </MultiDataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
-                    </Grid>
-
-                </Grid>
+                    </ui:Button.Style>
+                </ui:Button>
 
             </Grid>
 

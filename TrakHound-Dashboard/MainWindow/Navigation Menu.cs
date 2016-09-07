@@ -180,11 +180,6 @@ namespace TrakHound_Dashboard
             NavigationMenu_Hide();
         }
 
-        //private void DeveloperConsole_Clicked(TrakHound_UI.Button bt)
-        //{
-        //    developerConsole.Shown = !developerConsole.Shown;
-        //}
-
         private void ReportBug_Clicked(TrakHound_UI.Button bt)
         {
             OpenBugReport();
