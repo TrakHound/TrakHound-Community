@@ -76,7 +76,7 @@ namespace TrakHound_Server.Plugins.OEE
             // Calculate IdealDuration based on percentage of the average override value and the Actual Duration of the Cycle
             idealSeconds = duration * (avg / 100);
 
-            return TimeSpan.FromSeconds(idealSeconds);
+            return TimeSpan.FromSeconds(Math.Min(duration, idealSeconds));
         }
     }
     

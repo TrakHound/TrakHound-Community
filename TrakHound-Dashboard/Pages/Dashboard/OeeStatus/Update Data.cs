@@ -18,7 +18,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeStatus
 
         void Update(EventData data)
         {
-            if (data != null && data.Id == "STATUS_STATUS")
+            if (data != null && data.Id == "STATUS_STATUS" && data.Data02 != null && data.Data02.GetType() == typeof(Data.StatusInfo))
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
@@ -34,7 +34,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeStatus
                 }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
             }
 
-            if (data != null && data.Id == "STATUS_OEE")
+            if (data != null && data.Id == "STATUS_OEE" && data.Data02 != null && data.Data02.GetType() == typeof(Data.OeeInfo))
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {

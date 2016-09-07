@@ -111,13 +111,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
             }
         }
 
-        //public void GetSentData(EventData data)
-        //{
-        //    UpdateDeviceAdded(data);
-        //    UpdateDeviceUpdated(data);
-        //    UpdateDeviceRemoved(data);
-        //}
-
         public event SendData_Handler SendData;
 
         #endregion
@@ -132,7 +125,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
                 if (_devices == null)
                 {
                     _devices = new ObservableCollection<DeviceConfiguration>();
-                    _devices.CollectionChanged += Devices_CollectionChanged;
                 }
                 return _devices;
             }
@@ -141,31 +133,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
                 _devices = value;
             }
         }
-
-        public void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            //StartDelayTimer();
-        }
-
-        //private System.Timers.Timer startDelayTimer;
-
-        //private void StartDelayTimer()
-        //{
-        //    if (startDelayTimer != null) startDelayTimer.Enabled = false;
-
-        //    startDelayTimer = new System.Timers.Timer();
-        //    startDelayTimer.Interval = 1000;
-        //    startDelayTimer.Elapsed += StartDelayTimer_Elapsed;
-        //    startDelayTimer.Enabled = true;
-        //}
-
-        //private void StartDelayTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        //{
-        //    var timer = (System.Timers.Timer)sender;
-        //    timer.Enabled = false;
-
-        //    Start();
-        //}
 
         void UpdateDeviceAdded(EventData data)
         {

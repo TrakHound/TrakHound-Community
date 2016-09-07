@@ -102,7 +102,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
                 userConfiguration = null;
             }
 
-            if (data != null && data.Id == "STATUS_CONTROLLER")
+            if (data != null && data.Id == "STATUS_CONTROLLER" && data.Data02 != null && data.Data02.GetType() == typeof(TrakHound.API.Data.ControllerInfo))
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
@@ -118,7 +118,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
                 }), UI_Functions.PRIORITY_DATA_BIND, new object[] { });
             }
 
-            if (data != null && data.Id == "STATUS_STATUS")
+            if (data != null && data.Id == "STATUS_STATUS" && data.Data02 != null && data.Data02.GetType() == typeof(TrakHound.API.Data.StatusInfo))
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
@@ -134,7 +134,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
                 }), UI_Functions.PRIORITY_DATA_BIND, new object[] { });
             }
 
-            if (data != null && data.Id == "STATUS_OEE")
+            if (data != null && data.Id == "STATUS_OEE" && data.Data02 != null && data.Data02.GetType() == typeof(TrakHound.API.Data.OeeInfo))
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
@@ -150,7 +150,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
                 }), UI_Functions.PRIORITY_DATA_BIND, new object[] { });
             }
 
-            if (data != null && data.Id == "STATUS_TIMERS")
+            if (data != null && data.Id == "STATUS_TIMERS" && data.Data02 != null && data.Data02.GetType() == typeof(TrakHound.API.Data.TimersInfo))
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {

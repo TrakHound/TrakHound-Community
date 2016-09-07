@@ -22,7 +22,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline
 
         void Update(EventData data)
         {
-            if (data != null && data.Id == "STATUS_STATUS")
+            if (data != null && data.Id == "STATUS_STATUS" && data.Data02 != null && data.Data02.GetType() == typeof(Data.StatusInfo))
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
@@ -38,7 +38,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline
                 }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
             }
 
-            if (data != null && data.Id == "STATUS_HOURS")
+            if (data != null && data.Id == "STATUS_HOURS" && data.Data02 != null && data.Data02.GetType() == typeof(List<Data.HourInfo>))
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {

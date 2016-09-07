@@ -86,7 +86,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
                 userConfiguration = null;
             }
 
-            if (data != null && data.Id == "STATUS_STATUS")
+            if (data != null && data.Id == "STATUS_STATUS" && data.Data02 != null && data.Data02.GetType() == typeof(TrakHound.API.Data.StatusInfo))
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {

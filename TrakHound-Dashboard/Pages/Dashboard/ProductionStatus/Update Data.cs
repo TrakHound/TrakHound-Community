@@ -18,7 +18,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatus
 
         void Update(EventData data)
         {
-            if (data != null && data.Id == "STATUS_STATUS")
+            if (data != null && data.Id == "STATUS_STATUS" && data.Data02 != null && data.Data02.GetType() == typeof(Data.StatusInfo))
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
@@ -34,7 +34,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatus
                 }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
             }
 
-            if (data != null && data.Id == "STATUS_TIMERS")
+            if (data != null && data.Id == "STATUS_TIMERS" && data.Data02 != null && data.Data02.GetType() == typeof(Data.TimersInfo))
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {

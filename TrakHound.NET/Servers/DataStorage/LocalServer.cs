@@ -240,7 +240,8 @@ namespace TrakHound.Servers.DataStorage
                                 if (deviceInfo != null) deviceInfos.Add(deviceInfo);
                             }
 
-                            if (deviceInfos.Count > 0) response = JSON.FromList<API.Data.DeviceInfo>(deviceInfos);
+                            if (deviceInfos.Count > 0) response = API.Data.DeviceInfo.ListToJson(deviceInfos);
+                            //if (deviceInfos.Count > 0) response = JSON.FromList<API.Data.DeviceInfo>(deviceInfos);
                         }
                     }
                     else
@@ -267,7 +268,7 @@ namespace TrakHound.Servers.DataStorage
                         if (!string.IsNullOrEmpty(json))
                         {
                             var devices = JSON.ToType<List<API.Data.DeviceInfo>>(json);
-                            //var devices = API.Data.DeviceInfo.FromJson(json);
+                            //var devices = API.Data.DeviceInfo.(json);
                             if (devices != null && devices.Count > 0)
                             {
                                 foreach (var device in devices)

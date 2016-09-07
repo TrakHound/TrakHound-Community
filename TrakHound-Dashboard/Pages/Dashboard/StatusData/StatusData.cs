@@ -57,8 +57,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
 
                 var devices = Devices.ToList().Select(o => o.UniqueId).ToList();
 
-                //string command = "011111";
-
                 var now = DateTime.Now;
                 DateTime from = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);
                 DateTime to = from.AddDays(1);
@@ -77,14 +75,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
                             data.Data02 = c.Value;
                             SendDataEvent(data);
                         }
-
-
-
-                        //SendControllerInfo(deviceInfo);
-                        //SendOeeInfo(deviceInfo);
-                        //SendStatusInfo(deviceInfo);
-                        //SendTimersInfo(deviceInfo);
-                        //SendDayInfo(deviceInfo);
                     }
                 }
 
@@ -92,70 +82,70 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
             }
         }
 
-        private void SendControllerInfo(Data.DeviceInfo info)
-        {
-            var obj = info.GetClass("controller");
-            if (obj != null)
-            {
-                var data = new EventData();
-                data.Id = "STATUS_CONTROLLER";
-                data.Data01 = info.UniqueId;
-                data.Data02 = obj;
-                SendDataEvent(data);
-            }
-        }
+        //private void SendControllerInfo(Data.DeviceInfo info)
+        //{
+        //    var obj = info.GetClass("controller");
+        //    if (obj != null)
+        //    {
+        //        var data = new EventData();
+        //        data.Id = "STATUS_CONTROLLER";
+        //        data.Data01 = info.UniqueId;
+        //        data.Data02 = obj;
+        //        SendDataEvent(data);
+        //    }
+        //}
 
-        private void SendOeeInfo(Data.DeviceInfo info)
-        {
-            var obj = info.GetClass("oee");
-            if (obj != null)
-            {
-                var data = new EventData();
-                data.Id = "STATUS_OEE";
-                data.Data01 = info.UniqueId;
-                data.Data02 = obj;
-                SendDataEvent(data);
-            }
-        }
+        //private void SendOeeInfo(Data.DeviceInfo info)
+        //{
+        //    var obj = info.GetClass("oee");
+        //    if (obj != null)
+        //    {
+        //        var data = new EventData();
+        //        data.Id = "STATUS_OEE";
+        //        data.Data01 = info.UniqueId;
+        //        data.Data02 = obj;
+        //        SendDataEvent(data);
+        //    }
+        //}
 
-        private void SendStatusInfo(Data.DeviceInfo info)
-        {
-            var obj = info.GetClass("status");
-            if (obj != null)
-            {
-                var data = new EventData();
-                data.Id = "STATUS_STATUS";
-                data.Data01 = info.UniqueId;
-                data.Data02 = obj;
-                SendDataEvent(data);
-            }
-        }
+        //private void SendStatusInfo(Data.DeviceInfo info)
+        //{
+        //    var obj = info.GetClass("status");
+        //    if (obj != null)
+        //    {
+        //        var data = new EventData();
+        //        data.Id = "STATUS_STATUS";
+        //        data.Data01 = info.UniqueId;
+        //        data.Data02 = obj;
+        //        SendDataEvent(data);
+        //    }
+        //}
 
-        private void SendTimersInfo(Data.DeviceInfo info)
-        {
-            var obj = info.GetClass("timers");
-            if (obj != null)
-            {
-                var data = new EventData();
-                data.Id = "STATUS_TIMERS";
-                data.Data01 = info.UniqueId;
-                data.Data02 = obj;
-                SendDataEvent(data);
-            }
-        }
+        //private void SendTimersInfo(Data.DeviceInfo info)
+        //{
+        //    var obj = info.GetClass("timers");
+        //    if (obj != null)
+        //    {
+        //        var data = new EventData();
+        //        data.Id = "STATUS_TIMERS";
+        //        data.Data01 = info.UniqueId;
+        //        data.Data02 = obj;
+        //        SendDataEvent(data);
+        //    }
+        //}
 
-        private void SendDayInfo(Data.DeviceInfo info)
-        {
-            var obj = info.GetClass("hours");
-            if (obj != null)
-            {
-                var data = new EventData();
-                data.Id = "STATUS_HOURS";
-                data.Data01 = info.UniqueId;
-                data.Data02 = obj;
-                SendDataEvent(data);
-            }
-        }
+        //private void SendDayInfo(Data.DeviceInfo info)
+        //{
+        //    var obj = info.GetClass("hours");
+        //    if (obj != null)
+        //    {
+        //        var data = new EventData();
+        //        data.Id = "STATUS_HOURS";
+        //        data.Data01 = info.UniqueId;
+        //        data.Data02 = obj;
+        //        SendDataEvent(data);
+        //    }
+        //}
 
         private void SendDataEvent(EventData data)
         {

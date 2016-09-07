@@ -42,7 +42,7 @@
     <ApplicationIcon>Resources\TrakHound_Logo_Initials_10.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>TrakHound_Dashboard.App</StartupObject>
+    <StartupObject>TrakHound_Dashboard.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
