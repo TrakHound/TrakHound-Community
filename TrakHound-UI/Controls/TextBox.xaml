@@ -166,7 +166,7 @@
                              BorderThickness="0"
                              Background="Transparent"
                              FontSize="{Binding FontSize}"
-                             Foreground="#333"
+                             Foreground="#000"
                              Padding="0,8"
                              CaretBrush="Black"
                              Focusable="True"

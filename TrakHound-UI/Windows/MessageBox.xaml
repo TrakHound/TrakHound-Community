@@ -7,10 +7,15 @@
         WindowStartupLocation="CenterScreen"
             
         Title="{Binding WindowTitle}" 
-        Height="200" Width="400" Icon="/TrakHound-UI;component/Resources/TrakHound_Logo_Initials_10_30px.png" MaxHeight="600"
+        
+        Width="400"
+        Height="200"
+        MaxHeight="600"
+        
+        Icon="/TrakHound-UI;component/Resources/TrakHound_Logo_Initials_10_30px.png"
         >
 
-    <Grid Background="{StaticResource Window_Background}">
+    <Grid Background="{StaticResource Background}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
@@ -31,7 +36,7 @@
                 <Rectangle.Style>
                     <Style TargetType="Rectangle">
                         <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                        <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
+                        <Setter Property="Fill" Value="{StaticResource TrakHound_Blue}"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -42,7 +47,7 @@
             </Rectangle>
 
             <!--Text-->
-            <TextBlock Grid.Column="1" Text="{Binding Text}" Foreground="{StaticResource Foreground_Normal}" FontSize="12pt" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
+            <TextBlock Grid.Column="1" Text="{Binding Text}" Foreground="{StaticResource Text}" FontSize="12pt" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
 
         </Grid>
         
@@ -50,21 +55,11 @@
         <!--Buttons-->
         <Grid Grid.Row="1" Margin="0,20">
             <Grid.Resources>
-                <Style TargetType="ui:Button">
+                <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Transparent_Background}">
                     <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="BorderBrush" Value="{StaticResource Shade_Dark}"/>
-                    <Setter Property="BorderThickness" Value="1"/>
                     <Setter Property="FontSize" Value="14"/>
                     <Setter Property="MinWidth" Value="100"/>
                     <Setter Property="Height" Value="40"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                            <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
-                            <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
-                        </Trigger>
-                    </Style.Triggers>
                 </Style>
             </Grid.Resources>
             
@@ -124,7 +119,6 @@
                 <ui:Button Text="Cancel" HorizontalAlignment="Center" Clicked="Cancel_Clicked"/>
 
             </StackPanel>
-
 
         </Grid>
         
