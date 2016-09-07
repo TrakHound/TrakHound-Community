@@ -80,8 +80,6 @@ namespace TrakHound_Server.Plugins.CloudData
 
         private void ProcessQueue()
         {
-            //Console.WriteLine("ProcessQueue @ " + DateTime.Now.ToString("o"));
-
             if (queuedInfos.Count > 0)
             {
                 // Use ToList() to avoid 'enumerated list changed' exception
@@ -97,11 +95,7 @@ namespace TrakHound_Server.Plugins.CloudData
 
                         queuedInfo.RemoveClass("hours");
                         queuedInfo.AddClass("hours", hours);
-
-                        //queuedInfo.Hours = hours;
                     }
-
-                    //queuedInfo.Hours = Data.HourInfo.CombineHours(queuedInfo.Hours);
                 }
 
                 Update(Plugin.currentUser, temp);
@@ -110,7 +104,6 @@ namespace TrakHound_Server.Plugins.CloudData
                 {
                     var match = queuedInfos.Find(o => o.UniqueId == queuedInfo.UniqueId);
                     if (match != null) match.ClearClasses();
-                    //if (match != null) match.Hours.Clear();
                 }
             }
         }
@@ -119,7 +112,6 @@ namespace TrakHound_Server.Plugins.CloudData
         {
             if (ApiConfiguration.DataApiHost.ToString() != ApiConfiguration.LOCAL_API_HOST) // Remote
             {
-                //var json = JSON.FromList<Data.DeviceInfo>(deviceInfos);
                 var json = Data.DeviceInfo.ListToJson(deviceInfos);
                 if (json != null)
                 {
@@ -136,7 +128,6 @@ namespace TrakHound_Server.Plugins.CloudData
             }
             else // Local
             {
-                //var json = JSON.FromList<Data.DeviceInfo>(deviceInfos);
                 var json = Data.DeviceInfo.ListToJson(deviceInfos);
                 if (json != null)
                 {

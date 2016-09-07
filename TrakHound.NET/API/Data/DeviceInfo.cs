@@ -25,12 +25,7 @@ namespace TrakHound.API
                 {
                     var obj = GetClass("description");
                     if (obj != null) return (DescriptionInfo)obj;
-                    else
-                    {
-                        obj = new DescriptionInfo();
-                        AddClass("description", obj);
-                        return (DescriptionInfo)obj;
-                    }
+                    return null;
                 }
                 set
                 {

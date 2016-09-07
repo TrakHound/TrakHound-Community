@@ -37,16 +37,7 @@ namespace TrakHound_Server.Plugins.CloudData
             deviceInfo = new Data.DeviceInfo();
             deviceInfo.UniqueId = config.UniqueId;
 
-            deviceInfo.AddClass("description", config.Description);
-
-            //deviceInfo.Description.Description = config.Description.Description;
-            //deviceInfo.Description.DeviceId = config.Description.DeviceId;
-            //deviceInfo.Description.Manufacturer = config.Description.Manufacturer;
-            //deviceInfo.Description.Model = config.Description.Model;
-            //deviceInfo.Description.Serial = config.Description.Serial;
-            //deviceInfo.Description.Controller = config.Description.Controller;
-            //deviceInfo.Description.LogoUrl = config.Description.LogoUrl;
-            //deviceInfo.Description.ImageUrl = config.Description.ImageUrl;
+            deviceInfo.Description = config.Description;
 
             queue.Add(deviceInfo);
         }
