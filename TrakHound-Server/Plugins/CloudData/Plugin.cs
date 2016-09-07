@@ -67,7 +67,7 @@ namespace TrakHound_Server.Plugins.CloudData
                     case "GENERATED_EVENTS": UpdateGeneratedEvents(data); break;
 
                     // Get Cycle Data
-                    //case "CYCLES": UpdateCycleData(data); break;
+                    case "CYCLES": UpdateCycleData(data); break;
 
                     case "ADD_DEVICE_DATA": AddData(data); break;
                 }
@@ -477,6 +477,8 @@ namespace TrakHound_Server.Plugins.CloudData
             }
         }
 
+        private Data.CycleInfo previousCycleInfo = null;
+
         private void UpdateCycleData(EventData data)
         {
             if (data.Data01 != null && data.Data02 != null)
@@ -484,26 +486,40 @@ namespace TrakHound_Server.Plugins.CloudData
                 var cycleDatas = (List<Cycles.CycleData>)data.Data02;
                 if (cycleDatas != null)
                 {
-                    var cyclesInfo = new Data.CyclesInfo();
+                    var cycleInfos = new List<Data.CycleInfo>();
 
                     foreach (var cycleData in cycleDatas)
                     {
-                        var cycleInfo = new Data.CyclesInfo.CycleInfo();
-                        cycleInfo.CycleId = cycleData.CycleId;
-                        cycleInfo.InstanceId = cycleData.InstanceId;
-                        cycleInfo.CycleName = cycleData.Name;
-                        cycleInfo.CycleEvent = cycleData.Event;
-                        cycleInfo.Start = cycleData.Start;
-                        cycleInfo.End = cycleData.Stop;
-                        cycleInfo.Duration = cycleData.Duration.TotalSeconds;
+                        if (cycleData.Completed && cycleData.Duration > TimeSpan.Zero)
+                        {
+                            var cycleInfo = new Data.CycleInfo();
 
-                        cyclesInfo.Cycles.Add(cycleInfo);
+                            cycleInfo.CycleId = cycleData.CycleId;
+                            cycleInfo.CycleInstanceId = cycleData.InstanceId;
+
+                            cycleInfo.CycleName = cycleData.Name;
+                            cycleInfo.CycleEvent = cycleData.Event;
+                            cycleInfo.ProductionType = cycleData.ProductionType.ToString();
+
+                            cycleInfo.Start = cycleData.Start;
+                            cycleInfo.Stop = cycleData.Stop;
+                            cycleInfo.Duration = cycleData.Duration.TotalSeconds;
+
+                            if (previousCycleInfo == null || cycleInfo.CycleId != previousCycleInfo.CycleId || cycleInfo.CycleInstanceId != previousCycleInfo.CycleInstanceId)
+                            {
+                                cycleInfos.Add(cycleInfo);
+                            }
+
+                            previousCycleInfo = cycleInfo;
+                        }                       
                     }
 
-                    deviceInfo.AddClass("cycles", cyclesInfo);
-                    //deviceInfo.Cycles = cyclesInfo;
+                    if (cycleInfos.Count > 0)
+                    {
+                        deviceInfo.AddClass("cycles", cycleInfos);
 
-                    queue.Add(deviceInfo);
+                        queue.Add(deviceInfo);
+                    }
                 }
             }
         }

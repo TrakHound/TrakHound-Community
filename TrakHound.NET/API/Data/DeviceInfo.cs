@@ -134,17 +134,17 @@ namespace TrakHound.API
             }
 
             [JsonProperty("cycles")]
-            public CyclesInfo Cycles
+            public List<CycleInfo> Cycles
             {
                 get
                 {
                     var obj = GetClass("cycles");
-                    if (obj != null) return (CyclesInfo)obj;
+                    if (obj != null) return (List<CycleInfo>)obj;
                     else
                     {
-                        obj = new CyclesInfo();
+                        obj = new List<CycleInfo>();
                         AddClass("cycles", obj);
-                        return (CyclesInfo)obj;
+                        return (List<CycleInfo>)obj;
                     }
                 }
                 set

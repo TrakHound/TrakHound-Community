@@ -72,15 +72,15 @@ namespace TrakHound_Server.Plugins.Cycles
             {
                 if (data.Count > 0)
                 {
-                    // Insure that InstanceData list is sorted by Timestamp ASC
-                    var orderedData = data.OrderBy(x => x.Timestamp).ToList();
-
                     // Filter out data that has already been processed
-                    var latestData = orderedData.FindAll(x => x.Timestamp > lastTimestamp);
+                    var latestData = data.FindAll(x => x.Timestamp > lastTimestamp);
+
+                    // Insure that InstanceData list is sorted by Timestamp ASC
+                    var orderedData = latestData.OrderBy(x => x.Timestamp).ToList();
 
                     if (configuration != null)
                     {
-                        foreach (var instanceData in latestData)
+                        foreach (var instanceData in orderedData)
                         {
                             // Get list of new / updated CycleData objects
                             var cycleDatas = Process(instanceData);
@@ -160,6 +160,8 @@ namespace TrakHound_Server.Plugins.Cycles
 
                                 if (cycle.Name != cycleName || cycle.Event != cycleEventValue || !CompareOverrideLists(cycle.CycleOverrides, cycleOverrides))
                                 {
+                                    cycle.Completed = true;
+
                                     // Add a copy of the current cycle to the list
                                     result.Add(cycle.Copy());
 
@@ -172,6 +174,7 @@ namespace TrakHound_Server.Plugins.Cycles
                                         cycle.InstanceId = Guid.NewGuid().ToString();
                                         cycle.Name = cycleName;
                                         cycle.Event = cycleEventValue;
+                                        cycle.Completed = false;
 
                                         // Set Production Type
                                         var productionType = cc.ProductionTypes.Find(x => x.EventValue == cycleEventValue);
@@ -187,6 +190,7 @@ namespace TrakHound_Server.Plugins.Cycles
                                         // Set cycle to new Event
                                         cycle.InstanceId = Guid.NewGuid().ToString();
                                         cycle.Event = cycleEventValue;
+                                        cycle.Completed = false;
 
                                         // Set Production Type
                                         var productionType = cc.ProductionTypes.Find(x => x.EventValue == cycleEventValue);
@@ -222,7 +226,7 @@ namespace TrakHound_Server.Plugins.Cycles
                                 result.Add(cycle);
                             }
 
-                            storedCycle = cycle;
+                            storedCycle = cycle.Copy();
                         }
                     }
                 }     

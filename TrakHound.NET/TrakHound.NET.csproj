@@ -76,6 +76,7 @@
     <Compile Include="API\Bugs\BugInfo.cs" />
     <Compile Include="API\Bugs\BugType.cs" />
     <Compile Include="API\Bugs\Send.cs" />
+    <Compile Include="API\Data\CycleInfo.cs" />
     <Compile Include="API\Devices\Check.cs" />
     <Compile Include="API\Devices\CheckInfo.cs" />
     <Compile Include="Servers\DataStorage\Backup.cs" />

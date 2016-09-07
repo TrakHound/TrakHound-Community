@@ -197,43 +197,6 @@ namespace TrakHound.API
                 return result;
             }
 
-            //public static TimersInfo GetTimersInfo(List<HourInfo> hours)
-            //{
-            //    var result = new TimersInfo();
-
-            //    if (hours.Count > 0)
-            //    {
-            //        result.Total = hours.Select(o => o.TotalTime).Sum();
-
-            //        result.Active = hours.Select(o => o.Active).Sum();
-            //        result.Idle = hours.Select(o => o.Idle).Sum();
-            //        result.Alert = hours.Select(o => o.Alert).Sum();
-
-            //        result.Production = hours.Select(o => o.Production).Sum();
-            //        result.Setup = hours.Select(o => o.Setup).Sum();
-            //        result.Teardown = hours.Select(o => o.Teardown).Sum();
-            //        result.Maintenance = hours.Select(o => o.Maintenance).Sum();
-            //        result.ProcessDevelopment = hours.Select(o => o.ProcessDevelopment).Sum();
-
-            //        result.
-
-            //        result.Active = hours.Select(o => o.Active).Sum();
-            //        result.Active = hours.Select(o => o.Active).Sum();
-            //        result.Active = hours.Select(o => o.Active).Sum();
-            //        result.Active = hours.Select(o => o.Active).Sum();
-            //        result.Active = hours.Select(o => o.Active).Sum();
-            //        result.Active = hours.Select(o => o.Active).Sum();
-            //        result.Active = hours.Select(o => o.Active).Sum();
-            //        result.Active = hours.Select(o => o.Active).Sum();
-            //        result.Active = hours.Select(o => o.Active).Sum();
-            //        result.Active = hours.Select(o => o.Active).Sum();
-
-
-
-            //    }
-
-            //    return result;
-            //}
         }
     }
 }

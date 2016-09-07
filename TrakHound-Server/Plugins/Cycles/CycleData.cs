@@ -36,6 +36,8 @@ namespace TrakHound_Server.Plugins.Cycles
             }
         }
 
+        public bool Completed { get; set; }
+
         public List<CycleOverride> CycleOverrides { get; set; }
 
         public List<Override> Overrides { get; set; }
@@ -69,6 +71,7 @@ namespace TrakHound_Server.Plugins.Cycles
             result.ProductionType = ProductionType;
             result.Start = Start;
             result.Stop = Stop;
+            result.Completed = Completed;
             result.CycleOverrides = CycleOverrides.ToList();
             result.Overrides = Overrides.ToList();
             return result;
