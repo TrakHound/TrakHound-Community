@@ -423,8 +423,8 @@ namespace TrakHound_Server.Plugins.CloudData
                         int i = storedOeeDatas.FindIndex(o => o.Start.Hour == oeeData.Start.Hour && o.CycleId == oeeData.CycleId && o.CycleInstanceId == oeeData.CycleInstanceId);
                         if (i >= 0) storedOeeDatas[i] = oeeData;
 
-                        deviceInfo.AddHourInfo(hourInfo);
-                        //deviceInfo.Hours.Add(hourInfo);
+                        //deviceInfo.AddHourInfo(hourInfo);
+                        deviceInfo.Hours.Add(hourInfo);
                     }
 
                     queue.Add(deviceInfo);
@@ -455,8 +455,8 @@ namespace TrakHound_Server.Plugins.CloudData
                             {
                                 hourInfo.TotalPieces = info.Count;
 
-                                deviceInfo.AddHourInfo(hourInfo);
-                                //deviceInfo.Hours.Add(hourInfo);
+                                //deviceInfo.AddHourInfo(hourInfo);
+                                deviceInfo.Hours.Add(hourInfo);
                             }
                             else
                             {
@@ -464,8 +464,8 @@ namespace TrakHound_Server.Plugins.CloudData
                                 {
                                     hourInfo.TotalPieces = info.Count - storedPartCount;
 
-                                    deviceInfo.AddHourInfo(hourInfo);
-                                    //deviceInfo.Hours.Add(hourInfo);
+                                    //deviceInfo.AddHourInfo(hourInfo);
+                                    deviceInfo.Hours.Add(hourInfo);
                                     storedPartCount = info.Count;
                                 }
                             }                         

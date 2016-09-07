@@ -216,19 +216,18 @@ namespace TrakHound.API
                 classes.Clear();
             }
 
-            public void AddHourInfo(Data.HourInfo hour)
-            {
-                var obj = GetClass("hours");
-                if (obj == null)
-                {
-                    obj = new List<Data.HourInfo>();
-                    AddClass("hours", obj);
-                }
+            //public void AddHourInfo(Data.HourInfo hour)
+            //{
+            //    var obj = GetClass("hours");
+            //    if (obj == null)
+            //    {
+            //        obj = new List<Data.HourInfo>();
+            //        AddClass("hours", obj);
+            //    }
 
-                var hours = (List<Data.HourInfo>)obj;
-
-                hours.Add(hour);
-            }
+            //    var hours = (List<Data.HourInfo>)obj;
+            //    hours.Add(hour);
+            //}
 
 
             public string ToJson()
