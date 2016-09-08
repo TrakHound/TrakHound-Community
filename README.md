@@ -23,6 +23,9 @@ The User Interface has been updated and now features a cleaner interface that sh
 - The best advantage of this setup is that data can be retrieved using the TrakHound API HTTP functions which allows for clients to easily be developed on many different platforms. This also allows TrakHound to supplement other systems/software as it can be easily integrated. Previous to this change, data was read directly from the database which meant that it was up to the client to establish communication with the database server itself. This caused issues when trying to communicate with different database types (MySQL, SQLite, SQL Server, etc.). Now, the client just has to communicate using the standard API and basic HTTP functions.
 - Using the new HTTP based API now makes TrakHound fully cloud compatible!
 
+### IMTS 2016
+- TrakHound is going to be featured in Okuma's booth at IMTS 2016 (booth S-8500) as TrakHound is now part of the Okuma App Store. Okuma customers can now go to the Okuma App Store to download their MTConnect Agent/Adapter and will now see TrakHound Community (listed as MTConnect Display) right beside it.
+
 
 ## Help Needed!
 
