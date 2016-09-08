@@ -101,8 +101,8 @@ namespace TrakHound_Server.Plugins.CloudData
                 var status = deviceInfo.Status;
                 bool statusSet = false;
 
-                var timers = deviceInfo.Timers;
-                bool timersSet = false;
+                //var timers = deviceInfo.Timers;
+                //bool timersSet = false;
 
                 // Device Status
                 var snapshot = snapshots.Find(o => o.Name == "Device Status");
@@ -131,8 +131,8 @@ namespace TrakHound_Server.Plugins.CloudData
                 {
                     double val = 0;
                     double.TryParse(snapshot.Value, out val);
-                    timers.DayRun = val;
-                    timersSet = true;
+                    status.DayRun = val;
+                    statusSet = true;
                 }
 
                 // Day Operating Time
@@ -141,8 +141,8 @@ namespace TrakHound_Server.Plugins.CloudData
                 {
                     double val = 0;
                     double.TryParse(snapshot.Value, out val);
-                    timers.DayOperating = val;
-                    timersSet = true;
+                    status.DayOperating = val;
+                    statusSet = true;
                 }
 
                 // Day Cutting Time
@@ -151,8 +151,8 @@ namespace TrakHound_Server.Plugins.CloudData
                 {
                     double val = 0;
                     double.TryParse(snapshot.Value, out val);
-                    timers.DayCutting = val;
-                    timersSet = true;
+                    status.DayCutting = val;
+                    statusSet = true;
                 }
 
                 // Day Spindle Time
@@ -161,8 +161,8 @@ namespace TrakHound_Server.Plugins.CloudData
                 {
                     double val = 0;
                     double.TryParse(snapshot.Value, out val);
-                    timers.DaySpindle = val;
-                    timersSet = true;
+                    status.DaySpindle = val;
+                    statusSet = true;
                 }
 
 
@@ -172,8 +172,8 @@ namespace TrakHound_Server.Plugins.CloudData
                 {
                     double val = 0;
                     double.TryParse(snapshot.Value, out val);
-                    timers.TotalRun = val;
-                    timersSet = true;
+                    status.TotalRun = val;
+                    statusSet = true;
                 }
 
                 // Total Operating Time
@@ -182,8 +182,8 @@ namespace TrakHound_Server.Plugins.CloudData
                 {
                     double val = 0;
                     double.TryParse(snapshot.Value, out val);
-                    timers.TotalOperating = val;
-                    timersSet = true;
+                    status.TotalOperating = val;
+                    statusSet = true;
                 }
 
                 // Total Cutting Time
@@ -192,8 +192,8 @@ namespace TrakHound_Server.Plugins.CloudData
                 {
                     double val = 0;
                     double.TryParse(snapshot.Value, out val);
-                    timers.TotalCutting = val;
-                    timersSet = true;
+                    status.TotalCutting = val;
+                    statusSet = true;
                 }
 
                 // Total Spindle Time
@@ -202,13 +202,11 @@ namespace TrakHound_Server.Plugins.CloudData
                 {
                     double val = 0;
                     double.TryParse(snapshot.Value, out val);
-                    timers.TotalSpindle = val;
-                    timersSet = true;
+                    status.TotalSpindle = val;
+                    statusSet = true;
                 }
 
                 if (statusSet) deviceInfo.AddClass("status", status);
-                if (timersSet) deviceInfo.AddClass("timers", timers);
-
                 queue.Add(deviceInfo);
             }
             else

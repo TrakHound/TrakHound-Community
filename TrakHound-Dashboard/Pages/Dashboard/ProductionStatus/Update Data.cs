@@ -34,21 +34,21 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatus
                 }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
             }
 
-            if (data != null && data.Id == "STATUS_TIMERS" && data.Data02 != null && data.Data02.GetType() == typeof(Data.TimersInfo))
-            {
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    string uniqueId = data.Data01.ToString();
-                    var info = (Data.TimersInfo)data.Data02;
+            //if (data != null && data.Id == "STATUS_TIMERS" && data.Data02 != null && data.Data02.GetType() == typeof(Data.TimersInfo))
+            //{
+            //    Dispatcher.BeginInvoke(new Action(() =>
+            //    {
+            //        string uniqueId = data.Data01.ToString();
+            //        var info = (Data.TimersInfo)data.Data02;
 
-                    int index = Rows.ToList().FindIndex(x => x.Configuration.UniqueId == uniqueId);
-                    if (index >= 0)
-                    {
-                        var row = Rows[index];
-                        row.UpdateData(info);
-                    }
-                }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
-            }
+            //        int index = Rows.ToList().FindIndex(x => x.Configuration.UniqueId == uniqueId);
+            //        if (index >= 0)
+            //        {
+            //            var row = Rows[index];
+            //            row.UpdateData(info);
+            //        }
+            //    }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+            //}
         }
 
         void UpdateDeviceAdded(EventData data)

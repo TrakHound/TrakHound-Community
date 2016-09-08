@@ -28,6 +28,36 @@ namespace TrakHound.API
 
             [JsonProperty("part_count")]
             public int PartCount { get; set; }
+
+
+            // Run Timers -------------------------
+
+            [JsonProperty("day_run")]
+            public double DayRun { get; set; }
+
+            [JsonProperty("day_operating")]
+            public double DayOperating { get; set; }
+
+            [JsonProperty("day_cutting")]
+            public double DayCutting { get; set; }
+
+            [JsonProperty("day_spindle")]
+            public double DaySpindle { get; set; }
+
+
+            [JsonProperty("total_run")]
+            public double TotalRun { get; set; }
+
+            [JsonProperty("total_operating")]
+            public double TotalOperating { get; set; }
+
+            [JsonProperty("total_cutting")]
+            public double TotalCutting { get; set; }
+
+            [JsonProperty("total_spindle")]
+            public double TotalSpindle { get; set; }
+
+            // ----------------------------------
         }
     }
 }
