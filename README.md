@@ -24,7 +24,7 @@ The User Interface has been updated and now features a cleaner interface that sh
 - Using the new HTTP based API now makes TrakHound fully cloud compatible!
 
 ### IMTS 2016
-- TrakHound is going to be featured in Okuma's booth at IMTS 2016 (booth S-8500) as TrakHound is now part of the Okuma App Store. Okuma customers can now go to the Okuma App Store to download their MTConnect Agent/Adapter and will now see TrakHound Community (listed as MTConnect Display) right beside it.
+- TrakHound is going to be featured in Okuma's booth at IMTS 2016 (booth S-8500) as TrakHound is now part of the Okuma App Store. Okuma customers can now go to the Okuma App Store to download their MTConnect Agent/Adapter and will now see TrakHound Community (listed as MTConnect Display) right beside it. Check it out at <a href="https://www.myokuma.com/mtconnect-display">Okuma App Store - MTConnect Display</a>.
 
 
 ## Help Needed!
