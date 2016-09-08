@@ -177,22 +177,5 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatus.Controls
                 TotalSpindleTime = info.TotalSpindle / 3600;
             }
         }
-
-        //public void UpdateData(Data.TimersInfo info)
-        //{
-        //    if (info != null)
-        //    {
-        //        DayRunTime = info.DayRun / 3600;
-        //        DayOperatingTime = info.DayOperating / 3600;
-        //        DayCuttingTime = info.DayCutting / 3600;
-        //        DaySpindleTime = info.DaySpindle / 3600;
-
-        //        TotalRunTime = info.TotalRun / 3600;
-        //        TotalOperatingTime = info.TotalOperating / 3600;
-        //        TotalCuttingTime = info.TotalCutting / 3600;
-        //        TotalSpindleTime = info.TotalSpindle / 3600;
-        //    }
-        //}
-        
     }
 }

@@ -349,20 +349,6 @@ namespace TrakHound.Servers.DataStorage
                                         timers.Maintenance = hours.Select(o => o.Maintenance).Sum();
                                         timers.ProcessDevelopment = hours.Select(o => o.ProcessDevelopment).Sum();
 
-                                        //var previousTimers = device.Timers;
-                                        //if (previousTimers != null)
-                                        //{
-                                        //    timers.DayRun = previousTimers.DayRun;
-                                        //    timers.DayOperating = previousTimers.DayOperating;
-                                        //    timers.DayCutting = previousTimers.DayCutting;
-                                        //    timers.DaySpindle = previousTimers.DaySpindle;
-
-                                        //    timers.TotalRun = previousTimers.TotalRun;
-                                        //    timers.TotalOperating = previousTimers.TotalOperating;
-                                        //    timers.TotalCutting = previousTimers.TotalCutting;
-                                        //    timers.TotalSpindle = previousTimers.TotalSpindle;
-                                        //}
-
                                         info.AddClass("timers", timers);
 
                                         // Set Part Count
