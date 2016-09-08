@@ -41,17 +41,23 @@ Setup is easy using the built in Device Manager where a user can search their en
  <table style="width:100%">
  
   <tr>
-    <td><img src="http://www.feenux.com/github/v2/images/screenshots/Dashboard_01.png"/></td>
-    <td><img src="http://www.feenux.com/github/v2/images/screenshots/Dashboard_02.png"/></td>
-    <td><img src="http://www.feenux.com/github/v2/images/screenshots/Dashboard_03.png"/></td>
+    <td><img src="http://www.trakhound.com/images/download_screenshots/trakhound_community/v1.3/overview_01.png"/></td>
+    <td><img src="http://www.trakhound.com/images/download_screenshots/trakhound_community/v1.3/controllerstatus_01.png"/></td>
+    <td><img src="http://www.trakhound.com/images/download_screenshots/trakhound_community/v1.3/oeetimeline_01.png"/></td>
   </tr>
   
   <tr>
-    <td><img src="http://www.feenux.com/github/v2/images/screenshots/DeviceManager_01.png"/></td>
-    <td><img src="http://www.feenux.com/github/v2/images/screenshots/DeviceManager_02.png"/></td>
-    <td><img src="http://www.feenux.com/github/v2/images/screenshots/DeviceManager_05.png"/></td>
+    <td><img src="http://www.trakhound.com/images/download_screenshots/trakhound_community/v1.3/oeestatus_01.png"/></td>
+    <td><img src="http://www.trakhound.com/images/download_screenshots/trakhound_community/v1.3/devicestatustimes_01.png"/></td>
+    <td><img src="http://www.trakhound.com/images/download_screenshots/trakhound_community/v1.3/productionstatustimes_01.png"/></td>
   </tr>
   
+  <tr>
+    <td><img src="http://www.trakhound.com/images/download_screenshots/trakhound_community/v1.3/devicemanager_01.png"/></td>
+    <td><img src="http://www.trakhound.com/images/download_screenshots/trakhound_community/v1.3/autodetect_01.png"/></td>
+    <td><img src="http://www.trakhound.com/images/download_screenshots/trakhound_community/v1.3/edit_description_01.png"/></td>
+  </tr>
+ 
 </table> 
 
 ##How it Works
