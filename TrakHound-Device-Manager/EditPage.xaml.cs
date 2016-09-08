@@ -7,7 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,6 +20,7 @@ using System.Xml;
 using TrakHound;
 using TrakHound.Configurations;
 using TrakHound.Configurations.Converters;
+using TrakHound.Logging;
 using TrakHound.Plugins;
 using TrakHound.Plugins.Server;
 using TrakHound.Tools;
@@ -297,12 +300,18 @@ namespace TrakHound_Device_Manager
         {
             PagesLoading = true;
 
-            AddPage(new Pages.Cycles.Info());
-            AddPage(new Pages.Description.Info());
-            AddPage(new Pages.MTConnectConfig.Info());
-            AddPage(new Pages.GeneratedEvents.Info());
-            AddPage(new Pages.InstanceData.Info());
-            AddPage(new Pages.Parts.Info());
+            var pageInfos = GetPluginPageInfos();
+            foreach (var pageInfo in pageInfos)
+            {
+                AddPage(pageInfo);
+            }
+
+            //AddPage(new Pages.Cycles.Info());
+            //AddPage(new Pages.Description.Info());
+            //AddPage(new Pages.MTConnectConfig.Info());
+            //AddPage(new Pages.GeneratedEvents.Info());
+            //AddPage(new Pages.InstanceData.Info());
+            //AddPage(new Pages.Parts.Info());
 
             LoadPages_Finished();          
         }
@@ -411,7 +420,65 @@ namespace TrakHound_Device_Manager
 
         //static List<Type> pluginPageTypes;
 
-        //static List<IConfigurationInfo> pluginInfos = new List<IConfigurationInfo>();
+        static List<IConfigurationInfo> pluginInfos;
+
+        //static List<IConfigurationPage> pluginPages = new List<IConfigurationPage>();
+
+        public List<IConfigurationInfo> GetPluginPageInfos()
+        {
+            var result = pluginInfos;
+
+            if (result == null)
+            {
+                result = new List<IConfigurationInfo>();
+
+                string pluginsPath;
+
+                // Load from System Directory first (easier for user to navigate to 'C:\TrakHound\')
+                pluginsPath = FileLocations.Plugins;
+                if (Directory.Exists(pluginsPath)) GetPluginPageInfos(pluginsPath, result);
+
+                // Load from App root Directory (doesn't overwrite plugins found in System Directory)
+                pluginsPath = AppDomain.CurrentDomain.BaseDirectory;
+                if (Directory.Exists(pluginsPath)) GetPluginPageInfos(pluginsPath, result);
+
+                // Load from Running Assemblies
+                GetPluginPageInfos(Assembly.GetExecutingAssembly(), result);
+                GetPluginPageInfos(Assembly.GetEntryAssembly(), result);
+                GetPluginPageInfos(Assembly.GetCallingAssembly(), result);
+
+                pluginInfos = result;
+            }
+
+            return result;
+        }
+
+        //public List<IConfigurationPage> GetPluginPages()
+        //{
+        //    var result = pluginPages;
+
+        //    if (result == null)
+        //    {
+        //        result = new List<IConfigurationPage>();
+
+        //        string pluginsPath;
+
+        //        // Load from System Directory first (easier for user to navigate to 'C:\TrakHound\')
+        //        pluginsPath = FileLocations.Plugins;
+        //        if (Directory.Exists(pluginsPath)) GetPluginPages(pluginsPath, result);
+
+        //        // Load from App root Directory (doesn't overwrite plugins found in System Directory)
+        //        pluginsPath = AppDomain.CurrentDomain.BaseDirectory;
+        //        if (Directory.Exists(pluginsPath)) GetPluginPages(pluginsPath, result);
+
+        //        // Load from Current Assembly
+        //        GetPluginPages(Assembly.GetEntryAssembly(), result);
+
+        //        pluginPages = result;
+        //    }
+
+        //    return result;
+        //}
 
         //public List<Type> GetPluginPageTypes()
         //{
@@ -442,27 +509,89 @@ namespace TrakHound_Device_Manager
         //    return result;
         //}
 
-        //private void GetPluginPageTypes(Assembly assembly, List<Type> types)
+        private void GetPluginPageInfos(Assembly assembly, List<IConfigurationInfo> infos)
+        {
+            try
+            {
+                var plugins = Reader.FindPlugins<IConfigurationInfo>(assembly, new ConfigurationInfoPlugin.PluginContainer());
+                foreach (var plugin in plugins)
+                {
+                    if (!infos.Exists(x => x.Title == plugin.Title))
+                    {
+                        infos.Add(plugin);
+                    }
+                }
+            }
+            catch (Exception ex) { Logger.Log("LoadPlugins() : Exception : " + ex.Message, LogLineType.Error); }
+        }
+
+        private void GetPluginPageInfos(string path, List<IConfigurationInfo> infos)
+        {
+            if (Directory.Exists(path))
+            {
+                try
+                {
+                    var plugins = Reader.FindPlugins<IConfigurationInfo>(path, new ConfigurationInfoPlugin.PluginContainer());
+                    foreach (var plugin in plugins)
+                    {
+                        if (!infos.Exists(x => x.Title == plugin.Title))
+                        {
+                            infos.Add(plugin);
+                        }
+                    }
+                }
+                catch (Exception ex) { Logger.Log("LoadPlugins() : Exception : " + ex.Message, LogLineType.Error); }
+
+                // Search Subdirectories
+                foreach (string directory in Directory.GetDirectories(path))
+                {
+                    GetPluginPageInfos(directory, infos);
+                }
+            }
+        }
+
+        //private void GetPluginPages(Assembly assembly, List<IConfigurationPage> pages)
         //{
         //    try
         //    {
-        //        var plugins = Reader.FindPlugins<IConfigurationInfo>(assembly, new ConfigurationInfoPlugin.PluginContainer());
+        //        var plugins = Reader.FindPlugins<IConfigurationPage>(assembly, new ConfigurationPagePlugin.PluginContainer());
         //        foreach (var plugin in plugins)
         //        {
-        //            var type = plugin.ConfigurationPageType;
-
-        //            if (!types.Exists(x => x.FullName == type.FullName))
+        //            if (!pages.Exists(x => x.Title == plugin.Title))
         //            {
-        //                pluginInfos.Add(plugin);
-
-        //                types.Add(type);
+        //                pages.Add(plugin);
         //            }
         //        }
         //    }
         //    catch (Exception ex) { Logger.Log("LoadPlugins() : Exception : " + ex.Message, LogLineType.Error); }
         //}
 
-        //private void GetPluginPageTypes(string path, List<Type> types)
+        //private void GetPluginPages(string path, List<IConfigurationPage> pages)
+        //{
+        //    if (Directory.Exists(path))
+        //    {
+        //        try
+        //        {
+        //            var plugins = Reader.FindPlugins<IConfigurationPage>(path, new ConfigurationPagePlugin.PluginContainer());
+        //            foreach (var plugin in plugins)
+        //            {
+        //                if (!pages.Exists(x => x.Title == plugin.Title))
+        //                {
+        //                    pages.Add(plugin);
+        //                }
+        //            }
+        //        }
+        //        catch (Exception ex) { Logger.Log("LoadPlugins() : Exception : " + ex.Message, LogLineType.Error); }
+
+        //        // Search Subdirectories
+        //        foreach (string directory in Directory.GetDirectories(path))
+        //        {
+        //            GetPluginPages(directory, pages);
+        //        }
+        //    }
+        //}
+
+        //private void GetPluginPageTypes(string path, List<IConfigurationPage> types)
         //{
         //    if (Directory.Exists(path))
         //    {
@@ -490,7 +619,7 @@ namespace TrakHound_Device_Manager
         //        }
         //    }
         //}
-        
+
         #endregion
 
         #region "MTC Data Items"  

@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace TrakHound_UI
@@ -114,25 +105,26 @@ namespace TrakHound_UI
         public static readonly DependencyProperty TextWrappingProperty =
             DependencyProperty.Register("TextWrapping", typeof(bool), typeof(TextBox), new PropertyMetadata(false));
 
+
         [TypeConverterAttribute(typeof(FontSizeConverter))]
-        [LocalizabilityAttribute(LocalizationCategory.None)]
-        public double FontSize
+        [LocalizabilityAttribute(LocalizationCategory.Font)]
+        public new double FontSize
         {
             get { return (double)GetValue(FontSizeProperty); }
             set { SetValue(FontSizeProperty, value); }
         }
 
-        public static readonly DependencyProperty FontSizeProperty =
+        public new static readonly DependencyProperty FontSizeProperty =
             DependencyProperty.Register("FontSize", typeof(double), typeof(TextBox), new PropertyMetadata(14d));
 
 
-        public Brush Background
+        public new Brush Background
         {
             get { return (Brush)GetValue(BackgroundProperty); }
             set { SetValue(BackgroundProperty, value); }
         }
 
-        public static readonly DependencyProperty BackgroundProperty =
+        public new static readonly DependencyProperty BackgroundProperty =
             DependencyProperty.Register("Background", typeof(Brush), typeof(TextBox), new PropertyMetadata(new SolidColorBrush(Colors.White)));
 
 

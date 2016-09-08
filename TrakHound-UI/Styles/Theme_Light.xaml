@@ -588,13 +588,132 @@
         </Style.Triggers>
     </Style>
 
-    <!--<Style TargetType="{x:Type ComboBox}">
+    <ControlTemplate TargetType="ToggleButton" x:Key="ComboBoxToggleButtonTemplate">
+
+        <ControlTemplate.Resources>
+            <LinearGradientBrush x:Key="ShadeGradient" EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#40ffffff" Offset="0"/>
+                <GradientStop Color="#20ffffff" Offset="0.3"/>
+                <GradientStop Color="Transparent" Offset="1"/>
+            </LinearGradientBrush>
+        </ControlTemplate.Resources>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="30" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.ColumnSpan="1" Name="Border"
+              BorderBrush="{StaticResource Border}" 
+              CornerRadius="0" BorderThickness="1, 1, 0, 1" 
+              Background="{StaticResource Background}" />
+
+            <Border Grid.Column="1" Margin="0, 0, 0, 0" BorderBrush="{StaticResource Border}" Name="ButtonBorder"
+              CornerRadius="0, 0, 0, 0" BorderThickness="0, 1, 1, 1" 
+              Background="{StaticResource Background}" />
+
+            <Border Grid.Column="1" Name="ToggleShade" Background="Transparent"/>
+
+            <Path Name="Arrow" Grid.Column="1" 
+            Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z"
+            HorizontalAlignment="Center" Fill="{StaticResource TrakHound_Blue}"
+            VerticalAlignment="Center" />
+
+            <!--Gloss Effect-->
+            <Border x:Name="gloss" Grid.Column="1" IsHitTestVisible="False" Visibility="Collapsed">
+
+                <Grid IsHitTestVisible="False">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="6*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.RowSpan="2" IsHitTestVisible="False">
+                        <Border.Background>
+                            <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                                <RadialGradientBrush.GradientStops>
+                                    <GradientStop Color="#33ffffff" Offset="0" />
+                                    <GradientStop Color="#00ffffff" Offset="1.0" />
+                                </RadialGradientBrush.GradientStops>
+                            </RadialGradientBrush>
+                        </Border.Background>
+                    </Border>
+
+                    <Border CornerRadius="0,0,200,200" IsHitTestVisible="False">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#00ffffff" Offset="0.2"/>
+                                <GradientStop Color="#33ffffff" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+
+                    <Border Grid.Row="1" IsHitTestVisible="False">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#00ffffff" Offset="0"/>
+                                <GradientStop Color="#08000000" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+
+                </Grid>
+
+            </Border>
+
+        </Grid>
+
+        <ControlTemplate.Triggers>
+
+            <DataTrigger Binding="{Binding IsMouseOver, ElementName=ToggleShade}" Value="True">
+                <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="{StaticResource TrakHound_Blue}"/>
+                <Setter Property="Panel.Background" TargetName="ToggleShade" Value="{StaticResource ShadeGradient}"/>
+                <Setter Property="Visibility" TargetName="gloss" Value="Visible"/>
+                <Setter Property="Shape.Fill" TargetName="Arrow" Value="{StaticResource Background}"/>
+                <Setter Property="Cursor" Value="Hand"/>
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding IsMouseOver, ElementName=ButtonBorder}" Value="True">
+                <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="{StaticResource TrakHound_Blue}"/>
+                <Setter Property="Panel.Background" TargetName="ToggleShade" Value="{StaticResource ShadeGradient}"/>
+                <Setter Property="Visibility" TargetName="gloss" Value="Visible"/>
+                <Setter Property="Shape.Fill" TargetName="Arrow" Value="{StaticResource Background}"/>
+                <Setter Property="Cursor" Value="Hand"/>
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding IsMouseOver, ElementName=Arrow}" Value="True">
+                <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="{StaticResource TrakHound_Blue}"/>
+                <Setter Property="Panel.Background" TargetName="ToggleShade" Value="{StaticResource ShadeGradient}"/>
+                <Setter Property="Visibility" TargetName="gloss" Value="Visible"/>
+                <Setter Property="Shape.Fill" TargetName="Arrow" Value="{StaticResource Background}"/>
+                <Setter Property="Cursor" Value="Hand"/>
+            </DataTrigger>
+
+            <Trigger Property="ToggleButton.IsChecked" Value="True">
+                <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="{StaticResource TrakHound_Blue}"/>
+                <Setter Property="Panel.Background" TargetName="ToggleShade" Value="{StaticResource ShadeGradient}"/>
+                <Setter Property="Visibility" TargetName="gloss" Value="Visible"/>
+                <Setter Property="Shape.Fill" TargetName="Arrow" Value="{StaticResource Background}"/>
+            </Trigger>
+
+            <Trigger Property="UIElement.IsEnabled" Value="False">
+                <Setter Property="Panel.Background" TargetName="Border" Value="{StaticResource Disabled}"/>
+                <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="{StaticResource Border}"/>
+                <Setter Property="Border.BorderBrush" TargetName="ButtonBorder" Value="{StaticResource Border}"/>
+                <Setter Property="TextElement.Foreground" Value="{StaticResource Disabled_Text}"/>
+                <Setter Property="Shape.Fill" TargetName="Arrow" Value="{StaticResource Disabled_Text}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style TargetType="{x:Type ComboBox}">
         <Setter Property="UIElement.SnapsToDevicePixels" Value="True"/>
         <Setter Property="FrameworkElement.OverridesDefaultStyle" Value="True"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
-        <Setter Property="TextElement.Foreground" Value="#333333"/>
+        <Setter Property="TextElement.Foreground" Value="{StaticResource Text}"/>
         <Setter Property="FrameworkElement.FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Control.Template">
             <Setter.Value>
@@ -623,7 +742,7 @@
                             </TextBox.Template>
                         </TextBox>
 
-                        --><!-- Popup showing items --><!--
+                         <!--Popup showing items--> 
                         <Popup Name="Popup" Placement="Bottom"
                    Focusable="False" AllowsTransparency="True"
                    IsOpen="{TemplateBinding ComboBox.IsDropDownOpen}"
@@ -652,7 +771,7 @@
                             <Setter Property="FrameworkElement.MinHeight" TargetName="DropDownBorder" Value="95"/>
                         </Trigger>
                         <Trigger Property="UIElement.IsEnabled" Value="False">
-                            <Setter Property="TextElement.Foreground" Value="#888888"/>
+                            <Setter Property="TextElement.Foreground" Value="{StaticResource Disabled_Text}"/>
                         </Trigger>
                         <Trigger Property="ItemsControl.IsGrouping" Value="True">
                             <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
@@ -670,6 +789,6 @@
 
         </Setter>
 
-    </Style>-->
+    </Style>
     
 </ResourceDictionary>

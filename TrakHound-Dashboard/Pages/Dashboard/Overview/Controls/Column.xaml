@@ -715,6 +715,10 @@
                                 <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusRed}"/>
                                 <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusRed_Hover}"/>
                             </DataTrigger>
+                            <DataTrigger Binding="{Binding OeeStatus}" Value="1">
+                                <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusOrange}"/>
+                                <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusOrange_Hover}"/>
+                            </DataTrigger>
                             <DataTrigger Binding="{Binding OeeStatus}" Value="2">
                                 <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
                                 <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
@@ -758,6 +762,10 @@
                                 <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusRed}"/>
                                 <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusRed_Hover}"/>
                             </DataTrigger>
+                            <DataTrigger Binding="{Binding AvailabilityStatus}" Value="1">
+                                <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusOrange}"/>
+                                <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusOrange_Hover}"/>
+                            </DataTrigger>
                             <DataTrigger Binding="{Binding AvailabilityStatus}" Value="2">
                                 <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
                                 <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
@@ -800,6 +808,10 @@
                             <DataTrigger Binding="{Binding PerformanceStatus}" Value="0">
                                 <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusRed}"/>
                                 <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusRed_Hover}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding PerformanceStatus}" Value="1">
+                                <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusOrange}"/>
+                                <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusOrange_Hover}"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding PerformanceStatus}" Value="2">
                                 <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>

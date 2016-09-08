@@ -64,7 +64,6 @@ namespace TrakHound_Device_Manager.Pages.Description
 
         public void GetSentData(EventData data)
         {
-            // Temporarily Disabled to allow all images to load locally
             if (data != null && data.Id != null)
             {
                 if (data.Id == "DEVICE_MANAGER")

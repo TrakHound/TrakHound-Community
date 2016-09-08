@@ -25,6 +25,9 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
     /// </summary>
     public partial class Column : UserControl
     {
+        private const int OEE_HIGH = 70;
+        private const int OEE_LOW = 50;
+
         public Column(DeviceConfiguration config, UserConfiguration userConfig)
         {
             InitializeComponent();
@@ -170,8 +173,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
             {
                 SetValue(OeeProperty, value);
 
-                if (value > 75) OeeStatus = 2;
-                else if (value > 50) OeeStatus = 1;
+                if (value > OEE_HIGH) OeeStatus = 2;
+                else if (value > OEE_LOW) OeeStatus = 1;
                 else OeeStatus = 0;
             }
         }
@@ -196,8 +199,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
             {
                 SetValue(AvailabilityProperty, value);
 
-                if (value > 75) AvailabilityStatus = 2;
-                else if (value > 50) AvailabilityStatus = 1;
+                if (value > OEE_HIGH) AvailabilityStatus = 2;
+                else if (value > OEE_LOW) AvailabilityStatus = 1;
                 else AvailabilityStatus = 0;
             }
         }
@@ -222,8 +225,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
             {
                 SetValue(PerformanceProperty, value);
 
-                if (value > 75) PerformanceStatus = 2;
-                else if (value > 50) PerformanceStatus = 1;
+                if (value > OEE_HIGH) PerformanceStatus = 2;
+                else if (value > OEE_LOW) PerformanceStatus = 1;
                 else PerformanceStatus = 0;
             }
         }
@@ -248,8 +251,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
             {
                 SetValue(QualityProperty, value);
 
-                if (value > 75) QualityStatus = 2;
-                else if (value > 50) QualityStatus = 1;
+                if (value > OEE_HIGH) QualityStatus = 2;
+                else if (value > OEE_LOW) QualityStatus = 1;
                 else QualityStatus = 0;
             }
         }
