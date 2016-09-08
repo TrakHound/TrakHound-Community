@@ -11,20 +11,18 @@
 </p>
 
 ## News
-**Update 7/29/16 - v1 Official Release** 
+**Update 9/8/16 - v1.3 Official Release** 
 
-- **This repo was renamed 'TrakHound-Community' instead of just 'TrakHound'.** TrakHound Community is the new official name of the open source PC software package for the TrakHound platform. 
-- **'TrakHound Client' was renamed to 'TrakHound Dashboard'** in order to better accomodate future client applications (reports, activity monitor, etc.).
-- The directory structure and projects of this repo were changed to better organize projects and consolidate libraries and plugins into fewer projects (went from ~50 to 8 projects). Plugins are now contained in the TrakHound.NET project (the one exception is the TrakHound-Overview dashboard plugin). 
-- **You may have noticed that we created separate repos for each project, well, that didn't work very well so we're going to not update those but leave them up for a few weeks in case anyone was linked to them.**
-- All nuget packages were removed in favor of a 'lib' directory (some users had issues when downloading/cloning repo and nuget packages wouldn't update correctly).
-- Part of project consolidation was to separate UI components from projects where the project could need to be run without any UI (TrakHound Server). This should make is easier compile for other platforms (such as using Mono for Linux).
-- **We temporarily removed the MySQL database plugin to update it and we are moving the ability to write to a remote database to only be available with our TrakHound Standard version. We are trying to keep as much as we can free but this feature was chosen to be an upgrade. Please contact sales@trakhound.com for more information.**
-- We temporarily dropped the Bug reporter window and now just displays a message after a bug report was automatically sent (can be disabled in Options menu).
-- We temporarily dropped support for the automatic update feature and will most likely be making this as part of the upgrade to teh TrakHound Standard version.
-- We are about to launch a new website (TrakHound.com) with updated Help documentation for setup, configuration, and development.
-- **This is our first 'Official' release and we want to thank everyone that assisted us in our beta phase with contributions and feedback!** Hopefully we can continue to develop and improve this project into a reliable, customizable, and easy to use monitoring solution that can become the standard data collection app using MTConnect.
- 
+### User Interface
+
+The User Interface has been updated and now features a cleaner interface that should be eaiser to read as status colors stand out better on the lighter background. We are also working on a Themes feature where user-defined themes can be used.
+
+### New TrakHound API
+- The Server is now broken down into two parts. The Data Processing Server, which collects data using MTConnect and then processes it using plugins, now sends that processed data to a Data Storage Server using HTTP and JSON. The benefit to seperating these is that the data storage server can be written in many different formats and languages and provides the ability to store data in many more ways. 
+- The TrakHound Server application/service runs both the Data Processing Server and a local Data Storage Server. The local Data Storage Server recieves the JSON data and stores it in a local SQLite database. We also have an Apache/PHP/MySQL based Data Storage Server that receives the JSON data and stores it in a remote MySQL database. The Apache/PHP/MySQL based application is not open source as of yet but we plan to once we can implement a better authentication system. 
+- The best advantage of this setup is that data can be retrieved using the TrakHound API HTTP functions which allows for clients to easily be developed on many different platforms. This also allows TrakHound to supplement other systems/software as it can be easily integrated. Previous to this change, data was read directly from the database which meant that it was up to the client to establish communication with the database server itself. This caused issues when trying to communicate with different database types (MySQL, SQLite, SQL Server, etc.). Now, the client just has to communicate using the standard API and basic HTTP functions.
+- Using the new HTTP based API now makes TrakHound fully cloud compatible!
+
 
 ## Help Needed!
 
@@ -60,17 +58,10 @@ Setup is easy using the built in Device Manager where a user can search their en
  
 </table> 
 
-##How it Works
-
-TrakHound works by reading data using the MTConnect communications protocol. This data is then processed and stored in a database. The default database is SQLite where data is stored on the PC that TrakHound is installed on. Other databases can be used for remote storage and currently MySQL and SQL Server are supported.
 
 ####Basic Setup
 Below is a diagram showing how a basic setup works. This shows two machines communicating directly with one PC and all data is stored on that PC. This is a good starting point for most users and can be used in scenarios where only one user needs to view data.
 ![Basic Communications Setup] (http://feenux.com/github/v2/images/diagrams/overview_basic_01.png)
-
-####Standalone Server Setup
-Below is a diagram showing how a standalone server setup works. This shows two machines communicating with a standalone server with TrakHound Server installed. The server then stores the data in a separate database that can be accessed by PC's on the network. Multiple PC's can then view data using TrakHound while reading directly from the database.
-![Standalone Communications Setup] (http://feenux.com/github/v2/images/diagrams/overview_standalone_01.png)
 
 ##Licensing
 TrakHound is licensed under the GPLv3 software license. For more information please contact us at info@TrakHound.org.
