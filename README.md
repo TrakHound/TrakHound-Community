@@ -64,7 +64,7 @@ Setup is easy using the built in Device Manager where a user can search their en
 
 ####Basic Setup
 Below is a diagram showing how a basic setup works. This shows two machines communicating directly with one PC and all data is stored on that PC. This is a good starting point for most users and can be used in scenarios where only one user needs to view data.
-![Basic Communications Setup] (http://feenux.com/github/v2/images/diagrams/overview_basic_01.png)
+![Basic Communications Setup] (http://trakhound.com/images/overview_basic_04.png)
 
 ##Licensing
 TrakHound is licensed under the GPLv3 software license. For more information please contact us at info@TrakHound.org.
