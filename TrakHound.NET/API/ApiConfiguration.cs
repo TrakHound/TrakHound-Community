@@ -38,6 +38,7 @@ namespace TrakHound.API
             apiConfig.DataHost = CLOUD_API_HOST;
             apiConfig.AuthenticationHost = CLOUD_API_HOST;
             Set(apiConfig);
+            Create(apiConfig);
         }
 
         public static void SetLocal()
@@ -46,13 +47,14 @@ namespace TrakHound.API
             apiConfig.DataHost = LOCAL_API_HOST;
             apiConfig.AuthenticationHost = CLOUD_API_HOST;
             Set(apiConfig);
+            Create(apiConfig);
         }
 
         public static void Set(ApiConfiguration apiConfig)
         {
             SetDataHost(apiConfig);
             SetAuthenticationHost(apiConfig);
-            Create(apiConfig);
+            //Create(apiConfig);
         }
 
         public static void SetDataHost(ApiConfiguration apiConfig)
@@ -175,6 +177,8 @@ namespace TrakHound.API
 
             public Monitor()
             {
+                Logger.Log("API Configuration File Monitor Started", LogLineType.Notification);
+
                 string dir = FileLocations.TrakHound;
 
                 var watcher = new FileSystemWatcher(dir, CONFIG_FILENAME);
@@ -184,7 +188,7 @@ namespace TrakHound.API
                 watcher.EnableRaisingEvents = true;
             }
 
-            private System.Timers.Timer delayTimer = new System.Timers.Timer();
+            private System.Timers.Timer delayTimer;
 
             private void File_Changed(object sender, FileSystemEventArgs e)
             {
@@ -196,7 +200,8 @@ namespace TrakHound.API
                 if (delayTimer != null) delayTimer.Stop();
                 else
                 {
-                    delayTimer.Interval = 500;
+                    delayTimer = new System.Timers.Timer();
+                    delayTimer.Interval = 2000;
                     delayTimer.Elapsed += DelayTimer_Elapsed;
                 }
 
@@ -205,11 +210,13 @@ namespace TrakHound.API
 
             private void DelayTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
             {
+                Logger.Log("API Configuration Changed", LogLineType.Notification);
+
                 var timer = (System.Timers.Timer)sender;
                 timer.Stop();
 
                 var apiConfig = Read();
-                if (ApiConfigurationChanged != null) ApiConfigurationChanged(apiConfig);
+                ApiConfigurationChanged?.Invoke(apiConfig);
             }
         }
     }

@@ -55,7 +55,7 @@ namespace TrakHound.Servers.DataProcessing
 
             IsRunnning = true;
 
-            if (Started != null) Started();
+            Started?.Invoke();
         }
 
         public void Stop()
@@ -70,7 +70,7 @@ namespace TrakHound.Servers.DataProcessing
 
             IsRunnning = false;
 
-            if (Stopped != null) Stopped();
+            Stopped?.Invoke();
         }
 
         private void LoginMonitor_UserChanged(API.Users.UserLoginFile.LoginData loginData)

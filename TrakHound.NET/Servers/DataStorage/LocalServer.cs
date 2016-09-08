@@ -47,6 +47,8 @@ namespace TrakHound.Servers.DataStorage
 
         public void Start()
         {
+            Stop();
+
             listener = new HttpListener();
             listener.Prefixes.Add("http://localhost:" + PORT + "/api/");
             listener.Start();
@@ -86,8 +88,15 @@ namespace TrakHound.Servers.DataStorage
 
         public void Stop()
         {
-            listener.Stop();
-            listener.Close();
+            if (listener != null)
+            {
+                try
+                {
+                    listener.Stop();
+                    listener.Close();
+                }
+                catch (Exception ex) { }
+            }
 
             StopBackupTimer();
         }

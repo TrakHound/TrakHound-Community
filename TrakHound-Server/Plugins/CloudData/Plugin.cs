@@ -311,8 +311,6 @@ namespace TrakHound_Server.Plugins.CloudData
                     // Production Status
                     if (eventTime.Event == "production_status" && !string.IsNullOrEmpty(eventTime.Value))
                     {
-                        //hourInfo.TotalTime = eventTime.Duration.TotalSeconds;
-
                         switch (eventTime.Value.ToLower())
                         {
                             case "production": hourInfo.Production = eventTime.Duration.TotalSeconds; break;
@@ -398,9 +396,6 @@ namespace TrakHound_Server.Plugins.CloudData
                 var oeeDatas = (List<OEE.OEEData>)data.Data02;
                 if (oeeDatas != null)
                 {
-                    //var oee = new TrakHound.OEE();
-                    //oee.ConstantQuality = 1;
-
                     foreach (var oeeData in oeeDatas.ToList())
                     {
                         var storedOeeData = storedOeeDatas.Find(o => o.Start.Hour == oeeData.Start.Hour && o.CycleId == oeeData.CycleId && o.CycleInstanceId == oeeData.CycleInstanceId);
@@ -416,14 +411,10 @@ namespace TrakHound_Server.Plugins.CloudData
                         hourInfo.PlannedProductionTime = Math.Max(0, oeeData.PlannedProductionTime - storedOeeData.PlannedProductionTime);
                         hourInfo.OperatingTime = Math.Max(0, oeeData.OperatingTime - storedOeeData.OperatingTime);
                         hourInfo.IdealOperatingTime = Math.Max(0, oeeData.IdealOperatingTime - storedOeeData.IdealOperatingTime);
-                        //hourInfo.TotalPieces = Math.Max(0, oeeData.TotalPieces - storedOeeData.TotalPieces);
-                        //hourInfo.GoodPieces = Math.Max(0, oeeData.GoodPieces - storedOeeData.GoodPieces);
-
                         // Update in stored list
                         int i = storedOeeDatas.FindIndex(o => o.Start.Hour == oeeData.Start.Hour && o.CycleId == oeeData.CycleId && o.CycleInstanceId == oeeData.CycleInstanceId);
                         if (i >= 0) storedOeeDatas[i] = oeeData;
 
-                        //deviceInfo.AddHourInfo(hourInfo);
                         deviceInfo.Hours.Add(hourInfo);
                     }
 
@@ -455,7 +446,6 @@ namespace TrakHound_Server.Plugins.CloudData
                             {
                                 hourInfo.TotalPieces = info.Count;
 
-                                //deviceInfo.AddHourInfo(hourInfo);
                                 deviceInfo.Hours.Add(hourInfo);
                             }
                             else
@@ -464,7 +454,6 @@ namespace TrakHound_Server.Plugins.CloudData
                                 {
                                     hourInfo.TotalPieces = info.Count - storedPartCount;
 
-                                    //deviceInfo.AddHourInfo(hourInfo);
                                     deviceInfo.Hours.Add(hourInfo);
                                     storedPartCount = info.Count;
                                 }

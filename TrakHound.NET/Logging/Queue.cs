@@ -52,7 +52,13 @@ namespace TrakHound.Logging
                 case LogLineType.Warning: add = configuration.Warning; break;
             }
 
-            if (queue != null && add) queue.Add(line);
+            // For some reason this can adding a line to the queue List throws an exception. 
+            // Probably need to use 'lock' since it is being accessed from multiple threads and an exception is being thrown inside the List class.
+            try
+            {
+                if (queue != null && add) queue.Add(line);
+            }
+            catch (Exception ex) { }
         }
 
         private void AddToLog(XmlDocument doc, Line line)
