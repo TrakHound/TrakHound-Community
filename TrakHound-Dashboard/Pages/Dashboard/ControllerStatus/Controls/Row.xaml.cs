@@ -160,6 +160,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus.Controls
                 ControllerMode = info.ControllerMode;
                 ExecutionMode = info.ExecutionMode;
                 Program = info.ProgramName;
+                Block = info.ProgramBlock;
+                Line = info.ProgramLine;
                 SystemStatus = info.SystemStatus;
                 SystemMessage = info.SystemMessage;
             }

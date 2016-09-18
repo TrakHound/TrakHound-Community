@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
              xmlns:local="clr-namespace:TrakHound_Dashboard.Pages.Dashboard.ControllerStatus.Controls"
              
              xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
@@ -10,10 +11,17 @@
              mc:Ignorable="d" 
              Height="65">
 
+    <UserControl.Resources>
+
+        <SolidColorBrush ice:Freeze="True" x:Key="Highlight" Color="#30FFFFFF"/>
+        <SolidColorBrush ice:Freeze="True" x:Key="Highlight_Colored" Color="#30FFFFFF"/>
+
+    </UserControl.Resources>
+
     <Border x:Name="root">
         <Border.Style>
             <Style TargetType="Border">
-                <Setter Property="BorderBrush" Value="#ccc"/>
+                <Setter Property="BorderBrush" Value="{StaticResource Border}"/>
                 <Setter Property="BorderThickness" Value="0,0,0,1"/>
             </Style>
         </Border.Style>
@@ -34,7 +42,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!--Status Indicator-->
-                <Border Grid.Column="0" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                <Border Grid.Column="0" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
                     <Border.Style>
                         <Style TargetType="Border">
                             <Style.Triggers>
@@ -101,7 +109,7 @@
                 </Border>
 
                 <!--Description-->
-                <Border Grid.Column="1" BorderBrush="#ccc" BorderThickness="0,0,1,0" Background="Transparent">
+                <Border Grid.Column="1" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0" Background="Transparent">
                     <Border.ToolTip>
                         <StackPanel Width="300">
                             <StackPanel.Resources>
@@ -112,31 +120,31 @@
                                 </Style>
                             </StackPanel.Resources>
 
-                            <TextBlock Text="{Binding Configuration.Description.Description}" Foreground="{StaticResource Foreground_Normal}" FontSize="14" FontWeight="Bold" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding Configuration.Description.Description}" Foreground="{StaticResource Text}" FontSize="14" FontWeight="Bold" TextWrapping="Wrap"/>
 
                             <TextBlock>
-                                <Run Text="Manufacturer :" Foreground="{StaticResource Foreground_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Manufacturer}" Foreground="{StaticResource Foreground_Normal}"/>
+                                <Run Text="Manufacturer :" Foreground="{StaticResource Text_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Manufacturer}" Foreground="{StaticResource Text}"/>
                             </TextBlock>
 
                             <TextBlock>
-                                <Run Text="Model :" Foreground="{StaticResource Foreground_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Model}" Foreground="{StaticResource Foreground_Normal}"/>
+                                <Run Text="Model :" Foreground="{StaticResource Text_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Model}" Foreground="{StaticResource Text}"/>
                             </TextBlock>
 
                             <TextBlock>
-                                <Run Text="Serial :" Foreground="{StaticResource Foreground_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Serial}" Foreground="{StaticResource Foreground_Normal}"/>
+                                <Run Text="Serial :" Foreground="{StaticResource Text_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Serial}" Foreground="{StaticResource Text}"/>
                             </TextBlock>
 
                             <TextBlock>
-                                <Run Text="Controller :" Foreground="{StaticResource Foreground_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Controller}" Foreground="{StaticResource Foreground_Normal}"/>
+                                <Run Text="Controller :" Foreground="{StaticResource Text_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Controller}" Foreground="{StaticResource Text}"/>
                             </TextBlock>
 
                             <TextBlock>
-                                <Run Text="Location :" Foreground="{StaticResource Foreground_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Location}" Foreground="{StaticResource Foreground_Normal}"/>
+                                <Run Text="Location :" Foreground="{StaticResource Text_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Location}" Foreground="{StaticResource Text}"/>
                             </TextBlock>
 
                         </StackPanel>
@@ -158,10 +166,10 @@
                         </StackPanel.Resources>
 
                         <!--Device Description-->
-                        <TextBlock Text="{Binding Configuration.Description.Description}" Foreground="{StaticResource Foreground_Normal}" FontSize="10"  Margin="0,2" HorizontalAlignment="Left"/>
+                        <TextBlock Text="{Binding Configuration.Description.Description}" Foreground="{StaticResource Text}" FontSize="10"  Margin="0,2" HorizontalAlignment="Left"/>
 
                         <!--Manufacturer-->
-                        <TextBlock Foreground="{StaticResource Foreground_Normal}" FontSize="12" FontWeight="Bold" Margin="0,2" HorizontalAlignment="Left">
+                        <TextBlock Foreground="{StaticResource Text}" FontSize="12" FontWeight="Bold" Margin="0,2" HorizontalAlignment="Left">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Style.Triggers>
@@ -180,23 +188,23 @@
                         </TextBlock>
 
                         <!--Serial-->
-                        <TextBlock Text="{Binding Configuration.Description.Serial}" Foreground="{StaticResource Foreground_Normal}" FontSize="10" Margin="0,2" HorizontalAlignment="Left"/>
+                        <TextBlock Text="{Binding Configuration.Description.Serial}" Foreground="{StaticResource Text}" FontSize="10" Margin="0,2" HorizontalAlignment="Left"/>
 
                     </StackPanel>
 
                 </Border>
 
                 <!--Device ID-->
-                <Border Grid.Column="2" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                <Border Grid.Column="2" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
 
                     <Viewbox Margin="10">
-                        <TextBlock Text="{Binding Configuration.Description.Device_ID}" Foreground="{StaticResource Foreground_Normal}" TextWrapping="Wrap" TextAlignment="Center"/>
+                        <TextBlock Text="{Binding Configuration.Description.DeviceId}" Foreground="{StaticResource Text}" TextWrapping="Wrap" TextAlignment="Center"/>
                     </Viewbox>
 
                 </Border>
 
                 <!--Availability-->
-                <Border Grid.Column="3" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                <Border Grid.Column="3" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
 
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -224,11 +232,11 @@
                                 <Grid.Style>
                                     <Style TargetType="Grid">
                                         <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                        <Setter Property="Background" Value="#ccc"/>
+                                        <Setter Property="Background" Value="{StaticResource Disabled_Text}"/>
                                         <Setter Property="Height" Value="40"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Availability}" Value="AVAILABLE">
-                                                <Setter Property="Background" Value="#fff"/>
+                                                <Setter Property="Background" Value="White"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -237,7 +245,7 @@
 
                         </Border>
 
-                        <Rectangle Grid.Column="1" Fill="#ccc" Width="1"/>
+                        <Rectangle Grid.Column="1" Fill="{StaticResource Border}" Width="1"/>
 
                         <!--Off-->
                         <Border Grid.Column="2">
@@ -258,11 +266,11 @@
                                 <Grid.Style>
                                     <Style TargetType="Grid">
                                         <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                        <Setter Property="Background" Value="#ccc"/>
+                                        <Setter Property="Background" Value="{StaticResource Disabled_Text}"/>
                                         <Setter Property="Height" Value="40"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Availability}" Value="UNAVAILABLE">
-                                                <Setter Property="Background" Value="#fff"/>
+                                                <Setter Property="Background" Value="White"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -301,7 +309,7 @@
                             <Setter Property="Background" Value="Transparent"/>
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" Value="#33ffffff"/>
+                                    <Setter Property="Background" Value="{StaticResource Highlight_Colored}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
@@ -309,7 +317,7 @@
                 </Border>
 
                 <!--Emergency Stop-->
-                <Border Grid.Column="4" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                <Border Grid.Column="4" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
                     <Border.Style>
                         <Style TargetType="Border">
                             <Style.Triggers>
@@ -339,10 +347,10 @@
                         <TextBlock Text="{Binding EmergencyStop}" TextAlignment="Left" HorizontalAlignment="Center">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="#fff"/>
+                                    <Setter Property="Foreground" Value="White"/>
                                     <Style.Triggers>
                                         <Trigger Property="Text" Value="UNAVAILABLE">
-                                            <Setter Property="Foreground" Value="#ccc"/>
+                                            <Setter Property="Foreground" Value="{StaticResource Disabled_Text}"/>
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -379,21 +387,21 @@
                             <Setter Property="Background" Value="Transparent"/>
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" Value="#100080ff"/>
+                                    <Setter Property="Background" Value="{StaticResource Highlight}"/>
                                 </Trigger>
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>
                                         <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
                                         <Condition Binding="{Binding EmergencyStop}" Value="ARMED"/>
                                     </MultiDataTrigger.Conditions>
-                                    <Setter Property="Background" Value="#33ffffff"/>
+                                    <Setter Property="Background" Value="{StaticResource Highlight_Colored}"/>
                                 </MultiDataTrigger>
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>
                                         <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
                                         <Condition Binding="{Binding EmergencyStop}" Value="TRIGGERED"/>
                                     </MultiDataTrigger.Conditions>
-                                    <Setter Property="Background" Value="#33ffffff"/>
+                                    <Setter Property="Background" Value="{StaticResource Highlight_Colored}"/>
                                 </MultiDataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -401,7 +409,7 @@
                 </Border>
                 
                 <!--Execution Mode-->
-                <Border Grid.Column="5" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                <Border Grid.Column="5" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
                     <Border.Style>
                         <Style TargetType="Border">
                             <Style.Triggers>
@@ -423,15 +431,10 @@
 
                         <!--Icon-->
                         <Grid>
-                            <Grid.Resources>
-                                <ImageBrush x:Key="Started_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Start_02.png" />
-                                <ImageBrush x:Key="Idle_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Pause_02.png" />
-                                <ImageBrush x:Key="Stopped_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Stop_02.png" />
-                            </Grid.Resources>
                             <Grid.Style>
                                 <Style TargetType="Grid">
-                                    <Setter Property="OpacityMask" Value="{StaticResource Idle_IMG}" />
-                                    <Setter Property="Background" Value="#ccc"/>
+                                    <Setter Property="OpacityMask" Value="{StaticResource Paused_IMG}" />
+                                    <Setter Property="Background" Value="{StaticResource Text}"/>
                                     <Setter Property="Height" Value="25"/>
                                     <Setter Property="Width" Value="25"/>
                                     <Setter Property="Margin" Value="10,0,0,0"/>
@@ -471,16 +474,16 @@
                             <TextBlock Text="{Binding ExecutionMode}" TextAlignment="Left" HorizontalAlignment="Center">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="#333"/>
+                                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding ExecutionMode}" Value="ACTIVE">
-                                                <Setter Property="Foreground" Value="#fff"/>
+                                                <Setter Property="Foreground" Value="White"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding ExecutionMode}" Value="STOPPED">
-                                                <Setter Property="Foreground" Value="#fff"/>
+                                                <Setter Property="Foreground" Value="White"/>
                                             </DataTrigger>
                                             <Trigger Property="Text" Value="UNAVAILABLE">
-                                                <Setter Property="Foreground" Value="#ccc"/>
+                                                <Setter Property="Foreground" Value="{StaticResource Disabled_Text}"/>
                                             </Trigger>
                                         </Style.Triggers>
                                     </Style>
@@ -518,21 +521,21 @@
                             <Setter Property="Background" Value="Transparent"/>
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" Value="#100080ff"/>
+                                    <Setter Property="Background" Value="{StaticResource Highlight}"/>
                                 </Trigger>
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>
                                         <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
                                         <Condition Binding="{Binding ExecutionMode}" Value="ACTIVE"/>
                                     </MultiDataTrigger.Conditions>
-                                    <Setter Property="Background" Value="#33ffffff"/>
+                                    <Setter Property="Background" Value="{StaticResource Highlight_Colored}"/>
                                 </MultiDataTrigger>
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>
                                         <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
                                         <Condition Binding="{Binding ExecutionMode}" Value="STOPPED"/>
                                     </MultiDataTrigger.Conditions>
-                                    <Setter Property="Background" Value="#33ffffff"/>
+                                    <Setter Property="Background" Value="{StaticResource Highlight_Colored}"/>
                                 </MultiDataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -540,12 +543,12 @@
                 </Border>
 
                 <!--Controller Mode-->
-                <Border Grid.Column="6" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                <Border Grid.Column="6" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
 
                     <UniformGrid Columns="5">
 
                         <!--Automatic-->
-                        <Border Grid.Column="0" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                        <Border Grid.Column="0" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
                             <Border.Style>
                                 <Style TargetType="Border">
                                     <Style.Triggers>
@@ -567,7 +570,7 @@
                                         <Setter Property="Height" Value="30"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding ControllerMode}" Value="AUTOMATIC">
-                                                <Setter Property="Background" Value="#fff"/>
+                                                <Setter Property="Background" Value="White"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -577,7 +580,7 @@
                         </Border>
 
                         <!--Semi Automatic-->
-                        <Border Grid.Column="1" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                        <Border Grid.Column="1" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
                             <Border.Style>
                                 <Style TargetType="Border">
                                     <Style.Triggers>
@@ -599,7 +602,7 @@
                                         <Setter Property="Height" Value="30"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding ControllerMode}" Value="SEMI_AUTOMATIC">
-                                                <Setter Property="Background" Value="#fff"/>
+                                                <Setter Property="Background" Value="White"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -609,7 +612,7 @@
                         </Border>
 
                         <!--MDI-->
-                        <Border Grid.Column="2" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                        <Border Grid.Column="2" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
                             <Border.Style>
                                 <Style TargetType="Border">
                                     <Style.Triggers>
@@ -631,7 +634,7 @@
                                         <Setter Property="Height" Value="30"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding ControllerMode}" Value="MANUAL_DATA_INPUT">
-                                                <Setter Property="Background" Value="#fff"/>
+                                                <Setter Property="Background" Value="White"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -641,7 +644,7 @@
                         </Border>
 
                         <!--Manual-->
-                        <Border Grid.Column="3" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                        <Border Grid.Column="3" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
                             <Border.Style>
                                 <Style TargetType="Border">
                                     <Style.Triggers>
@@ -663,7 +666,7 @@
                                         <Setter Property="Height" Value="30"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding ControllerMode}" Value="MANUAL">
-                                                <Setter Property="Background" Value="#fff"/>
+                                                <Setter Property="Background" Value="White"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -695,7 +698,7 @@
                                         <Setter Property="Height" Value="30"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding ControllerMode}" Value="EDIT">
-                                                <Setter Property="Background" Value="#fff"/>
+                                                <Setter Property="Background" Value="White"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -733,7 +736,7 @@
                             <Setter Property="Background" Value="Transparent"/>
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" Value="#100080ff"/>
+                                    <Setter Property="Background" Value="{StaticResource Highlight}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
@@ -741,7 +744,7 @@
                 </Border>
                 
                 <!--Program-->
-                <Border Grid.Column="7" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                <Border Grid.Column="7" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
 
                     <StackPanel Margin="20,0" HorizontalAlignment="Left" VerticalAlignment="Center">
 
@@ -751,10 +754,10 @@
                             <TextBlock Text="{Binding Program}" TextAlignment="Left" HorizontalAlignment="Left">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="#333"/>
+                                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
                                         <Style.Triggers>
                                             <Trigger Property="Text" Value="UNAVAILABLE">
-                                                <Setter Property="Foreground" Value="#ccc"/>
+                                                <Setter Property="Foreground" Value="{StaticResource Disabled_Text}"/>
                                             </Trigger>
                                         </Style.Triggers>
                                     </Style>
@@ -763,26 +766,28 @@
 
                         </Viewbox>
                         
+                        <!--Program Line Number-->
                         <TextBlock Text="{Binding Line}" FontSize="12">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="#888"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Text_Light}"/>
                                     <Style.Triggers>
                                         <Trigger Property="Text" Value="UNAVAILABLE">
-                                            <Setter Property="Foreground" Value="#ccc"/>
+                                            <Setter Property="Foreground" Value="{StaticResource Disabled_Text}"/>
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
 
+                        <!--Program Block Text-->
                         <TextBlock Text="{Binding Block}" FontSize="12">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="#888"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Text_Light}"/>
                                     <Style.Triggers>
                                         <Trigger Property="Text" Value="UNAVAILABLE">
-                                            <Setter Property="Foreground" Value="#ccc"/>
+                                            <Setter Property="Foreground" Value="{StaticResource Disabled_Text}"/>
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -794,7 +799,7 @@
                 </Border>
 
                 <!--System Status-->
-                <Border Grid.Column="8" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                <Border Grid.Column="8" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
                     <Border.Style>
                         <Style TargetType="Border">
                             <Style.Triggers>
@@ -813,10 +818,6 @@
 
                         <!--Icon-->
                         <Grid VerticalAlignment="Center">
-                            <Grid.Resources>
-                                <ImageBrush x:Key="Warning_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Warning_01.png" />
-                                <ImageBrush x:Key="Check_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/CheckMark_01.png" />
-                            </Grid.Resources>
                             <Grid.Style>
                                 <Style TargetType="Grid">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -824,14 +825,19 @@
                                     <Setter Property="Width" Value="30"/>
                                     <Setter Property="Margin" Value="0,0,10,0"/>
                                     <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SystemStatus}" Value="Normal">
+                                            <Setter Property="OpacityMask" Value="{StaticResource Status_Normal_IMG}" />
+                                            <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
                                         <DataTrigger Binding="{Binding SystemStatus}" Value="Warning">
-                                            <Setter Property="OpacityMask" Value="{StaticResource Warning_IMG}" />
-                                            <Setter Property="Background" Value="Orange"/>
+                                            <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}" />
+                                            <Setter Property="Background" Value="{StaticResource StatusOrange}"/>
                                             <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding SystemStatus}" Value="Fault">
-                                            <Setter Property="OpacityMask" Value="{StaticResource Warning_IMG}" />
-                                            <Setter Property="Background" Value="#fff"/>
+                                            <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}" />
+                                            <Setter Property="Background" Value="White"/>
                                             <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -845,29 +851,30 @@
                             <TextBlock Text="{Binding SystemStatus}" FontSize="16" Margin="0,0,0,2">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="#333"/>
+                                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
                                         <Style.Triggers>
                                             <Trigger Property="Text" Value="Normal">
                                                 <Setter Property="Foreground" Value="{StaticResource StatusGreen}"/>
                                             </Trigger>
                                             <Trigger Property="Text" Value="Fault">
-                                                <Setter Property="Foreground" Value="#fff"/>
+                                                <Setter Property="Foreground" Value="White"/>
                                             </Trigger>
                                             <Trigger Property="Text" Value="UNAVAILABLE">
-                                                <Setter Property="Foreground" Value="#ccc"/>
+                                                <Setter Property="Foreground" Value="{StaticResource Disabled_Text}"/>
                                             </Trigger>
                                             <Trigger Property="Text" Value="Unavailable">
-                                                <Setter Property="Foreground" Value="#ccc"/>
+                                                <Setter Property="Foreground" Value="{StaticResource Disabled_Text}"/>
                                             </Trigger>
                                         </Style.Triggers>
                                     </Style>
                                 </TextBlock.Style>
                             </TextBlock>
 
+                            <!--System Message Text-->
                             <TextBlock Text="{Binding SystemMessage}" FontSize="12" TextWrapping="Wrap" MaxHeight="30" >
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="#333"/>
+                                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
                                         <Style.Triggers>
                                             <Trigger Property="Text" Value="{x:Null}">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -876,10 +883,10 @@
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                             </Trigger>
                                             <DataTrigger Binding="{Binding SystemStatus}" Value="Fault">
-                                                <Setter Property="Foreground" Value="#fff"/>
+                                                <Setter Property="Foreground" Value="White"/>
                                             </DataTrigger>
                                             <Trigger Property="Text" Value="UNAVAILABLE">
-                                                <Setter Property="Foreground" Value="#ccc"/>
+                                                <Setter Property="Foreground" Value="{StaticResource Disabled_Text}"/>
                                             </Trigger>
                                         </Style.Triggers>
                                     </Style>
