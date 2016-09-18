@@ -2128,21 +2128,7 @@
                         </Style>
                     </Viewbox.Style>
 
-                    <TextBlock Text="{Binding SystemMessage}">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Foreground" Value="{StaticResource Text}"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding SystemStatus}" Value="Warning">
-                                        <Setter Property="Foreground" Value="#FFFFFF"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding SystemStatus}" Value="Fault">
-                                        <Setter Property="Foreground" Value="#FFFFFF"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
+                    <TextBlock Text="{Binding SystemMessage}" Foreground="{StaticResource Text}"/>
 
                 </Viewbox>
 
