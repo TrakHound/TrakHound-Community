@@ -365,6 +365,14 @@ namespace TrakHound_Server.Plugins.CloudData
                 // Program Name
                 info = infos.Find(x => x.Type == "PROGRAM");
                 if (info != null) controller.ProgramName = info.Value1;
+
+                // Program Block
+                info = infos.Find(x => x.Type == "BLOCK");
+                if (info != null) controller.ProgramBlock = info.Value1;
+
+                // Program Line
+                info = infos.Find(x => x.Type == "LINE");
+                if (info != null) controller.ProgramLine = info.Value1;
             }
             else
             {
@@ -423,6 +431,7 @@ namespace TrakHound_Server.Plugins.CloudData
 
 
         private int storedPartCount = 0;
+        private string storedPartCountHour = null;
 
         private void UpdatePartCount(EventData data)
         {
@@ -448,12 +457,17 @@ namespace TrakHound_Server.Plugins.CloudData
                             }
                             else
                             {
-                                if (info.Count != storedPartCount)
+                                if (info.Count != storedPartCount || storedPartCountHour != GetHourId(hourInfo.Date, hourInfo.Hour))
                                 {
-                                    hourInfo.TotalPieces = info.Count - storedPartCount;
+                                    // If Part Count is less than stored value then assume it has been reset and needs to be incremented
+                                    if (info.Count < storedPartCount) hourInfo.TotalPieces = info.Count;
+                                    else hourInfo.TotalPieces = info.Count - storedPartCount;
+
+                                    Console.WriteLine("Part Count = " + info.Count + " :: " + hourInfo.TotalPieces + " : " + storedPartCount);
 
                                     deviceInfo.Hours.Add(hourInfo);
                                     storedPartCount = info.Count;
+                                    storedPartCountHour = GetHourId(hourInfo.Date, hourInfo.Hour);
                                 }
                             }                         
                         }
@@ -462,6 +476,11 @@ namespace TrakHound_Server.Plugins.CloudData
                     } 
                 }
             }
+        }
+
+        private string GetHourId(string date, int hour)
+        {
+            return date + "_" + hour;
         }
 
         private Data.CycleInfo previousCycleInfo = null;

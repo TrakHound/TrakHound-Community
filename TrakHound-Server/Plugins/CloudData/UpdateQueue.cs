@@ -49,16 +49,16 @@ namespace TrakHound_Server.Plugins.CloudData
 
         public void Start()
         {
-            if (queueTimer != null) queueTimer.Enabled = false;
+            if (queueTimer != null) queueTimer.Stop();
             else
             {
                 queueTimer = new System.Timers.Timer();
+                queueTimer.AutoReset = false;
+                queueTimer.Elapsed -= QueueTimer_Elapsed;
                 queueTimer.Elapsed += QueueTimer_Elapsed;
             }
 
-            if (Plugin.currentUser != null || ApiConfiguration.DataApiHost.ToString() != ApiConfiguration.LOCAL_API_HOST) queueTimer.Interval = 5000;
-            else queueTimer.Interval = 500;
-
+            queueTimer.Interval = ApiConfiguration.UpdateInterval;
             queueTimer.Start();
         }
 
@@ -70,22 +70,26 @@ namespace TrakHound_Server.Plugins.CloudData
 
         private void QueueTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            var timer = (System.Timers.Timer)sender;
-            timer.Stop();
+            //timer.Stop();
 
             ProcessQueue();
 
-            timer.Start();
+            Start();
+
+            //var timer = (System.Timers.Timer)sender;
+            //timer.Start();
         }
 
         private void ProcessQueue()
         {
             if (queuedInfos.Count > 0)
             {
-                // Use ToList() to avoid 'enumerated list changed' exception
-                var temp = queuedInfos.ToList();
+                // List of infos to actually send to API
+                var temp = new List<Data.DeviceInfo>();
 
-                foreach (var queuedInfo in temp)
+                long bufferSize = 0;
+
+                foreach (var queuedInfo in queuedInfos.ToList())
                 {
                     var obj = queuedInfo.GetClass("hours");
                     if (obj != null)
@@ -95,6 +99,16 @@ namespace TrakHound_Server.Plugins.CloudData
 
                         queuedInfo.RemoveClass("hours");
                         queuedInfo.AddClass("hours", hours);
+
+                        // Get json size
+                        long size = 0;
+                        string json = queuedInfo.ToJson();
+                        if (json != null) size = json.Length;
+                        bufferSize += size;
+
+                        // Only add if less than buffersize
+                        if (bufferSize <= ApiConfiguration.BufferSize) temp.Add(queuedInfo);
+                        else break;
                     }
                 }
 
@@ -103,10 +117,13 @@ namespace TrakHound_Server.Plugins.CloudData
                 foreach (var queuedInfo in temp)
                 {
                     var match = queuedInfos.Find(o => o.UniqueId == queuedInfo.UniqueId);
-                    if (match != null) match.ClearClasses();
+                    //if (match != null) match.ClearClasses();
+                    if (match != null && match.Hours != null) match.Hours.Clear();
                 }
             }
         }
+
+
 
         public static void Update(UserConfiguration userConfig, List<Data.DeviceInfo> deviceInfos)
         {
@@ -183,7 +200,7 @@ namespace TrakHound_Server.Plugins.CloudData
                 string response = HTTP.POST(httpInfo);
                 if (!string.IsNullOrEmpty(response))
                 {
-                    ApiError.ProcessResponse(response, "Update Cloud Data : " + info.Url);
+                    ApiError.ProcessResponse(response, "Update Cloud Data : " + info.Url + " @ " + DateTime.Now.ToLongTimeString());
                 }
             }
         }
