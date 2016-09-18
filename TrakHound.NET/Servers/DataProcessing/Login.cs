@@ -71,8 +71,8 @@ namespace TrakHound.Servers.DataProcessing
 
         private void UpdateLoginInformation(DeviceServer server)
         {
-            if (CurrentUser != null) server.SendPluginsData("USER_LOGIN", CurrentUser);
-            else server.SendPluginsData("USER_LOGIN", null);
+            if (CurrentUser != null) server.SendPluginData("USER_LOGIN", CurrentUser);
+            else server.SendPluginData("USER_LOGIN", null);
         }
     }
 }

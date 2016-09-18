@@ -73,7 +73,7 @@ namespace TrakHound.Servers.DataProcessing
             Stopped?.Invoke();
         }
 
-        private void LoginMonitor_UserChanged(API.Users.UserLoginFile.LoginData loginData)
+        private void LoginMonitor_UserChanged(UserLoginFile.LoginData loginData)
         {
             Login(loginData);
         }
@@ -102,7 +102,7 @@ namespace TrakHound.Servers.DataProcessing
             pluginsPath = AppDomain.CurrentDomain.BaseDirectory;
             if (Directory.Exists(pluginsPath)) LoadServerPlugins(pluginsPath);
 
-            // Load from running assembly (TrakHound-Server)
+            // Load from running assembly (ex. TrakHound-Server)
             LoadServerPlugins(Assembly.GetEntryAssembly());
 
             PrintServerPluginInfo(serverPlugins);

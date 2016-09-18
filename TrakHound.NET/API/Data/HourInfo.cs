@@ -192,6 +192,8 @@ namespace TrakHound.API
                     result.Availability = oee.Availability;
                     result.Performance = oee.Performance;
                     result.Quality = oee.Quality;
+                    result.TotalPieces = oee.TotalPieces;
+                    result.GoodPieces = oee.GoodPieces;
                 }
 
                 return result;

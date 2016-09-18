@@ -44,12 +44,13 @@ namespace TrakHound.API
                 {
                     var obj = GetClass("status");
                     if (obj != null) return (StatusInfo)obj;
-                    else
-                    {
-                        obj = new StatusInfo();
-                        AddClass("status", obj);
-                        return (StatusInfo)obj;
-                    }
+                    //else
+                    //{
+                    //    obj = new StatusInfo();
+                    //    AddClass("status", obj);
+                    //    return (StatusInfo)obj;
+                    //}
+                    return null;
                 }
                 set
                 {
@@ -68,12 +69,13 @@ namespace TrakHound.API
                 {
                     var obj = GetClass("controller");
                     if (obj != null) return (ControllerInfo)obj;
-                    else
-                    {
-                        obj = new ControllerInfo();
-                        AddClass("controller", obj);
-                        return (ControllerInfo)obj;
-                    }
+                    //else
+                    //{
+                    //    obj = new ControllerInfo();
+                    //    AddClass("controller", obj);
+                    //    return (ControllerInfo)obj;
+                    //}
+                    return null;
                 }
                 set
                 {
@@ -92,12 +94,13 @@ namespace TrakHound.API
                 {
                     var obj = GetClass("oee");
                     if (obj != null) return (OeeInfo)obj;
-                    else
-                    {
-                        obj = new OeeInfo();
-                        AddClass("oee", obj);
-                        return (OeeInfo)obj;
-                    }
+                    //else
+                    //{
+                    //    obj = new OeeInfo();
+                    //    AddClass("oee", obj);
+                    //    return (OeeInfo)obj;
+                    //}
+                    return null;
                 }
                 set
                 {
@@ -116,12 +119,13 @@ namespace TrakHound.API
                 {
                     var obj = GetClass("timers");
                     if (obj != null) return (TimersInfo)obj;
-                    else
-                    {
-                        obj = new TimersInfo();
-                        AddClass("timers", obj);
-                        return (TimersInfo)obj;
-                    }
+                    //else
+                    //{
+                    //    obj = new TimersInfo();
+                    //    AddClass("timers", obj);
+                    //    return (TimersInfo)obj;
+                    //}
+                    return null;
                 }
                 set
                 {
@@ -140,12 +144,13 @@ namespace TrakHound.API
                 {
                     var obj = GetClass("cycles");
                     if (obj != null) return (List<CycleInfo>)obj;
-                    else
-                    {
-                        obj = new List<CycleInfo>();
-                        AddClass("cycles", obj);
-                        return (List<CycleInfo>)obj;
-                    }
+                    //else
+                    //{
+                    //    obj = new List<CycleInfo>();
+                    //    AddClass("cycles", obj);
+                    //    return (List<CycleInfo>)obj;
+                    //}
+                    return null;
                 }
                 set
                 {
@@ -164,12 +169,13 @@ namespace TrakHound.API
                 {
                     var obj = GetClass("hours");
                     if (obj != null) return (List<HourInfo>)obj;
-                    else
-                    {
-                        obj = new List<HourInfo>();
-                        AddClass("hours", obj);
-                        return (List<HourInfo>)obj;
-                    }
+                    //else
+                    //{
+                    //    obj = new List<HourInfo>();
+                    //    AddClass("hours", obj);
+                    //    return (List<HourInfo>)obj;
+                    //}
+                    return null;
                 }
                 set
                 {
@@ -241,7 +247,15 @@ namespace TrakHound.API
 
                 data.Add("unique_id", UniqueId);
 
-                foreach (var c in classes) data.Add(c.Key, c.Value);
+                foreach (var c in classes)
+                {
+                    object match = false;
+                    if (!data.TryGetValue(c.Key, out match))
+                    {
+
+                        data.Add(c.Key, c.Value);
+                    }
+                }
 
                 if (data.Count > 1) return data;
                 else return null;
@@ -259,6 +273,17 @@ namespace TrakHound.API
 
                 if (datas.Count > 0) return JSON.FromList<object>(datas);
                 else return null;
+            }
+
+            public DeviceInfo Copy()
+            {
+                var result = new DeviceInfo();
+                foreach (var c in Classes)
+                {
+                    result.AddClass(c.Key, c.Value);
+                }
+
+                return result;
             }
 
         }

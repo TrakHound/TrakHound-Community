@@ -11,28 +11,16 @@ using TrakHound.Configurations;
 using TrakHound.Logging;
 using TrakHound.Plugins;
 using TrakHound.Plugins.Server;
-using TrakHound.Tables;
 
 namespace TrakHound.Servers.DataProcessing
 {
+    /// <summary>
+    /// Data Processing Server for individual device. Handles plugins and events related to the device.
+    /// </summary>
     public partial class DeviceServer
     {
 
-        public DeviceServer(DeviceConfiguration config, List<IServerPlugin> serverPlugins)
-        {
-            Configuration = config;
-            plugins = serverPlugins;
-        }
-
         public DeviceConfiguration Configuration { get; set; }
-
-        public string ConfigurationPath { get; set; }
-
-        public bool UpdateConfigurationFile { get; set; }
-
-        public delegate void StatusChanged_Handler(DeviceServer server);
-        public event StatusChanged_Handler Started;
-        public event StatusChanged_Handler Stopped;
 
         private bool _isRunning = false;
         public bool IsRunning
@@ -42,13 +30,26 @@ namespace TrakHound.Servers.DataProcessing
             {
                 _isRunning = value;
                 if (_isRunning && Started != null) Started(this);
-                else if (Stopped != null) Stopped(this);
+                else Stopped?.Invoke(this);
             }
         }
 
-        private System.Timers.Timer connectionTimer;
+        public delegate void StatusChanged_Handler(DeviceServer server);
+        public event StatusChanged_Handler Started;
+        public event StatusChanged_Handler Stopped;
+
+        public event SendData_Handler SendData;
 
         private ManualResetEvent stop;
+
+        private List<IServerPlugin> plugins { get; set; }
+
+
+        public DeviceServer(DeviceConfiguration config, List<IServerPlugin> serverPlugins)
+        {
+            Configuration = config;
+            plugins = serverPlugins;
+        }
 
         public void Start()
         {
@@ -57,73 +58,29 @@ namespace TrakHound.Servers.DataProcessing
 
             Initialize(Configuration);
 
-            Plugins_Starting();
-
-            SendDatabaseStatus(true, Configuration);
+            StartPlugins();
         }
 
         public void Stop()
         {
             stop.Set();
 
-            if (connectionTimer != null) connectionTimer.Enabled = false;
-
-            SendDatabaseStatus(false, Configuration);
-
-            Plugins_Closing();
+            ClosePlugins();
 
             IsRunning = false;
 
             Logger.Log("Device Server Stopped :: " + Configuration.Description.Description + " [" + Configuration.Description.DeviceId + "]", LogLineType.Notification);
         }
 
-        public void SendPluginsData(string id, string message)
-        {
-            var data = new EventData();
-            data.Id = id;
-            data.Data01 = message;
-
-            Plugins_Update_SendData(data);
-        }
-
-        public void SendPluginsData(string id, object obj)
-        {
-            var data = new EventData();
-            data.Id = id;
-            data.Data01 = obj;
-
-            Plugins_Update_SendData(data);
-        }
 
         private void Initialize(DeviceConfiguration config)
         {
             Configuration = config;
 
-            //InitializeVariablesTables();
-
-            Plugins_Initialize(config);
+            InitializePlugins(config);
         }
 
-        private void SendDatabaseStatus(bool connected, DeviceConfiguration config)
-        {
-            var data = new EventData();
-            data.Id = "DatabaseStatus";
-            data.Data01 = config;
-            data.Data02 = connected;
-
-            Plugins_Update_SendData(data);
-        }
-
-        //void InitializeVariablesTables()
-        //{
-        //    string tablePrefix;
-        //    if (Configuration.DatabaseId != null) tablePrefix = Configuration.DatabaseId + "_";
-        //    else tablePrefix = "";
-
-        //    Variables.CreateTable(tablePrefix);
-        //}
-
-        void PrintDeviceHeader(DeviceConfiguration config)
+        private void PrintDeviceHeader(DeviceConfiguration config)
         {
             Logger.Log("Device [" + config.Index.ToString() + "] ---------------------------------------", LogLineType.Console);
 
@@ -136,12 +93,7 @@ namespace TrakHound.Servers.DataProcessing
             Logger.Log("--------------------------------------------------", LogLineType.Console);
         }
 
-        public event SendData_Handler SendData;
-
-
-        List<IServerPlugin> plugins { get; set; }
-
-        void Plugins_Initialize(DeviceConfiguration config)
+        private void InitializePlugins(DeviceConfiguration config)
         {
             if (plugins != null && config != null)
             {
@@ -149,8 +101,8 @@ namespace TrakHound.Servers.DataProcessing
                 {
                     try
                     {
-                        plugin.SendData -= Plugins_Update_SendData;
-                        plugin.SendData += Plugins_Update_SendData;
+                        plugin.SendData -= SendPluginData;
+                        plugin.SendData += SendPluginData;
                         plugin.Initialize(config);
                     }
                     catch (Exception ex)
@@ -161,27 +113,71 @@ namespace TrakHound.Servers.DataProcessing
             }
         }
 
-        void Plugins_Update_SendData(EventData data)
+
+        private class SendDataInfo
+        {
+            public SendDataInfo(IServerPlugin plugin, EventData data)
+            {
+                Plugin = plugin;
+                EventData = data;
+            }
+
+            public IServerPlugin Plugin { get; set; }
+            public EventData EventData { get; set; }
+        }
+
+        public void SendPluginData(string id, string message)
+        {
+            var data = new EventData();
+            data.Id = id;
+            data.Data01 = message;
+
+            SendPluginData(data);
+        }
+
+        public void SendPluginData(string id, object obj)
+        {
+            var data = new EventData();
+            data.Id = id;
+            data.Data01 = obj;
+
+            SendPluginData(data);
+        }
+
+        private void SendPluginData(EventData data)
         {
             if (plugins != null)
             {
                 foreach (var plugin in plugins)
                 {
-                    try
-                    {
-                        plugin.GetSentData(data);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Log("Plugin :: Exception : " + plugin.Name + " :: " + ex.Message, LogLineType.Error);
-                    }
+                    var sendDataInfo = new SendDataInfo(plugin, data);
+
+                    ThreadPool.QueueUserWorkItem(new WaitCallback(PluginSendData), sendDataInfo); 
                 }
             }
 
-            if (SendData != null) SendData(data);
+            SendData?.Invoke(data);
         }
 
-        void Plugins_Starting()
+        private void PluginSendData(object o)
+        {
+            if (o != null)
+            {
+                var sendDataInfo = (SendDataInfo)o;
+
+                try
+                {
+                    sendDataInfo.Plugin.GetSentData(sendDataInfo.EventData);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log("Plugin Send Data :: Exception : " + sendDataInfo.Plugin.Name + " :: " + ex.Message, LogLineType.Error);
+                }
+            }  
+        }
+
+
+        private void StartPlugins()
         {
             if (plugins != null)
             {
@@ -199,7 +195,7 @@ namespace TrakHound.Servers.DataProcessing
             }
         }
 
-        void Plugins_Closing()
+        private void ClosePlugins()
         {
             if (plugins != null)
             {

@@ -31,6 +31,12 @@ namespace TrakHound.API
 
             [JsonProperty("program_name")]
             public string ProgramName { get; set; }
+
+            [JsonProperty("program_line")]
+            public string ProgramLine { get; set; }
+
+            [JsonProperty("program_block")]
+            public string ProgramBlock { get; set; }
         }
     }
 }

@@ -18,9 +18,16 @@ namespace TrakHound.API
        
         public const string LOCAL_API_HOST = "http://localhost:8472/api/";
         public const string CLOUD_API_HOST = "http://TrakHound.com/api/";
+        public const long DEFAULT_BUFFER_SIZE = 500000; // 5 kB
+        public const int DEFAULT_UPDATE_INTERVAL = 5000; // 5 Seconds
+        public const int DEFAULT_TIMEOUT = 2000; // 2 Seconds
 
         public static Uri DataApiHost = new Uri(LOCAL_API_HOST);
         public static Uri AuthenticationApiHost = new Uri(CLOUD_API_HOST);
+
+        public static long BufferSize = DEFAULT_BUFFER_SIZE;
+        public static int UpdateInterval = DEFAULT_UPDATE_INTERVAL;
+        public static int Timeout = DEFAULT_TIMEOUT;
 
         [JsonProperty("data_host")]
         public string DataHost { get; set; }

@@ -22,6 +22,12 @@ namespace TrakHound.API
 
             [JsonProperty("quality")]
             public double Quality { get; set; }
+
+            [JsonProperty("total_pieces")]
+            public int TotalPieces { get; set; }
+
+            [JsonProperty("good_pieces")]
+            public int GoodPieces { get; set; }
         }
     }
 }
