@@ -178,8 +178,8 @@
 
     <!--Page List Button-->
     <Style TargetType="{x:Type ui:ListButton}">
-        <Setter Property="Foreground" Value="{StaticResource Foreground}"/>
-        <Setter Property="SelectorForeground" Value="{StaticResource Foreground}"/>
+        <Setter Property="Foreground" Value="{StaticResource Text}"/>
+        <Setter Property="SelectorForeground" Value="{StaticResource Text}"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Height" Value="35"/>
         <Setter Property="FontSize" Value="12"/>
@@ -201,20 +201,18 @@
                 <Trigger.ExitActions>
                     <BeginStoryboard>
                         <Storyboard FillBehavior="Stop">
-                            <ColorAnimation To="{StaticResource Foreground_Color}" Storyboard.TargetProperty="(ui:ListButton.Foreground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
+                            <ColorAnimation To="{StaticResource Text_Color}" Storyboard.TargetProperty="(ui:ListButton.Foreground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
                         </Storyboard>
                     </BeginStoryboard>
                     <BeginStoryboard>
                         <Storyboard FillBehavior="Stop">
-                            <ColorAnimation To="{StaticResource Foreground_Color}" Storyboard.TargetProperty="(ui:ListButton.SelectorForeground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
+                            <ColorAnimation To="{StaticResource Text_Color}" Storyboard.TargetProperty="(ui:ListButton.SelectorForeground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
                         </Storyboard>
                     </BeginStoryboard>
                 </Trigger.ExitActions>
 
             </Trigger>
             <Trigger Property="IsSelected" Value="true">
-                <!--<Setter Property="SelectorWidth" Value="5"/>-->
-
                 <Trigger.EnterActions>
                     <BeginStoryboard>
                         <Storyboard>
@@ -231,21 +229,16 @@
                             <ColorAnimation To="{StaticResource TrakHound_Blue_Color}" Storyboard.TargetProperty="(ui:ListButton.Background).(SolidColorBrush.Color)" Duration="0:0:0.15"/>
                         </Storyboard>
                     </BeginStoryboard>
-                    <!--<BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation To="5" Storyboard.TargetProperty="SelectorWidth" Duration="0:0:0.25"/>
-                        </Storyboard>
-                    </BeginStoryboard>-->
                 </Trigger.EnterActions>
                 <Trigger.ExitActions>
                     <BeginStoryboard>
                         <Storyboard FillBehavior="Stop">
-                            <ColorAnimation To="{StaticResource Foreground_Color}" Storyboard.TargetProperty="(ui:ListButton.Foreground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
+                            <ColorAnimation To="{StaticResource Text_Color}" Storyboard.TargetProperty="(ui:ListButton.Foreground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
                         </Storyboard>
                     </BeginStoryboard>
                     <BeginStoryboard>
                         <Storyboard FillBehavior="Stop">
-                            <ColorAnimation To="{StaticResource Foreground_Color}" Storyboard.TargetProperty="(ui:ListButton.SelectorForeground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
+                            <ColorAnimation To="{StaticResource Text_Color}" Storyboard.TargetProperty="(ui:ListButton.SelectorForeground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
                         </Storyboard>
                     </BeginStoryboard>
                     <BeginStoryboard>
@@ -253,11 +246,6 @@
                             <ColorAnimation To="Transparent" Storyboard.TargetProperty="(ui:ListButton.Background).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
                         </Storyboard>
                     </BeginStoryboard>
-                    <!--<BeginStoryboard>
-                        <Storyboard FillBehavior="Stop">
-                            <DoubleAnimation To="3" Storyboard.TargetProperty="SelectorWidth" Duration="0:0:0.25"/>
-                        </Storyboard>
-                    </BeginStoryboard>-->
                 </Trigger.ExitActions>
 
             </Trigger>

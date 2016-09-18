@@ -6,69 +6,56 @@
              
              xmlns:ui="clr-namespace:TrakHound_UI"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
-             
-             Margin="10"
              >
 
-    <StackPanel x:Name="root">
-
+    <Grid x:Name="root">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="7*"/>
+        </Grid.RowDefinitions>
+        
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel>
+            <!--Title-->
+            <Viewbox MaxHeight="20" HorizontalAlignment="Left">
 
-                <!--Title-->
-                <Viewbox MaxHeight="16" HorizontalAlignment="Left">
+                <TextBlock Text="{Binding Text}" TextAlignment="Left">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="{Binding Foreground}"/>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
 
-                    <TextBlock Text="{Binding Text}" TextAlignment="Left">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <!--<Setter Property="FontWeight" Value="SemiBold"/>-->
-                                <Setter Property="Foreground" Value="{Binding Foreground}"/>
-                                <!--<Setter Property="FontWeight" Value="Normal"/>-->
-                                <!--<Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                        <Setter Property="FontWeight" Value="SemiBold"/>
-                                    </DataTrigger>
-                                </Style.Triggers>-->
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
+            </Viewbox>
 
-                </Viewbox>
-
-                <!--Time Elapsed-->
-                <TextBlock Text="{Binding Time}" FontSize="10" Foreground="{Binding Foreground}" />
-
-            </StackPanel>
-
-            <!--Percentage-->
-            <TextBlock Grid.Column="1" Canvas.Left="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,0" Text="{Binding Percentage}" FontSize="20" FontWeight="Bold" FontFamily="{StaticResource RobotoFont}" >
-                <!--<TextBlock.Style>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="Foreground" Value="{Binding Foreground}"/>
-                        <Setter Property="FontWeight" Value="Normal"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                <Setter Property="FontWeight" Value="Bold"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>-->
-            </TextBlock>
+            <!--Time Elapsed-->
+            <TextBlock Grid.Column="1" Text="{Binding Time}" FontSize="12" Foreground="{Binding Foreground}" VerticalAlignment="Center"/>
 
         </Grid>
 
-        <!--Time Bar-->
-        <ui:ProgressBar Height="{Binding BarHeight}" Margin="0,5,0,0"
+        <Grid Grid.Row="1" Margin="0,5,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Percentage-->
+            <TextBlock VerticalAlignment="Center" Text="{Binding Percentage}" FontSize="20" FontWeight="Bold" FontFamily="{StaticResource RobotoFont}" />
+
+            <!--Time Bar-->
+            <ui:ProgressBar Grid.Column="1" Height="{Binding BarHeight}" Margin="10,0,0,0"
                         Value="{Binding BarValue}" Maximum="{Binding BarMaximum}"
                         Foreground="{Binding BarBrush}" Background="{Binding BarBackgroundBrush}"
                         AnimateValueChange="{Binding AnimateValueChange}"
                         BorderThickness="0"/>
 
-    </StackPanel>
+        </Grid>
+
+    </Grid>
 
 </UserControl>

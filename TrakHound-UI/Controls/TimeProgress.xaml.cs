@@ -80,7 +80,7 @@ namespace TrakHound_UI
         }
 
         public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register("Value", typeof(double), typeof(TimeProgress), new PropertyMetadata(0d, new PropertyChangedCallback(Value_PropertyChanged)));
+            DependencyProperty.Register("Value", typeof(double), typeof(TimeProgress), new PropertyMetadata(0.0d, new PropertyChangedCallback(Value_PropertyChanged)));
 
 
         public double Maximum
@@ -198,7 +198,7 @@ namespace TrakHound_UI
         }
 
         public static readonly DependencyProperty BarHeightProperty =
-            DependencyProperty.Register("BarHeight", typeof(double), typeof(TimeProgress), new PropertyMetadata(10d));
+            DependencyProperty.Register("BarHeight", typeof(double), typeof(TimeProgress), new PropertyMetadata(15d));
 
 
         public bool AnimateValueChange
