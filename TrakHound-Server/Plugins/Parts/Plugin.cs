@@ -62,6 +62,7 @@ namespace TrakHound_Server.Plugins.Parts
                                 lastTimestamp = info.Timestamp;
                                 infos.Add(info);
 
+                                lastSequence = info.Sequence;
                                 SaveStoredSequence(info);
                             }
                         }
@@ -128,7 +129,7 @@ namespace TrakHound_Server.Plugins.Parts
             data.Id = "PARTS";
             data.Data01 = configuration;
             data.Data02 = infos;
-            if (SendData != null) SendData(data);
+            SendData?.Invoke(data);
         }
 
     }
