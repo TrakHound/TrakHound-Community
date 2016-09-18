@@ -13,7 +13,7 @@
     <Border x:Name="root">
         <Border.Style>
             <Style TargetType="Border">
-                <Setter Property="BorderBrush" Value="#ccc"/>
+                <Setter Property="BorderBrush" Value="{StaticResource Border}"/>
                 <Setter Property="BorderThickness" Value="0,0,0,1"/>
             </Style>
         </Border.Style>
@@ -29,7 +29,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!--Status Indicator-->
-                <Border Grid.Column="0" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                <Border Grid.Column="0" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
                     <Border.Style>
                         <Style TargetType="Border">
                             <Style.Triggers>
@@ -96,7 +96,7 @@
                 </Border>
 
                 <!--Description-->
-                <Border Grid.Column="1" BorderBrush="#ccc" BorderThickness="0,0,1,0" Background="Transparent">
+                <Border Grid.Column="1" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0" Background="Transparent">
                     <Border.ToolTip>
                         <StackPanel Width="300">
                             <StackPanel.Resources>
@@ -107,31 +107,31 @@
                                 </Style>
                             </StackPanel.Resources>
 
-                            <TextBlock Text="{Binding Configuration.Description.Description}" Foreground="{StaticResource Foreground_Normal}" FontSize="14" FontWeight="Bold" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding Configuration.Description.Description}" Foreground="{StaticResource Text}" FontSize="14" FontWeight="Bold" TextWrapping="Wrap"/>
 
                             <TextBlock>
-                                <Run Text="Manufacturer :" Foreground="{StaticResource Foreground_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Manufacturer}" Foreground="{StaticResource Foreground_Normal}"/>
+                                <Run Text="Manufacturer :" Foreground="{StaticResource Text_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Manufacturer}" Foreground="{StaticResource Text}"/>
                             </TextBlock>
 
                             <TextBlock>
-                                <Run Text="Model :" Foreground="{StaticResource Foreground_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Model}" Foreground="{StaticResource Foreground_Normal}"/>
+                                <Run Text="Model :" Foreground="{StaticResource Text_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Model}" Foreground="{StaticResource Text}"/>
                             </TextBlock>
 
                             <TextBlock>
-                                <Run Text="Serial :" Foreground="{StaticResource Foreground_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Serial}" Foreground="{StaticResource Foreground_Normal}"/>
+                                <Run Text="Serial :" Foreground="{StaticResource Text_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Serial}" Foreground="{StaticResource Text}"/>
                             </TextBlock>
 
                             <TextBlock>
-                                <Run Text="Controller :" Foreground="{StaticResource Foreground_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Controller}" Foreground="{StaticResource Foreground_Normal}"/>
+                                <Run Text="Controller :" Foreground="{StaticResource Text_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Controller}" Foreground="{StaticResource Text}"/>
                             </TextBlock>
 
                             <TextBlock>
-                                <Run Text="Location :" Foreground="{StaticResource Foreground_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Location}" Foreground="{StaticResource Foreground_Normal}"/>
+                                <Run Text="Location :" Foreground="{StaticResource Text_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Location}" Foreground="{StaticResource Text}"/>
                             </TextBlock>
 
                         </StackPanel>
@@ -153,10 +153,10 @@
                         </StackPanel.Resources>
 
                         <!--Device Description-->
-                        <TextBlock Text="{Binding Configuration.Description.Description}" Foreground="{StaticResource Foreground_Normal}" FontSize="10"  Margin="0,2" HorizontalAlignment="Left"/>
+                        <TextBlock Text="{Binding Configuration.Description.Description}" Foreground="{StaticResource Text}" FontSize="10"  Margin="0,2" HorizontalAlignment="Left"/>
 
                         <!--Manufacturer-->
-                        <TextBlock Foreground="{StaticResource Foreground_Normal}" FontSize="12" FontWeight="Bold" Margin="0,2" HorizontalAlignment="Left">
+                        <TextBlock Foreground="{StaticResource Text}" FontSize="12" FontWeight="Bold" Margin="0,2" HorizontalAlignment="Left">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Style.Triggers>
@@ -175,17 +175,17 @@
                         </TextBlock>
 
                         <!--Serial-->
-                        <TextBlock Text="{Binding Configuration.Description.Serial}" Foreground="{StaticResource Foreground_Normal}" FontSize="10" Margin="0,2" HorizontalAlignment="Left"/>
+                        <TextBlock Text="{Binding Configuration.Description.Serial}" Foreground="{StaticResource Text}" FontSize="10" Margin="0,2" HorizontalAlignment="Left"/>
 
                     </StackPanel>
 
                 </Border>
 
                 <!--Device ID-->
-                <Border Grid.Column="2" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                <Border Grid.Column="2" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
 
                     <Viewbox Margin="10">
-                        <TextBlock Text="{Binding Configuration.Description.Device_ID}" Foreground="{StaticResource Foreground_Normal}" TextWrapping="Wrap" TextAlignment="Center"/>
+                        <TextBlock Text="{Binding Configuration.Description.DeviceId}" Foreground="{StaticResource Text}" TextWrapping="Wrap" TextAlignment="Center"/>
                     </Viewbox>
 
                 </Border>
@@ -193,7 +193,7 @@
                 <UniformGrid Grid.Column="3" Columns="3">
 
                     <!--Active-->
-                    <Border BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                    <Border BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Style.Triggers>
@@ -209,25 +209,25 @@
                             <ui:TimeDisplay Time="{Binding ActiveTime}" MaxHeight="25">
                                 <ui:TimeDisplay.Style>
                                     <Style TargetType="ui:TimeDisplay">
-                                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Status}" Value="2">
-                                                <Setter Property="Foreground" Value="#fff"/>
+                                                <Setter Property="Foreground" Value="White"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </ui:TimeDisplay.Style>
                             </ui:TimeDisplay>
 
-                            <Rectangle Grid.Column="1" Fill="{StaticResource Shade_Normal}" Width="1" Margin="10"/>
+                            <Rectangle Grid.Column="1" Fill="{StaticResource Border}" Width="1" Margin="10"/>
 
                             <ui:NumberDisplay Grid.Column="2" Value="{Binding ActivePercentage}" ValueFormat="P1">
                                 <ui:NumberDisplay.Style>
                                     <Style TargetType="ui:NumberDisplay">
-                                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Status}" Value="2">
-                                                <Setter Property="Foreground" Value="#fff"/>
+                                                <Setter Property="Foreground" Value="White"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -239,12 +239,12 @@
                     </Border>
 
                     <!--Idle-->
-                    <Border BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                    <Border BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Status}" Value="1">
-                                        <Setter Property="Background" Value="{StaticResource StatusYellow}"/>
+                                        <Setter Property="Background" Value="{StaticResource StatusOrange}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -252,18 +252,40 @@
 
                         <StackPanel Margin="20,0" Orientation="Horizontal" HorizontalAlignment="Center">
 
-                            <ui:TimeDisplay Time="{Binding IdleTime}" Foreground="{StaticResource Foreground_Normal}" MaxHeight="25"/>
+                            <ui:TimeDisplay Time="{Binding IdleTime}" MaxHeight="25">
+                                <ui:TimeDisplay.Style>
+                                    <Style TargetType="ui:TimeDisplay">
+                                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Status}" Value="1">
+                                                <Setter Property="Foreground" Value="White"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ui:TimeDisplay.Style>
+                            </ui:TimeDisplay>
 
-                            <Rectangle Grid.Column="1" Fill="{StaticResource Shade_Normal}" Width="1" Margin="10"/>
+                            <Rectangle Grid.Column="1" Fill="{StaticResource Border}" Width="1" Margin="10"/>
 
-                            <ui:NumberDisplay Grid.Column="2" Value="{Binding IdlePercentage}" ValueFormat="P1" Foreground="{StaticResource Foreground_Normal}"/>
+                            <ui:NumberDisplay Grid.Column="2" Value="{Binding IdlePercentage}" ValueFormat="P1">
+                                <ui:NumberDisplay.Style>
+                                    <Style TargetType="ui:NumberDisplay">
+                                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Status}" Value="1">
+                                                <Setter Property="Foreground" Value="White"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ui:NumberDisplay.Style>
+                            </ui:NumberDisplay>
 
                         </StackPanel>
 
                     </Border>
 
                     <!--Alert-->
-                    <Border BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                    <Border BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Style.Triggers>
@@ -279,25 +301,25 @@
                             <ui:TimeDisplay Time="{Binding AlertTime}" MaxHeight="25">
                                 <ui:TimeDisplay.Style>
                                     <Style TargetType="ui:TimeDisplay">
-                                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Status}" Value="0">
-                                                <Setter Property="Foreground" Value="#fff"/>
+                                                <Setter Property="Foreground" Value="White"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </ui:TimeDisplay.Style>
                             </ui:TimeDisplay>
 
-                            <Rectangle Grid.Column="1" Fill="{StaticResource Shade_Normal}" Width="1" Margin="10"/>
+                            <Rectangle Grid.Column="1" Fill="{StaticResource Border}" Width="1" Margin="10"/>
 
                             <ui:NumberDisplay Grid.Column="2" Value="{Binding AlertPercentage}" ValueFormat="P1">
                                 <ui:NumberDisplay.Style>
                                     <Style TargetType="ui:NumberDisplay">
-                                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Status}" Value="0">
-                                                <Setter Property="Foreground" Value="#fff"/>
+                                                <Setter Property="Foreground" Value="White"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
