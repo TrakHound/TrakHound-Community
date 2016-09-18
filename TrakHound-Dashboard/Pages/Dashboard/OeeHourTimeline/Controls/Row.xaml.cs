@@ -88,6 +88,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline.Controls
         {
             if (hours != null)
             {
+                foreach (var hourData in HourDatas) hourData.Reset();
+
                 foreach (var hour in hours)
                 {
                     // Probably a more elegant way of getting the Time Zone Offset could be done here

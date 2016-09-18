@@ -10,7 +10,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="75" d:DesignWidth="75">
 
-    <Border x:Name="root" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+    <Border x:Name="root" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
 
         <Grid>
 
@@ -23,64 +23,18 @@
                         </Grid.RowDefinitions>
 
                         <!--Time-->
-                        <TextBlock FontWeight="Bold" Foreground="{StaticResource Foreground_Normal}" Margin="5">
+                        <TextBlock FontWeight="Bold" Foreground="{StaticResource Text}" Margin="5">
                         <Run Text="{Binding HourData.StartTime}"/>
                         <Run Text="-"/>
                         <Run Text="{Binding HourData.EndTime}"/>
                         </TextBlock>
                         
                         <!--Date-->
-                        <TextBlock Text="{Binding HourData.Date}" Foreground="{StaticResource Foreground_Normal}" Margin="5,0,5,5"/>
+                        <TextBlock Text="{Binding HourData.Date}" Foreground="{StaticResource Text}" Margin="5,0,5,5"/>
                         
                     </Grid>
                 </Rectangle.ToolTip>
 
-                <!--<Rectangle.ToolTip>
-                    <Grid MinWidth="250">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-
-                        --><!--Time--><!--
-                        <TextBlock FontWeight="Bold" Foreground="{StaticResource Foreground_Normal}" Margin="5">
-                        <Run Text="{Binding HourData.StartTime}"/>
-                        <Run Text="-"/>
-                        <Run Text="{Binding HourData.EndTime}"/>
-                        </TextBlock>
-
-                        --><!--Date--><!--
-                        <TextBlock Text="{Binding HourData.Date}" Foreground="{StaticResource Foreground_Normal}" Margin="5,0,5,5"/>
-
-                        <StackPanel Grid.Row="1">
-                            <StackPanel.Resources>
-                                <Style TargetType="ui:TimeProgress">
-                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                                    <Setter Property="BarHeight" Value="10"/>
-                                    <Setter Property="Margin" Value="0,5"/>
-                                </Style>
-                            </StackPanel.Resources>
-
-                            <ui:TimeProgress Text="Active" 
-                                             Value="{Binding HourData.ActiveSeconds}"
-                                             Maximum="{Binding HourData.TotalSeconds}"
-                                             BarBrush="{StaticResource StatusGreen}" 
-                                             BarBackgroundBrush="{StaticResource StatusGreen_Hover}"/>
-
-                            <ui:TimeProgress Text="Idle" Value="{Binding HourData.IdleSeconds}"
-                                             Maximum="{Binding HourData.TotalSeconds}"
-                                             BarBrush="{StaticResource StatusYellow}" 
-                                             BarBackgroundBrush="{StaticResource StatusYellow_Hover}"/>
-
-                            <ui:TimeProgress Text="Alert" Value="{Binding HourData.AlertSeconds}"
-                                             Maximum="{Binding HourData.TotalSeconds}"
-                                             BarBrush="{StaticResource StatusRed}" 
-                                             BarBackgroundBrush="{StaticResource StatusRed_Hover}"/>
-
-                        </StackPanel>
-
-                    </Grid>
-                </Rectangle.ToolTip>-->
                 <Rectangle.Style>
                     <Style TargetType="Rectangle">
                         <Setter Property="Fill" Value="Transparent"/>
@@ -90,7 +44,7 @@
                                 <Setter Property="Fill" Value="{StaticResource StatusGreen}"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding HourData.Status}" Value="1">
-                                <Setter Property="Fill" Value="{StaticResource StatusYellow}"/>
+                                <Setter Property="Fill" Value="{StaticResource StatusOrange}"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding HourData.Status}" Value="0">
                                 <Setter Property="Fill" Value="{StaticResource StatusRed}"/>
@@ -108,7 +62,7 @@
                                     <Condition Binding="{Binding HourData.Status}" Value="1"/>
                                     <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
                                 </MultiDataTrigger.Conditions>
-                                <Setter Property="Fill" Value="{StaticResource StatusYellow_Light}"/>
+                                <Setter Property="Fill" Value="{StaticResource StatusOrange_Light}"/>
                             </MultiDataTrigger>
                             <MultiDataTrigger>
                                 <MultiDataTrigger.Conditions>
@@ -119,7 +73,7 @@
                             </MultiDataTrigger>
 
                             <DataTrigger Binding="{Binding HourData.TotalSeconds}" Value="0">
-                                <Setter Property="Fill" Value="#fff"/>
+                                <Setter Property="Fill" Value="White"/>
                             </DataTrigger>
                             
                         </Style.Triggers>
@@ -133,24 +87,13 @@
                     <Style TargetType="ui:NumberDisplay">
                         <Setter Property="HorizontalAlignment" Value="Center"/>
                         <Setter Property="VerticalAlignment" Value="Center"/>
-                        <Setter Property="Foreground" Value="#fff"/>
+                        <Setter Property="Foreground" Value="White"/>
                         <Setter Property="Margin" Value="5"/>
                         <Style.Triggers>
 
-                            <DataTrigger Binding="{Binding HourData.Status}" Value="2">
-                                <!--<Setter Property="Value" Value="{Binding HourData.ActivePercentage, StringFormat=P0}"/>-->
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding HourData.Status}" Value="1">
-                                <!--<Setter Property="Value" Value="{Binding HourData.IdlePercentage, StringFormat=P0}"/>-->
-                                <Setter Property="Foreground" Value="#333"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding HourData.Status}" Value="0">
-                                <!--<Setter Property="Value" Value="{Binding HourData.AlertPercentage, StringFormat=P0}"/>-->
-                            </DataTrigger>
-
                             <DataTrigger Binding="{Binding HourData.TotalSeconds}" Value="0">
                                 <Setter Property="Margin" Value="10"/>
-                                <Setter Property="Foreground" Value="#eee"/>
+                                <Setter Property="Foreground" Value="{StaticResource Disabled_Text}"/>
                                 <Setter Property="Value" Value="0"/>
                             </DataTrigger>
 
@@ -158,42 +101,6 @@
                     </Style>
                 </ui:NumberDisplay.Style>
             </ui:NumberDisplay>
-
-            <!--<Viewbox IsHitTestVisible="False">
-
-                <TextBlock IsHitTestVisible="False">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment" Value="Center"/>
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                            --><!--<Setter Property="FontSize" Value="20"/>--><!--
-                            <Setter Property="Margin" Value="5"/>
-                            <Setter Property="Foreground" Value="#fff"/>
-                            <Style.Triggers>
-                                
-                                <DataTrigger Binding="{Binding HourData.Status}" Value="2">
-                                    <Setter Property="Text" Value="{Binding HourData.ActivePercentage, StringFormat=P0}"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding HourData.Status}" Value="1">
-                                    <Setter Property="Text" Value="{Binding HourData.IdlePercentage, StringFormat=P0}"/>
-                                    <Setter Property="Foreground" Value="#333"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding HourData.Status}" Value="0">
-                                    <Setter Property="Text" Value="{Binding HourData.AlertPercentage, StringFormat=P0}"/>
-                                </DataTrigger>
-
-                                <DataTrigger Binding="{Binding HourData.TotalSeconds}" Value="0">
-                                    <Setter Property="Margin" Value="10"/>
-                                    <Setter Property="Foreground" Value="#eee"/>
-                                    <Setter Property="Text" Value="N/A"/>
-                                </DataTrigger>
-
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-
-            </Viewbox>-->
 
         </Grid>
         
