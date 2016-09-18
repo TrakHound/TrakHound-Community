@@ -10,18 +10,10 @@
              mc:Ignorable="d" 
              Height="65">
 
-    <UserControl.Resources>
-
-        <ImageBrush x:Key="Power_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Power_01.png"  />
-
-        <ImageBrush x:Key="Alert_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Warning_01.png"  />
-
-    </UserControl.Resources>
-
     <Border x:Name="root">
         <Border.Style>
             <Style TargetType="Border">
-                <Setter Property="BorderBrush" Value="#ccc"/>
+                <Setter Property="BorderBrush" Value="{StaticResource Border}"/>
                 <Setter Property="BorderThickness" Value="0,0,0,1"/>
             </Style>
         </Border.Style>
@@ -42,7 +34,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!--Status Indicator-->
-                <Border Grid.Column="0" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                <Border Grid.Column="0" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
                     <Border.Style>
                         <Style TargetType="Border">
                             <Style.Triggers>
@@ -109,7 +101,7 @@
                 </Border>
 
                 <!--Description-->
-                <Border Grid.Column="1" BorderBrush="#ccc" BorderThickness="0,0,1,0" Background="Transparent">
+                <Border Grid.Column="1" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0" Background="Transparent">
                     <Border.ToolTip>
                         <StackPanel Width="300">
                             <StackPanel.Resources>
@@ -120,31 +112,31 @@
                                 </Style>
                             </StackPanel.Resources>
 
-                            <TextBlock Text="{Binding Configuration.Description.Description}" Foreground="{StaticResource Foreground_Normal}" FontSize="14" FontWeight="Bold" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding Configuration.Description.Description}" Foreground="{StaticResource Text}" FontSize="14" FontWeight="Bold" TextWrapping="Wrap"/>
 
                             <TextBlock>
-                                <Run Text="Manufacturer :" Foreground="{StaticResource Foreground_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Manufacturer}" Foreground="{StaticResource Foreground_Normal}"/>
+                                <Run Text="Manufacturer :" Foreground="{StaticResource Text_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Manufacturer}" Foreground="{StaticResource Text}"/>
                             </TextBlock>
 
                             <TextBlock>
-                                <Run Text="Model :" Foreground="{StaticResource Foreground_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Model}" Foreground="{StaticResource Foreground_Normal}"/>
+                                <Run Text="Model :" Foreground="{StaticResource Text_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Model}" Foreground="{StaticResource Text}"/>
                             </TextBlock>
 
                             <TextBlock>
-                                <Run Text="Serial :" Foreground="{StaticResource Foreground_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Serial}" Foreground="{StaticResource Foreground_Normal}"/>
+                                <Run Text="Serial :" Foreground="{StaticResource Text_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Serial}" Foreground="{StaticResource Text}"/>
                             </TextBlock>
 
                             <TextBlock>
-                                <Run Text="Controller :" Foreground="{StaticResource Foreground_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Controller}" Foreground="{StaticResource Foreground_Normal}"/>
+                                <Run Text="Controller :" Foreground="{StaticResource Text_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Controller}" Foreground="{StaticResource Text}"/>
                             </TextBlock>
 
                             <TextBlock>
-                                <Run Text="Location :" Foreground="{StaticResource Foreground_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Location}" Foreground="{StaticResource Foreground_Normal}"/>
+                                <Run Text="Location :" Foreground="{StaticResource Text_Light}"/>
+                                <Run Text="{Binding Configuration.Description.Location}" Foreground="{StaticResource Text}"/>
                             </TextBlock>
 
                         </StackPanel>
@@ -166,10 +158,10 @@
                         </StackPanel.Resources>
 
                         <!--Device Description-->
-                        <TextBlock Text="{Binding Configuration.Description.Description}" Foreground="{StaticResource Foreground_Normal}" FontSize="10"  Margin="0,2" HorizontalAlignment="Left"/>
+                        <TextBlock Text="{Binding Configuration.Description.Description}" Foreground="{StaticResource Text}" FontSize="10"  Margin="0,2" HorizontalAlignment="Left"/>
 
                         <!--Manufacturer-->
-                        <TextBlock Foreground="{StaticResource Foreground_Normal}" FontSize="12" FontWeight="Bold" Margin="0,2" HorizontalAlignment="Left">
+                        <TextBlock Foreground="{StaticResource Text}" FontSize="12" FontWeight="Bold" Margin="0,2" HorizontalAlignment="Left">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Style.Triggers>
@@ -188,224 +180,23 @@
                         </TextBlock>
 
                         <!--Serial-->
-                        <TextBlock Text="{Binding Configuration.Description.Serial}" Foreground="{StaticResource Foreground_Normal}" FontSize="10" Margin="0,2" HorizontalAlignment="Left"/>
+                        <TextBlock Text="{Binding Configuration.Description.Serial}" Foreground="{StaticResource Text}" FontSize="10" Margin="0,2" HorizontalAlignment="Left"/>
 
                     </StackPanel>
 
                 </Border>
 
-
-                <!--Status Indicator-->
-                <!--<Border Grid.Column="0" BorderBrush="#ccc" BorderThickness="0,0,1,0">
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
-                                    <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding DeviceStatus}" Value="Idle">
-                                    <Setter Property="Background" Value="{StaticResource StatusYellow}"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
-                                    <Setter Property="Background" Value="{StaticResource StatusRed}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-
-                    <Rectangle HorizontalAlignment="Center" VerticalAlignment="Center" Fill="White">
-                        <Rectangle.Style>
-                            <Style TargetType="Rectangle">
-                                <Setter Property="Height" Value="20"/>
-                                <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"/>
-                                <Setter Property="Margin" Value="0"/>
-                                <Setter Property="OpacityMask" Value="{StaticResource Power_IMG}"/>
-                                <Setter Property="Opacity" Value="0"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
-                                        <DataTrigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation Duration="00:00:1.0" Storyboard.TargetProperty="Opacity" From="0" To="1" >
-                                                        <DoubleAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseOut"/>
-                                                        </DoubleAnimation.EasingFunction>
-                                                    </DoubleAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.EnterActions>
-                                        <DataTrigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation Duration="00:00:1.0" Storyboard.TargetProperty="Opacity" From="1" To="0" >
-                                                        <DoubleAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseOut"/>
-                                                        </DoubleAnimation.EasingFunction>
-                                                    </DoubleAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.ExitActions>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Connected}" Value="true">
-                                        <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}"/>
-                                    </DataTrigger>
-                                    <Trigger Property="Opacity" Value="0">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Rectangle.Style>
-                    </Rectangle>
-
-                </Border>-->
-
-                <!--Mouse Over Panel w/ ToolTip-->
-                <!--<Border Grid.Column="0">
-                    <Border.ToolTip>
-                        <StackPanel MaxWidth="300">
-                            <TextBlock Text="Device Status" FontWeight="Bold"/>
-                            <TextBlock TextWrapping="Wrap">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
-                                                <Setter Property="Text" Value="Device is currently Active"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding DeviceStatus}" Value="Idle">
-                                                <Setter Property="Text" Value="Device is currently Idle"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
-                                                <Setter Property="Text" Value="Device currently needs Attention"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </StackPanel>
-                    </Border.ToolTip>
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" Value="#33ffffff"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-                </Border>-->
-                
-                <!--Description-->
-                <!--<Border Grid.Column="1" BorderBrush="#ccc" BorderThickness="0,0,1,0">
-
-                    <StackPanel VerticalAlignment="Center" Margin="10,2">
-                        <StackPanel.Resources>
-                            <Style TargetType="TextBlock">
-                                <Style.Triggers>
-                                    <Trigger Property="Text" Value="{x:Null}">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </Trigger>
-                                    <Trigger Property="Text" Value="">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </StackPanel.Resources>
-
-                        --><!--Device Description--><!--
-                        <TextBlock Text="{Binding Configuration.Description.Description}" Foreground="{StaticResource Foreground_Normal}" FontSize="10"  Margin="0,2" HorizontalAlignment="Left"/>
-
-                        --><!--Manufacturer--><!--
-                        <TextBlock Foreground="{StaticResource Foreground_Normal}" FontSize="12" FontWeight="Bold" Margin="0,2" HorizontalAlignment="Left">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding Configuration.Description.Manufacturer}" Value="{x:Null}"/>
-                                                <Condition Binding="{Binding Configuration.Description.Model}" Value="{x:Null}"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </MultiDataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                            <Run Text="{Binding Configuration.Description.Manufacturer}"/>
-                            <Run Text="{Binding Configuration.Description.Model}"/>
-                        </TextBlock>
-
-                        --><!--Serial--><!--
-                        <TextBlock Text="{Binding Configuration.Description.Serial}" Foreground="{StaticResource Foreground_Normal}" FontSize="10" Margin="0,2" HorizontalAlignment="Left"/>
-
-                    </StackPanel>
-
-                </Border>-->
-
-                <!--Mouse Over Panel w/ ToolTip-->
-                <!--<Border Grid.Column="1">
-                    <Border.ToolTip>
-                        <StackPanel Width="300">
-                            <StackPanel.Resources>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="FontSize" Value="12"/>
-                                    <Setter Property="Margin" Value="0,2"/>
-                                    <Setter Property="HorizontalAlignment" Value="Left"/>
-                                </Style>
-                            </StackPanel.Resources>
-
-                            <TextBlock Text="{Binding Configuration.Description.Description}" Foreground="{StaticResource Foreground_Normal}" FontSize="14" FontWeight="Bold" TextWrapping="Wrap"/>
-
-                            <TextBlock>
-                                <Run Text="Manufacturer :" Foreground="{StaticResource Foreground_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Manufacturer}" Foreground="{StaticResource Foreground_Normal}"/>
-                            </TextBlock>
-
-                            <TextBlock>
-                                <Run Text="Model :" Foreground="{StaticResource Foreground_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Model}" Foreground="{StaticResource Foreground_Normal}"/>
-                            </TextBlock>
-
-                            <TextBlock>
-                                <Run Text="Serial :" Foreground="{StaticResource Foreground_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Serial}" Foreground="{StaticResource Foreground_Normal}"/>
-                            </TextBlock>
-
-                            <TextBlock>
-                                <Run Text="Controller :" Foreground="{StaticResource Foreground_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Controller}" Foreground="{StaticResource Foreground_Normal}"/>
-                            </TextBlock>
-
-                            <TextBlock>
-                                <Run Text="Location :" Foreground="{StaticResource Foreground_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Location}" Foreground="{StaticResource Foreground_Normal}"/>
-                            </TextBlock>
-
-                        </StackPanel>
-                        
-                    </Border.ToolTip>
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" Value="#100080ff"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-                </Border>-->
-
                 <!--Device ID-->
-                <Border Grid.Column="2" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                <Border Grid.Column="2" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
 
                     <Viewbox Margin="10">
-                        <TextBlock Text="{Binding Configuration.Description.Device_ID}" Foreground="{StaticResource Foreground_Normal}" TextWrapping="Wrap" TextAlignment="Center"/>
+                        <TextBlock Text="{Binding Configuration.Description.DeviceId}" Foreground="{StaticResource Text}" TextWrapping="Wrap" TextAlignment="Center"/>
                     </Viewbox>
 
                 </Border>
 
                 <!--Production Status-->
-                <Border Grid.Column="3" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                <Border Grid.Column="3" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
                     <Border.Style>
                         <Style TargetType="Border">
                             <Style.Triggers>
@@ -433,7 +224,7 @@
 
                     <Viewbox MaxHeight="26" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Center">
 
-                        <TextBlock Text="{Binding ProductionStatus}" Foreground="#fff">
+                        <TextBlock Text="{Binding ProductionStatus}" Foreground="White">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Style.Triggers>
@@ -450,7 +241,7 @@
                 </Border>
 
                 <!--Run Time-->
-                <Border Grid.Column="4" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                <Border Grid.Column="4" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
 
                     <Grid>
                         <Grid.RowDefinitions>
@@ -463,20 +254,20 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="Day" FontSize="10" Foreground="#888" VerticalAlignment="Center" Margin="5"/>
-                        <ui:NumberDisplay Grid.Column="1" Value="{Binding DayRunTime}" ValueFormat="N1" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Day" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
+                        <ui:NumberDisplay Grid.Column="1" Value="{Binding DayRunTime}" ValueFormat="N1" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
-                        <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Fill="{StaticResource Shade_Normal}" Height="1" Margin="0,2"/>
+                        <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Fill="{StaticResource Border}" Height="1" Margin="0,2"/>
 
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Total" FontSize="10" Foreground="#888" VerticalAlignment="Center" Margin="5"/>
-                        <ui:NumberDisplay Grid.Row="2" Grid.Column="1" Value="{Binding TotalRunTime}" ValueFormat="N1" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Total" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
+                        <ui:NumberDisplay Grid.Row="2" Grid.Column="1" Value="{Binding TotalRunTime}" ValueFormat="N1" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
                     </Grid>
                     
                 </Border>
 
                 <!--Operating Time-->
-                <Border Grid.Column="5" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                <Border Grid.Column="5" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
 
                     <Grid>
                         <Grid.RowDefinitions>
@@ -489,20 +280,20 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="Day" FontSize="10" Foreground="#888" VerticalAlignment="Center" Margin="5"/>
-                        <ui:NumberDisplay Grid.Column="1" Value="{Binding DayOperatingTime}" ValueFormat="N1" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Day" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
+                        <ui:NumberDisplay Grid.Column="1" Value="{Binding DayOperatingTime}" ValueFormat="N1" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
-                        <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Fill="{StaticResource Shade_Normal}" Height="1" Margin="0,2"/>
+                        <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Fill="{StaticResource Border}" Height="1" Margin="0,2"/>
 
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Total" FontSize="10" Foreground="#888" VerticalAlignment="Center" Margin="5"/>
-                        <ui:NumberDisplay Grid.Row="2" Grid.Column="1" Value="{Binding TotalOperatingTime}" ValueFormat="N1" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Total" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
+                        <ui:NumberDisplay Grid.Row="2" Grid.Column="1" Value="{Binding TotalOperatingTime}" ValueFormat="N1" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
                     </Grid>
                     
                 </Border>
 
                 <!--Cutting Time-->
-                <Border Grid.Column="6" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                <Border Grid.Column="6" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
 
                     <Grid>
                         <Grid.RowDefinitions>
@@ -515,20 +306,20 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="Day" FontSize="10" Foreground="#888" VerticalAlignment="Center" Margin="5"/>
-                        <ui:NumberDisplay Grid.Column="1" Value="{Binding DayCuttingTime}" ValueFormat="N1" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Day" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
+                        <ui:NumberDisplay Grid.Column="1" Value="{Binding DayCuttingTime}" ValueFormat="N1" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
-                        <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Fill="{StaticResource Shade_Normal}" Height="1" Margin="0,2"/>
+                        <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Fill="{StaticResource Border}" Height="1" Margin="0,2"/>
 
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Total" FontSize="10" Foreground="#888" VerticalAlignment="Center" Margin="5"/>
-                        <ui:NumberDisplay Grid.Row="2" Grid.Column="1" Value="{Binding TotalCuttingTime}" ValueFormat="N1" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Total" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
+                        <ui:NumberDisplay Grid.Row="2" Grid.Column="1" Value="{Binding TotalCuttingTime}" ValueFormat="N1" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
                     </Grid>
                     
                 </Border>
 
                 <!--Spindle Run Time-->
-                <Border Grid.Column="7" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                <Border Grid.Column="7" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
 
                     <Grid>
                         <Grid.RowDefinitions>
@@ -541,22 +332,22 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="Day" FontSize="10" Foreground="#888" VerticalAlignment="Center" Margin="5"/>
-                        <ui:NumberDisplay Grid.Column="1" Value="{Binding DaySpindleTime}" ValueFormat="N1" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Day" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
+                        <ui:NumberDisplay Grid.Column="1" Value="{Binding DaySpindleTime}" ValueFormat="N1" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
-                        <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Fill="{StaticResource Shade_Normal}" Height="1" Margin="0,2"/>
+                        <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Fill="{StaticResource Border}" Height="1" Margin="0,2"/>
 
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Total" FontSize="10" Foreground="#888" VerticalAlignment="Center" Margin="5"/>
-                        <ui:NumberDisplay Grid.Row="2" Grid.Column="1" Value="{Binding TotalSpindleTime}" ValueFormat="N1" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Total" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
+                        <ui:NumberDisplay Grid.Row="2" Grid.Column="1" Value="{Binding TotalSpindleTime}" ValueFormat="N1" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
                     </Grid>
                     
                 </Border>
 
                 <!--Part Count-->
-                <Border Grid.Column="8" BorderBrush="#ccc" BorderThickness="0,0,1,0">
+                <Border Grid.Column="8" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
 
-                    <ui:NumberDisplay Value="{Binding PartCount}" ValueFormat="N0" Foreground="#333" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <ui:NumberDisplay Value="{Binding PartCount}" ValueFormat="N0" Foreground="{StaticResource Text}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
                 </Border>
 
