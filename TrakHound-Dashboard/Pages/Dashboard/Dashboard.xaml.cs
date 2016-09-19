@@ -17,25 +17,81 @@ using TrakHound.Plugins.Client;
 using TrakHound.Tools;
 using TrakHound_UI;
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+
+using TrakHound;
+using TrakHound.Configurations;
+using TrakHound.Logging;
+using TrakHound.Plugins;
+using TrakHound.Plugins.Client;
+using TrakHound.Tools;
+
 namespace TrakHound_Dashboard.Pages.Dashboard
 {
     /// <summary>
     /// Interaction logic for DashboardPage.xaml
     /// </summary>
-    public partial class Dashboard : UserControl
+    public partial class Dashboard : UserControl, IClientPlugin
     {
 
-        public Dashboard()
+        public string Title { get { return "Dashboard"; } }
+
+        public string Description { get { return "Contains and organizes pages for displaying Device data in various ways. Acts as the Home page for other Device Monitoring Plugins."; } }
+
+        private BitmapImage _image;
+        public ImageSource Image
         {
-            InitializeComponent();
-            root.DataContext = this;
+            get
+            {
+                if (_image == null)
+                {
+                    _image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Dashboard_01.png"));
+                    _image.Freeze();
+                }
 
-            SubCategories = new List<PluginConfigurationCategory>();
-            var pages = new PluginConfigurationCategory();
-            pages.Name = "Pages";
-            SubCategories.Add(pages);
+                return _image;
+            }
+        }
 
-            IsExpanded = Properties.Settings.Default.DashboardIsExpanded;
+        public void Opened() { }
+        public bool Opening() { return true; }
+
+        public void Closed() { }
+        public bool Closing() { return true; }
+
+        public event SendData_Handler SendData;
+
+        public string ParentPlugin { get { return null; } }
+        public string ParentPluginCategory { get { return null; } }
+
+        public bool OpenOnStartUp { get { return true; } }
+
+        public List<PluginConfigurationCategory> SubCategories { get; set; }
+
+        public List<IClientPlugin> Plugins { get; set; }
+
+        public IPage Options { get; set; }
+
+        private ObservableCollection<DeviceConfiguration> _devices;
+        public ObservableCollection<DeviceConfiguration> Devices
+        {
+            get
+            {
+                if (_devices == null)
+                {
+                    _devices = new ObservableCollection<DeviceConfiguration>();
+                }
+                return _devices;
+            }
+            set
+            {
+                _devices = value;
+            }
         }
 
         private ObservableCollection<ListButton> _pages;
@@ -54,6 +110,13 @@ namespace TrakHound_Dashboard.Pages.Dashboard
             }
         }
 
+        private PluginConfiguration currentPage;
+
+        private List<PluginConfiguration> enabledPlugins;
+
+        bool dateClicked = false;
+
+        #region "Dependency Properties"
 
         public object PageContent
         {
@@ -112,6 +175,92 @@ namespace TrakHound_Dashboard.Pages.Dashboard
 
         public static readonly DependencyProperty DateMenuShownProperty =
             DependencyProperty.Register("DateMenuShown", typeof(bool), typeof(Dashboard), new PropertyMetadata(false));
+
+        #endregion
+
+
+
+        public Dashboard()
+        {
+            InitializeComponent();
+            root.DataContext = this;
+
+            SubCategories = new List<PluginConfigurationCategory>();
+            var pages = new PluginConfigurationCategory();
+            pages.Name = "Pages";
+            SubCategories.Add(pages);
+
+            IsExpanded = Properties.Settings.Default.DashboardIsExpanded;
+        }
+
+        public void Initialize()
+        {
+            enabledPlugins = new List<PluginConfiguration>();
+
+            foreach (PluginConfigurationCategory category in SubCategories)
+            {
+                foreach (PluginConfiguration config in category.PluginConfigurations)
+                {
+                    config.EnabledChanged += config_EnabledChanged;
+
+                    if (config.Enabled) Plugins_Load(config);
+                }
+            }
+        }
+
+
+        public void GetSentData(EventData data)
+        {
+            Dispatcher.BeginInvoke(new Action(UpdateCurrentDate), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateLoggedInChanged), UI_Functions.PRIORITY_BACKGROUND, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateWindowClick), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDevicesLoading), UI_Functions.PRIORITY_BACKGROUND, new object[] { data });
+
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceAdded), UI_Functions.PRIORITY_BACKGROUND, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceUpdated), UI_Functions.PRIORITY_BACKGROUND, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceRemoved), UI_Functions.PRIORITY_BACKGROUND, new object[] { data });
+
+            if (Plugins != null)
+            {
+                foreach (IClientPlugin plugin in Plugins)
+                {
+                    var sendDataInfo = new SendDataInfo(plugin, data);
+
+                    ThreadPool.QueueUserWorkItem(new WaitCallback(ProcessSendData), sendDataInfo);
+
+                    //ThreadPool.QueueUserWorkItem(o => plugin.GetSentData(data));
+                    //Dispatcher.BeginInvoke(new Action<EventData>(plugin.GetSentData), UI_Functions.PRIORITY_BACKGROUND, new object[] { data });
+                }
+            }
+        }
+
+        private class SendDataInfo
+        {
+            public SendDataInfo(IClientPlugin plugin, EventData data)
+            {
+                Plugin = plugin;
+                Data = data;
+            }
+
+            public IClientPlugin Plugin { get; set; }
+            public EventData Data { get; set; }
+        }
+
+        private void ProcessSendData(object o)
+        {
+            if (o != null)
+            {
+                var sendDataInfo = (SendDataInfo)o;
+
+                try
+                {
+                    sendDataInfo.Plugin.GetSentData(sendDataInfo.Data);
+                }
+                catch (Exception ex) { Logger.Log("Plugin Error :: " + ex.Message); }
+            }
+        }
+
 
         private void UpdateCurrentDate()
         {
@@ -221,15 +370,11 @@ namespace TrakHound_Dashboard.Pages.Dashboard
 
         #region "Child PlugIns"
 
-        PluginConfiguration currentPage;
-
-        List<PluginConfiguration> EnabledPlugins;
-
         public void Plugins_Load(PluginConfiguration config)
         {
             if (Plugins != null)
             {
-                if (!EnabledPlugins.Contains(config))
+                if (!enabledPlugins.Contains(config))
                 {
                     IClientPlugin plugin = Plugins.Find(x => x.Title.ToUpper() == config.Name.ToUpper());
                     if (plugin != null)
@@ -252,7 +397,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard
 
                         SortPageList();
 
-                        EnabledPlugins.Add(config);
+                        enabledPlugins.Add(config);
                     }
                 }
             }
@@ -310,7 +455,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard
 
                     if (config == currentPage) PageContent = null;
 
-                    if (EnabledPlugins.Contains(config)) EnabledPlugins.Remove(config);
+                    if (enabledPlugins.Contains(config)) enabledPlugins.Remove(config);
                 }
             }
         }
@@ -417,7 +562,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard
             }
         }
 
-
         private void SelectNextPage()
         {
             if (currentPage != null && Pages.Count > 0)
@@ -449,6 +593,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard
                 }
             }
         }
+
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -493,8 +638,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard
             Properties.Settings.Default.DashboardIsExpanded = IsExpanded;
             Properties.Settings.Default.Save();
         }
-
-        bool dateClicked = false;
 
         private void SelectDate_Clicked(TrakHound_UI.Button bt)
         {
