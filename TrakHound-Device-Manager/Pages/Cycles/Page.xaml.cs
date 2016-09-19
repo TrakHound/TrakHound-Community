@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+using TrakHound;
 using TrakHound.Plugins;
 using TrakHound.Plugins.Server;
 using TrakHound.Tools;

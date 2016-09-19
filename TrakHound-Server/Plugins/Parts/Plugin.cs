@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 
+using TrakHound;
 using TrakHound.Configurations;
 using TrakHound.Plugins;
 using TrakHound.Plugins.Server;

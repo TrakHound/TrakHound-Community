@@ -5,6 +5,7 @@
 
 using System.Threading;
 
+using TrakHound;
 using TrakHound.Configurations;
 using TrakHound.Logging;
 using TrakHound.Plugins;

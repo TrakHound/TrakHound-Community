@@ -9,6 +9,7 @@ using TrakHound.Tools;
 using TrakHound.Plugins;
 using TrakHound_UI.Timeline;
 
+using TrakHound;
 using TrakHound.Configurations;
 
 namespace TH_StatusTimeline.Controls

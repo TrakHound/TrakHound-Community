@@ -13,6 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
+using TrakHound;
 using TrakHound.Tools;
 using MTConnect.Application.Components;
 using TrakHound.Plugins;

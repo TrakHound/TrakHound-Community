@@ -13,6 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
+using TrakHound;
 using TrakHound_Server.Plugins.SnapshotData;
 using TrakHound.Tools;
 using TrakHound.Plugins;

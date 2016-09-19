@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
+using TrakHound;
 using TrakHound.Configurations;
 using TrakHound.Plugins;
 

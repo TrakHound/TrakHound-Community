@@ -37,6 +37,10 @@ namespace TrakHound_Dashboard.Controls
         public void Closed() { }
         public bool Closing() { return true; }
 
+        public event SendData_Handler SendData;
+
+        public void GetSentData(EventData data) { }
+
 
         public string TabTitle { get; set; }
 

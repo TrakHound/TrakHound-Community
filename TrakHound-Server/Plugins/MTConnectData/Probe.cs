@@ -7,6 +7,7 @@ using MTConnect;
 using MTConnect.Application.Components;
 using System;
 
+using TrakHound;
 using TrakHound.Configurations;
 using TrakHound.Logging;
 using TrakHound.Plugins;

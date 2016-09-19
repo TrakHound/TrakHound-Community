@@ -5,6 +5,8 @@
 
 using System.Windows.Media;
 
+using TrakHound.Plugins;
+
 namespace TrakHound
 {
     /// <summary>
@@ -21,6 +23,17 @@ namespace TrakHound
 
         void Closed();
         bool Closing();
+
+        /// <summary>
+        /// Get Data from another page
+        /// </summary>
+        /// <param name="data"></param>
+        void GetSentData(EventData data);
+
+        /// <summary>
+        /// Send data to other pages
+        /// </summary>
+        event SendData_Handler SendData;
     }
 
 }

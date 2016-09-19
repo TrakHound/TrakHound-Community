@@ -38,6 +38,10 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
         public void Closed() { }
         public bool Closing() { return true; }
 
+        public event SendData_Handler SendData;
+
+        public void GetSentData(EventData data) { }
+
         #endregion
 
         /// <summary>

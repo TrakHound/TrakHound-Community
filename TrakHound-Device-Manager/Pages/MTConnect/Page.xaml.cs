@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using MTConnect;
 using MTConnect.Application.Components;
 
+using TrakHound;
 using TrakHound.Tools;
 using TrakHound.Plugins;
 using TrakHound.Plugins.Server;

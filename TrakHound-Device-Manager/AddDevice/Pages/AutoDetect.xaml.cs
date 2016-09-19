@@ -75,6 +75,10 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
             return true;
         }
 
+        public event SendData_Handler SendData;
+
+        public void GetSentData(EventData data) { }
+
         #endregion
 
         /// <summary>

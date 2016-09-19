@@ -80,6 +80,7 @@
     <Compile Include="API\Data\CycleInfo.cs" />
     <Compile Include="API\Devices\Check.cs" />
     <Compile Include="API\Devices\CheckInfo.cs" />
+    <Compile Include="Configurations\DeviceDescription.cs" />
     <Compile Include="Servers\DataStorage\Backup.cs" />
     <Compile Include="Servers\DataStorage\LocalServer.cs" />
     <Compile Include="API\Data\CyclesInfo.cs" />
@@ -151,7 +152,7 @@
     <Compile Include="Plugins\Database\IConfigurationInfo.cs" />
     <Compile Include="Plugins\Database\IConfigurationPage.cs" />
     <Compile Include="Plugins\Database\IDatabasePlugin.cs" />
-    <Compile Include="Plugins\EventData.cs" />
+    <Compile Include="EventData.cs" />
     <Compile Include="Plugins\Reader.cs" />
     <Compile Include="Plugins\Server\ConifgurationInfoPlugin.cs" />
     <Compile Include="Plugins\Server\ConifgurationPagePlugin.cs" />

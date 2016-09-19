@@ -45,6 +45,11 @@ namespace TrakHound_Dashboard.Pages.Options.General
         public void Closed() { }
         public bool Closing() { return true; }
 
+        public event SendData_Handler SendData;
+
+        public void GetSentData(EventData data) { }
+
+
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.Save();

@@ -41,6 +41,10 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
         public void Closed() { }
         public bool Closing() { return true; }
 
+        public event SendData_Handler SendData;
+
+        public void GetSentData(EventData data) { }
+
 
         public void Load()
         {

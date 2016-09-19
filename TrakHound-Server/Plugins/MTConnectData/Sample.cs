@@ -8,6 +8,7 @@ using MTConnect.Application.Headers;
 using MTConnect.Application.Streams;
 using System;
 
+using TrakHound;
 using TrakHound.Configurations;
 using TrakHound.Logging;
 using TrakHound.Plugins;

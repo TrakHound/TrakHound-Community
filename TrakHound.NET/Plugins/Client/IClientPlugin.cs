@@ -37,43 +37,6 @@ namespace TrakHound.Plugins.Client
         /// </summary>
         ImageSource Image { get; }
 
-        ///// <summary>
-        ///// Author's name
-        ///// </summary>
-        //string Author { get; }
-
-        ///// <summary>
-        ///// Author's copyright statement
-        ///// </summary>
-        //string Copyright { get; }
-
-        ///// <summary>
-        ///// Image associated with the author
-        ///// </summary>
-        //ImageSource AuthorImage { get; }
-
-        ///// <summary>
-        ///// Name of the software license for the plugin
-        ///// (ex. GPLv3)
-        ///// </summary>
-        //string LicenseName { get; }
-
-        ///// <summary>
-        ///// Actual text of the software license for the plugin
-        ///// </summary>
-        //string LicenseText { get; }
-
-
-
-
-        /// <summary>
-        /// Url pointing to the 'appinfo' file to use for Automatic Updates (if applicable)
-        /// </summary>
-        //string UpdateFileURL { get; }
-
-
-
-
         /// <summary>
         /// Used to set the default parent plugin's name 
         /// (ex. if plugin is desiged for Dashboard, ParentPlugin should = "Dashboard")
@@ -87,19 +50,9 @@ namespace TrakHound.Plugins.Client
         string ParentPluginCategory { get; }
 
         /// <summary>
-        /// Used to turn on/off ability for the plugin to accept "child" plugins
-        /// </summary>
-        //bool AcceptsPlugins { get; }
-
-        /// <summary>
         /// Used to force the plugin to open up when intially loaded/enabled
         /// </summary>
         bool OpenOnStartUp { get; }
-
-        /// <summary>
-        /// Used to toggle whether to show in App Launcher menu
-        /// </summary>
-        //bool ShowInAppMenu { get; }
 
         /// <summary>
         /// Contains the Subcategories for this plugin's "child" plugins
@@ -111,7 +64,6 @@ namespace TrakHound.Plugins.Client
         /// Contains the Plugin's "child" plugins
         /// </summary>
         List<IClientPlugin> Plugins { get; set; }
-
 
 
         /// <summary>
@@ -143,21 +95,16 @@ namespace TrakHound.Plugins.Client
         bool Closing();
 
 
-        /// <summary>
-        /// Get Data from another plugin
-        /// </summary>
-        /// <param name="data"></param>
-        void GetSentData(EventData data);
+        ///// <summary>
+        ///// Get Data from another plugin
+        ///// </summary>
+        ///// <param name="data"></param>
+        //void GetSentData(EventData data);
 
-        /// <summary>
-        /// Send data to other plugins
-        /// </summary>
-        event SendData_Handler SendData;
-
-        /// <summary>
-        /// List of Device_Client objects
-        /// </summary>
-        //ObservableCollection<DeviceConfiguration> Devices { get; set; }
+        ///// <summary>
+        ///// Send data to other plugins
+        ///// </summary>
+        //event SendData_Handler SendData;
 
         /// <summary>
         /// Sets the OptionsPage object to be displayed in the Clients Options menu as a seperate page
