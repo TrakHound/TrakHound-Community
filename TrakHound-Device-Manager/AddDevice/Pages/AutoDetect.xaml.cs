@@ -3,10 +3,10 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+using MTConnect.Application.Components;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -14,14 +14,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Xml;
 
-using TrakHound.Configurations;
 using TrakHound;
-using TrakHound.Tools;
-using MTConnect;
-using MTConnect.Application.Components;
+using TrakHound.Configurations;
 using TrakHound.Configurations.AutoGenerate;
+using TrakHound.Tools;
 
 namespace TrakHound_Device_Manager.AddDevice.Pages
 {
@@ -34,6 +31,19 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
         {
             InitializeComponent();
             DataContext = this;
+
+            PingTimeout = Math.Max(100, Properties.Settings.Default.AutoDetectPingTimeout);
+
+            StartPort = Properties.Settings.Default.AutoDetectStartPort;
+            EndPort = Properties.Settings.Default.AutoDetectEndPort;
+
+            StartAddress = Properties.Settings.Default.AutoDetectStartAddress;
+            EndAddress = Properties.Settings.Default.AutoDetectEndAddress;
+
+            if (string.IsNullOrEmpty(StartAddress) || string.IsNullOrEmpty(EndAddress))
+            {
+                SetDefaultAddressRange();
+            }
         }
 
         #region "IPage"
@@ -49,6 +59,18 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
         public void Closed() { }
         public bool Closing()
         {
+            // Save Auto Detect Setttings
+
+            Properties.Settings.Default.AutoDetectStartPort = StartPort;
+            Properties.Settings.Default.AutoDetectEndPort = EndPort;
+
+            Properties.Settings.Default.AutoDetectPingTimeout = PingTimeout;
+
+            Properties.Settings.Default.AutoDetectStartAddress = StartAddress;
+            Properties.Settings.Default.AutoDetectEndAddress = EndAddress;
+
+            Properties.Settings.Default.Save();
+
             Cancel();
             return true;
         }
@@ -131,6 +153,25 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
             DependencyProperty.Register("SearchProgressMaximum", typeof(double), typeof(AutoDetect), new PropertyMetadata(1d));
 
 
+        public string StartAddress
+        {
+            get { return (string)GetValue(StartAddressProperty); }
+            set { SetValue(StartAddressProperty, value); }
+        }
+
+        public static readonly DependencyProperty StartAddressProperty =
+            DependencyProperty.Register("StartAddress", typeof(string), typeof(AutoDetect), new PropertyMetadata(null));
+
+        public string EndAddress
+        {
+            get { return (string)GetValue(EndAddressProperty); }
+            set { SetValue(EndAddressProperty, value); }
+        }
+
+        public static readonly DependencyProperty EndAddressProperty =
+            DependencyProperty.Register("EndAddress", typeof(string), typeof(AutoDetect), new PropertyMetadata(null));
+
+
         public int StartPort
         {
             get { return (int)GetValue(StartPortProperty); }
@@ -149,6 +190,16 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
 
         public static readonly DependencyProperty EndPortProperty =
             DependencyProperty.Register("EndPort", typeof(int), typeof(AutoDetect), new PropertyMetadata(5020));
+
+
+        public int PingTimeout
+        {
+            get { return (int)GetValue(PingTimeoutProperty); }
+            set { SetValue(PingTimeoutProperty, value); }
+        }
+
+        public static readonly DependencyProperty PingTimeoutProperty =
+            DependencyProperty.Register("PingTimeout", typeof(int), typeof(AutoDetect), new PropertyMetadata(100));
 
         #endregion
 
@@ -175,6 +226,10 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
         int portRangeStart = 5000;
         int portRangeStop = 5020;
 
+        int pingTimeout = 100;
+
+        List<IPAddress> addressRange;
+
         ManualResetEvent stop;
         Network_Functions.PingNodes ping;
 
@@ -186,6 +241,38 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
             NetworkNodesFound = 0;
             nodesChecked = 0;
             DeviceInfos.Clear();
+            addressRange = null;
+
+            pingTimeout = PingTimeout;
+
+            var hostIp = Network_Functions.GetHostIP();
+            var hostSubnet = Network_Functions.GetSubnetMask(hostIp);
+
+            if (hostIp != null && hostSubnet != null)
+            {
+                var ipNetwork = IPNetwork.Parse(hostIp, hostSubnet);
+                if (ipNetwork != null)
+                {
+                    var ips = IPNetwork.ListIPAddress(ipNetwork).ToList();
+                    if (ips != null && ips.Count > 0)
+                    {
+                        // Get Start Address
+                        IPAddress start = null;
+                        IPAddress.TryParse(StartAddress, out start);
+
+                        // Get End Address
+                        IPAddress end = null;
+                        IPAddress.TryParse(EndAddress, out end);
+
+                        if (start != null && end != null)
+                        {
+                            var range = new Network_Functions.IPAddressRange(start, end);
+
+                            addressRange = ips.FindAll(o => range.IsInRange(o));
+                        }
+                    }
+                }
+            }
 
             portRangeStart = StartPort;
             portRangeStop = EndPort;
@@ -200,7 +287,7 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
 
         public void FindDevices_Worker(object o)
         {
-            ping = new Network_Functions.PingNodes(100);
+            ping = new Network_Functions.PingNodes(addressRange, pingTimeout);
             ping.PingSuccessful += Ping_PingSuccessful;
             ping.Start();
         }
@@ -242,7 +329,7 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
             {
                 var info = (TestInfo)o;
 
-                bool open = Network_Functions.IsPortOpen(info.Address, info.Port, TimeSpan.FromMilliseconds(100));
+                bool open = Network_Functions.IsPortOpen(info.Address, info.Port, pingTimeout);
 
                 if (open && !stop.WaitOne(0, true))
                 {
@@ -446,6 +533,35 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
 
         private void AddDevicesManually_Clicked(TrakHound_UI.Button bt) { if (ParentPage != null) ParentPage.ShowManual(); }
 
+        private void ResetDefault_Clicked(TrakHound_UI.Button bt)
+        {
+            PingTimeout = 100;
+            StartPort = 5000;
+            EndPort = 5020;
+
+            SetDefaultAddressRange();
+        }
+
+        private void SetDefaultAddressRange()
+        {
+            var hostIp = Network_Functions.GetHostIP();
+            var hostSubnet = Network_Functions.GetSubnetMask(hostIp);
+
+            if (hostIp != null && hostSubnet != null)
+            {
+                var ipNetwork = IPNetwork.Parse(hostIp, hostSubnet);
+                if (ipNetwork != null)
+                {
+                    var ips = IPNetwork.ListIPAddress(ipNetwork).ToList();
+                    if (ips != null && ips.Count > 0)
+                    {
+                        StartAddress = ips[0].ToString();
+                        EndAddress = ips[ips.Count - 1].ToString();
+                    }
+                }
+            }
+        }
+
         private void Cancel_Clicked(TrakHound_UI.Button bt)
         {
             Cancel();
@@ -456,11 +572,6 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
             if (stop != null) stop.Set();
             if (ping != null) ping.Cancel();
             DevicesLoading = false;
-        }
-
-        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

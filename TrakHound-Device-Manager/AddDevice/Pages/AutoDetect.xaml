@@ -12,7 +12,7 @@
              xmlns:local="clr-namespace:TrakHound_Device_Manager.AddDevice.Pages"
              xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
                     
-             mc:Ignorable="d" Unloaded="UserControl_Unloaded" 
+             mc:Ignorable="d"
              >
 
     <!--Available Devices-->
@@ -23,7 +23,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock TextWrapping="Wrap" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="10,0,10,20">
+        <TextBlock TextWrapping="Wrap" FontSize="10pt" Foreground="{StaticResource Text}" Margin="10,0,10,20">
             <Run Text="Find devices on the network and automatically generate a Device Configuration using MTConnect"/>
             <LineBreak/>
             <Run Text="Note: This may take several minutes, depending on the size of the network being searched."/>
@@ -32,23 +32,58 @@
         <!--Number of Devices Found-->
         <StackPanel Grid.Row="1" Margin="10,0,0,20">
 
-            <!--MTConnect Port Range-->
-            <StackPanel Margin="0,0,20,20" HorizontalAlignment="Left">
+            <WrapPanel Orientation="Horizontal">
 
-                <TextBlock Text="MTConnect Port Range" Foreground="#888" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                <!--MTConnect IP Address Range-->
+                <StackPanel Margin="0,0,20,20" HorizontalAlignment="Left">
 
-                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="MTConnect IP Address Range" Foreground="{StaticResource Text_Light}" HorizontalAlignment="Center" Margin="0,0,20,5"/>
 
-                    <ui:TextBox Text="{Binding StartPort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="100"/>
+                    <StackPanel Orientation="Horizontal">
 
-                    <TextBlock Text="To" VerticalAlignment="Center" Margin="0,0,15,0" Foreground="#333"/>
+                        <ui:TextBox Text="{Binding StartAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="100"/>
 
-                    <ui:TextBox Text="{Binding EndPort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="100"/>
+                        <TextBlock Text="To" VerticalAlignment="Center" Margin="0,0,15,0" Foreground="{StaticResource Text}"/>
+
+                        <ui:TextBox Text="{Binding EndAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="100"/>
+
+                    </StackPanel>
+
+                </StackPanel>
+                
+                <!--MTConnect Port Range-->
+                <StackPanel Margin="0,0,20,20" HorizontalAlignment="Left">
+
+                    <TextBlock Text="MTConnect Port Range" Foreground="{StaticResource Text_Light}" HorizontalAlignment="Center" Margin="0,0,20,5"/>
+
+                    <StackPanel Orientation="Horizontal">
+
+                        <ui:TextBox Text="{Binding StartPort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="100"/>
+
+                        <TextBlock Text="To" VerticalAlignment="Center" Margin="0,0,15,0" Foreground="{StaticResource Text}"/>
+
+                        <ui:TextBox Text="{Binding EndPort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="100"/>
+
+                    </StackPanel>
 
                 </StackPanel>
 
-            </StackPanel>
+                <!--Ping Timeout-->
+                <StackPanel Margin="0,0,20,20" HorizontalAlignment="Left">
 
+                    <TextBlock Text="Ping Timeout" Foreground="{StaticResource Text_Light}" HorizontalAlignment="Center" Margin="0,0,20,5"/>
+
+                    <ui:TextBox Text="{Binding PingTimeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="100"/>
+
+                </StackPanel>
+                
+                <!--Reset to Default Settings-->
+                <ui:Button Text="Reset to Default" Height="30" Clicked="ResetDefault_Clicked" Style="{StaticResource Button_Accent_Background}"/>
+
+
+            </WrapPanel>
+
+            
             <Grid Margin="0,0,0,10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -78,7 +113,7 @@
                         </TextBlock>
 
                         <!--Text-->
-                        <TextBlock Foreground="{StaticResource Foreground_Normal}" MinWidth="200" FontSize="12pt" VerticalAlignment="Center">
+                        <TextBlock Foreground="{StaticResource Text}" MinWidth="200" FontSize="12pt" VerticalAlignment="Center">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Text" Value="Devices Found on Network"/>
@@ -259,7 +294,7 @@
             <StackPanel Orientation="Horizontal">
 
                 <!--Number Of Devices Already Added-->
-                <TextBlock Foreground="{StaticResource Foreground_Normal}" VerticalAlignment="Center">
+                <TextBlock Foreground="{StaticResource Text}" VerticalAlignment="Center">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
                             <Setter Property="Visibility" Value="Visible"/>
@@ -288,10 +323,10 @@
                     
                 </TextBlock>
 
-                <Rectangle Width="1" Fill="{StaticResource Foreground_Normal}" Margin="10,0"/>
+                <Rectangle Width="1" Fill="{StaticResource Text}" Margin="10,0"/>
 
                 <!--Number of Network Nodes Found-->
-                <TextBlock Foreground="{StaticResource Foreground_Normal}" VerticalAlignment="Center">
+                <TextBlock Foreground="{StaticResource Text}" VerticalAlignment="Center">
                     
                     <Run Text="{Binding NetworkNodesFound}" FontWeight="Bold" FontSize="12pt"/>
 
@@ -380,12 +415,12 @@
                             </Setter>
                             <Style.Triggers>
                                 <Trigger Property="IsFocused" Value="false">
-                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Text}"/>
                                 </Trigger>
                                 <Trigger Property="IsSelected" Value="true">
                                     <Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource Self}}"/>
                                     <Setter Property="BorderBrush" Value="Transparent"/>
-                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Text}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
@@ -399,17 +434,7 @@
                                 <ui:Button ToolTip="Add Device" DataObject="{Binding }" Clicked="Add_Clicked" Image="/TrakHound-Device-Manager;component/Resources/Add_01.png">
                                     <ui:Button.Style>
                                         <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Accent_Background}">
-                                            <!--<Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                                            <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
-                                            <Setter Property="FontSize" Value="14"/>
-                                            <Setter Property="Padding" Value="10,5"/>-->
-                                            <!--<Setter Property="MinHeight" Value="35"/>-->
-                                            <!--<Setter Property="ImageTextPadding" Value="10"/>
-                                            <Setter Property="Visibility" Value="Visible"/>-->
                                             <Style.Triggers>
-                                                <!--<Trigger Property="IsMouseOver" Value="true">
-                                                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                                                </Trigger>-->
                                                 <DataTrigger Binding="{Binding Loading}" Value="true">
                                                     <DataTrigger.EnterActions>
                                                         <BeginStoryboard>
@@ -479,7 +504,7 @@
                                         </Style>
                                     </Grid.Style>
 
-                                    <ui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="25" Height="25" Foreground="{StaticResource TrakHound_Blue}" />
+                                    <ui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="25" Height="25" Foreground="{StaticResource Spinner}" />
 
                                 </Grid>
 

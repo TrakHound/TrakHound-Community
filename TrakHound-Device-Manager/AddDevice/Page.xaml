@@ -44,7 +44,7 @@
 
         <Border Grid.Column="1" BorderBrush="#aaa" BorderThickness="1,0,0,0">
 
-            <Grid Background="{StaticResource Window_Background}" >
+            <Grid Background="{StaticResource Background}" >
 
                 <Grid Margin="40,0,0,0">
                     <Grid.RowDefinitions>
@@ -68,7 +68,7 @@
                                 <Grid.Style>
                                     <Style TargetType="Grid">
                                         <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                        <Setter Property="Background" Value="{StaticResource Foreground_Normal}"/>
+                                        <Setter Property="Background" Value="{StaticResource Text}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding CurrentPage.Image}" Value="{x:Null}">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -79,11 +79,11 @@
                             </Grid>
 
                             <!--Page Name-->
-                            <TextBlock Text="{Binding CurrentPage.Title}" Foreground="{StaticResource Foreground_Normal}" FontSize="30" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding CurrentPage.Title}" Foreground="{StaticResource Text}" FontSize="30" VerticalAlignment="Center"/>
 
                         </StackPanel>
 
-                        <Rectangle Grid.Row="1" Fill="{StaticResource Shade_Normal}" Height="0.5" Margin="0,5"/>
+                        <Rectangle Grid.Row="1" Fill="{StaticResource Border}" Height="0.5" Margin="0,5"/>
 
                     </Grid>
 
