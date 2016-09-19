@@ -10,7 +10,7 @@
              
              >
 
-    <Grid Background="{StaticResource Window_Background}">
+    <Grid Background="{StaticResource Background}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="400"/>
             <ColumnDefinition Width="400"/>
@@ -98,26 +98,19 @@
                                     </DataTrigger.ExitActions>
                                 </DataTrigger>
                                 <Trigger Property="Opacity" Value="0">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Setter Property="Visibility" Value="Hidden"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </Grid.Style>
 
-                    <ui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="35" Height="35" Foreground="{StaticResource Accent_Normal}" />
+                    <ui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="35" Height="35" Foreground="{StaticResource Spinner}" />
 
                     <ui:Button Image="/TrakHound-Device-Manager;component/Resources/X_01.png" Clicked="TestConnectionCancel_Clicked" ToolTip="Cancel">
                         <ui:Button.Style>
-                            <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Accent_Background}">
-                                <!--<Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                                <Setter Property="Background" Value="Transparent"/>-->
+                            <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Accent_Foreground}">
                                 <Setter Property="Height" Value="20"/>
                                 <Setter Property="Width" Value="20"/>
-                                <!--<Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="true">
-                                        <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
-                                    </Trigger>
-                                </Style.Triggers>-->
                             </Style>
                         </ui:Button.Style>
                     </ui:Button>
@@ -170,10 +163,13 @@
                         <Setter Property="IsEnabled" Value="false"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding ConnectionTestLoading}" Value="true">
-                                <Setter Property="Visibility" Value="Hidden"/>
+                                <Setter Property="IsEnabled" Value="false"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding ConnectionTestResult}" Value="1">
                                 <Setter Property="IsEnabled" Value="true"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Loading}" Value="true">
+                                <Setter Property="IsEnabled" Value="false"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
