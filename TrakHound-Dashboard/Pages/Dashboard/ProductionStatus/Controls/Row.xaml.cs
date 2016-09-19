@@ -157,6 +157,14 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatus.Controls
 
         public DateTime CurrentTime { get; set; }
 
+        public void UpdateData(Data.OeeInfo info)
+        {
+            if (info != null)
+            {
+                PartCount = info.TotalPieces;
+            }
+        }
+
         public void UpdateData(Data.StatusInfo info)
         {
             if (info != null)
@@ -164,7 +172,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatus.Controls
                 Connected = info.Connected == 1;
                 DeviceStatus = info.DeviceStatus;
                 ProductionStatus = info.ProductionStatus;
-                PartCount = info.PartCount;
+                //PartCount = info.PartCount;
+                
 
                 DayRunTime = info.DayRun / 3600;
                 DayOperatingTime = info.DayOperating / 3600;
