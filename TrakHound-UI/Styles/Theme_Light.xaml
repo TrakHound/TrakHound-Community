@@ -194,7 +194,7 @@
                     </BeginStoryboard>
                     <BeginStoryboard>
                         <Storyboard>
-                            <ColorAnimation To="{StaticResource TrakHound_Blue_Color}" Storyboard.TargetProperty="(ui:ListButton.SelectorForeground).(SolidColorBrush.Color)" Duration="0:0:0.15"/>
+                            <ColorAnimation To="{StaticResource TrakHound_Blue_Color}" Storyboard.TargetProperty="(ui:ListButton.SelectorForeground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
                         </Storyboard>
                     </BeginStoryboard>
                 </Trigger.EnterActions>
@@ -216,17 +216,17 @@
                 <Trigger.EnterActions>
                     <BeginStoryboard>
                         <Storyboard>
-                            <ColorAnimation To="{StaticResource Text_Alternate_Color}" Storyboard.TargetProperty="(ui:ListButton.Foreground).(SolidColorBrush.Color)" Duration="0:0:0.15"/>
+                            <ColorAnimation To="{StaticResource Text_Alternate_Color}" Storyboard.TargetProperty="(ui:ListButton.Foreground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
                         </Storyboard>
                     </BeginStoryboard>
                     <BeginStoryboard>
                         <Storyboard>
-                            <ColorAnimation To="#88ffffff" Storyboard.TargetProperty="(ui:ListButton.SelectorForeground).(SolidColorBrush.Color)" Duration="0:0:0.15"/>
+                            <ColorAnimation To="#88ffffff" Storyboard.TargetProperty="(ui:ListButton.SelectorForeground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
                         </Storyboard>
                     </BeginStoryboard>
                     <BeginStoryboard>
                         <Storyboard>
-                            <ColorAnimation To="{StaticResource TrakHound_Blue_Color}" Storyboard.TargetProperty="(ui:ListButton.Background).(SolidColorBrush.Color)" Duration="0:0:0.15"/>
+                            <ColorAnimation To="{StaticResource TrakHound_Blue_Color}" Storyboard.TargetProperty="(ui:ListButton.Background).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
                         </Storyboard>
                     </BeginStoryboard>
                 </Trigger.EnterActions>

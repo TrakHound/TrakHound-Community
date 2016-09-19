@@ -13,15 +13,6 @@
     <Grid x:Name="root" MouseEnter="Main_GRID_MouseEnter" MouseLeave="Main_GRID_MouseLeave" Margin="0,0,0,0" Cursor="Hand">
         <Grid.Style>
             <Style TargetType="Grid">
-                <!--<Setter Property="Background">
-                    <Setter.Value>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="Transparent" Offset="0"/>
-                            <GradientStop Color="#20ffffff" Offset="0.4"/>
-                            <GradientStop Color="Transparent" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Setter.Value>
-                </Setter>-->
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding Background}" Value="{x:Null}">
                         <Setter Property="Background" Value="Transparent"/>
@@ -51,14 +42,14 @@
                                 <DataTrigger.EnterActions>
                                     <BeginStoryboard>
                                         <Storyboard>
-                                            <ThicknessAnimation Duration="0:0:0.25" Storyboard.TargetProperty="Margin" To="0"/>
+                                            <ThicknessAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Margin" To="0"/>
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </DataTrigger.EnterActions>
                                 <DataTrigger.ExitActions>
                                     <BeginStoryboard>
                                         <Storyboard FillBehavior="Stop">
-                                            <ThicknessAnimation Duration="0:0:0.25" Storyboard.TargetProperty="Margin" To="0,5"/>
+                                            <ThicknessAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Margin" To="0,5"/>
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </DataTrigger.ExitActions>
@@ -67,14 +58,14 @@
                                 <DataTrigger.EnterActions>
                                     <BeginStoryboard>
                                         <Storyboard>
-                                            <ThicknessAnimation Duration="0:0:0.25" Storyboard.TargetProperty="Margin" To="0"/>
+                                            <ThicknessAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Margin" To="0"/>
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </DataTrigger.EnterActions>
                                 <DataTrigger.ExitActions>
                                     <BeginStoryboard>
                                         <Storyboard FillBehavior="Stop">
-                                            <ThicknessAnimation Duration="0:0:0.25" Storyboard.TargetProperty="Margin" To="0,5"/>
+                                            <ThicknessAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Margin" To="0,5"/>
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </DataTrigger.ExitActions>
