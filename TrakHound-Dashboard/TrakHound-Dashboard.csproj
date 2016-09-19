@@ -139,7 +139,6 @@
     </Compile>
     <Compile Include="Pages\Dashboard\OeeStatus\Plugin.cs" />
     <Compile Include="Pages\Dashboard\OeeStatus\Update Data.cs" />
-    <None Include="Pages\Dashboard\Plugin.cs" />
     <Compile Include="Pages\Dashboard\ProductionStatusTimes\Controls\Row.xaml.cs">
       <DependentUpon>Row.xaml</DependentUpon>
     </Compile>

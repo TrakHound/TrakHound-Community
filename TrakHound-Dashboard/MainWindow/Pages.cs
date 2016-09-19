@@ -22,21 +22,6 @@ namespace TrakHound_Dashboard
 {
     public partial class MainWindow
     {
-
-        ObservableCollection<TabPage> _tabPages;
-        public ObservableCollection<TabPage> TabPages
-        {
-            get
-            {
-                if (_tabPages == null) _tabPages = new ObservableCollection<TabPage>();
-                return _tabPages;
-            }
-            set
-            {
-                _tabPages = value;
-            }
-        }
-
         ObservableCollection<TabHeader> _tabHeaders;
         public ObservableCollection<TabHeader> TabHeaders
         {
@@ -382,7 +367,6 @@ namespace TrakHound_Dashboard
                 }
             }
         }
-
 
         #region "About"
 
