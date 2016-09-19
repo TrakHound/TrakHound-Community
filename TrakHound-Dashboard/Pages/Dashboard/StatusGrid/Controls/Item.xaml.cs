@@ -665,12 +665,12 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
         {
             if (info != null)
             {
-                EmergencyStop = info.EmergencyStop;
-                ControllerMode = info.ControllerMode;
-                ExecutionMode = info.ExecutionMode;
+                EmergencyStop = FormatValue(info.EmergencyStop);
+                ControllerMode = FormatValue(info.ControllerMode);
+                ExecutionMode = FormatValue(info.ExecutionMode);
                 Program = info.ProgramName;
-                SystemStatus = info.SystemStatus;
-                SystemMessage = info.SystemMessage;
+                SystemStatus = FormatValue(info.SystemStatus);
+                SystemMessage = FormatValue(info.SystemMessage);
             }
         }
 
@@ -678,10 +678,14 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
         {
             if (info != null)
             {
+                
+
                 Connected = info.Connected == 1;
-                DeviceStatus = info.DeviceStatus;
+               if (!string.IsNullOrEmpty(info.DeviceStatus)) DeviceStatus = info.DeviceStatus;
                 ProductionStatus = info.ProductionStatus;
-                PartCount = info.PartCount;
+                //PartCount = info.PartCount;
+
+                Console.WriteLine(Connected.ToString());
 
                 DeviceStatusTime = TimeSpan.FromSeconds(info.DeviceStatusTimer);
             }
@@ -691,10 +695,10 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
         {
             if (info != null)
             {
-                Oee = info.Oee * 100;
-                Availability = info.Availability * 100;
-                Performance = info.Performance * 100;
-                Quality = info.Quality * 100;
+                Oee = info.Oee;
+                Availability = info.Availability;
+                Performance = info.Performance;
+                Quality = info.Quality;
             }
         }
 
@@ -743,6 +747,19 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
                 ProcessDevelopmentTime = TimeSpan.FromSeconds(processDevelopment);
             }
         }
+
+
+        private static string FormatValue(string s)
+        {
+            return s;
+
+            //if (string.IsNullOrEmpty(s)) return null;
+
+            //string o = s.Replace('_', ' ');
+
+            //return String_Functions.UppercaseFirst(o);
+        }
+
     }
 
 }

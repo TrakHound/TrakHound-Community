@@ -101,6 +101,38 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
                     }
                 }), UI_Functions.PRIORITY_DATA_BIND, new object[] { });
             }
+
+            if (data != null && data.Id == "STATUS_CONTROLLER" && data.Data02 != null && data.Data02.GetType() == typeof(TrakHound.API.Data.ControllerInfo))
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    string uniqueId = data.Data01.ToString();
+                    var info = (TrakHound.API.Data.ControllerInfo)data.Data02;
+
+                    int index = Items.ToList().FindIndex(x => x.UniqueId == uniqueId);
+                    if (index >= 0)
+                    {
+                        var column = Items[index];
+                        column.UpdateData(info);
+                    }
+                }), UI_Functions.PRIORITY_DATA_BIND, new object[] { });
+            }
+
+            if (data != null && data.Id == "STATUS_OEE" && data.Data02 != null && data.Data02.GetType() == typeof(TrakHound.API.Data.OeeInfo))
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    string uniqueId = data.Data01.ToString();
+                    var info = (TrakHound.API.Data.OeeInfo)data.Data02;
+
+                    int index = Items.ToList().FindIndex(x => x.UniqueId == uniqueId);
+                    if (index >= 0)
+                    {
+                        var column = Items[index];
+                        column.UpdateData(info);
+                    }
+                }), UI_Functions.PRIORITY_DATA_BIND, new object[] { });
+            }
         }
 
 

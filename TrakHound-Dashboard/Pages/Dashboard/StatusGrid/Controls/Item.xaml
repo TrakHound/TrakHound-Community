@@ -6,48 +6,17 @@
              xmlns:local="clr-namespace:TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls"
              
              xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
+             xmlns:level_indicator="clr-namespace:TrakHound_UI.LevelIndicator;assembly=TrakHound-UI"
              
              mc:Ignorable="d" 
              >
-
-    <UserControl.Resources>
-
-        <!--<ImageBrush x:Key="Power_Large_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Power_01_100px.png"/>
-        <ImageBrush x:Key="Status_Normal_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/CheckMark_01.png" />
-        
-        --><!--Device Status Icons--><!--
-        <ImageBrush x:Key="Active_Large_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Active_01_100px.png" />
-        <ImageBrush x:Key="Idle_Large_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Hourglass_01_100px.png" />
-        <ImageBrush x:Key="Alert_Large_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Warning_01_100px.png" />
-        <ImageBrush x:Key="Active_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Active_01.png" />
-        <ImageBrush x:Key="Idle_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Hourglass_01.png" />
-        <ImageBrush x:Key="Alert_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Warning_01.png" />
-        
-        --><!--Production Status Icons--><!--
-        <ImageBrush x:Key="Production_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Cycle_01.png" />
-        <ImageBrush x:Key="Setup_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Carrot_Arrow_Up_01.png" />
-        <ImageBrush x:Key="Teardown_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Carrot_Arrow_Down_01.png" />
-        <ImageBrush x:Key="Maintenance_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/options_gear_30px.png" />
-        <ImageBrush x:Key="ProcessDevelopment_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Lab_01.png" />
-        
-        --><!--Controller Mode Icons--><!--
-        <ImageBrush x:Key="Auto_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Auto_01.png" />
-        <ImageBrush x:Key="SemiAuto_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/SingleBlock_01.png" />
-        <ImageBrush x:Key="MDI_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/MDI_01.png" />
-        <ImageBrush x:Key="Manual_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Manual_01.png" />
-        <ImageBrush x:Key="Edit_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Edit_01.png" />
-
-        --><!--Emergency Stop Icon--><!--
-        <ImageBrush x:Key="Estop_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Estop_02.png" />-->
-        
-    </UserControl.Resources>
 
     <!--Device Description-->
     <Border x:Name="root">
         <Border.Style>
             <Style TargetType="Border">
-                <Setter Property="Height" Value="200"/>
-                <Setter Property="Background" Value="#60000000"/>
+                <Setter Property="Height" Value="250"/>
+                <Setter Property="Background" Value="Transparent"/>
                 <Style.Triggers>
 
                     <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
@@ -81,6 +50,7 @@
                 <!--<RowDefinition Height="auto"/>-->
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
 
             <!--Device Logo-->
@@ -327,7 +297,7 @@
                         <Setter Property="MaxHeight" Value="180"/>
                         <Setter Property="Grid.Row" Value="0"/>
                         <Setter Property="Grid.Column" Value="1"/>
-                        <Setter Property="Grid.RowSpan" Value="5"/>
+                        <Setter Property="Grid.RowSpan" Value="3"/>
                         <!--<Style.Triggers>
                             <DataTrigger Binding="{Binding WidthStatus}" Value="0">
                                 <Setter Property="MaxWidth" Value="50"/>
@@ -356,33 +326,11 @@
                     <Style TargetType="Border">
                         <Setter Property="Padding" Value="5"/>
                         <Setter Property="VerticalAlignment" Value="Bottom"/>
-                        <Setter Property="Grid.Row" Value="3"/>
-                        <!--<Style.Triggers>
-                            <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                --><!--<Setter Property="Padding" Value="5,10"/>--><!--
-                                <Setter Property="Grid.Row" Value="1"/>
-                                <Setter Property="VerticalAlignment" Value="Center"/>
-                            </DataTrigger>
-                        </Style.Triggers>-->
+                        <Setter Property="Grid.Row" Value="2"/>
                     </Style>
                 </Border.Style>
 
                 <StackPanel>
-                    <StackPanel.Style>
-                        <Style TargetType="StackPanel">
-                            <!--<Style.Triggers>
-                                <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
-                                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                                    <Setter Property="LayoutTransform">
-                                        <Setter.Value>
-                                            <RotateTransform Angle="-90"/>
-                                        </Setter.Value>
-                                    </Setter>
-                                </DataTrigger>
-                            </Style.Triggers>-->
-                        </Style>
-                    </StackPanel.Style>
                     <StackPanel.Resources>
                         <Style TargetType="TextBlock">
                             <Setter Property="Margin" Value="0,2"/>
@@ -399,11 +347,6 @@
                         <Viewbox.Style>
                             <Style TargetType="Viewbox">
                                 <Setter Property="Margin" Value="10,2"/>
-                                <!--<Style.Triggers>
-                                    <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                        <Setter Property="Margin" Value="2"/>
-                                    </DataTrigger>
-                                </Style.Triggers>-->
                             </Style>
                         </Viewbox.Style>
 
@@ -451,44 +394,164 @@
 
             </Border>
 
-            <!--Detailed Information-->
-            <Grid Grid.Column="2" Margin="5,0" Grid.RowSpan="5">
+            <!--Controller Indicators-->
+            <Grid Grid.Column="2" Margin="5,10" Grid.RowSpan="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-                <StackPanel VerticalAlignment="Center">
-                    <StackPanel.Resources>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Foreground" Value="#fff"/>
-                            <Setter Property="Margin" Value="2"/>
-                            <Setter Property="HorizontalAlignment" Value="Center"/>
-                        </Style>
-                        <Style TargetType="Viewbox">
-                            <Setter Property="MaxHeight" Value="20"/>
-                        </Style>
-                    </StackPanel.Resources>
+                <!--Execution Mode-->
+                <Grid Grid.Row="0" VerticalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
 
-                    <TextBlock Text="Device Type" FontSize="10" Margin="0,5,0,2"/>
-                    <Viewbox>
-                        <TextBlock Text="{Binding DeviceType}"/>
+                    <Grid>
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="OpacityMask" Value="{StaticResource Paused_IMG}" />
+                                <Setter Property="Background" Value="#FFFFFF"/>
+                                <Setter Property="Height" Value="25"/>
+                                <Setter Property="Width" Value="25"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ExecutionMode}" Value="ACTIVE">
+                                        <Setter Property="OpacityMask" Value="{StaticResource Started_IMG}" />
+                                        <Setter Property="Background" Value="#fff"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ExecutionMode}" Value="STOPPED">
+                                        <Setter Property="OpacityMask" Value="{StaticResource Stopped_IMG}" />
+                                        <Setter Property="Background" Value="#fff"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ExecutionMode}" Value="UNAVAILABLE">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ExecutionMode}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                    </Grid>
+
+                    <Viewbox Grid.Row="1" MaxHeight="10" Margin="0,5,0,0">
+
+                        <TextBlock Text="{Binding ExecutionMode}" Foreground="#FFFFFF"/>
+
                     </Viewbox>
 
-                    <TextBlock Text="Serial" FontSize="10" Margin="0,5,0,2"/>
-                    <Viewbox>
-                        <TextBlock Text="{Binding Serial}"/>
+                </Grid>
+
+                <!--Controller Mode-->
+                <Grid Grid.Row="1" VerticalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid>
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="OpacityMask" Value="{StaticResource Auto_IMG}" />
+                                <Setter Property="Background" Value="#FFFFFF"/>
+                                <Setter Property="Height" Value="30"/>
+                                <Setter Property="Width" Value="30"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ControllerMode}" Value="SEMI_AUTOMATIC">
+                                        <Setter Property="OpacityMask" Value="{StaticResource SemiAuto_IMG}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ControllerMode}" Value="MANUAL_DATA_INPUT">
+                                        <Setter Property="OpacityMask" Value="{StaticResource MDI_IMG}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ControllerMode}" Value="MANUAL">
+                                        <Setter Property="OpacityMask" Value="{StaticResource Manual_IMG}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ControllerMode}" Value="EDIT">
+                                        <Setter Property="OpacityMask" Value="{StaticResource Edit_IMG}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ControllerMode}" Value="UNAVAILABLE">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ControllerMode}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                    </Grid>
+
+                    <Viewbox Grid.Row="1" MaxHeight="10" Margin="0,5,0,0">
+
+                        <TextBlock Text="{Binding ControllerMode}" Foreground="#FFFFFF"/>
+
                     </Viewbox>
 
-                    <TextBlock Text="Controller" FontSize="10" Margin="0,5,0,2"/>
-                    <Viewbox>
-                        <TextBlock Text="{Binding Controller}"/>
+                </Grid>
+
+                <!--System Status-->
+                <Grid Grid.Row="2" VerticalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid>
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="OpacityMask" Value="{StaticResource Status_Normal_IMG}" />
+                                <Setter Property="Background" Value="#FFFFFF"/>
+                                <Setter Property="Height" Value="25"/>
+                                <Setter Property="Width" Value="25"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SystemStatus}" Value="Warning">
+                                        <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SystemStatus}" Value="Fault">
+                                        <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                    </Grid>
+
+                    <Viewbox Grid.Row="1" MaxHeight="10" Margin="0,5,0,0">
+
+                        <TextBlock Text="{Binding SystemStatus}" Foreground="#FFFFFF"/>
+
                     </Viewbox>
 
-                    <TextBlock Text="Location" FontSize="10" Margin="0,5,0,2"/>
-                    <Viewbox>
-                        <TextBlock Text="{Binding Location}"/>
-                    </Viewbox>
-
-                </StackPanel>
+                </Grid>
 
             </Grid>
+
+            <Border Grid.Row="4" Grid.ColumnSpan="3" Background="#10000000">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Orientation="Horizontal" Margin="10,0" >
+
+                        <TextBlock Text="OEE" Foreground="#FFFFFF" FontSize="14" VerticalAlignment="Center" />
+
+                        <ui:MeterDisplay Margin="10,0,0,0" Width="100" ValueFormat="P0" MaxHeight="25" Value="{Binding Oee}" Foreground="#FFFFFF" ActiveLevelBrush="#FFFFFF" InactiveLevelBrush="#20FFFFFF" Maximum="1"/>
+
+                    </StackPanel>
+                    
+                    <Viewbox Grid.Column="2" MaxHeight="15" HorizontalAlignment="Right" Margin="10,0">
+
+                        <TextBlock Text="{Binding SystemMessage}" Foreground="#FFFFFF" TextAlignment="Right"/>
+
+                    </Viewbox>
+
+                </Grid>
+
+            </Border>
 
             <!--Gloss Effect-->
             <Border Grid.ColumnSpan="5" Grid.RowSpan="5" IsHitTestVisible="False">
