@@ -684,7 +684,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
                 Connected = info.Connected == 1;
                 DeviceStatus = info.DeviceStatus;
                 ProductionStatus = info.ProductionStatus;
-                PartCount = info.PartCount;
+                //PartCount = info.PartCount;
 
                 DeviceStatusTime = TimeSpan.FromSeconds(info.DeviceStatusTimer);
             }
@@ -698,6 +698,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
                 Availability = info.Availability * 100;
                 Performance = info.Performance * 100;
                 Quality = info.Quality * 100;
+                PartCount = info.TotalPieces;
             }
         }
 
