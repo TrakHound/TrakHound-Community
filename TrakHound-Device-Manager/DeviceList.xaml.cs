@@ -104,8 +104,6 @@ namespace TrakHound_Device_Manager
 
         #endregion
         
-        const System.Windows.Threading.DispatcherPriority PRIORITY_BACKGROUND = System.Windows.Threading.DispatcherPriority.Background;
-
 
         #region "Device Manager Event Handlers"
 
@@ -278,7 +276,7 @@ namespace TrakHound_Device_Manager
                 removeInfo.Success = DeviceManager.RemoveDevices(configs);
             }
 
-            Dispatcher.BeginInvoke(new Action<RemoveDevices_Info>(RemoveDevices_Finshed), PRIORITY_BACKGROUND, new object[] { removeInfo });
+            Dispatcher.BeginInvoke(new Action<RemoveDevices_Info>(RemoveDevices_Finshed), UI_Functions.PRIORITY_BACKGROUND, new object[] { removeInfo });
         }
 
         private void RemoveDevices_Finshed(RemoveDevices_Info removeInfo)
@@ -343,7 +341,7 @@ namespace TrakHound_Device_Manager
                     config.Enabled = true;
                 }
 
-                Dispatcher.BeginInvoke(new Action<EnableDevice_Info>(EnableDevice_Finished), PRIORITY_BACKGROUND, new object[] { info });
+                Dispatcher.BeginInvoke(new Action<EnableDevice_Info>(EnableDevice_Finished), UI_Functions.PRIORITY_BACKGROUND, new object[] { info });
             }
         }
 
@@ -396,7 +394,7 @@ namespace TrakHound_Device_Manager
                 // If changes were successful, then update DeviceManager's Congifuration
                 if (info.Success) config.Enabled = false;
                 
-                Dispatcher.BeginInvoke(new Action<EnableDevice_Info>(DisableDevice_Finished), PRIORITY_BACKGROUND, new object[] { info });
+                Dispatcher.BeginInvoke(new Action<EnableDevice_Info>(DisableDevice_Finished), UI_Functions.PRIORITY_BACKGROUND, new object[] { info });
             }
         }
 

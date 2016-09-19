@@ -32,15 +32,15 @@
         <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
             <Setter Property="BorderBrush" Value="{DynamicResource Border}" />
             <Setter Property="BorderThickness" Value="0,1,0,0" />
-            <Setter Property="Background" Value="{StaticResource Window_Background}"/>
+            <Setter Property="Background" Value="{StaticResource Background}"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="true">
-                    <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
-                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                    <Setter Property="Background" Value="#EEEEEE"/>
+                    <Setter Property="Foreground" Value="{StaticResource Text}"/>
                 </Trigger>
                 <Trigger Property="IsSelected" Value="true">
-                    <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
-                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                    <Setter Property="Background" Value="#EEEEEE"/>
+                    <Setter Property="Foreground" Value="{StaticResource Text}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -153,20 +153,12 @@
             <ScrollViewer.Style>
                 <Style TargetType="ScrollViewer">
                     <Style.Triggers>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Devices}" Value="{x:Null}"/>
-                                <Condition Binding="{Binding SharedDevices}" Value="{x:Null}"/>
-                            </MultiDataTrigger.Conditions>
+                        <DataTrigger Binding="{Binding Devices}" Value="{x:Null}">
                             <Setter Property="Visibility" Value="Collapsed"/>
-                        </MultiDataTrigger>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Devices.Count}" Value="0"/>
-                                <Condition Binding="{Binding SharedDevices.Count}" Value="0"/>
-                            </MultiDataTrigger.Conditions>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Devices.Count}" Value="0">
                             <Setter Property="Visibility" Value="Collapsed"/>
-                        </MultiDataTrigger>
+                        </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </ScrollViewer.Style>
@@ -228,26 +220,6 @@
                     </DataGrid.Columns>
 
                 </DataGrid>
-
-                <Grid Grid.Row="1" PreviewMouseDown="Grid_PreviewMouseDown" Background="Transparent" ContextMenu="{StaticResource DataGridRowContextMenu_None}"/>
-
-                <!--Shared Devices-->
-                <StackPanel Grid.Row="2">
-                    <StackPanel.Style>
-                        <Style TargetType="StackPanel">
-                            <Setter Property="Visibility" Value="Visible"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SharedDevices}" Value="{x:Null}">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding SharedDevices.Count}" Value="0">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </StackPanel.Style>
-
-                </StackPanel>
 
             </Grid>
 
