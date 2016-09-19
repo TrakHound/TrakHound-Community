@@ -18,6 +18,7 @@
                 <!--Icons-->
                 <ResourceDictionary>
 
+                    <ImageBrush x:Key="Message_IMG" Stretch="Uniform" ImageSource="Resources/Envelope_01.png"/>
                     <ImageBrush x:Key="Power_Large_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Power_01_100px.png"/>
                     <ImageBrush x:Key="Power_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Power_01.png"  />
                     <ImageBrush x:Key="Status_Normal_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/CheckMark_01.png" />
@@ -43,6 +44,11 @@
                     <ImageBrush x:Key="MDI_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/MDI_01.png" />
                     <ImageBrush x:Key="Manual_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Manual_01.png" />
                     <ImageBrush x:Key="Edit_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Edit_01.png" />
+
+                    <!--Execution Mode Icons-->
+                    <ImageBrush x:Key="Started_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Start_02.png" />
+                    <ImageBrush x:Key="Paused_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Pause_02.png" />
+                    <ImageBrush x:Key="Stopped_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Stop_02.png" />
 
                     <!--Emergency Stop Icon-->
                     <ImageBrush x:Key="Estop_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Estop_02.png" />
