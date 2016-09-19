@@ -1,12 +1,13 @@
-﻿using System;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using System.Net.NetworkInformation;
-using System.Diagnostics;
 using System.Net;
-using System.Threading;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 
 namespace TrakHound.Tools
@@ -27,29 +28,29 @@ namespace TrakHound.Tools
             return null;
         }
 
-        public static IPAddress[] GetAddressList(IPAddress ipAddress)
-        {
-            var result = new List<IPAddress>();
+        //public static IPAddress[] GetAddressList(IPAddress ipAddress)
+        //{
+        //    var result = new List<IPAddress>();
 
-            byte[] ipBytes = ipAddress.GetAddressBytes();
+        //    byte[] ipBytes = ipAddress.GetAddressBytes();
 
-            var b = new byte[4];
-            b[0] = ipBytes[0];
-            b[1] = ipBytes[1];
-            b[2] = ipBytes[2];
+        //    var b = new byte[4];
+        //    b[0] = ipBytes[0];
+        //    b[1] = ipBytes[1];
+        //    b[2] = ipBytes[2];
 
-            for (var x = 0; x <= 255; x++)
-            {
-                b[3] = Convert.ToByte(x);
+        //    for (var x = 0; x <= 255; x++)
+        //    {
+        //        b[3] = Convert.ToByte(x);
 
-                var ip = new IPAddress(b);
-                result.Add(ip);
-            }
+        //        var ip = new IPAddress(b);
+        //        result.Add(ip);
+        //    }
 
-            return result.ToArray();
-        }
+        //    return result.ToArray();
+        //}
 
-        public static bool IsPortOpen(string host, int port, TimeSpan timeout)
+        public static bool IsPortOpen(string host, int port, int timeout)
         {
             try
             {
@@ -71,6 +72,25 @@ namespace TrakHound.Tools
                 return false;
             }
             return true;
+        }
+
+        public static IPAddress GetSubnetMask(IPAddress ip)
+        {
+            foreach (NetworkInterface adapter in NetworkInterface.GetAllNetworkInterfaces())
+            {
+                foreach (UnicastIPAddressInformation unicastIPAddressInformation in adapter.GetIPProperties().UnicastAddresses)
+                {
+                    if (unicastIPAddressInformation.Address.AddressFamily == AddressFamily.InterNetwork)
+                    {
+                        if (ip.Equals(unicastIPAddressInformation.Address))
+                        {
+                            return unicastIPAddressInformation.IPv4Mask;
+                        }
+                    }
+                }
+            }
+
+            return null;
         }
 
         //public static IPAddress[] GetAddressList(IPAddress ipAddress)
@@ -100,8 +120,9 @@ namespace TrakHound.Tools
             private int returnedIndexes = 0;
             private int expectedIndexes = 0;
 
-            //private Ping ping;
             private int timeout = 2000;
+
+            private List<IPAddress> addressRange;
 
             public delegate void PingSuccessful_Handler(PingReply reply);
             public event PingSuccessful_Handler PingSuccessful;
@@ -112,6 +133,17 @@ namespace TrakHound.Tools
             public PingNodes()
             {
 
+            }
+
+            public PingNodes(List<IPAddress> _addressRange)
+            {
+                addressRange = _addressRange;
+            }
+
+            public PingNodes(List<IPAddress> _addressRange, int _timeout)
+            {
+                addressRange = _addressRange;
+                timeout = _timeout;
             }
 
             public PingNodes(int _timeout)
@@ -127,12 +159,13 @@ namespace TrakHound.Tools
                 var ip = GetHostIP();
                 if (ip != null)
                 {
-                    var list = GetAddressList(ip);
-                    if (list.Length > 0)
+                    var hostIp = IPNetwork.Parse(ip.ToString());
+                    var list = addressRange == null ? new System.Net.IPAddressCollection(hostIp).ToList() : addressRange;
+                    if (list.Count > 0)
                     {
-                        expectedIndexes = list.Length;
+                        expectedIndexes = list.Count;
 
-                        for (var x = 0; x <= list.Length - 1; x++)
+                        for (var x = 0; x <= list.Count - 1; x++)
                         {
                             int index = x;
                             StartPing(list[x], index);
@@ -144,25 +177,6 @@ namespace TrakHound.Tools
             public void Cancel()
             {
                 foreach (var request in queuedPings) request.SendAsyncCancel();
-            }
-
-            private static IPAddress GetSubnetMask(IPAddress ip)
-            {
-                foreach (NetworkInterface adapter in NetworkInterface.GetAllNetworkInterfaces())
-                {
-                    foreach (UnicastIPAddressInformation unicastIPAddressInformation in adapter.GetIPProperties().UnicastAddresses)
-                    {
-                        if (unicastIPAddressInformation.Address.AddressFamily == AddressFamily.InterNetwork)
-                        {
-                            if (ip.Equals(unicastIPAddressInformation.Address))
-                            {
-                                return unicastIPAddressInformation.IPv4Mask;
-                            }
-                        }
-                    }
-                }
-
-                return null;
             }
 
             private static byte[] GetSubnetBytes(IPAddress ip, IPAddress subnetMask)
@@ -201,12 +215,55 @@ namespace TrakHound.Tools
 
                     if (status == IPStatus.Success)
                     {
-                        if (PingSuccessful != null) PingSuccessful(e.Reply);
+                        PingSuccessful?.Invoke(e.Reply);
                     }
 
                     returnedIndexes += 1;
-                    if (returnedIndexes >= expectedIndexes) if (Finished != null) Finished();
+                    if (returnedIndexes >= expectedIndexes) Finished?.Invoke();
                 }
+            }
+        }
+
+        public class IPAddressRange
+        {
+            readonly AddressFamily addressFamily;
+            readonly byte[] lowerBytes;
+            readonly byte[] upperBytes;
+
+            public IPAddressRange(IPAddress lower, IPAddress upper)
+            {
+                // Assert that lower.AddressFamily == upper.AddressFamily
+
+                addressFamily = lower.AddressFamily;
+                lowerBytes = lower.GetAddressBytes();
+                upperBytes = upper.GetAddressBytes();
+            }
+
+            public bool IsInRange(IPAddress address)
+            {
+                if (address.AddressFamily != addressFamily)
+                {
+                    return false;
+                }
+
+                byte[] addressBytes = address.GetAddressBytes();
+
+                bool lowerBoundary = true, upperBoundary = true;
+
+                for (int i = 0; i < this.lowerBytes.Length &&
+                    (lowerBoundary || upperBoundary); i++)
+                {
+                    if ((lowerBoundary && addressBytes[i] < lowerBytes[i]) ||
+                        (upperBoundary && addressBytes[i] > upperBytes[i]))
+                    {
+                        return false;
+                    }
+
+                    lowerBoundary &= (addressBytes[i] == lowerBytes[i]);
+                    upperBoundary &= (addressBytes[i] == upperBytes[i]);
+                }
+
+                return true;
             }
         }
 
