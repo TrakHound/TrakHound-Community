@@ -36,8 +36,15 @@ namespace TrakHound_Device_Manager.AddDevice
         public void Opened() { }
         public bool Opening() { return true; }
 
-        public void Closed() { if (PageClosed != null) PageClosed(); }
-        public bool Closing() { return true; }
+        public void Closed() { PageClosed?.Invoke(); }
+        public bool Closing()
+        {
+            if (autoDetectPage != null) autoDetectPage.Closing();
+            if (manualPage != null) manualPage.Closing();
+            if (loadFromFilePage != null) loadFromFilePage.Closing();
+
+            return true;
+        }
 
         #endregion
 
@@ -61,6 +68,10 @@ namespace TrakHound_Device_Manager.AddDevice
         /// </summary>
         public DeviceManager DeviceManager { get; set; }
 
+        private Pages.AutoDetect autoDetectPage;
+        private Pages.Manual manualPage;
+        private Pages.LoadFromFile loadFromFilePage;
+
 
         /// <summary>
         /// Object for containing the currently displayed IPage object
@@ -80,14 +91,8 @@ namespace TrakHound_Device_Manager.AddDevice
         /// </summary>
         public void OpenDeviceList()
         {
-            if (DeviceListSelected != null) DeviceListSelected();
+            DeviceListSelected?.Invoke();
         }
-
-
-        Pages.AutoDetect autoDetectPage;
-        Pages.Manual manualPage;
-        Pages.LoadFromFile loadFromFilePage;
-
 
 
         public bool AutoDetectSelected

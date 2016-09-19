@@ -84,6 +84,15 @@ namespace TrakHound_Dashboard
 
         private void Main_Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            foreach (var tabHeader in TabHeaders)
+            {
+                var tabPage = tabHeader.Page;
+                if (tabPage != null)
+                {
+                    if (tabPage.PageContent != null) tabPage.PageContent.Closing();
+                }
+            }
+
             Plugins_Closed();
 
             Properties.Settings.Default.Save();
