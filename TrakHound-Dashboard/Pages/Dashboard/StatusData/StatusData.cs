@@ -15,19 +15,19 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
 {
     public partial class StatusData
     {
+        private const int INTERVAL_MIN = 500;
+        private const int INTERVAL_MAX = 60000;
+
+        private Thread updateThread;
+        private ManualResetEvent updateStop;
+
 
         public StatusData()
         {
             Start();
         }
 
-        private const int INTERVAL_MIN = 500;
-        private const int INTERVAL_MAX = 60000;
-
-        Thread updateThread;
-        ManualResetEvent updateStop;
-
-        void Start()
+        private void Start()
         {
             Stop();
 
@@ -37,30 +37,32 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
             updateThread.Start();
         }
 
-        void Stop()
+        private void Stop()
         {
             if (updateStop != null) updateStop.Set();
         }
 
-        void Abort()
+        private void Abort()
         {
             if (updateThread != null) updateThread.Abort();
         }
 
-        void Update()
+        private void Update()
         {
             int interval = Math.Max(INTERVAL_MIN, Properties.Settings.Default.DatabaseReadInterval);
 
             while (!updateStop.WaitOne(0, true))
-            {
-                List<Data.DeviceInfo> deviceInfos = null;
-
-                var devices = Devices.ToList().Select(o => o.UniqueId).ToList();
-
+            {                
+                // Get Timestamp for current entire day
                 var now = DateTime.Now;
-                DateTime from = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);
+                DateTime from = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0, DateTimeKind.Local);
                 DateTime to = from.AddDays(1);
 
+                // Get list of UniqueId's from Devices list
+                var devices = Devices.ToList().Select(o => o.UniqueId).ToList();
+
+                // Retrieve device Data from API
+                List<Data.DeviceInfo> deviceInfos = null;
                 if (UserConfiguration != null) deviceInfos = Data.Get(UserConfiguration, devices, from.ToUniversalTime(), to.ToUniversalTime(), 2000);
                 else deviceInfos = Data.Get(null, devices, from, to, 2000);
                 if (deviceInfos != null)
@@ -78,74 +80,10 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
                     }
                 }
 
+                // Put thread to sleep for specified interval (Data Read Interval
                 Thread.Sleep(interval);
             }
         }
-
-        //private void SendControllerInfo(Data.DeviceInfo info)
-        //{
-        //    var obj = info.GetClass("controller");
-        //    if (obj != null)
-        //    {
-        //        var data = new EventData();
-        //        data.Id = "STATUS_CONTROLLER";
-        //        data.Data01 = info.UniqueId;
-        //        data.Data02 = obj;
-        //        SendDataEvent(data);
-        //    }
-        //}
-
-        //private void SendOeeInfo(Data.DeviceInfo info)
-        //{
-        //    var obj = info.GetClass("oee");
-        //    if (obj != null)
-        //    {
-        //        var data = new EventData();
-        //        data.Id = "STATUS_OEE";
-        //        data.Data01 = info.UniqueId;
-        //        data.Data02 = obj;
-        //        SendDataEvent(data);
-        //    }
-        //}
-
-        //private void SendStatusInfo(Data.DeviceInfo info)
-        //{
-        //    var obj = info.GetClass("status");
-        //    if (obj != null)
-        //    {
-        //        var data = new EventData();
-        //        data.Id = "STATUS_STATUS";
-        //        data.Data01 = info.UniqueId;
-        //        data.Data02 = obj;
-        //        SendDataEvent(data);
-        //    }
-        //}
-
-        //private void SendTimersInfo(Data.DeviceInfo info)
-        //{
-        //    var obj = info.GetClass("timers");
-        //    if (obj != null)
-        //    {
-        //        var data = new EventData();
-        //        data.Id = "STATUS_TIMERS";
-        //        data.Data01 = info.UniqueId;
-        //        data.Data02 = obj;
-        //        SendDataEvent(data);
-        //    }
-        //}
-
-        //private void SendDayInfo(Data.DeviceInfo info)
-        //{
-        //    var obj = info.GetClass("hours");
-        //    if (obj != null)
-        //    {
-        //        var data = new EventData();
-        //        data.Id = "STATUS_HOURS";
-        //        data.Data01 = info.UniqueId;
-        //        data.Data02 = obj;
-        //        SendDataEvent(data);
-        //    }
-        //}
 
         private void SendDataEvent(EventData data)
         {
