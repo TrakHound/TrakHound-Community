@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Windows.Media;
 
 using TrakHound;
@@ -59,7 +60,7 @@ namespace TrakHound_Dashboard
         {
             Plugins = GetPlugins();
 
-            PluginConfigurations = GetPluginConfigurations(Plugins); 
+            PluginConfigurations = GetPluginConfigurations(Plugins);
 
             foreach (var config in PluginConfigurations)
             {
@@ -124,6 +125,7 @@ namespace TrakHound_Dashboard
             path = AppDomain.CurrentDomain.BaseDirectory;
             if (Directory.Exists(path)) AddPlugins(GetPlugins(path), result);
 
+            // Load from currenlty running assembly (ex. TrakHound-Dashboard)
             AddPlugins(GetPlugins(Assembly.GetEntryAssembly()), result);
 
             foreach (var plugin in result)
@@ -282,7 +284,7 @@ namespace TrakHound_Dashboard
                 // See if root is a match
                 if (config.Name == plugin.Title &&
                     config.Parent == plugin.ParentPlugin &&
-                    config.Category == plugin.ParentPluginCategory 
+                    config.Category == plugin.ParentPluginCategory
                     ) result = config;
                 // if root is not a match, then search subconfigs
                 else
@@ -463,9 +465,7 @@ namespace TrakHound_Dashboard
                         }
                     }
                 }
-            }
-
-            
+            }  
         }
 
         /// <summary>
@@ -488,9 +488,37 @@ namespace TrakHound_Dashboard
                         );
                     if (plugin != null)
                     {
-                        plugin.GetSentData(data);
+                        var sendDataInfo = new SendDataInfo(plugin, data);
+
+                        ThreadPool.QueueUserWorkItem(new WaitCallback(ProcessSendData), sendDataInfo);
                     }
                 }
+            }
+        }
+
+        private class SendDataInfo
+        {
+            public SendDataInfo(IClientPlugin plugin, EventData data)
+            {
+                Plugin = plugin;
+                Data = data;
+            }
+
+            public IClientPlugin Plugin { get; set; }
+            public EventData Data { get; set; }
+        }
+
+        private void ProcessSendData(object o)
+        {
+            if (o != null)
+            {
+                var sendDataInfo = (SendDataInfo)o;
+
+                try
+                {
+                    sendDataInfo.Plugin.GetSentData(sendDataInfo.Data);
+                }
+                catch (Exception ex) { Logger.Log("Plugin Error :: " + ex.Message); }
             }
         }
 
