@@ -11,6 +11,7 @@ using TrakHound;
 using TrakHound.API;
 using TrakHound.API.Users;
 using TrakHound.Configurations;
+using TrakHound.Logging;
 using TrakHound.Plugins;
 using TrakHound.Plugins.Server;
 using TrakHound_Server.Plugins.Status;
@@ -38,9 +39,9 @@ namespace TrakHound_Server.Plugins.CloudData
             deviceInfo = new Data.DeviceInfo();
             deviceInfo.UniqueId = config.UniqueId;
 
-            deviceInfo.Description = config.Description;
+            //deviceInfo.Description = config.Description;
 
-            queue.Add(deviceInfo);
+            //queue.Add(deviceInfo);
         }
 
         public void GetSentData(EventData data)
@@ -109,6 +110,7 @@ namespace TrakHound_Server.Plugins.CloudData
                 var snapshot = snapshots.Find(o => o.Name == "Device Status");
                 if (snapshot != null)
                 {
+                    if (status == null) status = new Data.StatusInfo();
                     status.DeviceStatus = snapshot.Value;
                     status.DeviceStatusTimer = Math.Max(0, Convert.ToInt32((snapshot.Timestamp - snapshot.PreviousTimestamp).TotalSeconds));
                     previousDeviceStatusTimestamp = snapshot.Timestamp;
@@ -119,6 +121,7 @@ namespace TrakHound_Server.Plugins.CloudData
                 snapshot = snapshots.Find(o => o.Name == "Production Status");
                 if (snapshot != null)
                 {
+                    if (status == null) status = new Data.StatusInfo();
                     status.ProductionStatus = snapshot.Value;
                     status.ProductionStatusTimer = Math.Max(0, Convert.ToInt32((snapshot.Timestamp - snapshot.PreviousTimestamp).TotalSeconds));
                     previousProductionStatusTimestamp = snapshot.Timestamp;
@@ -130,6 +133,7 @@ namespace TrakHound_Server.Plugins.CloudData
                 snapshot = snapshots.Find(o => o.Name == "Day Run Time");
                 if (snapshot != null)
                 {
+                    if (status == null) status = new Data.StatusInfo();
                     double val = 0;
                     double.TryParse(snapshot.Value, out val);
                     status.DayRun = val;
@@ -140,6 +144,7 @@ namespace TrakHound_Server.Plugins.CloudData
                 snapshot = snapshots.Find(o => o.Name == "Day Operating Time");
                 if (snapshot != null)
                 {
+                    if (status == null) status = new Data.StatusInfo();
                     double val = 0;
                     double.TryParse(snapshot.Value, out val);
                     status.DayOperating = val;
@@ -150,6 +155,7 @@ namespace TrakHound_Server.Plugins.CloudData
                 snapshot = snapshots.Find(o => o.Name == "Day Cutting Time");
                 if (snapshot != null)
                 {
+                    if (status == null) status = new Data.StatusInfo();
                     double val = 0;
                     double.TryParse(snapshot.Value, out val);
                     status.DayCutting = val;
@@ -160,6 +166,7 @@ namespace TrakHound_Server.Plugins.CloudData
                 snapshot = snapshots.Find(o => o.Name == "Day Spindle Time");
                 if (snapshot != null)
                 {
+                    if (status == null) status = new Data.StatusInfo();
                     double val = 0;
                     double.TryParse(snapshot.Value, out val);
                     status.DaySpindle = val;
@@ -171,6 +178,7 @@ namespace TrakHound_Server.Plugins.CloudData
                 snapshot = snapshots.Find(o => o.Name == "Total Run Time");
                 if (snapshot != null)
                 {
+                    if (status == null) status = new Data.StatusInfo();
                     double val = 0;
                     double.TryParse(snapshot.Value, out val);
                     status.TotalRun = val;
@@ -181,6 +189,7 @@ namespace TrakHound_Server.Plugins.CloudData
                 snapshot = snapshots.Find(o => o.Name == "Total Operating Time");
                 if (snapshot != null)
                 {
+                    if (status == null) status = new Data.StatusInfo();
                     double val = 0;
                     double.TryParse(snapshot.Value, out val);
                     status.TotalOperating = val;
@@ -191,6 +200,7 @@ namespace TrakHound_Server.Plugins.CloudData
                 snapshot = snapshots.Find(o => o.Name == "Total Cutting Time");
                 if (snapshot != null)
                 {
+                    if (status == null) status = new Data.StatusInfo();
                     double val = 0;
                     double.TryParse(snapshot.Value, out val);
                     status.TotalCutting = val;
@@ -201,6 +211,7 @@ namespace TrakHound_Server.Plugins.CloudData
                 snapshot = snapshots.Find(o => o.Name == "Total Spindle Time");
                 if (snapshot != null)
                 {
+                    if (status == null) status = new Data.StatusInfo();
                     double val = 0;
                     double.TryParse(snapshot.Value, out val);
                     status.TotalSpindle = val;
@@ -323,7 +334,8 @@ namespace TrakHound_Server.Plugins.CloudData
                     hours.Add(hourInfo);
                 }
 
-                deviceInfo.AddClass("hours", hours);
+                AddHourInfos(hours);
+                //deviceInfo.AddClass("hours", hours);
             }
         }
 
@@ -422,12 +434,43 @@ namespace TrakHound_Server.Plugins.CloudData
                         int i = storedOeeDatas.FindIndex(o => o.Start.Hour == oeeData.Start.Hour && o.CycleId == oeeData.CycleId && o.CycleInstanceId == oeeData.CycleInstanceId);
                         if (i >= 0) storedOeeDatas[i] = oeeData;
 
-                        deviceInfo.Hours.Add(hourInfo);
+                        AddHourInfo(hourInfo);
+                        //deviceInfo.Hours.Add(hourInfo);
                     }
 
                     queue.Add(deviceInfo);
                 }
             }
+        }
+
+        private void AddHourInfo(Data.HourInfo hourInfo)
+        {
+            if (deviceInfo.Hours == null)
+            {
+                var hours = new List<Data.HourInfo>();
+                deviceInfo.AddClass("hours", hours);
+            }
+
+            try
+            {
+                deviceInfo.Hours.Add(hourInfo);
+            }
+            catch (Exception ex) { Logger.Log("Error Adding HourInfo to DeviceInfo :: " + ex.Message); } 
+        }
+
+        private void AddHourInfos(List<Data.HourInfo> hourInfos)
+        {
+            if (deviceInfo.Hours == null)
+            {
+                var hours = new List<Data.HourInfo>();
+                deviceInfo.AddClass("hours", hours);
+            }
+
+            try
+            {
+                deviceInfo.Hours.AddRange(hourInfos);
+            }
+            catch (Exception ex) { Logger.Log("Error Adding HourInfo to DeviceInfo :: " + ex.Message); }
         }
 
 
@@ -454,7 +497,8 @@ namespace TrakHound_Server.Plugins.CloudData
                             {
                                 hourInfo.TotalPieces = info.Count;
 
-                                deviceInfo.Hours.Add(hourInfo);
+                                AddHourInfo(hourInfo);
+                                //deviceInfo.Hours.Add(hourInfo);
                             }
                             else
                             {
@@ -466,7 +510,8 @@ namespace TrakHound_Server.Plugins.CloudData
 
                                     Console.WriteLine("Part Count = " + info.Count + " :: " + hourInfo.TotalPieces + " : " + storedPartCount);
 
-                                    deviceInfo.Hours.Add(hourInfo);
+                                    AddHourInfo(hourInfo);
+                                    //deviceInfo.Hours.Add(hourInfo);
                                     storedPartCount = info.Count;
                                     storedPartCountHour = GetHourId(hourInfo.Date, hourInfo.Hour);
                                 }
