@@ -187,6 +187,27 @@ namespace TrakHound.API
                 }
             }
 
+            [JsonProperty("agent")]
+            public AgentInfo Agent
+            {
+                get
+                {
+                    var obj = GetClass("agent");
+                    if (obj != null) return (AgentInfo)obj;
+                    return null;
+                }
+                set
+                {
+                    var o = value;
+                    if (o != null)
+                    {
+                        AddClass("agent", o);
+                    }
+                }
+            }
+
+
+            #region "SubClass Management"
 
             private Dictionary<string, object> classes = new Dictionary<string, object>();
 
@@ -222,18 +243,7 @@ namespace TrakHound.API
                 classes.Clear();
             }
 
-            //public void AddHourInfo(Data.HourInfo hour)
-            //{
-            //    var obj = GetClass("hours");
-            //    if (obj == null)
-            //    {
-            //        obj = new List<Data.HourInfo>();
-            //        AddClass("hours", obj);
-            //    }
-
-            //    var hours = (List<Data.HourInfo>)obj;
-            //    hours.Add(hour);
-            //}
+            #endregion
 
 
             public string ToJson()

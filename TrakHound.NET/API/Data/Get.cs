@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 
 using TrakHound.API.Users;
@@ -110,6 +111,11 @@ namespace TrakHound.API
             }
 
             return null;
+        }
+
+        public static List<DeviceInfo> GetDeviceList(UserConfiguration userConfig)
+        {
+            return Get(userConfig, null, DateTime.Now, DateTime.Now, 5000, "1");
         }
 
         public class DeviceListItem
