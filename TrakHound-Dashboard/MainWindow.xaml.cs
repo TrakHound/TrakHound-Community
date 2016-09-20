@@ -53,18 +53,13 @@ namespace TrakHound_Dashboard
             InitializeComponent();
             DataContext = this;
 
-            //developerConsole.CurrentOutput = ApplicationNames.TRAKHOUND_DASHBOARD;
-
             Application.Current.MainWindow = this;
 
-            DeviceManager_Initialize();
-
-
             // Read Users and Login
-            Splash_UpdateStatus("...Logging in User", 60);
+            Splash_UpdateStatus("...Logging in User", 40);
             Users_Initialize();
 
-            Splash_UpdateStatus("...Loading Plugins", 70);
+            Splash_UpdateStatus("...Loading Plugins", 60);
             LoadPlugins();
 
             Splash_UpdateStatus("...Finishing Up", 100);
