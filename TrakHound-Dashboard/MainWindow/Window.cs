@@ -6,6 +6,7 @@
 using System.Windows;
 using System.Windows.Input;
 
+using TrakHound;
 using TrakHound.Plugins;
 
 namespace TrakHound_Dashboard
@@ -42,10 +43,9 @@ namespace TrakHound_Dashboard
         {
             messageCenter.Hide();
 
-            // Send message to plugins that Devices have been loaded
-            var data = new EventData();
-            data.Id = "WINDOW_CLICKED";
-            Plugin_SendData(data);
+            //var data = new EventData();
+            //data.Id = "WINDOW_CLICKED";
+            //Plugin_SendData(data);
         }
 
     }
