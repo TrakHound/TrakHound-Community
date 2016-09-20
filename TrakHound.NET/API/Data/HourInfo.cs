@@ -124,7 +124,10 @@ namespace TrakHound.API
             {
                 var newHours = new List<HourInfo>();
 
-                var _hours = hours.ToList();
+                List<HourInfo> _hours = null;
+
+                // Used 'lock' since it sometimes threw a 'source array was not long enough' exception
+                lock (hours) { _hours = hours.ToList(); }
 
                 var distinctDates = _hours.Select(o => o.Date).Distinct();
                 foreach (string distinctDate in distinctDates.ToList())
