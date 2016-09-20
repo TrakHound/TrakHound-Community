@@ -17,6 +17,9 @@ namespace TrakHound.API
             [JsonProperty("unique_id")]
             public string UniqueId { get; set; }
 
+            [JsonProperty("enabled")]
+            public bool Enabled { get; set; }
+
 
             [JsonProperty("description")]
             public DescriptionInfo Description
@@ -256,6 +259,7 @@ namespace TrakHound.API
                 var data = new Dictionary<string, object>();
 
                 data.Add("unique_id", UniqueId);
+                data.Add("enabled", Enabled);
 
                 foreach (var c in classes)
                 {
