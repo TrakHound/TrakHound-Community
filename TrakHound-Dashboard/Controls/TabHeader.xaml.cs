@@ -113,9 +113,9 @@ namespace TrakHound_Dashboard.Controls
         public const double MIN_WIDTH = 70; // Icon + Close Button
         public const double MAX_WIDTH = 320;
 
-        const double TAB_OPENING_OPACITY_ANIMATION_TIME = 300;
-        const double TAB_OPENING_HEIGHT_ANIMATION_TIME = 300;
-        const double TAB_OPENING_WIDTH_ANIMATION_TIME = 400;
+        const double TAB_OPENING_OPACITY_ANIMATION_TIME = 200;
+        const double TAB_OPENING_HEIGHT_ANIMATION_TIME = 200;
+        const double TAB_OPENING_WIDTH_ANIMATION_TIME = 300;
 
         public void Open(bool fade = false)
         {
@@ -187,8 +187,8 @@ namespace TrakHound_Dashboard.Controls
 
         #region "Closing"
 
-        const double TAB_CLOSING_ANIMATION_TIME = 300;
-        const double SPACE_CLOSING_ANIMATION_TIME = 300;
+        const double TAB_CLOSING_ANIMATION_TIME = 200;
+        const double SPACE_CLOSING_ANIMATION_TIME = 200;
 
         double spaceWidth = 0;
 
