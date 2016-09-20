@@ -156,7 +156,22 @@ namespace TrakHound.Servers.DataProcessing
                     else if (checkInfo.Enabled) getIds.Add(checkInfo.UniqueId);
                 }
 
-                // Get full DeviceConfigurations for each device that has been changed or added
+                // Find devices that were removed
+                foreach (var device in Devices.ToList())
+                {
+                    if (!checkInfos.Exists(x => x.UniqueId == device.Configuration.UniqueId))
+                    {
+                        var d = Devices.Find(x => x.Configuration.UniqueId == device.Configuration.UniqueId);
+                        if (d != null)
+                        {
+                            d.Stop();
+
+                            Devices.Remove(d);
+                        }
+                    }
+                }
+
+                // Get full DeviceConfigurations for each device that have been changed or added
                 if (getIds.Count > 0)
                 {
                     var configs = API.Devices.Get(userConfig, getIds.ToArray());
@@ -179,6 +194,10 @@ namespace TrakHound.Servers.DataProcessing
                         }
                     }
                 }
+            }
+            else
+            {
+                RemoveAllDevices();
             }
         }
 
