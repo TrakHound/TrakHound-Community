@@ -14,6 +14,7 @@ namespace TrakHound.Configurations
         public DeviceDescription(Data.DeviceInfo deviceInfo)
         {
             UniqueId = deviceInfo.UniqueId;
+            Enabled = deviceInfo.Enabled;
             Description = deviceInfo.Description;
             Agent = deviceInfo.Agent;
         }
@@ -21,12 +22,18 @@ namespace TrakHound.Configurations
         public DeviceDescription(DeviceConfiguration deviceConfig)
         {
             UniqueId = deviceConfig.UniqueId;
+            Enabled = deviceConfig.Enabled;
+            Index = deviceConfig.Index;
             Description = deviceConfig.Description;
             Agent = deviceConfig.Agent;
         }
 
 
         public string UniqueId { get; set; }
+
+        public bool Enabled { get; set; }
+
+        public int Index { get; set; }
 
         public Data.DescriptionInfo Description { get; set; }
 
