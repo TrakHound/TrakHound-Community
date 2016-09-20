@@ -191,9 +191,6 @@
                                 <Setter Property="MaxWidth" Value="300"/>
                                 <Setter Property="Margin" Value="10,15,10,5"/>
                                 <Style.Triggers>
-                                    <!--<DataTrigger Binding="{Binding DeviceLogo}" Value="{x:Null}">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>-->
                                     <DataTrigger Binding="{Binding WidthStatus}" Value="0">
                                         <Setter Property="MaxWidth" Value="50"/>
                                         <Setter Property="Grid.Row" Value="2"/>
