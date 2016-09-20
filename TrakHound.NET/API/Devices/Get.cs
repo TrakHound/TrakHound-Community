@@ -58,13 +58,12 @@ namespace TrakHound.API
 
                 string url = new Uri(apiHost, "devices/get/index.php").ToString();
 
-                string format = "{0}?token={1}&sender_id={2}{3}";
+                string format = "{0}?token={1}&sender_id={2}&unique_id={3}";
 
                 string token = userConfig.SessionToken;
                 string senderId = UserManagement.SenderId.Get();
-                string uniqueId = "unique_id=" + deviceUniqueId;
 
-                url = string.Format(format, url, token, senderId, uniqueId);
+                url = string.Format(format, url, token, senderId, deviceUniqueId);
 
                 string response = HTTP.GET(url);
                 if (response != null)
@@ -72,9 +71,11 @@ namespace TrakHound.API
                     bool success = ApiError.ProcessResponse(response, "Get Devices");
                     if (success)
                     {
-                        var deviceInfo = JSON.ToType<DeviceInfo>(response);
-                        if (deviceInfo != null)
+                        var deviceInfos = JSON.ToType<List<DeviceInfo>>(response);
+                        if (deviceInfos != null && deviceInfos.Count > 0)
                         {
+                            var deviceInfo = deviceInfos[0];
+
                             var table = deviceInfo.ToTable();
                             if (table != null)
                             {
