@@ -60,9 +60,9 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatusTimes
         {
             Update(data);
 
-            this.Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceAdded), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
-            this.Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceUpdated), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
-            this.Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceRemoved), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceAdded), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceUpdated), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceRemoved), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
         }
 
         public event SendData_Handler SendData;
@@ -71,13 +71,12 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatusTimes
 
         private static string GetUniqueIdFromDeviceInfo(Controls.Row row)
         {
-            if (row != null && row.Configuration != null)
+            if (row != null && row.Device != null)
             {
-                return row.Configuration.UniqueId;
+                return row.Device.UniqueId;
             }
             return null;
         }
-
 
         public IPage Options { get; set; }
 

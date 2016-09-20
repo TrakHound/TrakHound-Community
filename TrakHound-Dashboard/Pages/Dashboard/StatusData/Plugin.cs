@@ -9,6 +9,7 @@ using System.Linq;
 using System.Windows.Media;
 
 using TrakHound;
+using TrakHound.API;
 using TrakHound.API.Users;
 using TrakHound.Tools;
 using TrakHound.Logging;
@@ -30,35 +31,35 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
         public ImageSource Image { get { return null; } }
 
 
-        public string Author { get { return "TrakHound"; } }
+        //public string Author { get { return "TrakHound"; } }
 
-        public string AuthorText { get { return "©2015 Feenux LLC. All Rights Reserved"; } }
+        //public string AuthorText { get { return "©2015 Feenux LLC. All Rights Reserved"; } }
 
-        public ImageSource AuthorImage { get { return null; } }
+        //public ImageSource AuthorImage { get { return null; } }
 
 
-        public string LicenseName { get { return "GPLv3"; } }
+        //public string LicenseName { get { return "GPLv3"; } }
 
-        public string LicenseText { get { return null; } }
-
-        #endregion
-
-        #region "Update Information"
-
-        public string UpdateFileURL { get { return "http://www.feenux.com/trakhound/appinfo/th/statusdata-appinfo.json"; } }
+        //public string LicenseText { get { return null; } }
 
         #endregion
+
+        //#region "Update Information"
+
+        //public string UpdateFileURL { get { return "http://www.feenux.com/trakhound/appinfo/th/statusdata-appinfo.json"; } }
+
+        //#endregion
 
         #region "Plugin Properties/Options"
 
         public string ParentPlugin { get { return null; } }
         public string ParentPluginCategory { get { return null; } }
 
-        public bool AcceptsPlugins { get { return false; } }
+        //public bool AcceptsPlugins { get { return false; } }
 
         public bool OpenOnStartUp { get { return false; } }
 
-        public bool ShowInAppMenu { get { return false; } }
+        //public bool ShowInAppMenu { get { return false; } }
 
         public List<PluginConfigurationCategory> SubCategories { get; set; }
 
@@ -117,14 +118,14 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
 
         #region "Devices"
 
-        private ObservableCollection<DeviceConfiguration> _devices;
-        public ObservableCollection<DeviceConfiguration> Devices
+        private ObservableCollection<DeviceDescription> _devices;
+        public ObservableCollection<DeviceDescription> Devices
         {
             get
             {
                 if (_devices == null)
                 {
-                    _devices = new ObservableCollection<DeviceConfiguration>();
+                    _devices = new ObservableCollection<DeviceDescription>();
                 }
                 return _devices;
             }
@@ -134,13 +135,30 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
             }
         }
 
+        //private ObservableCollection<DeviceConfiguration> _devices;
+        //public ObservableCollection<DeviceConfiguration> Devices
+        //{
+        //    get
+        //    {
+        //        if (_devices == null)
+        //        {
+        //            _devices = new ObservableCollection<DeviceConfiguration>();
+        //        }
+        //        return _devices;
+        //    }
+        //    set
+        //    {
+        //        _devices = value;
+        //    }
+        //}
+
         void UpdateDeviceAdded(EventData data)
         {
             if (data != null)
             {
                 if (data.Id == "DEVICE_ADDED" && data.Data01 != null)
                 {
-                    Devices.Add((DeviceConfiguration)data.Data01);
+                    Devices.Add((DeviceDescription)data.Data01);
                 }
             }
         }
@@ -151,13 +169,13 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
             {
                 if (data.Id == "DEVICE_UPDATED" && data.Data01 != null)
                 {
-                    var config = (DeviceConfiguration)data.Data01;
+                    var device = (DeviceDescription)data.Data01;
 
-                    int i = Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
+                    int i = Devices.ToList().FindIndex(x => x.UniqueId == device.UniqueId);
                     if (i >= 0)
                     {
                         Devices.RemoveAt(i);
-                        Devices.Insert(i, config);
+                        Devices.Insert(i, device);
                     }
                 }
             }
@@ -169,9 +187,9 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
             {
                 if (data.Id == "DEVICE_REMOVED" && data.Data01 != null)
                 {
-                    var config = (DeviceConfiguration)data.Data01;
+                    var device = (DeviceDescription)data.Data01;
 
-                    int i = Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
+                    int i = Devices.ToList().FindIndex(x => x.UniqueId == device.UniqueId);
                     if (i >= 0)
                     {
                         Devices.RemoveAt(i);

@@ -125,31 +125,31 @@
                                 </Style>
                             </StackPanel.Resources>
 
-                            <TextBlock Text="{Binding Configuration.Description.Description}" Foreground="{StaticResource Text}" FontSize="14" FontWeight="Bold" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding Device.Description.Description}" Foreground="{StaticResource Text}" FontSize="14" FontWeight="Bold" TextWrapping="Wrap"/>
 
                             <TextBlock>
                                 <Run Text="Manufacturer :" Foreground="{StaticResource Text_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Manufacturer}" Foreground="{StaticResource Text}"/>
+                                <Run Text="{Binding Device.Description.Manufacturer}" Foreground="{StaticResource Text}"/>
                             </TextBlock>
 
                             <TextBlock>
                                 <Run Text="Model :" Foreground="{StaticResource Text_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Model}" Foreground="{StaticResource Text}"/>
+                                <Run Text="{Binding Device.Description.Model}" Foreground="{StaticResource Text}"/>
                             </TextBlock>
 
                             <TextBlock>
                                 <Run Text="Serial :" Foreground="{StaticResource Text_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Serial}" Foreground="{StaticResource Text}"/>
+                                <Run Text="{Binding Device.Description.Serial}" Foreground="{StaticResource Text}"/>
                             </TextBlock>
 
                             <TextBlock>
                                 <Run Text="Controller :" Foreground="{StaticResource Text_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Controller}" Foreground="{StaticResource Text}"/>
+                                <Run Text="{Binding Device.Description.Controller}" Foreground="{StaticResource Text}"/>
                             </TextBlock>
 
                             <TextBlock>
                                 <Run Text="Location :" Foreground="{StaticResource Text_Light}"/>
-                                <Run Text="{Binding Configuration.Description.Location}" Foreground="{StaticResource Text}"/>
+                                <Run Text="{Binding Device.Description.Location}" Foreground="{StaticResource Text}"/>
                             </TextBlock>
 
                         </StackPanel>
@@ -171,7 +171,7 @@
                         </StackPanel.Resources>
 
                         <!--Device Description-->
-                        <TextBlock Text="{Binding Configuration.Description.Description}" Foreground="{StaticResource Text}" FontSize="10"  Margin="0,2" HorizontalAlignment="Left"/>
+                        <TextBlock Text="{Binding Device.Description.Description}" Foreground="{StaticResource Text}" FontSize="10"  Margin="0,2" HorizontalAlignment="Left"/>
 
                         <!--Manufacturer-->
                         <TextBlock Foreground="{StaticResource Text}" FontSize="12" FontWeight="Bold" Margin="0,2" HorizontalAlignment="Left">
@@ -180,20 +180,20 @@
                                     <Style.Triggers>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding Configuration.Description.Manufacturer}" Value="{x:Null}"/>
-                                                <Condition Binding="{Binding Configuration.Description.Model}" Value="{x:Null}"/>
+                                                <Condition Binding="{Binding Device.Description.Manufacturer}" Value="{x:Null}"/>
+                                                <Condition Binding="{Binding Device.Description.Model}" Value="{x:Null}"/>
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </MultiDataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
-                            <Run Text="{Binding Configuration.Description.Manufacturer}"/>
-                            <Run Text="{Binding Configuration.Description.Model}"/>
+                            <Run Text="{Binding Device.Description.Manufacturer}"/>
+                            <Run Text="{Binding Device.Description.Model}"/>
                         </TextBlock>
 
                         <!--Serial-->
-                        <TextBlock Text="{Binding Configuration.Description.Serial}" Foreground="{StaticResource Text}" FontSize="10" Margin="0,2" HorizontalAlignment="Left"/>
+                        <TextBlock Text="{Binding Device.Description.Serial}" Foreground="{StaticResource Text}" FontSize="10" Margin="0,2" HorizontalAlignment="Left"/>
 
                     </StackPanel>
 
@@ -203,7 +203,7 @@
                 <Border Grid.Column="2" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
 
                     <Viewbox Margin="10">
-                        <TextBlock Text="{Binding Configuration.Description.DeviceId}" Foreground="{StaticResource Text}" TextWrapping="Wrap" TextAlignment="Center"/>
+                        <TextBlock Text="{Binding Device.Description.DeviceId}" Foreground="{StaticResource Text}" TextWrapping="Wrap" TextAlignment="Center"/>
                     </Viewbox>
 
                 </Border>

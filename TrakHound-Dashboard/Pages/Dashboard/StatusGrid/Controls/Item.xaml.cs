@@ -25,30 +25,30 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
     /// </summary>
     public partial class Item : UserControl
     {
-        public Item(DeviceConfiguration config, UserConfiguration userConfig)
+        public Item(DeviceDescription device, UserConfiguration userConfig)
         {
             InitializeComponent();
             root.DataContext = this;
 
             UserConfiguration = userConfig;
 
-            UniqueId = config.UniqueId;
+            UniqueId = device.UniqueId;
 
-            Description = config.Description.Description;
-            DeviceId = config.Description.DeviceId;
-            Manufacturer = config.Description.Manufacturer;
-            Model = config.Description.Model;
+            Description = device.Description.Description;
+            DeviceId = device.Description.DeviceId;
+            Manufacturer = device.Description.Manufacturer;
+            Model = device.Description.Model;
 
-            DeviceType = config.Description.DeviceType;
-            Serial = config.Description.Serial;
-            Controller = config.Description.Controller;
-            Location = config.Description.Location;
+            DeviceType = device.Description.DeviceType;
+            Serial = device.Description.Serial;
+            Controller = device.Description.Controller;
+            Location = device.Description.Location;
              
             // Load Device Logo
-            if (!string.IsNullOrEmpty(config.Description.LogoUrl)) LoadDeviceLogo(config.Description.LogoUrl);
+            if (!string.IsNullOrEmpty(device.Description.LogoUrl)) LoadDeviceLogo(device.Description.LogoUrl);
 
             // Load Device Image
-            if (!string.IsNullOrEmpty(config.Description.ImageUrl)) LoadDeviceImage(config.Description.ImageUrl);
+            if (!string.IsNullOrEmpty(device.Description.ImageUrl)) LoadDeviceImage(device.Description.ImageUrl);
         }
 
         public string UniqueId { get; set; }
@@ -678,14 +678,9 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
         {
             if (info != null)
             {
-                
-
                 Connected = info.Connected == 1;
-               if (!string.IsNullOrEmpty(info.DeviceStatus)) DeviceStatus = info.DeviceStatus;
-                ProductionStatus = info.ProductionStatus;
-                //PartCount = info.PartCount;
-
-                Console.WriteLine(Connected.ToString());
+                if (!string.IsNullOrEmpty(info.DeviceStatus)) DeviceStatus = info.DeviceStatus;
+                if (!string.IsNullOrEmpty(info.ProductionStatus)) ProductionStatus = info.ProductionStatus;
 
                 DeviceStatusTime = TimeSpan.FromSeconds(info.DeviceStatusTimer);
             }

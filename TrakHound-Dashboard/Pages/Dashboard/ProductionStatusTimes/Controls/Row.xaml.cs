@@ -17,12 +17,12 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatusTimes.Controls
     /// </summary>
     public partial class Row : UserControl
     {
-        public Row(DeviceConfiguration config)
+        public Row(DeviceDescription device)
         {
             InitializeComponent();
             root.DataContext = this;
 
-            Configuration = config;
+            Device = device;
         }
 
         #region "Dependency Properties"
@@ -37,14 +37,14 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatusTimes.Controls
             DependencyProperty.Register("Connected", typeof(bool), typeof(Row), new PropertyMetadata(false));
 
 
-        public DeviceConfiguration Configuration
+        public DeviceDescription Device
         {
-            get { return (DeviceConfiguration)GetValue(ConfigurationProperty); }
-            set { SetValue(ConfigurationProperty, value); }
+            get { return (DeviceDescription)GetValue(DeviceProperty); }
+            set { SetValue(DeviceProperty, value); }
         }
 
-        public static readonly DependencyProperty ConfigurationProperty =
-            DependencyProperty.Register("Configuration", typeof(DeviceConfiguration), typeof(Row), new PropertyMetadata(null));
+        public static readonly DependencyProperty DeviceProperty =
+            DependencyProperty.Register("Device", typeof(DeviceDescription), typeof(Row), new PropertyMetadata(null));
 
         public string DeviceStatus
         {

@@ -160,11 +160,11 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
             {
                 if (data.Id == "DEVICE_ADDED" && data.Data01 != null)
                 {
-                    var config = (DeviceConfiguration)data.Data01;
+                    var device = (DeviceDescription)data.Data01;
 
-                    if (config != null && !Items.ToList().Exists(o => o.UniqueId == config.UniqueId))
+                    if (device != null && !Items.ToList().Exists(o => o.UniqueId == device.UniqueId))
                     {
-                        var column = new Controls.Item(config, userConfiguration);
+                        var column = new Controls.Item(device, userConfiguration);
                         Items.Add(column);
                     }
                 }
@@ -177,16 +177,16 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
             {
                 if (data.Id == "DEVICE_UPDATED" && data.Data01 != null)
                 {
-                    var config = (DeviceConfiguration)data.Data01;
+                    var device = (DeviceDescription)data.Data01;
 
-                    int index = Items.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
+                    int index = Items.ToList().FindIndex(x => x.UniqueId == device.UniqueId);
                     if (index >= 0)
                     {
                         Items.RemoveAt(index);
 
-                        if (config != null && !Items.ToList().Exists(o => o.UniqueId == config.UniqueId))
+                        if (device != null && !Items.ToList().Exists(o => o.UniqueId == device.UniqueId))
                         {
-                            var column = new Controls.Item(config, userConfiguration);
+                            var column = new Controls.Item(device, userConfiguration);
                             Items.Insert(index, column);
                         }
                     }
@@ -200,9 +200,9 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
             {
                 if (data.Id == "DEVICE_REMOVED" && data.Data01 != null)
                 {
-                    var config = (DeviceConfiguration)data.Data01;
+                    var device = (DeviceDescription)data.Data01;
 
-                    int index = Items.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
+                    int index = Items.ToList().FindIndex(x => x.UniqueId == device.UniqueId);
                     if (index >= 0) Items.RemoveAt(index);
                 }
             }

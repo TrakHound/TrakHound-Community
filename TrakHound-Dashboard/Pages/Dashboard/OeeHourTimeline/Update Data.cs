@@ -18,9 +18,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline
     public partial class Page
     {
 
-        const System.Windows.Threading.DispatcherPriority PRIORITY_BACKGROUND = System.Windows.Threading.DispatcherPriority.Background;
-        const System.Windows.Threading.DispatcherPriority PRIORITY_CONTEXT_IDLE = System.Windows.Threading.DispatcherPriority.ContextIdle;
-
         void Update(EventData data)
         {
             if (data != null && data.Id == "STATUS_STATUS" && data.Data02 != null && data.Data02.GetType() == typeof(Data.StatusInfo))
@@ -30,7 +27,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline
                     string uniqueId = data.Data01.ToString();
                     var info = (Data.StatusInfo)data.Data02;
 
-                    int index = Rows.ToList().FindIndex(x => x.Configuration.UniqueId == uniqueId);
+                    int index = Rows.ToList().FindIndex(x => x.Device.UniqueId == uniqueId);
                     if (index >= 0)
                     {
                         var row = Rows[index];
@@ -46,7 +43,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline
                     string uniqueId = data.Data01.ToString();
                     var info = (List<Data.HourInfo>)data.Data02;
 
-                    int index = Rows.ToList().FindIndex(x => x.Configuration.UniqueId == uniqueId);
+                    int index = Rows.ToList().FindIndex(x => x.Device.UniqueId == uniqueId);
                     if (index >= 0)
                     {
                         var row = Rows[index];
@@ -62,8 +59,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline
             {
                 if (data.Id == "DEVICE_ADDED" && data.Data01 != null)
                 {
-                    var config = (DeviceConfiguration)data.Data01;
-                    AddRow(config);
+                    var device = (DeviceDescription)data.Data01;
+                    AddRow(device);
                 }
             }
         }
@@ -74,13 +71,13 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline
             {
                 if (data.Id == "DEVICE_UPDATED" && data.Data01 != null)
                 {
-                    var config = (DeviceConfiguration)data.Data01;
+                    var device = (DeviceDescription)data.Data01;
 
-                    int index = Rows.ToList().FindIndex(x => GetUniqueIdFromDeviceInfo(x) == config.UniqueId);
+                    int index = Rows.ToList().FindIndex(x => GetUniqueIdFromDeviceInfo(x) == device.UniqueId);
                     if (index >= 0)
                     {
                         Rows.RemoveAt(index);
-                        AddRow(config, index);
+                        AddRow(device, index);
                     }
                 }
             }
@@ -92,9 +89,9 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline
             {
                 if (data.Id == "DEVICE_REMOVED" && data.Data01 != null)
                 {
-                    var config = (DeviceConfiguration)data.Data01;
+                    var device = (DeviceDescription)data.Data01;
 
-                    int index = Rows.ToList().FindIndex(x => GetUniqueIdFromDeviceInfo(x) == config.UniqueId);
+                    int index = Rows.ToList().FindIndex(x => GetUniqueIdFromDeviceInfo(x) == device.UniqueId);
                     if (index >= 0) Rows.RemoveAt(index);
                 }
             }

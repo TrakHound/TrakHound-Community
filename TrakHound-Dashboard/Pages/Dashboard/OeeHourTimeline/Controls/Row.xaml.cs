@@ -18,12 +18,12 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline.Controls
     /// </summary>
     public partial class Row : UserControl
     {
-        public Row(DeviceConfiguration config)
+        public Row(DeviceDescription device)
         {
             InitializeComponent();
             root.DataContext = this;
 
-            Configuration = config;
+            Device = device;
 
             HourDatas = new List<HourData>();
             for (var x = 0; x < 24; x++) HourDatas.Add(new HourData(x, x + 1));
@@ -31,14 +31,14 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline.Controls
 
         #region "Dependency Properties"
 
-        public TrakHound.Configurations.DeviceConfiguration Configuration
+        public DeviceDescription Device
         {
-            get { return (TrakHound.Configurations.DeviceConfiguration)GetValue(ConfigurationProperty); }
-            set { SetValue(ConfigurationProperty, value); }
+            get { return (DeviceDescription)GetValue(DeviceProperty); }
+            set { SetValue(DeviceProperty, value); }
         }
 
-        public static readonly DependencyProperty ConfigurationProperty =
-            DependencyProperty.Register("Configuration", typeof(TrakHound.Configurations.DeviceConfiguration), typeof(Row), new PropertyMetadata(null));
+        public static readonly DependencyProperty DeviceProperty =
+            DependencyProperty.Register("Device", typeof(DeviceDescription), typeof(Row), new PropertyMetadata(null));
 
 
         public bool Connected

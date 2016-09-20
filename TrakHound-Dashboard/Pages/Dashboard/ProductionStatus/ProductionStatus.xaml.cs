@@ -34,20 +34,20 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatus
             }
         }
 
-        private void AddRow(DeviceConfiguration config)
+        private void AddRow(DeviceDescription device)
         {
-            if (config != null && !Rows.ToList().Exists(o => o.Configuration.UniqueId == config.UniqueId))
+            if (device != null && !Rows.ToList().Exists(o => o.Device.UniqueId == device.UniqueId))
             {
-                var row = new Row(config);
+                var row = new Row(device);
                 Rows.Add(row);
             }
         }
 
-        private void AddRow(DeviceConfiguration config, int index)
+        private void AddRow(DeviceDescription device, int index)
         {
-            if (config != null && !Rows.ToList().Exists(o => o.Configuration.UniqueId == config.UniqueId))
+            if (device != null && !Rows.ToList().Exists(o => o.Device.UniqueId == device.UniqueId))
             {
-                var row = new Row(config);
+                var row = new Row(device);
                 Rows.Insert(index, row);
             }
         }

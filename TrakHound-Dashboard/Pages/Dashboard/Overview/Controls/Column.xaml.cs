@@ -28,30 +28,30 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
         private const int OEE_HIGH = 70;
         private const int OEE_LOW = 50;
 
-        public Column(DeviceConfiguration config, UserConfiguration userConfig)
+        public Column(DeviceDescription device, UserConfiguration userConfig)
         {
             InitializeComponent();
             root.DataContext = this;
 
             UserConfiguration = userConfig;
 
-            UniqueId = config.UniqueId;
+            UniqueId = device.UniqueId;
 
-            Description = config.Description.Description;
-            DeviceId = config.Description.DeviceId;
-            Manufacturer = config.Description.Manufacturer;
-            Model = config.Description.Model;
+            Description = device.Description.Description;
+            DeviceId = device.Description.DeviceId;
+            Manufacturer = device.Description.Manufacturer;
+            Model = device.Description.Model;
 
-            DeviceType = config.Description.DeviceType;
-            Serial = config.Description.Serial;
-            Controller = config.Description.Controller;
-            Location = config.Description.Location;
+            DeviceType = device.Description.DeviceType;
+            Serial = device.Description.Serial;
+            Controller = device.Description.Controller;
+            Location = device.Description.Location;
              
             // Load Device Logo
-            if (!string.IsNullOrEmpty(config.Description.LogoUrl)) LoadDeviceLogo(config.Description.LogoUrl);
+            if (!string.IsNullOrEmpty(device.Description.LogoUrl)) LoadDeviceLogo(device.Description.LogoUrl);
 
             // Load Device Image
-            if (!string.IsNullOrEmpty(config.Description.ImageUrl)) LoadDeviceImage(config.Description.ImageUrl);
+            if (!string.IsNullOrEmpty(device.Description.ImageUrl)) LoadDeviceImage(device.Description.ImageUrl);
         }
 
         public string UniqueId { get; set; }
@@ -684,7 +684,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
                 Connected = info.Connected == 1;
                 DeviceStatus = info.DeviceStatus;
                 ProductionStatus = info.ProductionStatus;
-                //PartCount = info.PartCount;
 
                 DeviceStatusTime = TimeSpan.FromSeconds(info.DeviceStatusTimer);
             }

@@ -26,7 +26,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatusTimes
                     string uniqueId = data.Data01.ToString();
                     var info = (Data.StatusInfo)data.Data02;
 
-                    int index = Rows.ToList().FindIndex(x => x.Configuration.UniqueId == uniqueId);
+                    int index = Rows.ToList().FindIndex(x => x.Device.UniqueId == uniqueId);
                     if (index >= 0)
                     {
                         var row = Rows[index];
@@ -42,7 +42,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatusTimes
                     string uniqueId = data.Data01.ToString();
                     var info = (Data.TimersInfo)data.Data02;
 
-                    int index = Rows.ToList().FindIndex(x => x.Configuration.UniqueId == uniqueId);
+                    int index = Rows.ToList().FindIndex(x => x.Device.UniqueId == uniqueId);
                     if (index >= 0)
                     {
                         var row = Rows[index];
@@ -50,24 +50,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatusTimes
                     }
                 }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
             }
-
-
-            //if (data != null && data.Id != null && data.Data01 != null)
-            //{
-            //    var config = data.Data01 as DeviceConfiguration;
-            //    if (config != null)
-            //    {
-            //        Dispatcher.BeginInvoke(new Action(() =>
-            //        {
-            //            int index = Rows.ToList().FindIndex(x => x.Configuration.UniqueId == config.UniqueId);
-            //            if (index >= 0)
-            //            {
-            //                var row = Rows[index];
-            //                row.UpdateData(data);   
-            //            }
-            //        }));
-            //    }
-            //}
         }
 
         void UpdateDeviceAdded(EventData data)
@@ -76,8 +58,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatusTimes
             {
                 if (data.Id == "DEVICE_ADDED" && data.Data01 != null)
                 {
-                    var config = (DeviceConfiguration)data.Data01;
-                    AddRow(config);
+                    var device = (DeviceDescription)data.Data01;
+                    AddRow(device);
                 }
             }
         }
@@ -88,13 +70,13 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatusTimes
             {
                 if (data.Id == "DEVICE_UPDATED" && data.Data01 != null)
                 {
-                    var config = (DeviceConfiguration)data.Data01;
+                    var device = (DeviceDescription)data.Data01;
 
-                    int index = Rows.ToList().FindIndex(x => GetUniqueIdFromDeviceInfo(x) == config.UniqueId);
+                    int index = Rows.ToList().FindIndex(x => GetUniqueIdFromDeviceInfo(x) == device.UniqueId);
                     if (index >= 0)
                     {
                         Rows.RemoveAt(index);
-                        AddRow(config, index);
+                        AddRow(device, index);
                     }
                 }
             }
@@ -106,9 +88,9 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatusTimes
             {
                 if (data.Id == "DEVICE_REMOVED" && data.Data01 != null)
                 {
-                    var config = (DeviceConfiguration)data.Data01;
+                    var device = (DeviceDescription)data.Data01;
 
-                    int index = Rows.ToList().FindIndex(x => GetUniqueIdFromDeviceInfo(x) == config.UniqueId);
+                    int index = Rows.ToList().FindIndex(x => GetUniqueIdFromDeviceInfo(x) == device.UniqueId);
                     if (index >= 0) Rows.RemoveAt(index);
                 }
             }
