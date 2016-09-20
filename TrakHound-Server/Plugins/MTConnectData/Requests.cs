@@ -32,7 +32,8 @@ namespace TrakHound_Server.Plugins.MTConnectData
                 {
                     probeData = null;
 
-                    var ac = Configuration.Get(config);
+                    //var ac = Configuration.Get(config);
+                    var ac = config.Agent;
                     if (ac != null)
                     {
                         requestTimer = new System.Timers.Timer();
@@ -55,7 +56,8 @@ namespace TrakHound_Server.Plugins.MTConnectData
 
         private void RunRequests(DeviceConfiguration config)
         {
-            var ac = Configuration.Get(config);
+            //var ac = Configuration.Get(config);
+            var ac = config.Agent;
             if (ac != null)
             {
                 // Run a Probe request and get the returned data

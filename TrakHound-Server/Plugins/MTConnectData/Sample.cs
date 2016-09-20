@@ -9,6 +9,7 @@ using MTConnect.Application.Streams;
 using System;
 
 using TrakHound;
+using TrakHound.API;
 using TrakHound.Configurations;
 using TrakHound.Logging;
 using TrakHound.Plugins;
@@ -26,7 +27,7 @@ namespace TrakHound_Server.Plugins.MTConnectData
         private const long MaxSampleCount = 10000;
         private bool startFromFirst = false;
 
-        private ReturnData GetSample(Streams header, Configuration ac, DeviceConfiguration config)
+        private ReturnData GetSample(Streams header, Data.AgentInfo ac, DeviceConfiguration config)
         {
             ReturnData result = null;
 

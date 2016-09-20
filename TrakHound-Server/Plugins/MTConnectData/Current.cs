@@ -8,6 +8,7 @@ using MTConnect.Application.Streams;
 using System;
 
 using TrakHound;
+using TrakHound.API;
 using TrakHound.Configurations;
 using TrakHound.Logging;
 using TrakHound.Plugins;
@@ -17,7 +18,7 @@ namespace TrakHound_Server.Plugins.MTConnectData
     public partial class Plugin
     {
 
-        private ReturnData GetCurrent(Configuration config)
+        private ReturnData GetCurrent(Data.AgentInfo config)
         {
             ReturnData result = null;
 
