@@ -55,6 +55,7 @@ namespace TrakHound.Tools.Web
                         jss.DateFormatHandling = DateFormatHandling.IsoDateFormat;
                         jss.DateParseHandling = DateParseHandling.DateTime;
                         jss.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+                        jss.NullValueHandling = NullValueHandling.Ignore;
 
                         data = ConvertToSafe(data);
 
@@ -87,32 +88,10 @@ namespace TrakHound.Tools.Web
             }
 
             return null;
-
-            //if (data != null)
-            //    if (data.Trim() != "")
-            //    {
-            //        try
-            //        {
-            //            var jss = new JsonSerializerSettings();
-            //            jss.DateFormatHandling = DateFormatHandling.IsoDateFormat;
-            //            jss.DateParseHandling = DateParseHandling.DateTime;
-            //            jss.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-
-            //            data = ConvertToSafe(data);
-
-            //            return (T)JsonConvert.DeserializeObject(data, (typeof(T)), jss);
-            //        }
-            //        catch (JsonException jex) { Logger.Log(jex.Message); }
-            //        catch (Exception ex) { Logger.Log(ex.Message); }
-            //    }
-
-            //return default(T);
         }
 
         private static string ConvertToSafe(string s)
         {
-            //if (s.Contains("%")) s = s.Replace("%", "%25");
-
             return s;
         }
 
@@ -120,7 +99,10 @@ namespace TrakHound.Tools.Web
         {
             try
             {
-                return JsonConvert.SerializeObject(data.ToList());
+                var jss = new JsonSerializerSettings();
+                jss.NullValueHandling = NullValueHandling.Ignore;
+
+                return JsonConvert.SerializeObject(data.ToList(), jss);
             }
             catch (Exception ex)
             {
