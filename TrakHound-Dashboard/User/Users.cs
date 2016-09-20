@@ -5,6 +5,7 @@
 
 using System.Windows;
 
+using TrakHound;
 using TrakHound.API.Users;
 
 namespace TrakHound_Dashboard
@@ -34,10 +35,12 @@ namespace TrakHound_Dashboard
 
                 _currentuser = value;
 
+                LoadDevices();
+
                 // Update other pages
-                if (DeviceManager != null) DeviceManager.CurrentUser = _currentuser;
                 if (accountpage != null) accountpage.LoadUserConfiguration(_currentuser);
-                Plugins_UpdateUser(_currentuser);
+
+                SendCurrentUser();
 
                 // Login Server user (set login file)
                 Login(_currentuser);
@@ -86,6 +89,39 @@ namespace TrakHound_Dashboard
 
         public static readonly DependencyProperty UserLoginErrorProperty =
             DependencyProperty.Register("UserLoginError", typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+
+        /// <summary>
+        /// Send the Current User as a message to other pages
+        /// </summary>
+        /// <param name="userConfig"></param>
+        private void SendCurrentUser()
+        {
+            var data = CreateCurrentUserMessage();
+            Plugin_SendData(data);
+        }
+
+        private void SendCurrentUser(IPage page)
+        {
+            var data = CreateCurrentUserMessage();
+            page.GetSentData(data);
+        }
+
+        private EventData CreateCurrentUserMessage()
+        {
+            var data = new EventData();
+
+            if (_currentuser != null)
+            {
+                data.Id = "USER_LOGIN";
+                data.Data01 = _currentuser;
+            }
+            else
+            {
+                data.Id = "USER_LOGOUT";
+            }
+
+            return data;
+        }
 
     }
 }
