@@ -117,8 +117,8 @@ namespace TrakHound_Server.Plugins.CloudData
                 foreach (var queuedInfo in temp)
                 {
                     var match = queuedInfos.Find(o => o.UniqueId == queuedInfo.UniqueId);
-                    //if (match != null) match.ClearClasses();
-                    if (match != null && match.Hours != null) match.Hours.Clear();
+                    if (match != null) match.ClearClasses();
+                    //if (match != null && match.Hours != null) match.Hours.Clear();
                 }
             }
         }
