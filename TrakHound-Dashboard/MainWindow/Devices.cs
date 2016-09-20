@@ -3,169 +3,189 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
-using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
+using System.Threading;
 
+using TrakHound;
+using TrakHound.API.Users;
 using TrakHound.Configurations;
-using TrakHound.Plugins;
-using TrakHound_Device_Manager;
 
 namespace TrakHound_Dashboard
 {
     public partial class MainWindow
     {
-        public DeviceManager DeviceManager { get; set; }
-
-        public List<DeviceConfiguration> Devices { get; set; }
-
-        bool addDeviceOpened = false;
-
-        private void DeviceManager_Initialize()
+        private List<DeviceDescription> _devices;
+        public List<DeviceDescription> Devices
         {
-            if (DeviceManager == null)
+            get
             {
-                DeviceManager = new DeviceManager();
-                DeviceManager.DeviceListUpdated += Devicemanager_DeviceListUpdated;
-                DeviceManager.DeviceUpdated += Devicemanager_DeviceUpdated;
-                DeviceManager.LoadingDevices += DeviceManager_LoadingDevices;
-                DeviceManager.DevicesLoaded += DeviceManager_DevicesLoaded;
+                if (_devices == null) _devices = new List<DeviceDescription>();
+                return _devices;
+            }
+            set { _devices = value; }
+        }
+
+
+        private Thread loadDevicesThread;
+
+        private void LoadDevices()
+        {
+            // Send message to other pages that Devices are currently being loaded
+            SendDevicesLoadingMessage();
+
+            // Clear current devices
+            ClearDevices();
+
+            // Make sure loadDevicesThread is not active
+            if (loadDevicesThread != null) loadDevicesThread.Abort();
+
+            // Start LoadDevices in separate thread
+            if (CurrentUser != null)
+            {
+                loadDevicesThread = new Thread(new ParameterizedThreadStart(LoadUserDevices));
+                loadDevicesThread.Start(CurrentUser);
+            }
+            else
+            {
+                loadDevicesThread = new Thread(new ThreadStart(LoadLocalDevices));
+                loadDevicesThread.Start();
             }
         }
 
-        private void Devicemanager_DeviceListUpdated(List<DeviceConfiguration> configs)
+        private void LoadUserDevices(object o)
         {
-            this.Dispatcher.BeginInvoke(new Action<List<DeviceConfiguration>>(UpdateDeviceList), MainWindow.PRIORITY_BACKGROUND, new object[] { configs });
-        }
-
-        private void Devicemanager_DeviceUpdated(DeviceConfiguration config, DeviceManager.DeviceUpdateArgs args)
-        {
-            switch (args.Event)
+            if (o != null)
             {
-                case DeviceManager.DeviceUpdateEvent.Added:
-                    AddDevice(config);
-                    break;
+                var currentUser = (UserConfiguration)o;
 
-                case DeviceManager.DeviceUpdateEvent.Changed:
-                    UpdateDevice(config);
-                    break;
-
-                case DeviceManager.DeviceUpdateEvent.Removed:
-                    RemoveDevice(config);
-                    break;
-            }
-        }
-
-        private void DeviceManager_DevicesLoaded()
-        {
-            this.Dispatcher.BeginInvoke(new Action(DeviceManager_DevicesLoaded_GUI), MainWindow.PRIORITY_BACKGROUND, new object[] { });
-        }
-
-        private void DeviceManager_DevicesLoaded_GUI()
-        {
-            // Send message to plugins that Devices have been loaded
-            var data = new EventData();
-            data.Id = "DEVICES_LOADED";
-            Plugin_SendData(data);
-        }
-
-        private void DeviceManager_LoadingDevices()
-        {
-            this.Dispatcher.BeginInvoke(new Action(DeviceManager_LoadingDevices_GUI), MainWindow.PRIORITY_BACKGROUND, new object[] { });
-        }
-
-        private void DeviceManager_LoadingDevices_GUI()
-        {
-            // Send message to plugins that Devices are being loaded
-            var data = new EventData();
-            data.Id = "LOADING_DEVICES";
-            Plugin_SendData(data);
-        }
-
-
-        /// <summary>
-        /// Method that loads devices from DeviceManager's DeviceLoaded event
-        /// </summary>
-        /// <param name="configs"></param>
-        private void UpdateDeviceList(List<DeviceConfiguration> configs)
-        {
-            var enabledConfigs = new List<DeviceConfiguration>();
-
-            if (configs != null)
-            {
-                var orderedConfigs = configs.OrderBy(x => x.Description.Manufacturer).ThenBy(x => x.Description.Model).ThenBy(x => x.Description.Description).ThenBy(x => x.Description.DeviceId);
-
-                foreach (DeviceConfiguration config in orderedConfigs)
+                // Get Configurations
+                var result = TrakHound.API.Data.GetDeviceList(currentUser);
+                if (result != null)
                 {
-                    if (config.Enabled)
+                    foreach (var deviceInfo in result)
                     {
-                        enabledConfigs.Add(config);
+                        AddDevice(new DeviceDescription(deviceInfo));
                     }
                 }
-
-                Devices = orderedConfigs.ToList();
-
-                if (!addDeviceOpened && enabledConfigs.Count == 0 && _currentuser != null)
-                {
-                    addDeviceOpened = true;
-                    DeviceManager_DeviceList_Open();
-                }
-                else if (enabledConfigs.Count > 0)
-                {
-                    addDeviceOpened = false;
-                }
             }
 
-            foreach (var config in enabledConfigs)
+            SendDevicesLoadedMessage();
+        }
+
+        private void LoadLocalDevices()
+        {
+            var deviceConfigs = DeviceConfiguration.ReadAll(FileLocations.Devices);
+            if (deviceConfigs != null)
             {
-                AddDevice(config);
+                foreach (var deviceConfig in deviceConfigs)
+                {
+                    AddDevice(new DeviceDescription(deviceConfig));
+                }
             }
 
-            // Send message to plugins that Devices have been loaded
-            var data = new EventData();
-            data.Id = "DEVICES_LOADED";
-            Plugin_SendData(data);
+            SendDevicesLoadedMessage();
         }
 
         /// <summary>
-        /// Device Manager Added a device so add this device to Devices
+        /// Adds a device to the Device List
         /// </summary>
-        /// <param name="config"></param>
-        private void AddDevice(DeviceConfiguration config)
+        /// <param name="config">The Device to add</param>
+        public void AddDevice(DeviceDescription device)
+        {
+            Devices.Add(device);
+            SendDeviceAddedMessage(device);
+        }
+
+        /// <summary>
+        /// Clears the Device List
+        /// </summary>
+        private void ClearDevices()
+        {
+            // Remove all devices
+            if (Devices != null)
+            {
+                foreach (var device in Devices.ToList())
+                {
+                    SendDeviceRemovedMessage(device);
+                }
+
+                Devices.Clear();
+            }
+        }
+
+        private void SendDevicesLoadingMessage()
+        {
+            // Send message to plugins that Devices have been loaded
+            var data = new EventData();
+            data.Id = "DEVICES_LOADING";
+            SendEventData(data);
+        }
+
+        private void SendDevicesLoadedMessage()
+        {
+            // Send message to plugins that Devices have been loaded
+            var data = new EventData();
+            data.Id = "DEVICES_LOADED";
+            SendEventData(data);
+        }
+
+        private void SendDeviceAddedMessage(DeviceDescription device)
         {
             // Send message to plugins that Device has been added
             var data = new EventData();
             data.Id = "DEVICE_ADDED";
-            data.Data01 = config;
-            Plugin_SendData(data);
+            data.Data01 = device;
+            SendEventData(data);
         }
 
-        /// <summary>
-        /// Device Manager Updated a device so remove old device and new device to Devices
-        /// </summary>
-        /// <param name="config"></param>
-        private void UpdateDevice(DeviceConfiguration config)
+        private void SendDeviceUpdatedMessage(DeviceDescription device)
         {
             // Send message to plugins that Device has been updated
             var data = new EventData();
             data.Id = "DEVICE_UPDATED";
-            data.Data01 = config;
-            Plugin_SendData(data);
+            data.Data01 = device;
+            SendEventData(data);
         }
 
-        /// <summary>
-        /// Device Manager Removed a device so remove this device to Devices
-        /// </summary>
-        /// <param name="config"></param>
-        private void RemoveDevice(DeviceConfiguration config)
+        private void SendDeviceRemovedMessage(DeviceDescription device)
         {
             // Send message to plugins that Device has been removed
             var data = new EventData();
             data.Id = "DEVICE_REMOVED";
-            data.Data01 = config;
-            Plugin_SendData(data);
+            data.Data01 = device;
+            SendEventData(data);
         }
 
+        private void SendCurrentDevices()
+        {
+            if (Devices != null)
+            {
+                foreach (var device in Devices.ToList())
+                {
+                    // Send message to plugins that Device has been added
+                    var data = new EventData();
+                    data.Id = "DEVICE_ADDED";
+                    data.Data01 = device;
+                    SendEventData(data);
+                }
+            }
+        }
+
+        private void SendCurrentDevices(IPage page)
+        {
+            if (Devices != null)
+            {
+                foreach (var device in Devices.ToList())
+                {
+                    // Send message to plugins that Device has been added
+                    var data = new EventData();
+                    data.Id = "DEVICE_ADDED";
+                    data.Data01 = device;
+                    page.GetSentData(data);
+                }
+            }
+        }
+        
     }
 }
