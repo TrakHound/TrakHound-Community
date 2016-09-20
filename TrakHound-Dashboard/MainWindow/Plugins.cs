@@ -9,10 +9,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using System.Windows.Media;
 
 using TrakHound;
-using TrakHound.API.Users;
 using TrakHound.Logging;
 using TrakHound.Plugins;
 using TrakHound.Plugins.Client;
@@ -71,40 +69,6 @@ namespace TrakHound_Dashboard
             Properties.Settings.Default.Save();
         }
 
-        // Debug Omit Plugins (any plugin listed won't be loaded)
-        static string[] debugOmitPlugins = new string[]
-        {
-            //"Dashboard",
-
-            //"Device Compare",
-            //"OEE",
-            //"Availability",
-            //"Performance",
-            //"Timeline (OEE)",
-            //"Production Status",
-            //"Program Name",
-            //"Feedrate Override",
-            //"Rapidrate Override",
-            //"Spindle Override",
-            //"Emergency Stop",
-            //"Controller Mode",
-            //"Execution Mode",
-            //"Alarm",
-            //"Part Count",
-
-            //"Device Table",
-
-            //"Table Manager",
-            //"Status Data",
-            ////"Status Timeline",
-            ////"Device Status Hour Timeline",
-            ////"Controller Status",
-            ////"Production Status",
-            ////"OEE Status",
-            ////"Device Status Times",
-            ////"Production Status Times"
-        };
-
         #region "IClientPlugins"
 
         /// <summary>
@@ -131,12 +95,6 @@ namespace TrakHound_Dashboard
             foreach (var plugin in result)
             {
                 Logger.Log(plugin.Title + " Loaded", LogLineType.Notification);
-            }
-
-            foreach (var debugOmitPlugin in debugOmitPlugins)
-            {
-                var p = result.Find(x => x.Title == debugOmitPlugin);
-                if (p != null) result.Remove(p);
             }
 
             return result;
@@ -474,9 +432,6 @@ namespace TrakHound_Dashboard
         /// <param name="de_d"></param>
         private void Plugin_SendData(EventData data)
         {
-            Plugin_ShowDeviceManager(data);
-            Plugin_ShowRequested(data);
-
             foreach (var config in PluginConfigurations)
             {
                 if (config.Enabled)
@@ -494,6 +449,8 @@ namespace TrakHound_Dashboard
                     }
                 }
             }
+
+            SendEventData(data);
         }
 
         private class SendDataInfo
@@ -522,93 +479,6 @@ namespace TrakHound_Dashboard
             }
         }
 
-        private void Plugin_ShowDeviceManager(EventData data)
-        {
-            if (data != null && data.Id != null)
-            {
-                if (data.Id == "SHOW_DEVICE_MANAGER")
-                {
-                    DeviceManager_DeviceList_Open();
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// Plugin has sent a message requesting to be shown as a tab
-        /// de_d.id = 'show'
-        /// de_d.data01 = Configuration
-        /// de_d.data02 = Plugin (IClientPlugin)
-        /// de_d.data03 = [Optional] Alternate Title
-        /// de_d.data04 = [Optional] Tag
-        /// </summary>
-        /// <param name="de_d"></param>
-        private void Plugin_ShowRequested(EventData data)
-        {
-            if (data != null && data.Id != null && data.Data02 != null)
-            {
-                if (data.Id.ToLower() == "show")
-                {
-                    if (typeof(IPage).IsAssignableFrom(data.Data02.GetType()))
-                    {
-                        var page = (IPage)data.Data02;
-
-                        string title = page.Title;
-                        ImageSource img = page.Image;
-                        string tag = null;
-
-                        if (data.Data03 != null) title = data.Data03.ToString();
-                        if (data.Data04 != null) tag = data.Data04.ToString();
-
-                        AddTab(page, title, img, tag);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Plugin has been signaled to be unloaded
-        /// </summary>
-        /// <param name="config"></param>
-        public void Plugin_Unload(PluginConfiguration config)
-        {
-            if (config != null)
-            {
-                if (!config.Enabled)
-                {
-                    // Remove TabHeader
-                    //TabHeaders.ToList().FindIndex(x => x.Page.PageContent)
-
-                    //foreach (TH_TabItem ti in Pages_TABCONTROL.Items.OfType<TH_TabItem>().ToList())
-                    //{
-                    //    if (ti.Header != null)
-                    //    {
-                    //        if (ti.Header.ToString().ToUpper() == config.Name.ToUpper())
-                    //        {
-                    //            if (ti.Content.GetType() == typeof(Grid))
-                    //            {
-                    //                Grid grid = ti.Content as Grid;
-                    //                grid.Children.Clear();
-                    //            }
-                    //            Pages_TABCONTROL.Items.Remove(ti);
-                    //        }
-                    //    }
-                    //}
-
-                    //if (optionsManager != null)
-                    //{
-                    //    foreach (ListButton lb in optionsManager.Pages.ToList())
-                    //    {
-                    //        if (lb.Text.ToUpper() == config.Name.ToUpper())
-                    //        {
-                    //            optionsManager.Pages.Remove(lb);
-                    //        }
-                    //    }
-                    //}
-                }
-            }
-        }
-
         /// <summary>
         /// Create an Options page for the plugin and add it to the Options Manager
         /// </summary>
@@ -616,27 +486,6 @@ namespace TrakHound_Dashboard
         private void Plugin_CreateOptionsPage(IClientPlugin plugin)
         {
             if (plugin.Options != null) Options_AddPage(plugin.Options);
-        }
-
-        /// <summary>
-        /// Update the Current User for each plugin
-        /// </summary>
-        /// <param name="userConfig"></param>
-        private void Plugins_UpdateUser(UserConfiguration userConfig)
-        {
-            var data = new EventData();
-
-            if (userConfig != null)
-            {
-                data.Id = "USER_LOGIN";
-                data.Data01 = userConfig;
-            }
-            else
-            {
-                data.Id = "USER_LOGOUT";
-            }
-
-            Plugin_SendData(data);
         }
 
         /// <summary>
