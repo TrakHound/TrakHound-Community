@@ -69,6 +69,13 @@ namespace TrakHound_Dashboard
                 header.CloseClicked += TabHeader_CloseClicked;
                 header.Opened += TabHeader_Opened;
                 header.Closed += TabHeader_Closed;
+                page.SendData += SendEventData;
+
+                // Send Current User Data
+                SendCurrentUser(page);
+
+                // Send Current Device List
+                SendCurrentDevices(page);
 
                 TabHeaders.Add(header);
 
@@ -199,8 +206,8 @@ namespace TrakHound_Dashboard
         }
 
 
-        const double TAB_PAGE_OPEN_ANIMATION_TIME = 300;
-        const double TAB_PAGE_CLOSE_ANIMATION_TIME = 300;
+        const double TAB_PAGE_OPEN_ANIMATION_TIME = 200;
+        const double TAB_PAGE_CLOSE_ANIMATION_TIME = 200;
 
         private void AnimateTabPageOpen()
         {
@@ -342,6 +349,85 @@ namespace TrakHound_Dashboard
 
         #endregion
 
+        #region "Event Data"
+
+        private void SendEventData(EventData data)
+        {
+            LoadDevicesRequested(data);
+            ShowDeviceManagerRequested(data);
+            ShowRequested(data);
+
+            foreach (var tabHeader in TabHeaders)
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    if (tabHeader.Page != null)
+                    {
+                        if (tabHeader.Page.PageContent != null)
+                        {
+                            tabHeader.Page.PageContent.GetSentData(data);
+                        }
+                    }
+                }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+            }
+        }
+
+        private void LoadDevicesRequested(EventData data)
+        {
+            if (data != null && data.Id != null)
+            {
+                if (data.Id == "LOAD_DEVICES")
+                {
+                    LoadDevices();
+                }
+            }
+        }
+
+        private void ShowDeviceManagerRequested(EventData data)
+        {
+            if (data != null && data.Id != null)
+            {
+                if (data.Id == "SHOW_DEVICE_MANAGER")
+                {
+                    DeviceManager_DeviceList_Open();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Page has sent a message requesting to be shown as a tab
+        /// de_d.id = 'show'
+        /// de_d.data01 = Configuration
+        /// de_d.data02 = Plugin (IClientPlugin)
+        /// de_d.data03 = [Optional] Alternate Title
+        /// de_d.data04 = [Optional] Tag
+        /// </summary>
+        /// <param name="de_d"></param>
+        private void ShowRequested(EventData data)
+        {
+            if (data != null && data.Id != null && data.Data02 != null)
+            {
+                if (data.Id.ToLower() == "show")
+                {
+                    if (typeof(IPage).IsAssignableFrom(data.Data02.GetType()))
+                    {
+                        var page = (IPage)data.Data02;
+
+                        string title = page.Title;
+                        ImageSource img = page.Image;
+                        string tag = null;
+
+                        if (data.Data03 != null) title = data.Data03.ToString();
+                        if (data.Data04 != null) tag = data.Data04.ToString();
+
+                        AddTab(page, title, img, tag);
+                    }
+                }
+            }
+        }
+
+        #endregion
+
         void ChangePage_Forward()
         {
             if (TabHeaders.Count > 1)
@@ -404,12 +490,10 @@ namespace TrakHound_Dashboard
             if (deviceListPage == null)
             {
                 deviceListPage = new DeviceList();
-                deviceListPage.DeviceManager = DeviceManager;
 
                 deviceListPage.PageClosed += DeviceListPage_PageClosed;
                 deviceListPage.AddDeviceSelected += DeviceManager_DeviceList_AddDeviceSelected;
                 deviceListPage.EditSelected += DeviceManager_DeviceList_DeviceEditSelected;
-                deviceListPage.EditTableSelected += DeviceManager_DeviceList_DeviceEditTableSelected;
             }
         }
 
@@ -418,7 +502,6 @@ namespace TrakHound_Dashboard
             deviceListPage.PageClosed -= DeviceListPage_PageClosed;
             deviceListPage.AddDeviceSelected -= DeviceManager_DeviceList_AddDeviceSelected;
             deviceListPage.EditSelected -= DeviceManager_DeviceList_DeviceEditSelected;
-            deviceListPage.EditTableSelected -= DeviceManager_DeviceList_DeviceEditTableSelected;
 
             deviceListPage = null;
         }
@@ -435,9 +518,7 @@ namespace TrakHound_Dashboard
 
         private void DeviceManager_DeviceList_AddDeviceSelected() { DeviceManager_AddDevice_Open(); }
 
-        private void DeviceManager_DeviceList_DeviceEditSelected(DeviceConfiguration config) { DeviceManager_EditDevice_Open(config); }
-
-        private void DeviceManager_DeviceList_DeviceEditTableSelected(DeviceConfiguration config) { }
+        private void DeviceManager_DeviceList_DeviceEditSelected(DeviceDescription device) { DeviceManager_EditDevice_Open(device); }
 
         #endregion
 
@@ -450,11 +531,9 @@ namespace TrakHound_Dashboard
             if (addDevicePage == null)
             {
                 addDevicePage = new TrakHound_Device_Manager.AddDevice.Page();
-                addDevicePage.DeviceManager = DeviceManager;
                 addDevicePage.ShowAutoDetect();
 
                 addDevicePage.DeviceListSelected += DeviceManager_AddDevice_DeviceListSelected;
-                addDevicePage.EditTableSelected += DeviceManager_AddDevice_EditTableSelected;
                 addDevicePage.PageClosed += AddDevicePage_PageClosed;
             }
         }
@@ -462,7 +541,6 @@ namespace TrakHound_Dashboard
         private void AddDevicePage_PageClosed()
         {
             addDevicePage.DeviceListSelected -= DeviceManager_AddDevice_DeviceListSelected;
-            addDevicePage.EditTableSelected -= DeviceManager_AddDevice_EditTableSelected;
             addDevicePage.PageClosed -= AddDevicePage_PageClosed;
 
             addDevicePage = null;
@@ -482,17 +560,17 @@ namespace TrakHound_Dashboard
 
         #endregion
 
-        public void DeviceManager_EditDevice_Open(DeviceConfiguration config)
+        public void DeviceManager_EditDevice_Open(DeviceDescription device)
         {
-            string title = "Edit Device - " + config.Description.Description;
-            if (config.Description.DeviceId != null) title += " (" + config.Description.DeviceId + ")";
+            string title = "Edit Device - " + device.Description.Description;
+            if (device.Description.DeviceId != null) title += " (" + device.Description.DeviceId + ")";
 
-            string tag = config.UniqueId;
+            string tag = device.UniqueId;
 
             var tab = FindTab(title, tag);
             if (tab == null)
             {
-                var page = new EditPage(config, DeviceManager);
+                var page = new EditPage(CurrentUser, device.UniqueId);
 
                 page.DeviceListSelected += DeviceManager_EditDevice_DeviceListSelected;
 
