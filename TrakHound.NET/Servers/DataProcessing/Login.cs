@@ -25,7 +25,7 @@ namespace TrakHound.Servers.DataProcessing
             }
         }
 
-        public Database_Settings UserDatabaseSettings { get; set; }
+        //public Database_Settings UserDatabaseSettings { get; set; }
 
         public delegate void CurrentUserChanged_Handler(UserConfiguration userConfig);
         public event CurrentUserChanged_Handler CurrentUserChanged;

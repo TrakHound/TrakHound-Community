@@ -160,14 +160,6 @@
     </Compile>
     <Compile Include="Pages\Dashboard\StatusData\Plugin.cs" />
     <Compile Include="Pages\Dashboard\StatusData\StatusData.cs" />
-    <Compile Include="Pages\Dashboard\StatusTimeline\Controls\Row.xaml.cs">
-      <DependentUpon>Row.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Dashboard\StatusTimeline\Plugin.cs" />
-    <Compile Include="Pages\Dashboard\StatusTimeline\StatusTimeline.xaml.cs">
-      <DependentUpon>StatusTimeline.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Dashboard\StatusTimeline\Update Data.cs" />
     <None Include="Pages\Options\API\Controls\ServerItem.xaml.cs">
       <DependentUpon>ServerItem.xaml</DependentUpon>
     </None>
@@ -211,7 +203,6 @@
     <Compile Include="Controls\TabManager.xaml.cs">
       <DependentUpon>TabManager.xaml</DependentUpon>
     </Compile>
-    <None Include="Controls\TH_TabItem.cs" />
     <Compile Include="Controls\TH_ToolBarItem.xaml.cs">
       <DependentUpon>TH_ToolBarItem.xaml</DependentUpon>
     </Compile>
@@ -413,14 +404,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\Dashboard\StatusGrid\StatusGrid.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\Dashboard\StatusTimeline\Controls\Row.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\Dashboard\StatusTimeline\StatusTimeline.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

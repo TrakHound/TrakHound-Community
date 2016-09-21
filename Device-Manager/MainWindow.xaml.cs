@@ -49,7 +49,7 @@ namespace Device_Manager
         private void DeviceList_Initialize()
         {
             deviceList = new DeviceList();
-            deviceList.DeviceManager = deviceManager;
+            //deviceList.DeviceManager = deviceManager;
             deviceList.AddDeviceSelected += DeviceList_AddDeviceSelected;
             deviceList.EditSelected += DeviceList_EditSelected;
 

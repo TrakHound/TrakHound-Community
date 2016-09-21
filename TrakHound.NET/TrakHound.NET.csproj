@@ -78,14 +78,13 @@
     <Compile Include="API\Bugs\BugType.cs" />
     <Compile Include="API\Bugs\Send.cs" />
     <Compile Include="API\Data\CycleInfo.cs" />
+    <Compile Include="API\Data\AgentInfo.cs" />
     <Compile Include="API\Devices\Check.cs" />
     <Compile Include="API\Devices\CheckInfo.cs" />
     <Compile Include="Configurations\DeviceDescription.cs" />
     <Compile Include="Servers\DataStorage\Backup.cs" />
     <Compile Include="Servers\DataStorage\LocalServer.cs" />
-    <Compile Include="API\Data\CyclesInfo.cs" />
     <Compile Include="API\Data\HourInfo.cs" />
-    <Compile Include="API\Data\OeeTimelineInfo.cs" />
     <Compile Include="API\Devices\Remove.cs" />
     <Compile Include="API\Files\Download.cs" />
     <Compile Include="API\Files\Upload.cs" />
@@ -100,7 +99,6 @@
     <Compile Include="Configurations\AutoGenerate\Agent.cs" />
     <Compile Include="Configurations\AutoGenerate\Configuration.cs" />
     <Compile Include="Configurations\AutoGenerate\Cycles.cs" />
-    <None Include="Configurations\AutoGenerate\Databases.cs" />
     <Compile Include="Configurations\AutoGenerate\Description.cs" />
     <Compile Include="Configurations\AutoGenerate\GeneratedEvents\CycleExecution.cs" />
     <Compile Include="Configurations\AutoGenerate\GeneratedEvents\DeviceStatus.cs" />
@@ -115,11 +113,7 @@
     <Compile Include="Configurations\Converters\TableToXml.cs" />
     <Compile Include="Configurations\Converters\XmlToTable.cs" />
     <Compile Include="Configurations\Converters\Converter.cs" />
-    <Compile Include="Configurations\Database_Settings.cs" />
-    <Compile Include="Configurations\Description_Settings.cs" />
     <Compile Include="Configurations\DeviceConfiguration.cs" />
-    <Compile Include="Configurations\FileLocation_Settings.cs" />
-    <Compile Include="Configurations\IConfiguration.cs" />
     <Compile Include="API\Data\ControllerInfo.cs" />
     <Compile Include="API\Data\DescriptionInfo.cs" />
     <Compile Include="API\Data\DeviceInfo.cs" />
@@ -147,11 +141,6 @@
     <Compile Include="Plugins\Client\ClientPlugin.cs" />
     <Compile Include="Plugins\Client\Configuration.cs" />
     <Compile Include="Plugins\Client\IClientPlugin.cs" />
-    <Compile Include="Plugins\Database\ConifgurationInfoPlugin.cs" />
-    <Compile Include="Plugins\Database\DatabasePlugin.cs" />
-    <Compile Include="Plugins\Database\IConfigurationInfo.cs" />
-    <Compile Include="Plugins\Database\IConfigurationPage.cs" />
-    <Compile Include="Plugins\Database\IDatabasePlugin.cs" />
     <Compile Include="EventData.cs" />
     <Compile Include="Plugins\Reader.cs" />
     <Compile Include="Plugins\Server\ConifgurationInfoPlugin.cs" />

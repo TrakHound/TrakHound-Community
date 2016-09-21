@@ -80,13 +80,11 @@
     <Compile Include="Plugins\InstanceData\InstanceData.cs" />
     <Compile Include="Plugins\InstanceData\Plugin.cs" />
     <Compile Include="Plugins\InstanceData\Processing.cs" />
-    <Compile Include="Plugins\MTConnectData\Configuration.cs" />
     <Compile Include="Plugins\MTConnectData\Current.cs" />
     <Compile Include="Plugins\MTConnectData\Plugin.cs" />
     <Compile Include="Plugins\MTConnectData\Probe.cs" />
     <Compile Include="Plugins\MTConnectData\Requests.cs" />
     <Compile Include="Plugins\MTConnectData\Sample.cs" />
-    <None Include="Plugins\OEE\Configuration.cs" />
     <Compile Include="Plugins\OEE\OEE.cs" />
     <Compile Include="Plugins\OEE\OEEData.cs" />
     <Compile Include="Plugins\Parts\Configuration.cs" />
