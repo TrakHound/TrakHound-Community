@@ -59,20 +59,21 @@ namespace TrakHound_Device_Manager.Pages.Description
 
         public event SettingChanged_Handler SettingChanged;
 
+        private UserConfiguration currentUser;
 
         public event SendData_Handler SendData;
 
         public void GetSentData(EventData data)
         {
-            if (data != null && data.Id != null)
+            if (data != null)
             {
-                if (data.Id == "DEVICE_MANAGER")
+                if (data.Id == "USER_LOGIN")
                 {
-                    if (data.Data02 != null)
-                    {
-                        deviceManager = (DeviceManager)data.Data02;
-                    }
-                    else deviceManager = null;
+                    if (data.Data01 != null) currentUser = (UserConfiguration)data.Data01;
+                }
+                else if (data.Id == "USER_LOGOUT")
+                {
+                    currentUser = null;
                 }
             }
         }
@@ -165,7 +166,7 @@ namespace TrakHound_Device_Manager.Pages.Description
 
         DataTable configurationTable;
 
-        DeviceManager deviceManager;
+        //DeviceManager deviceManager;
 
         public bool Loading
         {
@@ -432,7 +433,7 @@ namespace TrakHound_Device_Manager.Pages.Description
 
                 var info = new ImageInfo();
                 info.FileId = fileId;
-                if (deviceManager != null) info.UserConfig = deviceManager.CurrentUser;
+                info.UserConfig = currentUser;
 
                 ThreadPool.QueueUserWorkItem(new WaitCallback(LoadManufacturerLogo_Worker), info);
             }
@@ -522,7 +523,7 @@ namespace TrakHound_Device_Manager.Pages.Description
                 if (File.Exists(imagePath))
                 {
                     var info = new ImageInfo();
-                    if (deviceManager != null) info.UserConfig = deviceManager.CurrentUser;
+                    info.UserConfig = currentUser;
                     info.FileId = imagePath;
 
                     ManufacturerLogoLoading = true;
@@ -570,7 +571,7 @@ namespace TrakHound_Device_Manager.Pages.Description
 
                             var fileData = new HTTP.FileContentData("uploadImage", tempPath, contentType);
 
-                            var fileInfos = Files.Upload(deviceManager.CurrentUser, fileData);
+                            var fileInfos = Files.Upload(currentUser, fileData);
                             if (fileInfos != null && fileInfos.Length > 0)
                             {
                                 fileId = fileInfos[0].Id;
@@ -679,7 +680,7 @@ namespace TrakHound_Device_Manager.Pages.Description
 
                 var info = new ImageInfo();
                 info.FileId = fileId;
-                if (deviceManager != null) info.UserConfig = deviceManager.CurrentUser;
+                info.UserConfig = currentUser;
 
                 ThreadPool.QueueUserWorkItem(new WaitCallback(LoadDeviceImage_Worker), info);
             }
@@ -768,7 +769,7 @@ namespace TrakHound_Device_Manager.Pages.Description
                 if (File.Exists(imagePath))
                 {
                     var info = new ImageInfo();
-                    if (deviceManager != null) info.UserConfig = deviceManager.CurrentUser;
+                    info.UserConfig = currentUser;
                     info.FileId = imagePath;
 
                     DeviceImageLoading = true;
@@ -816,7 +817,7 @@ namespace TrakHound_Device_Manager.Pages.Description
 
                             var fileData = new HTTP.FileContentData("uploadImage", tempPath, contentType);
 
-                            var fileInfos = Files.Upload(deviceManager.CurrentUser, fileData);
+                            var fileInfos = Files.Upload(currentUser, fileData);
                             if (fileInfos != null && fileInfos.Length > 0)
                             {
                                 fileId = fileInfos[0].Id;

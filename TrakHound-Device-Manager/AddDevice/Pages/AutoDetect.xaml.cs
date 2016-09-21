@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 using TrakHound;
+using TrakHound.API.Users;
 using TrakHound.Configurations;
 using TrakHound.Configurations.AutoGenerate;
 using TrakHound.Tools;
@@ -77,7 +78,125 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
 
         public event SendData_Handler SendData;
 
-        public void GetSentData(EventData data) { }
+
+        ObservableCollection<DeviceDescription> _devices;
+        /// <summary>
+        /// Collection of TrakHound.Configurations.Configuration objects that represent the active devices
+        /// </summary>
+        public ObservableCollection<DeviceDescription> Devices
+        {
+            get
+            {
+                if (_devices == null)
+                    _devices = new ObservableCollection<DeviceDescription>();
+                return _devices;
+            }
+
+            set
+            {
+                _devices = value;
+            }
+        }
+
+        private UserConfiguration currentUser;
+
+
+        public void GetSentData(EventData data)
+        {
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateLoggedInChanged), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDevicesLoading), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceAdded), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceUpdated), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceRemoved), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+        }
+
+        void UpdateLoggedInChanged(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id == "USER_LOGIN")
+                {
+                    if (data.Data01 != null) currentUser = (UserConfiguration)data.Data01;
+                }
+                else if (data.Id == "USER_LOGOUT")
+                {
+                    currentUser = null;
+                }
+            }
+        }
+
+        void UpdateDevicesLoading(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id == "DEVICES_LOADING")
+                {
+                    DevicesLoading = true;
+                    ClearDevices();
+                }
+
+                if (data.Id == "DEVICES_LOADED")
+                {
+                    DevicesLoading = false;
+                }
+            }
+        }
+
+        void UpdateDeviceAdded(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id == "DEVICE_ADDED" && data.Data01 != null)
+                {
+                    Devices.Add((DeviceDescription)data.Data01);
+                }
+            }
+        }
+
+        void UpdateDeviceUpdated(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id == "DEVICE_UPDATED" && data.Data01 != null)
+                {
+                    var device = (DeviceDescription)data.Data01;
+
+                    int i = Devices.ToList().FindIndex(x => x.UniqueId == device.UniqueId);
+                    if (i >= 0)
+                    {
+                        Devices.RemoveAt(i);
+                        Devices.Insert(i, device);
+                    }
+                }
+            }
+        }
+
+        void UpdateDeviceRemoved(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id == "DEVICE_REMOVED" && data.Data01 != null)
+                {
+                    var device = (DeviceDescription)data.Data01;
+
+                    int i = Devices.ToList().FindIndex(x => x.UniqueId == device.UniqueId);
+                    if (i >= 0)
+                    {
+                        Devices.RemoveAt(i);
+                    }
+                }
+            }
+        }
+
+        private void ClearDevices()
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                Devices.Clear();
+            }
+            ), UI_Functions.PRIORITY_DATA_BIND, new object[] { });
+        }
 
         #endregion
 
@@ -273,6 +392,9 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
                             var range = new Network_Functions.IPAddressRange(start, end);
 
                             addressRange = ips.FindAll(o => range.IsInRange(o));
+
+                            int localhostIndex = addressRange.FindIndex(o => o.ToString() == hostIp.ToString());
+                            if (localhostIndex >= 0) addressRange[localhostIndex] = IPAddress.Loopback;
                         }
                     }
                 }
@@ -397,22 +519,22 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
                 {
                     if (stop.WaitOne(0, true)) break;
 
-                    if (ParentPage.DeviceManager != null && ParentPage.DeviceManager.Devices != null)
+                    if (Devices != null)
                     {
                         bool match = false;
 
-                        // Check Device Manager to see if the Device has already been added
-                        foreach (var addedDevice in ParentPage.DeviceManager.Devices.ToList())
-                        {
-                            var agentConfig = AgentConfiguration.Read(addedDevice);
-                            if (agentConfig.Address == address && 
-                                agentConfig.Port == port &&
-                                agentConfig.DeviceName == device.Name)
-                            {
-                                match = true;
-                                break;
-                            }
-                        }
+                        // Check Device List to see if the Device has already been added
+                        //foreach (var addedDevice in Devices.ToList())
+                        //{
+                        //    var agentConfig = AgentConfiguration.Read(addedDevice);
+                        //    if (agentConfig.Address == address && 
+                        //        agentConfig.Port == port &&
+                        //        agentConfig.DeviceName == device.Name)
+                        //    {
+                        //        match = true;
+                        //        break;
+                        //    }
+                        //}
 
                         // If Device is not already added then add it
                         if (!match)
@@ -468,9 +590,9 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
                 var config = Configuration.Create(probeData);
 
                 // Add Device to user (or save to disk if local)
-                if (ParentPage.DeviceManager.CurrentUser != null)
+                if (currentUser != null)
                 {
-                    success = TrakHound.API.Devices.Update(ParentPage.DeviceManager.CurrentUser, config);
+                    success = TrakHound.API.Devices.Update(currentUser, config);
                 }
                 else
                 {
@@ -481,8 +603,14 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
                 {
                     Dispatcher.BeginInvoke(new Action(() =>
                     {
+                        // Send message that device was added
+                        var data = new EventData();
+                        data.Id = "DEVICE_ADDED";
+                        data.Data01 = new DeviceDescription(config);
+                        SendData?.Invoke(data);
+
                         // Add to DeviceManager
-                        ParentPage.DeviceManager.AddDevice(config);
+                        //ParentPage.DeviceManager.AddDevice(config);
 
                         int i = DeviceInfos.ToList().FindIndex(x => x.Id == info.Id);
                         if (i >= 0) DeviceInfos.RemoveAt(i);
@@ -495,14 +623,11 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
                 }
             }
 
-            if (!success)
+            Dispatcher.BeginInvoke(new Action(() =>
             {
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    info.Loading = false;
+                info.Loading = false;
 
-                }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
-            }
+            }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
         }
 
         #endregion

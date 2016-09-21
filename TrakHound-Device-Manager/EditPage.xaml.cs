@@ -18,6 +18,8 @@ using System.Windows.Media.Imaging;
 using System.Xml;
 
 using TrakHound;
+using TrakHound.API;
+using TrakHound.API.Users;
 using TrakHound.Configurations;
 using TrakHound.Configurations.Converters;
 using TrakHound.Logging;
@@ -33,21 +35,21 @@ namespace TrakHound_Device_Manager
     /// </summary>
     public partial class EditPage : UserControl, IPage
     {
-        public EditPage(DeviceConfiguration config, DeviceManager deviceManager)
+        public EditPage(UserConfiguration _userConfig, string _uniqueId)
         {
             InitializeComponent();
             DataContext = this;
 
-            DeviceManager = deviceManager;
+            userConfig = _userConfig;
+            uniqueId = _uniqueId;
 
-            if (config != null)
-            {
-                Configuration = config;
-                ConfigurationTable = DeviceConfigurationConverter.XMLToTable(config.Xml);
-            }
+            LoadDevice();
 
             LoadPages();
         }
+
+        private UserConfiguration userConfig;
+        private string uniqueId;
 
         #region "IPage Interface"
 
@@ -80,14 +82,40 @@ namespace TrakHound_Device_Manager
 
         public event SendData_Handler SendData;
 
-        public void GetSentData(EventData data) { }
+        public void GetSentData(EventData data)
+        {
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateLoggedInChanged), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+
+            foreach (var page in ConfigurationPages)
+            {
+                page.GetSentData(data);
+            }
+        }
+
+        void UpdateLoggedInChanged(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id == "USER_LOGIN")
+                {
+                    if (data.Data01 != null) userConfig = (UserConfiguration)data.Data01;
+                }
+                else if (data.Id == "USER_LOGOUT")
+                {
+                    userConfig = null;
+                }
+            }
+        }
+
+        private EventData CreateCurrentUserEventData()
+        {
+            var data = new EventData();
+            data.Id = "USER_LOGIN";
+            data.Data01 = userConfig;
+            return data;
+        }
 
         #endregion
-
-        /// <summary>
-        /// Parent DeviceManager object
-        /// </summary>
-        public DeviceManager DeviceManager { get; set; }
 
         /// <summary>
         /// Configuration object that is being edited
@@ -103,14 +131,6 @@ namespace TrakHound_Device_Manager
         /// Event to request to open the Device List Page
         /// </summary>
         public event PageSelected_Handler DeviceListSelected;
-
-        /// <summary>
-        /// Event to request to open the Edit Table Page
-        /// </summary>
-        public event DeviceSelected_Handler EditTableSelected;
-
-
-        const System.Windows.Threading.DispatcherPriority PRIORITY_BACKGROUND = System.Windows.Threading.DispatcherPriority.Background;
 
 
         #region "Toolbar"
@@ -133,23 +153,18 @@ namespace TrakHound_Device_Manager
             DeviceListSelected?.Invoke();
         }
 
-        private void EditTable_Clicked(TrakHound_UI.Button bt)
-        {
-            EditTableSelected?.Invoke(Configuration);
-        }
-
         #endregion
 
         #region "Dependency Properties"
 
-        public bool PagesLoading
+        public bool DeviceLoading
         {
-            get { return (bool)GetValue(PagesLoadingProperty); }
-            set { SetValue(PagesLoadingProperty, value); }
+            get { return (bool)GetValue(DeviceLoadingProperty); }
+            set { SetValue(DeviceLoadingProperty, value); }
         }
 
-        public static readonly DependencyProperty PagesLoadingProperty =
-            DependencyProperty.Register("PagesLoading", typeof(bool), typeof(EditPage), new PropertyMetadata(false));
+        public static readonly DependencyProperty DeviceLoadingProperty =
+            DependencyProperty.Register("DeviceLoading", typeof(bool), typeof(EditPage), new PropertyMetadata(true));
 
         public object CurrentPage
         {
@@ -180,15 +195,115 @@ namespace TrakHound_Device_Manager
 
         #endregion
 
+        #region "Load Device Configuration"
+
+        private Thread loadDeviceThread;
+
+        private class LoadDeviceInfo
+        {
+            public LoadDeviceInfo(UserConfiguration _userConfig, string _uniqueId)
+            {
+                UserConfiguration = _userConfig;
+                UniqueId = _uniqueId;
+            }
+
+            public UserConfiguration UserConfiguration { get; set; }
+            public string UniqueId { get; set; }
+        }
+
+        /// <summary>
+        /// Loads the Device's DeviceConfiguration
+        /// </summary>
+        private void LoadDevice()
+        {
+            DeviceLoading = true;
+
+            if (loadDeviceThread != null) loadDeviceThread.Abort();
+
+            if (userConfig != null)
+            {
+                loadDeviceThread = new Thread(new ParameterizedThreadStart(LoadUserDevice));
+                loadDeviceThread.Start(new LoadDeviceInfo(userConfig, uniqueId));
+            }
+            else
+            {
+                loadDeviceThread = new Thread(new ParameterizedThreadStart(LoadLocalDevice));
+                loadDeviceThread.Start(uniqueId);
+            }
+        }
+
+        private void LoadUserDevice(object o)
+        {
+            if (o != null)
+            {
+                var loadDeviceInfo = (LoadDeviceInfo)o;
+
+                var config = Devices.Get(loadDeviceInfo.UserConfiguration, loadDeviceInfo.UniqueId);
+                if (config != null)
+                {
+                    Configuration = config;
+                    ConfigurationTable = DeviceConfigurationConverter.XMLToTable(config.Xml);
+
+                    // Reload Pages with new Device Configuration
+                    Dispatcher.BeginInvoke(new Action(RestorePages), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                }
+            }
+
+            Dispatcher.BeginInvoke(new Action(() => DeviceLoading = false), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+        }
+
+        private void LoadLocalDevice(object o)
+        {
+            if (o != null)
+            {
+                string uniqueId = (string)o;
+
+                try
+                {
+                    string filename = Path.ChangeExtension(uniqueId, ".xml");
+                    string path = Path.Combine(FileLocations.Devices, filename);
+
+                    var config = DeviceConfiguration.Read(path);
+                    if (config != null)
+                    {
+                        Configuration = config;
+                        ConfigurationTable = DeviceConfigurationConverter.XMLToTable(config.Xml);
+
+                        // Reload Pages with new Device Configuration
+                        Dispatcher.BeginInvoke(new Action(RestorePages), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log("Local Device Backup Error :: Exception :: " + ex.Message);
+                }
+            }
+
+            Dispatcher.BeginInvoke(new Action(() => DeviceLoading = false), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+        }
+
+        private DeviceConfiguration GetLocalDeviceConfiguration(string uniqueId)
+        {
+            string filename = Path.ChangeExtension(uniqueId, ".xml");
+            string path = Path.Combine(FileLocations.Devices, filename);
+
+            return DeviceConfiguration.Read(path);
+        }
+
+        #endregion
+
         #region "Load / Save Device"
 
         private void LoadPage(IConfigurationPage page)
         {
-            Dispatcher.BeginInvoke(new Action(() =>
+            if (ConfigurationTable != null)
             {
-                if (!page.Loaded) page.LoadConfiguration(ConfigurationTable.Copy());
-                page.Loaded = true;
-            }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    if (!page.Loaded) page.LoadConfiguration(ConfigurationTable.Copy());
+                    page.Loaded = true;
+                }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+            }
         }
 
         private void RestorePages()
@@ -241,9 +356,9 @@ namespace TrakHound_Device_Manager
                 // Reset Update ID
                 DataTable_Functions.UpdateTableValue(dt, "address", "/UpdateId", "value", Guid.NewGuid().ToString());
 
-                if (DeviceManager.CurrentUser != null)
+                if (userConfig != null)
                 {
-                    success = TrakHound.API.Devices.Update(DeviceManager.CurrentUser, dt);
+                    success = Devices.Update(userConfig, dt);
                 }
                 // If not logged in Save to File in 'C:\TrakHound\'
                 else
@@ -272,10 +387,10 @@ namespace TrakHound_Device_Manager
             SaveNeeded = false;
             Saving = false;
 
-            // Update Device in Device Manager
-            var args = new DeviceManager.DeviceUpdateArgs();
-            args.Event = DeviceManager.DeviceUpdateEvent.Changed;
-            DeviceManager.UpdateDevice(Configuration, args);
+            var data = new EventData();
+            data.Id = "DEVICE_UPDATED";
+            data.Data01 = new DeviceDescription(Configuration);
+            SendData?.Invoke(data);
         }
 
         #endregion
@@ -302,38 +417,20 @@ namespace TrakHound_Device_Manager
 
         private void LoadPages()
         {
-            PagesLoading = true;
+            GetPluginPageInfos();
+            var pageInfos = PluginPageInfos;
 
-            var pageInfos = GetPluginPageInfos();
             foreach (var pageInfo in pageInfos)
             {
                 AddPage(pageInfo);
             }
-
-            //AddPage(new Pages.Cycles.Info());
-            //AddPage(new Pages.Description.Info());
-            //AddPage(new Pages.MTConnectConfig.Info());
-            //AddPage(new Pages.GeneratedEvents.Info());
-            //AddPage(new Pages.InstanceData.Info());
-            //AddPage(new Pages.Parts.Info());
 
             LoadPages_Finished();          
         }
 
         private void LoadPages_Finished()
         {
-            PagesLoading = false;
-
             GetProbeData(ConfigurationTable);
-        }
-
-        private void SendDeviceManagerData(IConfigurationPage page)
-        {
-            var data = new EventData();
-            data.Id = "DEVICE_MANAGER";
-            data.Data02 = DeviceManager;
-
-            page.GetSentData(data);
         }
 
         private static IConfigurationPage CreatePage(IConfigurationInfo info)
@@ -403,9 +500,8 @@ namespace TrakHound_Device_Manager
 
                     page.GetSentData(GetProbeHeader());
                     page.GetSentData(GetProbeDataItems());
+                    page.GetSentData(CreateCurrentUserEventData());
                     
-                    SendDeviceManagerData(page);
-
                     ConfigurationPages.Add(page);
                 }
 
@@ -422,98 +518,36 @@ namespace TrakHound_Device_Manager
 
         #region "Plugins"
 
-        //static List<Type> pluginPageTypes;
+        public static List<IConfigurationInfo> PluginPageInfos { get; set; }
 
-        static List<IConfigurationInfo> pluginInfos;
-
-        //static List<IConfigurationPage> pluginPages = new List<IConfigurationPage>();
-
-        public List<IConfigurationInfo> GetPluginPageInfos()
+        public static void GetPluginPageInfos()
         {
-            var result = pluginInfos;
+            var infos = PluginPageInfos;
 
-            if (result == null)
+            if (infos == null)
             {
-                result = new List<IConfigurationInfo>();
+                infos = new List<IConfigurationInfo>();
 
                 string pluginsPath;
 
                 // Load from System Directory first (easier for user to navigate to 'C:\TrakHound\')
                 pluginsPath = FileLocations.Plugins;
-                if (Directory.Exists(pluginsPath)) GetPluginPageInfos(pluginsPath, result);
+                if (Directory.Exists(pluginsPath)) GetPluginPageInfos(pluginsPath, infos);
 
                 // Load from App root Directory (doesn't overwrite plugins found in System Directory)
                 pluginsPath = AppDomain.CurrentDomain.BaseDirectory;
-                if (Directory.Exists(pluginsPath)) GetPluginPageInfos(pluginsPath, result);
+                if (Directory.Exists(pluginsPath)) GetPluginPageInfos(pluginsPath, infos);
 
                 // Load from Running Assemblies
-                GetPluginPageInfos(Assembly.GetExecutingAssembly(), result);
-                GetPluginPageInfos(Assembly.GetEntryAssembly(), result);
-                GetPluginPageInfos(Assembly.GetCallingAssembly(), result);
+                GetPluginPageInfos(Assembly.GetExecutingAssembly(), infos);
+                GetPluginPageInfos(Assembly.GetEntryAssembly(), infos);
+                GetPluginPageInfos(Assembly.GetCallingAssembly(), infos);
 
-                pluginInfos = result;
+                PluginPageInfos = infos;
             }
-
-            return result;
         }
-
-        //public List<IConfigurationPage> GetPluginPages()
-        //{
-        //    var result = pluginPages;
-
-        //    if (result == null)
-        //    {
-        //        result = new List<IConfigurationPage>();
-
-        //        string pluginsPath;
-
-        //        // Load from System Directory first (easier for user to navigate to 'C:\TrakHound\')
-        //        pluginsPath = FileLocations.Plugins;
-        //        if (Directory.Exists(pluginsPath)) GetPluginPages(pluginsPath, result);
-
-        //        // Load from App root Directory (doesn't overwrite plugins found in System Directory)
-        //        pluginsPath = AppDomain.CurrentDomain.BaseDirectory;
-        //        if (Directory.Exists(pluginsPath)) GetPluginPages(pluginsPath, result);
-
-        //        // Load from Current Assembly
-        //        GetPluginPages(Assembly.GetEntryAssembly(), result);
-
-        //        pluginPages = result;
-        //    }
-
-        //    return result;
-        //}
-
-        //public List<Type> GetPluginPageTypes()
-        //{
-        //    var result = pluginPageTypes;
-
-        //    pluginInfos.Clear();
-
-        //    if (result == null)
-        //    {
-        //        result = new List<Type>();
-
-        //        string pluginsPath;
-
-        //        // Load from System Directory first (easier for user to navigate to 'C:\TrakHound\')
-        //        pluginsPath = FileLocations.Plugins;
-        //        if (Directory.Exists(pluginsPath)) GetPluginPageTypes(pluginsPath, result);
-
-        //        // Load from App root Directory (doesn't overwrite plugins found in System Directory)
-        //        pluginsPath = AppDomain.CurrentDomain.BaseDirectory;
-        //        if (Directory.Exists(pluginsPath)) GetPluginPageTypes(pluginsPath, result);
-
-        //        // Load from Current Assembly
-        //        GetPluginPageTypes(Assembly.GetEntryAssembly(), result);
-
-        //        pluginPageTypes = result;
-        //    }
-
-        //    return result;
-        //}
-
-        private void GetPluginPageInfos(Assembly assembly, List<IConfigurationInfo> infos)
+        
+        private static void GetPluginPageInfos(Assembly assembly, List<IConfigurationInfo> infos)
         {
             try
             {
@@ -529,7 +563,7 @@ namespace TrakHound_Device_Manager
             catch (Exception ex) { Logger.Log("LoadPlugins() : Exception : " + ex.Message, LogLineType.Error); }
         }
 
-        private void GetPluginPageInfos(string path, List<IConfigurationInfo> infos)
+        private static void GetPluginPageInfos(string path, List<IConfigurationInfo> infos)
         {
             if (Directory.Exists(path))
             {
@@ -553,77 +587,7 @@ namespace TrakHound_Device_Manager
                 }
             }
         }
-
-        //private void GetPluginPages(Assembly assembly, List<IConfigurationPage> pages)
-        //{
-        //    try
-        //    {
-        //        var plugins = Reader.FindPlugins<IConfigurationPage>(assembly, new ConfigurationPagePlugin.PluginContainer());
-        //        foreach (var plugin in plugins)
-        //        {
-        //            if (!pages.Exists(x => x.Title == plugin.Title))
-        //            {
-        //                pages.Add(plugin);
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex) { Logger.Log("LoadPlugins() : Exception : " + ex.Message, LogLineType.Error); }
-        //}
-
-        //private void GetPluginPages(string path, List<IConfigurationPage> pages)
-        //{
-        //    if (Directory.Exists(path))
-        //    {
-        //        try
-        //        {
-        //            var plugins = Reader.FindPlugins<IConfigurationPage>(path, new ConfigurationPagePlugin.PluginContainer());
-        //            foreach (var plugin in plugins)
-        //            {
-        //                if (!pages.Exists(x => x.Title == plugin.Title))
-        //                {
-        //                    pages.Add(plugin);
-        //                }
-        //            }
-        //        }
-        //        catch (Exception ex) { Logger.Log("LoadPlugins() : Exception : " + ex.Message, LogLineType.Error); }
-
-        //        // Search Subdirectories
-        //        foreach (string directory in Directory.GetDirectories(path))
-        //        {
-        //            GetPluginPages(directory, pages);
-        //        }
-        //    }
-        //}
-
-        //private void GetPluginPageTypes(string path, List<IConfigurationPage> types)
-        //{
-        //    if (Directory.Exists(path))
-        //    {
-        //        try
-        //        {
-        //            var plugins = Reader.FindPlugins<IConfigurationInfo>(path, new ConfigurationInfoPlugin.PluginContainer());
-        //            foreach (var plugin in plugins)
-        //            {
-        //                var type = plugin.ConfigurationPageType;
-
-        //                if (!types.Exists(x => x.FullName == type.FullName))
-        //                {
-        //                    pluginInfos.Add(plugin);
-
-        //                    types.Add(type);
-        //                }
-        //            }
-        //        }
-        //        catch (Exception ex) { Logger.Log("LoadPlugins() : Exception : " + ex.Message, LogLineType.Error); }
-
-        //        // Search Subdirectories
-        //        foreach (string directory in Directory.GetDirectories(path))
-        //        {
-        //            GetPluginPageTypes(directory, types);
-        //        }
-        //    }
-        //}
-
+        
         #endregion
 
         #region "MTC Data Items"  
@@ -747,7 +711,7 @@ namespace TrakHound_Device_Manager
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     page.GetSentData(data);
-                }), PRIORITY_BACKGROUND, new object[] { });
+                }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
             }
         }
 
@@ -776,7 +740,7 @@ namespace TrakHound_Device_Manager
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     page.GetSentData(data);
-                }), PRIORITY_BACKGROUND, new object[] { });     
+                }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });     
             }
         }
 

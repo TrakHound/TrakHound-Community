@@ -10,6 +10,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 using TrakHound;
+using TrakHound.API.Users;
+using TrakHound.Tools;
 using TrakHound_UI;
 
 namespace TrakHound_Device_Manager.AddDevice
@@ -48,7 +50,34 @@ namespace TrakHound_Device_Manager.AddDevice
 
         public event SendData_Handler SendData;
 
-        public void GetSentData(EventData data) { }
+        public void GetSentData(EventData data)
+        {
+            if (autoDetectPage != null) autoDetectPage.GetSentData(data);
+            if (manualPage != null) manualPage.GetSentData(data);
+            if (loadFromFilePage != null) loadFromFilePage.GetSentData(data);
+
+            UpdateLoggedInChanged(data);
+        }
+
+        private void SendPageData(EventData data)
+        {
+            SendData?.Invoke(data);
+        }
+
+        void UpdateLoggedInChanged(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id == "USER_LOGIN")
+                {
+                    if (data.Data01 != null) currentUser = (UserConfiguration)data.Data01;
+                }
+                else if (data.Id == "USER_LOGOUT")
+                {
+                    currentUser = null;
+                }
+            }
+        }
 
         #endregion
 
@@ -76,6 +105,7 @@ namespace TrakHound_Device_Manager.AddDevice
         private Pages.Manual manualPage;
         private Pages.LoadFromFile loadFromFilePage;
 
+        private UserConfiguration currentUser;
 
         /// <summary>
         /// Object for containing the currently displayed IPage object
@@ -126,6 +156,22 @@ namespace TrakHound_Device_Manager.AddDevice
         public static readonly DependencyProperty LoadFromFileSelectedProperty =
             DependencyProperty.Register("LoadFromFileSelected", typeof(bool), typeof(Page), new PropertyMetadata(false));
 
+        private void SendCurrentUser(IPage page)
+        {
+            var data = new EventData();
+
+            if (currentUser != null)
+            {
+                data.Id = "USER_LOGIN";
+                data.Data01 = currentUser;
+            }
+            else
+            {
+                data.Id = "USER_LOGOUT";
+            }
+
+            page.GetSentData(data);
+        }
 
         public void ShowAutoDetect()
         {
@@ -136,6 +182,8 @@ namespace TrakHound_Device_Manager.AddDevice
             {
                 autoDetectPage = new Pages.AutoDetect();
                 autoDetectPage.ParentPage = this;
+                autoDetectPage.SendData += SendPageData;
+                SendCurrentUser(autoDetectPage);
             }
 
             AutoDetectSelected = true;
@@ -154,6 +202,8 @@ namespace TrakHound_Device_Manager.AddDevice
             {
                 manualPage = new Pages.Manual();
                 manualPage.ParentPage = this;
+                manualPage.SendData += SendPageData;
+                SendCurrentUser(manualPage);
             }
 
             AutoDetectSelected = false;
@@ -172,6 +222,8 @@ namespace TrakHound_Device_Manager.AddDevice
             {
                 loadFromFilePage = new Pages.LoadFromFile();
                 loadFromFilePage.ParentPage = this;
+                loadFromFilePage.SendData += SendPageData;
+                SendCurrentUser(loadFromFilePage);
             }
 
             AutoDetectSelected = false;

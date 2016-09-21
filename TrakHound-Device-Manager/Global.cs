@@ -8,7 +8,7 @@ using TrakHound.Configurations;
 namespace TrakHound_Device_Manager
 {
 
-    public delegate void DeviceSelected_Handler(DeviceConfiguration config);
+    public delegate void DeviceSelected_Handler(DeviceDescription config);
     public delegate void PageSelected_Handler();
 
     public enum ManagementType

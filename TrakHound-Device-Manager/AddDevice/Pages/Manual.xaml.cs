@@ -11,7 +11,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+
 using TrakHound;
+using TrakHound.API.Users;
 using TrakHound.Configurations;
 using TrakHound.Configurations.AutoGenerate;
 using TrakHound.Tools;
@@ -38,6 +40,8 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
         public static readonly DependencyProperty ParentPageProperty =
             DependencyProperty.Register("ParentPage", typeof(Page), typeof(Manual), new PropertyMetadata(null));
 
+        private UserConfiguration currentUser;
+
 
         #region "IPage"
 
@@ -54,7 +58,25 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
 
         public event SendData_Handler SendData;
 
-        public void GetSentData(EventData data) { }
+        public void GetSentData(EventData data)
+        {
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateLoggedInChanged), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+        }
+
+        void UpdateLoggedInChanged(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id == "USER_LOGIN")
+                {
+                    if (data.Data01 != null) currentUser = (UserConfiguration)data.Data01;
+                }
+                else if (data.Id == "USER_LOGOUT")
+                {
+                    currentUser = null;
+                }
+            }
+        }
 
         #endregion
 
@@ -233,7 +255,7 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
             public string Address { get; set; }
             public int Port { get; set; }
             public string DeviceName { get; set; }
-            public TrakHound.API.Users.UserConfiguration CurrentUser { get; set; }
+            public UserConfiguration CurrentUser { get; set; }
         }
 
         private void AddDevice()
@@ -246,13 +268,16 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
             int port = 80;
             int.TryParse(Port, out port);
             info.Port = port;
+            info.CurrentUser = currentUser;
 
-            if (ParentPage.DeviceManager != null)
-            {
-                info.CurrentUser = ParentPage.DeviceManager.CurrentUser;
+            ThreadPool.QueueUserWorkItem(new WaitCallback(AddDevice_Worker), info);
 
-                ThreadPool.QueueUserWorkItem(new WaitCallback(AddDevice_Worker), info);
-            }    
+            //if (ParentPage.DeviceManager != null)
+            //{
+            //    info.CurrentUser = ParentPage.DeviceManager.CurrentUser;
+
+            //    ThreadPool.QueueUserWorkItem(new WaitCallback(AddDevice_Worker), info);
+            //}    
         }
 
         private void AddDevice_Worker(object o)
@@ -294,8 +319,14 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
 
                 if (success)
                 {
+                    // Send message that device was added
+                    var data = new EventData();
+                    data.Id = "DEVICE_ADDED";
+                    data.Data01 = new DeviceDescription(config);
+                    SendData?.Invoke(data);
+
                     // Add to DeviceManager
-                    if (config != null) ParentPage.DeviceManager.AddDevice(config);
+                    //if (config != null) ParentPage.DeviceManager.AddDevice(config);
 
                     TrakHound_UI.MessageBox.Show("Device added successfully!", "Add Device Successful", TrakHound_UI.MessageBoxButtons.Ok);
                 }

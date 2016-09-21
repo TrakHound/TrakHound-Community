@@ -14,8 +14,10 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Xml;
 
 using TrakHound;
+using TrakHound.API.Users;
 using TrakHound.Configurations;
 using TrakHound.Logging;
 using TrakHound.Tools;
@@ -39,7 +41,8 @@ namespace TrakHound_Device_Manager
 
         public string Title { get { return "Device Manager"; } }
 
-        public ImageSource Image { get { return image; } }
+        private BitmapImage _image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Device-Manager;component/Resources/Root.png"));
+        public ImageSource Image { get { return _image; } }
 
         public void Opened() { }
         public bool Opening() { return true; }
@@ -47,50 +50,45 @@ namespace TrakHound_Device_Manager
         public void Closed() { PageClosed?.Invoke(); }
         public bool Closing() { return true; }
 
-        #endregion
+        public event SendData_Handler SendData;
 
-        private BitmapImage image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Device-Manager;component/Resources/Root.png"));
-
-
-        private DeviceManager _deviceManager;
-        /// <summary>
-        /// Parent DeviceManager object
-        /// </summary>
-        public DeviceManager DeviceManager
+        public void GetSentData(EventData data)
         {
-            get { return _deviceManager; }
-            set
-            {
-                _deviceManager = value;
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateLoggedInChanged), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDevicesLoading), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
 
-                if (_deviceManager != null)
-                {
-                    AddDevices(_deviceManager.Devices);
-
-                    _deviceManager.DeviceListUpdated += _deviceManager_DeviceListUpdated;
-                    _deviceManager.DeviceUpdated += _deviceManager_DeviceUpdated;
-                    _deviceManager.LoadingDevices += _deviceManager_LoadingDevices;
-                    _deviceManager.DevicesLoaded += _deviceManager_DevicesLoaded;
-                }
-            }
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceAdded), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceUpdated), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceRemoved), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
         }
 
-        #region "Events"
+        #endregion
+
+        private UserConfiguration currentUser;
+
+        ObservableCollection<DeviceDescription> _devices;
+        /// <summary>
+        /// Collection of DeviceDescription objects
+        /// </summary>
+        public ObservableCollection<DeviceDescription> Devices
+        {
+            get
+            {
+                if (_devices == null)
+                    _devices = new ObservableCollection<DeviceDescription>();
+                return _devices;
+            }
+
+            set
+            {
+                _devices = value;
+            }
+        }
 
         /// <summary>
         /// Event to request to open the Edit Page
         /// </summary>
         public event DeviceSelected_Handler EditSelected;
-
-        /// <summary>
-        /// Event to request to open the Edit Table Page
-        /// </summary>
-        public event DeviceSelected_Handler EditTableSelected;
-
-        /// <summary>
-        /// Event to request to open the Copy Device Page
-        /// </summary>
-        public event DeviceSelected_Handler CopyDeviceSelected;
 
         /// <summary>
         /// Event to request to open the Add Device Page
@@ -102,39 +100,7 @@ namespace TrakHound_Device_Manager
         /// </summary>
         public event PageSelected_Handler PageClosed;
 
-        #endregion
-        
 
-        #region "Device Manager Event Handlers"
-
-        private void _deviceManager_DeviceListUpdated(List<DeviceConfiguration> configs) { AddDevices(configs); }
-
-        private void _deviceManager_DeviceUpdated(DeviceConfiguration config, DeviceManager.DeviceUpdateArgs args)
-        {
-            if (args.Sender != this)
-            {
-                switch (args.Event)
-                {
-                    case DeviceManager.DeviceUpdateEvent.Added: AddDeviceToList(config); break;
-
-                    case DeviceManager.DeviceUpdateEvent.Changed: ReplaceDeviceInList(config); break;
-
-                    case DeviceManager.DeviceUpdateEvent.Removed: RemoveDeviceFromList(config); break;
-                }
-            }
-        }
-
-        private void _deviceManager_LoadingDevices()
-        {
-            Dispatcher.BeginInvoke(new Action(() => { DevicesLoading = true; }));
-        }
-
-        private void _deviceManager_DevicesLoaded()
-        {
-            Dispatcher.BeginInvoke(new Action(() => { DevicesLoading = false; }));
-        }
-
-        #endregion
 
         #region "Dependency Properties"
 
@@ -147,69 +113,96 @@ namespace TrakHound_Device_Manager
         public static readonly DependencyProperty DevicesLoadingProperty =
             DependencyProperty.Register("DevicesLoading", typeof(bool), typeof(DeviceList), new PropertyMetadata(false));
 
+
+        public bool BackupLoading
+        {
+            get { return (bool)GetValue(BackupLoadingProperty); }
+            set { SetValue(BackupLoadingProperty, value); }
+        }
+
+        public static readonly DependencyProperty BackupLoadingProperty =
+            DependencyProperty.Register("BackupLoading", typeof(bool), typeof(DeviceList), new PropertyMetadata(false));
+
         #endregion
 
-        private void OpenEditTable(DeviceConfiguration config)
+        #region "EventData Handlers"
+
+        void UpdateLoggedInChanged(EventData data)
         {
-            EditTableSelected?.Invoke(config);
-        }
-
-
-        #region "Device Lists"
-
-        ObservableCollection<DeviceConfiguration> _devices;
-        /// <summary>
-        /// Collection of TrakHound.Configurations.Configuration objects that represent the active devices
-        /// </summary>
-        public ObservableCollection<DeviceConfiguration> Devices
-        {
-            get
+            if (data != null)
             {
-                if (_devices == null)
-                    _devices = new ObservableCollection<DeviceConfiguration>();
-                return _devices;
-            }
-
-            set
-            {
-                _devices = value;
-            }
-        }
-
-        private void AddDeviceToList(DeviceConfiguration config, int index = -1)
-        {
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                if (index < 0) Devices.Add(config);
-                else Devices.Insert(index, config);
-
-                Devices.Sort();
-            }
-            ), UI_Functions.PRIORITY_DATA_BIND, new object[] { });
-        }
-
-        private void ReplaceDeviceInList(DeviceConfiguration config)
-        {
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                int index = Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
-                if (index >= 0)
+                if (data.Id == "USER_LOGIN")
                 {
-                    Devices.RemoveAt(index);
-                    AddDeviceToList(config, index);
+                    if (data.Data01 != null) currentUser = (UserConfiguration)data.Data01;
+                }
+                else if (data.Id == "USER_LOGOUT")
+                {
+                    currentUser = null;
                 }
             }
-            ), UI_Functions.PRIORITY_DATA_BIND, new object[] { });
         }
 
-        private void RemoveDeviceFromList(DeviceConfiguration config)
+        void UpdateDevicesLoading(EventData data)
         {
-            Dispatcher.BeginInvoke(new Action(() =>
+            if (data != null)
             {
-                var index = Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
-                if (index >= 0) Devices.RemoveAt(index);
+                if (data.Id == "DEVICES_LOADING")
+                {
+                    DevicesLoading = true;
+                    ClearDevices();
+                }
+
+                if (data.Id == "DEVICES_LOADED")
+                {
+                    DevicesLoading = false;
+                }
             }
-            ), UI_Functions.PRIORITY_DATA_BIND, new object[] { });
+        }
+
+        void UpdateDeviceAdded(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id == "DEVICE_ADDED" && data.Data01 != null)
+                {
+                    Devices.Add((DeviceDescription)data.Data01);
+                }
+            }
+        }
+
+        void UpdateDeviceUpdated(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id == "DEVICE_UPDATED" && data.Data01 != null)
+                {
+                    var device = (DeviceDescription)data.Data01;
+
+                    int i = Devices.ToList().FindIndex(x => x.UniqueId == device.UniqueId);
+                    if (i >= 0)
+                    {
+                        Devices.RemoveAt(i);
+                        Devices.Insert(i, device);
+                    }
+                }
+            }
+        }
+
+        void UpdateDeviceRemoved(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id == "DEVICE_REMOVED" && data.Data01 != null)
+                {
+                    var device = (DeviceDescription)data.Data01;
+
+                    int i = Devices.ToList().FindIndex(x => x.UniqueId == device.UniqueId);
+                    if (i >= 0)
+                    {
+                        Devices.RemoveAt(i);
+                    }
+                }
+            }
         }
 
         private void ClearDevices()
@@ -223,43 +216,30 @@ namespace TrakHound_Device_Manager
 
         #endregion
 
-        #region "Add Devices"
-
-        private void AddDevices(List<DeviceConfiguration> configs)
-        {
-            ClearDevices();
-
-            if (configs != null)
-            {
-                foreach (var config in configs) AddDeviceToList(config);
-            }
-        }
-
-        #endregion
 
         #region "Remove Devices"
 
         private class RemoveDevices_Info
         {
-            public List<DeviceConfiguration> Devices { get; set; }
+            public List<DeviceDescription> Devices { get; set; }
             public bool Success { get; set; }
         }
 
-        private void RemoveDevices(List<DeviceConfiguration> configs)
+        private void RemoveDevices(List<DeviceDescription> devices)
         {
             // Set the text for the MessageBox based on how many devices are selected to be removed
             string msg = null;
-            if (configs.Count == 1) msg = "Are you sure you want to permanently remove this device?";
-            else msg = "Are you sure you want to permanently remove these " + configs.Count.ToString() + " devices?";
+            if (devices.Count == 1) msg = "Are you sure you want to permanently remove this device?";
+            else msg = "Are you sure you want to permanently remove these " + devices.Count.ToString() + " devices?";
 
             string title = null;
-            if (configs.Count == 1) msg = "Remove Device";
-            else msg = "Remove " + configs.Count.ToString() + " Devices";
+            if (devices.Count == 1) msg = "Remove Device";
+            else msg = "Remove " + devices.Count.ToString() + " Devices";
 
             var result = TrakHound_UI.MessageBox.Show(msg, title, TrakHound_UI.MessageBoxButtons.YesNo);
             if (result == MessageBoxDialogResult.Yes)
             {
-                ThreadPool.QueueUserWorkItem(new WaitCallback(RemoveDevices_Worker), configs);
+                ThreadPool.QueueUserWorkItem(new WaitCallback(RemoveDevices_Worker), devices);
             }
         }
 
@@ -269,35 +249,70 @@ namespace TrakHound_Device_Manager
 
             if (o != null)
             {
-                var configs = (List<DeviceConfiguration>)o;
+                var devices = (List<DeviceDescription>)o;
 
-                removeInfo.Devices = configs;
+                removeInfo.Devices = devices;
 
-                removeInfo.Success = DeviceManager.RemoveDevices(configs);
+                var uniqueIds = devices.Select(x => x.UniqueId).ToArray();
+
+                if (currentUser != null) removeInfo.Success = TrakHound.API.Devices.Remove(currentUser, uniqueIds);
+                else removeInfo.Success = RemoveLocalDevices(devices);
             }
 
             Dispatcher.BeginInvoke(new Action<RemoveDevices_Info>(RemoveDevices_Finshed), UI_Functions.PRIORITY_BACKGROUND, new object[] { removeInfo });
+        }
+
+        private bool RemoveLocalDevices(List<DeviceDescription> devices)
+        {
+            bool result = false;
+
+            foreach (var device in devices)
+            {
+                string path = FileLocations.Devices + "\\" + device.UniqueId + ".xml";
+
+                if (File.Exists(path))
+                {
+                    try
+                    {
+                        File.Delete(path);
+
+                        result = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Log("Remove Local Device :: Exception :: " + path + " :: " + ex.Message);
+                        break; 
+                    }
+                }
+            }
+
+            return result; 
         }
 
         private void RemoveDevices_Finshed(RemoveDevices_Info removeInfo)
         {
             if (removeInfo.Success)
             { 
-                foreach (var config in removeInfo.Devices)
+                foreach (var device in removeInfo.Devices)
                 {
-                    if (config != null)
+                    if (device != null)
                     {
-                        // Raise DeviceUpdated Event
-                        var args = new DeviceManager.DeviceUpdateArgs();
-                        args.Event = DeviceManager.DeviceUpdateEvent.Removed;
-                        DeviceManager.UpdateDevice(config, args);
+                        // Send message that device has been removed
+                        var data = new EventData();
+                        data.Id = "DEVICE_REMOVED";
+                        data.Data01 = device;
+                        SendData?.Invoke(data);
                     }
                 }
             }
             else
             {
                 TrakHound_UI.MessageBox.Show("An error occured while attempting to Remove Device. Please try again.", "Remove Device Error", MessageBoxButtons.Ok);
-                DeviceManager.LoadDevices();
+
+                // Send request to reload devices
+                var data = new EventData();
+                data.Id = "LOAD_DEVICES";
+                SendData?.Invoke(data);
             }
         }
 
@@ -330,16 +345,31 @@ namespace TrakHound_Device_Manager
             {
                 var info = (EnableDevice_Info)o;
 
-                var config = ((DeviceConfiguration)info.DataObject);
+                var device = ((DeviceDescription)info.DataObject);
+
+                bool result = false;
 
                 // Enable Device using DeviceManager
-                if (DeviceManager != null) info.Success = DeviceManager.EnableDevice(config);
+                if (currentUser != null)
+                {
+                    result = TrakHound.API.Devices.Update(currentUser, device.UniqueId, new TrakHound.API.Devices.DeviceInfo.Row("/Enabled", "True", null));
+                    if (result) device.Enabled = true;
+                }
+                else
+                {
+                    var config = GetLocalDeviceConfiguration(device.UniqueId);
+                    if (config != null)
+                    {
+                        result = UpdateEnabledXML(config.Xml, true);
+                        if (result) result = ResetUpdateId(config);
+                        if (result) result = DeviceConfiguration.Save(config);
+                    }
+                }
+
+                info.Success = result;
 
                 // If changes were successful, then update DeviceManager's Congifuration
-                if (info.Success)
-                {
-                    config.Enabled = true;
-                }
+                if (info.Success) device.Enabled = true;
 
                 Dispatcher.BeginInvoke(new Action<EnableDevice_Info>(EnableDevice_Finished), UI_Functions.PRIORITY_BACKGROUND, new object[] { info });
             }
@@ -351,13 +381,13 @@ namespace TrakHound_Device_Manager
             {
                 if (info.Success)
                 {
-                    var config = ((DeviceConfiguration)info.DataObject);
+                    var device = ((DeviceDescription)info.DataObject);
 
-                    //Raise DeviceUpdated Event
-                    var args = new DeviceManager.DeviceUpdateArgs();
-                    args.Sender = this;
-                    args.Event = DeviceManager.DeviceUpdateEvent.Added;
-                    DeviceManager.UpdateDevice(config, args);
+                    // Send message that device has been removed
+                    var data = new EventData();
+                    data.Id = "DEVICE_ENABLED";
+                    data.Data01 = device;
+                    SendData?.Invoke(data);
                 }
                 // If not successful then set Checkbox back to previous state
                 else info.Sender.IsChecked = false;
@@ -386,13 +416,31 @@ namespace TrakHound_Device_Manager
             {
                 var info = (EnableDevice_Info)o;
 
-                var config = ((DeviceConfiguration)info.DataObject);
+                var device = ((DeviceDescription)info.DataObject);
+
+                bool result = false;
 
                 // Disable Device using DeviceManager
-                if (DeviceManager != null) info.Success = DeviceManager.DisableDevice(config);
+                if (currentUser != null)
+                {
+                    result = TrakHound.API.Devices.Update(currentUser, device.UniqueId, new TrakHound.API.Devices.DeviceInfo.Row("/Enabled", "False", null));
+                    if (result) device.Enabled = false;
+                }
+                else
+                {
+                    var config = GetLocalDeviceConfiguration(device.UniqueId);
+                    if (config != null)
+                    {
+                        result = UpdateEnabledXML(config.Xml, false);
+                        if (result) result = ResetUpdateId(config);
+                        if (result) result = DeviceConfiguration.Save(config);
+                    }
+                }
+
+                info.Success = result;
 
                 // If changes were successful, then update DeviceManager's Congifuration
-                if (info.Success) config.Enabled = false;
+                if (info.Success) device.Enabled = false;
                 
                 Dispatcher.BeginInvoke(new Action<EnableDevice_Info>(DisableDevice_Finished), UI_Functions.PRIORITY_BACKGROUND, new object[] { info });
             }
@@ -404,13 +452,13 @@ namespace TrakHound_Device_Manager
             {
                 if (info.Success)
                 {
-                    var config = ((DeviceConfiguration)info.DataObject);
+                    var device = ((DeviceDescription)info.DataObject);
 
-                    // Raise DeviceUpdated Event
-                    var args = new DeviceManager.DeviceUpdateArgs();
-                    args.Sender = this;
-                    args.Event = DeviceManager.DeviceUpdateEvent.Removed;
-                    DeviceManager.UpdateDevice(config, args);
+                    // Send message that device has been removed
+                    var data = new EventData();
+                    data.Id = "DEVICE_DISABLED";
+                    data.Data01 = device;
+                    SendData?.Invoke(data);
                 }
                 // If not successful then set Checkbox back to previous state
                 else info.Sender.IsChecked = true;
@@ -470,9 +518,9 @@ namespace TrakHound_Device_Manager
 
                 if (valid)
                 {
-                    DeviceConfiguration refConfig = null;
-                    if (change > 0) refConfig = (DeviceConfiguration)items[items.IndexOf(selectedItems[0]) - 1];
-                    else if (change < 0) refConfig = (DeviceConfiguration)items[items.IndexOf(selectedItems[selectedItems.Count - 1]) + 1];
+                    DeviceDescription refConfig = null;
+                    if (change > 0) refConfig = (DeviceDescription)items[items.IndexOf(selectedItems[0]) - 1];
+                    else if (change < 0) refConfig = (DeviceDescription)items[items.IndexOf(selectedItems[selectedItems.Count - 1]) + 1];
 
                     int refIndex = refConfig.Index;
 
@@ -482,7 +530,7 @@ namespace TrakHound_Device_Manager
                         if (change > 0) adjChange = change + ((selectedItems.Count - 1) - x);
                         else if (change < 0) adjChange = change - x;
 
-                        var config = (DeviceConfiguration)selectedItems[x];
+                        var config = (DeviceDescription)selectedItems[x];
 
                         int listIndex = items.IndexOf(selectedItems[x]);
 
@@ -496,7 +544,7 @@ namespace TrakHound_Device_Manager
                         string e = adjChange.ToString();
 
                         // Change index using DeviceManager
-                        if (DeviceManager != null) DeviceManager.ChangeDeviceIndex(config, newIndex);
+                        //if (DeviceManager != null) DeviceManager.ChangeDeviceIndex(config, newIndex);
 
                         var info = new MoveInfo(listIndex, listIndex - change, newIndex);
                         infos.Add(info);
@@ -510,7 +558,7 @@ namespace TrakHound_Device_Manager
                     {
                         var info = infos[x];
 
-                        var config = (DeviceConfiguration)items[info.OldListIndex];
+                        var config = (DeviceDescription)items[info.OldListIndex];
                         config.Index = info.DeviceIndex;
 
                         selectedIndexes[x] = info.NewListIndex;
@@ -609,6 +657,126 @@ namespace TrakHound_Device_Manager
 
         #endregion
 
+        #region "Device Backup"
+
+        private Thread backupDeviceThread;
+
+        private class BackupDeviceInfo
+        {
+            public BackupDeviceInfo(UserConfiguration userConfig, string[] uniqueIds)
+            {
+                UserConfiguration = userConfig;
+                UniqueIds = uniqueIds;
+            }
+
+            public UserConfiguration UserConfiguration { get; set; }
+            public string[] UniqueIds { get; set; }
+        }
+
+        private void BackupDevices(string[] uniqueIds)
+        {
+            BackupLoading = true;
+
+            if (backupDeviceThread != null) backupDeviceThread.Abort();
+
+            if (currentUser != null)
+            {
+                backupDeviceThread = new Thread(new ParameterizedThreadStart(BackupUserDevices));
+                backupDeviceThread.Start(new BackupDeviceInfo(currentUser, uniqueIds));
+            }
+            else
+            {
+                backupDeviceThread = new Thread(new ParameterizedThreadStart(BackupLocalDevices));
+                backupDeviceThread.Start(uniqueIds);
+            }
+        }
+
+        private void BackupUserDevices(object o)
+        {
+            if (o != null)
+            {
+                var backupDeviceInfo = (BackupDeviceInfo)o;
+
+                // Get DeviceConfigurations using API
+                var configs = TrakHound.API.Devices.Get(backupDeviceInfo.UserConfiguration, backupDeviceInfo.UniqueIds);
+                if (configs != null)
+                {
+                    // Create backup directory
+                    string backupPath = Path.Combine(FileLocations.Backup, "DeviceBackup-" + DateTime.Now.ToString("yyyy-MM-dd--hh-mm-ss"));
+                    if (!Directory.Exists(backupPath)) Directory.CreateDirectory(backupPath);
+
+                    // Save each DeviceConfiguration
+                    foreach (var config in configs)
+                    {
+                        DeviceConfiguration.Save(config, backupPath);
+                    }
+
+                    // Open Windows Explorer with the directory the backups were saved to
+                    try
+                    {
+                        System.Diagnostics.Process.Start("explorer", backupPath);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Log("Device Backup Error :: Error Opening Windows Explorer :: Exception :: " + ex.Message);
+                    }
+                }
+                else
+                {
+
+                }
+            }
+
+            Dispatcher.BeginInvoke(new Action(() => { BackupLoading = false; }));
+        }
+
+        private void BackupLocalDevices(object o)
+        {
+            if (o != null)
+            {
+                var uniqueIds = (string[])o;
+
+                // Create backup directory
+                string backupPath = Path.Combine(FileLocations.Backup, "DeviceBackup-" + DateTime.Now.ToString("yyyy-MM-dd--hh-mm-ss"));
+                if (!Directory.Exists(backupPath)) Directory.CreateDirectory(backupPath);
+
+                foreach (string uniqueId in uniqueIds)
+                {
+                    try
+                    {
+                        string filename = Path.ChangeExtension(uniqueId, ".xml");
+                        string sourcePath = Path.Combine(FileLocations.Devices, filename);
+                        string destPath = Path.Combine(backupPath, filename);
+
+                        // See if file exists
+                        if (File.Exists(sourcePath))
+                        {
+                            // Copy File from Devices to new backup path
+                            File.Copy(sourcePath, destPath);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Log("Local Device Backup Error :: Exception :: " + ex.Message);
+                    }
+                }
+
+                // Open Windows Explorer with the directory the backups were saved to
+                try
+                {
+                    System.Diagnostics.Process.Start("explorer", backupPath);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log("Device Backup Error :: Error Opening Windows Explorer :: Exception :: " + ex.Message);
+                }
+            }
+
+            Dispatcher.BeginInvoke(new Action(() => { BackupLoading = false; }));
+        }
+
+        #endregion
+
 
         #region "Button Actions"
 
@@ -619,77 +787,51 @@ namespace TrakHound_Device_Manager
 
         private void EditClicked()
         {
-            foreach (var device in Devices_DG.SelectedItems)
+            foreach (var item in Devices_DG.SelectedItems)
             {
-                var config = (DeviceConfiguration)device;
-
-                EditSelected?.Invoke(config);
-            }
-        }
-
-        private void EditTableClicked()
-        {
-            foreach (var device in Devices_DG.SelectedItems)
-            {
-                var config = (DeviceConfiguration)device;
-
-                EditTableSelected?.Invoke(config);
+                var device = (DeviceDescription)item;
+                EditSelected?.Invoke(device);
             }
         }
 
         private void RefreshClicked()
         {
-            if (DeviceManager != null) DeviceManager.LoadDevices();
-        }
-
-        private void CopyClicked()
-        {
-            if (Devices_DG.SelectedItem != null)
-            {
-                var config = (DeviceConfiguration)Devices_DG.SelectedItem;
-
-                if (config != null)
-                {
-                    CopyDeviceSelected?.Invoke(config);
-                }
-            }
+            // Send Message to Reload Devices
+            var data = new EventData();
+            data.Id = "LOAD_DEVICES";
+            SendData?.Invoke(data);
         }
 
         private void RemoveClicked()
         {
             if (Devices_DG.SelectedItems != null && Devices_DG.SelectedItems.Count > 0)
             {
-                var configs = new List<DeviceConfiguration>();
+                var devices = new List<DeviceDescription>();
 
                 foreach (var item in Devices_DG.SelectedItems)
                 {
-                    var config = item as DeviceConfiguration;
-                    if (config != null) configs.Add(config);
+                    var device = item as DeviceDescription;
+                    if (device != null) devices.Add(device);
                 }
 
-                if (configs.Count > 0) RemoveDevices(configs);
+                if (devices.Count > 0) RemoveDevices(devices);
             }
         }
 
         private void BackupClicked()
         {
-            string backupPath = Path.Combine(FileLocations.Backup, "DeviceBackup-" + DateTime.Now.ToString("yyyy-MM-dd--hh-mm-ss"));
-            if (!Directory.Exists(backupPath)) Directory.CreateDirectory(backupPath);
+            var uniqueIds = new List<string>();
 
-            foreach (var device in Devices_DG.SelectedItems)
+            // Get a list of UniqueIds for each selected item in Devices DataTable
+            foreach (var item in Devices_DG.SelectedItems)
             {
-                var config = (DeviceConfiguration)device;
-
-                DeviceConfiguration.Save(config, backupPath);
+                var device = (DeviceDescription)item;
+                uniqueIds.Add(device.UniqueId);
             }
 
-            try
+            if (uniqueIds.Count > 0)
             {
-                System.Diagnostics.Process.Start("explorer", backupPath);
-            }
-            catch (Exception ex)
-            {
-                Logger.Log("SaveClicked() :: Exception :: " + ex.Message);
+                BackupDevices(uniqueIds.ToArray());
             }
         }
 
@@ -711,7 +853,7 @@ namespace TrakHound_Device_Manager
         {
             if (bt.DataObject != null)
             {
-                var config = (DeviceConfiguration)bt.DataObject;
+                var config = (DeviceDescription)bt.DataObject;
 
                 EditSelected?.Invoke(config);
             }
@@ -729,11 +871,7 @@ namespace TrakHound_Device_Manager
 
         private void Edit_Toolbar_Clicked(TrakHound_UI.Button bt) { EditClicked(); }
 
-        private void EditTable_Toolbar_Clicked(TrakHound_UI.Button bt) { EditTableClicked(); }
-
         private void Refresh_Toolbar_Clicked(TrakHound_UI.Button bt) { RefreshClicked(); }
-
-        private void Copy_Toolbar_Clicked(TrakHound_UI.Button bt) { CopyClicked(); }
 
         private void Remove_Toolbar_Clicked(TrakHound_UI.Button bt) { RemoveClicked(); }
 
@@ -747,10 +885,6 @@ namespace TrakHound_Device_Manager
 
         private void Edit_DataGridRowContextMenu_Click(object sender, RoutedEventArgs e) { EditClicked(); }
 
-        private void EditTable_DataGridRowContextMenu_Click(object sender, RoutedEventArgs e) { EditTableClicked(); }
-
-        private void Copy_DataGridRowContextMenu_Click(object sender, RoutedEventArgs e) { CopyClicked(); }
-
         private void Remove_DataGridRowContextMenu_Click(object sender, RoutedEventArgs e) { RemoveClicked(); }
 
         private void Backup_DataGridRowContextMenu_Click(object sender, RoutedEventArgs e) { BackupClicked(); }
@@ -758,6 +892,42 @@ namespace TrakHound_Device_Manager
         #endregion
 
         private void Grid_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) { Devices_DG.SelectedItems.Clear(); }
+
+        private DeviceConfiguration GetLocalDeviceConfiguration(string uniqueId)
+        {
+            string filename = Path.ChangeExtension(uniqueId, ".xml");
+            string path = Path.Combine(FileLocations.Devices, filename);
+
+            return DeviceConfiguration.Read(path);
+        }
+
+        private bool ResetUpdateId(DeviceConfiguration config)
+        {
+            bool result = false;
+
+            var updateId = Guid.NewGuid().ToString();
+
+            if (currentUser != null) result = TrakHound.API.Devices.Update(currentUser, config.UniqueId, new TrakHound.API.Devices.DeviceInfo.Row("/UpdateId", updateId, null));
+            else result = true;
+
+            if (result)
+            {
+                config.UpdateId = updateId;
+                XML_Functions.SetInnerText(config.Xml, "UpdateId", updateId);
+            }
+
+            return result;
+        }
+
+        private static bool UpdateEnabledXML(XmlDocument xml, bool enabled)
+        {
+            bool result = false;
+
+            result = XML_Functions.SetInnerText(xml, "Enabled", enabled.ToString());
+
+            return result;
+        }
+
 
     }
 
