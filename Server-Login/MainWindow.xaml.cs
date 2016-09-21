@@ -9,7 +9,6 @@ using System.Windows;
 
 using TrakHound.API;
 using TrakHound.API.Users;
-using TrakHound.Configurations;
 using TrakHound.Tools;
 
 namespace Server_Login
@@ -26,8 +25,6 @@ namespace Server_Login
 
             ApiConfiguration.Set(ApiConfiguration.Read());
         }
-
-        public Database_Settings userDatabaseSettings;
 
         UserConfiguration currentuser;
         public UserConfiguration CurrentUser
