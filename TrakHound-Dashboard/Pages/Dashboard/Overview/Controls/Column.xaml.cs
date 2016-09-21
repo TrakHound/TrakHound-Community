@@ -37,21 +37,24 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
 
             UniqueId = device.UniqueId;
 
-            Description = device.Description.Description;
-            DeviceId = device.Description.DeviceId;
-            Manufacturer = device.Description.Manufacturer;
-            Model = device.Description.Model;
+            if (device.Description != null)
+            {
+                Description = device.Description.Description;
+                DeviceId = device.Description.DeviceId;
+                Manufacturer = device.Description.Manufacturer;
+                Model = device.Description.Model;
 
-            DeviceType = device.Description.DeviceType;
-            Serial = device.Description.Serial;
-            Controller = device.Description.Controller;
-            Location = device.Description.Location;
-             
-            // Load Device Logo
-            if (!string.IsNullOrEmpty(device.Description.LogoUrl)) LoadDeviceLogo(device.Description.LogoUrl);
+                DeviceType = device.Description.DeviceType;
+                Serial = device.Description.Serial;
+                Controller = device.Description.Controller;
+                Location = device.Description.Location;
 
-            // Load Device Image
-            if (!string.IsNullOrEmpty(device.Description.ImageUrl)) LoadDeviceImage(device.Description.ImageUrl);
+                // Load Device Logo
+                if (!string.IsNullOrEmpty(device.Description.LogoUrl)) LoadDeviceLogo(device.Description.LogoUrl);
+
+                // Load Device Image
+                if (!string.IsNullOrEmpty(device.Description.ImageUrl)) LoadDeviceImage(device.Description.ImageUrl);
+            }
         }
 
         public string UniqueId { get; set; }

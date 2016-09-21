@@ -65,7 +65,7 @@ namespace TrakHound_Dashboard
                 {
                     foreach (var deviceInfo in result)
                     {
-                        AddDevice(new DeviceDescription(deviceInfo));
+                        if (deviceInfo.Description != null) AddDevice(new DeviceDescription(deviceInfo));
                     }
                 }
             }
@@ -80,7 +80,7 @@ namespace TrakHound_Dashboard
             {
                 foreach (var deviceConfig in deviceConfigs)
                 {
-                    AddDevice(new DeviceDescription(deviceConfig));
+                    if (deviceConfig.Description != null) AddDevice(new DeviceDescription(deviceConfig));
                 }
             }
 
