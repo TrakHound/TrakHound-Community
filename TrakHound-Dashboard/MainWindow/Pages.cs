@@ -398,29 +398,32 @@ namespace TrakHound_Dashboard
         /// Page has sent a message requesting to be shown as a tab
         /// de_d.id = 'show'
         /// de_d.data01 = Configuration
-        /// de_d.data02 = Plugin (IClientPlugin)
+        /// de_d.data02 = Page (IPage)
         /// de_d.data03 = [Optional] Alternate Title
         /// de_d.data04 = [Optional] Tag
         /// </summary>
         /// <param name="de_d"></param>
         private void ShowRequested(EventData data)
         {
-            if (data != null && data.Id != null && data.Data02 != null)
+            if (data != null)
             {
-                if (data.Id.ToLower() == "show")
+                if (data.Id == "SHOW")
                 {
-                    if (typeof(IPage).IsAssignableFrom(data.Data02.GetType()))
+                    if (data.Data02 != null)
                     {
-                        var page = (IPage)data.Data02;
+                        if (typeof(IPage).IsAssignableFrom(data.Data02.GetType()))
+                        {
+                            var page = (IPage)data.Data02;
 
-                        string title = page.Title;
-                        ImageSource img = page.Image;
-                        string tag = null;
+                            string title = page.Title;
+                            ImageSource img = page.Image;
+                            string tag = null;
 
-                        if (data.Data03 != null) title = data.Data03.ToString();
-                        if (data.Data04 != null) tag = data.Data04.ToString();
+                            if (data.Data03 != null) title = data.Data03.ToString();
+                            if (data.Data04 != null) tag = data.Data04.ToString();
 
-                        AddTab(page, title, img, tag);
+                            AddTab(page, title, img, tag);
+                        }
                     }
                 }
             }
