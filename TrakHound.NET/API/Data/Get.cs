@@ -57,7 +57,7 @@ namespace TrakHound.API
 
             // List Devices to Get data for
             // If no devices are listed then ALL devices are retrieved
-            if (uniqueIds != null)
+            if (uniqueIds != null && uniqueIds.Count > 0)
             {
                 var deviceItems = new List<DeviceListItem>();
 
