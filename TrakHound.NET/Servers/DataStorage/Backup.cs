@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Xml;
 
@@ -42,7 +43,7 @@ namespace TrakHound.Servers.DataStorage
                 Table.CleanHours(connection);
 
                 // Insert each of the HourInfos into the Hours table
-                foreach (var deviceInfo in deviceInfos)
+                foreach (var deviceInfo in deviceInfos.ToList())
                 {
                     var obj = deviceInfo.GetClass("hours");
                     if (obj != null)
@@ -395,9 +396,8 @@ namespace TrakHound.Servers.DataStorage
                 //int timeZoneOffset = (DateTime.UtcNow - DateTime.Now).Hours;
 
                 string currentLocalDay = DateTime.Now.ToString(API.Data.HourInfo.DateFormat);
-                //string currentUtcDay = DateTime.UtcNow.ToString(API.Data.HourInfo.DateFormat);
 
-                string query = "DELETE FROM `hours` WHERE date < '" + currentLocalDay + "'";
+                string query = "DELETE FROM `hours` WHERE `date` < '" + currentLocalDay + "'";
 
                 Query.Run(connection, query);
             }
