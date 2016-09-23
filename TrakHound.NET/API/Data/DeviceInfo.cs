@@ -47,12 +47,6 @@ namespace TrakHound.API
                 {
                     var obj = GetClass("status");
                     if (obj != null) return (StatusInfo)obj;
-                    //else
-                    //{
-                    //    obj = new StatusInfo();
-                    //    AddClass("status", obj);
-                    //    return (StatusInfo)obj;
-                    //}
                     return null;
                 }
                 set
@@ -72,12 +66,6 @@ namespace TrakHound.API
                 {
                     var obj = GetClass("controller");
                     if (obj != null) return (ControllerInfo)obj;
-                    //else
-                    //{
-                    //    obj = new ControllerInfo();
-                    //    AddClass("controller", obj);
-                    //    return (ControllerInfo)obj;
-                    //}
                     return null;
                 }
                 set
@@ -97,12 +85,6 @@ namespace TrakHound.API
                 {
                     var obj = GetClass("oee");
                     if (obj != null) return (OeeInfo)obj;
-                    //else
-                    //{
-                    //    obj = new OeeInfo();
-                    //    AddClass("oee", obj);
-                    //    return (OeeInfo)obj;
-                    //}
                     return null;
                 }
                 set
@@ -122,12 +104,6 @@ namespace TrakHound.API
                 {
                     var obj = GetClass("timers");
                     if (obj != null) return (TimersInfo)obj;
-                    //else
-                    //{
-                    //    obj = new TimersInfo();
-                    //    AddClass("timers", obj);
-                    //    return (TimersInfo)obj;
-                    //}
                     return null;
                 }
                 set
@@ -147,12 +123,6 @@ namespace TrakHound.API
                 {
                     var obj = GetClass("cycles");
                     if (obj != null) return (List<CycleInfo>)obj;
-                    //else
-                    //{
-                    //    obj = new List<CycleInfo>();
-                    //    AddClass("cycles", obj);
-                    //    return (List<CycleInfo>)obj;
-                    //}
                     return null;
                 }
                 set
@@ -172,12 +142,6 @@ namespace TrakHound.API
                 {
                     var obj = GetClass("hours");
                     if (obj != null) return (List<HourInfo>)obj;
-                    //else
-                    //{
-                    //    obj = new List<HourInfo>();
-                    //    AddClass("hours", obj);
-                    //    return (List<HourInfo>)obj;
-                    //}
                     return null;
                 }
                 set
@@ -212,15 +176,22 @@ namespace TrakHound.API
 
             #region "SubClass Management"
 
-            private Dictionary<string, object> classes = new Dictionary<string, object>();
-
-            public Dictionary<string, object> Classes { get { return classes; } }
+            private Dictionary<string, object> _classes;
+            public Dictionary<string, object> Classes
+            {
+                get
+                {
+                    if (_classes == null) _classes = new Dictionary<string, object>();
+                    return _classes;
+                }
+                set { _classes = value; }
+            }
 
 
             public void AddClass(string id, object obj)
             {
                 var o = GetClass(id);
-                if (o == null) classes.Add(id, obj);
+                if (o == null) Classes.Add(id, obj);
                 else
                 {
                     RemoveClass(id);
@@ -231,19 +202,19 @@ namespace TrakHound.API
             public object GetClass(string id)
             {
                 object obj = null;
-                classes.TryGetValue(id, out obj);
+                Classes.TryGetValue(id, out obj);
 
                 return obj;
             }
 
             public void RemoveClass(string id)
             {
-                if (id != null) classes.Remove(id);
+                if (id != null) Classes.Remove(id);
             }
 
             public void ClearClasses()
             {
-                classes.Clear();
+                Classes.Clear();
             }
 
             #endregion
@@ -261,7 +232,7 @@ namespace TrakHound.API
                 data.Add("unique_id", UniqueId);
                 data.Add("enabled", Enabled);
 
-                foreach (var c in classes)
+                foreach (var c in Classes)
                 {
                     object match = false;
                     if (!data.TryGetValue(c.Key, out match))
