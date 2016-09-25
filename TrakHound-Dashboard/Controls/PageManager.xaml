@@ -68,7 +68,7 @@
                             <StackPanel Orientation="Horizontal" Margin="0,10">
 
                                 <!--Image-->
-                                <Grid Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Height="30" VerticalAlignment="Center" Margin="0,0,20,0">
+                                <Grid Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Height="25" VerticalAlignment="Center" Margin="0,0,20,0">
                                     <Grid.Resources>
                                         <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding PageContent.Image}" />
                                     </Grid.Resources>
@@ -76,7 +76,7 @@
                                         <Style TargetType="Grid">
                                             <Setter Property="Visibility" Value="Visible"/>
                                             <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                            <Setter Property="Background" Value="{StaticResource Text}"/>
+                                            <Setter Property="Background" Value="{StaticResource Foreground}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding PageContent.Image}" Value="{x:Null}">
                                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -87,7 +87,7 @@
                                 </Grid>
 
                                 <!--Title-->
-                                <TextBlock Text="{Binding PageContent.Title}" Foreground="{StaticResource Text}" FontSize="30" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding PageContent.Title}" Foreground="{StaticResource Text}" FontSize="25" VerticalAlignment="Center"/>
 
                             </StackPanel>
 
