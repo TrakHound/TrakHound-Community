@@ -10,6 +10,7 @@ using System.Linq;
 using TrakHound.Configurations;
 
 using TrakHound;
+using TrakHound.Tools;
 
 namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline
 {
@@ -45,6 +46,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline
                 var row = new Row(device);
                 row.Clicked += Row_Clicked;
                 Rows.Add(row);
+                Rows.Sort();
             }
         }
 
@@ -55,6 +57,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline
                 var row = new Row(device);
                 row.Clicked += Row_Clicked;
                 Rows.Insert(index, row);
+                Rows.Sort();
             }
         }
 

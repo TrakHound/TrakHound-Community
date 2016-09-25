@@ -172,6 +172,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus
                 var row = new Controls.Row(device);
                 row.Clicked += Row_Clicked;
                 Rows.Add(row);
+                Rows.Sort();
             }
         }
 
@@ -182,6 +183,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus
                 var row = new Controls.Row(device);
                 row.Clicked += Row_Clicked;
                 Rows.Insert(index, row);
+                Rows.Sort();
             }
         }
 

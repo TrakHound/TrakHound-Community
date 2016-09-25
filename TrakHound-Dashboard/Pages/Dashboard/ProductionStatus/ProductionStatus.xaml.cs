@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using TrakHound;
 using TrakHound.Configurations;
 using TrakHound_Dashboard.Pages.Dashboard.ProductionStatus.Controls;
+using TrakHound.Tools;
 
 namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatus
 {
@@ -42,6 +43,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatus
                 var row = new Row(device);
                 row.Clicked += Row_Clicked;
                 Rows.Add(row);
+                Rows.Sort();
             }
         }
 
@@ -52,6 +54,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatus
                 var row = new Row(device);
                 row.Clicked += Row_Clicked;
                 Rows.Insert(index, row);
+                Rows.Sort();
             }
         }
 

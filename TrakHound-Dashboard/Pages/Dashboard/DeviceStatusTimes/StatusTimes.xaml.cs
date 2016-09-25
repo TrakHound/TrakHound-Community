@@ -6,6 +6,7 @@ using System.Linq;
 using TrakHound;
 using TrakHound.Configurations;
 using TrakHound_Dashboard.Pages.Dashboard.DeviceStatusTimes.Controls;
+using TrakHound.Tools;
 
 namespace TrakHound_Dashboard.Pages.Dashboard.DeviceStatusTimes
 {
@@ -41,6 +42,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.DeviceStatusTimes
                 var row = new Row(device);
                 row.Clicked += Row_Clicked;
                 Rows.Add(row);
+                Rows.Sort();
             }
         }
 
@@ -51,6 +53,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.DeviceStatusTimes
                 var row = new Row(device);
                 row.Clicked += Row_Clicked;
                 Rows.Insert(index, row);
+                Rows.Sort();
             }
         }
 

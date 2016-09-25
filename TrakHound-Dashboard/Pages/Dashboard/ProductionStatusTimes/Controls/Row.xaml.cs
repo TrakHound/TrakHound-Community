@@ -15,7 +15,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatusTimes.Controls
     /// <summary>
     /// Interaction logic for Row.xaml
     /// </summary>
-    public partial class Row : UserControl
+    public partial class Row : UserControl, IComparable
     {
         public Row(DeviceDescription device)
         {
@@ -131,12 +131,21 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatusTimes.Controls
 
         public DateTime CurrentTime { get; set; }
 
+        public int Index
+        {
+            get
+            {
+                if (Device != null) return Device.Index;
+                else return -1;
+            }
+        }
+
         public void UpdateData(Data.StatusInfo info)
         {
             if (info != null)
             {
                 Connected = info.Connected == 1;
-                DeviceStatus = info.DeviceStatus;
+                if (!string.IsNullOrEmpty(info.DeviceStatus)) DeviceStatus = info.DeviceStatus;
             }
         }
 
@@ -161,5 +170,89 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatusTimes.Controls
         {
             Clicked?.Invoke(this);
         }
+
+        #region "IComparable"
+
+        public int CompareTo(object obj)
+        {
+            if (obj == null) return 1;
+
+            var i = obj as Row;
+            if (i != null)
+            {
+                if (i > this) return -1;
+                else if (i < this) return 1;
+                else return 0;
+            }
+            else return 1;
+        }
+
+        #region "Private"
+
+        static bool EqualTo(Row r1, Row r2)
+        {
+            if (!object.ReferenceEquals(r1, null) && object.ReferenceEquals(r2, null)) return false;
+            if (object.ReferenceEquals(r1, null) && !object.ReferenceEquals(r2, null)) return false;
+            if (object.ReferenceEquals(r1, null) && object.ReferenceEquals(r2, null)) return true;
+
+            return r1.Index == r2.Index;
+        }
+
+        static bool NotEqualTo(Row r1, Row r2)
+        {
+            if (!object.ReferenceEquals(r1, null) && object.ReferenceEquals(r2, null)) return true;
+            if (object.ReferenceEquals(r1, null) && !object.ReferenceEquals(r2, null)) return true;
+            if (object.ReferenceEquals(r1, null) && object.ReferenceEquals(r2, null)) return false;
+
+            return r1.Index != r2.Index;
+        }
+
+        static bool LessThan(Row r1, Row r2)
+        {
+            if (r1.Index > r2.Index) return false;
+            else return true;
+        }
+
+        static bool GreaterThan(Row r1, Row r2)
+        {
+            if (r1.Index < r2.Index) return false;
+            else return true;
+        }
+
+        #endregion
+
+        public static bool operator ==(Row r1, Row r2)
+        {
+            return EqualTo(r1, r2);
+        }
+
+        public static bool operator !=(Row r1, Row r2)
+        {
+            return NotEqualTo(r1, r2);
+        }
+
+
+        public static bool operator <(Row r1, Row r2)
+        {
+            return LessThan(r1, r2);
+        }
+
+        public static bool operator >(Row r1, Row r2)
+        {
+            return GreaterThan(r1, r2);
+        }
+
+
+        public static bool operator <=(Row r1, Row r2)
+        {
+            return LessThan(r1, r2) || EqualTo(r1, r2);
+        }
+
+        public static bool operator >=(Row r1, Row r2)
+        {
+            return GreaterThan(r1, r2) || EqualTo(r1, r2);
+        }
+
+        #endregion
     }
 }
