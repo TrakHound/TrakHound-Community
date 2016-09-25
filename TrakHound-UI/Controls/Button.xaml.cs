@@ -3,6 +3,7 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -59,6 +60,17 @@ namespace TrakHound_UI
 
         public static readonly DependencyProperty TextProperty =
             DependencyProperty.Register("Text", typeof(string), typeof(Button), new PropertyMetadata(null));
+
+        //[TypeConverterAttribute(typeof(FontSizeConverter))]
+        //[LocalizabilityAttribute(LocalizationCategory.Font)]
+        //public new double FontSize
+        //{
+        //    get { return (double)GetValue(FontSizeProperty); }
+        //    set { SetValue(FontSizeProperty, value); }
+        //}
+
+        //public new static readonly DependencyProperty FontSizeProperty =
+        //    DependencyProperty.Register("FontSize", typeof(double), typeof(TextBox), new PropertyMetadata(12d));
 
 
         public object ButtonContent
@@ -174,10 +186,8 @@ namespace TrakHound_UI
 
         private void Border_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (Clicked != null) Clicked(this);
+            Clicked?.Invoke(this);
         }   
-
-
 
     }
 
