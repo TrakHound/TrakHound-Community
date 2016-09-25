@@ -34,7 +34,7 @@
         WindowState="Maximized"         
         SizeChanged="Main_Window_SizeChanged"
         
-        FontFamily="arial"
+        FontFamily="open sans"
         
         PreviewMouseDown="Main_Window_PreviewMouseDown"
         PreviewKeyUp="Main_Window_PreviewKeyUp"
@@ -187,7 +187,7 @@
             </Grid>
 
             <!--Status Bar-->
-            <Grid DockPanel.Dock="Bottom" Grid.Row="2" Height="25" Background="#aaa" >
+            <Grid DockPanel.Dock="Bottom" Grid.Row="2" Height="25" Background="{StaticResource Background_Alternate}" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="auto" />
@@ -218,7 +218,7 @@
                             <Grid.Style>
                                 <Style TargetType="Grid">
                                     <Setter Property="OpacityMask" Value="{StaticResource Pause_IMG}" />
-                                    <Setter Property="Background" Value="{StaticResource Text}"/>
+                                    <Setter Property="Background" Value="{StaticResource Text_Alternate}"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ServerStatus}" Value="{x:Static services:ServiceStatus.Running}">
                                             <Setter Property="OpacityMask" Value="{StaticResource Running_IMG}" />
@@ -234,7 +234,7 @@
                             </Grid.Style>
                         </Grid>
 
-                        <TextBlock Foreground="{StaticResource Text}" FontSize="8pt" VerticalAlignment="Center">
+                        <TextBlock Foreground="{StaticResource Text_Alternate}" FontSize="8pt" VerticalAlignment="Center">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Style.Triggers>
@@ -258,9 +258,9 @@
 
                 <!--Resize Grip Lines-->
                 <Grid Grid.Column="1" Width="25">
-                    <Line X1="2" Y1="20" X2="20" Y2="2" Stroke="#33000000" StrokeThickness="1"/>
-                    <Line X1="8" Y1="22" X2="22" Y2="8" Stroke="#33000000" StrokeThickness="1"/>
-                    <Line X1="15" Y1="22" X2="22" Y2="15" Stroke="#33000000" StrokeThickness="1"/>
+                    <Line X1="2" Y1="20" X2="20" Y2="2" Stroke="#33ffffff" StrokeThickness="1"/>
+                    <Line X1="8" Y1="22" X2="22" Y2="8" Stroke="#33ffffff" StrokeThickness="1"/>
+                    <Line X1="15" Y1="22" X2="22" Y2="15" Stroke="#33ffffff" StrokeThickness="1"/>
                 </Grid>
 
             </Grid>
