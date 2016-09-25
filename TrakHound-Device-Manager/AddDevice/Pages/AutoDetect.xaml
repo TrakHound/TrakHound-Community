@@ -23,7 +23,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock TextWrapping="Wrap" FontSize="10pt" Foreground="{StaticResource Text}" Margin="10,0,10,20">
+        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{StaticResource Text}" Margin="10,0,10,20">
             <Run Text="Find devices on the network and automatically generate a Device Configuration using MTConnect"/>
             <LineBreak/>
             <Run Text="Note: This may take several minutes, depending on the size of the network being searched."/>
@@ -80,7 +80,6 @@
                 <!--Reset to Default Settings-->
                 <ui:Button Text="Reset to Default" Height="30" Clicked="ResetDefault_Clicked" Style="{StaticResource Button_Accent_Background}"/>
 
-
             </WrapPanel>
 
             
@@ -113,7 +112,7 @@
                         </TextBlock>
 
                         <!--Text-->
-                        <TextBlock Foreground="{StaticResource Text}" MinWidth="200" FontSize="12pt" VerticalAlignment="Center">
+                        <TextBlock Foreground="{StaticResource Text}" MinWidth="200" FontSize="12" VerticalAlignment="Center">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Text" Value="Devices Found on Network"/>
@@ -308,7 +307,7 @@
                     
                     <Run Text="{Binding DevicesAlreadyAdded}" FontWeight="Bold" FontSize="12pt"/>
 
-                    <Run FontSize="8pt">
+                    <Run FontSize="12">
                         <Run.Style>
                             <Style TargetType="Run">
                                 <Setter Property="Text" Value="Devices Already Added"/>
@@ -330,7 +329,7 @@
                     
                     <Run Text="{Binding NetworkNodesFound}" FontWeight="Bold" FontSize="12pt"/>
 
-                    <Run FontSize="8pt">
+                    <Run FontSize="12">
                         <Run.Style>
                             <Style TargetType="Run">
                                 <Setter Property="Text" Value="Network Nodes Found"/>

@@ -66,7 +66,7 @@
         </Grid.RowDefinitions>
 
         <!--Tool Bar-->
-        <Border Grid.Row="0" BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
+        <Border Grid.Row="0" BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,0">
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
                 <StackPanel.Resources>
@@ -242,10 +242,10 @@
             </StackPanel.Style>
 
             <!--No Devices Found-->
-            <TextBlock Text="No Devices Found" Foreground="{StaticResource Text}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,0" FontSize="14pt"/>
+            <TextBlock Text="No Devices Found" Foreground="{StaticResource Text}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,0" FontSize="14"/>
 
             <!--Click Below-->
-            <TextBlock Text="Click below to Add a Device" Foreground="{StaticResource Text}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,20" FontSize="14pt"/>
+            <TextBlock Text="Click below to Add a Device" Foreground="{StaticResource Text}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,20" FontSize="14"/>
 
 
             <!--Add Device Button-->
@@ -294,7 +294,7 @@
 
                 <ui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource Spinner}" />
 
-                <TextBlock Text="Creating Backup.." Foreground="{StaticResource Text}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,20,0,0" FontSize="14pt"/>
+                <TextBlock Text="Creating Backup.." Foreground="{StaticResource Text}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,20,0,0" FontSize="14"/>
 
             </StackPanel>
 
@@ -341,7 +341,7 @@
 
                 <ui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource Spinner}" />
 
-                <TextBlock Text="Loading Devices.." Foreground="{StaticResource Text}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,20,0,0" FontSize="14pt"/>
+                <TextBlock Text="Loading Devices.." Foreground="{StaticResource Text}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,20,0,0" FontSize="14"/>
 
             </StackPanel>
 
