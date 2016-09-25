@@ -136,16 +136,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <None Include="app.config" />
-    <None Include="Pages\Shifts\Controls\BreakListItem.xaml.cs">
-      <DependentUpon>BreakListItem.xaml</DependentUpon>
-    </None>
-    <None Include="Pages\Shifts\Controls\ShiftListItem.xaml.cs">
-      <DependentUpon>ShiftListItem.xaml</DependentUpon>
-    </None>
-    <None Include="Pages\Shifts\Info.cs" />
-    <None Include="Pages\Shifts\Page.xaml.cs">
-      <DependentUpon>Page.xaml</DependentUpon>
-    </None>
     <Compile Include="Pages\SnapshotData\Controls\SnapshotItem.xaml.cs">
       <DependentUpon>SnapshotItem.xaml</DependentUpon>
     </Compile>
@@ -253,18 +243,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <None Include="Pages\Shifts\Controls\BreakListItem.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Pages\Shifts\Controls\ShiftListItem.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Pages\Shifts\Page.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </None>
     <Page Include="Pages\SnapshotData\Controls\SnapshotItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
