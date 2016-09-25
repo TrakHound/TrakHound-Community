@@ -11,8 +11,6 @@ using TrakHound;
 using TrakHound.API;
 using TrakHound.API.Users;
 using TrakHound.Configurations;
-using TrakHound.Logging;
-using TrakHound.Plugins;
 using TrakHound.Plugins.Server;
 using TrakHound_Server.Plugins.Status;
 
@@ -38,10 +36,6 @@ namespace TrakHound_Server.Plugins.CloudData
 
             deviceInfo = new Data.DeviceInfo();
             deviceInfo.UniqueId = config.UniqueId;
-
-            //deviceInfo.Description = config.Description;
-
-            //queue.Add(deviceInfo);
         }
 
         public void GetSentData(EventData data)
@@ -102,9 +96,6 @@ namespace TrakHound_Server.Plugins.CloudData
 
                 var status = deviceInfo.Status;
                 bool statusSet = false;
-
-                //var timers = deviceInfo.Timers;
-                //bool timersSet = false;
 
                 // Device Status
                 var snapshot = snapshots.Find(o => o.Name == "Device Status");
@@ -334,8 +325,7 @@ namespace TrakHound_Server.Plugins.CloudData
                     hours.Add(hourInfo);
                 }
 
-                AddHourInfos(hours);
-                //deviceInfo.AddClass("hours", hours);
+                deviceInfo.AddHourInfos(hours);
             }
         }
 
@@ -434,45 +424,13 @@ namespace TrakHound_Server.Plugins.CloudData
                         int i = storedOeeDatas.FindIndex(o => o.Start.Hour == oeeData.Start.Hour && o.CycleId == oeeData.CycleId && o.CycleInstanceId == oeeData.CycleInstanceId);
                         if (i >= 0) storedOeeDatas[i] = oeeData;
 
-                        AddHourInfo(hourInfo);
-                        //deviceInfo.Hours.Add(hourInfo);
+                        deviceInfo.AddHourInfo(hourInfo);
                     }
 
                     queue.Add(deviceInfo);
                 }
             }
         }
-
-        private void AddHourInfo(Data.HourInfo hourInfo)
-        {
-            if (deviceInfo.Hours == null)
-            {
-                var hours = new List<Data.HourInfo>();
-                deviceInfo.AddClass("hours", hours);
-            }
-
-            try
-            {
-                deviceInfo.Hours.Add(hourInfo);
-            }
-            catch (Exception ex) { Logger.Log("Error Adding HourInfo to DeviceInfo :: " + ex.Message); } 
-        }
-
-        private void AddHourInfos(List<Data.HourInfo> hourInfos)
-        {
-            if (deviceInfo.Hours == null)
-            {
-                var hours = new List<Data.HourInfo>();
-                deviceInfo.AddClass("hours", hours);
-            }
-
-            try
-            {
-                deviceInfo.Hours.AddRange(hourInfos);
-            }
-            catch (Exception ex) { Logger.Log("Error Adding HourInfo to DeviceInfo :: " + ex.Message); }
-        }
-
 
         private int storedPartCount = 0;
         private string storedPartCountHour = null;
@@ -497,8 +455,7 @@ namespace TrakHound_Server.Plugins.CloudData
                             {
                                 hourInfo.TotalPieces = info.Count;
 
-                                AddHourInfo(hourInfo);
-                                //deviceInfo.Hours.Add(hourInfo);
+                                deviceInfo.AddHourInfo(hourInfo);
                             }
                             else
                             {
@@ -510,8 +467,8 @@ namespace TrakHound_Server.Plugins.CloudData
 
                                     Console.WriteLine("Part Count = " + info.Count + " :: " + hourInfo.TotalPieces + " : " + storedPartCount);
 
-                                    AddHourInfo(hourInfo);
-                                    //deviceInfo.Hours.Add(hourInfo);
+                                    deviceInfo.AddHourInfo(hourInfo);
+
                                     storedPartCount = info.Count;
                                     storedPartCountHour = GetHourId(hourInfo.Date, hourInfo.Hour);
                                 }

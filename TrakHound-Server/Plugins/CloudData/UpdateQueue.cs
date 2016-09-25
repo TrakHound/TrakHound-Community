@@ -11,6 +11,7 @@ using System.Threading;
 
 using TrakHound.API;
 using TrakHound.API.Users;
+using TrakHound.Logging;
 using TrakHound.Tools.Web;
 
 namespace TrakHound_Server.Plugins.CloudData
@@ -19,7 +20,12 @@ namespace TrakHound_Server.Plugins.CloudData
     {
         private static List<Data.DeviceInfo> queuedInfos = new List<Data.DeviceInfo>();
 
-        private System.Timers.Timer queueTimer;
+        private Thread queueThread;
+
+        private ManualResetEvent stop;
+
+        private bool started = false;
+
 
         public void Add(Data.DeviceInfo deviceInfo)
         {
@@ -47,41 +53,55 @@ namespace TrakHound_Server.Plugins.CloudData
             }
         }
 
+
         public void Start()
         {
-            if (queueTimer != null) queueTimer.Stop();
-            else
+            if (!started)
             {
-                queueTimer = new System.Timers.Timer();
-                queueTimer.AutoReset = false;
-                queueTimer.Elapsed -= QueueTimer_Elapsed;
-                queueTimer.Elapsed += QueueTimer_Elapsed;
+                stop = new ManualResetEvent(false);
+
+                started = true;
+
+                if (queueThread != null) queueThread.Abort();
+
+                queueThread = new Thread(new ThreadStart(Update));
+                queueThread.Start();
+            }
+        }
+
+        private void Update()
+        {
+            while (!stop.WaitOne(0, true))
+            {
+                ProcessQueue();
+
+                Thread.Sleep(ApiConfiguration.UpdateInterval);
             }
 
-            queueTimer.Interval = ApiConfiguration.UpdateInterval;
-            queueTimer.Start();
+            Console.WriteLine("UpdateQueue Loop Exited");
         }
 
         public void Stop()
         {
-            if (queueTimer != null) queueTimer.Stop();
-            queueTimer = null;
+            stop.Set();
+            started = false;
+
+            Logger.Log("CloudData Queue Stopped");
         }
 
-        private void QueueTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        private void RequestTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            //timer.Stop();
+            var timer = (System.Timers.Timer)sender;
 
+            timer.Enabled = false;
             ProcessQueue();
-
-            Start();
-
-            //var timer = (System.Timers.Timer)sender;
-            //timer.Start();
+            if (stop != null && !stop.WaitOne(0, true)) timer.Enabled = true;
         }
 
         private void ProcessQueue()
         {
+            Console.WriteLine("ProcessQueue() :: Count = " + queuedInfos.Count);
+
             if (queuedInfos.Count > 0)
             {
                 // List of infos to actually send to API
@@ -91,38 +111,30 @@ namespace TrakHound_Server.Plugins.CloudData
 
                 foreach (var queuedInfo in queuedInfos.ToList())
                 {
-                    var obj = queuedInfo.GetClass("hours");
-                    if (obj != null)
-                    {
-                        var hours = (List<Data.HourInfo>)obj;
-                        hours = Data.HourInfo.CombineHours(hours);
+                    queuedInfo.CombineHours();
 
-                        queuedInfo.RemoveClass("hours");
-                        queuedInfo.AddClass("hours", hours);
+                    // Get json size
+                    long size = 0;
+                    string json = queuedInfo.ToJson();
+                    if (json != null) size = json.Length;
+                    bufferSize += size;
 
-                        // Get json size
-                        long size = 0;
-                        string json = queuedInfo.ToJson();
-                        if (json != null) size = json.Length;
-                        bufferSize += size;
-
-                        // Only add if less than buffersize
-                        if (bufferSize <= ApiConfiguration.BufferSize) temp.Add(queuedInfo);
-                        else break;
-                    }
+                    // Only add if less than buffersize
+                    if (bufferSize <= ApiConfiguration.BufferSize) temp.Add(queuedInfo);
+                    else break;
                 }
 
                 Update(Plugin.currentUser, temp);
 
                 foreach (var queuedInfo in temp)
                 {
+                    Console.WriteLine(queuedInfo.UniqueId + " :: Count = " + queuedInfo.Classes.Count);
+
                     var match = queuedInfos.Find(o => o.UniqueId == queuedInfo.UniqueId);
                     if (match != null) match.ClearClasses();
-                    //if (match != null && match.Hours != null) match.Hours.Clear();
                 }
             }
         }
-
 
 
         public static void Update(UserConfiguration userConfig, List<Data.DeviceInfo> deviceInfos)
