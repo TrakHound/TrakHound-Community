@@ -50,7 +50,7 @@ namespace TrakHound.Servers.DataStorage
                     {
                         var hours = (List<Data.HourInfo>)obj;
 
-                        foreach (var hour in hours)
+                        foreach (var hour in hours.ToList())
                         {
                             Row.InsertHourInfo(connection, deviceInfo.UniqueId, hour);
                         }
@@ -99,12 +99,7 @@ namespace TrakHound.Servers.DataStorage
                                 result.Add(deviceInfo);
                             }
 
-                            var hours = new List<Data.HourInfo>();
-                            hours.Add(hourRowInfo.HourInfo);
-
-                            deviceInfo.AddClass("hours", hours);
-
-                            //deviceInfo.Hours.Add(hourRowInfo.HourInfo);
+                            deviceInfo.AddHourInfo(hourRowInfo.HourInfo);
                         }
 
                         return result;
@@ -392,9 +387,6 @@ namespace TrakHound.Servers.DataStorage
 
             public static void CleanHours(SQLiteConnection connection)
             {
-                // Probably a more elegant way of getting the Time Zone Offset could be done here
-                //int timeZoneOffset = (DateTime.UtcNow - DateTime.Now).Hours;
-
                 string currentLocalDay = DateTime.Now.ToString(API.Data.HourInfo.DateFormat);
 
                 string query = "DELETE FROM `hours` WHERE `date` < '" + currentLocalDay + "'";

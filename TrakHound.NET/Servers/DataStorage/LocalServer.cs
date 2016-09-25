@@ -384,17 +384,15 @@ namespace TrakHound.Servers.DataStorage
                 // Probably a more elegant way of getting the Time Zone Offset could be done here
                 int timeZoneOffset = Convert.ToInt32((DateTime.UtcNow - DateTime.Now).TotalHours);
 
-                string currentLocalDay = DateTime.Now.ToString(API.Data.HourInfo.DateFormat);
-                string currentUtcDay = DateTime.UtcNow.ToString(API.Data.HourInfo.DateFormat);
+                string fromDate = DateTime.Now.ToString(API.Data.HourInfo.DateFormat); ;
+                int fromHour = timeZoneOffset;
 
-                // Get the adjusted hour based on the timezone
-                int adjHourEnd = 24 - timeZoneOffset;
+                string toDate = DateTime.Now.AddDays(1).ToString(API.Data.HourInfo.DateFormat);
+                int toHour = 24 - timeZoneOffset;
 
-                if (currentLocalDay != currentUtcDay)
-                {
-                    return hourInfo.Date == currentUtcDay || (hourInfo.Date == currentLocalDay && hourInfo.Hour >= adjHourEnd);
-                }
-                else return hourInfo.Date == currentUtcDay;
+                if ((hourInfo.Date == fromDate && hourInfo.Hour >= fromHour) ||
+                    (hourInfo.Date == toDate && hourInfo.Hour <= toHour)) return true;
+                else return false; 
             }
         }
 
