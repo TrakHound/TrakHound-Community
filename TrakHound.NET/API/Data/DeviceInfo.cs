@@ -5,6 +5,7 @@
 
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 
 using TrakHound.Tools.Web;
 
@@ -14,6 +15,7 @@ namespace TrakHound.API
     {
         public class DeviceInfo
         {
+
             [JsonProperty("unique_id")]
             public string UniqueId { get; set; }
 
@@ -173,6 +175,67 @@ namespace TrakHound.API
                 }
             }
 
+            public void CombineHours()
+            {
+                if (Hours != null && Hours.Count > 0)
+                {
+                    lock (Hours)
+                    {
+                        var newHours = new List<HourInfo>();
+
+                        var _hours = Hours.ToList();
+                        if (_hours != null)
+                        {
+                            // Clean list of any null HourInfos
+                            _hours = _hours.FindAll(o => o != null);
+
+                            var distinctDates = _hours.Select(o => o.Date).Distinct();
+                            foreach (string distinctDate in distinctDates.ToList())
+                            {
+                                var sameDate = _hours.FindAll(o => o.Date == distinctDate);
+
+                                var distinctHours = sameDate.Select(o => o.Hour).Distinct();
+                                foreach (int distinctHour in distinctHours.ToList())
+                                {
+                                    var hourInfo = new HourInfo();
+                                    hourInfo.Date = distinctDate;
+                                    hourInfo.Hour = distinctHour;
+
+                                    var sameHours = _hours.FindAll(o => o.Hour == distinctHour);
+                                    foreach (var sameHour in sameHours.ToList())
+                                    {
+                                        // OEE
+                                        hourInfo.PlannedProductionTime += sameHour.PlannedProductionTime;
+                                        hourInfo.OperatingTime += sameHour.OperatingTime;
+                                        hourInfo.IdealOperatingTime += sameHour.IdealOperatingTime;
+                                        hourInfo.TotalPieces += sameHour.TotalPieces;
+                                        hourInfo.GoodPieces += sameHour.GoodPieces;
+
+                                        hourInfo.TotalTime += sameHour.TotalTime;
+
+                                        // Device Status
+                                        hourInfo.Active += sameHour.Active;
+                                        hourInfo.Idle += sameHour.Idle;
+                                        hourInfo.Alert += sameHour.Alert;
+
+                                        // Production Status
+                                        hourInfo.Production += sameHour.Production;
+                                        hourInfo.Setup += sameHour.Setup;
+                                        hourInfo.Teardown += sameHour.Teardown;
+                                        hourInfo.Maintenance += sameHour.Maintenance;
+                                        hourInfo.ProcessDevelopment += sameHour.ProcessDevelopment;
+                                    }
+
+                                    newHours.Add(hourInfo);
+                                }
+                            }
+
+                            Hours = newHours;
+                        }
+                    }
+                }
+            }
+
 
             #region "SubClass Management"
 
@@ -190,12 +253,15 @@ namespace TrakHound.API
 
             public void AddClass(string id, object obj)
             {
-                var o = GetClass(id);
-                if (o == null) Classes.Add(id, obj);
-                else
+                lock (Classes)
                 {
-                    RemoveClass(id);
-                    AddClass(id, obj);
+                    var o = GetClass(id);
+                    if (o == null) Classes.Add(id, obj);
+                    else
+                    {
+                        RemoveClass(id);
+                        AddClass(id, obj);
+                    }
                 }
             }
 
@@ -269,6 +335,44 @@ namespace TrakHound.API
                 }
 
                 return result;
+            }
+
+
+            public void AddHourInfo(Data.HourInfo hourInfo)
+            {
+                if (hourInfo != null)
+                {
+                    lock (this)
+                    {
+                        var hours = Hours;
+                        if (hours == null) hours = new List<Data.HourInfo>();
+
+                        hours.Add(hourInfo);
+
+                        Hours = hours;
+                    }
+                }
+            }
+
+            public void AddHourInfos(List<Data.HourInfo> hourInfos)
+            {
+                if (hourInfos != null && hourInfos.Count > 0)
+                {
+                    var _hourInfos = hourInfos.FindAll(o => o != null);
+
+                    lock (this)
+                    {
+                        var hours = Hours;
+                        if (hours == null) hours = new List<Data.HourInfo>();
+
+                        foreach (var hourInfo in _hourInfos)
+                        {
+                            if (hourInfo != null) hours.Add(hourInfo);
+                        }
+
+                        Hours = hours;
+                    }
+                }
             }
 
         }
