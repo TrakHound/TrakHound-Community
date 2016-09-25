@@ -146,7 +146,7 @@
                                     MinWidth="50"
                                     MaxWidth="250"
                                     HorizontalAlignment="Left" VerticalAlignment="Center"
-                                    FontSize="13"      
+                                    FontSize="12"      
                                     SizeChanged="TextBlock_SizeChanged"
                                     >
                                 <TextBlock.Style>
