@@ -9,33 +9,38 @@
              mc:Ignorable="d" 
              >
 
-    <Grid FocusManager.IsFocusScope="False">
+    <Grid x:Name="root" FocusManager.IsFocusScope="False">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--Title-->
-        <TextBlock Text="Default Value" FontSize="8pt" Foreground="#aaa" Margin="10,5" FocusManager.IsFocusScope="False"/>
+        <TextBlock Text="Default Value" FontSize="12" Foreground="{StaticResource Text}" Margin="10,5" FocusManager.IsFocusScope="False"/>
+
+        <!--User Input-->
+        <ui:TextBox x:Name="valuename_TXT" Grid.Row="2" Text="{Binding ValueName}" TextChanged="TextBox_TextChanged" MinWidth="150"/>
 
         <!--Value Header-->
-        <Border Grid.Row="1" CornerRadius="2" Background="#0080ff" MinWidth="200" FocusManager.IsFocusScope="False">
+        <!--<Border Grid.Row="1" CornerRadius="2" Background="{StaticResource TrakHound_Blue}" MinWidth="200" FocusManager.IsFocusScope="False" Padding="10">-->
 
-            <StackPanel Margin="20,10" VerticalAlignment="Center" FocusManager.IsFocusScope="False">
+            
 
-                <!--Value Name-->
+            <!--<StackPanel Margin="20,10" VerticalAlignment="Center" FocusManager.IsFocusScope="False">
+
+                --><!--Value Name--><!--
                 <StackPanel FocusManager.IsFocusScope="False">
 
-                    <TextBlock Text="Value" Foreground="#66ffffff" FontSize="10pt"  FocusManager.IsFocusScope="False"/>
+                    --><!--<TextBlock Text="Value" Foreground="White" FontSize="10pt"  FocusManager.IsFocusScope="False"/>--><!--
 
                     <Border BorderThickness="1" CornerRadius="1" Margin="0,5,0,5" FocusManager.IsFocusScope="False">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Setter Property="BorderBrush" Value="#33ffffff"/>
-                                <Setter Property="Background" Value="#00000000"/>
+                                <Setter Property="Background" Value="Transparent"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsFocused, ElementName=valuename_TXT}" Value="true">
-                                        <Setter Property="BorderBrush" Value="#0060ff"/>
+                                        <Setter Property="BorderBrush" Value="{StaticResource TrakHound_DarkBlue}"/>
                                         <Setter Property="Background" Value="White"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -44,11 +49,11 @@
 
                         <Grid Margin="10,0" FocusManager.IsFocusScope="False">
 
-                            <!--User Input-->
-                            <TextBox x:Name="valuename_TXT" Text="{Binding ValueName}" TextChanged="TextBox_TextChanged" GotFocus="TXT_GotFocus" LostFocus="TXT_LostFocus" GotKeyboardFocus="TXT_GotKeyboardFocus" GotMouseCapture="TXT_GotMouseCapture" BorderThickness="0" Background="#00000000"  FontSize="14pt" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black">
+                            --><!--User Input--><!--
+                            <TextBox x:Name="valuename_TXT" Text="{Binding ValueName}" TextChanged="TextBox_TextChanged" GotFocus="TXT_GotFocus" LostFocus="TXT_LostFocus" GotKeyboardFocus="TXT_GotKeyboardFocus" GotMouseCapture="TXT_GotMouseCapture" FontSize="12" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black">
                                 <TextBox.Style>
                                     <Style TargetType="TextBox">
-                                        <Setter Property="Foreground" Value="#fff"/>
+                                        <Setter Property="Foreground" Value="White"/>
                                         <Setter Property="TextAlignment" Value="Left"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsFocused, ElementName=valuename_TXT}" Value="true">
@@ -66,9 +71,9 @@
 
                 </StackPanel>
 
-            </StackPanel>
+            </StackPanel>-->
 
-        </Border>
+        <!--</Border>-->
 
     </Grid>
 

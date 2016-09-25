@@ -27,30 +27,30 @@
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
 
                 <!--Image-->
-                <Grid Height="30" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,0,0" VerticalAlignment="Center">
+                <Grid Height="25" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,0,0" VerticalAlignment="Center">
                     <Grid.Resources>
                         <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding Image}" />
                     </Grid.Resources>
                     <Grid.Style>
                         <Style TargetType="Grid">
                             <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                            <Setter Property="Background" Value="{StaticResource Foreground_Normal}"/>
+                            <Setter Property="Background" Value="{StaticResource Foreground}"/>
                         </Style>
                     </Grid.Style>
                 </Grid>
 
-                <TextBlock Text="Parts" FontSize="20pt" Foreground="{StaticResource Foreground_Normal}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                <TextBlock Text="Parts" FontSize="25" Foreground="{StaticResource Text}" Margin="10,0,0,0" VerticalAlignment="Center"/>
 
             </StackPanel>
 
-            <TextBlock Grid.Column="1" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="20,5" TextWrapping="Wrap" MaxWidth="800" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <TextBlock Grid.Column="1" FontSize="12" Foreground="{StaticResource Text_Light}" Margin="20,5" TextWrapping="Wrap" MaxWidth="800" HorizontalAlignment="Left" VerticalAlignment="Center">
             Use Parts to track Part Count.
             Uses a Generated Event with that corresponds to an event such as 'Parts Produced'.
             </TextBlock>
 
         </Grid>
 
-        <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Shade_Normal}" Margin="0,15,0,0"/>
+        <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Border}" Margin="0,15,0,0"/>
 
         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
 
@@ -130,7 +130,7 @@
                           SelectionChanged="PartsEventName_SelectionChanged"
                           IsEditable="True" 
                           VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
-                          FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+                          FontSize="12" Background="{x:Null}" Cursor="Hand"/>
 
 
                 <!--Title and Help-->
@@ -200,7 +200,7 @@
                           SelectionChanged="producedValue_COMBO_SelectionChanged"
                           IsEditable="True" 
                           VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
-                          FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+                          FontSize="12" Background="{x:Null}" Cursor="Hand"/>
 
 
                 <!--Title and Help-->
@@ -272,14 +272,14 @@
                           SelectionChanged="partCountLink_COMBO_SelectionChanged" 
                           IsEditable="True"
                           VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
-                          FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+                          FontSize="12" Background="{x:Null}" Cursor="Hand"/>
 
                 <ComboBox Margin="0,10" Width="200" Height="30"
                           ItemsSource="{Binding CalculationTypes}"
                           SelectedValue="{Binding SelectedCalculationType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                           SelectionChanged="CalculationType_SelectionChanged" 
                           VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
-                          FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+                          FontSize="12" Background="{x:Null}" Cursor="Hand"/>
 
             </StackPanel>
 

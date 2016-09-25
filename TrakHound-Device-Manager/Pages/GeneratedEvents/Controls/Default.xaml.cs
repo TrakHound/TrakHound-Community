@@ -17,7 +17,7 @@ namespace TrakHound_Device_Manager.Pages.GeneratedEvents.Controls
         public Default()
         {
             InitializeComponent();
-            DataContext = this;
+            root.DataContext = this;
         }
 
         public Page.Result ParentResult;
@@ -40,18 +40,19 @@ namespace TrakHound_Device_Manager.Pages.GeneratedEvents.Controls
 
             if (ParentResult != null) ParentResult.value = txt.Text;
 
-            if (txt.IsKeyboardFocused) if (SettingChanged != null) SettingChanged();
+            //if (txt.IsKeyboardFocused) if (SettingChanged != null) SettingChanged();
+            if (txt.IsKeyboardFocused) SettingChanged?.Invoke();
         }
 
-        object oldFocus = null;
+        //object oldFocus = null;
 
-        private void TXT_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e) { if (oldFocus != sender) ((TextBox)sender).SelectAll(); oldFocus = sender; }
+        //private void TXT_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e) { if (oldFocus != sender) ((TextBox)sender).SelectAll(); oldFocus = sender; }
 
-        private void TXT_GotFocus(object sender, RoutedEventArgs e) { if (oldFocus != sender) ((TextBox)sender).SelectAll(); oldFocus = sender; }
+        //private void TXT_GotFocus(object sender, RoutedEventArgs e) { if (oldFocus != sender) ((TextBox)sender).SelectAll(); oldFocus = sender; }
 
-        private void TXT_GotMouseCapture(object sender, MouseEventArgs e) { if (oldFocus != sender) ((TextBox)sender).SelectAll(); oldFocus = sender; }
+        //private void TXT_GotMouseCapture(object sender, MouseEventArgs e) { if (oldFocus != sender) ((TextBox)sender).SelectAll(); oldFocus = sender; }
 
-        private void TXT_LostFocus(object sender, RoutedEventArgs e) { oldFocus = null; }
+        //private void TXT_LostFocus(object sender, RoutedEventArgs e) { oldFocus = null; }
 
     }
 }

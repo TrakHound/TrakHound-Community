@@ -8,14 +8,14 @@
              
              >
 
-    <Border CornerRadius="2" Background="#00000000">
+    <Border CornerRadius="2" Background="Transparent">
         <Border.Style>
             <Style TargetType="Border">
-                <Setter Property="BorderBrush" Value="#33000000"/>
+                <Setter Property="BorderBrush" Value="{StaticResource Border}"/>
                 <Setter Property="BorderThickness" Value="1"/>
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="true">
-                        <Setter Property="BorderBrush" Value="#0080ff"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource TrakHound_Blue}"/>
                     </Trigger>
                 </Style.Triggers>
             </Style>
@@ -33,7 +33,7 @@
                 <!--Name-->
                 <StackPanel Orientation="Horizontal">
 
-                    <TextBlock Text="Name" FontSize="8pt" Foreground="#888" Margin="10,0" VerticalAlignment="Center"/>
+                    <TextBlock Text="Name" FontSize="12" Foreground="{StaticResource Text_Light}" Margin="10,0" VerticalAlignment="Center"/>
 
                     <!--Value-->
                     <Grid Margin="0" Width="250">
@@ -45,10 +45,10 @@
                         <Border BorderThickness="1" CornerRadius="1" Margin="0,5" Background="White">
                             <Border.Style>
                                 <Style TargetType="Border">
-                                    <Setter Property="BorderBrush" Value="#aaa"/>
+                                    <Setter Property="BorderBrush" Value="{StaticResource Border}"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsFocused, ElementName=name_TXT}" Value="true">
-                                            <Setter Property="BorderBrush" Value="#0080ff"/>
+                                            <Setter Property="BorderBrush" Value="{StaticResource TrakHound_Blue}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -57,7 +57,7 @@
                             <Grid Margin="10,0">
 
                                 <!--User Input-->
-                                <TextBox x:Name="name_TXT" Text="{Binding CaptureName}" TextChanged="name_TXT_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="14" Foreground="#333" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" TextAlignment="Center" MaxLines="1" CaretBrush="Black"/>
+                                <TextBox x:Name="name_TXT" Text="{Binding CaptureName}" TextChanged="name_TXT_TextChanged" BorderThickness="0" Background="Transparent" FontSize="12" Foreground="{StaticResource Text}" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" TextAlignment="Center" MaxLines="1" CaretBrush="Black"/>
 
                             </Grid>
 
@@ -71,29 +71,17 @@
                 <!--Data Link-->
                 <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
 
-                    <TextBlock Text="Data Link" FontSize="8pt" Foreground="#888" Margin="10,0" VerticalAlignment="Center"/>
+                    <TextBlock Text="Data Link" FontSize="12" Foreground="{StaticResource Text_Light}" Margin="10,0" VerticalAlignment="Center"/>
 
                     <!--Data Item Link-->
-                    <ComboBox x:Name="link_COMBO" MinWidth="200" Padding="20,0" DataContext="{Binding ParentPage}" ItemsSource="{Binding CollectedItems}" TextBoxBase.TextChanged="link_COMBO_TextChanged" IsEditable="True" SelectionChanged="link_COMBO_SelectionChanged" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Cursor="Hand"/>
+                    <ComboBox x:Name="link_COMBO" MinWidth="200" Padding="20,0" DataContext="{Binding ParentPage}" ItemsSource="{Binding CollectedItems}" TextBoxBase.TextChanged="link_COMBO_TextChanged" IsEditable="True" SelectionChanged="link_COMBO_SelectionChanged" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="12" Cursor="Hand"/>
 
                 </StackPanel>
 
             </StackPanel>
 
             <!--Remove Button-->
-            <ui:Button Grid.Column="1" Image="/TrakHound-Device-Manager;component/Resources/X_01.png" Style="{StaticResource Button_Accent_Foreground}" Cursor="Hand" Padding="10" Margin="10,0,0,0" Clicked="Remove_Clicked">
-                <!--<ui:Button.Style>
-                    <Style TargetType="ui:Button">
-                        <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                        <Setter Property="Background" Value="Transparent"/>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </ui:Button.Style>-->
-            </ui:Button>
+            <ui:Button Grid.Column="1" Image="/TrakHound-Device-Manager;component/Resources/X_01.png" Style="{StaticResource Button_Accent_Foreground}" Cursor="Hand" Padding="10" Margin="10,0,0,0" Clicked="Remove_Clicked"/>
 
         </Grid>
 

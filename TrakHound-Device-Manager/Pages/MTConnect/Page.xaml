@@ -21,21 +21,21 @@
         <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
 
             <!--Image-->
-            <Grid Height="30" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,0,0" VerticalAlignment="Center">
+            <Grid Height="25" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,0,0" VerticalAlignment="Center">
                 <Grid.Resources>
                     <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TrakHound-Device-Manager;component/Resources/MTConnect_01.png" />
                 </Grid.Resources>
                 <Grid.Style>
                     <Style TargetType="Grid">
                         <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                        <Setter Property="Background" Value="{StaticResource Text}"/>
+                        <Setter Property="Background" Value="{StaticResource Foreground}"/>
                     </Style>
                 </Grid.Style>
             </Grid>
 
-            <TextBlock Text="Agent" FontSize="20pt" Foreground="{StaticResource Text}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+            <TextBlock Text="Agent" FontSize="25" Foreground="{StaticResource Text}" Margin="10,0,0,0" VerticalAlignment="Center"/>
 
-            <TextBlock Text="Configure the MTConnect® Agent Communication." FontSize="10pt" Foreground="{StaticResource Text}" Margin="20,5" VerticalAlignment="Center"/>
+            <TextBlock Text="Configure the MTConnect® Agent Communication." FontSize="12" Foreground="{StaticResource Text_Light}" Margin="20,5" VerticalAlignment="Center"/>
 
         </StackPanel>
 
@@ -88,7 +88,7 @@
                         </Grid.ColumnDefinitions>
 
                         <!--Buttton-->
-                        <ui:Button Text="Test Connection" Clicked="TestConnection_Clicked" Height="35" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <ui:Button Text="Test Connection" Clicked="TestConnection_Clicked" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <ui:Button.Style>
                                 <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Accent_Background}">
                                     <Style.Triggers>
@@ -180,6 +180,7 @@
                             </Grid.Style>
                         </Grid>
 
+                        <!--Connection Test Result-->
                         <TextBlock Grid.Column="2" Text="{Binding ConnectionTestResultText}" FontSize="12" TextWrapping="Wrap" VerticalAlignment="Center" Margin="20,0,0,0">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
@@ -202,7 +203,7 @@
                         <StackPanel Orientation="Horizontal">
 
                             <!--Title-->
-                            <TextBlock Text="Heartbeat Interval" Foreground="{StaticResource Text}" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
+                            <TextBlock Text="Heartbeat Interval" Foreground="{StaticResource Text}" Margin="0,0,10,0" FontSize="12" VerticalAlignment="Center"/>
 
                             <!--Help-->
                             <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
@@ -274,7 +275,7 @@
                                 <Grid Margin="10,0">
 
                                     <!--Instructions-->
-                                    <TextBlock Text="{Binding Heartbeat_TimeSpan}" FontSize="12pt" Foreground="{StaticResource Text}" VerticalAlignment="Center" Margin="2,0" >
+                                    <TextBlock Text="{Binding Heartbeat_TimeSpan}" FontSize="12" Foreground="{StaticResource Text}" VerticalAlignment="Center" Margin="2,0" >
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -288,7 +289,7 @@
                                     </TextBlock>
 
                                     <!--User Input-->
-                                    <TextBox x:Name="heartbeat_TXT" LostFocus="heartbeat_TXT_LostFocus" TextChanged="heartbeat_TXT_TextChanged" BorderThickness="0" Background="Transparent"  FontSize="12pt" Foreground="{StaticResource Text}" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
+                                    <TextBox x:Name="heartbeat_TXT" LostFocus="heartbeat_TXT_LostFocus" TextChanged="heartbeat_TXT_TextChanged" BorderThickness="0" Background="Transparent"  FontSize="12" Foreground="{StaticResource Text}" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
 
                                 </Grid>
 

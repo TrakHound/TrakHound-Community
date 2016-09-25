@@ -17,14 +17,14 @@
         </Grid.RowDefinitions>
         
         <!--Description-->
-        <StackPanel Margin="0,10" FocusManager.IsFocusScope="False">
+        <StackPanel FocusManager.IsFocusScope="False">
 
-            <TextBlock Text="Event Description" FontSize="8pt" Foreground="#888" Margin="10,5" FocusManager.IsFocusScope="False"/>
+            <TextBlock Text="Event Description" FontSize="12" Foreground="{StaticResource Text_Light}" Margin="10,5" FocusManager.IsFocusScope="False"/>
 
             <Border BorderThickness="1" CornerRadius="1" Margin="0,5" FocusManager.IsFocusScope="False">
                 <Border.Style>
                     <Style TargetType="Border">
-                        <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource Border}"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsFocused, ElementName=description_TXT}" Value="true">
                                 <Setter Property="BorderBrush" Value="{StaticResource TrakHound_LightBlue}"/>
@@ -33,16 +33,15 @@
                     </Style>
                 </Border.Style>
 
-                <TextBox x:Name="description_TXT" Text="{Binding Description}" TextChanged="Description_TextChanged" GotFocus="TXT_GotFocus" LostFocus="TXT_LostFocus" GotMouseCapture="TXT_GotMouseCapture" GotKeyboardFocus="TXT_GotKeyboardFocus" Foreground="#333" Margin="10" BorderBrush="{x:Null}">
+                <TextBox x:Name="description_TXT" Text="{Binding Description}" TextChanged="Description_TextChanged" GotFocus="TXT_GotFocus" LostFocus="TXT_LostFocus" GotMouseCapture="TXT_GotMouseCapture" GotKeyboardFocus="TXT_GotKeyboardFocus" Foreground="{StaticResource Text}" Margin="10" BorderBrush="{x:Null}">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
-                            <Setter Property="FontSize" Value="10pt"/>
-                            <Setter Property="Background" Value="#00000000"/>
+                            <Setter Property="FontSize" Value="12"/>
+                            <Setter Property="Background" Value="Transparent"/>
                             <Setter Property="Padding" Value="0"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="true">
-                                    <Setter Property="FontSize" Value="12pt"/>
-                                    <Setter Property="Background" Value="#fff"/>
+                                    <Setter Property="Background" Value="White"/>
                                     <Setter Property="Padding" Value="20"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -66,31 +65,20 @@
             </ItemsControl>
             
             <!--Add Value Button-->
-            <ui:Button Height="40" Text="Add Value" Style="{StaticResource Button_Accent_Foreground}" ImageTextPadding="10" Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Margin="0,20" Clicked="AddValue_Clicked" HorizontalAlignment="Left" FocusManager.IsFocusScope="False">
+            <ui:Button Text="Add Value" Style="{StaticResource Button_Accent_Foreground}" ImageTextPadding="10" Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Margin="0,20" Clicked="AddValue_Clicked" HorizontalAlignment="Left" FocusManager.IsFocusScope="False">
                 <ui:Button.ToolTip>
                     Add a new Value to the Event
                 </ui:Button.ToolTip>
-                <!--<ui:Button.Style>
-                    <Style TargetType="ui:Button">
-                        <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                        <Setter Property="Background" Value="Transparent"/>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </ui:Button.Style>-->
             </ui:Button>
             
             <!--Default Value-->
             <ContentControl Content="{Binding DefaultValue}" HorizontalAlignment="Left" Margin="0,5" FocusManager.IsFocusScope="False"/>
             
             <!--Separator-->
-            <Rectangle Height="1" Fill="{StaticResource Shade_Normal}" Margin="0,20" FocusManager.IsFocusScope="False"/>
+            <Rectangle Height="1" Fill="{StaticResource Border}" Margin="0,20" FocusManager.IsFocusScope="False"/>
             
             <!--Capture Items Title-->
-            <TextBlock Text="Capture Items" FontSize="8pt" Foreground="#aaa" Margin="10,5" FocusManager.IsFocusScope="False"/>
+            <TextBlock Text="Capture Items" FontSize="12" Foreground="{StaticResource Text_Light}" Margin="10,5" FocusManager.IsFocusScope="False"/>
 
             <!--Capture Items-->
             <ItemsControl Grid.Row="1" ItemsSource="{Binding CaptureItems}" FocusManager.IsFocusScope="False">
@@ -102,19 +90,7 @@
             </ItemsControl>
 
             <!--Add Capture Item Button-->
-            <ui:Button Height="35" Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Style="{StaticResource Button_Accent_Foreground}" Text="Add Capture Item" ImageTextPadding="10" ToolTip="Add Capture Item" Margin="0,20" Clicked="AddCaptureItem_Clicked" HorizontalAlignment="Left" FocusManager.IsFocusScope="False">
-                <!--<ui:Button.Style>
-                    <Style TargetType="ui:Button">
-                        <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                        <Setter Property="Background" Value="Transparent"/>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </ui:Button.Style>-->
-            </ui:Button>
+            <ui:Button Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Style="{StaticResource Button_Accent_Foreground}" Text="Add Capture Item" ImageTextPadding="10" ToolTip="Add Capture Item" Margin="0,20" Clicked="AddCaptureItem_Clicked" HorizontalAlignment="Left" FocusManager.IsFocusScope="False"/>
 
         </StackPanel>
      

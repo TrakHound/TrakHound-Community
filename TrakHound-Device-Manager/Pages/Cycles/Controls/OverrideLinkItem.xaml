@@ -22,7 +22,7 @@
                 <!--Data Link-->
                 <StackPanel Orientation="Horizontal">
 
-                    <TextBlock Text="Link" FontSize="8pt" Foreground="#888" Margin="10,0" VerticalAlignment="Center"/>
+                    <TextBlock Text="Link" FontSize="12" Foreground="{StaticResource Text_Light}" Margin="10,0" VerticalAlignment="Center"/>
 
                     <ComboBox 
                               MinWidth="200" Height="30" Padding="20,0" 
@@ -31,7 +31,7 @@
                               DisplayMemberPath="Display"
                               SelectionChanged="Link_SelectionChanged"
                               VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
-                              FontSize="14" Cursor="Hand"
+                              FontSize="12" Cursor="Hand"
                               IsEditable="True"
                               SelectedValue="{Binding SelectedId, RelativeSource={RelativeSource AncestorType=local:OverrideLinkItem}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         />

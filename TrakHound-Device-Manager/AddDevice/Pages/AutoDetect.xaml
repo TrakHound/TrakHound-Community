@@ -244,7 +244,7 @@
                 </StackPanel>
 
                 <!--Add All Button-->
-                <ui:Button Grid.Column="1" Text="Add All" Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Clicked="AddAll_Clicked">
+                <ui:Button Grid.Column="1" Text="Add All" Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Clicked="AddAll_Clicked" VerticalAlignment="Center">
                     <ui:Button.Style>
                         <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Accent_Background}">
                             <Style.Triggers>
@@ -368,6 +368,8 @@
                     VerticalScrollBarVisibility="Auto"  
                     HeadersVisibility="Column"
                     SelectionMode="Single"
+                    MaxWidth="800"
+                    HorizontalAlignment="Left"
                     >
             <DataGrid.Style>
                 <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
@@ -389,7 +391,7 @@
                 <DataGridTextColumn Header="Port" Binding="{Binding Port}"/>
                 <DataGridTextColumn Header="Device Name" Binding="{Binding Device.Name}"/>
 
-                <DataGridTextColumn Header="Description" Binding="{Binding DeviceDescription.CDATA}"/>
+                <DataGridTextColumn Header="Description" Binding="{Binding DeviceDescription.CDATA}" Width="*"/>
                 <DataGridTextColumn Header="Manufacturer" Binding="{Binding DeviceDescription.Manufacturer}"/>
                 <DataGridTextColumn Header="Model" Binding="{Binding DeviceDescription.Model}"/>
                 <DataGridTextColumn Header="Serial" Binding="{Binding DeviceDescription.SerialNumber}"/>

@@ -22,11 +22,11 @@
 
                     <Grid MinWidth="150">
 
-                        <TextBlock Text="{Binding ValueName}" FontSize="10pt" Foreground="{StaticResource Text}" Margin="0,0,20,0"  VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        <TextBlock Text="{Binding ValueName}" FontSize="12" Foreground="{StaticResource Text}" Margin="0,0,20,0"  VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
                     </Grid>
 
-                    <ComboBox x:Name="productionType_COMBO" Padding="20,0"  Width="200" DataContext="{Binding ParentPage}" ItemsSource="{Binding ProductionTypeValues}"  SelectionChanged="productionType_COMBO_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+                    <ComboBox x:Name="productionType_COMBO" Padding="20,0"  Width="200" DataContext="{Binding ParentPage}" ItemsSource="{Binding ProductionTypeValues}" SelectionChanged="productionType_COMBO_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="12" Background="{x:Null}" Cursor="Hand"/>
 
                 </StackPanel>
 

@@ -37,7 +37,7 @@
             </StackPanel.Style>
 
             <!--Title-->
-            <TextBlock Text="{Binding Title}" Foreground="{DynamicResource Text}" Margin="0,0,10,5" FontSize="12pt" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding Title}" Foreground="{DynamicResource Text}" Margin="0,0,10,5" FontSize="12" VerticalAlignment="Center"/>
 
             <!--Help-->
             <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
@@ -280,7 +280,7 @@
 
                     <local:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="40" Height="40" Foreground="{StaticResource TrakHound_Blue}" />
 
-                    <TextBlock Text="{Binding LoadingText}" Foreground="{DynamicResource Text}" FontSize="10pt" Margin="0,10,0,0"/>
+                    <TextBlock Text="{Binding LoadingText}" Foreground="{DynamicResource Text}" FontSize="12" Margin="0,10,0,0"/>
 
                 </StackPanel>
 
@@ -289,7 +289,7 @@
         </Grid>
 
         <!--Clear-->
-        <TextBlock Grid.Row="2" Margin="0,5,0,0" Text="Clear" FontSize="10pt" TextDecorations="Underline" HorizontalAlignment="Right" MouseDown="Clear_MouseDown">
+        <TextBlock Grid.Row="2" Margin="0,5,0,0" Text="Clear" FontSize="12" TextDecorations="Underline" HorizontalAlignment="Right" MouseDown="Clear_MouseDown">
             <TextBlock.Style>
                 <Style TargetType="TextBlock">
                     <Setter Property="Foreground" Value="{StaticResource Foreground_Light}"/>

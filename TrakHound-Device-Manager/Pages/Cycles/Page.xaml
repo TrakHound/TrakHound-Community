@@ -28,23 +28,23 @@
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
 
                 <!--Image-->
-                <Grid Height="30" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,0,0" VerticalAlignment="Center">
+                <Grid Height="25" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,0,0" VerticalAlignment="Center">
                     <Grid.Resources>
                         <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding Image}" />
                     </Grid.Resources>
                     <Grid.Style>
                         <Style TargetType="Grid">
                             <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                            <Setter Property="Background" Value="{StaticResource Text}"/>
+                            <Setter Property="Background" Value="{StaticResource Foreground}"/>
                         </Style>
                     </Grid.Style>
                 </Grid>
 
-                <TextBlock Text="Cycles" FontSize="20pt" Foreground="{StaticResource Text}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                <TextBlock Text="Cycles" FontSize="25" Foreground="{StaticResource Text}" Margin="10,0,0,0" VerticalAlignment="Center"/>
 
             </StackPanel>
 
-            <TextBlock Grid.Column="1" FontSize="10pt" Foreground="{StaticResource Text}" Margin="20,5" TextWrapping="Wrap" MaxWidth="800" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <TextBlock Grid.Column="1" FontSize="12" Foreground="{StaticResource Text_Light}" Margin="20,5" TextWrapping="Wrap" MaxWidth="800" HorizontalAlignment="Left" VerticalAlignment="Center">
             Use Cycles to track machine programs or sequences. 
             Uses a Generated Event with that corresponds to events such as 'Cycle Active', 'Cycle Stopped', 'Cycle Paused', etc.
             </TextBlock>
@@ -69,7 +69,7 @@
                     <StackPanel Orientation="Horizontal">
 
                         <!--Title-->
-                        <TextBlock Text="Event Name" Foreground="{StaticResource Text}" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
+                        <TextBlock Text="Event Name" Foreground="{StaticResource Text}" Margin="0,0,10,0" FontSize="12" VerticalAlignment="Center"/>
 
                         <!--Help-->
                         <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
@@ -113,7 +113,7 @@
                               SelectionChanged="CycleEventName_SelectionChanged"
                               IsEditable="True" 
                               VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
-                              FontSize="14" Background="{x:Null}" Cursor="Hand"
+                              FontSize="12" Background="{x:Null}" Cursor="Hand"
                               />
 
 
@@ -121,7 +121,7 @@
                     <StackPanel Orientation="Horizontal">
 
                         <!--Title-->
-                        <TextBlock Text="Cycle Stopped Value" Foreground="{StaticResource Text}" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
+                        <TextBlock Text="Cycle Stopped Value" Foreground="{StaticResource Text}" Margin="0,0,10,0" FontSize="12" VerticalAlignment="Center"/>
 
                         <!--Help-->
                         <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
@@ -163,7 +163,7 @@
                               SelectionChanged="stoppedValue_COMBO_SelectionChanged" 
                               IsEditable="True" 
                               VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
-                              FontSize="14" Background="{x:Null}" Cursor="Hand"
+                              FontSize="12" Background="{x:Null}" Cursor="Hand"
                               />
 
 
@@ -171,7 +171,7 @@
                     <StackPanel Orientation="Horizontal">
 
                         <!--Title-->
-                        <TextBlock Text="Cycle Name Link" Foreground="{StaticResource Text}" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
+                        <TextBlock Text="Cycle Name Link" Foreground="{StaticResource Text}" Margin="0,0,10,0" FontSize="12" VerticalAlignment="Center"/>
 
                         <!--Help-->
                         <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
@@ -215,7 +215,7 @@
                               VerticalAlignment="Center" 
                               VerticalContentAlignment="Center"
                               HorizontalContentAlignment="Center"
-                              FontSize="14" Background="{x:Null}" Cursor="Hand"
+                              FontSize="12" Background="{x:Null}" Cursor="Hand"
                               >
                         <ComboBox.Style>
                             <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
@@ -245,7 +245,7 @@
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
 
                         <!--Title-->
-                        <TextBlock Text="Production Types" Foreground="{StaticResource Text}" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
+                        <TextBlock Text="Production Types" Foreground="{StaticResource Text}" Margin="0,0,10,0" FontSize="12" VerticalAlignment="Center"/>
 
                         <!--Help-->
                         <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
@@ -299,7 +299,7 @@
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
 
                         <!--Title-->
-                        <TextBlock Text="Override Links" Foreground="{StaticResource Text}" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
+                        <TextBlock Text="Override Links" Foreground="{StaticResource Text}" Margin="0,0,10,0" FontSize="12" VerticalAlignment="Center"/>
 
                         <!--Help-->
                         <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">

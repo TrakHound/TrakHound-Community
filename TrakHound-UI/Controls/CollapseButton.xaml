@@ -13,7 +13,7 @@
 
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
+                <RowDefinition Height="35"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
@@ -51,7 +51,7 @@
                         </Grid.ColumnDefinitions>
 
                         <!--Collapse/Expande Image-->
-                        <Rectangle Width="30" Height="30" Margin="10,5" VerticalAlignment="Top" RenderTransformOrigin="0.5, 0.5">
+                        <Rectangle Width="25" Height="25" Margin="10,4" VerticalAlignment="Top" RenderTransformOrigin="0.5, 0.5">
                             <Rectangle.Resources>
                                 <ImageBrush x:Key="Expand_IMG" Stretch="Uniform" ImageSource="/TrakHound-UI;component/Resources/Expand_01.png" />
                             </Rectangle.Resources>
@@ -89,7 +89,7 @@
                         </Rectangle>
 
                         <!--Button Text-->
-                        <TextBlock Grid.Column="1" Text="{Binding Text}" FontSize="14" Foreground="#FFFFFF" VerticalAlignment="Center">
+                        <TextBlock Grid.Column="1" Text="{Binding Text}" FontSize="12" Foreground="#FFFFFF" VerticalAlignment="Center" Margin="0,0,0,2">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Visibility" Value="Visible"/>

@@ -12,10 +12,10 @@
              mc:Ignorable="d" 
              d:DesignWidth="600">
 
-    <Border CornerRadius="2" BorderThickness="1" Background="#00000000" FocusManager.IsFocusScope="False">
+    <Border CornerRadius="2" BorderThickness="1" Background="Transparent" FocusManager.IsFocusScope="False">
         <Border.Style>
             <Style TargetType="Border">
-                <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource Border}"/>
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding IsMouseOver}" Value="true">
                         <Setter Property="BorderBrush" Value="{StaticResource TrakHound_LightBlue}"/>
@@ -35,13 +35,13 @@
                 </Grid.ColumnDefinitions>
 
                 <!--Value Label-->
-                <TextBlock Grid.Column="0" Text="Value" FontSize="8pt" Foreground="#888" Margin="10,5" VerticalAlignment="Center" FocusManager.IsFocusScope="False"/>
+                <TextBlock Grid.Column="0" Text="Value" FontSize="12" Foreground="{StaticResource Text}" Margin="10,5" VerticalAlignment="Center" FocusManager.IsFocusScope="False"/>
 
                 <!--Value Name Input-->
                 <Border Grid.Column="1" BorderThickness="1" CornerRadius="1" Margin="0,5,0,5" MinWidth="100" FocusManager.IsFocusScope="False">
                     <Border.Style>
                         <Style TargetType="Border">
-                            <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource Border}"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsFocused, ElementName=valuename_TXT}" Value="true">
                                     <Setter Property="BorderBrush" Value="{StaticResource TrakHound_Blue}"/>
@@ -51,14 +51,12 @@
                     </Border.Style>
 
                     <!--User Input-->
-                    <TextBox x:Name="valuename_TXT" Text="{Binding ValueName}" TextChanged="ValueName_TextChanged" Padding="20,0" BorderThickness="0" Foreground="#333" Background="#00000000" FontSize="12pt" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black">
+                    <TextBox x:Name="valuename_TXT" Text="{Binding ValueName}" TextChanged="ValueName_TextChanged" Padding="20,0" BorderThickness="0" Foreground="{StaticResource Text}" Background="Transparent" FontSize="12" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black">
                         <TextBox.Style>
                             <Style TargetType="TextBox">
-                                <!--<Setter Property="Foreground" Value="#fff"/>-->
                                 <Setter Property="TextAlignment" Value="Left"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsFocused, ElementName=valuename_TXT}" Value="true">
-                                        <!--<Setter Property="Foreground" Value="#333"/>-->
                                         <Setter Property="TextAlignment" Value="Center"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -69,25 +67,13 @@
                 </Border>
 
                 <!--Remove Value Button-->
-                <ui:Button Grid.Column="3" Image="/TrakHound-Device-Manager;component/Resources/X_01.png" Style="{StaticResource Button_Accent_Foreground}" Margin="10,0" Height="25" HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="Hand" Clicked="Remove_Clicked" FocusManager.IsFocusScope="False">
-                    <!--<ui:Button.Style>
-                        <Style TargetType="ui:Button">
-                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ui:Button.Style>-->
-                </ui:Button>
+                <ui:Button Grid.Column="3" Image="/TrakHound-Device-Manager;component/Resources/X_01.png" Style="{StaticResource Button_Accent_Foreground}" Margin="10,0" Height="25" HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="Hand" Clicked="Remove_Clicked" FocusManager.IsFocusScope="False"/>
 
             </Grid>
 
-            <Rectangle Height="1" Fill="{StaticResource Shade_Normal}" Margin="10,20"/>
+            <Rectangle Height="1" Fill="{StaticResource Border}" Margin="10,20"/>
 
-            <TextBlock Grid.Column="1" FontSize="8pt" Foreground="#888" Margin="10,0,0,10" FocusManager.IsFocusScope="False">
+            <TextBlock Grid.Column="1" FontSize="12" Foreground="{StaticResource Text}" Margin="10,0,0,10" FocusManager.IsFocusScope="False">
                 Triggers - Value is met when all of the Trigger conditions are met
             </TextBlock>
 
@@ -108,39 +94,17 @@
                 <StackPanel Orientation="Horizontal">
 
                     <!--Add Trigger Button-->
-                    <ui:Button Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Style="{StaticResource Button_Accent_Foreground}" Text="Add Trigger" ImageTextPadding="10" VerticalAlignment="Center" HorizontalAlignment="Left" Height="35" Margin="10,5" Clicked="AddTrigger_Clicked">
+                    <ui:Button Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Style="{StaticResource Button_Accent_Foreground}" Text="Add Trigger" ImageTextPadding="10" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,5" Clicked="AddTrigger_Clicked">
                         <ui:Button.ToolTip>
                             Add a new Trigger that defines a single condition that must be met (logical AND)
                         </ui:Button.ToolTip>
-                        <!--<ui:Button.Style>
-                            <Style TargetType="ui:Button">
-                                <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="true">
-                                        <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ui:Button.Style>-->
                     </ui:Button>
 
                     <!--Add MultiTrigger Button-->
-                    <ui:Button Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Text="Add MultiTrigger" Style="{StaticResource Button_Accent_Foreground}" ImageTextPadding="10" VerticalAlignment="Center" HorizontalAlignment="Left" Height="35" Margin="10,5" Clicked="AddMultiTrigger_Clicked">
+                    <ui:Button Image="/TrakHound-Device-Manager;component/Resources/Add_01.png" Text="Add MultiTrigger" Style="{StaticResource Button_Accent_Foreground}" ImageTextPadding="10" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,5" Clicked="AddMultiTrigger_Clicked">
                         <ui:Button.ToolTip>
                             Add a new MultiTrigger that defines multiple Triggers where only one has to be met (logical AND/OR)
                         </ui:Button.ToolTip>
-                        <!--<ui:Button.Style>
-                            <Style TargetType="ui:Button">
-                                <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="true">
-                                        <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ui:Button.Style>-->
                     </ui:Button>
 
                 </StackPanel>

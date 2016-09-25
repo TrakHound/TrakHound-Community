@@ -22,28 +22,28 @@
         <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
 
             <!--Image-->
-            <Grid Height="30" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,0,0" VerticalAlignment="Center">
+            <Grid Height="25" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,0,0" VerticalAlignment="Center">
                 <Grid.Resources>
                     <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TrakHound-Device-Manager;component/Resources/Hourglass_01.png" />
                 </Grid.Resources>
                 <Grid.Style>
                     <Style TargetType="Grid">
                         <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                        <Setter Property="Background" Value="{StaticResource Foreground_Normal}"/>
+                        <Setter Property="Background" Value="{StaticResource Foreground}"/>
                     </Style>
                 </Grid.Style>
             </Grid>
 
-            <TextBlock Text="Instance Data" FontSize="20pt" Foreground="{StaticResource Foreground_Normal}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+            <TextBlock Text="Instance Data" FontSize="25" Foreground="{StaticResource Text}" Margin="10,0,0,0" VerticalAlignment="Center"/>
 
-            <TextBlock FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="20,5" TextWrapping="Wrap" VerticalAlignment="Center">
+            <TextBlock FontSize="12" Foreground="{StaticResource Text_Light}" Margin="20,5" TextWrapping="Wrap" VerticalAlignment="Center">
                 The Instance Table is used to record all of the variables from the Agent at every Timestamp and/or Sequence captured.
                 This simplifies the process of interpreting the status of the device at any captured Timestamp.
             </TextBlock>
 
         </StackPanel>
 
-        <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Shade_Normal}" Margin="0,15,0,0"/>
+        <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Border}" Margin="0,15,0,0"/>
 
         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
 
@@ -57,9 +57,9 @@
                 <!--Upload to Database-->
                 <StackPanel Grid.Column="0">
 
-                    <TextBlock Text="Upload to Database" FontSize="12pt" Foreground="#333" Margin="0,10"/>
+                    <TextBlock Text="Upload to Database" FontSize="12" Foreground="{StaticResource Text}" Margin="0,10"/>
 
-                    <Border CornerRadius="2" BorderThickness="1" BorderBrush="#ccc">
+                    <Border CornerRadius="2" BorderThickness="1" BorderBrush="{StaticResource Border}">
 
                         <StackPanel Margin="20">
 
@@ -73,7 +73,7 @@
                                 <StackPanel Orientation="Horizontal">
 
                                     <!--Title-->
-                                    <TextBlock Text="Events" Foreground="#333" Margin="10,0" FontSize="10pt" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Events" Foreground="{StaticResource Text}" Margin="10,0" FontSize="12" VerticalAlignment="Center"/>
 
                                     <!--Help-->
                                     <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
@@ -142,7 +142,7 @@
                                 <StackPanel Orientation="Horizontal">
 
                                     <!--Title-->
-                                    <TextBlock Text="Samples" Foreground="#333" Margin="10,0" FontSize="10pt" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Samples" Foreground="{StaticResource Text}" Margin="10,0" FontSize="12" VerticalAlignment="Center"/>
 
                                     <!--Help-->
                                     <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
@@ -211,7 +211,7 @@
                                 <StackPanel Orientation="Horizontal">
 
                                     <!--Title-->
-                                    <TextBlock Text="Conditions" Foreground="#333" Margin="10,0" FontSize="10pt" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Conditions" Foreground="{StaticResource Text}" Margin="10,0" FontSize="12" VerticalAlignment="Center"/>
 
                                     <!--Help-->
                                     <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
@@ -289,7 +289,7 @@
                         <StackPanel Orientation="Horizontal">
 
                             <!--Title-->
-                            <TextBlock Text="Data Items to Initiate New Row" FontSize="12pt" Foreground="#333" Margin="0,10,10,10"/>
+                            <TextBlock Text="Data Items to Initiate New Row" FontSize="12" Foreground="{StaticResource Text}" Margin="0,10,10,10"/>
 
                             <!--Help-->
                             <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
@@ -360,7 +360,7 @@
                                 <!--Events-->
                                 <StackPanel Margin="40,0">
 
-                                    <TextBlock Text="Events" FontSize="10pt" Foreground="#888" Margin="10"/>
+                                    <TextBlock Text="Events" FontSize="12" Foreground="{StaticResource Text}" Margin="10"/>
 
                                     <ItemsControl Grid.Column="1" ItemsSource="{Binding EventItems}">
                                         <ItemsControl.Resources>
@@ -373,7 +373,7 @@
                                 <!--Samples-->
                                 <StackPanel Margin="40,0">
 
-                                    <TextBlock Text="Samples" FontSize="10pt" Foreground="#888" Margin="10"/>
+                                    <TextBlock Text="Samples" FontSize="12" Foreground="{StaticResource Text}" Margin="10"/>
 
                                     <ItemsControl Grid.Column="1" ItemsSource="{Binding SampleItems}">
                                         <ItemsControl.Resources>
@@ -386,7 +386,7 @@
                                 <!--Conditions-->
                                 <StackPanel Margin="40,0">
 
-                                    <TextBlock Text="Conditions" FontSize="10pt" Foreground="#888" Margin="10"/>
+                                    <TextBlock Text="Conditions" FontSize="12" Foreground="{StaticResource Text}" Margin="10"/>
 
                                     <ItemsControl Grid.Column="1" ItemsSource="{Binding ConditionItems}">
                                         <ItemsControl.Resources>
@@ -466,7 +466,7 @@
                                     </Style>
                                 </Grid.Style>
 
-                                <ui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Height="100" Foreground="#0080ff" />
+                                <ui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource TrakHound_Blue}" />
 
                             </Grid>
 

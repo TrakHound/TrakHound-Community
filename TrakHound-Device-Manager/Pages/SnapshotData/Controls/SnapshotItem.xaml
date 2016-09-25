@@ -23,14 +23,14 @@
 
     </UserControl.Resources>
 
-    <Border x:Name="root" CornerRadius="2" Background="#00000000">
+    <Border x:Name="root" CornerRadius="2" Background="Transparent">
         <Border.Style>
             <Style TargetType="Border">
-                <Setter Property="BorderBrush" Value="#ccc"/>
+                <Setter Property="BorderBrush" Value="{StaticResource Border}"/>
                 <Setter Property="BorderThickness" Value="1"/>
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="true">
-                        <Setter Property="BorderBrush" Value="#0080ff"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource TrakHound_Blue}"/>
                     </Trigger>
                 </Style.Triggers>
             </Style>
@@ -48,7 +48,7 @@
                 <!--Name-->
                 <StackPanel Orientation="Horizontal">
 
-                    <TextBlock Text="Name" FontSize="8pt" Foreground="#888" Margin="10,0" VerticalAlignment="Center"/>
+                    <TextBlock Text="Name" FontSize="12" Foreground="#888" Margin="10,0" VerticalAlignment="Center"/>
 
                     <ui:TextBox Text="{Binding NameText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="name_TXT_TextChanged" Background="White" Padding="10,2" Margin="0,5" MinWidth="200"/>
 
@@ -57,7 +57,7 @@
                 <!--Type-->
                 <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
 
-                    <TextBlock Text="Type" FontSize="8pt" Foreground="#888" Margin="10,0" VerticalAlignment="Center"/>
+                    <TextBlock Text="Type" FontSize="12" Foreground="#888" Margin="10,0" VerticalAlignment="Center"/>
 
                     <ComboBox Width="150" SelectedItem="{Binding SelectedType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="Type_SelectionChanged" Height="30" VerticalAlignment="Center">
                         <ComboBox.Items>
@@ -72,7 +72,7 @@
                 <!--Data Link-->
                 <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
 
-                    <TextBlock Text="Data Link" FontSize="8pt" Foreground="#888" Margin="10,0" VerticalAlignment="Center"/>
+                    <TextBlock Text="Data Link" FontSize="12" Foreground="#888" Margin="10,0" VerticalAlignment="Center"/>
 
                     <ComboBox x:Name="collectedlink_COMBO" MinWidth="200" Padding="20,0" SelectionChanged="Link_SelectionChanged" TextBoxBase.TextChanged="Link_COMBO_TextChanged">
                         <ComboBox.Style>
