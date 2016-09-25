@@ -269,7 +269,7 @@ namespace TrakHound_Dashboard.Controls
 
         #endregion
 
-        private const double MAX_TEXT_WIDTH = 200;
+        private const double MAX_TEXT_WIDTH = 100;
 
         private void TextBlock_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -281,45 +281,45 @@ namespace TrakHound_Dashboard.Controls
 
         private void ChangeWidth(double width, TextBlock txt)
         {
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                double maxWidth = MAX_TEXT_WIDTH;
-                if (MaxWidth < MAX_WIDTH)
-                {
-                    maxWidth = MaxWidth - 120;
-                    maxWidth = Math.Min(MAX_TEXT_WIDTH, maxWidth);
-                    maxWidth = Math.Max(10, maxWidth);
-                }
+            //Dispatcher.BeginInvoke(new Action(() =>
+            //{
+            //    double maxWidth = MAX_TEXT_WIDTH;
+            //    if (MaxWidth < MAX_WIDTH)
+            //    {
+            //        maxWidth = MaxWidth - 120;
+            //        maxWidth = Math.Min(MAX_TEXT_WIDTH, maxWidth);
+            //        maxWidth = Math.Max(10, maxWidth);
+            //    }
 
-                if (width > maxWidth)
-                {
-                    string t = Text;
+            //    if (width > maxWidth)
+            //    {
+            //        string t = Text;
 
-                    if (t != null)
-                    {
-                        double textWidth = GetFormattedText(t).Width;
+            //        if (t != null)
+            //        {
+            //            double textWidth = GetFormattedText(t).Width;
 
-                        if (textWidth > maxWidth)
-                        {
-                            // Keep removing characters from the string until the max width is met
-                            while (textWidth > maxWidth)
-                            {
-                                t = t.Substring(0, t.Length - 1);
-                                textWidth = GetFormattedText(t).Width;
-                            }
+            //            if (textWidth > maxWidth)
+            //            {
+            //                // Keep removing characters from the string until the max width is met
+            //                while (textWidth > maxWidth)
+            //                {
+            //                    t = t.Substring(0, t.Length - 1);
+            //                    textWidth = GetFormattedText(t).Width;
+            //                }
 
-                            // Make sure the last character is not a space
-                            if (t[t.Length - 1] == ' ' && txt.Text.Length > t.Length + 2) t = txt.Text.Substring(0, t.Length + 2);
+            //                // Make sure the last character is not a space
+            //                if (t[t.Length - 1] == ' ' && txt.Text.Length > t.Length + 2) t = txt.Text.Substring(0, t.Length + 2);
 
-                            // Add the ...
-                            txt.Text = t + "...";
-                        }
-                        else txt.Text = Text;
-                    }
-                }
-                else txt.Text = Text;
+            //                // Add the ...
+            //                txt.Text = t + "...";
+            //            }
+            //            else txt.Text = Text;
+            //        }
+            //    }
+            //    else txt.Text = Text;
 
-            }), MainWindow.PRIORITY_CONTEXT_IDLE, new object[] { });
+            //}), MainWindow.PRIORITY_CONTEXT_IDLE, new object[] { });
         }
 
         private static FormattedText GetFormattedText(string s)
