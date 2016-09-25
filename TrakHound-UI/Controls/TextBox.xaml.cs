@@ -115,7 +115,7 @@ namespace TrakHound_UI
         }
 
         public new static readonly DependencyProperty FontSizeProperty =
-            DependencyProperty.Register("FontSize", typeof(double), typeof(TextBox), new PropertyMetadata(14d));
+            DependencyProperty.Register("FontSize", typeof(double), typeof(TextBox), new PropertyMetadata(12d));
 
 
         public new Brush Background
