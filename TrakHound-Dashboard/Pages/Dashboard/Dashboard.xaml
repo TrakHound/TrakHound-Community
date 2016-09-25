@@ -140,7 +140,7 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="{Binding PageContent.Title}" Foreground="{StaticResource Text}" FontSize="14" FontWeight="Bold" Margin="0,0,20,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding PageContent.Title}" Foreground="{StaticResource Text}" FontSize="14" Margin="0,0,20,0" VerticalAlignment="Center"/>
 
                             <TextBlock Grid.Column="1" Text="{Binding PageContent.Description}" Foreground="{StaticResource Text_Light}" FontSize="10" TextWrapping="Wrap" MaxWidth="500" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
