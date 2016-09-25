@@ -75,14 +75,14 @@
                 </Rectangle.Style>
             </Rectangle>
 
-            <!--Icon-->
+            <!--Image-->
             <Rectangle Grid.Column="1" Height="20" Width="20" Margin="10,0">
                 <Rectangle.Resources>
                     <ImageBrush x:Key="IMG" ImageSource="{Binding Image}" Stretch="Uniform" />
                 </Rectangle.Resources>
                 <Rectangle.Style>
                     <Style TargetType="Rectangle">
-                        <Setter Property="Fill" Value="{Binding Foreground}"/>
+                        <Setter Property="Fill" Value="{Binding ImageForeground}"/>
                         <Setter Property="Visibility" Value="Collapsed"/>
                         <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
                         <Style.Triggers>
@@ -98,10 +98,10 @@
             </Rectangle>
 
             <!--Simple Text-->
-            <TextBlock Grid.Column="2" Text="{Binding Text}" TextWrapping="{Binding TextWrapping}" FontSize="14" VerticalAlignment="Center" TextAlignment="{Binding TextAlignment}" Margin="0,0,20,0">
+            <TextBlock Grid.Column="2" Text="{Binding Text}" TextWrapping="{Binding TextWrapping}" FontSize="12" VerticalAlignment="Center" TextAlignment="{Binding TextAlignment}" Margin="0,0,20,0">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
-                        <Setter Property="Foreground" Value="{Binding Foreground}"/>
+                        <Setter Property="Foreground" Value="{Binding TextForeground}"/>
                         <Setter Property="Visibility" Value="Collapsed"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding ButtonContent}" Value="{x:Null}">
