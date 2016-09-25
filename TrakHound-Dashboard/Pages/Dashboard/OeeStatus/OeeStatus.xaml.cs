@@ -6,7 +6,7 @@
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using System.Linq;
-
+using TrakHound;
 using TrakHound_Dashboard.Pages.Dashboard.OeeStatus.Controls;
 using TrakHound.Configurations;
 
@@ -42,6 +42,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeStatus
             if (device != null && !Rows.ToList().Exists(o => o.Device.UniqueId == device.UniqueId))
             {
                 var row = new Row(device);
+                row.Clicked += Row_Clicked;
                 Rows.Add(row);
             }
         }
@@ -51,9 +52,17 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeStatus
             if (device != null && !Rows.ToList().Exists(o => o.Device.UniqueId == device.UniqueId))
             {
                 var row = new Row(device);
+                row.Clicked += Row_Clicked;
                 Rows.Insert(index, row);
             }
         }
 
+        private void Row_Clicked(Controls.Row row)
+        {
+            var data = new EventData();
+            data.Id = "OPEN_DEVICE_DETAILS";
+            data.Data01 = row.Device;
+            SendData?.Invoke(data);
+        }
     }
 }

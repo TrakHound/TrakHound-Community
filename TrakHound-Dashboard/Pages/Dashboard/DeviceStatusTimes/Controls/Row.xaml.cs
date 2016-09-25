@@ -166,6 +166,13 @@ namespace TrakHound_Dashboard.Pages.Dashboard.DeviceStatusTimes.Controls
                 AlertTime = TimeSpan.FromSeconds(alert);
             }
         }
-        
+
+        public delegate void Clicked_Handler(Row row);
+        public event Clicked_Handler Clicked;
+
+        private void UserControl_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Clicked?.Invoke(this);
+        }
     }
 }

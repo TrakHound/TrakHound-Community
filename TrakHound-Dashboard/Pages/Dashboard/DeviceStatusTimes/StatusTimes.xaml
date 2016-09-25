@@ -29,13 +29,13 @@
                         <Style TargetType="TextBlock">
                             <Setter Property="VerticalAlignment" Value="Center"/>
                             <Setter Property="TextAlignment" Value="Center"/>
-                            <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                            <Setter Property="Foreground" Value="{StaticResource Text_Alternate}"/>
                             <Setter Property="TextWrapping" Value="Wrap"/>
                             <Setter Property="Margin" Value="5"/>
                         </Style>
                         <Style TargetType="Rectangle">
                             <Setter Property="HorizontalAlignment" Value="Right"/>
-                            <Setter Property="Fill" Value="{StaticResource Border}"/>
+                            <Setter Property="Fill" Value="{StaticResource Border_Alternate}"/>
                             <Setter Property="Width" Value="1"/>
                         </Style>
                     </Grid.Resources>
@@ -67,6 +67,37 @@
                         </Grid>
 
                     </UniformGrid>
+
+                </Grid>
+
+            </Border>
+
+            <!--Gloss Overlay-->
+            <Border IsHitTestVisible="False">
+
+                <Grid IsHitTestVisible="False">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="4.5*"/>
+                        <RowDefinition Height="5.5*"/>
+                    </Grid.RowDefinitions>
+
+                    <Rectangle IsHitTestVisible="False">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#10ffffff" Offset="0"/>
+                                <GradientStop Color="#20ffffff" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+
+                    <Rectangle Grid.Row="1" IsHitTestVisible="False">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#10000000" Offset="0"/>
+                                <GradientStop Color="#00ffffff" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
 
                 </Grid>
 

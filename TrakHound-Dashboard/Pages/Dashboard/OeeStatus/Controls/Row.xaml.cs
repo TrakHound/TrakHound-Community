@@ -192,5 +192,12 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeStatus.Controls
             }
         }
 
+        public delegate void Clicked_Handler(Row row);
+        public event Clicked_Handler Clicked;
+
+        private void UserControl_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Clicked?.Invoke(this);
+        }
     }
 }

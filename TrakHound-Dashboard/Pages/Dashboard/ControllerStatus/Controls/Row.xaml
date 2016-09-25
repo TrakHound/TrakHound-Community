@@ -8,6 +8,9 @@
              
              xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
              
+             MouseDown="UserControl_MouseDown"
+             Cursor="Hand"
+             
              mc:Ignorable="d" 
              Height="65">
 
@@ -18,7 +21,7 @@
 
     </UserControl.Resources>
 
-    <Border x:Name="root">
+    <Border x:Name="root" Background="Transparent">
         <Border.Style>
             <Style TargetType="Border">
                 <Setter Property="BorderBrush" Value="{StaticResource Border}"/>
@@ -169,7 +172,7 @@
                         <TextBlock Text="{Binding Device.Description.Description}" Foreground="{StaticResource Text}" FontSize="10"  Margin="0,2" HorizontalAlignment="Left"/>
 
                         <!--Manufacturer-->
-                        <TextBlock Foreground="{StaticResource Text}" FontSize="12" FontWeight="Bold" Margin="0,2" HorizontalAlignment="Left">
+                        <TextBlock Foreground="{StaticResource Text}" FontSize="12" FontWeight="SemiBold" Margin="0,2" HorizontalAlignment="Left">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Style.Triggers>
@@ -900,6 +903,20 @@
                 </Border>
 
             </Grid>
+
+            <!--Mouse Over Cover-->
+            <Border Grid.ColumnSpan="5" Grid.RowSpan="5" IsHitTestVisible="False">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=root}" Value="true">
+                                <Setter Property="Background" Value="#10000000"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+            </Border>
 
             <!--Gloss Overlay-->
             <Border IsHitTestVisible="False">

@@ -183,5 +183,13 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatus.Controls
                 TotalSpindleTime = info.TotalSpindle / 3600;
             }
         }
+
+        public delegate void Clicked_Handler(Row row);
+        public event Clicked_Handler Clicked;
+
+        private void UserControl_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Clicked?.Invoke(this);
+        }
     }
 }
