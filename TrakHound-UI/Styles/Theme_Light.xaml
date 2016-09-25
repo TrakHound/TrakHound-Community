@@ -5,7 +5,7 @@
 
     <!--Background-->
     <SolidColorBrush ice:Freeze="True" x:Key="Background" Color="#FFFFFF"/>
-    <SolidColorBrush ice:Freeze="True" x:Key="Background_Alternate" Color="#EEEEEE"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="Background_Alternate" Color="#333333"/>
     
     <!--Foreground Colors-->
     <Color ice:Freeze="True" x:Key="Foreground_Color">#666666</Color>
@@ -29,7 +29,7 @@
 
     <!--Border Colors-->
     <Color ice:Freeze="True" x:Key="Border_Color">#CCCCCC</Color>
-    <Color ice:Freeze="True" x:Key="Border_Alternate_Color">#333333</Color>
+    <Color ice:Freeze="True" x:Key="Border_Alternate_Color">#888888</Color>
 
     <!--Border Brushes-->
     <SolidColorBrush ice:Freeze="True" x:Key="Border" Color="{StaticResource Border_Color}"/>
@@ -111,7 +111,7 @@
                 <Trigger.ExitActions>
                     <BeginStoryboard>
                         <Storyboard FillBehavior="Stop">
-                            <ColorAnimation To="Transparent" Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" Duration="0:0:0.05"/>
+                            <ColorAnimation To="Transparent" Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
                         </Storyboard>
                     </BeginStoryboard>
                 </Trigger.ExitActions>
@@ -178,8 +178,9 @@
 
     <!--Page List Button-->
     <Style TargetType="{x:Type ui:ListButton}">
-        <Setter Property="Foreground" Value="{StaticResource Text}"/>
-        <Setter Property="SelectorForeground" Value="{StaticResource Text}"/>
+        <Setter Property="ImageForeground" Value="{StaticResource Foreground}"/>
+        <Setter Property="TextForeground" Value="{StaticResource Text}"/>
+        <Setter Property="SelectorForeground" Value="{StaticResource Foreground}"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Height" Value="35"/>
         <Setter Property="FontSize" Value="12"/>
@@ -189,7 +190,12 @@
                 <Trigger.EnterActions>
                     <BeginStoryboard>
                         <Storyboard>
-                            <ColorAnimation To="{StaticResource TrakHound_Blue_Color}" Storyboard.TargetProperty="(ui:ListButton.Foreground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
+                            <ColorAnimation To="{StaticResource TrakHound_Blue_Color}" Storyboard.TargetProperty="(ui:ListButton.TextForeground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation To="{StaticResource TrakHound_Blue_Color}" Storyboard.TargetProperty="(ui:ListButton.ImageForeground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
                         </Storyboard>
                     </BeginStoryboard>
                     <BeginStoryboard>
@@ -201,12 +207,17 @@
                 <Trigger.ExitActions>
                     <BeginStoryboard>
                         <Storyboard FillBehavior="Stop">
-                            <ColorAnimation To="{StaticResource Text_Color}" Storyboard.TargetProperty="(ui:ListButton.Foreground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
+                            <ColorAnimation To="{StaticResource Text_Color}" Storyboard.TargetProperty="(ui:ListButton.TextForeground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
                         </Storyboard>
                     </BeginStoryboard>
                     <BeginStoryboard>
                         <Storyboard FillBehavior="Stop">
-                            <ColorAnimation To="{StaticResource Text_Color}" Storyboard.TargetProperty="(ui:ListButton.SelectorForeground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
+                            <ColorAnimation To="{StaticResource Foreground_Color}" Storyboard.TargetProperty="(ui:ListButton.ImageForeground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                    <BeginStoryboard>
+                        <Storyboard FillBehavior="Stop">
+                            <ColorAnimation To="{StaticResource Foreground_Color}" Storyboard.TargetProperty="(ui:ListButton.SelectorForeground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
                         </Storyboard>
                     </BeginStoryboard>
                 </Trigger.ExitActions>
@@ -216,7 +227,12 @@
                 <Trigger.EnterActions>
                     <BeginStoryboard>
                         <Storyboard>
-                            <ColorAnimation To="{StaticResource Text_Alternate_Color}" Storyboard.TargetProperty="(ui:ListButton.Foreground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
+                            <ColorAnimation To="{StaticResource Text_Alternate_Color}" Storyboard.TargetProperty="(ui:ListButton.TextForeground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation To="{StaticResource Text_Alternate_Color}" Storyboard.TargetProperty="(ui:ListButton.ImageForeground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
                         </Storyboard>
                     </BeginStoryboard>
                     <BeginStoryboard>
@@ -233,12 +249,17 @@
                 <Trigger.ExitActions>
                     <BeginStoryboard>
                         <Storyboard FillBehavior="Stop">
-                            <ColorAnimation To="{StaticResource Text_Color}" Storyboard.TargetProperty="(ui:ListButton.Foreground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
+                            <ColorAnimation To="{StaticResource Text_Color}" Storyboard.TargetProperty="(ui:ListButton.TextForeground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
                         </Storyboard>
                     </BeginStoryboard>
                     <BeginStoryboard>
                         <Storyboard FillBehavior="Stop">
-                            <ColorAnimation To="{StaticResource Text_Color}" Storyboard.TargetProperty="(ui:ListButton.SelectorForeground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
+                            <ColorAnimation To="{StaticResource Foreground_Color}" Storyboard.TargetProperty="(ui:ListButton.ImageForeground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                    <BeginStoryboard>
+                        <Storyboard FillBehavior="Stop">
+                            <ColorAnimation To="{StaticResource Foreground_Color}" Storyboard.TargetProperty="(ui:ListButton.SelectorForeground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
                         </Storyboard>
                     </BeginStoryboard>
                     <BeginStoryboard>
@@ -454,8 +475,8 @@
     <!--DataGrid Column Header-->
     <Style TargetType="DataGridColumnHeader">
         <Setter Property="MinHeight" Value="30"/>
-        <Setter Property="Background" Value="#F8F8F8"/>
-        <Setter Property="Foreground" Value="{StaticResource Text}"/>
+        <Setter Property="Background" Value="{StaticResource Background_Alternate}"/>
+        <Setter Property="Foreground" Value="{StaticResource Text_Alternate}"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -463,7 +484,7 @@
                     <Border Name="bd"
                         Background="{TemplateBinding Background}"
                         Margin="0,0,0,0"
-                        BorderBrush="{StaticResource Border}"
+                        BorderBrush="{StaticResource Border_Alternate}"
                         BorderThickness="0,0,1,0"    
                         >
                         <Grid>
@@ -471,14 +492,40 @@
                             <Border Padding="5,0">
                                 <ContentPresenter  VerticalAlignment="Center" HorizontalAlignment="Center" />
                             </Border>
+
+                            <!--Gloss Overlay-->
+                            <Border IsHitTestVisible="False">
+
+                                <Grid IsHitTestVisible="False">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="4.5*"/>
+                                        <RowDefinition Height="5.5*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Rectangle IsHitTestVisible="False">
+                                        <Rectangle.Fill>
+                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                <GradientStop Color="#10ffffff" Offset="0"/>
+                                                <GradientStop Color="#20ffffff" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+
+                                    <Rectangle Grid.Row="1" IsHitTestVisible="False">
+                                        <Rectangle.Fill>
+                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                <GradientStop Color="#10000000" Offset="0"/>
+                                                <GradientStop Color="#00ffffff" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+
+                                </Grid>
+
+                            </Border>
+
                         </Grid>
                     </Border>
-                    <!--<ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Foreground" Value="#FFFFFF"/>
-                            <Setter Property="Background" Value="{StaticResource TrakHound_Blue}"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>-->
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
