@@ -62,7 +62,7 @@ namespace TrakHound_UI
         }
 
         public static readonly DependencyProperty FontSizeProperty =
-            DependencyProperty.Register("FontSize", typeof(double), typeof(PasswordBox), new PropertyMetadata(14d));
+            DependencyProperty.Register("FontSize", typeof(double), typeof(PasswordBox), new PropertyMetadata(12d));
 
 
         public SecureString SecurePassword { get; set; }
