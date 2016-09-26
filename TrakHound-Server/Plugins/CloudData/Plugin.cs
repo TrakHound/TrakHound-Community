@@ -465,8 +465,6 @@ namespace TrakHound_Server.Plugins.CloudData
                                     if (info.Count < storedPartCount) hourInfo.TotalPieces = info.Count;
                                     else hourInfo.TotalPieces = info.Count - storedPartCount;
 
-                                    Console.WriteLine("Part Count = " + info.Count + " :: " + hourInfo.TotalPieces + " : " + storedPartCount);
-
                                     deviceInfo.AddHourInfo(hourInfo);
 
                                     storedPartCount = info.Count;

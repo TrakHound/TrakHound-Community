@@ -100,16 +100,16 @@ namespace TrakHound_Server.Plugins.CloudData
 
         private void ProcessQueue()
         {
-            Console.WriteLine("ProcessQueue() :: Count = " + queuedInfos.Count);
-
             if (queuedInfos.Count > 0)
             {
                 // List of infos to actually send to API
-                var temp = new List<Data.DeviceInfo>();
+                var sendList = new List<Data.DeviceInfo>();
 
                 long bufferSize = 0;
 
-                foreach (var queuedInfo in queuedInfos.ToList())
+                var temp = queuedInfos.ToList().FindAll(o => o != null);
+
+                foreach (var queuedInfo in temp)
                 {
                     queuedInfo.CombineHours();
 
@@ -120,16 +120,14 @@ namespace TrakHound_Server.Plugins.CloudData
                     bufferSize += size;
 
                     // Only add if less than buffersize
-                    if (bufferSize <= ApiConfiguration.BufferSize) temp.Add(queuedInfo);
+                    if (bufferSize <= ApiConfiguration.BufferSize) sendList.Add(queuedInfo);
                     else break;
                 }
 
-                Update(Plugin.currentUser, temp);
+                Update(Plugin.currentUser, sendList);
 
-                foreach (var queuedInfo in temp)
+                foreach (var queuedInfo in sendList)
                 {
-                    Console.WriteLine(queuedInfo.UniqueId + " :: Count = " + queuedInfo.Classes.Count);
-
                     var match = queuedInfos.Find(o => o.UniqueId == queuedInfo.UniqueId);
                     if (match != null) match.ClearClasses();
                 }
