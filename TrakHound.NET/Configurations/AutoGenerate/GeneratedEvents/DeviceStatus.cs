@@ -36,21 +36,47 @@ namespace TrakHound.Configurations.AutoGenerate.GeneratedEvents
             // Add Triggers
             string triggerPrefix = valuePrefix + "/Triggers";
 
+            int i = 0;
+
             var item = probeItems.Find(x => x.Category == DataItemCategory.EVENT && x.Type == "AVAILABILITY");
-            if (item != null) DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||00", "attributes", "id||00;link||" + item.Id + ";link_type||ID;value||AVAILABLE;");
+            if (item != null)
+            {
+                DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||" + i.ToString("00"), "attributes", "id||" + i.ToString("00") + ";link||" + item.Id + ";link_type||ID;value||AVAILABLE;");
+                i++;
+            }
 
             item = probeItems.Find(x => x.Category == DataItemCategory.EVENT && x.Type == "EMERGENCY_STOP");
-            if (item != null) DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||01", "attributes", "id||01;link||" + item.Id + ";link_type||ID;value||ARMED;");
+            if (item != null)
+            {
+                DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||" + i.ToString("00"), "attributes", "id||" + i.ToString("00") + ";link||" + item.Id + ";link_type||ID;value||ARMED;");
+                i++;
+            }
 
-            item = probeItems.Find(x => x.Category == DataItemCategory.CONDITION && x.Type == "SYSTEM" && x.FullAddress.ToLower().Contains("controller"));
-            if (item != null) DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||02", "attributes", "id||02;link||" + item.Id + ";link_type||ID;modifier||NOT;value||Fault;");
+            // Add any Controller/Path Faults
+            var items = probeItems.FindAll(x => x.Category == DataItemCategory.CONDITION && 
+            (x.Type == "SYSTEM" || x.Type == "LOGIC_PROGRAM" || x.Type == "MOTION_PROGRAM") &&
+            (x.FullAddress.ToLower().Contains("controller") || x.FullAddress.ToLower().Contains("path")));
+            if (items != null)
+            {
+                foreach (var item1 in items)
+                {
+                    DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||" + i.ToString("00"), "attributes", "id||" + i.ToString("00") + ";link||" + item1.Id + ";link_type||ID;modifier||NOT;value||Fault;");
+                    i++;
+                }
+            }
 
             item = probeItems.Find(x => x.Category == DataItemCategory.EVENT && x.Type == "CONTROLLER_MODE");
-            if (item != null) DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||03", "attributes", "id||03;link||" + item.Id + ";link_type||ID;value||AUTOMATIC;");
-
+            if (item != null)
+            {
+                DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||" + i.ToString("00"), "attributes", "id||" + i.ToString("00") + ";link||" + item.Id + ";link_type||ID;value||AUTOMATIC;");
+                i++;
+            }
             item = probeItems.Find(x => x.Category == DataItemCategory.EVENT && x.Type == "EXECUTION");
-            if (item != null) DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||04", "attributes", "id||04;link||" + item.Id + ";link_type||ID;value||ACTIVE;");
-
+            if (item != null)
+            {
+                DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||" + i.ToString("00"), "attributes", "id||" + i.ToString("00") + ";link||" + item.Id + ";link_type||ID;value||ACTIVE;");
+                i++;
+            }
 
             // Add Result
             DataTable_Functions.UpdateTableValue(dt, "address", valuePrefix + "/Result", "value", "Active");
@@ -66,14 +92,34 @@ namespace TrakHound.Configurations.AutoGenerate.GeneratedEvents
             // Add Triggers
             string triggerPrefix = valuePrefix + "/Triggers";
 
+            int i = 0;
+
             var item = probeItems.Find(x => x.Category == DataItemCategory.EVENT && x.Type == "AVAILABILITY");
-            if (item != null) DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||00", "attributes", "id||00;link||" + item.Id + ";link_type||ID;value||AVAILABLE;");
+            if (item != null)
+            {
+                DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||" + i.ToString("00"), "attributes", "id||" + i.ToString("00") + ";link||" + item.Id + ";link_type||ID;value||AVAILABLE;");
+                i++;
+            }
 
             item = probeItems.Find(x => x.Category == DataItemCategory.EVENT && x.Type == "EMERGENCY_STOP");
-            if (item != null) DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||01", "attributes", "id||01;link||" + item.Id + ";link_type||ID;value||ARMED;");
+            if (item != null)
+            {
+                DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||" + i.ToString("00"), "attributes", "id||" + i.ToString("00") + ";link||" + item.Id + ";link_type||ID;value||ARMED;");
+                i++;
+            }
 
-            item = probeItems.Find(x => x.Category == DataItemCategory.CONDITION && x.Type == "SYSTEM" && x.FullAddress.ToLower().Contains("controller"));
-            if (item != null) DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||02", "attributes", "id||02;link||" + item.Id + ";link_type||ID;modifier||NOT;value||Fault;");
+            // Add any Controller/Path Faults
+            var items = probeItems.FindAll(x => x.Category == DataItemCategory.CONDITION &&
+            (x.Type == "SYSTEM" || x.Type == "LOGIC_PROGRAM" || x.Type == "MOTION_PROGRAM") &&
+            (x.FullAddress.ToLower().Contains("controller") || x.FullAddress.ToLower().Contains("path")));
+            if (items != null)
+            {
+                foreach (var item1 in items)
+                {
+                    DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||" + i.ToString("00"), "attributes", "id||" + i.ToString("00") + ";link||" + item1.Id + ";link_type||ID;modifier||NOT;value||Fault;");
+                    i++;
+                }
+            }
 
             // Add Result
             DataTable_Functions.UpdateTableValue(dt, "address", valuePrefix + "/Result", "value", "Idle");
