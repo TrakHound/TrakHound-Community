@@ -441,7 +441,7 @@ namespace TrakHound_Dashboard
                         x.ParentPlugin == config.Parent &&
                         x.ParentPluginCategory == config.Category
                         );
-                    if (plugin != null)
+                    if (plugin != null && plugin != data.Sender)
                     {
                         var sendDataInfo = new SendDataInfo(plugin, data);
 
