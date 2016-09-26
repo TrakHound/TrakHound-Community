@@ -352,7 +352,7 @@
                             </Style>
                         </Viewbox.Style>
 
-                        <TextBlock Text="{Binding DeviceId}" TextAlignment="Right" Foreground="#fff" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding Device.Description.DeviceId}" TextAlignment="Right" Foreground="#fff" FontWeight="Bold"/>
 
                     </Viewbox>
 
@@ -363,10 +363,8 @@
                                 <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
                                 <Setter Property="FontSize" Value="12"/>
                                 <Setter Property="TextAlignment" Value="Center"/>
-                                <!--<Setter Property="TextWrapping" Value="Wrap"/>-->
                                 <Setter Property="VerticalAlignment" Value="Center"/>
-                                <!--<Setter Property="Width" Value="180"/>-->
-                                <Setter Property="Text" Value="{Binding Description}"/>
+                                <Setter Property="Text" Value="{Binding Device.Description.Description}"/>
                                 <Style.Triggers>
                                     <Trigger Property="Text" Value="">
                                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -374,9 +372,6 @@
                                     <Trigger Property="Text" Value="{x:Null}">
                                         <Setter Property="Visibility" Value="Collapsed"/>
                                     </Trigger>
-                                    <!--<DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                                <Setter Property="Width" Value="100"/>
-                                            </DataTrigger>-->
                                 </Style.Triggers>
                             </Style>
                         </TextBlock.Style>
@@ -386,8 +381,8 @@
                     <Viewbox MaxHeight="20">
 
                         <TextBlock FontSize="14" Foreground="#fff" FontWeight="Bold" HorizontalAlignment="Left">
-                                            <Run Text="{Binding Manufacturer}"/>
-                                            <Run Text="{Binding Model}"/>
+                                            <Run Text="{Binding Device.Description.Manufacturer}"/>
+                                            <Run Text="{Binding Device.Description.Model}"/>
                         </TextBlock>
 
                     </Viewbox>
