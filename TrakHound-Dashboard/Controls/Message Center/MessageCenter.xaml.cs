@@ -121,7 +121,7 @@ namespace TrakHound_Dashboard.Controls.Message_Center
 
         public void AddMessage(MessageData data)
         {
-            this.Dispatcher.BeginInvoke(new Action<MessageData>(AddMessage_GUI), MainWindow.PRIORITY_BACKGROUND, new object[] { data });
+            this.Dispatcher.BeginInvoke(new Action<MessageData>(AddMessage_GUI), UI_Functions.PRIORITY_BACKGROUND, new object[] { data });
         }
 
         void AddMessage_GUI(MessageData data)

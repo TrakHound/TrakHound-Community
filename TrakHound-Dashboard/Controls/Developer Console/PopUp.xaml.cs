@@ -13,6 +13,7 @@ using System.Windows.Media;
 
 using TrakHound;
 using TrakHound.Logging;
+using TrakHound.Tools;
 
 namespace TrakHound_Dashboard.Controls.Developer_Console
 {
@@ -82,7 +83,7 @@ namespace TrakHound_Dashboard.Controls.Developer_Console
             {
                 if (value != null && _currentOutput != value)
                 {
-                    Dispatcher.BeginInvoke(new Action<string>(SetCurrentOutput), MainWindow.PRIORITY_BACKGROUND, new object[] { value });
+                    Dispatcher.BeginInvoke(new Action<string>(SetCurrentOutput), UI_Functions.PRIORITY_BACKGROUND, new object[] { value });
                 }
                     
                 _currentOutput = value;
@@ -118,7 +119,7 @@ namespace TrakHound_Dashboard.Controls.Developer_Console
 
         public void AddLine(Line line, string applicationName)
         {
-            if (line != null) Dispatcher.BeginInvoke(new Action<Line, string>(AddLine_GUI), MainWindow.PRIORITY_BACKGROUND, new object[] { line, applicationName });
+            if (line != null) Dispatcher.BeginInvoke(new Action<Line, string>(AddLine_GUI), UI_Functions.PRIORITY_BACKGROUND, new object[] { line, applicationName });
         }
 
         void AddLine_GUI(Line line, string applicationName)
