@@ -59,13 +59,13 @@ namespace TrakHound_Dashboard
             {
                 var currentUser = (UserConfiguration)o;
 
-                // Get Configurations
-                var result = TrakHound.API.Data.GetDeviceList(currentUser);
-                if (result != null)
+                // Get DeviceDescriptions
+                var devices = TrakHound.API.Devices.List(currentUser);
+                if (devices != null && devices.Count > 0)
                 {
-                    foreach (var deviceInfo in result)
+                    foreach (var device in devices)
                     {
-                        if (deviceInfo.Description != null) AddDevice(new DeviceDescription(deviceInfo));
+                        AddDevice(device);
                     }
                 }
             }
