@@ -81,6 +81,7 @@
     <Compile Include="API\Data\AgentInfo.cs" />
     <Compile Include="API\Devices\Check.cs" />
     <Compile Include="API\Devices\CheckInfo.cs" />
+    <Compile Include="API\Devices\List.cs" />
     <Compile Include="Configurations\DeviceDescription.cs" />
     <Compile Include="Servers\DataStorage\Backup.cs" />
     <Compile Include="Servers\DataStorage\LocalServer.cs" />
