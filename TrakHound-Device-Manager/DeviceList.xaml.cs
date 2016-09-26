@@ -233,8 +233,8 @@ namespace TrakHound_Device_Manager
             else msg = "Are you sure you want to permanently remove these " + devices.Count.ToString() + " devices?";
 
             string title = null;
-            if (devices.Count == 1) msg = "Remove Device";
-            else msg = "Remove " + devices.Count.ToString() + " Devices";
+            if (devices.Count == 1) title = "Remove Device?";
+            else title = "Remove " + devices.Count.ToString() + " Devices?";
 
             var result = TrakHound_UI.MessageBox.Show(msg, title, TrakHound_UI.MessageBoxButtons.YesNo);
             if (result == MessageBoxDialogResult.Yes)
