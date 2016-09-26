@@ -363,7 +363,7 @@ namespace TrakHound_Dashboard
                 {
                     if (tabHeader.Page != null)
                     {
-                        if (tabHeader.Page.PageContent != null)
+                        if (tabHeader.Page.PageContent != null && tabHeader.Page.PageContent != data.Sender)
                         {
                             tabHeader.Page.PageContent.GetSentData(data);
                         }
