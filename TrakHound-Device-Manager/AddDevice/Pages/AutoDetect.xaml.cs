@@ -524,17 +524,17 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
                         bool match = false;
 
                         // Check Device List to see if the Device has already been added
-                        //foreach (var addedDevice in Devices.ToList())
-                        //{
-                        //    var agentConfig = AgentConfiguration.Read(addedDevice);
-                        //    if (agentConfig.Address == address && 
-                        //        agentConfig.Port == port &&
-                        //        agentConfig.DeviceName == device.Name)
-                        //    {
-                        //        match = true;
-                        //        break;
-                        //    }
-                        //}
+                        foreach (var addedDevice in Devices.ToList())
+                        {
+                            if (addedDevice.Agent != null && 
+                                addedDevice.Agent.Address == address &&
+                                addedDevice.Agent.Port == port &&
+                                addedDevice.Agent.DeviceName == device.Name)
+                            {
+                                match = true;
+                                break;
+                            }
+                        }
 
                         // If Device is not already added then add it
                         if (!match)
