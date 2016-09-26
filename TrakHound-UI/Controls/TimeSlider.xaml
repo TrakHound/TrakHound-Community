@@ -94,13 +94,14 @@
                 <Grid Margin="10,0">
 
                     <!--User Input-->
-                    <TextBox Text="{Binding Value_Text}" 
-                            BorderThickness="0" Background="Transparent" Foreground="#333"
-                            FontSize="{Binding FontSize}" Height="35"
-                            VerticalAlignment="Center" VerticalContentAlignment="Center"
-                            MaxLines="1" CaretBrush="Black"
-                            ToolTip="{Binding Value_FormattedString}"
-                            TextChanged="TextBox_TextChanged"/>
+                    <TextBox Name="value_TXT"
+                        Text="{Binding Value_Text}" 
+                        BorderThickness="0" Background="Transparent" Foreground="#333"
+                        FontSize="{Binding FontSize}" Height="35"
+                        VerticalAlignment="Center" VerticalContentAlignment="Center"
+                        MaxLines="1" CaretBrush="Black"
+                        ToolTip="{Binding Value_FormattedString}"
+                        TextChanged="TextBox_TextChanged"/>
 
                 </Grid>
 
