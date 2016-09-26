@@ -49,7 +49,7 @@
 
             </Border>
 
-            <Border Grid.Column="1" BorderBrush="#aaa" BorderThickness="1,0,0,0">
+            <Border Grid.Column="1" BorderBrush="{StaticResource Border}" BorderThickness="1,0,0,0">
 
                 <Grid Background="{StaticResource Background}" >
 
@@ -91,7 +91,7 @@
 
                             </StackPanel>
 
-                            <Rectangle Grid.Row="1" Fill="{StaticResource Border}" Height="0.5" Margin="0,5"/>
+                            <Rectangle Grid.Row="1" Fill="{StaticResource Border}" Height="0.5" Margin="0,5,0,0"/>
 
                         </Grid>
 
