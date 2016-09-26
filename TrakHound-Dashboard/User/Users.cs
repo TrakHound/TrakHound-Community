@@ -25,35 +25,44 @@ namespace TrakHound_Dashboard
         public event CurrentUserChanged_Handler CurrentUserChanged;
 
 
+        private bool firstLogin = true;
+
         private UserConfiguration _currentuser;
         public UserConfiguration CurrentUser
         {
             get { return (UserConfiguration)GetValue(CurrentUserProperty); }
             set
             {
+                var previousUser = _currentuser;
+
                 SetValue(CurrentUserProperty, value);
 
                 _currentuser = value;
 
-                LoadDevices();
+                if (previousUser != _currentuser || firstLogin)
+                {
+                    LoadDevices();
 
-                // Update other pages
-                if (accountpage != null) accountpage.LoadUserConfiguration(_currentuser);
+                    // Update other pages
+                    if (accountpage != null) accountpage.LoadUserConfiguration(_currentuser);
 
-                SendCurrentUser();
+                    SendCurrentUser();
 
-                // Login Server user (set login file)
-                Login(_currentuser);
+                    // Login Server user (set login file)
+                    Login(_currentuser);
 
-                // Restart Message monitor
-                StartMessageMonitor();
-                messageCenter.ClearMessages();
+                    // Restart Message monitor
+                    StartMessageMonitor();
+                    messageCenter.ClearMessages();
 
-                // Load the Profile Image (Nav Menu)
-                LoadProfileImage(_currentuser);
+                    // Load the Profile Image (Nav Menu)
+                    LoadProfileImage(_currentuser);
 
-                // Raise CurrentUserChanged Event
-                CurrentUserChanged?.Invoke(_currentuser);
+                    // Raise CurrentUserChanged Event
+                    CurrentUserChanged?.Invoke(_currentuser);
+                }
+
+                firstLogin = false;
             }
         }
 
@@ -108,7 +117,7 @@ namespace TrakHound_Dashboard
 
         private EventData CreateCurrentUserMessage()
         {
-            var data = new EventData();
+            var data = new EventData(this);
 
             if (_currentuser != null)
             {
