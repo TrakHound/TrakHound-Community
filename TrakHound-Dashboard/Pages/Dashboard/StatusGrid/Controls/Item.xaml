@@ -8,6 +8,9 @@
              xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
              xmlns:level_indicator="clr-namespace:TrakHound_UI.LevelIndicator;assembly=TrakHound-UI"
              
+             MouseDown="UserControl_MouseDown"
+             Cursor="Hand"
+             
              mc:Ignorable="d" 
              >
 
@@ -47,7 +50,6 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
-                <!--<RowDefinition Height="auto"/>-->
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="30"/>
@@ -526,6 +528,7 @@
 
             </Grid>
 
+            <!--Bottom Info Bar-->
             <Border Grid.Row="4" Grid.ColumnSpan="3" Background="#10000000">
 
                 <Grid>
@@ -553,6 +556,20 @@
 
             </Border>
 
+            <!--Mouse Over Cover-->
+            <Border Grid.ColumnSpan="5" Grid.RowSpan="5">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="#30FFFFFF"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+            </Border>
+            
             <!--Gloss Effect-->
             <Border Grid.ColumnSpan="5" Grid.RowSpan="5" IsHitTestVisible="False">
 

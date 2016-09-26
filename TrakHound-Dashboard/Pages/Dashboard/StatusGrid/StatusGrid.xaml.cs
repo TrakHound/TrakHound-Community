@@ -164,8 +164,9 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
 
                     if (device != null && !Items.ToList().Exists(o => o.UniqueId == device.UniqueId))
                     {
-                        var column = new Controls.Item(device, userConfiguration);
-                        Items.Add(column);
+                        var item = new Controls.Item(device, userConfiguration);
+                        item.Clicked += Item_Clicked;
+                        Items.Add(item);
                     }
                 }
             }
@@ -186,8 +187,9 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
 
                         if (device != null && !Items.ToList().Exists(o => o.UniqueId == device.UniqueId))
                         {
-                            var column = new Controls.Item(device, userConfiguration);
-                            Items.Insert(index, column);
+                            var item = new Controls.Item(device, userConfiguration);
+                            item.Clicked += Item_Clicked;
+                            Items.Insert(index, item);
                         }
                     }
                 }
@@ -206,6 +208,14 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
                     if (index >= 0) Items.RemoveAt(index);
                 }
             }
+        }
+
+        private void Item_Clicked(Controls.Item item)
+        {
+            var data = new EventData();
+            data.Id = "OPEN_DEVICE_DETAILS";
+            data.Data01 = item.Device;
+            SendData?.Invoke(data);
         }
 
     }

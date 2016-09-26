@@ -31,7 +31,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
             root.DataContext = this;
 
             UserConfiguration = userConfig;
-
+            Device = device;
             UniqueId = device.UniqueId;
 
             if (device.Description != null)
@@ -57,6 +57,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
         public string UniqueId { get; set; }
 
         public UserConfiguration UserConfiguration { get; set; }
+
+        public DeviceDescription Device { get; set; }
 
         #region "Dependency Properties"
 
@@ -758,6 +760,13 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
             //return String_Functions.UppercaseFirst(o);
         }
 
+        public delegate void Clicked_Handler(Item item);
+        public event Clicked_Handler Clicked;
+
+        private void UserControl_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Clicked?.Invoke(this);          
+        }
     }
 
 }
