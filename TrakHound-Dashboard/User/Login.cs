@@ -78,7 +78,16 @@ namespace TrakHound_Dashboard
 
                 userConfig = UserManagement.TokenLogin(token, "TrakHound Client Token Login");
 
-                Dispatcher.BeginInvoke(new Action<UserConfiguration>(Login_Finished), UI_Functions.PRIORITY_BACKGROUND, new object[] { userConfig });
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    Login_Finished(userConfig);
+
+                    if (userConfig == null) TrakHound_UI.MessageBox.Show("User Login Failed. Please Try Again.", "Login Failed", TrakHound_UI.MessageBoxButtons.Ok);
+
+
+                }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+
+                //Dispatcher.BeginInvoke(new Action<UserConfiguration>(Login_Finished), UI_Functions.PRIORITY_BACKGROUND, new object[] { userConfig });
             }
         }
 
