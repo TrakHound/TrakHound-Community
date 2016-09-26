@@ -31,8 +31,6 @@ namespace TrakHound_Server.Plugins.Parts
 
         public string PartsEventValue { get; set; }
 
-        public string PartsCaptureItemLink { get; set; }
-
         public CalculationType CalculationType { get; set; }
 
         public static Configuration Read(XmlDocument xml)

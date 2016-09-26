@@ -36,11 +36,24 @@ namespace TrakHound.Configurations.AutoGenerate.GeneratedEvents
             string valuePrefix = eventPrefix + "/Value||00";
             DataTable_Functions.UpdateTableValue(dt, "address", valuePrefix, "attributes", "id||00;");
 
-            // Add Triggers
-            string triggerPrefix = valuePrefix + "/Triggers";
+            // Add MultiTrigger
+            string multitriggerPrefix = valuePrefix + "/Triggers/MultiTrigger||00";
+            DataTable_Functions.UpdateTableValue(dt, "address", multitriggerPrefix, "attributes", "id||00;");
 
-            var item = probeItems.Find(x => x.Category == DataItemCategory.EVENT && x.Type == "PART_COUNT");
-            if (item != null) DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||00", "attributes", "id||00;link||" + item.Id + ";link_type||ID;value||UNAVAILABLE;modifier||not;");
+            // Add Triggers
+            string triggerPrefix = multitriggerPrefix;
+
+            int i = 0;
+
+            var items = probeItems.FindAll(x => x.Category == DataItemCategory.EVENT && x.Type == "PART_COUNT");
+            if (items != null)
+            {
+                foreach (var item in items)
+                {
+                    DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||" + i.ToString("00"), "attributes", "id||" + i.ToString("00") + ";link||" + item.Id + ";link_type||ID;value||UNAVAILABLE;modifier||not;");
+                    i++;
+                }
+            }
 
             // Add Result
             DataTable_Functions.UpdateTableValue(dt, "address", valuePrefix + "/Result", "value", "Parts Produced");
@@ -51,8 +64,17 @@ namespace TrakHound.Configurations.AutoGenerate.GeneratedEvents
         {
             string capturePrefix = eventPrefix + "/Capture";
 
-            var item = probeItems.Find(x => x.Category == DataItemCategory.EVENT && x.Type == "PART_COUNT");
-            if (item != null) DataTable_Functions.UpdateTableValue(dt, "address", capturePrefix + "/Item||00", "attributes", "id||00;name||part_count;link||" + item.Id + ";");
+            int i = 0;
+
+            var items = probeItems.FindAll(x => x.Category == DataItemCategory.EVENT && x.Type == "PART_COUNT");
+            if (items != null)
+            {
+                foreach (var item in items)
+                {
+                    DataTable_Functions.UpdateTableValue(dt, "address", capturePrefix + "/Item||" + i.ToString("00"), "attributes", "id||" + i.ToString("00") + ";name||part_count_" + i.ToString("00") + ";link||" + item.Id + ";");
+                    i++;
+                }
+            }
         }
 
     }

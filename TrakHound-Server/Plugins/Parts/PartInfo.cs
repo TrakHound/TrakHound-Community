@@ -30,34 +30,34 @@ namespace TrakHound_Server.Plugins.Parts
                 if (genEvent.EventName == pc.PartsEventName && genEvent.CurrentValue != null &&
                 genEvent.CurrentValue.Value == String_Functions.UppercaseFirst(pc.PartsEventValue.Replace('_', ' ')))
                 {
-                    var captureItem = genEvent.CaptureItems.Find(x => x.Name == pc.PartsCaptureItemLink);
-                    if (captureItem != null)
+                    DateTime timestamp = genEvent.CurrentValue.Timestamp;
+
+                    var info = new PartInfo();
+                    info.Id = Guid.NewGuid().ToString();
+                    info.Timestamp = timestamp;
+
+                    foreach (var captureItem in genEvent.CaptureItems)
                     {
                         int count = 0;
                         if (int.TryParse(captureItem.Value, out count))
                         {
-                            DateTime timestamp = genEvent.CurrentValue.Timestamp;
-
-                            var info = new PartInfo();
-                            info.Id = Guid.NewGuid().ToString();
-                            info.Timestamp = timestamp;
                             info.Sequence = captureItem.Sequence;
 
                             if (pc.CalculationType == CalculationType.Incremental)
                             {
-                                info.Count = count;
+                                info.Count += count;
                             }
                             else if (pc.CalculationType == CalculationType.Total)
                             {
                                 int previousCount = 0;
                                 int.TryParse(captureItem.PreviousValue, out previousCount);
 
-                                info.Count = count - previousCount;
-                            }
-
-                            return info;
+                                info.Count += count - previousCount;
+                            } 
                         }
                     }
+
+                    return info;
                 }
             }
 

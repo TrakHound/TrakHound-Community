@@ -207,7 +207,7 @@
                 <StackPanel Orientation="Horizontal">
 
                     <!--Title-->
-                    <TextBlock Text="Part Count Link" Foreground="#333" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
+                    <TextBlock Text="Calculation Type" Foreground="#333" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
 
                     <!--Help-->
                     <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
@@ -216,7 +216,7 @@
                                 <StackPanel>
                                     <TextBlock Text="Device Description" FontWeight="Bold"/>
                                     <TextBlock TextWrapping="Wrap">
-                                            Select the Generated Event Value Capture Item that corresponds to the number of Parts Produced (ex.Part Count).
+                                            Select the method that the Part Count is calculated by.
                                     </TextBlock>
                                 </StackPanel>
                             </ToolTip>
@@ -263,16 +263,6 @@
                     </Rectangle>
 
                 </StackPanel>
-
-                <ComboBox Margin="0,0" Width="200" Height="30"
-                          ItemsSource="{Binding GeneratedEventCaptureItems}"
-                          SelectedValue="{Binding SelectedPartCountLink, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                          SelectedValuePath="Id"
-                          DisplayMemberPath="Name"
-                          SelectionChanged="partCountLink_COMBO_SelectionChanged" 
-                          IsEditable="True"
-                          VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
-                          FontSize="12" Background="{x:Null}" Cursor="Hand"/>
 
                 <ComboBox Margin="0,10" Width="200" Height="30"
                           ItemsSource="{Binding CalculationTypes}"

@@ -14,7 +14,6 @@ namespace TrakHound.Configurations.AutoGenerate
         {
             DataTable_Functions.UpdateTableValue(dt, "address", "/Parts/PartsEventName", "value", "parts_count");
             DataTable_Functions.UpdateTableValue(dt, "address", "/Parts/PartsEventValue", "value", "parts_produced");
-            DataTable_Functions.UpdateTableValue(dt, "address", "/Parts/PartsCaptureItemLink", "value", "part_count");
             DataTable_Functions.UpdateTableValue(dt, "address", "/Parts/CalculationType", "value", "Total");
         }
     }
