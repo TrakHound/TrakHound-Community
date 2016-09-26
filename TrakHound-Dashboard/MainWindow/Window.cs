@@ -42,10 +42,6 @@ namespace TrakHound_Dashboard
         private void Main_Window_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             messageCenter.Hide();
-
-            //var data = new EventData();
-            //data.Id = "WINDOW_CLICKED";
-            //Plugin_SendData(data);
         }
 
     }
