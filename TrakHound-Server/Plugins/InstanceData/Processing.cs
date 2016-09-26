@@ -81,7 +81,7 @@ namespace TrakHound_Server.Plugins.Instances
 
         private void SendInstanceData(DeviceConfiguration config, List<InstanceData> instanceDatas)
         {
-            var data = new EventData();
+            var data = new EventData(this);
             data.Id = "INSTANCE_DATA";
             data.Data01 = config;
             data.Data02 = instanceDatas;
@@ -91,7 +91,7 @@ namespace TrakHound_Server.Plugins.Instances
 
         private void SendCurrentInstanceData(DeviceConfiguration config, CurrentInstanceData instanceData)
         {
-            var data = new EventData();
+            var data = new EventData(this);
             data.Id = "CURRENT_INSTANCE_DATA";
             data.Data01 = configuration;
             data.Data02 = instanceData;

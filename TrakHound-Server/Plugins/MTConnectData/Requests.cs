@@ -116,7 +116,7 @@ namespace TrakHound_Server.Plugins.MTConnectData
 
         private void UpdateAvailability(bool available, DeviceConfiguration config)
         {
-            var data = new EventData();
+            var data = new EventData(this);
             data.Id = "DEVICE_AVAILABILITY";
             data.Data01 = config;
             data.Data02 = available;

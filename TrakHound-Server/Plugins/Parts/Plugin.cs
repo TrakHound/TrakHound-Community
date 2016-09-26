@@ -8,7 +8,6 @@ using System.Collections.Generic;
 
 using TrakHound;
 using TrakHound.Configurations;
-using TrakHound.Plugins;
 using TrakHound.Plugins.Server;
 using TrakHound.Tools.Web;
 using TrakHound_Server.Plugins.GeneratedEvents;
@@ -126,7 +125,7 @@ namespace TrakHound_Server.Plugins.Parts
 
         private void SendPartInfos(List<PartInfo> infos)
         {
-            var data = new EventData();
+            var data = new EventData(this);
             data.Id = "PARTS";
             data.Data01 = configuration;
             data.Data02 = infos;

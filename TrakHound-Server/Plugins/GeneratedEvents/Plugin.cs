@@ -60,7 +60,7 @@ namespace TrakHound_Server.Plugins.GeneratedEvents
 
         void SendGeneratedEvents(List<GeneratedEvent> events)
         {
-            var data = new EventData();
+            var data = new EventData(this);
             data.Id = "GENERATED_EVENTS";
             data.Data01 = configuration;
             data.Data02 = events.ToList();

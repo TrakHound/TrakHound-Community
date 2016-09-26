@@ -279,7 +279,7 @@ namespace TrakHound_Server.Plugins.Cycles
         
         void SendCycleData(List<CycleData> cycleData)
         {
-            var data = new EventData();
+            var data = new EventData(this);
             data.Id = "CYCLES";
             data.Data01 = configuration;
             data.Data02 = cycleData;

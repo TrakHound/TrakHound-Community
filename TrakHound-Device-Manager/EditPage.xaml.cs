@@ -109,7 +109,7 @@ namespace TrakHound_Device_Manager
 
         private EventData CreateCurrentUserEventData()
         {
-            var data = new EventData();
+            var data = new EventData(this);
             data.Id = "USER_LOGIN";
             data.Data01 = userConfig;
             return data;
@@ -387,7 +387,7 @@ namespace TrakHound_Device_Manager
             SaveNeeded = false;
             Saving = false;
 
-            var data = new EventData();
+            var data = new EventData(this);
             data.Id = "DEVICE_UPDATED";
             data.Data01 = new DeviceDescription(Configuration);
             SendData?.Invoke(data);
@@ -702,7 +702,7 @@ namespace TrakHound_Device_Manager
 
         private void SendProbeHeader(MTConnect.Application.Headers.Devices header)
         {
-            var data = new EventData();
+            var data = new EventData(this);
             data.Id = "MTConnect_Probe_Header";
             data.Data02 = header;
 
@@ -719,7 +719,7 @@ namespace TrakHound_Device_Manager
         {
             if (probeHeader != null)
             {
-                var data = new EventData();
+                var data = new EventData(this);
                 data.Id = "MTConnect_Probe_Header";
                 data.Data02 = probeHeader;
 
@@ -731,7 +731,7 @@ namespace TrakHound_Device_Manager
 
         private void SendProbeDataItems(List<MTConnect.Application.Components.DataItem> items)
         {
-            var data = new EventData();
+            var data = new EventData(this);
             data.Id = "MTConnect_Probe_DataItems";
             data.Data02 = items;
 
@@ -749,7 +749,7 @@ namespace TrakHound_Device_Manager
         {
             if (probeData != null)
             {
-                var data = new EventData();
+                var data = new EventData(this);
                 data.Id = "MTConnect_Probe_DataItems";
                 data.Data02 = probeData;
 

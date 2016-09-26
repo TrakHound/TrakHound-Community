@@ -320,7 +320,7 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
                 if (success)
                 {
                     // Send message that device was added
-                    var data = new EventData();
+                    var data = new EventData(this);
                     data.Id = "DEVICE_ADDED";
                     data.Data01 = new DeviceDescription(config);
                     SendData?.Invoke(data);

@@ -604,7 +604,7 @@ namespace TrakHound_Device_Manager.AddDevice.Pages
                     Dispatcher.BeginInvoke(new Action(() =>
                     {
                         // Send message that device was added
-                        var data = new EventData();
+                        var data = new EventData(this);
                         data.Id = "DEVICE_ADDED";
                         data.Data01 = new DeviceDescription(config);
                         SendData?.Invoke(data);

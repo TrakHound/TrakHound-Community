@@ -72,7 +72,7 @@ namespace TrakHound_Server.Plugins.MTConnectData
         {
             //if (returnData != null)
             //{
-                var data = new EventData();
+                var data = new EventData(this);
                 data.Id = "MTCONNECT_SAMPLE";
                 data.Data01 = config;
                 data.Data02 = returnData;

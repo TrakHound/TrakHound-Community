@@ -158,7 +158,7 @@ namespace TrakHound_Device_Manager.AddDevice
 
         private void SendCurrentUser(IPage page)
         {
-            var data = new EventData();
+            var data = new EventData(this);
 
             if (currentUser != null)
             {

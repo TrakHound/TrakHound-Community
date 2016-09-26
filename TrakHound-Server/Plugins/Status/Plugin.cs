@@ -64,7 +64,7 @@ namespace TrakHound_Server.Plugins.Status
 
         private void SendStatusData(List<StatusInfo> infos)
         {
-            var data = new EventData();
+            var data = new EventData(this);
             data.Id = "MTCONNECT_STATUS";
             data.Data01 = configuration;
             data.Data02 = infos;

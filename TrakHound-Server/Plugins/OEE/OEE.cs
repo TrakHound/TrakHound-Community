@@ -87,7 +87,7 @@ namespace TrakHound_Server.Plugins.OEE
 
         private void SendOeeData(List<OEEData> oeeDatas)
         {
-            var data = new EventData();
+            var data = new EventData(this);
             data.Id = "OEE";
             data.Data01 = configuration;
             data.Data02 = oeeDatas;

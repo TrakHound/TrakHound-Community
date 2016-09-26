@@ -70,7 +70,7 @@ namespace TrakHound_Server.Plugins.SnapshotData
 
         void SendSnapShotItems(List<Snapshot> snapshots)
         {
-            var data = new EventData();
+            var data = new EventData(this);
             data.Id = "SNAPSHOTS";
             data.Data01 = configuration;
             data.Data02 = snapshots;
