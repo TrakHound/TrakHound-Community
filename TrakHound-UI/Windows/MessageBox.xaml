@@ -47,7 +47,7 @@
             </Rectangle>
 
             <!--Text-->
-            <TextBlock Grid.Column="1" Text="{Binding Text}" Foreground="{StaticResource Text}" FontSize="12pt" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
+            <TextBlock Grid.Column="1" Text="{Binding Text}" Foreground="{StaticResource Text}" FontSize="12" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
 
         </Grid>
         
@@ -57,7 +57,7 @@
             <Grid.Resources>
                 <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Transparent_Background}">
                     <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                    <Setter Property="FontSize" Value="14"/>
+                    <Setter Property="FontSize" Value="12"/>
                     <Setter Property="MinWidth" Value="100"/>
                     <Setter Property="Height" Value="40"/>
                 </Style>

@@ -390,7 +390,7 @@
                 <DataGridTextColumn Header="Port" Binding="{Binding Port}"/>
                 <DataGridTextColumn Header="Device Name" Binding="{Binding Device.Name}"/>
 
-                <DataGridTextColumn Header="Description" Binding="{Binding DeviceDescription.CDATA}" Width="*"/>
+                <DataGridTextColumn Header="Description" Binding="{Binding DeviceDescription.CDATA}" Width="*" MaxWidth="200"/>
                 <DataGridTextColumn Header="Manufacturer" Binding="{Binding DeviceDescription.Manufacturer}"/>
                 <DataGridTextColumn Header="Model" Binding="{Binding DeviceDescription.Model}"/>
                 <DataGridTextColumn Header="Serial" Binding="{Binding DeviceDescription.SerialNumber}"/>

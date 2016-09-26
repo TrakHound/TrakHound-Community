@@ -89,7 +89,7 @@
 
                     <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="auto" >
 
-                        <ContentControl Content="{Binding CurrentPage}" HorizontalAlignment="Left" Margin="0,0,0,50"/>
+                        <ContentControl Content="{Binding CurrentPage}" Margin="0,0,0,50"/>
 
                     </ScrollViewer>
 
