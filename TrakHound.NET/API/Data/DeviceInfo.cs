@@ -22,6 +22,9 @@ namespace TrakHound.API
             [JsonProperty("enabled")]
             public bool Enabled { get; set; }
 
+            [JsonProperty("index")]
+            public int Index { get; set; }
+
 
             [JsonProperty("description")]
             public DescriptionInfo Description
