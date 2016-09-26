@@ -62,7 +62,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatusTimes
 
         private void Row_Clicked(Controls.Row row)
         {
-            var data = new EventData();
+            var data = new EventData(this);
             data.Id = "OPEN_DEVICE_DETAILS";
             data.Data01 = row.Device;
             SendData?.Invoke(data);

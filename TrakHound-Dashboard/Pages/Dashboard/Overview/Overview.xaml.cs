@@ -84,6 +84,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
 
         public void GetSentData(EventData data)
         {
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDevicesLoading), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceAdded), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceUpdated), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceRemoved), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
@@ -190,6 +192,23 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
             UpdateColumnWidthStatus();
         }
 
+        void UpdateDevicesLoading(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id == "LOADING_DEVICES")
+                {
+                    ClearColumns();
+                }
+            }
+        }
+
+        private void ClearColumns()
+        {
+            foreach (var row in Columns) row.Clicked -= ColumnClicked;
+            Columns.Clear();
+        }
+
         void UpdateDeviceAdded(EventData data)
         {
             if (data != null)
@@ -220,15 +239,9 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
                     int index = Columns.ToList().FindIndex(x => x.Device.UniqueId == device.UniqueId);
                     if (index >= 0)
                     {
-                        Columns.RemoveAt(index);
-
-                        if (device != null && !Columns.ToList().Exists(o => o.Device.UniqueId == device.UniqueId))
-                        {
-                            var column = new Controls.Column(device, userConfiguration);
-                            column.Clicked += ColumnClicked;
-                            Columns.Insert(index, column);
-                            Columns.Sort();
-                        }
+                        var column = Columns[index];
+                        column.Device = device;
+                        Columns.Sort();
                     }
                 }
             }
@@ -243,7 +256,14 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
                     var device = (DeviceDescription)data.Data01;
 
                     int index = Columns.ToList().FindIndex(x => x.Device.UniqueId == device.UniqueId);
-                    if (index >= 0) Columns.RemoveAt(index);
+                    if (index >= 0)
+                    {
+                        // Remove Event Handlers
+                        var column = Columns[index];
+                        column.Clicked -= ColumnClicked;
+
+                        Columns.RemoveAt(index);
+                    }
                 }
             }
         }
@@ -266,7 +286,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
 
         private void ColumnClicked(Controls.Column column)
         {
-            var data = new EventData();
+            var data = new EventData(this);
             data.Id = "OPEN_DEVICE_DETAILS";
             data.Data01 = column.Device;
             SendData?.Invoke(data);

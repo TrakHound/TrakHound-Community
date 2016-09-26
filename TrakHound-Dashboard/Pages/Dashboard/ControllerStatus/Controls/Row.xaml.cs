@@ -232,14 +232,20 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus.Controls
 
         static bool LessThan(Row r1, Row r2)
         {
-            if (r1.Index > r2.Index) return false;
-            else return true;
+            if (r1.Index < r2.Index) return true;
+            else return false;
+
+            //if (r1.Index > r2.Index) return false;
+            //else return true;
         }
 
         static bool GreaterThan(Row r1, Row r2)
         {
-            if (r1.Index < r2.Index) return false;
-            else return true;
+            if (r1.Index > r2.Index) return true;
+            else return false;
+
+            //if (r1.Index < r2.Index) return false;
+            //else return true;
         }
 
         #endregion

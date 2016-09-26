@@ -64,6 +64,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus
 
         public void GetSentData(EventData data)
         {
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDevicesLoading), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+
             Update(data);
 
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceAdded), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
@@ -106,6 +108,23 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus
             }
         }
 
+        void UpdateDevicesLoading(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id == "LOADING_DEVICES")
+                {
+                    ClearRows();
+                }
+            }
+        }
+
+        private void ClearRows()
+        {
+            foreach (var row in Rows) row.Clicked -= Row_Clicked;
+            Rows.Clear();
+        }
+
         void UpdateDeviceAdded(EventData data)
         {
             if (data != null)
@@ -129,8 +148,9 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus
                     int index = Rows.ToList().FindIndex(x => x.Device.UniqueId == device.UniqueId);
                     if (index >= 0)
                     {
-                        Rows.RemoveAt(index);
-                        AddRow(device, index);
+                        var row = Rows[index];
+                        row.Device = device;
+                        Rows.Sort();
                     }
                 }
             }
@@ -145,7 +165,14 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus
                     var device = (DeviceDescription)data.Data01;
 
                     int index = Rows.ToList().FindIndex(x => x.Device.UniqueId == device.UniqueId);
-                    if (index >= 0) Rows.RemoveAt(index);
+                    if (index >= 0)
+                    {
+                        // Remove Event Handlers
+                        var row = Rows[index];
+                        row.Clicked -= Row_Clicked;
+
+                        Rows.RemoveAt(index);
+                    }
                 }
             }
         }
@@ -189,7 +216,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus
 
         private void Row_Clicked(Controls.Row row)
         {
-            var data = new EventData();
+            var data = new EventData(this);
             data.Id = "OPEN_DEVICE_DETAILS";
             data.Data01 = row.Device;
             SendData?.Invoke(data);

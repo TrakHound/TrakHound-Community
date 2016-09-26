@@ -7,29 +7,19 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-
-using TrakHound.Configurations;
-using TrakHound.Plugins;
-using TrakHound.Plugins.Client;
-using TrakHound.Tools;
-using TrakHound_UI;
-
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Threading;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 using TrakHound;
 using TrakHound.Configurations;
 using TrakHound.Logging;
-using TrakHound.Plugins;
 using TrakHound.Plugins.Client;
 using TrakHound.Tools;
+using TrakHound_UI;
 
 namespace TrakHound_Dashboard.Pages.Dashboard
 {
@@ -93,24 +83,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard
                 _devices = value;
             }
         }
-
-
-        //private ObservableCollection<DeviceConfiguration> _devices;
-        //public ObservableCollection<DeviceConfiguration> Devices
-        //{
-        //    get
-        //    {
-        //        if (_devices == null)
-        //        {
-        //            _devices = new ObservableCollection<DeviceConfiguration>();
-        //        }
-        //        return _devices;
-        //    }
-        //    set
-        //    {
-        //        _devices = value;
-        //    }
-        //}
 
         private ObservableCollection<ListButton> _pages;
         public ObservableCollection<ListButton> Pages
@@ -375,57 +347,10 @@ namespace TrakHound_Dashboard.Pages.Dashboard
                 }
             }
         }
-
-
-        //void UpdateDeviceAdded(EventData data)
-        //{
-        //    if (data != null)
-        //    {
-        //        if (data.Id == "DEVICE_ADDED" && data.Data01 != null)
-        //        {
-        //            Devices.Add((DeviceConfiguration)data.Data01);
-        //        }
-        //    }
-        //}
-
-        //void UpdateDeviceUpdated(EventData data)
-        //{
-        //    if (data != null)
-        //    {
-        //        if (data.Id == "DEVICE_UPDATED" && data.Data01 != null)
-        //        {
-        //            var config = (DeviceConfiguration)data.Data01;
-
-        //            int i = Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
-        //            if (i >= 0)
-        //            {
-        //                Devices.RemoveAt(i);
-        //                Devices.Insert(i, config);
-        //            }
-        //        }
-        //    }
-        //}
-
-        //void UpdateDeviceRemoved(EventData data)
-        //{
-        //    if (data != null)
-        //    {
-        //        if (data.Id == "DEVICE_REMOVED" && data.Data01 != null)
-        //        {
-        //            var config = (DeviceConfiguration)data.Data01;
-
-        //            int i = Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
-        //            if (i >= 0)
-        //            {
-        //                Devices.RemoveAt(i);
-        //            }
-        //        }
-        //    }
-        //}
-
+        
         private void OpenDeviceManager_Clicked(TrakHound_UI.Button bt)
         {
-            var data = new EventData();
+            var data = new EventData(this);
             data.Id = "SHOW_DEVICE_MANAGER";
             SendData(data);
         }

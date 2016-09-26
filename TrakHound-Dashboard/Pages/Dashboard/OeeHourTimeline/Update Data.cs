@@ -53,6 +53,23 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline
             }
         }
 
+        void UpdateDevicesLoading(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id == "LOADING_DEVICES")
+                {
+                    ClearRows();
+                }
+            }
+        }
+
+        private void ClearRows()
+        {
+            foreach (var row in Rows) row.Clicked -= Row_Clicked;
+            Rows.Clear();
+        }
+
         void UpdateDeviceAdded(EventData data)
         {
             if (data != null)
@@ -76,8 +93,9 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline
                     int index = Rows.ToList().FindIndex(x => GetUniqueIdFromDeviceInfo(x) == device.UniqueId);
                     if (index >= 0)
                     {
-                        Rows.RemoveAt(index);
-                        AddRow(device, index);
+                        var row = Rows[index];
+                        row.Device = device;
+                        Rows.Sort();
                     }
                 }
             }
@@ -92,7 +110,14 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline
                     var device = (DeviceDescription)data.Data01;
 
                     int index = Rows.ToList().FindIndex(x => GetUniqueIdFromDeviceInfo(x) == device.UniqueId);
-                    if (index >= 0) Rows.RemoveAt(index);
+                    if (index >= 0)
+                    {
+                        // Remove Event Handlers
+                        var row = Rows[index];
+                        row.Clicked -= Row_Clicked;
+
+                        Rows.RemoveAt(index);
+                    }
                 }
             }
         }

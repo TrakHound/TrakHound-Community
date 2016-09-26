@@ -55,6 +55,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline
 
         public void GetSentData(EventData data)
         {
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDevicesLoading), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+
             Update(data);
 
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceAdded), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });

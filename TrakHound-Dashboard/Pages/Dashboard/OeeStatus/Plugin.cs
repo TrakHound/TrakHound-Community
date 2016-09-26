@@ -61,6 +61,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeStatus
 
         public void GetSentData(EventData data)
         {
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDevicesLoading), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+
             Update(data);
 
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceAdded), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
@@ -71,54 +73,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeStatus
         public event SendData_Handler SendData;
 
         #endregion
-
-        //private ObservableCollection<DeviceConfiguration> _devices;
-        //public ObservableCollection<DeviceConfiguration> Devices
-        //{
-        //    get
-        //    {
-        //        if (_devices == null)
-        //        {
-        //            _devices = new ObservableCollection<DeviceConfiguration>();
-        //            _devices.CollectionChanged += Devices_CollectionChanged;
-        //        }
-        //        return _devices;
-        //    }
-        //    set
-        //    {
-        //        _devices = value;
-        //    }
-        //}
-
-        //public void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        //{
-        //    //Dispatcher.BeginInvoke(new Action(() =>
-        //    //{
-        //    //    if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
-        //    //    {
-        //    //        Rows.Clear();
-        //    //    }
-
-        //    //    if (e.NewItems != null)
-        //    //    {
-        //    //        foreach (DeviceConfiguration newConfig in e.NewItems)
-        //    //        {
-        //    //            if (newConfig != null) AddRow(newConfig);
-        //    //        }
-        //    //    }
-
-        //    //    if (e.OldItems != null)
-        //    //    {
-        //    //        foreach (DeviceConfiguration oldConfig in e.OldItems)
-        //    //        {
-        //    //            Devices.Remove(oldConfig);
-
-        //    //            int index = Rows.ToList().FindIndex(x => GetUniqueIdFromDeviceInfo(x) == oldConfig.UniqueId);
-        //    //            if (index >= 0) Rows.RemoveAt(index);
-        //    //        }
-        //    //    }
-        //    //}));
-        //}
 
         private static string GetUniqueIdFromDeviceInfo(Controls.Row row)
         {

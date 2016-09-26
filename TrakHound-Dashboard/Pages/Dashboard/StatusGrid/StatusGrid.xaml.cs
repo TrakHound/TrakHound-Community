@@ -69,6 +69,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
 
         public void GetSentData(EventData data)
         {
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDevicesLoading), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceAdded), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceUpdated), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceRemoved), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
@@ -154,6 +156,23 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
         }
 
 
+        void UpdateDevicesLoading(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.Id == "LOADING_DEVICES")
+                {
+                    ClearItems();
+                }
+            }
+        }
+
+        private void ClearItems()
+        {
+            foreach (var row in Items) row.Clicked -= Item_Clicked;
+            Items.Clear();
+        }
+
         void UpdateDeviceAdded(EventData data)
         {
             if (data != null)
@@ -167,6 +186,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
                         var item = new Controls.Item(device, userConfiguration);
                         item.Clicked += Item_Clicked;
                         Items.Add(item);
+                        Items.Sort();
                     }
                 }
             }
@@ -183,14 +203,9 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
                     int index = Items.ToList().FindIndex(x => x.UniqueId == device.UniqueId);
                     if (index >= 0)
                     {
-                        Items.RemoveAt(index);
-
-                        if (device != null && !Items.ToList().Exists(o => o.UniqueId == device.UniqueId))
-                        {
-                            var item = new Controls.Item(device, userConfiguration);
-                            item.Clicked += Item_Clicked;
-                            Items.Insert(index, item);
-                        }
+                        var item = Items[index];
+                        item.Device = device;
+                        Items.Sort();
                     }
                 }
             }
@@ -205,14 +220,21 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
                     var device = (DeviceDescription)data.Data01;
 
                     int index = Items.ToList().FindIndex(x => x.UniqueId == device.UniqueId);
-                    if (index >= 0) Items.RemoveAt(index);
+                    if (index >= 0)
+                    {
+                        // Remove Event Handlers
+                        var item = Items[index];
+                        item.Clicked -= Item_Clicked;
+
+                        Items.RemoveAt(index);
+                    }
                 }
             }
         }
 
         private void Item_Clicked(Controls.Item item)
         {
-            var data = new EventData();
+            var data = new EventData(this);
             data.Id = "OPEN_DEVICE_DETAILS";
             data.Data01 = item.Device;
             SendData?.Invoke(data);

@@ -71,7 +71,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
                     {
                         foreach (var c in deviceInfo.Classes)
                         {
-                            var data = new EventData();
+                            var data = new EventData(this);
                             data.Id = "STATUS_" + c.Key.ToUpper();
                             data.Data01 = deviceInfo.UniqueId;
                             data.Data02 = c.Value;

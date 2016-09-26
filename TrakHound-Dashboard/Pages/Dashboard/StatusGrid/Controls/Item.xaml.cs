@@ -23,7 +23,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
     /// <summary>
     /// Interaction logic for Item.xaml
     /// </summary>
-    public partial class Item : UserControl
+    public partial class Item : UserControl, IComparable
     {
         public Item(DeviceDescription device, UserConfiguration userConfig)
         {
@@ -36,16 +36,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
 
             if (device.Description != null)
             {
-                Description = device.Description.Description;
-                DeviceId = device.Description.DeviceId;
-                Manufacturer = device.Description.Manufacturer;
-                Model = device.Description.Model;
-
-                DeviceType = device.Description.DeviceType;
-                Serial = device.Description.Serial;
-                Controller = device.Description.Controller;
-                Location = device.Description.Location;
-
                 // Load Device Logo
                 if (!string.IsNullOrEmpty(device.Description.LogoUrl)) LoadDeviceLogo(device.Description.LogoUrl);
 
@@ -58,9 +48,27 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
 
         public UserConfiguration UserConfiguration { get; set; }
 
-        public DeviceDescription Device { get; set; }
+        public int Index
+        {
+            get
+            {
+                if (Device != null) return Device.Index;
+                else return -1;
+            }
+        }
 
         #region "Dependency Properties"
+
+        public DeviceDescription Device
+        {
+            get { return (DeviceDescription)GetValue(DeviceProperty); }
+            set { SetValue(DeviceProperty, value); }
+        }
+
+        public static readonly DependencyProperty DeviceProperty =
+            DependencyProperty.Register("Device", typeof(DeviceDescription), typeof(Item), new PropertyMetadata(null));
+
+
 
         public bool Connected
         {
@@ -92,81 +100,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
         public static readonly DependencyProperty DeviceStatusTimeProperty =
             DependencyProperty.Register("DeviceStatusTime", typeof(TimeSpan), typeof(Item), new PropertyMetadata(TimeSpan.FromSeconds(0)));
 
-
-
-        public string Description
-        {
-            get { return (string)GetValue(DescriptionProperty); }
-            set { SetValue(DescriptionProperty, value); }
-        }
-
-        public static readonly DependencyProperty DescriptionProperty =
-            DependencyProperty.Register("Description", typeof(string), typeof(Item), new PropertyMetadata(null));
-
-        public string DeviceId
-        {
-            get { return (string)GetValue(DeviceIdProperty); }
-            set { SetValue(DeviceIdProperty, value); }
-        }
-
-        public static readonly DependencyProperty DeviceIdProperty =
-            DependencyProperty.Register("DeviceId", typeof(string), typeof(Item), new PropertyMetadata(null));
-
-        public string Manufacturer
-        {
-            get { return (string)GetValue(ManufacturerProperty); }
-            set { SetValue(ManufacturerProperty, value); }
-        }
-
-        public static readonly DependencyProperty ManufacturerProperty =
-            DependencyProperty.Register("Manufacturer", typeof(string), typeof(Item), new PropertyMetadata(null));
-
-        public string Model
-        {
-            get { return (string)GetValue(ModelProperty); }
-            set { SetValue(ModelProperty, value); }
-        }
-
-        public static readonly DependencyProperty ModelProperty =
-            DependencyProperty.Register("Model", typeof(string), typeof(Item), new PropertyMetadata(null));
-
-        public string DeviceType
-        {
-            get { return (string)GetValue(DeviceTypeProperty); }
-            set { SetValue(DeviceTypeProperty, value); }
-        }
-
-        public static readonly DependencyProperty DeviceTypeProperty =
-            DependencyProperty.Register("DeviceType", typeof(string), typeof(Item), new PropertyMetadata(null));
-
-        public string Serial
-        {
-            get { return (string)GetValue(SerialProperty); }
-            set { SetValue(SerialProperty, value); }
-        }
-
-        public static readonly DependencyProperty SerialProperty =
-            DependencyProperty.Register("Serial", typeof(string), typeof(Item), new PropertyMetadata(null));
-
-        public string Controller
-        {
-            get { return (string)GetValue(ControllerProperty); }
-            set { SetValue(ControllerProperty, value); }
-        }
-
-        public static readonly DependencyProperty ControllerProperty =
-            DependencyProperty.Register("Controller", typeof(string), typeof(Item), new PropertyMetadata(null));
-
-        public string Location
-        {
-            get { return (string)GetValue(LocationProperty); }
-            set { SetValue(LocationProperty, value); }
-        }
-
-        public static readonly DependencyProperty LocationProperty =
-            DependencyProperty.Register("Location", typeof(string), typeof(Item), new PropertyMetadata(null));
-
-
+        
 
         public double Oee
         {
@@ -508,15 +442,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
             DependencyProperty.Register("PartCount", typeof(int), typeof(Item), new PropertyMetadata(0));
 
 
-        public int WidthStatus
-        {
-            get { return (int)GetValue(WidthStatusProperty); }
-            set { SetValue(WidthStatusProperty, value); }
-        }
-
-        public static readonly DependencyProperty WidthStatusProperty =
-            DependencyProperty.Register("WidthStatus", typeof(int), typeof(Item), new PropertyMetadata(0));
-
         #endregion
 
         #region "Images"
@@ -767,6 +692,90 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
         {
             Clicked?.Invoke(this);          
         }
+
+        #region "IComparable"
+
+        public int CompareTo(object obj)
+        {
+            if (obj == null) return 1;
+
+            var i = obj as Item;
+            if (i != null)
+            {
+                if (i > this) return -1;
+                else if (i < this) return 1;
+                else return 0;
+            }
+            else return 1;
+        }
+
+        #region "Private"
+
+        static bool EqualTo(Item i1, Item i2)
+        {
+            if (!object.ReferenceEquals(i1, null) && object.ReferenceEquals(i2, null)) return false;
+            if (object.ReferenceEquals(i1, null) && !object.ReferenceEquals(i2, null)) return false;
+            if (object.ReferenceEquals(i1, null) && object.ReferenceEquals(i2, null)) return true;
+
+            return i1.Index == i2.Index;
+        }
+
+        static bool NotEqualTo(Item i1, Item i2)
+        {
+            if (!object.ReferenceEquals(i1, null) && object.ReferenceEquals(i2, null)) return true;
+            if (object.ReferenceEquals(i1, null) && !object.ReferenceEquals(i2, null)) return true;
+            if (object.ReferenceEquals(i1, null) && object.ReferenceEquals(i2, null)) return false;
+
+            return i1.Index != i2.Index;
+        }
+
+        static bool LessThan(Item i1, Item i2)
+        {
+            if (i1.Index > i2.Index) return false;
+            else return true;
+        }
+
+        static bool GreaterThan(Item i1, Item i2)
+        {
+            if (i1.Index < i2.Index) return false;
+            else return true;
+        }
+
+        #endregion
+
+        public static bool operator ==(Item i1, Item i2)
+        {
+            return EqualTo(i1, i2);
+        }
+
+        public static bool operator !=(Item i1, Item i2)
+        {
+            return NotEqualTo(i1, i2);
+        }
+
+
+        public static bool operator <(Item i1, Item i2)
+        {
+            return LessThan(i1, i2);
+        }
+
+        public static bool operator >(Item i1, Item i2)
+        {
+            return GreaterThan(i1, i2);
+        }
+
+
+        public static bool operator <=(Item i1, Item i2)
+        {
+            return LessThan(i1, i2) || EqualTo(i1, i2);
+        }
+
+        public static bool operator >=(Item i1, Item i2)
+        {
+            return GreaterThan(i1, i2) || EqualTo(i1, i2);
+        }
+
+        #endregion
     }
 
 }

@@ -117,7 +117,7 @@ namespace TrakHound_Dashboard
         private void SendDevicesLoadingMessage()
         {
             // Send message to plugins that Devices have been loaded
-            var data = new EventData();
+            var data = new EventData(this);
             data.Id = "DEVICES_LOADING";
             SendEventData(data);
         }
@@ -125,7 +125,7 @@ namespace TrakHound_Dashboard
         private void SendDevicesLoadedMessage()
         {
             // Send message to plugins that Devices have been loaded
-            var data = new EventData();
+            var data = new EventData(this);
             data.Id = "DEVICES_LOADED";
             SendEventData(data);
         }
@@ -133,7 +133,7 @@ namespace TrakHound_Dashboard
         private void SendDeviceAddedMessage(DeviceDescription device)
         {
             // Send message to plugins that Device has been added
-            var data = new EventData();
+            var data = new EventData(this);
             data.Id = "DEVICE_ADDED";
             data.Data01 = device;
             SendEventData(data);
@@ -142,7 +142,7 @@ namespace TrakHound_Dashboard
         private void SendDeviceUpdatedMessage(DeviceDescription device)
         {
             // Send message to plugins that Device has been updated
-            var data = new EventData();
+            var data = new EventData(this);
             data.Id = "DEVICE_UPDATED";
             data.Data01 = device;
             SendEventData(data);
@@ -151,7 +151,7 @@ namespace TrakHound_Dashboard
         private void SendDeviceRemovedMessage(DeviceDescription device)
         {
             // Send message to plugins that Device has been removed
-            var data = new EventData();
+            var data = new EventData(this);
             data.Id = "DEVICE_REMOVED";
             data.Data01 = device;
             SendEventData(data);
@@ -164,7 +164,7 @@ namespace TrakHound_Dashboard
                 foreach (var device in Devices.ToList())
                 {
                     // Send message to plugins that Device has been added
-                    var data = new EventData();
+                    var data = new EventData(this);
                     data.Id = "DEVICE_ADDED";
                     data.Data01 = device;
                     SendEventData(data);
@@ -179,7 +179,7 @@ namespace TrakHound_Dashboard
                 foreach (var device in Devices.ToList())
                 {
                     // Send message to plugins that Device has been added
-                    var data = new EventData();
+                    var data = new EventData(this);
                     data.Id = "DEVICE_ADDED";
                     data.Data01 = device;
                     page.GetSentData(data);
