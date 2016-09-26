@@ -23,7 +23,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
     /// <summary>
     /// Interaction logic for Column.xaml
     /// </summary>
-    public partial class Column : UserControl
+    public partial class Column : UserControl, IComparable
     {
         private const int OEE_HIGH = 70;
         private const int OEE_LOW = 50;
@@ -35,7 +35,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
 
             UserConfiguration = userConfig;
 
-            UniqueId = device.UniqueId;
+            Device = device;
 
             if (device.Description != null)
             {
@@ -57,11 +57,30 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
             }
         }
 
-        public string UniqueId { get; set; }
+
+        public int Index
+        {
+            get
+            {
+                if (Device != null) return Device.Index;
+                else return -1;
+            }
+        }
 
         public UserConfiguration UserConfiguration { get; set; }
 
         #region "Dependency Properties"
+
+        public DeviceDescription Device
+        {
+            get { return (DeviceDescription)GetValue(DeviceProperty); }
+            set { SetValue(DeviceProperty, value); }
+        }
+
+        public static readonly DependencyProperty DeviceProperty =
+            DependencyProperty.Register("Device", typeof(DeviceDescription), typeof(Column), new PropertyMetadata(null));
+
+
 
         public bool Connected
         {
@@ -685,8 +704,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
             if (info != null)
             {
                 Connected = info.Connected == 1;
-                DeviceStatus = info.DeviceStatus;
-                ProductionStatus = info.ProductionStatus;
+                if (!string.IsNullOrEmpty(info.DeviceStatus)) DeviceStatus = info.DeviceStatus;
+                if (!string.IsNullOrEmpty(info.ProductionStatus)) ProductionStatus = info.ProductionStatus;
 
                 DeviceStatusTime = TimeSpan.FromSeconds(info.DeviceStatusTimer);
             }
@@ -749,6 +768,99 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
                 ProcessDevelopmentTime = TimeSpan.FromSeconds(processDevelopment);
             }
         }
+
+
+        public delegate void Clicked_Handler(Column column);
+        public event Clicked_Handler Clicked;
+
+        private void UserControl_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Clicked?.Invoke(this);
+        }
+
+        #region "IComparable"
+
+        public int CompareTo(object obj)
+        {
+            if (obj == null) return 1;
+
+            var i = obj as Column;
+            if (i != null)
+            {
+                if (i > this) return -1;
+                else if (i < this) return 1;
+                else return 0;
+            }
+            else return 1;
+        }
+
+        #region "Private"
+
+        static bool EqualTo(Column c1, Column c2)
+        {
+            if (!object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return false;
+            if (object.ReferenceEquals(c1, null) && !object.ReferenceEquals(c2, null)) return false;
+            if (object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return true;
+
+            return c1.Index == c2.Index;
+        }
+
+        static bool NotEqualTo(Column c1, Column c2)
+        {
+            if (!object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return true;
+            if (object.ReferenceEquals(c1, null) && !object.ReferenceEquals(c2, null)) return true;
+            if (object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return false;
+
+            return c1.Index != c2.Index;
+        }
+
+        static bool LessThan(Column c1, Column c2)
+        {
+            if (c1.Index > c2.Index) return false;
+            else return true;
+        }
+
+        static bool GreaterThan(Column c1, Column c2)
+        {
+            if (c1.Index < c2.Index) return false;
+            else return true;
+        }
+
+        #endregion
+
+        public static bool operator ==(Column c1, Column c2)
+        {
+            return EqualTo(c1, c2);
+        }
+
+        public static bool operator !=(Column c1, Column c2)
+        {
+            return NotEqualTo(c1, c2);
+        }
+
+
+        public static bool operator <(Column c1, Column c2)
+        {
+            return LessThan(c1, c2);
+        }
+
+        public static bool operator >(Column c1, Column c2)
+        {
+            return GreaterThan(c1, c2);
+        }
+
+
+        public static bool operator <=(Column c1, Column c2)
+        {
+            return LessThan(c1, c2) || EqualTo(c1, c2);
+        }
+
+        public static bool operator >=(Column c1, Column c2)
+        {
+            return GreaterThan(c1, c2) || EqualTo(c1, c2);
+        }
+
+        #endregion
     }
 
 }

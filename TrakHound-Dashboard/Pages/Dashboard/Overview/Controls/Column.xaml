@@ -42,7 +42,7 @@
 
     </UserControl.Resources>
 
-    <Border x:Name="root" BorderBrush="#aaa" BorderThickness="0,0,1,0">
+    <Border x:Name="root" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
 
         <Grid>
             <Grid.RowDefinitions>
@@ -62,7 +62,7 @@
             </Grid.RowDefinitions>
 
             <!--Device Description-->
-            <Border>
+            <Border MouseDown="UserControl_MouseDown" Cursor="Hand">
                 <Border.Style>
                     <Style TargetType="Border">
                         <Setter Property="Height" Value="200"/>
@@ -654,7 +654,21 @@
                         </StackPanel>
                         
                     </Grid>
-                    
+
+                    <!--Mouse Over Cover-->
+                    <Border Grid.ColumnSpan="5" Grid.RowSpan="5">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Background" Value="#30FFFFFF"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                    </Border>
+
                     <!--Gloss Effect-->
                     <Border Grid.ColumnSpan="5" Grid.RowSpan="5" IsHitTestVisible="False">
 

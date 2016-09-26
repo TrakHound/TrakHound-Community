@@ -30,7 +30,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!--Headers-->
-                <Grid>
+                <Grid Background="{StaticResource Background_Alternate}">
                     <Grid.RowDefinitions>
                         <RowDefinition>
                             <RowDefinition.Style>
@@ -66,14 +66,19 @@
                             <Setter Property="VerticalAlignment" Value="Center"/>
                             <Setter Property="HorizontalAlignment" Value="Center"/>
                             <Setter Property="TextAlignment" Value="Center"/>
-                            <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                            <Setter Property="Foreground" Value="{StaticResource Text_Alternate}"/>
                             <Setter Property="TextWrapping" Value="Wrap"/>
                             <Setter Property="Margin" Value="5"/>
                         </Style>
+                        <Style x:Key="BorderRect" TargetType="Rectangle">
+                            <Setter Property="Fill" Value="{StaticResource Border_Alternate}"/>
+                            <Setter Property="VerticalAlignment" Value="Bottom"/>
+                            <Setter Property="Height" Value="1"/>
+                        </Style>
                     </Grid.Resources>
 
-                    <Rectangle Grid.Row="0" Fill="#10000000"/>
-                    <Rectangle Grid.Row="0" Height="1" VerticalAlignment="Bottom"/>
+                    <!--<Rectangle Grid.Row="0" Fill="Red"/>-->
+                    <Rectangle Grid.Row="0" Style="{StaticResource BorderRect}"/>
                     <!--Gloss Effect-->
                     <Border Grid.Row="0" IsHitTestVisible="False">
 
@@ -116,7 +121,7 @@
                     </Border>
 
                     <TextBlock Grid.Row="1" Text="OEE (%)"/>
-                    <Rectangle Grid.Row="1" Height="1" VerticalAlignment="Bottom"/>
+                    <Rectangle Grid.Row="1" Style="{StaticResource BorderRect}"/>
                     <!--Gloss Effect-->
                     <Border Grid.Row="1" IsHitTestVisible="False">
 
@@ -159,7 +164,7 @@
                     </Border>
 
                     <TextBlock Grid.Row="2" Text="Availability (%)"/>
-                    <Rectangle Grid.Row="2" Height="1" VerticalAlignment="Bottom"/>
+                    <Rectangle Grid.Row="2" Style="{StaticResource BorderRect}"/>
                     <!--Gloss Effect-->
                     <Border Grid.Row="2" IsHitTestVisible="False">
 
@@ -202,7 +207,7 @@
                     </Border>
 
                     <TextBlock Grid.Row="3" Text="Performance (%)"/>
-                    <Rectangle Grid.Row="3" Height="1" VerticalAlignment="Bottom"/>
+                    <Rectangle Grid.Row="3" Style="{StaticResource BorderRect}"/>
                     <!--Gloss Effect-->
                     <Border Grid.Row="3" IsHitTestVisible="False">
 
@@ -245,7 +250,7 @@
                     </Border>
 
                     <TextBlock Grid.Row="4" Text="Part Count"/>
-                    <Rectangle Grid.Row="4" Height="1" VerticalAlignment="Bottom"/>
+                    <Rectangle Grid.Row="4" Style="{StaticResource BorderRect}"/>
                     <!--Gloss Effect-->
                     <Border Grid.Row="4" IsHitTestVisible="False">
 
@@ -327,7 +332,7 @@
                         </Grid>
 
                     </Grid>
-                    <Rectangle Grid.Row="5" Height="1" VerticalAlignment="Bottom"/>
+                    <Rectangle Grid.Row="5" Style="{StaticResource BorderRect}"/>
                     <!--Gloss Effect-->
                     <Border Grid.Row="5" IsHitTestVisible="False">
 
@@ -417,7 +422,7 @@
                         </Grid>
 
                     </Grid>
-                    <Rectangle Grid.Row="6" Height="1" VerticalAlignment="Bottom"/>
+                    <Rectangle Grid.Row="6" Style="{StaticResource BorderRect}"/>
                     <!--Gloss Effect-->
                     <Border Grid.Row="6" IsHitTestVisible="False">
 
@@ -460,7 +465,7 @@
                     </Border>
 
                     <TextBlock Grid.Row="7" Text="Program"/>
-                    <Rectangle Grid.Row="7" Height="1" VerticalAlignment="Bottom"/>
+                    <Rectangle Grid.Row="7" Style="{StaticResource BorderRect}"/>
                     <!--Gloss Effect-->
                     <Border Grid.Row="7" IsHitTestVisible="False">
 
@@ -503,7 +508,7 @@
                     </Border>
 
                     <TextBlock Grid.Row="8" Text="Emergency Stop"/>
-                    <Rectangle Grid.Row="8" Height="1" VerticalAlignment="Bottom"/>
+                    <Rectangle Grid.Row="8" Style="{StaticResource BorderRect}"/>
                     <!--Gloss Effect-->
                     <Border Grid.Row="8" IsHitTestVisible="False">
 
@@ -546,7 +551,7 @@
                     </Border>
 
                     <TextBlock Grid.Row="9" Text="Controller Mode"/>
-                    <Rectangle Grid.Row="9" Height="1" VerticalAlignment="Bottom"/>
+                    <Rectangle Grid.Row="9" Style="{StaticResource BorderRect}"/>
                     <!--Gloss Effect-->
                     <Border Grid.Row="9" IsHitTestVisible="False">
 
@@ -589,7 +594,7 @@
                     </Border>
 
                     <TextBlock Grid.Row="10" Text="Execution Mode"/>
-                    <Rectangle Grid.Row="10" Height="1" VerticalAlignment="Bottom"/>
+                    <Rectangle Grid.Row="10" Style="{StaticResource BorderRect}"/>
                     <!--Gloss Effect-->
                     <Border Grid.Row="10" IsHitTestVisible="False">
 
@@ -632,7 +637,7 @@
                     </Border>
 
                     <TextBlock Grid.Row="11" Text="System Status"/>
-                    <Rectangle Grid.Row="11" Height="1" VerticalAlignment="Bottom"/>
+                    <Rectangle Grid.Row="11" Style="{StaticResource BorderRect}"/>
                     <!--Gloss Effect-->
                     <Border Grid.Row="11" IsHitTestVisible="False">
 
@@ -675,7 +680,7 @@
                     </Border>
 
                     <TextBlock Grid.Row="12" Text="System Message"/>
-                    <Rectangle Grid.Row="12" Height="1" VerticalAlignment="Bottom"/>
+                    <Rectangle Grid.Row="12" Style="{StaticResource BorderRect}"/>
                     <!--Gloss Effect-->
                     <Border Grid.Row="12" IsHitTestVisible="False">
 
