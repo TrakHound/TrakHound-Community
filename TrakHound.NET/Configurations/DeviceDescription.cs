@@ -16,6 +16,7 @@ namespace TrakHound.Configurations
         {
             UniqueId = deviceInfo.UniqueId;
             Enabled = deviceInfo.Enabled;
+            Index = deviceInfo.Index;
             Description = deviceInfo.Description;
             Agent = deviceInfo.Agent;
         }
@@ -34,7 +35,12 @@ namespace TrakHound.Configurations
 
         public bool Enabled { get; set; }
 
-        public int Index { get; set; }
+        private int _index = -1;
+        public int Index
+        {
+            get { return _index; }
+            set { _index = value; }
+        }
 
         public Data.DescriptionInfo Description { get; set; }
 
