@@ -24,20 +24,6 @@
             <Setter Property="ValueFormat" Value="P0"/>
             <Setter Property="Padding" Value="10,0"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Status}" Value="0">
-                    <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusRed}"/>
-                    <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusRed_Hover}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Status}" Value="1">
-                    <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusOrange}"/>
-                    <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusOrange_Hover}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Status}" Value="2">
-                    <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
-                    <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
-                </DataTrigger>
-            </Style.Triggers>
         </Style>
 
     </UserControl.Resources>

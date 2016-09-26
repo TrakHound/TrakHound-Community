@@ -72,7 +72,7 @@
                                 <Setter Property="Fill" Value="{StaticResource StatusRed_Light}"/>
                             </MultiDataTrigger>
 
-                            <DataTrigger Binding="{Binding HourData.TotalSeconds}" Value="0">
+                            <DataTrigger Binding="{Binding HourData.Status}" Value="-1">
                                 <Setter Property="Fill" Value="White"/>
                             </DataTrigger>
                             
@@ -91,7 +91,7 @@
                         <Setter Property="Margin" Value="5"/>
                         <Style.Triggers>
 
-                            <DataTrigger Binding="{Binding HourData.TotalSeconds}" Value="0">
+                            <DataTrigger Binding="{Binding HourData.Status}" Value="-1">
                                 <Setter Property="Margin" Value="10"/>
                                 <Setter Property="Foreground" Value="{StaticResource Disabled_Text}"/>
                                 <Setter Property="Value" Value="0"/>
