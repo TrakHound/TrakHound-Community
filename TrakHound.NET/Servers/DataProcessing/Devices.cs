@@ -115,6 +115,9 @@ namespace TrakHound.Servers.DataProcessing
 
         void DevicesMonitor_Worker()
         {
+            // Clean Devices from any possible null DeviceConfigurations
+            Devices = Devices.FindAll(o => o != null);
+
             if (CurrentUser != null) CheckUserDevices(CurrentUser);
             else CheckLocalDevices();
         }
