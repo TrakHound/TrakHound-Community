@@ -113,8 +113,8 @@ namespace TrakHound_Server.Plugins.GeneratedEvents
                         // if any triggers are not met then break
                         if (!conditionsMet) break;
                     }
-
-                    if (conditionsMet)
+                    
+                    if (conditionsMet || Value.Triggers.Count == 0)
                     {
                         foreach (MultiTrigger multiTrigger in Value.MultiTriggers)
                         {
