@@ -128,7 +128,7 @@ namespace TrakHound.Servers.DataProcessing
 
         public void SendPluginData(string id, string message)
         {
-            var data = new EventData();
+            var data = new EventData(this);
             data.Id = id;
             data.Data01 = message;
 
@@ -137,7 +137,7 @@ namespace TrakHound.Servers.DataProcessing
 
         public void SendPluginData(string id, object obj)
         {
-            var data = new EventData();
+            var data = new EventData(this);
             data.Id = id;
             data.Data01 = obj;
 
