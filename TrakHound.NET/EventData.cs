@@ -9,6 +9,13 @@ namespace TrakHound
 
     public class EventData
     {
+        public EventData(object sender)
+        {
+            Sender = sender;
+        }
+
+        public object Sender { get; set; }
+
         public string Id { get; set; }
 
         public object Data01 { get; set; }
