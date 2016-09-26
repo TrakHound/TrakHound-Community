@@ -99,8 +99,6 @@ namespace TrakHound_Server.Plugins.GeneratedEvents
                                                 }
                                             }
 
-                                            //ev.CurrentValue = ev.Default;
-                                            //ev.CurrentValue.TimeStamp = DateTime.MinValue;
                                             result.Events.Add(ev);
 
                                         }
