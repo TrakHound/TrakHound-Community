@@ -173,5 +173,51 @@ namespace TrakHound.API.Users
 
             return words.ToArray();
         }
+
+
+
+        public override int GetHashCode()
+        {
+            char[] c = this.ToString().ToCharArray();
+            return base.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+
+            var other = obj as UserConfiguration;
+            if (object.ReferenceEquals(other, null)) return false;
+
+            return (this == other);
+        }
+
+        private static bool EqualTo(UserConfiguration c1, UserConfiguration c2)
+        {
+            if (!object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return false;
+            if (object.ReferenceEquals(c1, null) && !object.ReferenceEquals(c2, null)) return false;
+            if (object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return true;
+
+            return c1.Username == c2.Username && c1.SessionToken == c2.SessionToken;
+        }
+
+        private static bool NotEqualTo(UserConfiguration c1, UserConfiguration c2)
+        {
+            if (!object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return true;
+            if (object.ReferenceEquals(c1, null) && !object.ReferenceEquals(c2, null)) return true;
+            if (object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return false;
+
+            return c1.Username != c2.Username || c1.SessionToken != c2.SessionToken;
+        }
+
+        public static bool operator ==(UserConfiguration c1, UserConfiguration c2)
+        {
+            return EqualTo(c1, c2);
+        }
+
+        public static bool operator !=(UserConfiguration c1, UserConfiguration c2)
+        {
+            return NotEqualTo(c1, c2);
+        }
+
     }
 }
