@@ -83,6 +83,15 @@
     </None>
     <None Include="Pages\Dashboard\OverrideStatus\Update Data.cs" />
     <Compile Include="Controls\Message Center\MessageData.cs" />
+    <Compile Include="Pages\DeviceDetails\Controls\HourTimeline.xaml.cs">
+      <DependentUpon>HourTimeline.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DeviceDetails\Controls\HourSegment.xaml.cs">
+      <DependentUpon>HourSegment.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DeviceDetails\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Dashboard\Overview\Controls\Column.xaml.cs">
       <DependentUpon>Column.xaml</DependentUpon>
     </Compile>
@@ -95,6 +104,8 @@
     <Compile Include="Pages\Dashboard\StatusGrid\StatusGrid.xaml.cs">
       <DependentUpon>StatusGrid.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\DeviceDetails\HourData.cs" />
+    <Compile Include="Pages\DeviceDetails\Plugin.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -334,6 +345,18 @@
     <Page Include="Pages\Dashboard\Dashboard.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DeviceDetails\Controls\HourTimeline.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DeviceDetails\Controls\HourSegment.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DeviceDetails\Page.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Dashboard\OeeHourTimeline\Controls\Row.xaml">
       <Generator>MSBuild:Compile</Generator>

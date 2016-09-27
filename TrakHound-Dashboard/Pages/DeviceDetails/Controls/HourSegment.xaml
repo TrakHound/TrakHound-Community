@@ -1,0 +1,99 @@
+﻿<UserControl x:Class="TrakHound_Dashboard.Pages.DeviceDetails.Controls.HourSegment"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TrakHound_Dashboard.Pages.DeviceDetails.Controls"
+             
+             xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="75" d:DesignWidth="75">
+
+    <Border x:Name="root" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
+
+        <Grid>
+
+            <Rectangle>
+                <Rectangle.Style>
+                    <Style TargetType="Rectangle">
+                        <Setter Property="Fill" Value="White"/>
+                        <Style.Triggers>
+
+                            <DataTrigger Binding="{Binding HourData.Status}" Value="2">
+                                <Setter Property="Fill" Value="{StaticResource StatusGreen}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding HourData.Status}" Value="1">
+                                <Setter Property="Fill" Value="{StaticResource StatusOrange}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding HourData.Status}" Value="0">
+                                <Setter Property="Fill" Value="{StaticResource StatusRed}"/>
+                            </DataTrigger>
+
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding HourData.Status}" Value="2"/>
+                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Fill" Value="{StaticResource StatusGreen_Light}"/>
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding HourData.Status}" Value="1"/>
+                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Fill" Value="{StaticResource StatusOrange_Light}"/>
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding HourData.Status}" Value="0"/>
+                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Fill" Value="{StaticResource StatusRed_Light}"/>
+                            </MultiDataTrigger>
+
+                            <!--<DataTrigger Binding="{Binding HourData.Status}" Value="-1">
+                                <Setter Property="Fill" Value="White"/>
+                            </DataTrigger>-->
+                            
+                        </Style.Triggers>
+                    </Style>
+                </Rectangle.Style>
+
+            </Rectangle>
+
+            <ui:NumberDisplay Value="{Binding HourData.Value}" ValueFormat="{Binding ValueFormat}" MaxHeight="20" IsHitTestVisible="False">
+                <ui:NumberDisplay.Style>
+                    <Style TargetType="ui:NumberDisplay">
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                        <Setter Property="Margin" Value="5"/>
+                        <Style.Triggers>
+
+                            <DataTrigger Binding="{Binding HourData.Status}" Value="2">
+                                <Setter Property="Foreground" Value="White"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding HourData.Status}" Value="1">
+                                <Setter Property="Foreground" Value="White"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding HourData.Status}" Value="0">
+                                <Setter Property="Foreground" Value="White"/>
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding HourData.Status}" Value="-1">
+                                <Setter Property="Margin" Value="10"/>
+                                <Setter Property="Foreground" Value="{StaticResource Disabled}"/>
+                                <Setter Property="Value" Value="0"/>
+                            </DataTrigger>
+
+                        </Style.Triggers>
+                    </Style>
+                </ui:NumberDisplay.Style>
+            </ui:NumberDisplay>
+
+        </Grid>
+        
+    </Border>
+    
+</UserControl>
