@@ -17,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Xml;
 
 using TrakHound;
+using TrakHound.API;
 using TrakHound.API.Users;
 using TrakHound.Configurations;
 using TrakHound.Logging;
@@ -166,6 +167,7 @@ namespace TrakHound_Device_Manager
                 if (data.Id == "DEVICE_ADDED" && data.Data01 != null)
                 {
                     Devices.Add((DeviceDescription)data.Data01);
+                    Devices.Sort();
                 }
             }
         }
@@ -183,6 +185,7 @@ namespace TrakHound_Device_Manager
                     {
                         Devices.RemoveAt(i);
                         Devices.Insert(i, device);
+                        Devices.Sort();
                     }
                 }
             }
@@ -295,10 +298,16 @@ namespace TrakHound_Device_Manager
             { 
                 foreach (var device in removeInfo.Devices)
                 {
+                    int index = Devices.ToList().FindIndex(o => o.UniqueId == device.UniqueId);
+                    if (index >= 0) Devices.RemoveAt(index);
+                }
+
+                foreach (var device in removeInfo.Devices)
+                {
                     if (device != null)
                     {
                         // Send message that device has been removed
-                        var data = new EventData();
+                        var data = new EventData(this);
                         data.Id = "DEVICE_REMOVED";
                         data.Data01 = device;
                         SendData?.Invoke(data);
@@ -310,7 +319,7 @@ namespace TrakHound_Device_Manager
                 TrakHound_UI.MessageBox.Show("An error occured while attempting to Remove Device. Please try again.", "Remove Device Error", MessageBoxButtons.Ok);
 
                 // Send request to reload devices
-                var data = new EventData();
+                var data = new EventData(this);
                 data.Id = "LOAD_DEVICES";
                 SendData?.Invoke(data);
             }
@@ -384,7 +393,7 @@ namespace TrakHound_Device_Manager
                     var device = ((DeviceDescription)info.DataObject);
 
                     // Send message that device has been removed
-                    var data = new EventData();
+                    var data = new EventData(this);
                     data.Id = "DEVICE_ENABLED";
                     data.Data01 = device;
                     SendData?.Invoke(data);
@@ -455,7 +464,7 @@ namespace TrakHound_Device_Manager
                     var device = ((DeviceDescription)info.DataObject);
 
                     // Send message that device has been removed
-                    var data = new EventData();
+                    var data = new EventData(this);
                     data.Id = "DEVICE_DISABLED";
                     data.Data01 = device;
                     SendData?.Invoke(data);
@@ -471,17 +480,32 @@ namespace TrakHound_Device_Manager
 
         private class MoveInfo
         {
-            public MoveInfo(int oldListIndex, int newListIndex, int deviceIndex)
+            public MoveInfo(DeviceDescription device, int oldListIndex, int newListIndex, int deviceIndex)
             {
+                Device = device;
+
                 OldListIndex = oldListIndex;
                 NewListIndex = newListIndex;
                 DeviceIndex = deviceIndex;
             }
 
+            public DeviceDescription Device { get; set; }
+
             public int OldListIndex { get; set; }
             public int NewListIndex { get; set; }
             public int DeviceIndex { get; set; }
         }
+
+        private class UpdateDeviceIndexTimer : System.Timers.Timer
+        {
+            public List<MoveInfo> MoveInfos { get; set; }
+        }
+
+        private const int UPDATE_DEVICE_INDEX_DELAY = 2000;
+        private const int SEND_DEVICE_INDEX_DELAY = 500;
+
+        private UpdateDeviceIndexTimer updateDeviceIndexTimer;
+        private UpdateDeviceIndexTimer sendDeviceIndexTimer;
 
         private void MoveUpClicked() { Move(1); }
 
@@ -494,7 +518,13 @@ namespace TrakHound_Device_Manager
         private void Move(int change)
         {
             var items = Devices_DG.Items;
-            var selectedItems = Devices_DG.SelectedItems;
+
+            var selectedItems = new List<DeviceDescription>();
+            foreach (var selectedItem in Devices_DG.SelectedItems) selectedItems.Add((DeviceDescription)selectedItem);
+
+            // Insure order of selectedItems is by DeviceDescription.Index
+            if (change > 0) selectedItems = selectedItems.OrderBy(o => items.IndexOf(o)).ToList();
+            else if (change < 0) selectedItems = selectedItems.OrderByDescending(o => items.IndexOf(o)).ToList();
 
             var infos = new List<MoveInfo>();
 
@@ -512,67 +542,180 @@ namespace TrakHound_Device_Manager
                 else if (change < 0)
                 {
                     // Make sure last item in selecteditems is not the last item in the whole list
-                    int lastIndex = items.IndexOf(selectedItems[selectedItems.Count - 1]);
+                    int lastIndex = items.IndexOf(selectedItems[0]);
                     valid = (lastIndex < items.Count - 1);
                 }
 
                 if (valid)
                 {
-                    DeviceDescription refConfig = null;
-                    if (change > 0) refConfig = (DeviceDescription)items[items.IndexOf(selectedItems[0]) - 1];
-                    else if (change < 0) refConfig = (DeviceDescription)items[items.IndexOf(selectedItems[selectedItems.Count - 1]) + 1];
+                    // Create a reference index to base changes off of
+                    int refIndex = -1;
+                    if (change > 0) refIndex = items.IndexOf(selectedItems[0]);
+                    else if (change < 0) refIndex = items.IndexOf(selectedItems[selectedItems.Count - 1]);
 
-                    int refIndex = refConfig.Index;
-
+                    // Create a MoveInfo object for each item
                     for (var x = 0; x <= selectedItems.Count - 1; x++)
                     {
+                        // Calculate amount to change index by based on position of item in list
                         int adjChange = 0;
                         if (change > 0) adjChange = change + ((selectedItems.Count - 1) - x);
                         else if (change < 0) adjChange = change - x;
 
-                        var config = (DeviceDescription)selectedItems[x];
+                        var device = selectedItems[x];
 
-                        int listIndex = items.IndexOf(selectedItems[x]);
+                        // Get Current Index of Device
+                        int listIndex = items.IndexOf(device);
 
+                        // Calculate new index for Device based on reference index
                         int newIndex = refIndex - adjChange;
 
-                        string a = config.Index.ToString();
-                        string a1 = refIndex.ToString();
-                        string b = newIndex.ToString();
-                        string c = listIndex.ToString();
-                        string d = (listIndex - change).ToString();
-                        string e = adjChange.ToString();
-
-                        // Change index using DeviceManager
-                        //if (DeviceManager != null) DeviceManager.ChangeDeviceIndex(config, newIndex);
-
-                        var info = new MoveInfo(listIndex, listIndex - change, newIndex);
+                        // Add new MoveInfo object to list
+                        var info = new MoveInfo(device, listIndex, listIndex - change, newIndex);
                         infos.Add(info);
                     }
 
                     // Create new array for selecting rows after sorting
                     int[] selectedIndexes = new int[infos.Count];
 
-                    // Set new indexes
+                    // Set new indexes for selected items (include only changed)
                     for (var x = 0; x <= infos.Count - 1; x++)
                     {
                         var info = infos[x];
+                        var device = Devices[info.OldListIndex];
 
-                        var config = (DeviceDescription)items[info.OldListIndex];
-                        config.Index = info.DeviceIndex;
+                        // Set new Index value
+                        device.Index = info.NewListIndex;
+                        info.Device = device;
+
+                        // Move item in list to new index (Device List only)
+                        Devices.RemoveAt(info.OldListIndex);
+                        Devices.Insert(info.NewListIndex, device);
 
                         selectedIndexes[x] = info.NewListIndex;
                     }
 
-                    // Sort Devices list using new Configuration.Index
-                    Devices.Sort();
+                    // Create list of new indexes (include unchanged)
+                    var allIndexes = new List<MoveInfo>();
+                    foreach (var device in Devices.ToList())
+                    {
+                        int index = Devices.IndexOf(device);
+                        device.Index = index;
+                        allIndexes.Add(new MoveInfo(device, -1, index, -1));
+                    }
+
+                    // Send DeviceUpdated Events to other pages
+                    SendDeviceIndexes(allIndexes);
+
+                    // Update DeviceConfigurations with new Indexes
+                    UpdateDeviceIndexes(allIndexes);
 
                     // Select Rows using new List Indexes
                     SelectRowByIndexes(Devices_DG, selectedIndexes);
                 }
             }
         }
+        
+        private void UpdateDeviceIndexes(List<MoveInfo> infos)
+        {
+            if (updateDeviceIndexTimer != null) updateDeviceIndexTimer.Enabled = false;
+            else
+            {
+                updateDeviceIndexTimer = new UpdateDeviceIndexTimer();
+                updateDeviceIndexTimer.Interval = UPDATE_DEVICE_INDEX_DELAY;
+                updateDeviceIndexTimer.Elapsed += UpdateDeviceIndexesTimer_Elapsed;
+            }
 
+            updateDeviceIndexTimer.MoveInfos = infos;
+            updateDeviceIndexTimer.Enabled = true;
+        }
+
+        private void UpdateDeviceIndexesTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            var timer = (UpdateDeviceIndexTimer)sender;
+            timer.Enabled = false;
+
+            var infos = timer.MoveInfos;
+
+            // Update DeviceConfigurations
+            if (currentUser != null) ThreadPool.QueueUserWorkItem(new WaitCallback(UpdateUserDeviceIndexes), infos);
+            else ThreadPool.QueueUserWorkItem(new WaitCallback(UpdateLocalDeviceIndexes), infos);
+        }
+
+        private void UpdateUserDeviceIndexes(object o)
+        {
+            if (o != null)
+            {
+                var infos = (List<MoveInfo>)o;
+
+                if (infos != null && infos.Count > 0)
+                {
+                    var deviceInfos = new List<Devices.DeviceInfo>();
+
+                    foreach (var info in infos)
+                    {
+                        var deviceInfo = new Devices.DeviceInfo(info.Device.UniqueId, new Devices.DeviceInfo.Row("/Index", info.NewListIndex.ToString(), null));
+                        deviceInfos.Add(deviceInfo);
+                    }
+
+                    TrakHound.API.Devices.Update(currentUser, deviceInfos, false);
+                }
+            }
+        }
+
+        private void UpdateLocalDeviceIndexes(object o)
+        {
+            if (o != null)
+            {
+                var infos = (List<MoveInfo>)o;
+
+                if (infos != null && infos.Count > 0)
+                {
+                    var deviceInfos = new List<Devices.DeviceInfo>();
+
+                    foreach (var info in infos)
+                    {
+                        var config = GetLocalDeviceConfiguration(info.Device.UniqueId);
+                        if (config != null)
+                        {
+                            UpdateIndexXML(config.Xml, info.NewListIndex);
+                            ResetUpdateId(config);
+                            DeviceConfiguration.Save(config);
+                        }
+                    }
+                }
+            }
+        }
+
+
+        private void SendDeviceIndexes(List<MoveInfo> infos)
+        {
+            if (sendDeviceIndexTimer != null) sendDeviceIndexTimer.Enabled = false;
+            else
+            {
+                sendDeviceIndexTimer = new UpdateDeviceIndexTimer();
+                sendDeviceIndexTimer.Interval = SEND_DEVICE_INDEX_DELAY;
+                sendDeviceIndexTimer.Elapsed += SendDeviceIndexesTimer_Elapsed;
+            }
+
+            sendDeviceIndexTimer.MoveInfos = infos;
+            sendDeviceIndexTimer.Enabled = true;
+        }
+
+        private void SendDeviceIndexesTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            var timer = (UpdateDeviceIndexTimer)sender;
+            timer.Enabled = false;
+
+            var infos = timer.MoveInfos;
+
+            foreach (var info in infos)
+            {
+                var eventData = new EventData(this);
+                eventData.Id = "DEVICE_UPDATED";
+                eventData.Data01 = info.Device;
+                SendData?.Invoke(eventData);
+            }
+        }
 
 
         private static void SelectRowByIndexes(DataGrid dataGrid, params int[] rowIndexes)
@@ -797,7 +940,7 @@ namespace TrakHound_Device_Manager
         private void RefreshClicked()
         {
             // Send Message to Reload Devices
-            var data = new EventData();
+            var data = new EventData(this);
             data.Id = "LOAD_DEVICES";
             SendData?.Invoke(data);
         }
@@ -924,6 +1067,15 @@ namespace TrakHound_Device_Manager
             bool result = false;
 
             result = XML_Functions.SetInnerText(xml, "Enabled", enabled.ToString());
+
+            return result;
+        }
+
+        private static bool UpdateIndexXML(XmlDocument xml, int index)
+        {
+            bool result = false;
+
+            result = XML_Functions.SetInnerText(xml, "Index", index.ToString());
 
             return result;
         }
