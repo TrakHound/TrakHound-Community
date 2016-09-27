@@ -48,7 +48,7 @@
             </Grid.RowDefinitions>
 
             <!--Device Description-->
-            <Border MouseDown="UserControl_MouseDown" Cursor="Hand">
+            <Border MouseDown="UserControl_MouseDown" Cursor="Hand" ToolTip="Click for Device Details">
                 <Border.Style>
                     <Style TargetType="Border">
                         <Setter Property="Height" Value="200"/>

@@ -552,7 +552,7 @@
             </Border>
 
             <!--Mouse Over Cover-->
-            <Border Grid.ColumnSpan="5" Grid.RowSpan="5">
+            <Border Grid.ColumnSpan="5" Grid.RowSpan="5" ToolTip="Click for Device Details">
                 <Border.Style>
                     <Style TargetType="Border">
                         <Setter Property="Background" Value="Transparent"/>

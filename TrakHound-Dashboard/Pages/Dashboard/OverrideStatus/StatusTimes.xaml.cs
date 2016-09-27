@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Controls;
-
+using TrakHound;
 using TrakHound.Configurations;
 using TrakHound_Overview.Pages.Dashboard.OverrideStatus.Controls;
 
@@ -35,6 +35,7 @@ namespace TrakHound_Overview.Pages.Dashboard.OverrideStatus
         {
             var row = new Row();
             row.Configuration = config;
+            row.Clicked += Row_Clicked;
             Rows.Add(row);
         }
 
@@ -42,8 +43,16 @@ namespace TrakHound_Overview.Pages.Dashboard.OverrideStatus
         {
             var row = new Controls.Row();
             row.Configuration = config;
+            row.Clicked += Row_Clicked;
             Rows.Insert(index, row);
         }
 
+        private void Row_Clicked(Controls.Row row)
+        {
+            var data = new EventData(this);
+            data.Id = "OPEN_DEVICE_DETAILS";
+            data.Data01 = row.Device;
+            SendData?.Invoke(data);
+        }
     }
 }
