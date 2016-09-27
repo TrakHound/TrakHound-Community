@@ -3,9 +3,9 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+using System;
 using System.ComponentModel.Composition;
 using System.Data;
-using System.Windows.Media;
 
 namespace TrakHound.Plugins.Server
 {
@@ -14,7 +14,7 @@ namespace TrakHound.Plugins.Server
     {
         string Title { get; }
 
-        ImageSource Image { get; }
+        Uri Image { get; }
 
         event SettingChanged_Handler SettingChanged;
 

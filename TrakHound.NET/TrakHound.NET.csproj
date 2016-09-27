@@ -42,8 +42,6 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
@@ -195,7 +193,7 @@
     <Compile Include="Tools\Web\HTTP.cs" />
     <Compile Include="Tools\Web\JSON.cs" />
     <Compile Include="Tools\Web\ProxySettings.cs" />
-    <Compile Include="Tools\Window_Functions.cs" />
+    <None Include="Tools\Window_Functions.cs" />
     <Compile Include="Tools\XML\Attributes.cs" />
     <Compile Include="Tools\XML\Documents.cs" />
     <Compile Include="Tools\XML\Files.cs" />

@@ -1,11 +1,12 @@
-﻿using System;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-
 using System.IO;
 
 using TrakHound.Logging;
@@ -55,6 +56,18 @@ namespace TrakHound.Tools
                 return CropImage(img, heightCropRect);
             }
             else return img;
+        }
+
+        public static Image ImageFromFile(Uri uri)
+        {
+            try
+            {
+                var wc = new System.Net.WebClient();
+                return Image.FromStream(wc.OpenRead(uri));
+            }
+            catch (Exception ex) { Logger.Log("Error Loading Image from URI : " + uri + " : " + ex.Message); }
+
+            return null;
         }
 
         /// <summary>
@@ -111,103 +124,103 @@ namespace TrakHound.Tools
         }
 
 
-        public static BitmapImage SourceFromImage(System.Drawing.Image img)
-        {
-            try
-            {
-                using (MemoryStream stream = new MemoryStream())
-                {
-                    ImageFormat format = ImageFormat.Png;
+        //public static BitmapImage SourceFromImage(System.Drawing.Image img)
+        //{
+        //    try
+        //    {
+        //        using (MemoryStream stream = new MemoryStream())
+        //        {
+        //            ImageFormat format = ImageFormat.Png;
 
-                    img.Save(stream, format);
+        //            img.Save(stream, format);
 
-                    return ImageFromBuffer(stream.ToArray());
-                }
-            }
-            catch (Exception ex) { }
+        //            return ImageFromBuffer(stream.ToArray());
+        //        }
+        //    }
+        //    catch (Exception ex) { }
 
-            return null;
+        //    return null;
 
-        }
+        //}
 
-        public static BitmapImage ImageFromBuffer(Byte[] bytes)
-        {
-            MemoryStream stream = new MemoryStream(bytes);
-            BitmapImage image = new BitmapImage();
-            image.BeginInit();
-            image.StreamSource = stream;
-            image.CacheOption = BitmapCacheOption.OnLoad;
-            image.EndInit();
-            return image;
-        }
+        //public static BitmapImage ImageFromBuffer(Byte[] bytes)
+        //{
+        //    MemoryStream stream = new MemoryStream(bytes);
+        //    BitmapImage image = new BitmapImage();
+        //    image.BeginInit();
+        //    image.StreamSource = stream;
+        //    image.CacheOption = BitmapCacheOption.OnLoad;
+        //    image.EndInit();
+        //    return image;
+        //}
 
-        public static Byte[] BufferFromImage(BitmapImage imageSource)
-        {
-            Stream stream = imageSource.StreamSource;
-            Byte[] buffer = null;
-            if (stream != null && stream.Length > 0)
-            {
-                using (BinaryReader br = new BinaryReader(stream))
-                {
-                    buffer = br.ReadBytes((Int32)stream.Length);
-                }
-            }
+        //public static Byte[] BufferFromImage(BitmapImage imageSource)
+        //{
+        //    Stream stream = imageSource.StreamSource;
+        //    Byte[] buffer = null;
+        //    if (stream != null && stream.Length > 0)
+        //    {
+        //        using (BinaryReader br = new BinaryReader(stream))
+        //        {
+        //            buffer = br.ReadBytes((Int32)stream.Length);
+        //        }
+        //    }
 
-            return buffer;
-        }
+        //    return buffer;
+        //}
 
-        public static BitmapImage SetImageSize(ImageSource Source, int Width)
-        {
+        //public static BitmapImage SetImageSize(ImageSource Source, int Width)
+        //{
 
-            if (Source != null)
-            {
-                PngBitmapEncoder encoder = new PngBitmapEncoder();
-                MemoryStream memoryStream = new MemoryStream();
-                BitmapImage bImg = new BitmapImage();
+        //    if (Source != null)
+        //    {
+        //        PngBitmapEncoder encoder = new PngBitmapEncoder();
+        //        MemoryStream memoryStream = new MemoryStream();
+        //        BitmapImage bImg = new BitmapImage();
 
-                encoder.Frames.Add(BitmapFrame.Create(Source as BitmapSource));
-                encoder.Save(memoryStream);
+        //        encoder.Frames.Add(BitmapFrame.Create(Source as BitmapSource));
+        //        encoder.Save(memoryStream);
 
-                bImg.BeginInit();
-                bImg.DecodePixelWidth = Width;
-                bImg.StreamSource = new MemoryStream(memoryStream.ToArray());
-                bImg.CacheOption = BitmapCacheOption.OnLoad;
-                bImg.EndInit();
+        //        bImg.BeginInit();
+        //        bImg.DecodePixelWidth = Width;
+        //        bImg.StreamSource = new MemoryStream(memoryStream.ToArray());
+        //        bImg.CacheOption = BitmapCacheOption.OnLoad;
+        //        bImg.EndInit();
 
-                memoryStream.Close();
+        //        memoryStream.Close();
 
-                return bImg;
-            }
-            else return null;
+        //        return bImg;
+        //    }
+        //    else return null;
 
-        }
+        //}
 
-        public static BitmapImage SetImageSize(ImageSource Source, int Width, int Height)
-        {
+        //public static BitmapImage SetImageSize(ImageSource Source, int Width, int Height)
+        //{
 
-            if (Source != null)
-            {
-                PngBitmapEncoder encoder = new PngBitmapEncoder();
-                MemoryStream memoryStream = new MemoryStream();
-                BitmapImage bImg = new BitmapImage();
+        //    if (Source != null)
+        //    {
+        //        PngBitmapEncoder encoder = new PngBitmapEncoder();
+        //        MemoryStream memoryStream = new MemoryStream();
+        //        BitmapImage bImg = new BitmapImage();
 
-                encoder.Frames.Add(BitmapFrame.Create(Source as BitmapSource));
-                encoder.Save(memoryStream);
+        //        encoder.Frames.Add(BitmapFrame.Create(Source as BitmapSource));
+        //        encoder.Save(memoryStream);
 
-                bImg.BeginInit();
-                if (Width > 0) bImg.DecodePixelWidth = Width;
-                if (Height > 0) bImg.DecodePixelHeight = Height;
-                bImg.StreamSource = new MemoryStream(memoryStream.ToArray());
-                bImg.CacheOption = BitmapCacheOption.OnLoad;
-                bImg.EndInit();
+        //        bImg.BeginInit();
+        //        if (Width > 0) bImg.DecodePixelWidth = Width;
+        //        if (Height > 0) bImg.DecodePixelHeight = Height;
+        //        bImg.StreamSource = new MemoryStream(memoryStream.ToArray());
+        //        bImg.CacheOption = BitmapCacheOption.OnLoad;
+        //        bImg.EndInit();
 
-                memoryStream.Close();
+        //        memoryStream.Close();
 
-                return bImg;
-            }
-            else return null;
+        //        return bImg;
+        //    }
+        //    else return null;
 
-        }
+        //}
 
 
         public static Image GetImageFromFile(string path)
@@ -287,22 +300,22 @@ namespace TrakHound.Tools
 
         }
 
-        public static Bitmap BitmapImage2Bitmap(BitmapImage bitmapImage)
-        {
-            if (bitmapImage != null)
-            {
-                using (MemoryStream outStream = new MemoryStream())
-                {
-                    BitmapEncoder enc = new BmpBitmapEncoder();
-                    enc.Frames.Add(BitmapFrame.Create(bitmapImage));
-                    enc.Save(outStream);
-                    System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(outStream);
+        //public static Bitmap BitmapImage2Bitmap(BitmapImage bitmapImage)
+        //{
+        //    if (bitmapImage != null)
+        //    {
+        //        using (MemoryStream outStream = new MemoryStream())
+        //        {
+        //            BitmapEncoder enc = new BmpBitmapEncoder();
+        //            enc.Frames.Add(BitmapFrame.Create(bitmapImage));
+        //            enc.Save(outStream);
+        //            System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(outStream);
 
-                    return new Bitmap(bitmap);
-                }
-            }
-            return null;
-        }
+        //            return new Bitmap(bitmap);
+        //        }
+        //    }
+        //    return null;
+        //}
 
     }
 }

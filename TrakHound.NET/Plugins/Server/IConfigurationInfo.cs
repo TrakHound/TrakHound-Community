@@ -5,7 +5,6 @@
 
 using System;
 using System.ComponentModel.Composition;
-using System.Windows.Media;
 
 namespace TrakHound.Plugins.Server
 {
@@ -15,7 +14,7 @@ namespace TrakHound.Plugins.Server
 
         string Title { get; }
 
-        ImageSource Image { get; }
+        Uri Image { get; }
 
         Type ConfigurationPageType { get; }
 

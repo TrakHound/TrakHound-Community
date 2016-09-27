@@ -3,9 +3,7 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
-using System.Windows.Media;
-
-using TrakHound.Plugins;
+using System;
 
 namespace TrakHound
 {
@@ -16,7 +14,7 @@ namespace TrakHound
     {
         string Title { get; }
 
-        ImageSource Image { get; }
+        Uri Image { get; }
 
         void Opened();
         bool Opening();

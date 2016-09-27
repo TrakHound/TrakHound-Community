@@ -3,13 +3,9 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
-using System.Windows.Media;
-
-using TrakHound;
-using TrakHound.Configurations;
 
 namespace TrakHound.Plugins.Client
 {
@@ -22,20 +18,9 @@ namespace TrakHound.Plugins.Client
     {
 
         /// <summary>
-        /// Sets the Title of the Plugin
-        /// (ex. TH_Dashboard's Title = "Dashboard")
-        /// </summary>
-        string Title { get; }
-
-        /// <summary>
         /// Used to describe the functions of the Plugin
         /// </summary>
         string Description { get; }
-
-        /// <summary>
-        /// Image associated with the Plugin
-        /// </summary>
-        ImageSource Image { get; }
 
         /// <summary>
         /// Used to set the default parent plugin's name 
@@ -71,40 +56,6 @@ namespace TrakHound.Plugins.Client
         /// (ex. called after Devices has been set)
         /// </summary>
         void Initialize();
-
-        /// <summary>
-        /// Called when the plugin is shown
-        /// </summary>
-        void Opened();
-
-        /// <summary>
-        /// Called when the plugin is going to be shown. Return false to cancel
-        /// </summary>
-        /// <returns></returns>
-        bool Opening();
-
-        /// <summary>
-        /// Called when the plugin is closed
-        /// </summary>
-        void Closed();
-
-        /// <summary>
-        /// Called when the plugin is going to be closed. Return false to cancel
-        /// </summary>
-        /// <returns></returns>
-        bool Closing();
-
-
-        ///// <summary>
-        ///// Get Data from another plugin
-        ///// </summary>
-        ///// <param name="data"></param>
-        //void GetSentData(EventData data);
-
-        ///// <summary>
-        ///// Send data to other plugins
-        ///// </summary>
-        //event SendData_Handler SendData;
 
         /// <summary>
         /// Sets the OptionsPage object to be displayed in the Clients Options menu as a seperate page
