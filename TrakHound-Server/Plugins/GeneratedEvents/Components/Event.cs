@@ -198,27 +198,22 @@ namespace TrakHound_Server.Plugins.GeneratedEvents
                 }
 
                 // Get CaptureItems
-                foreach (CaptureItem captureItem in CaptureItems)
+                foreach (var captureItem in CaptureItems)
                 {
-                    var match = result.CaptureItems.Find(x => x.Id == captureItem.Id);
-                    if (match == null)
-                    {
-                        match = new CaptureItem();
-                        match.Id = captureItem.Id;
-                        match.Name = captureItem.Name;
-                        match.Link = captureItem.Link;
-                        result.CaptureItems.Add(match);
-                    }
-
-                    match.PreviousValue = match.Value;
+                    captureItem.PreviousValue = captureItem.Value;
 
                     var instanceValue = instanceData.Values.ToList().Find(x => Tools.GetValue(x, "Id") == Tools.GetValue(captureItem, "Link"));
                     if (instanceValue != null)
                     {
-                        match.Value = instanceValue.Value;
-                        match.Sequence = instanceData.Sequence;
+                        if (instanceValue.Value != captureItem.Value)
+                        {
+                            captureItem.Value = instanceValue.Value;
+                            captureItem.Sequence = instanceData.Sequence;
+                        }
                     }
-                    else match.Value = "";
+                    else captureItem.Value = "";
+
+                    result.CaptureItems = CaptureItems.ToList();
                 }
 
                 result.TimeStamp = instanceData.Timestamp;
