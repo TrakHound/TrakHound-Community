@@ -101,23 +101,25 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
 
         public void GetSentData(EventData data)
         {
-            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDevicesLoading), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDevicesLoading), System.Windows.Threading.DispatcherPriority.Normal, new object[] { data });
 
-            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceAdded), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
-            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceUpdated), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
-            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceRemoved), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceAdded), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceUpdated), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceRemoved), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { data });
 
             if (data != null && data.Id == "USER_LOGIN")
             {
                 if (data.Data01.GetType() == typeof(UserConfiguration))
                 {
                     userConfiguration = (UserConfiguration)data.Data01;
+                    ClearColumns();
                 }
             }
 
             if (data != null && data.Id == "USER_LOGOUT")
             {
                 userConfiguration = null;
+                ClearColumns();
             }
 
             if (data != null && data.Id == "STATUS_CONTROLLER" && data.Data02 != null && data.Data02.GetType() == typeof(TrakHound.API.Data.ControllerInfo))
@@ -133,7 +135,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
                         var column = Columns[index];
                         column.UpdateData(info);
                     }
-                }), UI_Functions.PRIORITY_DATA_BIND, new object[] { });
+                }), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { });
             }
 
             if (data != null && data.Id == "STATUS_STATUS" && data.Data02 != null && data.Data02.GetType() == typeof(TrakHound.API.Data.StatusInfo))
@@ -149,7 +151,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
                         var column = Columns[index];
                         column.UpdateData(info);
                     }
-                }), UI_Functions.PRIORITY_DATA_BIND, new object[] { });
+                }), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { });
             }
 
             if (data != null && data.Id == "STATUS_OEE" && data.Data02 != null && data.Data02.GetType() == typeof(TrakHound.API.Data.OeeInfo))
@@ -165,7 +167,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
                         var column = Columns[index];
                         column.UpdateData(info);
                     }
-                }), UI_Functions.PRIORITY_DATA_BIND, new object[] { });
+                }), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { });
             }
 
             if (data != null && data.Id == "STATUS_TIMERS" && data.Data02 != null && data.Data02.GetType() == typeof(TrakHound.API.Data.TimersInfo))
@@ -181,7 +183,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
                         var column = Columns[index];
                         column.UpdateData(info);
                     }
-                }), UI_Functions.PRIORITY_DATA_BIND, new object[] { });
+                }), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { });
             }
         }
 
@@ -203,7 +205,17 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
 
         private void ClearColumns()
         {
-            foreach (var row in Columns) row.Clicked -= ColumnClicked;
+            var columns = Columns.ToList();
+
+            foreach (var column in columns)
+            {
+                var match = Columns.ToList().Find(o => o.Device.UniqueId == column.Device.UniqueId);
+                if (match != null)
+                {
+                    match.Clicked -= ColumnClicked;
+                }
+            }
+
             Columns.Clear();
         }
 

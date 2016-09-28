@@ -75,13 +75,26 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus
 
         public void GetSentData(EventData data)
         {
-            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDevicesLoading), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDevicesLoading), System.Windows.Threading.DispatcherPriority.Normal, new object[] { data });
+
+            if (data != null && data.Id == "USER_LOGIN")
+            {
+                if (data.Data01.GetType() == typeof(TrakHound.API.Users.UserConfiguration))
+                {
+                    ClearRows();
+                }
+            }
+
+            if (data != null && data.Id == "USER_LOGOUT")
+            {
+                ClearRows();
+            }
 
             Update(data);
 
-            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceAdded), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
-            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceUpdated), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
-            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceRemoved), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceAdded), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceUpdated), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceRemoved), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { data });
         }
 
         void Update(EventData data)
@@ -130,9 +143,20 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus
             }
         }
 
+
         private void ClearRows()
         {
-            foreach (var row in Rows) row.Clicked -= Row_Clicked;
+            var rows = Rows.ToList();
+
+            foreach (var row in rows)
+            {
+                var match = Rows.ToList().Find(o => o.Device.UniqueId == row.Device.UniqueId);
+                if (match != null)
+                {
+                    match.Clicked -= Row_Clicked;
+                }
+            }
+
             Rows.Clear();
         }
 

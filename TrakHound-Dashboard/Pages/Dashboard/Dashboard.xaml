@@ -13,6 +13,7 @@
              xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
                           
              mc:Ignorable="d" 
+             d:DesignHeight="200"
              d:DesignWidth="800"
                         
              Loaded="UserControl_Loaded"
@@ -184,7 +185,7 @@
                     </Style>
                 </StackPanel.Style>
 
-                <TextBlock FontSize="14pt" Foreground="{StaticResource Text}" TextAlignment="Center" HorizontalAlignment="Center">     
+                <TextBlock FontSize="14" Foreground="{StaticResource Text_Light}" TextAlignment="Center" HorizontalAlignment="Center">     
                 No Devices Found <LineBreak/>
                 Click the button below to open Device Manager
                 </TextBlock>
@@ -234,7 +235,7 @@
 
                     <ui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource Spinner}" />
 
-                    <TextBlock FontSize="16pt" Foreground="{StaticResource Text}" TextAlignment="Center" Margin="0,20,0,0">     
+                    <TextBlock FontSize="14" Foreground="{StaticResource Text_Light}" TextAlignment="Center" Margin="0,20,0,0">     
                 Loading Devices...
                     </TextBlock>
 

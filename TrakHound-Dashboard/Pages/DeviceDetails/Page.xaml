@@ -1226,7 +1226,7 @@
 
                 <ui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource Spinner}" />
 
-                <TextBlock Text="Loading Device.." Foreground="{StaticResource Text}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,20,0,0" FontSize="12pt"/>
+                <TextBlock Text="Loading Device.." Foreground="{StaticResource Text_Light}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,20,0,0" FontSize="14"/>
 
             </StackPanel>
 

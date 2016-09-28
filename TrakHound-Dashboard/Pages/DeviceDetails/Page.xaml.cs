@@ -201,7 +201,7 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
 
                         UpdateDeviceInfo(info);
                     }
-                }), UI_Functions.PRIORITY_DATA_BIND, new object[] { });
+                }), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { });
             }
         }
 
@@ -1353,7 +1353,7 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
                 }
             }
 
-            Dispatcher.BeginInvoke(new Action<BitmapSource>(LoadDeviceLogo_GUI), UI_Functions.PRIORITY_DATA_BIND, new object[] { result });
+            Dispatcher.BeginInvoke(new Action<BitmapSource>(LoadDeviceLogo_GUI), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { result });
         }
 
         void LoadDeviceLogo_GUI(BitmapSource img)
@@ -1415,7 +1415,7 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
                 }
             }
 
-            Dispatcher.BeginInvoke(new Action<BitmapSource>(LoadDeviceImage_GUI), UI_Functions.PRIORITY_DATA_BIND, new object[] { result });
+            Dispatcher.BeginInvoke(new Action<BitmapSource>(LoadDeviceImage_GUI), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { result });
         }
 
         void LoadDeviceImage_GUI(BitmapSource img)

@@ -87,7 +87,7 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
                         sendData.Data03 = GetPageHeading(device);
                         SendData?.Invoke(sendData);
 
-                    }), UI_Functions.PRIORITY_DATA_BIND, new object[] { });
+                    }), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { });
                 }
             }
         }

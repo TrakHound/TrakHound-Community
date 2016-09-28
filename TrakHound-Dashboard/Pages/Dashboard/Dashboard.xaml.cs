@@ -90,8 +90,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard
 
         private List<PluginConfiguration> enabledPlugins;
 
-        bool dateClicked = false;
-
         #region "Dependency Properties"
 
         public object PageContent
@@ -155,7 +153,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard
         #endregion
 
 
-
         public Dashboard()
         {
             InitializeComponent();
@@ -189,12 +186,12 @@ namespace TrakHound_Dashboard.Pages.Dashboard
         {
             Dispatcher.BeginInvoke(new Action(UpdateCurrentDate), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
 
-            Dispatcher.BeginInvoke(new Action<EventData>(UpdateLoggedInChanged), UI_Functions.PRIORITY_BACKGROUND, new object[] { data });
-            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDevicesLoading), UI_Functions.PRIORITY_BACKGROUND, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateLoggedInChanged), System.Windows.Threading.DispatcherPriority.Normal, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDevicesLoading), System.Windows.Threading.DispatcherPriority.Normal, new object[] { data });
 
-            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceAdded), UI_Functions.PRIORITY_BACKGROUND, new object[] { data });
-            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceUpdated), UI_Functions.PRIORITY_BACKGROUND, new object[] { data });
-            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceRemoved), UI_Functions.PRIORITY_BACKGROUND, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceAdded), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceUpdated), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceRemoved), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { data });
 
             if (Plugins != null)
             {
@@ -246,11 +243,13 @@ namespace TrakHound_Dashboard.Pages.Dashboard
                 if (data.Id.ToLower() == "userloggedin")
                 {
                     LoggedIn = true;
+                    Devices.Clear();
                 }
 
                 if (data.Id.ToLower() == "userloggedout")
                 {
                     LoggedIn = false;
+                    Devices.Clear();
                 }
             }
         }
@@ -262,6 +261,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard
                 if (data.Id == "LOADING_DEVICES")
                 {
                     LoadingDevices = true;
+                    Devices.Clear();
                 }
 
                 if (data.Id == "DEVICES_LOADED")
@@ -599,7 +599,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard
 
         private void SelectDate_Clicked(TrakHound_UI.Button bt)
         {
-            dateClicked = true;
             DateMenuShown = !DateMenuShown;
         }
     }
