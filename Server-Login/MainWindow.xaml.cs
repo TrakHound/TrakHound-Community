@@ -164,8 +164,8 @@ namespace Server_Login
 
                 var userConfig = UserManagement.CreateTokenLogin(info.Username, info.Password, "TrakHound Server Login");
 
-                if (userConfig != null) UserLoginFile.Create(userConfig);
-                else UserLoginFile.Remove();
+                if (userConfig != null) ServerCredentials.Create(userConfig);
+                else ServerCredentials.Remove();
 
                 Dispatcher.BeginInvoke(new Action<UserConfiguration>(Login_Finished), UI_Functions.PRIORITY_BACKGROUND, new object[] { userConfig });
             }
