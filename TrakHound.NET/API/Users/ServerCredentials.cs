@@ -4,24 +4,23 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
-using System.Xml;
 using System.IO;
+using System.Xml;
 
 using TrakHound.Logging;
 using TrakHound.Tools;
 
 namespace TrakHound.API.Users
 {
-    public static class UserLoginFile
+    public static class ServerCredentials
     {
-        public const string USER_LOGIN_FILENAME = "nigolresu";
+        public const string SERVER_CREDENTIALS_FILENAME = "ServerCredentials.xml";
 
         public static bool Create(UserConfiguration userConfig)
         {
             bool result = false;
 
-            FileLocations.CreateAppDataDirectory();
-            string path = Path.Combine(FileLocations.AppData, USER_LOGIN_FILENAME);
+            string path = Path.Combine(FileLocations.TrakHound, SERVER_CREDENTIALS_FILENAME);
 
             Remove(path);
 
@@ -44,7 +43,7 @@ namespace TrakHound.API.Users
         {
             LoginData result = null;
 
-            string path = Path.Combine(FileLocations.AppData, USER_LOGIN_FILENAME);
+            string path = Path.Combine(FileLocations.TrakHound, SERVER_CREDENTIALS_FILENAME);
             if (File.Exists(path))
             {
                 try
@@ -62,7 +61,7 @@ namespace TrakHound.API.Users
                         result.Token = token;
                     }
                 }
-                catch (Exception ex) { Logger.Log("UserLoginFile.Read() :: Exception :: " + ex.Message); }
+                catch (Exception ex) { Logger.Log("Exception :: " + ex.Message); }
             }
 
             return result;
@@ -94,7 +93,7 @@ namespace TrakHound.API.Users
 
         public static void Remove()
         {
-            string path = Path.Combine(FileLocations.AppData, USER_LOGIN_FILENAME);
+            string path = Path.Combine(FileLocations.TrakHound, SERVER_CREDENTIALS_FILENAME);
             Remove(path);
         }
 
@@ -115,7 +114,7 @@ namespace TrakHound.API.Users
                     doc.Save(writer);
                 }
             }
-            catch (Exception ex) { Logger.Log("UserLoginFile.WriteDocument() :: Exception :: " + ex.Message); }
+            catch (Exception ex) { Logger.Log("Exception :: " + ex.Message); }
         }
 
 
@@ -126,21 +125,24 @@ namespace TrakHound.API.Users
 
             public Monitor()
             {
-                string dir = FileLocations.AppData;
-
-                var watcher = new FileSystemWatcher(dir, USER_LOGIN_FILENAME);
-                watcher.Changed += File_Changed;
-                watcher.Created += File_Changed;
-                watcher.Deleted += File_Changed;
-                watcher.EnableRaisingEvents = true;
+                string dir = FileLocations.TrakHound;
+                if (Directory.Exists(dir))
+                {
+                    var watcher = new FileSystemWatcher(dir, SERVER_CREDENTIALS_FILENAME);
+                    watcher.Changed += File_Changed;
+                    watcher.Created += File_Changed;
+                    watcher.Deleted += File_Changed;
+                    watcher.EnableRaisingEvents = true;
+                }
             }
 
             private void File_Changed(object sender, FileSystemEventArgs e)
             {
                 var loginData = Read();
 
-                if (UserChanged != null) UserChanged(loginData);
+                UserChanged?.Invoke(loginData);
             }
         }
     }
+    
 }
