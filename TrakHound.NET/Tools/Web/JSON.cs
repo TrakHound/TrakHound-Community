@@ -22,24 +22,24 @@ namespace TrakHound.Tools.Web
             DataTable result = null;
 
             if (data != null)
-            if (data.Trim() != "")
-            {
-                try
+                if (data.Trim() != "")
                 {
-                    JsonSerializerSettings JSS = new JsonSerializerSettings();
-                    JSS.DateFormatHandling = DateFormatHandling.IsoDateFormat;
-                    JSS.DateParseHandling = DateParseHandling.DateTime;
-                    JSS.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+                    try
+                    {
+                        var jss = new JsonSerializerSettings();
+                        jss.DateFormatHandling = DateFormatHandling.IsoDateFormat;
+                        jss.DateParseHandling = DateParseHandling.DateTime;
+                        jss.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
 
-                    data = ConvertToSafe(data);
+                        data = ConvertToSafe(data);
 
-                    DataTable DT = (DataTable)JsonConvert.DeserializeObject(data, (typeof(DataTable)), JSS);
+                        DataTable DT = (DataTable)JsonConvert.DeserializeObject(data, (typeof(DataTable)), jss);
 
-                    result = DT;
+                        result = DT;
+                    }
+                    catch (JsonException jex) { Logger.Log(jex.Message); }
+                    catch (Exception ex) { Logger.Log(ex.Message); }
                 }
-                catch (JsonException jex) { Logger.Log(jex.Message); }
-                catch (Exception ex) { Logger.Log(ex.Message); }
-            }
 
             return result;
         }
@@ -104,10 +104,8 @@ namespace TrakHound.Tools.Web
 
                 return JsonConvert.SerializeObject(data.ToList(), jss);
             }
-            catch (Exception ex)
-            {
-                Logger.Log("Error During Serialization :: " + ex.Message, LogLineType.Error);
-            }
+            catch (JsonException jex) { Logger.Log(jex.Message); }
+            catch (Exception ex) { Logger.Log(ex.Message); }
 
             return null;
         }
@@ -118,12 +116,10 @@ namespace TrakHound.Tools.Web
             {
                 return JsonConvert.SerializeObject(data);
             }
-            catch (Exception ex)
-            {
-                Logger.Log("Error During Serialization :: " + ex.Message, LogLineType.Error);
-            }
+            catch (JsonException jex) { Logger.Log(jex.Message); }
+            catch (Exception ex) { Logger.Log(ex.Message); }
 
-            return null;          
+            return null;
         }
 
     }
