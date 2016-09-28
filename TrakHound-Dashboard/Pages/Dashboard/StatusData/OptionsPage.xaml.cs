@@ -7,12 +7,9 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 using TrakHound;
-using TrakHound.Tools;
 
 namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
 {
@@ -32,8 +29,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
 
         public string Title { get { return "Status Data"; } }
 
-        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Generate_01.png")); } }
-
+        public Uri Image { get { return new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Generate_01.png"); } }
 
         public void Opened() { }
         public bool Opening() { return true; }
@@ -44,7 +40,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
         public event SendData_Handler SendData;
 
         public void GetSentData(EventData data) { }
-
 
         public void Load()
         {

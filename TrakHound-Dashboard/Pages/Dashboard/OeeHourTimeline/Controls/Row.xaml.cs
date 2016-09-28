@@ -70,7 +70,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline.Controls
         public static readonly DependencyProperty HourDatasProperty =
             DependencyProperty.Register("HourDatas", typeof(List<HourData>), typeof(Row), new PropertyMetadata(null));
 
-
         #endregion
 
         public DateTime CurrentTime { get; set; }

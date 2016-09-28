@@ -11,7 +11,6 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 using TrakHound;
@@ -33,20 +32,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard
 
         public string Description { get { return "Contains and organizes pages for displaying Device data in various ways. Acts as the Home page for other Device Monitoring Plugins."; } }
 
-        private BitmapImage _image;
-        public ImageSource Image
-        {
-            get
-            {
-                if (_image == null)
-                {
-                    _image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Dashboard_01.png"));
-                    _image.Freeze();
-                }
-
-                return _image;
-            }
-        }
+        public Uri Image { get { return new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Dashboard_01.png"); } }
 
         public void Opened() { }
         public bool Opening() { return true; }
@@ -204,7 +190,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard
             Dispatcher.BeginInvoke(new Action(UpdateCurrentDate), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
 
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateLoggedInChanged), UI_Functions.PRIORITY_BACKGROUND, new object[] { data });
-            Dispatcher.BeginInvoke(new Action<EventData>(UpdateWindowClick), UI_Functions.PRIORITY_DATA_BIND, new object[] { data });
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDevicesLoading), UI_Functions.PRIORITY_BACKGROUND, new object[] { data });
 
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceAdded), UI_Functions.PRIORITY_BACKGROUND, new object[] { data });
@@ -254,22 +239,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard
             CurrentDate = DateTime.Now.ToShortDateString();
         }
 
-        void UpdateWindowClick(EventData data)
-        {
-            if (data != null)
-            {
-                if (data.Id == "WINDOW_CLICKED")
-                {
-                    if (!dateClicked)
-                    {
-                        DateMenuShown = false;
-                    }
-
-                    dateClicked = false;
-                }
-            }
-        }
-
         void UpdateLoggedInChanged(EventData data)
         {
             if (data != null)
@@ -308,7 +277,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard
             {
                 if (data.Id == "DEVICE_ADDED" && data.Data01 != null)
                 {
-                    Devices.Add((DeviceDescription)data.Data01);
+                    var device = (DeviceDescription)data.Data01;
+                    if (device.Enabled) Devices.Add(device);
                 }
             }
         }
@@ -324,9 +294,10 @@ namespace TrakHound_Dashboard.Pages.Dashboard
                     int i = Devices.ToList().FindIndex(x => x.UniqueId == device.UniqueId);
                     if (i >= 0)
                     {
-                        Devices.RemoveAt(i);
-                        Devices.Insert(i, device);
+                        if (device.Enabled) Devices[i] = device;
+                        else Devices.RemoveAt(i);
                     }
+                    else if (device.Enabled) Devices.Add(device);
                 }
             }
         }
@@ -376,7 +347,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard
                         catch { }
 
                         var bt = new ListButton();
-                        bt.Image = plugin.Image;
+                        if (plugin.Image != null) bt.Image = new BitmapImage(plugin.Image);
                         bt.Text = plugin.Title;
                         bt.Selected += PageSelected;
                         bt.DataObject = plugin;

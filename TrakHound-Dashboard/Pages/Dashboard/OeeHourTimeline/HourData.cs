@@ -3,7 +3,6 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
-using System;
 using System.ComponentModel;
 
 namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline
@@ -28,13 +27,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline
             Quality = 0;
         }
 
-
-        public void SetDate(DateTime date)
-        {
-
-
-        }
-
         private string GetHourString(int hour)
         {
             string h = hour.ToString();
@@ -52,7 +44,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline
 
         public int StartHour { get; set; }
         public int EndHour { get; set; }
-
 
 
         private string _startTime;
@@ -105,8 +96,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline
         }
 
 
-
-
         private double _oee;
         public double Oee
         {
@@ -115,12 +104,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline
             {
                 var val = _oee;
                 _oee = value;
-
-                //if (value > 0.75) Status = 2;
-                //else if (value > 0.5) Status = 1;
-                //else if (value >= 0) Status = 0;
-                //else Status = -1;
-
                 if (val != _oee) NotifyChanged("Oee");
             }
         }
@@ -161,11 +144,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline
             }
         }
         
-        private void ProcessStatus()
-        {
-
-        }
-
         private int _status = -1;
         public int Status
         {

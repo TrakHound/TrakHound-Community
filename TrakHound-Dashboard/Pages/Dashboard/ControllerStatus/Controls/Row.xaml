@@ -19,6 +19,8 @@
         <SolidColorBrush ice:Freeze="True" x:Key="Highlight" Color="#30FFFFFF"/>
         <SolidColorBrush ice:Freeze="True" x:Key="Highlight_Colored" Color="#30FFFFFF"/>
 
+        <ui:UppercaseConverter x:Key="uppercaseConverter"/>
+
     </UserControl.Resources>
 
     <Border x:Name="root" Background="Transparent" ToolTip="Click for Device Details">
@@ -347,7 +349,7 @@
                             </Style>
                         </Viewbox.Style>
 
-                        <TextBlock Text="{Binding EmergencyStop}" TextAlignment="Left" HorizontalAlignment="Center">
+                        <TextBlock Text="{Binding EmergencyStop, Converter={StaticResource uppercaseConverter}}" TextAlignment="Left" HorizontalAlignment="Center">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Foreground" Value="White"/>
@@ -474,7 +476,7 @@
                                 </Style>
                             </Viewbox.Style>
 
-                            <TextBlock Text="{Binding ExecutionMode}" TextAlignment="Left" HorizontalAlignment="Center">
+                            <TextBlock Text="{Binding ExecutionMode, Converter={StaticResource uppercaseConverter}}" TextAlignment="Left" HorizontalAlignment="Center">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Foreground" Value="{StaticResource Text}"/>

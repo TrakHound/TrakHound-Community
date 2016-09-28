@@ -39,16 +39,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
 
             if (device.Description != null)
             {
-                Description = device.Description.Description;
-                DeviceId = device.Description.DeviceId;
-                Manufacturer = device.Description.Manufacturer;
-                Model = device.Description.Model;
-
-                DeviceType = device.Description.DeviceType;
-                Serial = device.Description.Serial;
-                Controller = device.Description.Controller;
-                Location = device.Description.Location;
-
                 // Load Device Logo
                 if (!string.IsNullOrEmpty(device.Description.LogoUrl)) LoadDeviceLogo(device.Description.LogoUrl);
 
@@ -111,80 +101,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
 
         public static readonly DependencyProperty DeviceStatusTimeProperty =
             DependencyProperty.Register("DeviceStatusTime", typeof(TimeSpan), typeof(Column), new PropertyMetadata(TimeSpan.FromSeconds(0)));
-
-
-
-        public string Description
-        {
-            get { return (string)GetValue(DescriptionProperty); }
-            set { SetValue(DescriptionProperty, value); }
-        }
-
-        public static readonly DependencyProperty DescriptionProperty =
-            DependencyProperty.Register("Description", typeof(string), typeof(Column), new PropertyMetadata(null));
-
-        public string DeviceId
-        {
-            get { return (string)GetValue(DeviceIdProperty); }
-            set { SetValue(DeviceIdProperty, value); }
-        }
-
-        public static readonly DependencyProperty DeviceIdProperty =
-            DependencyProperty.Register("DeviceId", typeof(string), typeof(Column), new PropertyMetadata(null));
-
-        public string Manufacturer
-        {
-            get { return (string)GetValue(ManufacturerProperty); }
-            set { SetValue(ManufacturerProperty, value); }
-        }
-
-        public static readonly DependencyProperty ManufacturerProperty =
-            DependencyProperty.Register("Manufacturer", typeof(string), typeof(Column), new PropertyMetadata(null));
-
-        public string Model
-        {
-            get { return (string)GetValue(ModelProperty); }
-            set { SetValue(ModelProperty, value); }
-        }
-
-        public static readonly DependencyProperty ModelProperty =
-            DependencyProperty.Register("Model", typeof(string), typeof(Column), new PropertyMetadata(null));
-
-        public string DeviceType
-        {
-            get { return (string)GetValue(DeviceTypeProperty); }
-            set { SetValue(DeviceTypeProperty, value); }
-        }
-
-        public static readonly DependencyProperty DeviceTypeProperty =
-            DependencyProperty.Register("DeviceType", typeof(string), typeof(Column), new PropertyMetadata(null));
-
-        public string Serial
-        {
-            get { return (string)GetValue(SerialProperty); }
-            set { SetValue(SerialProperty, value); }
-        }
-
-        public static readonly DependencyProperty SerialProperty =
-            DependencyProperty.Register("Serial", typeof(string), typeof(Column), new PropertyMetadata(null));
-
-        public string Controller
-        {
-            get { return (string)GetValue(ControllerProperty); }
-            set { SetValue(ControllerProperty, value); }
-        }
-
-        public static readonly DependencyProperty ControllerProperty =
-            DependencyProperty.Register("Controller", typeof(string), typeof(Column), new PropertyMetadata(null));
-
-        public string Location
-        {
-            get { return (string)GetValue(LocationProperty); }
-            set { SetValue(LocationProperty, value); }
-        }
-
-        public static readonly DependencyProperty LocationProperty =
-            DependencyProperty.Register("Location", typeof(string), typeof(Column), new PropertyMetadata(null));
 
 
 
@@ -597,11 +513,11 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
                             {
                                 if (result.PixelWidth > result.PixelHeight)
                                 {
-                                    result = Image_Functions.SetImageSize(result, 300);
+                                    result = TrakHound_UI.Functions.Images.SetImageSize(result, 300);
                                 }
                                 else
                                 {
-                                    result = Image_Functions.SetImageSize(result, 0, 80);
+                                    result = TrakHound_UI.Functions.Images.SetImageSize(result, 0, 80);
                                 }
 
                                 result.Freeze();
@@ -659,11 +575,11 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
                             {
                                 if (result.PixelWidth > result.PixelHeight)
                                 {
-                                    result = Image_Functions.SetImageSize(result, 300);
+                                    result = TrakHound_UI.Functions.Images.SetImageSize(result, 300);
                                 }
                                 else
                                 {
-                                    result = Image_Functions.SetImageSize(result, 0, 150);
+                                    result = TrakHound_UI.Functions.Images.SetImageSize(result, 0, 150);
                                 }
 
                                 result.Freeze();
@@ -690,9 +606,9 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
         {
             if (info != null)
             {
-                EmergencyStop = info.EmergencyStop;
-                ControllerMode = info.ControllerMode;
-                ExecutionMode = info.ExecutionMode;
+                if (!string.IsNullOrEmpty(info.EmergencyStop)) EmergencyStop = info.EmergencyStop;
+                if (!string.IsNullOrEmpty(info.ControllerMode)) ControllerMode = info.ControllerMode;
+                if (!string.IsNullOrEmpty(info.ExecutionMode)) ExecutionMode = info.ExecutionMode;
                 Program = info.ProgramName;
                 SystemStatus = info.SystemStatus;
                 SystemMessage = info.SystemMessage;

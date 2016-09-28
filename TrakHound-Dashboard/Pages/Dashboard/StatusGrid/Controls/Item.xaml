@@ -14,7 +14,12 @@
              mc:Ignorable="d" 
              >
 
-    <!--Device Description-->
+    <UserControl.Resources>
+
+        <ui:UppercaseConverter x:Key="uppercaseConverter"/>
+
+    </UserControl.Resources>
+
     <Border x:Name="root">
         <Border.Style>
             <Style TargetType="Border">
@@ -345,7 +350,7 @@
                     </StackPanel.Resources>
 
                     <!--Device ID-->
-                    <Viewbox MaxHeight="20" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Viewbox MaxHeight="25" VerticalAlignment="Center" HorizontalAlignment="Center">
                         <Viewbox.Style>
                             <Style TargetType="Viewbox">
                                 <Setter Property="Margin" Value="10,2"/>
@@ -433,9 +438,9 @@
                         </Grid.Style>
                     </Grid>
 
-                    <Viewbox Grid.Row="1" MaxHeight="10" Margin="0,5,0,0">
+                    <Viewbox Grid.Row="1" MaxHeight="15" Margin="0,5,0,0">
 
-                        <TextBlock Text="{Binding ExecutionMode}" Foreground="#FFFFFF"/>
+                        <TextBlock Text="{Binding ExecutionMode, Converter={StaticResource uppercaseConverter}}" Foreground="#FFFFFF"/>
 
                     </Viewbox>
 
@@ -479,9 +484,9 @@
                         </Grid.Style>
                     </Grid>
 
-                    <Viewbox Grid.Row="1" MaxHeight="10" Margin="0,5,0,0">
+                    <Viewbox Grid.Row="1" MaxHeight="15" Margin="0,5,0,0">
 
-                        <TextBlock Text="{Binding ControllerMode}" Foreground="#FFFFFF"/>
+                        <TextBlock Text="{Binding ControllerMode, Converter={StaticResource uppercaseConverter}}" Foreground="#FFFFFF"/>
 
                     </Viewbox>
 
@@ -513,9 +518,9 @@
                         </Grid.Style>
                     </Grid>
 
-                    <Viewbox Grid.Row="1" MaxHeight="10" Margin="0,5,0,0">
+                    <Viewbox Grid.Row="1" MaxHeight="15" Margin="0,5,0,0">
 
-                        <TextBlock Text="{Binding SystemStatus}" Foreground="#FFFFFF"/>
+                        <TextBlock Text="{Binding SystemStatus, Converter={StaticResource uppercaseConverter}}" Foreground="#FFFFFF"/>
 
                     </Viewbox>
 

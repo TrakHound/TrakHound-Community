@@ -9,8 +9,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 using TrakHound;
 using TrakHound.API.Users;
@@ -35,8 +33,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
 
         public string Description { get { return "View basic overview data for each device"; } }
 
-        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Analyse_01.png")); } }
-
+        public Uri Image { get { return new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Analyse_01.png"); } }
 
         public string ParentPlugin { get { return "Dashboard"; } }
 
@@ -52,6 +49,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
 
         private UserConfiguration userConfiguration;
 
+        #region "Dependency Properties"
 
         public int WidthStatus
         {
@@ -67,6 +65,25 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
         public static readonly DependencyProperty WidthStatusProperty =
             DependencyProperty.Register("WidthStatus", typeof(int), typeof(Overview), new PropertyMetadata(0));
 
+        private ObservableCollection<Controls.Column> _columns;
+        public ObservableCollection<Controls.Column> Columns
+        {
+            get
+            {
+                if (_columns == null)
+                {
+                    _columns = new ObservableCollection<Controls.Column>();
+                    _columns.CollectionChanged += _columns_CollectionChanged;
+                }
+                return _columns;
+            }
+            set
+            {
+                _columns = value;
+            }
+        }
+
+        #endregion
 
         public event SendData_Handler SendData;
 
@@ -168,25 +185,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
             }
         }
 
-
-        ObservableCollection<Controls.Column> _columns;
-        public ObservableCollection<Controls.Column> Columns
-        {
-            get
-            {
-                if (_columns == null)
-                {
-                    _columns = new ObservableCollection<Controls.Column>();
-                    _columns.CollectionChanged += _columns_CollectionChanged;
-                }
-                return _columns;
-            }
-            set
-            {
-                _columns = value;
-            }
-        }
-
         private void _columns_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             UpdateColumnWidthStatus();
@@ -216,14 +214,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
                 if (data.Id == "DEVICE_ADDED" && data.Data01 != null)
                 {
                     var device = (DeviceDescription)data.Data01;
-
-                    if (device != null && !Columns.ToList().Exists(o => o.Device.UniqueId == device.UniqueId))
-                    {
-                        var column = new Controls.Column(device, userConfiguration);
-                        column.Clicked += ColumnClicked;
-                        Columns.Add(column);
-                        Columns.Sort();
-                    }
+                    AddColumn(device);                
                 }
             }
         }
@@ -236,12 +227,14 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
                 {
                     var device = (DeviceDescription)data.Data01;
 
-                    int index = Columns.ToList().FindIndex(x => x.Device.UniqueId == device.UniqueId);
-                    if (index >= 0)
+                    if (device.Enabled)
                     {
-                        var column = Columns[index];
-                        column.Device = device;
-                        Columns.Sort();
+                        AddColumn(device);
+                        UpdateColumn(device);
+                    }
+                    else
+                    {
+                        RemoveColumn(device);
                     }
                 }
             }
@@ -254,17 +247,43 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
                 if (data.Id == "DEVICE_REMOVED" && data.Data01 != null)
                 {
                     var device = (DeviceDescription)data.Data01;
-
-                    int index = Columns.ToList().FindIndex(x => x.Device.UniqueId == device.UniqueId);
-                    if (index >= 0)
-                    {
-                        // Remove Event Handlers
-                        var column = Columns[index];
-                        column.Clicked -= ColumnClicked;
-
-                        Columns.RemoveAt(index);
-                    }
+                    RemoveColumn(device);
                 }
+            }
+        }
+
+        private void AddColumn(DeviceDescription device)
+        {
+            if (device != null && device.Enabled && !Columns.ToList().Exists(o => o.Device.UniqueId == device.UniqueId))
+            {
+                var column = new Controls.Column(device, userConfiguration);
+                column.Clicked += ColumnClicked;
+                Columns.Add(column);
+                Columns.Sort();
+            }
+        }
+
+        private void UpdateColumn(DeviceDescription device)
+        {
+            int index = Columns.ToList().FindIndex(x => x.Device.UniqueId == device.UniqueId);
+            if (index >= 0)
+            {
+                var column = Columns[index];
+                column.Device = device;
+                Columns.Sort();
+            }
+        }
+
+        private void RemoveColumn(DeviceDescription device)
+        {
+            int index = Columns.ToList().FindIndex(x => x.Device.UniqueId == device.UniqueId);
+            if (index >= 0)
+            {
+                // Remove Event Handlers
+                var column = Columns[index];
+                column.Clicked -= ColumnClicked;
+
+                Columns.RemoveAt(index);
             }
         }
 

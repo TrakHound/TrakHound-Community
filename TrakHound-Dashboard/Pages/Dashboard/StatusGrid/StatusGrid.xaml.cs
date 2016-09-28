@@ -7,15 +7,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 using TrakHound;
 using TrakHound.API.Users;
 using TrakHound.Configurations;
-using TrakHound.Plugins;
 using TrakHound.Plugins.Client;
 using TrakHound.Tools;
 
@@ -26,18 +22,12 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
     /// </summary>
     public partial class StatusGrid : UserControl, IClientPlugin
     {
-        public StatusGrid()
-        {
-            InitializeComponent();
-            root.DataContext = this;
-        }
 
         public string Title { get { return "Status Grid"; } }
 
         public string Description { get { return "View Basic Device Status in a Grid"; } }
 
-        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Grid_01.png")); } }
-
+        public Uri Image { get { return new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Grid_01.png"); } }
 
         public string ParentPlugin { get { return "Dashboard"; } }
 
@@ -51,10 +41,33 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
 
         public IPage Options { get; set; }
 
-        public event SendData_Handler SendData;
-
         private UserConfiguration userConfiguration;
 
+        private ObservableCollection<Controls.Item> _items;
+        public ObservableCollection<Controls.Item> Items
+        {
+            get
+            {
+                if (_items == null)
+                {
+                    _items = new ObservableCollection<Controls.Item>();
+                }
+                return _items;
+            }
+            set
+            {
+                _items = value;
+            }
+        }
+
+        public event SendData_Handler SendData;
+
+
+        public StatusGrid()
+        {
+            InitializeComponent();
+            root.DataContext = this;
+        }
 
         public void Initialize() { }
 
@@ -137,25 +150,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
             }
         }
 
-
-        ObservableCollection<Controls.Item> _items;
-        public ObservableCollection<Controls.Item> Items
-        {
-            get
-            {
-                if (_items == null)
-                {
-                    _items = new ObservableCollection<Controls.Item>();
-                }
-                return _items;
-            }
-            set
-            {
-                _items = value;
-            }
-        }
-
-
         void UpdateDevicesLoading(EventData data)
         {
             if (data != null)
@@ -181,13 +175,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
                 {
                     var device = (DeviceDescription)data.Data01;
 
-                    if (device != null && !Items.ToList().Exists(o => o.UniqueId == device.UniqueId))
-                    {
-                        var item = new Controls.Item(device, userConfiguration);
-                        item.Clicked += Item_Clicked;
-                        Items.Add(item);
-                        Items.Sort();
-                    }
+                    AddItem(device);
                 }
             }
         }
@@ -200,12 +188,14 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
                 {
                     var device = (DeviceDescription)data.Data01;
 
-                    int index = Items.ToList().FindIndex(x => x.UniqueId == device.UniqueId);
-                    if (index >= 0)
+                    if (device.Enabled)
                     {
-                        var item = Items[index];
-                        item.Device = device;
-                        Items.Sort();
+                        AddItem(device);
+                        UpdateItem(device);
+                    }
+                    else
+                    {
+                        RemoveItem(device);
                     }
                 }
             }
@@ -219,18 +209,46 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
                 {
                     var device = (DeviceDescription)data.Data01;
 
-                    int index = Items.ToList().FindIndex(x => x.UniqueId == device.UniqueId);
-                    if (index >= 0)
-                    {
-                        // Remove Event Handlers
-                        var item = Items[index];
-                        item.Clicked -= Item_Clicked;
-
-                        Items.RemoveAt(index);
-                    }
+                    RemoveItem(device);
                 }
             }
         }
+
+        private void AddItem(DeviceDescription device)
+        {
+            if (device != null && device.Enabled && !Items.ToList().Exists(o => o.Device.UniqueId == device.UniqueId))
+            {
+                var column = new Controls.Item(device, userConfiguration);
+                column.Clicked += Item_Clicked;
+                Items.Add(column);
+                Items.Sort();
+            }
+        }
+
+        private void UpdateItem(DeviceDescription device)
+        {
+            int index = Items.ToList().FindIndex(x => x.Device.UniqueId == device.UniqueId);
+            if (index >= 0)
+            {
+                var column = Items[index];
+                column.Device = device;
+                Items.Sort();
+            }
+        }
+
+        private void RemoveItem(DeviceDescription device)
+        {
+            int index = Items.ToList().FindIndex(x => x.Device.UniqueId == device.UniqueId);
+            if (index >= 0)
+            {
+                // Remove Event Handlers
+                var column = Items[index];
+                column.Clicked -= Item_Clicked;
+
+                Items.RemoveAt(index);
+            }
+        }
+
 
         private void Item_Clicked(Controls.Item item)
         {

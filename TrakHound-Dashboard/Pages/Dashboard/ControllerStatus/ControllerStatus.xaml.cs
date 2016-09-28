@@ -8,13 +8,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 using TrakHound;
 using TrakHound.API;
 using TrakHound.Configurations;
-using TrakHound.Plugins;
 using TrakHound.Plugins.Client;
 using TrakHound.Tools;
 
@@ -30,7 +27,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus
 
         public string Description { get { return "View Controller Status Variables for each Device"; } }
 
-        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Warning_01.png")); } }
+        public Uri Image { get { return new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Warning_01.png"); } }
 
         public string ParentPlugin { get { return "Dashboard"; } }
         public string ParentPluginCategory { get { return "Pages"; } }
@@ -42,6 +39,20 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus
         public List<IClientPlugin> Plugins { get; set; }
 
         public IPage Options { get; set; }
+
+        private ObservableCollection<Controls.Row> _rows;
+        public ObservableCollection<Controls.Row> Rows
+        {
+            get
+            {
+                if (_rows == null) _rows = new ObservableCollection<Controls.Row>();
+                return _rows;
+            }
+            set
+            {
+                _rows = value;
+            }
+        }
 
         public event SendData_Handler SendData;
 
@@ -145,12 +156,14 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus
                 {
                     var device = (DeviceDescription)data.Data01;
 
-                    int index = Rows.ToList().FindIndex(x => x.Device.UniqueId == device.UniqueId);
-                    if (index >= 0)
+                    if (device.Enabled)
                     {
-                        var row = Rows[index];
-                        row.Device = device;
-                        Rows.Sort();
+                        AddRow(device);
+                        UpdateRow(device);
+                    }
+                    else
+                    {
+                        RemoveRow(device);
                     }
                 }
             }
@@ -164,37 +177,14 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus
                 {
                     var device = (DeviceDescription)data.Data01;
 
-                    int index = Rows.ToList().FindIndex(x => x.Device.UniqueId == device.UniqueId);
-                    if (index >= 0)
-                    {
-                        // Remove Event Handlers
-                        var row = Rows[index];
-                        row.Clicked -= Row_Clicked;
-
-                        Rows.RemoveAt(index);
-                    }
+                    RemoveRow(device);
                 }
-            }
-        }
-
-
-        ObservableCollection<Controls.Row> _rows;
-        public ObservableCollection<Controls.Row> Rows
-        {
-            get
-            {
-                if (_rows == null) _rows = new ObservableCollection<Controls.Row>();
-                return _rows;
-            }
-            set
-            {
-                _rows = value;
             }
         }
 
         private void AddRow(DeviceDescription device)
         {
-            if (device != null && !Rows.ToList().Exists(o => o.Device.UniqueId == device.UniqueId))
+            if (device != null && device.Enabled && !Rows.ToList().Exists(o => o.Device.UniqueId == device.UniqueId))
             {
                 var row = new Controls.Row(device);
                 row.Clicked += Row_Clicked;
@@ -203,14 +193,27 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus
             }
         }
 
-        private void AddRow(DeviceDescription device, int index)
+        private void UpdateRow(DeviceDescription device)
         {
-            if (device != null && !Rows.ToList().Exists(o => o.Device.UniqueId == device.UniqueId))
+            int index = Rows.ToList().FindIndex(x => x.Device.UniqueId == device.UniqueId);
+            if (index >= 0)
             {
-                var row = new Controls.Row(device);
-                row.Clicked += Row_Clicked;
-                Rows.Insert(index, row);
+                var column = Rows[index];
+                column.Device = device;
                 Rows.Sort();
+            }
+        }
+
+        private void RemoveRow(DeviceDescription device)
+        {
+            int index = Rows.ToList().FindIndex(x => x.Device.UniqueId == device.UniqueId);
+            if (index >= 0)
+            {
+                // Remove Event Handlers
+                var row = Rows[index];
+                row.Clicked -= Row_Clicked;
+
+                Rows.RemoveAt(index);
             }
         }
 

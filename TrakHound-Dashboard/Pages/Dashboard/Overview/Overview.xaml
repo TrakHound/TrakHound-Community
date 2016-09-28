@@ -6,8 +6,7 @@
              xmlns:local="clr-namespace:TrakHound_Dashboard.Pages.Dashboard.Overview"
              mc:Ignorable="d" 
              
-             SizeChanged="UserControl_SizeChanged"
-             
+             SizeChanged="UserControl_SizeChanged"          
              >
 
     <UserControl.Resources>

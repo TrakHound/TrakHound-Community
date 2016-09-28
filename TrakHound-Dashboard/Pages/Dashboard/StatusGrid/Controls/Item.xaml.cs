@@ -502,11 +502,11 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
                             {
                                 if (result.PixelWidth > result.PixelHeight)
                                 {
-                                    result = Image_Functions.SetImageSize(result, 300);
+                                    result = TrakHound_UI.Functions.Images.SetImageSize(result, 300);
                                 }
                                 else
                                 {
-                                    result = Image_Functions.SetImageSize(result, 0, 80);
+                                    result = TrakHound_UI.Functions.Images.SetImageSize(result, 0, 80);
                                 }
 
                                 result.Freeze();
@@ -564,11 +564,11 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
                             {
                                 if (result.PixelWidth > result.PixelHeight)
                                 {
-                                    result = Image_Functions.SetImageSize(result, 300);
+                                    result = TrakHound_UI.Functions.Images.SetImageSize(result, 300);
                                 }
                                 else
                                 {
-                                    result = Image_Functions.SetImageSize(result, 0, 150);
+                                    result = TrakHound_UI.Functions.Images.SetImageSize(result, 0, 150);
                                 }
 
                                 result.Freeze();
@@ -595,12 +595,12 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
         {
             if (info != null)
             {
-                EmergencyStop = FormatValue(info.EmergencyStop);
-                ControllerMode = FormatValue(info.ControllerMode);
-                ExecutionMode = FormatValue(info.ExecutionMode);
+                if (!string.IsNullOrEmpty(info.EmergencyStop)) EmergencyStop = info.EmergencyStop;
+                if (!string.IsNullOrEmpty(info.ControllerMode)) ControllerMode = info.ControllerMode;
+                if (!string.IsNullOrEmpty(info.ExecutionMode)) ExecutionMode = info.ExecutionMode;
                 Program = info.ProgramName;
-                SystemStatus = FormatValue(info.SystemStatus);
-                SystemMessage = FormatValue(info.SystemMessage);
+                SystemStatus = info.SystemStatus;
+                SystemMessage = info.SystemMessage;
             }
         }
 
@@ -673,17 +673,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
             }
         }
 
-
-        private static string FormatValue(string s)
-        {
-            return s;
-
-            //if (string.IsNullOrEmpty(s)) return null;
-
-            //string o = s.Replace('_', ' ');
-
-            //return String_Functions.UppercaseFirst(o);
-        }
 
         public delegate void Clicked_Handler(Item item);
         public event Clicked_Handler Clicked;
