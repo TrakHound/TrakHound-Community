@@ -35,7 +35,7 @@
                     <ImageBrush x:Key="Production_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Cycle_01.png" />
                     <ImageBrush x:Key="Setup_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Carrot_Arrow_Up_01.png" />
                     <ImageBrush x:Key="Teardown_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Carrot_Arrow_Down_01.png" />
-                    <ImageBrush x:Key="Maintenance_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/options_gear_30px.png" />
+                    <ImageBrush x:Key="Maintenance_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Options_01.png" />
                     <ImageBrush x:Key="ProcessDevelopment_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Lab_01.png" />
 
                     <!--Controller Mode Icons-->

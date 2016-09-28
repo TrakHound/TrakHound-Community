@@ -652,7 +652,7 @@
                             <!--Options-->
                             <ui:Button Clicked="Options_Clicked">
                                 <ui:Button.ButtonContent>
-                                    <menus:MenuItem Text="Options" Image="Resources/options_gear_30px.png"/>
+                                    <menus:MenuItem Text="Options" Image="Resources/Options_01.png"/>
                                 </ui:Button.ButtonContent>
                             </ui:Button>
 

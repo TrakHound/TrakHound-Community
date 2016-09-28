@@ -16,7 +16,7 @@ using TrakHound.API.Users;
 using TrakHound.Configurations;
 using TrakHound.Tools;
 using TrakHound_Dashboard.Controls;
-using TrakHound_Device_Manager;
+using TrakHound_Dashboard.Pages.DeviceManager;
 
 namespace TrakHound_Dashboard
 {
@@ -532,13 +532,13 @@ namespace TrakHound_Dashboard
 
         #region "Add Device"
 
-        public TrakHound_Device_Manager.AddDevice.Page addDevicePage;
+        public TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Page addDevicePage;
 
         public void DeviceManager_AddDevice_Initialize()
         {
             if (addDevicePage == null)
             {
-                addDevicePage = new TrakHound_Device_Manager.AddDevice.Page();
+                addDevicePage = new TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Page();
                 addDevicePage.ShowAutoDetect();
 
                 addDevicePage.DeviceListSelected += DeviceManager_AddDevice_DeviceListSelected;
@@ -642,7 +642,7 @@ namespace TrakHound_Dashboard
             {
                 optionsManager = new PageManager();
                 optionsManager.TabTitle = "Options";
-                optionsManager.TabImage = new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/options_gear_30px.png");
+                optionsManager.TabImage = new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Options_01.png");
                 optionsManager.AddPage(new Pages.Options.General.Page());
                 optionsManager.AddPage(new Pages.Options.API.Page());
                 optionsManager.AddPage(new Pages.Options.Logger.Page());
