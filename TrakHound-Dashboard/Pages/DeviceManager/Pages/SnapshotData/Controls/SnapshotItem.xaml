@@ -1,0 +1,111 @@
+﻿<UserControl x:Class="TrakHound_Dashboard.Pages.DeviceManager.Pages.SnapshotData.Controls.SnapshotItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:local="clr-namespace:TrakHound_Dashboard.Pages.DeviceManager.Pages.SnapshotData.Controls"
+             xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             >
+
+    <UserControl.Resources>
+
+        <Style TargetType="ui:Button">
+            <Setter Property="Foreground" Value="{StaticResource TrakHound_Blue}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Foreground" Value="{StaticResource TrakHound_LightBlue}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </UserControl.Resources>
+
+    <Border x:Name="root" CornerRadius="2" Background="Transparent">
+        <Border.Style>
+            <Style TargetType="Border">
+                <Setter Property="BorderBrush" Value="{StaticResource Border}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="true">
+                        <Setter Property="BorderBrush" Value="{StaticResource TrakHound_Blue}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+
+                <!--Name-->
+                <StackPanel Orientation="Horizontal">
+
+                    <TextBlock Text="Name" FontSize="12" Foreground="#888" Margin="10,0" VerticalAlignment="Center"/>
+
+                    <ui:TextBox Text="{Binding NameText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="name_TXT_TextChanged" Background="White" Padding="10,2" Margin="0,5" MinWidth="200"/>
+
+                </StackPanel>
+
+                <!--Type-->
+                <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+
+                    <TextBlock Text="Type" FontSize="12" Foreground="#888" Margin="10,0" VerticalAlignment="Center"/>
+
+                    <ComboBox Width="150" SelectedItem="{Binding SelectedType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="Type_SelectionChanged" Height="30" VerticalAlignment="Center">
+                        <ComboBox.Items>
+                            <sys:String>Collected</sys:String>
+                            <sys:String>Generated</sys:String>
+                            <sys:String>Variable</sys:String>
+                        </ComboBox.Items>
+                    </ComboBox>
+
+                </StackPanel>
+
+                <!--Data Link-->
+                <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+
+                    <TextBlock Text="Data Link" FontSize="12" Foreground="#888" Margin="10,0" VerticalAlignment="Center"/>
+
+                    <ComboBox x:Name="collectedlink_COMBO" MinWidth="200" Padding="20,0" SelectionChanged="Link_SelectionChanged">
+                        <ComboBox.Style>
+                            <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                                <Setter Property="ItemsSource" Value="{x:Null}"/>
+                                <Setter Property="SelectedValue" Value="{Binding SelectedLink}"/>
+                                <Setter Property="IsEditable" Value="True"/>
+                                <Setter Property="Height" Value="30"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedType}" Value="Generated">
+                                        <Setter Property="ItemsSource" Value="{Binding ParentPage.GeneratedEventItems}"/>
+                                        <Setter Property="DisplayMemberPath" Value="Name"/>
+                                        <Setter Property="SelectedValuePath" Value="Id"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SelectedType}" Value="Collected">
+                                        <Setter Property="ItemsSource" Value="{Binding ParentPage.CollectedItems}"/>
+                                        <Setter Property="DisplayMemberPath" Value="Display"/>
+                                        <Setter Property="SelectedValuePath" Value="Id"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ComboBox.Style>
+                    </ComboBox>
+
+                </StackPanel>
+
+            </StackPanel>
+
+            <!--Remove Button-->
+            <ui:Button Grid.Column="1" Image="/TrakHound-Dashboard;component/Resources/X_01.png" Cursor="Hand" Margin="10" Clicked="Removed_Clicked"/>
+
+        </Grid>
+
+    </Border>
+
+</UserControl>

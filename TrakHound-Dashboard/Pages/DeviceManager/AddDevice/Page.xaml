@@ -1,0 +1,104 @@
+﻿<!--Copyright (c) 2016 Feenux LLC, All Rights Reserved.-->
+
+<!--This file is subject to the terms and conditions defined in-->
+<!--file 'LICENSE.txt', which is part of this source code package.-->
+
+<UserControl x:Class="TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Page"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:local="clr-namespace:TrakHound_Dashboard.Pages.DeviceManager.AddDevice"
+             xmlns:controls="clr-namespace:TrakHound_Dashboard.Pages.DeviceManager.Controls"
+             xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
+             
+             mc:Ignorable="d" 
+             d:DesignWidth="600"
+             >
+
+    <Grid x:Name="root">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!--Navigation Panel-->
+        <StackPanel HorizontalAlignment="Center">
+            <StackPanel.Resources>
+                <Style TargetType="ui:ListButton" BasedOn="{StaticResource {x:Type ui:ListButton}}">
+                    <Setter Property="MinWidth" Value="100"/>
+                </Style>
+            </StackPanel.Resources>
+
+            <!--Auto Detect-->
+            <ui:ListButton Text="Auto Detect" Image="/TrakHound-Dashboard;component/Resources/Options_01.png" Selected="AutoDetect_Clicked" IsSelected="{Binding AutoDetectSelected}"/>
+
+            <!--Manual-->
+            <ui:ListButton Text="Manual" Image="/TrakHound-Dashboard;component/Resources/Edit_02.png" Selected="Manual_Clicked" IsSelected="{Binding ManualSelected}"/>
+
+            <!--Load From File-->
+            <ui:ListButton Text="Load From File" Image="/TrakHound-Dashboard;component/Resources/List_01.png" Selected="LoadFromFile_Clicked" IsSelected="{Binding LoadFromFileSelected}"/>
+
+        </StackPanel>
+
+        <Border Grid.Column="1" BorderBrush="{StaticResource Border}" BorderThickness="1,0,0,0">
+
+            <Grid Background="{StaticResource Background}" >
+
+                <Grid Margin="40,0,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Margin="0,20">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,10">
+
+                            <!--Image-->
+                            <Grid Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Height="25" VerticalAlignment="Center" Margin="0,0,20,0">
+                                <Grid.Resources>
+                                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding CurrentPage.Image}" />
+                                </Grid.Resources>
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                        <Setter Property="Background" Value="{StaticResource Foreground}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding CurrentPage.Image}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                            </Grid>
+
+                            <!--Page Name-->
+                            <TextBlock Text="{Binding CurrentPage.Title}" Foreground="{StaticResource Text}" FontSize="25" VerticalAlignment="Center"/>
+
+                        </StackPanel>
+
+                        <Rectangle Grid.Row="1" Fill="{StaticResource Border}" Height="0.5" Margin="0,5,0,0"/>
+
+                    </Grid>
+
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="auto" >
+
+                        <ContentControl Content="{Binding CurrentPage}" Margin="0,0,0,50"/>
+
+                    </ScrollViewer>
+
+                </Grid>
+
+            </Grid>
+
+        </Border>
+
+    </Grid>
+
+</UserControl>

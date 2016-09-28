@@ -45,6 +45,10 @@
     <StartupObject>TrakHound_Dashboard.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MTConnect.NET, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\MTConnect.NET.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -106,6 +110,89 @@
     </Compile>
     <Compile Include="Pages\DeviceDetails\HourData.cs" />
     <Compile Include="Pages\DeviceDetails\Plugin.cs" />
+    <Compile Include="Pages\DeviceManager\AddDevice\DeviceInfo.cs" />
+    <Compile Include="Pages\DeviceManager\AddDevice\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DeviceManager\AddDevice\Pages\AutoDetect.xaml.cs">
+      <DependentUpon>AutoDetect.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DeviceManager\AddDevice\Pages\LoadFromFile.xaml.cs">
+      <DependentUpon>LoadFromFile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DeviceManager\AddDevice\Pages\Manual.xaml.cs">
+      <DependentUpon>Manual.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DeviceManager\Controls\DataGrid Controls.cs" />
+    <Compile Include="Pages\DeviceManager\DeviceList.xaml.cs">
+      <DependentUpon>DeviceList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DeviceManager\EditPage.xaml.cs">
+      <DependentUpon>EditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DeviceManager\Global.cs" />
+    <Compile Include="Pages\DeviceManager\Pages\Cycles\Controls\OverrideLinkItem.xaml.cs">
+      <DependentUpon>OverrideLinkItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DeviceManager\Pages\Cycles\Controls\ProductionTypeItem.xaml.cs">
+      <DependentUpon>ProductionTypeItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DeviceManager\Pages\Cycles\Info.cs" />
+    <Compile Include="Pages\DeviceManager\Pages\Cycles\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DeviceManager\Pages\Description\Info.cs" />
+    <Compile Include="Pages\DeviceManager\Pages\Description\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DeviceManager\Pages\GeneratedEvents\Controls\CaptureItem.xaml.cs">
+      <DependentUpon>CaptureItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DeviceManager\Pages\GeneratedEvents\Controls\Default.xaml.cs">
+      <DependentUpon>Default.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DeviceManager\Pages\GeneratedEvents\Controls\Event.xaml.cs">
+      <DependentUpon>Event.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DeviceManager\Pages\GeneratedEvents\Controls\EventButton.xaml.cs">
+      <DependentUpon>EventButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DeviceManager\Pages\GeneratedEvents\Controls\MultiTrigger.xaml.cs">
+      <DependentUpon>MultiTrigger.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DeviceManager\Pages\GeneratedEvents\Controls\Trigger.xaml.cs">
+      <DependentUpon>Trigger.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DeviceManager\Pages\GeneratedEvents\Controls\Value.xaml.cs">
+      <DependentUpon>Value.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DeviceManager\Pages\GeneratedEvents\Info.cs" />
+    <Compile Include="Pages\DeviceManager\Pages\GeneratedEvents\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DeviceManager\Pages\InstanceData\Controls\CheckBox.cs" />
+    <Compile Include="Pages\DeviceManager\Pages\InstanceData\Info.cs" />
+    <Compile Include="Pages\DeviceManager\Pages\InstanceData\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
+    <None Include="Pages\DeviceManager\Pages\MTConnect\Controls\MessageItem.xaml.cs">
+      <DependentUpon>MessageItem.xaml</DependentUpon>
+    </None>
+    <Compile Include="Pages\DeviceManager\Pages\MTConnect\Info.cs" />
+    <Compile Include="Pages\DeviceManager\Pages\MTConnect\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DeviceManager\Pages\Parts\Info.cs" />
+    <Compile Include="Pages\DeviceManager\Pages\Parts\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DeviceManager\Pages\SnapshotData\Controls\SnapshotItem.xaml.cs">
+      <DependentUpon>SnapshotItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DeviceManager\Pages\SnapshotData\Info.cs" />
+    <Compile Include="Pages\DeviceManager\Pages\SnapshotData\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -162,6 +249,11 @@
     <Compile Include="Pages\Dashboard\StatusData\StatusData.cs" />
     <Compile Include="Pages\Options\API\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="User\Login.cs" />
     <Compile Include="User\Logout.cs" />
@@ -234,11 +326,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -246,6 +333,7 @@
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
@@ -402,6 +490,102 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Pages\DeviceManager\AddDevice\Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DeviceManager\AddDevice\Pages\AutoDetect.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DeviceManager\AddDevice\Pages\LoadFromFile.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DeviceManager\AddDevice\Pages\Manual.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DeviceManager\DeviceList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DeviceManager\EditPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DeviceManager\Pages\Cycles\Controls\OverrideLinkItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DeviceManager\Pages\Cycles\Controls\ProductionTypeItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DeviceManager\Pages\Cycles\Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DeviceManager\Pages\Description\Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DeviceManager\Pages\GeneratedEvents\Controls\CaptureItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DeviceManager\Pages\GeneratedEvents\Controls\Default.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DeviceManager\Pages\GeneratedEvents\Controls\Event.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DeviceManager\Pages\GeneratedEvents\Controls\EventButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DeviceManager\Pages\GeneratedEvents\Controls\MultiTrigger.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DeviceManager\Pages\GeneratedEvents\Controls\Trigger.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DeviceManager\Pages\GeneratedEvents\Controls\Value.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DeviceManager\Pages\GeneratedEvents\Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DeviceManager\Pages\InstanceData\Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DeviceManager\Pages\MTConnect\Controls\MessageItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DeviceManager\Pages\MTConnect\Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DeviceManager\Pages\Parts\Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DeviceManager\Pages\SnapshotData\Controls\SnapshotItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DeviceManager\Pages\SnapshotData\Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\Options\API\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -513,9 +697,6 @@
     <Resource Include="Resources\Minus_04.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\options_gear_30px.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\Pause_01.png" />
   </ItemGroup>
   <ItemGroup>
@@ -596,9 +777,9 @@
     <Resource Include="Resources\Help_01.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TrakHound-Device-Manager\TrakHound-Device-Manager.csproj">
-      <Project>{407fe117-e654-4380-ad91-cae17943e7fd}</Project>
-      <Name>TrakHound-Device-Manager</Name>
+    <ProjectReference Include="..\TrakHound-Server\TrakHound-Server.csproj">
+      <Project>{9fcdabec-b317-4375-ae19-f605d836801c}</Project>
+      <Name>TrakHound-Server</Name>
     </ProjectReference>
     <ProjectReference Include="..\TrakHound-UI\TrakHound-UI.csproj">
       <Project>{b4c046ff-4a7d-4059-aaf8-713059ccf0f3}</Project>
@@ -653,6 +834,36 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Grid_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Arrow_Down_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pages\DeviceManager\GeneratedEvents.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Arrow_Up_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Block_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Disk_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Group_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\MTConnect_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Timer_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Options_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\List_01.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

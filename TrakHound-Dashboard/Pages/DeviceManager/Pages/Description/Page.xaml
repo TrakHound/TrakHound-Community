@@ -1,0 +1,169 @@
+﻿<UserControl x:Class="TrakHound_Dashboard.Pages.DeviceManager.Pages.Description.Page"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             
+             xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--Title and Image-->
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+
+            <!--Image-->
+            <Grid Height="25" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,0,0" VerticalAlignment="Center">
+                <Grid.Resources>
+                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/About_01.png" />
+                </Grid.Resources>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                        <Setter Property="Background" Value="{StaticResource Foreground}"/>
+                    </Style>
+                </Grid.Style>
+            </Grid>
+
+            <TextBlock Text="Description" FontSize="25" Height="30" Foreground="{StaticResource Text}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+
+            <TextBlock Text="General Device Desciption Settings" FontSize="12" Foreground="{StaticResource Text_Light}" Margin="20,5" VerticalAlignment="Center"/>
+
+        </StackPanel>
+
+        <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Border}" Margin="0,15,0,0"/>
+
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--Values-->
+                <StackPanel HorizontalAlignment="Left" Width="400">
+                    <StackPanel.Resources>
+                        <Style TargetType="ui:TextBox">
+                            <Setter Property="Margin" Value="0,10"/>
+                            <Setter Property="Width" Value="400"/>
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <!--Device Description-->
+                    <ui:TextBox Text="{Binding DeviceDescription, Mode=TwoWay}" Title="Device Description" Instructions="Enter description of device" TextChanged="TXT_TextChanged">
+                        <ui:TextBox.HelpText>
+                            Used to record a general desciption of the device.
+                        For example: 5 Axis Mill, Horizontal Lathe, 3 Axis Mill, etc.
+                        </ui:TextBox.HelpText>
+                    </ui:TextBox>
+
+                    <!--Device Type-->
+                    <ui:TextBox Text="{Binding DeviceType, Mode=TwoWay}" Title="Device Type" Instructions="Enter device type" TextChanged="TXT_TextChanged" Width="200">
+                        <ui:TextBox.HelpText>
+                            Used to record the type of device.
+                        For example: CNC, Press, Conveyor, etc.
+                        </ui:TextBox.HelpText>
+                    </ui:TextBox>
+
+                    <!--Manufacturer-->
+                    <ui:TextBox Text="{Binding Manufacturer, Mode=TwoWay}" Title="Manufacturer" Instructions="Enter device manufacturer" TextChanged="TXT_TextChanged">
+                        <ui:TextBox.HelpText>
+                            Used to record the device's manufacturer.
+                        For example: Okuma, Mazak, Haas, etc.
+                        </ui:TextBox.HelpText>
+                    </ui:TextBox>
+
+                    <!--Device ID-->
+                    <ui:TextBox Text="{Binding DeviceId, Mode=TwoWay}" Title="Device Id" Instructions="Enter device id" TextChanged="TXT_TextChanged" Width="200">
+                        <ui:TextBox.HelpText>
+                            Used to create an ID for the device that is different than other devices with similar Manufacturer, Model, etc. 
+                        For example: 01, 02, A, B, C, etc.
+                        </ui:TextBox.HelpText>
+                    </ui:TextBox>
+
+                    <!--Model-->
+                    <ui:TextBox Text="{Binding Model, Mode=TwoWay}" Title="Model" Instructions="Enter device model" TextChanged="TXT_TextChanged">
+                        <ui:TextBox.HelpText>
+                            Used to record the device's model.
+                        </ui:TextBox.HelpText>
+                    </ui:TextBox>
+
+                    <!--Serial-->
+                    <ui:TextBox Text="{Binding Serial, Mode=TwoWay}" Title="Serial" Instructions="Enter device serial number" TextChanged="TXT_TextChanged">
+                        <ui:TextBox.HelpText>
+                            Used to record what the serial number for the device is. Can be used to help differentiate from other devices.
+                        </ui:TextBox.HelpText>
+                    </ui:TextBox>
+
+                    <!--Controller-->
+                    <ui:TextBox Text="{Binding Controller, Mode=TwoWay}" Title="Controller" Instructions="Enter device controller type" TextChanged="TXT_TextChanged">
+                        <ui:TextBox.HelpText>
+                            Used to record what type/brand of controller the device has.
+                        For example: Fanuc, Mazatrol, OPC, Siemens, etc.
+                        </ui:TextBox.HelpText>
+                    </ui:TextBox>
+
+                    <!--Company-->
+                    <ui:TextBox Text="{Binding Company, Mode=TwoWay}" Title="Company" Instructions="Enter company device is used by" TextChanged="TXT_TextChanged">
+                        <ui:TextBox.HelpText>
+                            Used to record the Company that this machine belongs to. 
+                        For example if TrakHound is used by a Machine Service Provider and monitors many different company's machines.
+                        </ui:TextBox.HelpText>
+                    </ui:TextBox>
+
+                    <!--Location-->
+                    <ui:TextBox Text="{Binding Location, Mode=TwoWay}" Title="Location" Example="Plant B or Cell 14" TextChanged="TXT_TextChanged">
+                        <ui:TextBox.HelpText>
+                            Used to record the a note about the physical location of the device
+                        </ui:TextBox.HelpText>
+                    </ui:TextBox>
+
+                </StackPanel>
+
+                <!--Images-->
+                <StackPanel Grid.Column="1" Margin="60,10,0,0">
+
+                    <!--Manufacturer Logo-->
+                    <ui:ImageBox Title="Manufacturer Logo" HelpText="Upload a logo"
+                                 Height="150" 
+                                 Width="200"
+                                 UploadClicked="ManufacturerLogo_UploadClicked" 
+                                 ClearClicked="ManufacturerLogo_ClearClicked"
+                                 Image="{Binding ManufacturerLogo}"
+                                 ImageSet="{Binding ManufacturerLogoSet}"
+                                 Loading="{Binding ManufacturerLogoLoading}"
+                                 LoadingText="{Binding ManufacturerLogoLoadingText}"
+                                 />
+
+                    <!--Device Image-->
+                    <ui:ImageBox Title="Device Image" HelpText="Upload an image"
+                                 Margin="0,10,0,0"
+                                 Height="200" 
+                                 Width="200"
+                                 UploadClicked="DeviceImage_UploadClicked" 
+                                 ClearClicked="DeviceImage_ClearClicked"
+                                 Image="{Binding DeviceImage}"
+                                 ImageSet="{Binding DeviceImageSet}"
+                                 Loading="{Binding DeviceImageLoading}"
+                                 LoadingText="{Binding DeviceImageLoadingText}"
+                                 />
+
+                </StackPanel>
+
+            </Grid>
+
+        </ScrollViewer>
+        
+    </Grid>
+
+</UserControl>

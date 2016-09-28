@@ -1,0 +1,68 @@
+﻿<UserControl x:Class="TrakHound_Dashboard.Pages.DeviceManager.Pages.GeneratedEvents.Controls.EventButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="30" d:DesignWidth="300">
+
+    <Grid FocusManager.IsFocusScope="False">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" FocusManager.IsFocusScope="False">
+
+            <StackPanel Orientation="Horizontal" FocusManager.IsFocusScope="False">
+
+                <!--Event Name-->
+                <Border BorderThickness="1" CornerRadius="1" Margin="5,5,0,5" MinWidth="120" FocusManager.IsFocusScope="False">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="BorderBrush" Value="#33ffffff"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsFocused, ElementName=eventname_TXT}" Value="true">
+                                    <Setter Property="BorderBrush" Value="{StaticResource TrakHound_DarkBlue}"/>
+                                    <Setter Property="Background" Value="White"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+
+                    <Grid Margin="10,0">
+
+                        <!--User Input-->
+                        <TextBox x:Name="eventname_TXT" Text="{Binding EventName}" TextChanged="EventName_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black">
+                            <TextBox.Style>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="TextAlignment" Value="Left"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsFocused, ElementName=eventname_TXT}" Value="true">
+                                            <Setter Property="Foreground" Value="#333"/>
+                                            <Setter Property="TextAlignment" Value="Center"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+
+                    </Grid>
+
+                </Border>
+
+            </StackPanel>
+
+        </StackPanel>
+        
+        <!--Remove-->
+        <ui:Button Grid.Column="1" Margin="5" Height="20" VerticalAlignment="Center" Image="/TrakHound-Dashboard;component/Resources/X_01.png" Clicked="Remove_Clicked" Style="{StaticResource Button_Opposite_Foreground}"/>
+
+    </Grid>
+    
+</UserControl>

@@ -177,5 +177,65 @@ namespace TrakHound_Dashboard.Properties {
                 this["UpdateSettings"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string AutoDetectStartAddress {
+            get {
+                return ((string)(this["AutoDetectStartAddress"]));
+            }
+            set {
+                this["AutoDetectStartAddress"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string AutoDetectEndAddress {
+            get {
+                return ((string)(this["AutoDetectEndAddress"]));
+            }
+            set {
+                this["AutoDetectEndAddress"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5000")]
+        public int AutoDetectStartPort {
+            get {
+                return ((int)(this["AutoDetectStartPort"]));
+            }
+            set {
+                this["AutoDetectStartPort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5020")]
+        public int AutoDetectEndPort {
+            get {
+                return ((int)(this["AutoDetectEndPort"]));
+            }
+            set {
+                this["AutoDetectEndPort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public int AutoDetectPingTimeout {
+            get {
+                return ((int)(this["AutoDetectPingTimeout"]));
+            }
+            set {
+                this["AutoDetectPingTimeout"] = value;
+            }
+        }
     }
 }

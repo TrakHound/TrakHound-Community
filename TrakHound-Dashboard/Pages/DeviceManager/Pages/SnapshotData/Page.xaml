@@ -1,0 +1,90 @@
+﻿<UserControl x:Class="TrakHound_Dashboard.Pages.DeviceManager.Pages.SnapshotData.Page"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TrakHound_Dashboard.Pages.DeviceManager.Pages.SnapshotData"
+             
+             xmlns:controls="clr-namespace:TrakHound_Dashboard.Pages.DeviceManager.Pages.SnapshotData.Controls"
+             xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
+             
+             mc:Ignorable="d" 
+             d:DesignWidth="600">
+
+    <Grid x:Name="root">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Margin="20">
+
+            <!--Title and Image-->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10" FocusManager.IsFocusScope="False">
+
+                <!--Image-->
+                <Grid Height="25" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,0,0" VerticalAlignment="Center">
+                    <Grid.Resources>
+                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Camera_01.png" />
+                    </Grid.Resources>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                            <Setter Property="Background" Value="{StaticResource Foreground}"/>
+                        </Style>
+                    </Grid.Style>
+                </Grid>
+
+                <TextBlock Text="Snapshot Data" FontSize="25" Foreground="{StaticResource Text}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+
+                <!--Description-->
+                <TextBlock FontSize="12" Foreground="{StaticResource Text_Light}" Margin="20,5" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center">
+                Snapshot data is a central table for current device data. 
+                </TextBlock>
+
+            </StackPanel>
+
+            <!--Add Item-->
+            <ui:Button Text="Add Item" Clicked="Add_Clicked" Style="{StaticResource Button_Accent_Background}" Height="35" HorizontalAlignment="Left" Margin="0,20,0,0" Image="/TrakHound-Dashboard;component/Resources/Add_01.png"/>
+
+        </StackPanel>
+
+        <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Border}" Margin="0,0,0,10" />
+
+        <Grid Grid.Row="2">
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+                <ItemsControl ItemsSource="{Binding SnapshotItems}" Margin="20">
+                    <ItemsControl.Resources>
+                        <Style TargetType="controls:SnapshotItem">
+                            <Setter Property="Margin" Value="0,0,0,10"/>
+                        </Style>
+                    </ItemsControl.Resources>
+                </ItemsControl>
+
+            </ScrollViewer>
+
+            <!--No Items Found-->
+            <TextBlock FontSize="18pt" Foreground="{StaticResource Text}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Snapshots.Count}" Value="0">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+                
+                No Snapshots are configured <LineBreak/>
+                Click the 'Add Item' button above
+            </TextBlock>
+
+        </Grid>
+
+    </Grid>
+
+</UserControl>
