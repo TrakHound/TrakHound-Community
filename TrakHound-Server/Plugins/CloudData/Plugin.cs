@@ -420,6 +420,7 @@ namespace TrakHound_Server.Plugins.CloudData
                         hourInfo.PlannedProductionTime = Math.Max(0, oeeData.PlannedProductionTime - storedOeeData.PlannedProductionTime);
                         hourInfo.OperatingTime = Math.Max(0, oeeData.OperatingTime - storedOeeData.OperatingTime);
                         hourInfo.IdealOperatingTime = Math.Max(0, oeeData.IdealOperatingTime - storedOeeData.IdealOperatingTime);
+
                         // Update in stored list
                         int i = storedOeeDatas.FindIndex(o => o.Start.Hour == oeeData.Start.Hour && o.CycleId == oeeData.CycleId && o.CycleInstanceId == oeeData.CycleInstanceId);
                         if (i >= 0) storedOeeDatas[i] = oeeData;
@@ -431,9 +432,6 @@ namespace TrakHound_Server.Plugins.CloudData
                 }
             }
         }
-
-        private int storedPartCount = 0;
-        private string storedPartCountHour = null;
 
         private void UpdatePartCount(EventData data)
         {
@@ -459,26 +457,17 @@ namespace TrakHound_Server.Plugins.CloudData
                             }
                             else
                             {
-                                if (info.Count != storedPartCount || storedPartCountHour != GetHourId(hourInfo.Date, hourInfo.Hour))
-                                {
-                                    // If Part Count is less than stored value then assume it has been reset and needs to be incremented
-                                    if (info.Count < storedPartCount) hourInfo.TotalPieces = info.Count;
-                                    else hourInfo.TotalPieces = info.Count - storedPartCount;
-
-                                    deviceInfo.AddHourInfo(hourInfo);
-
-                                    storedPartCount = info.Count;
-                                    storedPartCountHour = GetHourId(hourInfo.Date, hourInfo.Hour);
-                                }
-                            }                         
+                                hourInfo.TotalPieces = info.Count;
+                                deviceInfo.AddHourInfo(hourInfo);
+                            }
                         }
 
                         queue.Add(deviceInfo);
-                    } 
+                    }
                 }
             }
         }
-
+        
         private string GetHourId(string date, int hour)
         {
             return date + "_" + hour;
