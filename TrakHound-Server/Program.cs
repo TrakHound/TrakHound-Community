@@ -9,6 +9,7 @@ using System.Reflection;
 using System.ServiceProcess;
 
 using TrakHound;
+using TrakHound.API.Users;
 using TrakHound.Servers.DataProcessing;
 using TrakHound.Servers.DataStorage;
 using TrakHound.Tools;
@@ -17,14 +18,31 @@ namespace TrakHound_Server
 {
     static class Program
     {
+        static bool serverServiceWasRunning = false;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         /// 
         static void Main(string[] args)
         {
+            PrintHeader();
+
+            UpdateUserSettings();
+
             if (args.Length > 0)
             {
+                if (args.Length > 1)
+                {
+                    string authenticationParameter = args[1];
+                    switch (authenticationParameter)
+                    {
+                        case "login": SetServerCredentials(); break;
+
+                        case "logout": ClearServerCredentials(); break;
+                    }
+                }
+
                 string installParameter = args[0];
                 switch (installParameter)
                 {
@@ -78,9 +96,6 @@ namespace TrakHound_Server
             RestartServerService();
         }
 
-
-        static bool serverServiceWasRunning = false;
-
         private static void StartConsole()
         {
             // Check to see if Server Service is Running
@@ -93,6 +108,7 @@ namespace TrakHound_Server
             }
             else Console.WriteLine("Error :: Server Service Could Not Be Stopped :: Aborting Console");
         }
+
 
         public static void RestartServerService()
         {
@@ -134,5 +150,97 @@ namespace TrakHound_Server
             return result;
         }
 
+
+        private static void UpdateUserSettings()
+        {
+            if (Properties.Settings.Default.UpdateSettings)
+            {
+                Properties.Settings.Default.Upgrade();
+                Properties.Settings.Default.UpdateSettings = false;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+
+        private static void SetServerCredentials()
+        {
+            // Ask for Username input
+            Console.WriteLine("Enter Username:");
+            string username = Console.ReadLine();
+
+            // Ask for Password input
+            Console.WriteLine("Enter password:");
+            string password = "";
+            ConsoleKeyInfo info = Console.ReadKey(true);
+            while (info.Key != ConsoleKey.Enter)
+            {
+                if (info.Key != ConsoleKey.Backspace)
+                {
+                    password += info.KeyChar;
+                    info = Console.ReadKey(true);
+                    Console.Write("*");
+                }
+                else if (info.Key == ConsoleKey.Backspace)
+                {
+                    if (!string.IsNullOrEmpty(password))
+                    {
+                        password = password.Substring
+                        (0, password.Length - 1);
+                    }
+                    info = Console.ReadKey(true);
+                }
+            }
+
+            Console.WriteLine();
+
+            // Login using API
+            if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
+            {
+                Console.WriteLine("Logging " + username + " in...");
+
+                var userConfig = UserManagement.CreateTokenLogin(username, password, "TrakHound-Server-Console-Login");
+                if (userConfig != null) ServerCredentials.Create(userConfig);
+                else ServerCredentials.Remove();
+            }
+        }
+
+        private static void ClearServerCredentials()
+        {
+            ServerCredentials.Remove();
+        }
+
+
+        private static void PrintHeader()
+        {
+            Console.WriteLine("--------------------------------------------------");
+
+            var assembly = Assembly.GetExecutingAssembly();
+            var resourceName = "TrakHound_Server.Header.txt";
+
+            try
+            {
+                using (var stream = assembly.GetManifestResourceStream(resourceName))
+                using (var reader = new System.IO.StreamReader(stream))
+                {
+                    string header = reader.ReadToEnd();
+
+                    if (header.Contains("[v]")) header = header.Replace("[v]", GetVersion());
+
+                    Console.WriteLine(header);
+                }
+            }
+            catch (Exception ex) { }
+
+            Console.WriteLine("--------------------------------------------------");
+        }
+
+        private static string GetVersion()
+        {
+            // Build Information
+            var assembly = Assembly.GetExecutingAssembly();
+            Version version = assembly.GetName().Version;
+
+            return "v" + version.Major.ToString() + "." + version.Minor.ToString() + "." + version.Build.ToString() + "." + version.Revision.ToString();
+        }
     }
 }

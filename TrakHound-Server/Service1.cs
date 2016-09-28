@@ -22,6 +22,8 @@ namespace TrakHound_Server
         {
             InitializeComponent();
 
+            //UpdateUserSettings();
+
             server = new ProcessingServer();
             server.Login();
 
@@ -29,6 +31,15 @@ namespace TrakHound_Server
             dataServer.Start();
         }
 
+        //private void UpdateUserSettings()
+        //{
+        //    if (Properties.Settings.Default.UpdateSettings)
+        //    {
+        //        Properties.Settings.Default.Upgrade();
+        //        Properties.Settings.Default.UpdateSettings = false;
+        //        Properties.Settings.Default.Save();
+        //    }
+        //}
 
         #region "Service"
 
