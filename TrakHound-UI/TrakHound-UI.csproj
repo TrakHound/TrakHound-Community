@@ -100,6 +100,7 @@
     <Compile Include="Controls\Timeline\Tools\InertialScroll.cs" />
     <Compile Include="Controls\Timeline\Tools\TooltipServiceEx.cs" />
     <Compile Include="Controls\Timeline\Tools\Utilities.cs" />
+    <Compile Include="Converters\UppercaseFirst.cs" />
     <Compile Include="Extensions\ControlFocus.cs" />
     <Compile Include="Functions\Brushes.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -376,7 +377,10 @@
     <Resource Include="Resources\TrakHound_Logo_10_90px.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Converters\" />
+    <ProjectReference Include="..\TrakHound.NET\TrakHound.NET.csproj">
+      <Project>{0621db23-5405-4771-975a-b47dc4b19d6b}</Project>
+      <Name>TrakHound.NET</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
