@@ -6,8 +6,6 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 using TrakHound;
 
@@ -38,8 +36,7 @@ namespace TrakHound_Dashboard.Pages.About.Information
 
         public string Title { get { return "Information"; } }
 
-        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Dashboard;component/Pages/About/Information/Information_01.png")); } }
-
+        public Uri Image { get { return new Uri("pack://application:,,,/TrakHound-Dashboard;component/Pages/About/Information/Information_01.png"); } }
 
         public void Opened() { }
         public bool Opening() { return true; }

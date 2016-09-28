@@ -808,7 +808,7 @@
                 </StackPanel>
 
                 <!--Oee Analysis-->
-                <StackPanel Margin="0,20">
+                <StackPanel Margin="0,40">
 
                     <!--Section Title-->
                     <TextBlock Text="OEE Analysis" Style="{StaticResource Heading1}"/>

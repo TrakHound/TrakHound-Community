@@ -81,14 +81,14 @@ namespace TrakHound_Dashboard.Pages.Account
             DependencyProperty.Register("Title", typeof(string), typeof(Page), new PropertyMetadata(null));
 
 
-        public ImageSource Image
+        public Uri Image
         {
-            get { return (ImageSource)GetValue(ImageProperty); }
+            get { return (Uri)GetValue(ImageProperty); }
             set { SetValue(ImageProperty, value); }
         }
 
         public static readonly DependencyProperty ImageProperty =
-            DependencyProperty.Register("Image", typeof(ImageSource), typeof(Page), new PropertyMetadata(null));
+            DependencyProperty.Register("Image", typeof(Uri), typeof(Page), new PropertyMetadata(null));
 
 
         public void LoadUserConfiguration(UserConfiguration userConfig)
@@ -146,12 +146,12 @@ namespace TrakHound_Dashboard.Pages.Account
             if (userConfig != null)
             {
                 Title = "Edit Account";
-                Image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/blank_profile_01_sm.png"));
+                Image = new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/blank_profile_01_sm.png");
             }
             else
             {
                 Title = "Create Account";
-                Image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/AddUser_01.png"));
+                Image = new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/AddUser_01.png");
             }
         }
 
@@ -808,11 +808,11 @@ namespace TrakHound_Dashboard.Pages.Account
                     var img = TrakHound.API.Files.DownloadImage(userConfig, userConfig.ImageUrl);
                     if (img != null)
                     {
-                        System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
+                        var bmp = new System.Drawing.Bitmap(img);
 
                         IntPtr bmpPt = bmp.GetHbitmap();
                         BitmapSource bmpSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                        bmpSource = Image_Functions.SetImageSize(bmpSource, 200, 200);
+                        bmpSource = TrakHound_UI.Functions.Images.SetImageSize(bmpSource, 200, 200);
                         bmpSource.Freeze();
 
                         Dispatcher.BeginInvoke(new Action<BitmapSource>(LoadProfileImage_GUI), priority, new object[] { bmpSource });
@@ -866,11 +866,11 @@ namespace TrakHound_Dashboard.Pages.Account
                     profileImageFilename = imagePath;
                     profileImageChanged = true;
 
-                    img = TrakHound.Tools.Image_Functions.CropImageToCenter(img);
+                    img = Image_Functions.CropImageToCenter(img);
 
                     profileImage = img;
 
-                    ProfileImage = TrakHound.Tools.Image_Functions.SourceFromImage(img);
+                    ProfileImage = TrakHound_UI.Functions.Images.SourceFromImage(img);
 
                     if (ProfileImage != null) ProfileImageSet = true;
                     else ProfileImageSet = false;

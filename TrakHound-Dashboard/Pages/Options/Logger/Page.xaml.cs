@@ -7,13 +7,11 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 using TrakHound;
-using TrakHound.Tools;
 using TrakHound.Logging;
+using TrakHound.Tools;
 
 namespace TrakHound_Dashboard.Pages.Options.Logger
 {
@@ -33,8 +31,7 @@ namespace TrakHound_Dashboard.Pages.Options.Logger
 
         public string Title { get { return "Logs"; } }
 
-        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Dashboard;component/Pages/About/Information/Information_01.png")); } }
-
+        public Uri Image { get { return new Uri("pack://application:,,,/TrakHound-Dashboard;component/Pages/About/Information/Information_01.png"); } }
 
         public void Opened() { }
         public bool Opening() { return true; }

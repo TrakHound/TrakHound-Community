@@ -29,19 +29,16 @@ namespace TrakHound_Dashboard
 
         private const int DEFAULT_ANIMATION_FRAMERATE = 60;
 
-        //public const System.Windows.Threading.DispatcherPriority PRIORITY_BACKGROUND = System.Windows.Threading.DispatcherPriority.Background;
-        //public const System.Windows.Threading.DispatcherPriority PRIORITY_CONTEXT_IDLE = System.Windows.Threading.DispatcherPriority.ContextIdle;
-        //public const System.Windows.Threading.DispatcherPriority PRIORITY_APPLICATION_IDLE = System.Windows.Threading.DispatcherPriority.ApplicationIdle;
-
         public void init()
         {
+            UpdateUserSettings();
+
             // Set Unhandled Exception handler
             AppDomain.CurrentDomain.UnhandledException += currentDomain_UnhandledException;
 
             // Set Animation Framerate
             Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(Timeline), new FrameworkPropertyMetadata { DefaultValue = DEFAULT_ANIMATION_FRAMERATE });
 
-            //Log_Initialize();
             Splash_Initialize();
 
             Splash_UpdateStatus("...Initializing", 10);
@@ -73,9 +70,14 @@ namespace TrakHound_Dashboard
             ServerMonitor_Initialize();
         }
 
-        private void Main_Window_Loaded(object sender, RoutedEventArgs e)
+        private void UpdateUserSettings()
         {
-
+            if (Properties.Settings.Default.UpdateSettings)
+            {
+                Properties.Settings.Default.Upgrade();
+                Properties.Settings.Default.UpdateSettings = false;
+                Properties.Settings.Default.Save();
+            }
         }
 
         private void Main_Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

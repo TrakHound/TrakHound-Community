@@ -51,7 +51,9 @@ namespace TrakHound_Dashboard
         public void AddTab(IPage page, string name = null, ImageSource image = null, string tag = null)
         {
             string txt = page.Title;
-            ImageSource img = page.Image;
+
+            ImageSource img = null;
+            if (page.Image != null) img = new BitmapImage(page.Image);
 
             if (name != null) txt = name;
             if (image != null) img = image;
@@ -416,7 +418,10 @@ namespace TrakHound_Dashboard
                             var page = (IPage)data.Data02;
 
                             string title = page.Title;
-                            ImageSource img = page.Image;
+
+                            ImageSource img = null;
+                            if (page.Image != null) img = new BitmapImage(page.Image);
+
                             string tag = null;
 
                             if (data.Data03 != null) title = data.Data03.ToString();
@@ -467,7 +472,7 @@ namespace TrakHound_Dashboard
             {
                 aboutManager = new PageManager();
                 aboutManager.TabTitle = "About";
-                aboutManager.TabImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/About_01.png"));
+                aboutManager.TabImage = new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/About_01.png");
                 aboutManager.AddPage(new Pages.About.Information.Page());
                 aboutManager.AddPage(new Pages.About.License.Page());
             }
@@ -575,9 +580,12 @@ namespace TrakHound_Dashboard
             {
                 var page = new EditPage(CurrentUser, device.UniqueId);
 
+                ImageSource img = null;
+                if (page.Image != null) img = new BitmapImage(page.Image);
+
                 page.DeviceListSelected += DeviceManager_EditDevice_DeviceListSelected;
 
-                AddTab(page, title, page.Image, tag);
+                AddTab(page, title, img, tag);
             }
             else
             {
@@ -605,7 +613,7 @@ namespace TrakHound_Dashboard
 
                 accountManager = new PageManager();
                 accountManager.TabTitle = "Account Management";
-                accountManager.TabImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/blank_profile_01_sm.png"));
+                accountManager.TabImage = new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/blank_profile_01_sm.png");
                 accountManager.AddPage(accountpage);
             }
         }
@@ -634,7 +642,7 @@ namespace TrakHound_Dashboard
             {
                 optionsManager = new PageManager();
                 optionsManager.TabTitle = "Options";
-                optionsManager.TabImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/options_gear_30px.png"));
+                optionsManager.TabImage = new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/options_gear_30px.png");
                 optionsManager.AddPage(new Pages.Options.General.Page());
                 optionsManager.AddPage(new Pages.Options.API.Page());
                 optionsManager.AddPage(new Pages.Options.Logger.Page());

@@ -7,8 +7,6 @@ using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 using TrakHound;
 
@@ -33,8 +31,7 @@ namespace TrakHound_Dashboard.Pages.About.License
 
         public string Title { get { return "License"; } }
 
-        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Dashboard;component/Pages/About/License/Key_03.png")); } }
-
+        public Uri Image { get { return new Uri("pack://application:,,,/TrakHound-Dashboard;component/Pages/About/License/Key_03.png"); } }
 
         public void Opened() { }
         public bool Opening() { return true; }

@@ -7,27 +7,21 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-
 using System.Threading;
-
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.IO;
-
-using System.Globalization;
-
 
 using TrakHound;
 using TrakHound.API;
 using TrakHound.API.Users;
 using TrakHound.Configurations;
-using TrakHound.Plugins.Client;
-using TrakHound.Tools;
-
 using TrakHound.Logging;
+using TrakHound.Tools;
 
 namespace TrakHound_Dashboard.Pages.DeviceDetails
 {
@@ -44,7 +38,7 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
 
         public string Description { get { return null; } }
 
-        public ImageSource Image { get { return null; } }
+        public Uri Image { get { return null; } }
 
         public event SendData_Handler SendData;
 
@@ -54,31 +48,6 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
             get { return _userConfiguration; }
             set { _userConfiguration = value; }
         }
-
-
-        public DeviceDescription Device
-        {
-            get { return (DeviceDescription)GetValue(DeviceProperty); }
-            set
-            {
-                SetValue(DeviceProperty, value);
-
-                if (value != null)
-                {
-                    var device = value;
-
-                    // Load Device Logo
-                    if (!string.IsNullOrEmpty(device.Description.LogoUrl)) LoadDeviceLogo(device.Description.LogoUrl);
-
-                    // Load Device Image
-                    if (!string.IsNullOrEmpty(device.Description.ImageUrl)) LoadDeviceImage(device.Description.ImageUrl);
-                }
-            }
-        }
-
-        public static readonly DependencyProperty DeviceProperty =
-            DependencyProperty.Register("Device", typeof(DeviceDescription), typeof(Page), new PropertyMetadata(null));
-       
 
         public Page(DeviceDescription device, Data.DeviceInfo deviceInfo, UserConfiguration userConfig)
         {
@@ -450,6 +419,30 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
 
         public static readonly DependencyProperty ConnectedProperty =
             DependencyProperty.Register("Connected", typeof(bool), typeof(Page), new PropertyMetadata(false));
+
+
+        public DeviceDescription Device
+        {
+            get { return (DeviceDescription)GetValue(DeviceProperty); }
+            set
+            {
+                SetValue(DeviceProperty, value);
+
+                if (value != null)
+                {
+                    var device = value;
+
+                    // Load Device Logo
+                    if (!string.IsNullOrEmpty(device.Description.LogoUrl)) LoadDeviceLogo(device.Description.LogoUrl);
+
+                    // Load Device Image
+                    if (!string.IsNullOrEmpty(device.Description.ImageUrl)) LoadDeviceImage(device.Description.ImageUrl);
+                }
+            }
+        }
+
+        public static readonly DependencyProperty DeviceProperty =
+            DependencyProperty.Register("Device", typeof(DeviceDescription), typeof(Page), new PropertyMetadata(null));
 
 
         public string DeviceStatus
@@ -1345,11 +1338,11 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
                             {
                                 if (result.PixelWidth > result.PixelHeight)
                                 {
-                                    result = Image_Functions.SetImageSize(result, 300);
+                                    result = TrakHound_UI.Functions.Images.SetImageSize(result, 300);
                                 }
                                 else
                                 {
-                                    result = Image_Functions.SetImageSize(result, 0, 80);
+                                    result = TrakHound_UI.Functions.Images.SetImageSize(result, 0, 80);
                                 }
 
                                 result.Freeze();
@@ -1407,11 +1400,11 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
                             {
                                 if (result.PixelWidth > result.PixelHeight)
                                 {
-                                    result = Image_Functions.SetImageSize(result, 300);
+                                    result = TrakHound_UI.Functions.Images.SetImageSize(result, 300);
                                 }
                                 else
                                 {
-                                    result = Image_Functions.SetImageSize(result, 0, 150);
+                                    result = TrakHound_UI.Functions.Images.SetImageSize(result, 0, 150);
                                 }
 
                                 result.Freeze();

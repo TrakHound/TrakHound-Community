@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 using TrakHound;
 using TrakHound.API;
@@ -25,7 +24,7 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
 
         public string Description { get { return null; } }
 
-        public ImageSource Image { get { return null; } }
+        public Uri Image { get { return null; } }
 
         public string ParentPlugin { get { return null; } }
         public string ParentPluginCategory { get { return null; } }

@@ -129,51 +129,37 @@
       <DependentUpon>Segment.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Dashboard\OeeHourTimeline\HourData.cs" />
-    <Compile Include="Pages\Dashboard\OeeHourTimeline\Plugin.cs" />
     <Compile Include="Pages\Dashboard\OeeHourTimeline\OeeStatusTimeline.xaml.cs">
       <DependentUpon>OeeStatusTimeline.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Dashboard\OeeHourTimeline\Update Data.cs" />
     <Compile Include="Pages\Dashboard\DeviceStatusTimes\Controls\Row.xaml.cs">
       <DependentUpon>Row.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Dashboard\DeviceStatusTimes\Plugin.cs" />
     <Compile Include="Pages\Dashboard\DeviceStatusTimes\StatusTimes.xaml.cs">
       <DependentUpon>StatusTimes.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Dashboard\DeviceStatusTimes\Update Data.cs" />
     <Compile Include="Pages\Dashboard\OeeStatus\Controls\Row.xaml.cs">
       <DependentUpon>Row.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Dashboard\OeeStatus\OeeStatus.xaml.cs">
       <DependentUpon>OeeStatus.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Dashboard\OeeStatus\Plugin.cs" />
-    <Compile Include="Pages\Dashboard\OeeStatus\Update Data.cs" />
     <Compile Include="Pages\Dashboard\ProductionStatusTimes\Controls\Row.xaml.cs">
       <DependentUpon>Row.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Dashboard\ProductionStatusTimes\Plugin.cs" />
     <Compile Include="Pages\Dashboard\ProductionStatusTimes\StatusTimes.xaml.cs">
       <DependentUpon>StatusTimes.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Dashboard\ProductionStatusTimes\Update Data.cs" />
     <Compile Include="Pages\Dashboard\ProductionStatus\Controls\Row.xaml.cs">
       <DependentUpon>Row.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Dashboard\ProductionStatus\Plugin.cs" />
     <Compile Include="Pages\Dashboard\ProductionStatus\ProductionStatus.xaml.cs">
       <DependentUpon>ProductionStatus.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Dashboard\ProductionStatus\Update Data.cs" />
     <Compile Include="Pages\Dashboard\StatusData\OptionsPage.xaml.cs">
       <DependentUpon>OptionsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Dashboard\StatusData\Plugin.cs" />
     <Compile Include="Pages\Dashboard\StatusData\StatusData.cs" />
-    <None Include="Pages\Options\API\Controls\ServerItem.xaml.cs">
-      <DependentUpon>ServerItem.xaml</DependentUpon>
-    </None>
     <Compile Include="Pages\Options\API\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
@@ -189,9 +175,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\Developer Console\PopUp.xaml.cs">
+    <None Include="Controls\Developer Console\PopUp.xaml.cs">
       <DependentUpon>PopUp.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="Controls\Message Center\Message.xaml.cs">
       <DependentUpon>Message.xaml</DependentUpon>
     </Compile>
@@ -211,13 +197,7 @@
     <Compile Include="Controls\TabHeader.xaml.cs">
       <DependentUpon>TabHeader.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TabManager.xaml.cs">
-      <DependentUpon>TabManager.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\TH_ToolBarItem.xaml.cs">
-      <DependentUpon>TH_ToolBarItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MainWindow\Developer Console.cs" />
+    <None Include="MainWindow\Developer Console.cs" />
     <Compile Include="MainWindow\Devices.cs" />
     <Compile Include="MainWindow\Message Center.cs" />
     <Compile Include="MainWindow\Pages.cs" />
@@ -245,12 +225,12 @@
     <Compile Include="Pages\Options\Logger\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Options\Updates\Page.xaml.cs">
+    <None Include="Pages\Options\Updates\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Options\Updates\UpdateItem.xaml.cs">
+    </None>
+    <None Include="Pages\Options\Updates\UpdateItem.xaml.cs">
       <DependentUpon>UpdateItem.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -278,10 +258,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\Developer Console\PopUp.xaml">
+    <None Include="Controls\Developer Console\PopUp.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
+    </None>
     <Page Include="Controls\Message Center\Message.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -303,14 +283,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\TabHeader.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\TabManager.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\TH_ToolBarItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -430,10 +402,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <None Include="Pages\Options\API\Controls\ServerItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </None>
     <Page Include="Pages\Options\API\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -446,38 +414,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\Options\Updates\Page.xaml">
+    <None Include="Pages\Options\Updates\Page.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\Options\Updates\UpdateItem.xaml">
+    </None>
+    <None Include="Pages\Options\Updates\UpdateItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Styles\Colors.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\Dashboard_Dark.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\Dashboard_Light.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\Menus.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Styles\Splash.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Styles\Window.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
+    </None>
     <Page Include="Windows\Fullscreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

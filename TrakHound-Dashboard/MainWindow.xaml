@@ -9,18 +9,14 @@
         
         xmlns:local="clr-namespace:TrakHound_Dashboard"
         xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
-        xmlns:controls="clr-namespace:TrakHound_Dashboard.Controls"
-        
-        xmlns:devconsole="clr-namespace:TrakHound_Dashboard.Controls.Developer_Console"     
+        xmlns:controls="clr-namespace:TrakHound_Dashboard.Controls"          
         xmlns:message="clr-namespace:TrakHound_Dashboard.Controls.Message_Center"
         xmlns:notifications="clr-namespace:TrakHound_Dashboard.Notifications"      
         xmlns:menus="clr-namespace:TrakHound_Dashboard.Menus"
-
         xmlns:services="clr-namespace:TrakHound.Tools;assembly=TrakHound-NET"
         
         Title="TrakHound Dashboard"
         
-        Loaded="Main_Window_Loaded"
         Closing="Main_Window_Closing"
         Closed="Main_Window_Closed"
         
@@ -40,7 +36,8 @@
         PreviewKeyUp="Main_Window_PreviewKeyUp"
         AllowDrop="True"
         
-        Icon="Resources/TrakHound_Logo_Initials_10.ico" ScrollViewer.VerticalScrollBarVisibility="Disabled"
+        Icon="Resources/TrakHound_Logo_Initials_10.ico"
+        ScrollViewer.VerticalScrollBarVisibility="Disabled"
         
         Background="{StaticResource Background}"
         >
@@ -56,7 +53,7 @@
             <Setter Property="TextElement.FontFamily" Value="Fonts/#Alte Haas Grotesk"/>
         </Style>
 
-        <local:UppercaseConverter x:Key="uppercaseConverter"/>
+        <ui:UppercaseConverter x:Key="uppercaseConverter"/>
 
     </Window.Resources>
 
@@ -66,7 +63,7 @@
         <DockPanel>
 
             <!--Top Bar-->
-            <Grid DockPanel.Dock="Top" Grid.Row="0" Height="35">
+            <Grid DockPanel.Dock="Top" Height="35">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
@@ -187,7 +184,7 @@
             </Grid>
 
             <!--Status Bar-->
-            <Grid DockPanel.Dock="Bottom" Grid.Row="2" Height="25" Background="{StaticResource Background_Alternate}" >
+            <Grid DockPanel.Dock="Bottom" Height="25" Background="{StaticResource Background_Alternate}" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="auto" />
@@ -266,26 +263,16 @@
             </Grid>
 
             <!--Content-->
-            <Grid Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" MinHeight="200"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="{Binding DeveloperConsoleHeight, Mode=TwoWay}"/>
-                </Grid.RowDefinitions>
-
-                <!--Page Content Display-->
-                <ContentControl x:Name="CurrentPage_CONTENT" Grid.Row="0" Content="{Binding CurrentPage}" ScrollViewer.VerticalScrollBarVisibility="Disabled">
-                    <ContentControl.LayoutTransform>
-                        <TransformGroup>
-                            <ScaleTransform ScaleX="{Binding ZoomLevel}" ScaleY="{Binding ZoomLevel}"/>
-                            <SkewTransform/>
-                            <RotateTransform/>
-                            <TranslateTransform/>
-                        </TransformGroup>
-                    </ContentControl.LayoutTransform>
-                </ContentControl>
-
-            </Grid>
+            <ContentControl x:Name="CurrentPage_CONTENT" Grid.Row="0" Content="{Binding CurrentPage}" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                <ContentControl.LayoutTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="{Binding ZoomLevel}" ScaleY="{Binding ZoomLevel}"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </ContentControl.LayoutTransform>
+            </ContentControl>
 
         </DockPanel>
 
@@ -328,7 +315,15 @@
         </Border>
 
         <!--Navigation Menu Panel-->
-        <Border Width="300" Background="{StaticResource Navigation_Menu_Background}" HorizontalAlignment="Left">
+        <Border Width="300" HorizontalAlignment="Left">
+            <Border.Background>
+                <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                    <RadialGradientBrush.GradientStops>
+                        <GradientStop Color="#40a0ff" Offset="0.3" />
+                        <GradientStop Color="#0080ff" Offset="1" />
+                    </RadialGradientBrush.GradientStops>
+                </RadialGradientBrush>
+            </Border.Background>
             <Border.RenderTransform>
                 <TranslateTransform X="-320"/>
             </Border.RenderTransform>

@@ -38,7 +38,8 @@ namespace TrakHound_Dashboard.Pages.Options.Updates
 
         public string Title { get { return "Updates"; } }
 
-        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Update_01.png")); } }
+        public Uri Image { get { return new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Update_01.png"); } }
+        //public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Update_01.png")); } }
 
 
         public void Opened() { }

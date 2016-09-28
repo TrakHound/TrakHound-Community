@@ -15,7 +15,7 @@
 
     <UserControl.Resources>
 
-        <main:UppercaseConverter x:Key="uppercaseConverter"/>
+        <ui:UppercaseConverter x:Key="uppercaseConverter"/>
 
     </UserControl.Resources>
 

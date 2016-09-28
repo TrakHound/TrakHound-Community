@@ -4,11 +4,9 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Collections.ObjectModel;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 using TrakHound;
 
@@ -28,16 +26,13 @@ namespace TrakHound_Dashboard.Pages.Options.General
             Themes.Add("Dark");
 
             mw = Application.Current.MainWindow as MainWindow;
-
-            //ChangeTheme(Properties.Settings.Default.SavedTheme);
-            //SelectedTheme = Properties.Settings.Default.SavedTheme;
         }
 
         MainWindow mw;
 
         public string Title { get { return "General"; } }
 
-        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Home_02.png")); } }
+        public Uri Image { get { return new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Home_02.png"); } }
 
         public void Opened() { }
         public bool Opening() { return true; }
@@ -131,30 +126,9 @@ namespace TrakHound_Dashboard.Pages.Options.General
 
         private void SaveTheme(string key)
         {
-            //switch (key)
-            //{
-            //    case "Dark":
-
-            //        Properties.Settings.Default.SavedTheme = new Uri("/TrakHound-UI;component/Styles/Theme_Dark.xaml", UriKind.RelativeOrAbsolute).ToString();
-
-            //        break;
-
-            //    default:
-
-            //        Properties.Settings.Default.SavedTheme = new Uri("/TrakHound-UI;component/Styles/Theme_Light.xaml", UriKind.RelativeOrAbsolute).ToString();
-
-            //        break;
-            //}
-
             Properties.Settings.Default.SavedTheme = key;
             Properties.Settings.Default.Save();
         }
-
-        //public void SetTheme(Uri uri)
-        //{
-        //    Properties.Settings.Default.SavedTheme = uri.ToString();
-        //    Properties.Settings.Default.Save();
-        //}
 
     }
 }

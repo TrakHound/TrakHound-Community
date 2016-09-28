@@ -6,9 +6,6 @@
 using System.Windows;
 using System.Windows.Input;
 
-using TrakHound;
-using TrakHound.Plugins;
-
 namespace TrakHound_Dashboard
 {
     public partial class MainWindow
@@ -34,9 +31,6 @@ namespace TrakHound_Dashboard
             {
                 ChangePage_Forward();
             }
-
-            // Toggle Developer Console with F12
-            //if (key == Key.F12) developerConsole.Shown = !developerConsole.Shown;
         }
 
         private void Main_Window_PreviewMouseDown(object sender, MouseButtonEventArgs e)

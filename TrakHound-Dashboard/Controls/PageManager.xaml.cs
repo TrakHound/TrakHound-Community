@@ -3,11 +3,11 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Media;
 
 using TrakHound;
 using TrakHound_UI;
@@ -28,7 +28,7 @@ namespace TrakHound_Dashboard.Controls
 
         public string Title { get { return TabTitle; } }
 
-        public ImageSource Image { get { return TabImage; } }
+        public Uri Image { get { return TabImage; } }
 
 
         public void Opened() { }
@@ -44,7 +44,7 @@ namespace TrakHound_Dashboard.Controls
 
         public string TabTitle { get; set; }
 
-        public ImageSource TabImage { get; set; }
+        public Uri TabImage { get; set; }
 
 
         private ObservableCollection<ListButton> pages;
@@ -75,7 +75,7 @@ namespace TrakHound_Dashboard.Controls
 
         public void AddPage(IPage page)
         {
-            ListButton lb = new ListButton();
+            var lb = new ListButton();
 
             // Bind ListButton.Text to PageName property
             var pageImageBinding = new Binding();

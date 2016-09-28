@@ -11,8 +11,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 
-using TrakHound.Tools;
-
 namespace TrakHound_Dashboard.Controls
 {
     /// <summary>
@@ -87,13 +85,16 @@ namespace TrakHound_Dashboard.Controls
         {
             if (e.ChangedButton == MouseButton.Left)
             {
-                if (Clicked != null) Clicked(this);
+                Clicked?.Invoke(this);
             }
         }
 
         private void TabItemClose_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (CloseClicked != null) CloseClicked(this);
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                CloseClicked?.Invoke(this);
+            }
         }
 
         public bool Closing
@@ -240,7 +241,7 @@ namespace TrakHound_Dashboard.Controls
         private void SpaceClosingAnimation_Completed(object sender, EventArgs e)
         {
             var args = new EventArgs();
-            if (Closed != null) Closed(this, args);
+            Closed?.Invoke(this, args);
         }
 
         #endregion

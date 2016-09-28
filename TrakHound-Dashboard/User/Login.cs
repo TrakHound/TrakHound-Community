@@ -86,8 +86,6 @@ namespace TrakHound_Dashboard
 
 
                 }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
-
-                //Dispatcher.BeginInvoke(new Action<UserConfiguration>(Login_Finished), UI_Functions.PRIORITY_BACKGROUND, new object[] { userConfig });
             }
         }
 
@@ -119,8 +117,8 @@ namespace TrakHound_Dashboard
         // Set Login File UserConfiguration
         private void Login(UserConfiguration userConfig)
         {
-            if (userConfig != null) UserLoginFile.Create(userConfig);
-            else UserLoginFile.Remove();
+            if (userConfig != null) ServerCredentials.Create(userConfig);
+            else ServerCredentials.Remove();
         }
 
     }

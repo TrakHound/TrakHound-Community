@@ -91,11 +91,11 @@ namespace TrakHound_Dashboard
                         IntPtr bmpPt = bmp.GetHbitmap();
 
                         BitmapSource bmpSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                        bmpSource = Image_Functions.SetImageSize(bmpSource, 75, 75);
+                        bmpSource = TrakHound_UI.Functions.Images.SetImageSize(bmpSource, 75, 75);
                         bmpSource.Freeze();
 
                         BitmapSource bmpSource_sm = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                        bmpSource_sm = Image_Functions.SetImageSize(bmpSource_sm, 30, 30);
+                        bmpSource_sm = TrakHound_UI.Functions.Images.SetImageSize(bmpSource_sm, 30, 30);
                         bmpSource_sm.Freeze();
 
                         Dispatcher.BeginInvoke(new Action<BitmapSource>(LoadProfileImage_GUI), UI_Functions.PRIORITY_BACKGROUND, new object[] { bmpSource });
