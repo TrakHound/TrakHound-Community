@@ -17,7 +17,10 @@ namespace TrakHound.API
         public class DeviceInfo
         {
             [JsonConstructor]
-            public DeviceInfo() { }
+            public DeviceInfo()
+            {
+                Data = new List<Row>();
+            }
 
             public DeviceInfo(string uniqueId, DataTable table)
             {
