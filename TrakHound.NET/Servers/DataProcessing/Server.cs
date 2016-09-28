@@ -20,7 +20,7 @@ namespace TrakHound.Servers.DataProcessing
     {
         public ProcessingServer()
         {
-            PrintHeader();
+            //PrintHeader();
 
             // Set Logger Application identifier name
             Logger.AppicationName = "TrakHound-Server";
@@ -35,7 +35,7 @@ namespace TrakHound.Servers.DataProcessing
             LoadServerPlugins();
 
             // Start User login file monitor
-            var loginMonitor = new UserLoginFile.Monitor();
+            var loginMonitor = new ServerCredentials.Monitor();
             loginMonitor.UserChanged += LoginMonitor_UserChanged;
 
             // Start API Configuration file monitor
@@ -73,7 +73,7 @@ namespace TrakHound.Servers.DataProcessing
             Stopped?.Invoke();
         }
 
-        private void LoginMonitor_UserChanged(UserLoginFile.LoginData loginData)
+        private void LoginMonitor_UserChanged(ServerCredentials.LoginData loginData)
         {
             Login(loginData);
         }

@@ -4,7 +4,6 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using TrakHound.API.Users;
-using TrakHound.Configurations;
 using TrakHound.Logging;
 using TrakHound.Tools;
 
@@ -25,24 +24,23 @@ namespace TrakHound.Servers.DataProcessing
             }
         }
 
-        //public Database_Settings UserDatabaseSettings { get; set; }
-
         public delegate void CurrentUserChanged_Handler(UserConfiguration userConfig);
         public event CurrentUserChanged_Handler CurrentUserChanged;
 
         void SendCurrentUserChanged(UserConfiguration userConfig)
         {
-            if (CurrentUserChanged != null) CurrentUserChanged(userConfig);  
+            CurrentUserChanged?.Invoke(userConfig);  
         }
 
 
         public void Login()
         {
-            UserLoginFile.LoginData loginData = UserLoginFile.Read();
+            //UserLoginFile.LoginData loginData = UserLoginFile.Read();
+            var loginData = ServerCredentials.Read();
             Login(loginData);
         }
 
-        public void Login(UserLoginFile.LoginData loginData)
+        public void Login(ServerCredentials.LoginData loginData)
         {
             UserConfiguration userConfig = null;
 

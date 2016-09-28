@@ -101,8 +101,6 @@ namespace TrakHound.API
                         if (response == "No Devices Found") return null;
                         else return JSON.ToType<List<CheckInfo>>(response);
                     }
-
-                    //return JSON.ToType<List<CheckInfo>>(response);
                 }
             }
 

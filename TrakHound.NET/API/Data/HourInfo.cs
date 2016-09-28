@@ -127,11 +127,6 @@ namespace TrakHound.API
                 // Used 'lock' since it sometimes threw a 'source array was not long enough' exception
                 var _hours = hours.ToList();
 
-                //List<HourInfo> _hours = null;
-
-                //// Used 'lock' since it sometimes threw a 'source array was not long enough' exception
-                //lock (hours) { _hours = hours.ToList(); }
-
                 // Clean list of any null HourInfos
                 _hours = _hours.FindAll(o => o != null);
 

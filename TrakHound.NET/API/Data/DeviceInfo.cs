@@ -187,49 +187,56 @@ namespace TrakHound.API
                         var newHours = new List<HourInfo>();
 
                         var _hours = Hours.ToList();
+                        if (_hours != null) _hours = _hours.FindAll(o => o != null); // Clean list of any null HourInfos
                         if (_hours != null)
                         {
-                            // Clean list of any null HourInfos
-                            _hours = _hours.FindAll(o => o != null);
-
                             var distinctDates = _hours.Select(o => o.Date).Distinct();
-                            foreach (string distinctDate in distinctDates.ToList())
+                            if (distinctDates != null)
                             {
-                                var sameDate = _hours.FindAll(o => o.Date == distinctDate);
-
-                                var distinctHours = sameDate.Select(o => o.Hour).Distinct();
-                                foreach (int distinctHour in distinctHours.ToList())
+                                foreach (string distinctDate in distinctDates.ToList())
                                 {
-                                    var hourInfo = new HourInfo();
-                                    hourInfo.Date = distinctDate;
-                                    hourInfo.Hour = distinctHour;
+                                    var sameDate = _hours.FindAll(o => o.Date == distinctDate);
 
-                                    var sameHours = _hours.FindAll(o => o.Hour == distinctHour);
-                                    foreach (var sameHour in sameHours.ToList())
+                                    var distinctHours = sameDate.Select(o => o.Hour).Distinct();
+                                    if (distinctHours != null)
                                     {
-                                        // OEE
-                                        hourInfo.PlannedProductionTime += sameHour.PlannedProductionTime;
-                                        hourInfo.OperatingTime += sameHour.OperatingTime;
-                                        hourInfo.IdealOperatingTime += sameHour.IdealOperatingTime;
-                                        hourInfo.TotalPieces += sameHour.TotalPieces;
-                                        hourInfo.GoodPieces += sameHour.GoodPieces;
+                                        foreach (int distinctHour in distinctHours.ToList())
+                                        {
+                                            var hourInfo = new HourInfo();
+                                            hourInfo.Date = distinctDate;
+                                            hourInfo.Hour = distinctHour;
 
-                                        hourInfo.TotalTime += sameHour.TotalTime;
+                                            var sameHours = _hours.FindAll(o => o.Hour == distinctHour);
+                                            if (sameHours != null)
+                                            {
+                                                foreach (var sameHour in sameHours.ToList())
+                                                {
+                                                    // OEE
+                                                    hourInfo.PlannedProductionTime += sameHour.PlannedProductionTime;
+                                                    hourInfo.OperatingTime += sameHour.OperatingTime;
+                                                    hourInfo.IdealOperatingTime += sameHour.IdealOperatingTime;
+                                                    hourInfo.TotalPieces += sameHour.TotalPieces;
+                                                    hourInfo.GoodPieces += sameHour.GoodPieces;
 
-                                        // Device Status
-                                        hourInfo.Active += sameHour.Active;
-                                        hourInfo.Idle += sameHour.Idle;
-                                        hourInfo.Alert += sameHour.Alert;
+                                                    hourInfo.TotalTime += sameHour.TotalTime;
 
-                                        // Production Status
-                                        hourInfo.Production += sameHour.Production;
-                                        hourInfo.Setup += sameHour.Setup;
-                                        hourInfo.Teardown += sameHour.Teardown;
-                                        hourInfo.Maintenance += sameHour.Maintenance;
-                                        hourInfo.ProcessDevelopment += sameHour.ProcessDevelopment;
+                                                    // Device Status
+                                                    hourInfo.Active += sameHour.Active;
+                                                    hourInfo.Idle += sameHour.Idle;
+                                                    hourInfo.Alert += sameHour.Alert;
+
+                                                    // Production Status
+                                                    hourInfo.Production += sameHour.Production;
+                                                    hourInfo.Setup += sameHour.Setup;
+                                                    hourInfo.Teardown += sameHour.Teardown;
+                                                    hourInfo.Maintenance += sameHour.Maintenance;
+                                                    hourInfo.ProcessDevelopment += sameHour.ProcessDevelopment;
+                                                }
+                                            }
+
+                                            newHours.Add(hourInfo);
+                                        }
                                     }
-
-                                    newHours.Add(hourInfo);
                                 }
                             }
 

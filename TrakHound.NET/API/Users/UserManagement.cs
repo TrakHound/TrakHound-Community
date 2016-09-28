@@ -296,7 +296,7 @@ namespace TrakHound.API.Users
                 Properties.Settings.Default.UserToken = userConfig.Token;
                 Properties.Settings.Default.Save();
 
-                UserLoginFile.Create(userConfig);
+                ServerCredentials.Create(userConfig);
             }
 
             public static string Get()
@@ -313,8 +313,7 @@ namespace TrakHound.API.Users
 
                 if (string.IsNullOrEmpty(result))
                 {
-                    // Create a new Sender Id using the Windows Security ID 
-                    result = new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.ToString();
+                    result = Guid.NewGuid().ToString();
 
                     Properties.Settings.Default.SenderId = result;
                     Properties.Settings.Default.Save();

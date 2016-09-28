@@ -351,22 +351,6 @@ namespace TrakHound.Servers.DataStorage
 
                                         info.AddClass("timers", timers);
 
-                                        // Set Part Count
-                                        //if (status != null)
-                                        //{
-                                        //    for (var x = 0; x < hours.Count; x++)
-                                        //    {
-                                        //        if (newInfo)
-                                        //        {
-                                        //            if (x < hours.Count - 1 || hours[x].TotalPieces == 0) status.PartCount += hours[x].TotalPieces;
-                                        //        }
-                                        //        else
-                                        //        {
-                                        //            status.PartCount += hours[x].TotalPieces;
-                                        //        }
-                                        //    }
-                                        //}
-
                                         response = "Devices Updated Successfully";
                                     }
                                 }
