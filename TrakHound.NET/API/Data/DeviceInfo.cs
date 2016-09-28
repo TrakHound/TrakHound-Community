@@ -326,7 +326,7 @@ namespace TrakHound.API
             {
                 var datas = new List<object>();
 
-                foreach (var deviceInfo in deviceInfos)
+                foreach (var deviceInfo in deviceInfos.ToList())
                 {
                     var data = deviceInfo.ToJsonObject();
                     if (data != null) datas.Add(data);
