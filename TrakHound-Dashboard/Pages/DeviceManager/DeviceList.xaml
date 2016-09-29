@@ -229,7 +229,6 @@
         <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel.Style>
                 <Style TargetType="StackPanel">
-                    <Setter Property="Opacity" Value="0"/>
                     <Setter Property="Visibility" Value="Collapsed"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Devices}" Value="{x:Null}">
@@ -237,9 +236,6 @@
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Devices.Count}" Value="0">
                             <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding DevicesLoading}" Value="true">
-                            <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
