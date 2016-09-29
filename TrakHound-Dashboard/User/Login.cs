@@ -81,7 +81,13 @@ namespace TrakHound_Dashboard
                 {
                     Login_Finished(userConfig);
 
-                    if (userConfig == null) TrakHound_UI.MessageBox.Show("User Login Failed. Please Try Again.", "Login Failed", TrakHound_UI.MessageBoxButtons.Ok);
+                    if (userConfig == null)
+                    {
+                        Properties.Settings.Default.LoginRememberToken = null;
+                        Properties.Settings.Default.Save();
+
+                        TrakHound_UI.MessageBox.Show("User Login Failed. Please Try Again.", "Login Failed", TrakHound_UI.MessageBoxButtons.Ok);
+                    }
 
                 }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
             }
