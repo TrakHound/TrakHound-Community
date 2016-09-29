@@ -64,22 +64,6 @@ namespace TrakHound.Tools.Web
 
                             result.Add(new PostContentData(key, vals));
                         }
-
-                        //foreach (string key in nvc.)
-                        //{
-                        //    var vals = "";
-                        //    foreach (var val in nvc.GetValues(key)) vals += val;
-
-                        //    result.Add(new PostContentData(key, vals));
-                        //}
-
-                        //foreach (var key in nvc.AllKeys)
-                        //{
-                        //    var vals = "";
-                        //    foreach (var val in nvc.GetValues(key)) vals += val;
-
-                        //    result.Add(new PostContentData(key, vals));
-                        //}
                     }
                 }
                 catch (Exception ex) { }
