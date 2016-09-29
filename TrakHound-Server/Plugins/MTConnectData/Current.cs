@@ -38,7 +38,7 @@ namespace TrakHound_Server.Plugins.MTConnectData
             result = Requests.Get(url, proxy, 2000, 1);
             if (result != null)
             {
-                Logger.Log("Current Successful : " + url + " @ " + requestTimestamp.ToString("o"), LogLineType.Console);
+                Logger.Log("Current Successful : " + url + " @ " + requestTimestamp.ToString("o") + " : " + result.Header.LastSequence, LogLineType.Console);
             }
             else
             {

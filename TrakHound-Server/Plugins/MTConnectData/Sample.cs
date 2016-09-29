@@ -12,7 +12,6 @@ using TrakHound;
 using TrakHound.API;
 using TrakHound.Configurations;
 using TrakHound.Logging;
-using TrakHound.Plugins;
 
 namespace TrakHound_Server.Plugins.MTConnectData
 {
@@ -41,7 +40,7 @@ namespace TrakHound_Server.Plugins.MTConnectData
             proxy.Port = ac.ProxyPort;
 
             lastInstanceId = agentInstanceId;
-            agentInstanceId = header.InstanceId;
+            UpdateAgentData(header);
 
             SampleInfo info = GetSampleInfo(header, config);
             if (info != null)
@@ -62,7 +61,7 @@ namespace TrakHound_Server.Plugins.MTConnectData
                         Logger.Log("Sample Error : " + url + " @ " + requestTimestamp.ToString("o"));
                     }
                 }
-                else Logger.Log("No New Data :: Sample Skipped", LogLineType.Console);
+                //else Logger.Log("No New Data :: Sample Skipped", LogLineType.Console);
             }
 
             return result;
@@ -70,15 +69,12 @@ namespace TrakHound_Server.Plugins.MTConnectData
 
         private void SendSampleData(ReturnData returnData, DeviceConfiguration config)
         {
-            //if (returnData != null)
-            //{
-                var data = new EventData(this);
-                data.Id = "MTCONNECT_SAMPLE";
-                data.Data01 = config;
-                data.Data02 = returnData;
+            var data = new EventData(this);
+            data.Id = "MTCONNECT_SAMPLE";
+            data.Data01 = config;
+            data.Data02 = returnData;
 
-                SendData?.Invoke(data);
-            //}
+            SendData?.Invoke(data);
         }
 
         private class SampleInfo

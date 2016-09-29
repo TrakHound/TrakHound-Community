@@ -8,7 +8,6 @@ using System.Threading;
 using TrakHound;
 using TrakHound.Configurations;
 using TrakHound.Logging;
-using TrakHound.Plugins;
 
 namespace TrakHound_Server.Plugins.MTConnectData
 {
@@ -17,8 +16,10 @@ namespace TrakHound_Server.Plugins.MTConnectData
 
         private System.Timers.Timer requestTimer;
 
-        MTConnect.Application.Components.ReturnData probeData;
-        MTConnect.Application.Streams.ReturnData currentData;
+        private ManualResetEvent stop;
+
+        private MTConnect.Application.Components.ReturnData probeData;
+        private MTConnect.Application.Streams.ReturnData currentData;
 
         private void Start(DeviceConfiguration config)
         {
@@ -32,7 +33,6 @@ namespace TrakHound_Server.Plugins.MTConnectData
                 {
                     probeData = null;
 
-                    //var ac = Configuration.Get(config);
                     var ac = config.Agent;
                     if (ac != null)
                     {
@@ -64,6 +64,8 @@ namespace TrakHound_Server.Plugins.MTConnectData
                 if (probeData == null)
                 {
                     probeData = GetProbe(ac);
+
+                    if (probeData != null) UpdateAgentData(probeData.Header);
 
                     // Send the Probe data to other plugins
                     SendProbeData(probeData, config);
@@ -100,8 +102,6 @@ namespace TrakHound_Server.Plugins.MTConnectData
             }
         }
 
-        private ManualResetEvent stop;
-
         private void Stop()
         {
             stop.Set();
@@ -136,6 +136,45 @@ namespace TrakHound_Server.Plugins.MTConnectData
             }
 
             return false;
+        }
+
+        private void UpdateAgentData(MTConnect.Application.Headers.Devices header)
+        {
+            if (header != null)
+            {
+                if (header.InstanceId != agentInstanceId)
+                {
+                    SendAgentReset(configuration);
+                    AgentData.Save(header, configuration);
+                }
+
+                agentInstanceId = header.InstanceId;
+            }
+        }
+
+        private void UpdateAgentData(MTConnect.Application.Headers.Streams header)
+        {
+            if (header != null)
+            {
+                if (header.InstanceId != agentInstanceId)
+                {
+                    SendAgentReset(configuration);
+                    AgentData.Save(header, configuration);
+                }
+
+                agentInstanceId = header.InstanceId;
+            }
+        }
+
+        private void SendAgentReset(DeviceConfiguration config)
+        {
+            System.Console.WriteLine(config.UniqueId + " :: Agent Reset");
+
+            var data = new EventData(this);
+            data.Id = "MTCONNECT_AGENT_RESET";
+            data.Data01 = config;
+
+            SendData?.Invoke(data);
         }
 
     }

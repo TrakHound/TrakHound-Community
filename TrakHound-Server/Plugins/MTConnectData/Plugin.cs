@@ -4,9 +4,7 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using TrakHound;
-using TrakHound.API;
 using TrakHound.Configurations;
-using TrakHound.Plugins;
 using TrakHound.Plugins.Server;
 
 namespace TrakHound_Server.Plugins.MTConnectData
@@ -19,17 +17,9 @@ namespace TrakHound_Server.Plugins.MTConnectData
         {
             configuration = config;
 
+            agentInstanceId = AgentData.Load(config);
+
             Start(config);
-
-            //var ac = Configuration.Read(config.Xml);
-            //if (ac != null)
-            //{
-            //    config.CustomClasses.Add(ac);
-
-            //    configuration = config;
-
-            //    Start(config);
-            //}
         }
 
         public void GetSentData(EventData data) { }
