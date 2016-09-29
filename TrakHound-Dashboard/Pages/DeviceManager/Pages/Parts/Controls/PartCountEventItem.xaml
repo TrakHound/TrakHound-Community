@@ -1,0 +1,86 @@
+﻿<UserControl x:Class="TrakHound_Dashboard.Pages.DeviceManager.Pages.Parts.Controls.PartCountEventItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             >
+
+    <UserControl.Resources>
+
+        <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+            <Setter Property="Padding" Value="20,0"/>
+            <Setter Property="MinWidth" Value="200"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Background" Value="{x:Null}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="{StaticResource Text_Light}"/>
+            <Setter Property="Margin" Value="10,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        
+    </UserControl.Resources>
+
+    <Border Name="root" Background="Transparent" BorderBrush="{StaticResource Border}" BorderThickness="1" CornerRadius="2" Padding="10">
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <!--Event Name-->
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Event Name"/>
+                <ComboBox Grid.Row="0" Grid.Column="1" SelectedValue="{Binding EventName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Id" DisplayMemberPath="Name" ItemsSource="{Binding ParentPage.GeneratedEventItems}" SelectionChanged="EventName_COMBO_SelectionChanged"/>
+
+                <!--Event Value-->
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Event Value"/>
+                <ComboBox Grid.Row="2" Grid.Column="1" SelectedValue="{Binding EventValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding GeneratedEventValues}" SelectionChanged="COMBO_SelectionChanged"/>
+
+                <!--Capture Item Link-->
+                <TextBlock Grid.Row="0" Grid.Column="3" Text="Capture Item Link"/>
+                <ComboBox Grid.Row="0" Grid.Column="4" SelectedValue="{Binding CaptureItemLink, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Id" DisplayMemberPath="Name" ItemsSource="{Binding GeneratedEventCaptureItems}" SelectionChanged="COMBO_SelectionChanged"/>
+
+                <!--Calculation Type-->
+                <TextBlock Grid.Row="2" Grid.Column="3" Text="Calculation Type"/>
+                <ComboBox Grid.Row="2" Grid.Column="4" SelectedValue="{Binding CalculationType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="COMBO_SelectionChanged">
+                    <ComboBox.Items>
+                        <sys:String>Incremental</sys:String>
+                        <sys:String>Total</sys:String>
+                    </ComboBox.Items>
+                </ComboBox>
+
+            </Grid>
+
+            <!--Remove Button-->
+            <ui:Button Grid.Column="1" Image="/TrakHound-Dashboard;component/Resources/X_01.png" Margin="20,0,0,0" Clicked="Remove_Clicked" Style="{StaticResource Button_Accent_Foreground}"/>
+
+        </Grid>
+
+    </Border>
+
+</UserControl>
