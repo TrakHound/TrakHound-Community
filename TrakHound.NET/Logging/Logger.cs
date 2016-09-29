@@ -49,24 +49,28 @@ namespace TrakHound.Logging
         /// <param name="lineNumber"></param>
         public static void Log(string text, LogLineType type = LogLineType.Notification, [CallerFilePath] string filename = "", [CallerMemberName] string member = "", [CallerLineNumber] int lineNumber = 0)
         {
-            string[] lines = text.Split(new string[] { "\r\n", "\n", Environment.NewLine }, StringSplitOptions.None);
-            foreach (var line in lines)
+            try
             {
-                var queueLine = new Line();
-                queueLine.Text = line;
-                queueLine.Type = type;
-                queueLine.Timestamp = DateTime.Now;
+                string[] lines = text.Split(new string[] { "\r\n", "\n", Environment.NewLine }, StringSplitOptions.None);
+                foreach (var line in lines)
+                {
+                    var queueLine = new Line();
+                    queueLine.Text = line;
+                    queueLine.Type = type;
+                    queueLine.Timestamp = DateTime.Now;
 
-                var assembly = Assembly.GetCallingAssembly();
+                    var assembly = Assembly.GetCallingAssembly();
 
-                queueLine.Assembly = assembly.FullName;
-                queueLine.Filename = filename;
-                queueLine.Member = member;
-                queueLine.LineNumber = lineNumber;
+                    queueLine.Assembly = assembly.FullName;
+                    queueLine.Filename = filename;
+                    queueLine.Member = member;
+                    queueLine.LineNumber = lineNumber;
 
-                logQueue.AddLineToQueue(queueLine);
-                Console.WriteLine(line);
+                    logQueue.AddLineToQueue(queueLine);
+                    Console.WriteLine(line);
+                }
             }
+            catch (Exception ex) { }         
         }
 
         public static string ReadOutputLogText(string applicationName, DateTime timestamp)
