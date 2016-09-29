@@ -229,6 +229,7 @@
         <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel.Style>
                 <Style TargetType="StackPanel">
+                    <Setter Property="Opacity" Value="0"/>
                     <Setter Property="Visibility" Value="Collapsed"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Devices}" Value="{x:Null}">
@@ -276,7 +277,7 @@
                             <DataTrigger.ExitActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="Opacity" From="1" To="0" >
+                                        <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="Opacity" From="1" To="0" BeginTime="00:00:0.5">
                                             <DoubleAnimation.EasingFunction>
                                                 <CubicEase EasingMode="EaseIn"/>
                                             </DoubleAnimation.EasingFunction>
@@ -312,7 +313,7 @@
                             <DataTrigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="Opacity" From="0" To="1" >
+                                        <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Opacity" From="0" To="1">
                                             <DoubleAnimation.EasingFunction>
                                                 <CubicEase EasingMode="EaseIn"/>
                                             </DoubleAnimation.EasingFunction>
@@ -323,9 +324,9 @@
                             <DataTrigger.ExitActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="Opacity" From="1" To="0" >
+                                        <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Opacity" From="1" To="0">
                                             <DoubleAnimation.EasingFunction>
-                                                <CubicEase EasingMode="EaseIn"/>
+                                                <CubicEase EasingMode="EaseOut"/>
                                             </DoubleAnimation.EasingFunction>
                                         </DoubleAnimation>
                                     </Storyboard>

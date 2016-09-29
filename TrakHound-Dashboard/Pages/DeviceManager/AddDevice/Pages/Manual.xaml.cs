@@ -213,7 +213,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
                 }
                 else returnInfo.Message = "MTConnect Probe Failed @ " + url;
 
-                Dispatcher.BeginInvoke(new Action<TestConnectionReturnInfo>(TestConnection_GUI), UI_Functions.PRIORITY_BACKGROUND, new object[] { returnInfo });
+                Dispatcher.BeginInvoke(new Action<TestConnectionReturnInfo>(TestConnection_GUI), System.Windows.Threading.DispatcherPriority.Background, new object[] { returnInfo });
             }
         }
 
@@ -320,7 +320,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
                 }
                 else TrakHound_UI.MessageBox.Show("Error during Add Device. Please Try Again.", "Add Device Error", TrakHound_UI.MessageBoxButtons.Ok);
 
-            }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+            }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
         }
 
     }

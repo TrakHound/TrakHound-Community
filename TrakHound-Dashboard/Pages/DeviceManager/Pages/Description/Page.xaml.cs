@@ -577,7 +577,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.Description
                     fileId = filename;
                 }
 
-                Dispatcher.BeginInvoke(new Action<string>(UploadManufacturerLogo_GUI), UI_Functions.PRIORITY_BACKGROUND, new object[] { fileId });
+                Dispatcher.BeginInvoke(new Action<string>(UploadManufacturerLogo_GUI), System.Windows.Threading.DispatcherPriority.Background, new object[] { fileId });
             }
         }
 
@@ -823,7 +823,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.Description
                     fileId = filename;
                 }
 
-                Dispatcher.BeginInvoke(new Action<string>(UploadDeviceImage_GUI), UI_Functions.PRIORITY_BACKGROUND, new object[] { fileId });
+                Dispatcher.BeginInvoke(new Action<string>(UploadDeviceImage_GUI), System.Windows.Threading.DispatcherPriority.Background, new object[] { fileId });
             }
         }
 

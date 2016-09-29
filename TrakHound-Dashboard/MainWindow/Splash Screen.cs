@@ -27,14 +27,14 @@ namespace TrakHound_Dashboard
             splsh.Version = version.Major.ToString() + "." + version.Minor.ToString() + "." + version.Build.ToString();
         }
 
-        void Splash_Show() { this.Dispatcher.Invoke(new Action(Splash_Show_GUI), UI_Functions.PRIORITY_BACKGROUND, new object[] { }); }
+        void Splash_Show() { this.Dispatcher.Invoke(new Action(Splash_Show_GUI), System.Windows.Threading.DispatcherPriority.Background, new object[] { }); }
 
         void Splash_Show_GUI() { if (splsh != null) splsh.Show(); }
 
         void Splash_Close() { if (splsh != null) splsh.Close(); }
 
 
-        void Splash_UpdateStatus(string status, double loadingProgress) { this.Dispatcher.Invoke(new Action<string, double>(Splash_UpdateStatus_GUI), UI_Functions.PRIORITY_BACKGROUND, new object[] { status, loadingProgress }); }
+        void Splash_UpdateStatus(string status, double loadingProgress) { this.Dispatcher.Invoke(new Action<string, double>(Splash_UpdateStatus_GUI), System.Windows.Threading.DispatcherPriority.Background, new object[] { status, loadingProgress }); }
 
         void Splash_UpdateStatus_GUI(string status, double loadingProgress) 
         {

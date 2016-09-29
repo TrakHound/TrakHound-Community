@@ -281,7 +281,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.MTConnectConfig
                 }
                 else returnInfo.Message = "MTConnect Probe Failed @ " + url;
 
-                Dispatcher.BeginInvoke(new Action<TestConnectionReturnInfo>(TestConnection_GUI), UI_Functions.PRIORITY_BACKGROUND, new object[] { returnInfo });
+                Dispatcher.BeginInvoke(new Action<TestConnectionReturnInfo>(TestConnection_GUI), System.Windows.Threading.DispatcherPriority.Background, new object[] { returnInfo });
             }
         }
 

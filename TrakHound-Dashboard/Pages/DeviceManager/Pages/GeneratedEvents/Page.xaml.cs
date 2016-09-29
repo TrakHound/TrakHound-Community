@@ -66,14 +66,14 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.GeneratedEvents
             GeneratedEvents.Clear();
             foreach (Event e in genEvents)
             {
-                Dispatcher.BeginInvoke(new Action(() => { GeneratedEvents.Add(e); }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                Dispatcher.BeginInvoke(new Action(() => { GeneratedEvents.Add(e); }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
             }
 
             // Load MTConnect DataItems using Probe Data
             if (!Loaded) LoadCollectedItems(probeData);
 
             loading = false;
-            Dispatcher.BeginInvoke(new Action(() => { Loading = false; }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+            Dispatcher.BeginInvoke(new Action(() => { Loading = false; }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
         }
 
         public void SaveConfiguration(DataTable dt)

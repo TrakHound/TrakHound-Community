@@ -101,12 +101,12 @@ namespace TrakHound_Dashboard
 
         private void ClientReader_LineAdded(Line line)
         {
-            Dispatcher.BeginInvoke(new Action<Line, string>(Log_Updated_GUI), UI_Functions.PRIORITY_BACKGROUND, new object[] { line, ApplicationNames.TRAKHOUND_DASHBOARD });
+            Dispatcher.BeginInvoke(new Action<Line, string>(Log_Updated_GUI), System.Windows.Threading.DispatcherPriority.Background, new object[] { line, ApplicationNames.TRAKHOUND_DASHBOARD });
         }
 
         private void ServerReader_LineAdded(Line line)
         {
-            Dispatcher.BeginInvoke(new Action<Line, string>(Log_Updated_GUI), UI_Functions.PRIORITY_BACKGROUND, new object[] { line, ApplicationNames.TRAKHOUND_SERVER });
+            Dispatcher.BeginInvoke(new Action<Line, string>(Log_Updated_GUI), System.Windows.Threading.DispatcherPriority.Background, new object[] { line, ApplicationNames.TRAKHOUND_SERVER });
         }
 
         void Log_Updated_GUI(Line line, string applicationName)

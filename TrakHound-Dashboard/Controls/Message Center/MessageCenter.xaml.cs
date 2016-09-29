@@ -121,7 +121,7 @@ namespace TrakHound_Dashboard.Controls.Message_Center
 
         public void AddMessage(MessageData data)
         {
-            this.Dispatcher.BeginInvoke(new Action<MessageData>(AddMessage_GUI), UI_Functions.PRIORITY_BACKGROUND, new object[] { data });
+            this.Dispatcher.BeginInvoke(new Action<MessageData>(AddMessage_GUI), System.Windows.Threading.DispatcherPriority.Background, new object[] { data });
         }
 
         void AddMessage_GUI(MessageData data)
@@ -352,7 +352,7 @@ namespace TrakHound_Dashboard.Controls.Message_Center
                             ThreadPool.QueueUserWorkItem(new WaitCallback(ClearMessages_Worker), info);
                         }
                     }
-                }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
 
                 foreach (Message msg in Notifications) msg.Shown = false;
                 foreach (Message msg in DeviceAlerts) msg.Shown = false;

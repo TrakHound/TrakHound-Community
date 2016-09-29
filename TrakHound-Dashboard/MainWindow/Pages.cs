@@ -161,7 +161,7 @@ namespace TrakHound_Dashboard
                             tabsWidth = GetTabPanelWidth();
                         }
                     }
-                }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
             }
         }
 
@@ -370,7 +370,7 @@ namespace TrakHound_Dashboard
                             tabHeader.Page.PageContent.GetSentData(data);
                         }
                     }
-                }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
             }
         }
 

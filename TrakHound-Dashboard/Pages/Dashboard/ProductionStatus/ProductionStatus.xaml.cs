@@ -126,7 +126,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatus
                         var row = Rows[index];
                         row.UpdateData(info);
                     }
-                }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
             }
 
             if (data != null && data.Id == "STATUS_OEE" && data.Data02 != null && data.Data02.GetType() == typeof(Data.OeeInfo))
@@ -142,7 +142,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatus
                         var row = Rows[index];
                         row.UpdateData(info);
                     }
-                }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
             }
         }
 

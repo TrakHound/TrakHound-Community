@@ -307,7 +307,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
             else if (ActualWidth > ((Columns.Count * 400) + 121)) widthStatus = 2;
             else if (ActualWidth > ((Columns.Count * 150) + 121)) widthStatus = 1;
 
-            WidthStatus = widthStatus;
+            Dispatcher.BeginInvoke(new Action(() => { WidthStatus = widthStatus; }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
         }
 
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)

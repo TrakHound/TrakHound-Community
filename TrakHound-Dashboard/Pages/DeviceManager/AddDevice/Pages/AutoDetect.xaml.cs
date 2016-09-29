@@ -425,7 +425,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
                 NetworkNodesFound++;
                 SearchProgressMaximum += (portRangeStop - portRangeStart); // Increment number of ports to probe
 
-            }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+            }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
 
             for (var p = portRangeStart; p < ((portRangeStop - portRangeStart) + portRangeStart); p++)
             {
@@ -471,7 +471,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
                         DevicesLoading = false;
                     }
 
-                }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
             }
         }
 
@@ -546,7 +546,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
                                     var info = new DeviceInfo(address, port, device);
                                     DeviceInfos.Add(info);
                                 }
-                            }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                            }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
                         }
                         else
                         {
@@ -554,7 +554,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
                             {
                                 if (!stop.WaitOne(0, true)) DevicesAlreadyAdded++;
 
-                            }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                            }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
                         }
                     }
                 }
@@ -614,7 +614,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
                         DevicesNotAdded = DeviceInfos.Count;
                         DevicesAlreadyAdded += 1;
 
-                    }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                    }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
                 }
             }
 
@@ -622,7 +622,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
             {
                 info.Loading = false;
 
-            }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+            }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
         }
 
         #endregion

@@ -82,7 +82,7 @@ namespace TrakHound_Dashboard.Pages.Options.Updates
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 Save();
-            }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });           
+            }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });           
         }
 
         private void Save()

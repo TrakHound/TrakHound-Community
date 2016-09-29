@@ -100,7 +100,6 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
         public event PageSelected_Handler PageClosed;
 
 
-
         #region "Dependency Properties"
 
         public bool DevicesLoading
@@ -260,7 +259,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                 else removeInfo.Success = RemoveLocalDevices(devices);
             }
 
-            Dispatcher.BeginInvoke(new Action<RemoveDevices_Info>(RemoveDevices_Finshed), UI_Functions.PRIORITY_BACKGROUND, new object[] { removeInfo });
+            Dispatcher.BeginInvoke(new Action<RemoveDevices_Info>(RemoveDevices_Finshed), System.Windows.Threading.DispatcherPriority.Background, new object[] { removeInfo });
         }
 
         private bool RemoveLocalDevices(List<DeviceDescription> devices)
@@ -384,7 +383,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                 // If changes were successful, then update DeviceManager's Congifuration
                 if (info.Success) device.Enabled = true;
 
-                Dispatcher.BeginInvoke(new Action<EnableDevice_Info>(EnableDevice_Finished), UI_Functions.PRIORITY_BACKGROUND, new object[] { info });
+                Dispatcher.BeginInvoke(new Action<EnableDevice_Info>(EnableDevice_Finished), System.Windows.Threading.DispatcherPriority.Background, new object[] { info });
             }
         }
 
@@ -461,7 +460,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                 // If changes were successful, then update DeviceManager's Congifuration
                 if (info.Success) device.Enabled = false;
                 
-                Dispatcher.BeginInvoke(new Action<EnableDevice_Info>(DisableDevice_Finished), UI_Functions.PRIORITY_BACKGROUND, new object[] { info });
+                Dispatcher.BeginInvoke(new Action<EnableDevice_Info>(DisableDevice_Finished), System.Windows.Threading.DispatcherPriority.Background, new object[] { info });
             }
         }
 
@@ -1089,7 +1088,6 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
 
             return result;
         }
-
 
     }
 

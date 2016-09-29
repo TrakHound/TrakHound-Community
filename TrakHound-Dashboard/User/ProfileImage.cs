@@ -98,12 +98,12 @@ namespace TrakHound_Dashboard
                         bmpSource_sm = TrakHound_UI.Functions.Images.SetImageSize(bmpSource_sm, 30, 30);
                         bmpSource_sm.Freeze();
 
-                        Dispatcher.BeginInvoke(new Action<BitmapSource>(LoadProfileImage_GUI), UI_Functions.PRIORITY_BACKGROUND, new object[] { bmpSource });
-                        Dispatcher.BeginInvoke(new Action<BitmapSource>(LoadProfileImageSmall_GUI), UI_Functions.PRIORITY_BACKGROUND, new object[] { bmpSource_sm });
+                        Dispatcher.BeginInvoke(new Action<BitmapSource>(LoadProfileImage_GUI), System.Windows.Threading.DispatcherPriority.Background, new object[] { bmpSource });
+                        Dispatcher.BeginInvoke(new Action<BitmapSource>(LoadProfileImageSmall_GUI), System.Windows.Threading.DispatcherPriority.Background, new object[] { bmpSource_sm });
                     }
                 }
 
-                Dispatcher.BeginInvoke(new Action(LoadProfileImage_Finished), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                Dispatcher.BeginInvoke(new Action(LoadProfileImage_Finished), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
             }
         }
 
@@ -171,7 +171,7 @@ namespace TrakHound_Dashboard
 
             var userConfig = UserManagement.EditUser(info, "TrakHound Client Edit User");
 
-            Dispatcher.BeginInvoke(new Action<UserConfiguration>(UpdateProfileImage_Finished), UI_Functions.PRIORITY_BACKGROUND, new object[] { userConfig });
+            Dispatcher.BeginInvoke(new Action<UserConfiguration>(UpdateProfileImage_Finished), System.Windows.Threading.DispatcherPriority.Background, new object[] { userConfig });
         }
 
         private void UpdateProfileImage_Finished(UserConfiguration userConfig)

@@ -145,7 +145,7 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
 
                         UpdateDeviceInfo(info);
                     }
-                }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
             }
 
             if (data != null && data.Id == "STATUS_CONTROLLER" && data.Data02 != null && data.Data02.GetType() == typeof(Data.ControllerInfo))
@@ -159,7 +159,7 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
 
                         UpdateDeviceInfo(info);
                     }
-                }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
             }
 
             if (data != null && data.Id == "STATUS_HOURS" && data.Data02 != null && data.Data02.GetType() == typeof(List<Data.HourInfo>))
@@ -173,7 +173,7 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
 
                         UpdateDeviceInfo(info);
                     }
-                }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
             }
 
             if (data != null && data.Id == "STATUS_TIMERS" && data.Data02 != null && data.Data02.GetType() == typeof(Data.TimersInfo))
@@ -187,7 +187,7 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
 
                         UpdateDeviceInfo(info);
                     }
-                }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
             }
 
             if (data != null && data.Id == "STATUS_OEE" && data.Data02 != null && data.Data02.GetType() == typeof(TrakHound.API.Data.OeeInfo))

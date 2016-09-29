@@ -184,7 +184,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard
 
         public void GetSentData(EventData data)
         {
-            Dispatcher.BeginInvoke(new Action(UpdateCurrentDate), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+            Dispatcher.BeginInvoke(new Action(UpdateCurrentDate), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
 
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateLoggedInChanged), System.Windows.Threading.DispatcherPriority.Normal, new object[] { data });
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDevicesLoading), System.Windows.Threading.DispatcherPriority.Normal, new object[] { data });
@@ -478,7 +478,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard
 
                 SelectNextPage();
 
-            }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+            }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
         }
 
         private void StopSlideshow()

@@ -54,7 +54,7 @@ namespace TrakHound_Dashboard
 
         private void ServerMonitor_Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            Dispatcher.BeginInvoke(new Action(ServerMonitor_GUI), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+            Dispatcher.BeginInvoke(new Action(ServerMonitor_GUI), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
         }
 
         private void ServerMonitor_GUI()

@@ -69,7 +69,7 @@ namespace TrakHound_Dashboard
 
                             messageCenter.CheckForMessages();
 
-                        }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                        }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
 
                     }
                 }

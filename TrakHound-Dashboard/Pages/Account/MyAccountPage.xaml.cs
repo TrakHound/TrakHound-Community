@@ -624,7 +624,7 @@ namespace TrakHound_Dashboard.Pages.Account
             {
                 ThreadPool.QueueUserWorkItem(new WaitCallback(VerifyUsername), Username);
 
-            }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });  
+            }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });  
         }
 
         void VerifyUsername(object o)
@@ -635,7 +635,7 @@ namespace TrakHound_Dashboard.Pages.Account
 
                 bool available = UserManagement.CheckUsernameAvailability(username);
 
-                Dispatcher.BeginInvoke(new Action<bool>(VerifyUsername_Finished), UI_Functions.PRIORITY_BACKGROUND, new object[] { available });
+                Dispatcher.BeginInvoke(new Action<bool>(VerifyUsername_Finished), System.Windows.Threading.DispatcherPriority.Background, new object[] { available });
             }
         }
 

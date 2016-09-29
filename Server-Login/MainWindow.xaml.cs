@@ -167,7 +167,7 @@ namespace Server_Login
                 if (userConfig != null) ServerCredentials.Create(userConfig);
                 else ServerCredentials.Remove();
 
-                Dispatcher.BeginInvoke(new Action<UserConfiguration>(Login_Finished), UI_Functions.PRIORITY_BACKGROUND, new object[] { userConfig });
+                Dispatcher.BeginInvoke(new Action<UserConfiguration>(Login_Finished), System.Windows.Threading.DispatcherPriority.Background, new object[] { userConfig });
             }
         }
 

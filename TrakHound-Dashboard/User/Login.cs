@@ -48,7 +48,7 @@ namespace TrakHound_Dashboard
                     Properties.Settings.Default.Save();
                 }
 
-                Dispatcher.BeginInvoke(new Action<UserConfiguration>(Login_Finished), UI_Functions.PRIORITY_BACKGROUND, new object[] { userConfig });
+                Dispatcher.BeginInvoke(new Action<UserConfiguration>(Login_Finished), System.Windows.Threading.DispatcherPriority.Background, new object[] { userConfig });
             }
         }
 
@@ -85,7 +85,7 @@ namespace TrakHound_Dashboard
                     if (userConfig == null) TrakHound_UI.MessageBox.Show("User Login Failed. Please Try Again.", "Login Failed", TrakHound_UI.MessageBoxButtons.Ok);
 
 
-                }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
             }
         }
 

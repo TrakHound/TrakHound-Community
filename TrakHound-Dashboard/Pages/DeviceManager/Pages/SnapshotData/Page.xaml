@@ -46,7 +46,7 @@
             </StackPanel>
 
             <!--Add Item-->
-            <ui:Button Text="Add Item" Clicked="Add_Clicked" Style="{StaticResource Button_Accent_Background}" Height="35" HorizontalAlignment="Left" Margin="0,20,0,0" Image="/TrakHound-Dashboard;component/Resources/Add_01.png"/>
+            <ui:Button Text="Add Item" Clicked="Add_Clicked" Style="{StaticResource Button_Accent_Background}" HorizontalAlignment="Left" Margin="0,20,0,0" Image="/TrakHound-Dashboard;component/Resources/Add_01.png"/>
 
         </StackPanel>
 

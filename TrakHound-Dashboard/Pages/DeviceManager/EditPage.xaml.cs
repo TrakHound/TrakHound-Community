@@ -243,11 +243,11 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                     ConfigurationTable = DeviceConfigurationConverter.XMLToTable(config.Xml);
 
                     // Reload Pages with new Device Configuration
-                    Dispatcher.BeginInvoke(new Action(RestorePages), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                    Dispatcher.BeginInvoke(new Action(RestorePages), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
                 }
             }
 
-            Dispatcher.BeginInvoke(new Action(() => DeviceLoading = false), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+            Dispatcher.BeginInvoke(new Action(() => DeviceLoading = false), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
         }
 
         private void LoadLocalDevice(object o)
@@ -268,7 +268,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                         ConfigurationTable = DeviceConfigurationConverter.XMLToTable(config.Xml);
 
                         // Reload Pages with new Device Configuration
-                        Dispatcher.BeginInvoke(new Action(RestorePages), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                        Dispatcher.BeginInvoke(new Action(RestorePages), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
                     }
                 }
                 catch (Exception ex)
@@ -277,7 +277,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                 }
             }
 
-            Dispatcher.BeginInvoke(new Action(() => DeviceLoading = false), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+            Dispatcher.BeginInvoke(new Action(() => DeviceLoading = false), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
         }
 
         private DeviceConfiguration GetLocalDeviceConfiguration(string uniqueId)
@@ -300,7 +300,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                 {
                     if (!page.Loaded) page.LoadConfiguration(ConfigurationTable.Copy());
                     page.Loaded = true;
-                }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
             }
         }
 
@@ -373,7 +373,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                 Configuration = DeviceConfiguration.Read(xml);
             }
 
-            Dispatcher.BeginInvoke(new Action<bool>(Save_Finished), UI_Functions.PRIORITY_BACKGROUND, new object[] { success });
+            Dispatcher.BeginInvoke(new Action<bool>(Save_Finished), System.Windows.Threading.DispatcherPriority.Background, new object[] { success });
         }
 
         private void Save_Finished(bool success)
@@ -709,7 +709,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     page.GetSentData(data);
-                }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
             }
         }
 
@@ -738,7 +738,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     page.GetSentData(data);
-                }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });     
+                }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });     
             }
         }
 

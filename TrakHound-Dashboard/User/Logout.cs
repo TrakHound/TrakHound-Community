@@ -30,7 +30,7 @@ namespace TrakHound_Dashboard
             Properties.Settings.Default.LoginRememberToken = null;
             Properties.Settings.Default.Save();
 
-            Dispatcher.BeginInvoke(new Action<bool>(Logout_Finished), UI_Functions.PRIORITY_BACKGROUND, new object[] { success });
+            Dispatcher.BeginInvoke(new Action<bool>(Logout_Finished), System.Windows.Threading.DispatcherPriority.Background, new object[] { success });
         }
 
         void Logout_Finished(bool success)
