@@ -14,7 +14,7 @@ namespace TrakHound.API.Users
 {
     public static class ServerCredentials
     {
-        public const string SERVER_CREDENTIALS_FILENAME = "ServerCredentials.xml";
+        public const string SERVER_CREDENTIALS_FILENAME = "server_credentials.xml";
 
         public static bool Create(UserConfiguration userConfig)
         {
@@ -75,7 +75,7 @@ namespace TrakHound.API.Users
             XmlNode docNode = result.CreateXmlDeclaration("1.0", "UTF-8", null);
             result.AppendChild(docNode);
 
-            XmlNode root = result.CreateElement("UserLogin");
+            XmlNode root = result.CreateElement("ServerCredentials");
             result.AppendChild(root);
 
             // Username

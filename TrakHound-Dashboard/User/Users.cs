@@ -39,10 +39,10 @@ namespace TrakHound_Dashboard
 
                 _currentuser = value;
 
-                if (previousUser != _currentuser || firstLogin)
-                {
-                    LoadDevices();
+                if (previousUser != _currentuser || firstLogin) LoadDevices();
 
+                if (previousUser != _currentuser)
+                {
                     // Update other pages
                     if (accountpage != null) accountpage.LoadUserConfiguration(_currentuser);
 

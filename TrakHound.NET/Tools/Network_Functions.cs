@@ -28,27 +28,10 @@ namespace TrakHound.Tools
             return null;
         }
 
-        //public static IPAddress[] GetAddressList(IPAddress ipAddress)
-        //{
-        //    var result = new List<IPAddress>();
-
-        //    byte[] ipBytes = ipAddress.GetAddressBytes();
-
-        //    var b = new byte[4];
-        //    b[0] = ipBytes[0];
-        //    b[1] = ipBytes[1];
-        //    b[2] = ipBytes[2];
-
-        //    for (var x = 0; x <= 255; x++)
-        //    {
-        //        b[3] = Convert.ToByte(x);
-
-        //        var ip = new IPAddress(b);
-        //        result.Add(ip);
-        //    }
-
-        //    return result.ToArray();
-        //}
+        public static string GetMacAddress()
+        {
+            return NetworkInterface.GetAllNetworkInterfaces().Where(nic => nic.OperationalStatus == OperationalStatus.Up).Select(nic => nic.GetPhysicalAddress().ToString()).FirstOrDefault();
+        }
 
         public static bool IsPortOpen(string host, int port, int timeout)
         {
@@ -92,28 +75,6 @@ namespace TrakHound.Tools
 
             return null;
         }
-
-        //public static IPAddress[] GetAddressList(IPAddress ipAddress)
-        //{
-        //    var result = new IPAddress[256];
-
-        //    byte[] ipBytes = ipAddress.GetAddressBytes();
-
-        //    var b = new byte[4];
-        //    b[0] = ipBytes[0];
-        //    b[1] = ipBytes[1];
-        //    b[2] = ipBytes[2];
-
-        //    for (var x = 0; x <= 255; x++)
-        //    {
-        //        b[3] = Convert.ToByte(x);
-
-        //        var ip = new IPAddress(b);
-        //        result[x] = ip;
-        //    }
-
-        //    return result;
-        //}
 
         public class PingNodes
         {

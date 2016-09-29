@@ -6,7 +6,6 @@
 using System;
 using System.Threading;
 using TrakHound.API.Users;
-using TrakHound.Tools;
 
 namespace TrakHound_Dashboard
 {
@@ -83,7 +82,6 @@ namespace TrakHound_Dashboard
                     Login_Finished(userConfig);
 
                     if (userConfig == null) TrakHound_UI.MessageBox.Show("User Login Failed. Please Try Again.", "Login Failed", TrakHound_UI.MessageBoxButtons.Ok);
-
 
                 }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
             }

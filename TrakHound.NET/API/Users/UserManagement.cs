@@ -9,8 +9,10 @@ using System.DirectoryServices;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Management;
 using System.Net;
 using System.Security.Principal;
+using System.Net.NetworkInformation;
 
 using TrakHound.Logging;
 using TrakHound.Tools;
@@ -309,17 +311,7 @@ namespace TrakHound.API.Users
         {
             public static string Get()
             {
-                var result = Properties.Settings.Default.SenderId;
-
-                if (string.IsNullOrEmpty(result))
-                {
-                    result = Guid.NewGuid().ToString();
-
-                    Properties.Settings.Default.SenderId = result;
-                    Properties.Settings.Default.Save();
-                }
-
-                return result;
+                return Network_Functions.GetMacAddress();
             }
         } 
 

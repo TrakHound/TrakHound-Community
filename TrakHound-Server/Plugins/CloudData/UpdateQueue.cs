@@ -73,7 +73,17 @@ namespace TrakHound_Server.Plugins.CloudData
         {
             while (!stop.WaitOne(0, true))
             {
-                ProcessQueue();
+                var sendList = ProcessQueue();
+                if (sendList != null)
+                {
+                    Update(Plugin.currentUser, sendList);
+
+                    foreach (var queuedInfo in sendList)
+                    {
+                        var match = queuedInfos.Find(o => o.UniqueId == queuedInfo.UniqueId);
+                        if (match != null) match.ClearClasses();
+                    }
+                }
 
                 Thread.Sleep(ApiConfiguration.UpdateInterval);
             }
@@ -89,16 +99,7 @@ namespace TrakHound_Server.Plugins.CloudData
             Logger.Log("CloudData Queue Stopped");
         }
 
-        private void RequestTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            var timer = (System.Timers.Timer)sender;
-
-            timer.Enabled = false;
-            ProcessQueue();
-            if (stop != null && !stop.WaitOne(0, true)) timer.Enabled = true;
-        }
-
-        private void ProcessQueue()
+        private List<Data.DeviceInfo> ProcessQueue()
         {
             if (queuedInfos.Count > 0)
             {
@@ -124,16 +125,11 @@ namespace TrakHound_Server.Plugins.CloudData
                     else break;
                 }
 
-                Update(Plugin.currentUser, sendList);
-
-                foreach (var queuedInfo in sendList)
-                {
-                    var match = queuedInfos.Find(o => o.UniqueId == queuedInfo.UniqueId);
-                    if (match != null) match.ClearClasses();
-                }
+                return sendList;
             }
-        }
 
+            return null;
+        }
 
         public static void Update(UserConfiguration userConfig, List<Data.DeviceInfo> deviceInfos)
         {

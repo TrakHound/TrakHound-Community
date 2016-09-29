@@ -80,6 +80,7 @@
     <Compile Include="Plugins\InstanceData\InstanceData.cs" />
     <Compile Include="Plugins\InstanceData\Plugin.cs" />
     <Compile Include="Plugins\InstanceData\Processing.cs" />
+    <Compile Include="Plugins\MTConnectData\AgentData.cs" />
     <Compile Include="Plugins\MTConnectData\Current.cs" />
     <Compile Include="Plugins\MTConnectData\Plugin.cs" />
     <Compile Include="Plugins\MTConnectData\Probe.cs" />
@@ -132,6 +133,9 @@
       <Project>{0621db23-5405-4771-975a-b47dc4b19d6b}</Project>
       <Name>TrakHound.NET</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Header.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

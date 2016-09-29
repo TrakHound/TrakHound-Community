@@ -3,6 +3,8 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+using System.Threading;
+
 using TrakHound.API.Users;
 using TrakHound.Logging;
 using TrakHound.Tools;
@@ -12,15 +14,17 @@ namespace TrakHound.Servers.DataProcessing
     public partial class ProcessingServer
     {
 
-        UserConfiguration currentuser;
+        UserConfiguration _currentuser;
         public UserConfiguration CurrentUser
         {
-            get { return currentuser; }
+            get { return _currentuser; }
             set
             {
-                currentuser = value;
+                var previousUser = _currentuser;
 
-                SendCurrentUserChanged(currentuser);
+                _currentuser = value;
+
+                SendCurrentUserChanged(_currentuser);
             }
         }
 
@@ -35,7 +39,6 @@ namespace TrakHound.Servers.DataProcessing
 
         public void Login()
         {
-            //UserLoginFile.LoginData loginData = UserLoginFile.Read();
             var loginData = ServerCredentials.Read();
             Login(loginData);
         }
@@ -44,14 +47,28 @@ namespace TrakHound.Servers.DataProcessing
         {
             UserConfiguration userConfig = null;
 
-            if (loginData != null)
+            if (loginData != null )
             {
-                userConfig = UserManagement.TokenLogin(loginData.Token);
+                if (CurrentUser == null || CurrentUser.Username != loginData.Username)
+                {
+                    while (loginData != null && userConfig == null)
+                    {
+                        userConfig = UserManagement.TokenLogin(loginData.Token);
+                        if (userConfig == null)
+                        {
+                            Logger.Log(String_Functions.UppercaseFirst(loginData.Username) + " Failed to Login... Retrying in 5 seconds");
+
+                            Thread.Sleep(5000);
+
+                            loginData = ServerCredentials.Read();
+                        }
+                    }
+                }
+
+                if (userConfig != null) Logger.Log(String_Functions.UppercaseFirst(userConfig.Username) + " Logged in Successfully");
             }
 
             CurrentUser = userConfig;
-
-            if (userConfig != null) Logger.Log(String_Functions.UppercaseFirst(userConfig.Username) + " Logged in Successfully");
         }
 
         public void Login(UserConfiguration userConfig)

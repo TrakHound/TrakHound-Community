@@ -131,16 +131,19 @@ namespace TrakHound_Dashboard
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
             Version version = assembly.GetName().Version;
 
+            string format = "{0}.{1}.{2}";
+            string s = string.Format(format, version.Major, version.Minor, version.Build);
+
             string last = Properties.Settings.Default.LastVersion;
-            if (last != "intial" && last != version.ToString())
+            if (last != "intial" && last != s)
             {
-                Properties.Settings.Default.LastVersion = version.ToString();
+                Properties.Settings.Default.LastVersion = s;
                 Properties.Settings.Default.Save();
 
                 // Add Notification to Message Center
                 var message = new Controls.Message_Center.MessageData();
-                message.Title = "TrakHound Updated to " + version.ToString();
-                message.Text = "TrakHound Successfully Updated from " + last + " to " + version.ToString();
+                message.Title = "TrakHound Updated to " + s;
+                message.Text = "TrakHound Successfully Updated from " + last + " to " + s;
                 message.Type = Messages.MessageType.TRAKHOUND_UPDATE;
                 message.Image = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Update_01.png"));
                 messageCenter.AddMessage(message);

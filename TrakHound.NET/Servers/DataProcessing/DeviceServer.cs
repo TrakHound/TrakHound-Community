@@ -9,7 +9,6 @@ using System.Threading;
 
 using TrakHound.Configurations;
 using TrakHound.Logging;
-using TrakHound.Plugins;
 using TrakHound.Plugins.Server;
 
 namespace TrakHound.Servers.DataProcessing

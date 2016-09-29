@@ -50,6 +50,7 @@
     </Reference>
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceProcess" />
@@ -156,12 +157,10 @@
     </Compile>
     <Compile Include="Servers\DataProcessing\Devices.cs" />
     <Compile Include="Servers\DataProcessing\DeviceServer.cs" />
-    <Compile Include="Servers\DataProcessing\Header.cs" />
+    <None Include="Servers\DataProcessing\Header.cs" />
     <Compile Include="Servers\DataProcessing\Login.cs" />
     <Compile Include="Tables\Names.cs" />
     <None Include="Tables\Variables.cs" />
-    <None Include="Tools\Web\HttpContentParser.cs" />
-    <None Include="Tools\Web\HttpMultipartParser.cs" />
     <Compile Include="Tools\IpNetwork\BigIntegerExt.cs" />
     <Compile Include="Tools\IpNetwork\IPAddressCollection.cs" />
     <Compile Include="Tools\IpNetwork\IPNetwork.cs" />
@@ -172,7 +171,7 @@
     <Compile Include="API\Users\CreateUserInfo.cs" />
     <Compile Include="API\Users\EditUserInfo.cs" />
     <Compile Include="API\Users\UserConfiguration.cs" />
-    <Compile Include="API\Users\UserLoginFile.cs" />
+    <Compile Include="API\Users\ServerCredentials.cs" />
     <Compile Include="API\Users\UserManagement.cs" />
     <Compile Include="Shifts\ShiftId.cs" />
     <Compile Include="Tools\DataTable_Functions.cs" />
@@ -187,13 +186,11 @@
     <Compile Include="Tools\Service_Functions.cs" />
     <Compile Include="Tools\String_Functions.cs" />
     <Compile Include="Tools\TimeSpan_Functions.cs" />
-    <Compile Include="Tools\UI_Functions.cs" />
     <Compile Include="Tools\WCF_Functions.cs" />
     <Compile Include="Tools\Web\Download.cs" />
     <Compile Include="Tools\Web\HTTP.cs" />
     <Compile Include="Tools\Web\JSON.cs" />
     <Compile Include="Tools\Web\ProxySettings.cs" />
-    <None Include="Tools\Window_Functions.cs" />
     <Compile Include="Tools\XML\Attributes.cs" />
     <Compile Include="Tools\XML\Documents.cs" />
     <Compile Include="Tools\XML\Files.cs" />
@@ -202,7 +199,7 @@
     <Compile Include="Tools\XML_Functions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Servers\DataProcessing\Header.txt" />
+    <None Include="Servers\DataProcessing\Header.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

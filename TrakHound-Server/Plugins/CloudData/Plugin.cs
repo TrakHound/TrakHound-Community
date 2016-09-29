@@ -449,17 +449,8 @@ namespace TrakHound_Server.Plugins.CloudData
                             hourInfo.Date = info.Timestamp.ToString(Data.HourInfo.DateFormat);
                             hourInfo.Hour = info.Timestamp.Hour;
 
-                            if (pc.CalculationType == Parts.CalculationType.Incremental)
-                            {
-                                hourInfo.TotalPieces = info.Count;
-
-                                deviceInfo.AddHourInfo(hourInfo);
-                            }
-                            else
-                            {
-                                hourInfo.TotalPieces = info.Count;
-                                deviceInfo.AddHourInfo(hourInfo);
-                            }
+                            hourInfo.TotalPieces = info.Count;
+                            deviceInfo.AddHourInfo(hourInfo);
                         }
 
                         queue.Add(deviceInfo);
