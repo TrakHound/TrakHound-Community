@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using TrakHound;
 using TrakHound.Configurations;
@@ -16,15 +17,12 @@ namespace TrakHound_Server.Plugins.Parts
 {
     public class Plugin : IServerPlugin
     {
-
-        public string Name { get { return "Parts"; } }
-
-        private DateTime lastTimestamp = DateTime.MinValue;
-
         private long lastSequence = 0;
 
-
         private DeviceConfiguration configuration;
+
+
+        public string Name { get { return "Parts"; } }
 
         public void Initialize(DeviceConfiguration config)
         {
@@ -43,28 +41,44 @@ namespace TrakHound_Server.Plugins.Parts
         {
             if (data != null)
             {
+                if (data.Id == "MTCONNECT_AGENT_RESET")
+                {
+                    lastSequence = 0;
+                }
+
                 if (data.Id == "GENERATED_EVENTS")
                 {
                     var genEventItems = (List<GeneratedEvent>)data.Data02;
+                    genEventItems = genEventItems.OrderBy(o => o.CurrentValue.Timestamp).ToList();
 
                     var pc = Configuration.Get(configuration);
                     if (pc != null)
                     {
-                        genEventItems = genEventItems.FindAll(x => x.EventName == pc.PartsEventName);
-
                         var infos = new List<PartInfo>();
 
-                        foreach (var item in genEventItems)
-                        {
-                            PartInfo info = PartInfo.Get(configuration, item);
-                            if (info != null && info.Count > 0 && info.Sequence > lastSequence)
-                            {
-                                lastTimestamp = info.Timestamp;
-                                infos.Add(info);
+                        PartInfo saveInfo = null;
 
-                                lastSequence = info.Sequence;
-                                SaveStoredSequence(info);
+                        foreach (var partCountEvent in pc.Events)
+                        {
+                            var matchedItems = genEventItems.FindAll(x => x.EventName == partCountEvent.EventName);
+
+                            foreach (var item in genEventItems)
+                            {
+                                PartInfo info = PartInfo.Get(partCountEvent, item, lastSequence);
+                                if (info != null && info.Count > 0)
+                                {
+                                    infos.Add(info);
+                                    if (saveInfo == null || saveInfo.Sequence < info.Sequence) saveInfo = info;
+
+                                    Console.WriteLine(configuration.UniqueId + " :: " + item.EventName + " = " + info.Count);
+                                }
                             }
+                        }
+
+                        if (saveInfo != null)
+                        {
+                            lastSequence = saveInfo.Sequence;
+                            SaveStoredSequence(saveInfo);
                         }
 
                         if (infos.Count > 0)
@@ -98,6 +112,18 @@ namespace TrakHound_Server.Plugins.Parts
                     Properties.Settings.Default.PartsStoredSequences = JSON.FromList<PartInfo.SequenceInfo>(sequenceInfos);
                     Properties.Settings.Default.Save();
                 }
+            }
+            else
+            {
+                var sequenceInfos = new List<PartInfo.SequenceInfo>();
+
+                var sequenceInfo = new PartInfo.SequenceInfo();
+                sequenceInfo.UniqueId = configuration.UniqueId;
+                sequenceInfo.Sequence = info.Sequence;
+                sequenceInfos.Add(sequenceInfo);
+
+                Properties.Settings.Default.PartsStoredSequences = JSON.FromList<PartInfo.SequenceInfo>(sequenceInfos);
+                Properties.Settings.Default.Save();
             }
         }
 

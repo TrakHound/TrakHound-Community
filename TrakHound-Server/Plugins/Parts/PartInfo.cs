@@ -5,7 +5,6 @@
 
 using System;
 
-using TrakHound.Configurations;
 using TrakHound.Tools;
 using TrakHound_Server.Plugins.GeneratedEvents;
 
@@ -22,48 +21,50 @@ namespace TrakHound_Server.Plugins.Parts
         public int Count { get; set; }
 
 
-        public static PartInfo Get(DeviceConfiguration config, GeneratedEvent genEvent)
+        public static PartInfo Get(PartCountEvent partCountEvent, GeneratedEvent genEvent, long lastSequence)
         {
-            var pc = Configuration.Get(config);
-            if (pc != null)
+            if (genEvent.EventName == partCountEvent.EventName && genEvent.CurrentValue != null &&
+                genEvent.CurrentValue.Value == String_Functions.UppercaseFirst(partCountEvent.EventValue.Replace('_', ' ')))
             {
-                if (genEvent.EventName == pc.PartsEventName && genEvent.CurrentValue != null &&
-                genEvent.CurrentValue.Value == String_Functions.UppercaseFirst(pc.PartsEventValue.Replace('_', ' ')))
+                if (!string.IsNullOrEmpty(partCountEvent.CaptureItemLink))
                 {
-                    DateTime timestamp = genEvent.CurrentValue.Timestamp;
-
-                    var info = new PartInfo();
-                    info.Id = Guid.NewGuid().ToString();
-                    info.Timestamp = timestamp;
-
-                    foreach (var captureItem in genEvent.CaptureItems)
+                    var captureItem = genEvent.CaptureItems.Find(x => x.Name == partCountEvent.CaptureItemLink);
+                    if (captureItem != null && captureItem.Sequence > lastSequence)
                     {
                         int count = 0;
                         if (int.TryParse(captureItem.Value, out count))
                         {
+                            DateTime timestamp = genEvent.CurrentValue.Timestamp;
+
+                            var info = new PartInfo();
+                            info.Id = Guid.NewGuid().ToString();
+                            info.Timestamp = timestamp;
                             info.Sequence = captureItem.Sequence;
 
-                            if (pc.CalculationType == CalculationType.Incremental)
+                            if (partCountEvent.CalculationType == CalculationType.Incremental)
                             {
-                                info.Count += count;
+                                info.Count = count;
                             }
-                            else if (pc.CalculationType == CalculationType.Total)
+                            else if (partCountEvent.CalculationType == CalculationType.Total)
                             {
                                 int previousCount = 0;
                                 int.TryParse(captureItem.PreviousValue, out previousCount);
 
-                                info.Count += count - previousCount;
-                            } 
+                                // If Part Count is less than stored value then assume
+                                // it has been reset and needs to be incremented the entire new amount
+                                if (count < previousCount) info.Count = count;
+                                else info.Count = count - previousCount;
+                            }
+
+                            return info;
                         }
                     }
-
-                    return info;
                 }
             }
 
             return null;
         }
-
+        
         public class SequenceInfo
         {
             public string UniqueId { get; set; }

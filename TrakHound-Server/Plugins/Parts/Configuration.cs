@@ -4,6 +4,7 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
 
@@ -26,12 +27,13 @@ namespace TrakHound_Server.Plugins.Parts
 
     public class Configuration
     {
+        public Configuration()
+        {
+            Events = new List<PartCountEvent>();
+        }
 
-        public string PartsEventName { get; set; }
+        public List<PartCountEvent> Events { get; set; }
 
-        public string PartsEventValue { get; set; }
-
-        public CalculationType CalculationType { get; set; }
 
         public static Configuration Read(XmlDocument xml)
         {
@@ -45,30 +47,81 @@ namespace TrakHound_Server.Plugins.Parts
                 {
                     XmlNode node = nodes[0];
 
+                    OldConfiguration oldConfig = null;
+
                     foreach (XmlNode child in node.ChildNodes)
                     {
                         if (child.NodeType == XmlNodeType.Element)
                         {
-                            if (child.Name.ToLower() == "calculationtype")
+                            if (child.Name.ToLower() == "event")
                             {
-                                switch (child.InnerText.ToLower())
+                                var partCountEvent = new PartCountEvent();
+
+                                foreach (XmlNode eventChild in child.ChildNodes)
                                 {
-                                    case "incremental": result.CalculationType = CalculationType.Incremental; break;
-                                    case "total": result.CalculationType = CalculationType.Total; break;
+                                    if (eventChild.NodeType == XmlNodeType.Element)
+                                    {
+                                        if (eventChild.Name.ToLower() == "calculationtype") // Deprecated
+                                        {
+                                            switch (eventChild.InnerText.ToLower())
+                                            {
+                                                case "incremental": partCountEvent.CalculationType = CalculationType.Incremental; break;
+                                                case "total": partCountEvent.CalculationType = CalculationType.Total; break;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            var type = typeof(PartCountEvent);
+
+                                            PropertyInfo info = type.GetProperty(eventChild.Name);
+                                            if (info != null)
+                                            {
+                                                Type t = info.PropertyType;
+                                                info.SetValue(partCountEvent, Convert.ChangeType(eventChild.InnerText, t), null);
+                                            }
+                                        }
+                                    }
                                 }
+
+                                result.Events.Add(partCountEvent);
                             }
                             else
                             {
-                                Type Setting = typeof(Configuration);
-                                PropertyInfo info = Setting.GetProperty(child.Name);
+                                if (oldConfig == null) oldConfig = new OldConfiguration();
 
-                                if (info != null)
+                                if (child.Name.ToLower() == "calculationtype") // Deprecated
                                 {
-                                    Type t = info.PropertyType;
-                                    info.SetValue(result, Convert.ChangeType(child.InnerText, t), null);
+                                    switch (child.InnerText.ToLower())
+                                    {
+                                        case "incremental": oldConfig.CalculationType = CalculationType.Incremental; break;
+                                        case "total": oldConfig.CalculationType = CalculationType.Total; break;
+                                    }
                                 }
-                            } 
+                                else // Deprecated
+                                {
+                                    var type = typeof(OldConfiguration);
+
+                                    PropertyInfo info = type.GetProperty(child.Name);
+                                    if (info != null)
+                                    {
+                                        Type t = info.PropertyType;
+                                        info.SetValue(oldConfig, Convert.ChangeType(child.InnerText, t), null);
+                                    }
+                                }
+                            }
                         }
+                    }
+
+                    if (oldConfig != null)
+                    {
+                        var partCountEvent = new PartCountEvent();
+
+                        partCountEvent.EventName = oldConfig.PartsEventName;
+                        partCountEvent.EventValue = oldConfig.PartsEventValue;
+                        partCountEvent.CaptureItemLink = oldConfig.PartsCaptureItemLink;
+                        partCountEvent.CalculationType = oldConfig.CalculationType;
+
+                        result.Events.Add(partCountEvent);
                     }
                 }
             }
@@ -86,5 +139,30 @@ namespace TrakHound_Server.Plugins.Parts
             return result;
         }
 
+    }
+
+    /// <summary>
+    /// Deprecated. Use Configuration class
+    /// </summary>
+    public class OldConfiguration
+    {
+        public string PartsEventName { get; set; }
+
+        public string PartsEventValue { get; set; }
+
+        public string PartsCaptureItemLink { get; set; }
+
+        public CalculationType CalculationType { get; set; }
+    }
+
+    public class PartCountEvent
+    {
+        public string EventName { get; set; }
+
+        public string EventValue { get; set; }
+
+        public string CaptureItemLink { get; set; }
+
+        public CalculationType CalculationType { get; set; }
     }
 }

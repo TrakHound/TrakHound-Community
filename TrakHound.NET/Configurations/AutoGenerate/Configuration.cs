@@ -44,9 +44,9 @@ namespace TrakHound.Configurations.AutoGenerate
                 GeneratedEvents.ProductionStatus.Add(dt, items);
                 GeneratedEvents.CycleExecution.Add(dt, items);
                 GeneratedEvents.PartsCount.Add(dt, items);
-                Shifts.Add(dt, items);
+                //Shifts.Add(dt, items);
                 Cycles.Add(dt, items);
-                Parts.Add(dt);
+                Parts.Add(dt, items);
 
                 // Manufacturer Specific Processing
                 Manufacturers.Okuma.Process(dt, probeData.Device);

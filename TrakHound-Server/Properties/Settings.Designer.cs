@@ -46,5 +46,17 @@ namespace TrakHound_Server.Properties {
                 this["UpdateSettings"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string StoredAgentData {
+            get {
+                return ((string)(this["StoredAgentData"]));
+            }
+            set {
+                this["StoredAgentData"] = value;
+            }
+        }
     }
 }
