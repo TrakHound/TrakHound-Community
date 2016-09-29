@@ -202,7 +202,7 @@ namespace TrakHound.Servers.DataStorage
                 else
                 {
                     backupTimer = new System.Timers.Timer();
-                    backupTimer.Interval = BACKUP_INTERVAL;
+                    backupTimer.Interval = 10000;
                     backupTimer.Elapsed += BackupTimer_Elapsed;
                 }
 
@@ -213,6 +213,9 @@ namespace TrakHound.Servers.DataStorage
 
         private void BackupTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
+            var timer = (System.Timers.Timer)sender;
+            timer.Interval = BACKUP_INTERVAL;
+
             Backup.Create(Data.DeviceInfos.ToList());
         }
 
