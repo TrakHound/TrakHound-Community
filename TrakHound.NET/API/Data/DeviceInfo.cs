@@ -15,6 +15,8 @@ namespace TrakHound.API
     {
         public class DeviceInfo
         {
+            private object _lock = new object();
+
 
             [JsonProperty("unique_id")]
             public string UniqueId { get; set; }
@@ -180,68 +182,61 @@ namespace TrakHound.API
 
             public void CombineHours()
             {
-                if (Hours != null && Hours.Count > 0)
+                lock (_lock)
                 {
-                    lock (Hours)
+                    if (Hours != null && Hours.Count > 0)
                     {
                         var newHours = new List<HourInfo>();
 
                         var _hours = Hours.ToList();
                         if (_hours != null) _hours = _hours.FindAll(o => o != null); // Clean list of any null HourInfos
-                        if (_hours != null)
+
+                        var distinctDates = _hours.Select(o => o.Date).Distinct();
+
+                        foreach (string distinctDate in distinctDates.ToList())
                         {
-                            var distinctDates = _hours.Select(o => o.Date).Distinct();
-                            if (distinctDates != null)
+                            var sameDate = _hours.FindAll(o => o.Date == distinctDate);
+
+                            var distinctHours = sameDate.Select(o => o.Hour).Distinct();
+
+                            foreach (int distinctHour in distinctHours.ToList())
                             {
-                                foreach (string distinctDate in distinctDates.ToList())
+                                var hourInfo = new HourInfo();
+                                hourInfo.Date = distinctDate;
+                                hourInfo.Hour = distinctHour;
+
+                                var sameHours = _hours.FindAll(o => o.Hour == distinctHour);
+
+                                foreach (var sameHour in sameHours.ToList())
                                 {
-                                    var sameDate = _hours.FindAll(o => o.Date == distinctDate);
+                                    // OEE
+                                    hourInfo.PlannedProductionTime += sameHour.PlannedProductionTime;
+                                    hourInfo.OperatingTime += sameHour.OperatingTime;
+                                    hourInfo.IdealOperatingTime += sameHour.IdealOperatingTime;
+                                    hourInfo.TotalPieces += sameHour.TotalPieces;
+                                    hourInfo.GoodPieces += sameHour.GoodPieces;
 
-                                    var distinctHours = sameDate.Select(o => o.Hour).Distinct();
-                                    if (distinctHours != null)
-                                    {
-                                        foreach (int distinctHour in distinctHours.ToList())
-                                        {
-                                            var hourInfo = new HourInfo();
-                                            hourInfo.Date = distinctDate;
-                                            hourInfo.Hour = distinctHour;
+                                    hourInfo.TotalTime += sameHour.TotalTime;
 
-                                            var sameHours = _hours.FindAll(o => o.Hour == distinctHour);
-                                            if (sameHours != null)
-                                            {
-                                                foreach (var sameHour in sameHours.ToList())
-                                                {
-                                                    // OEE
-                                                    hourInfo.PlannedProductionTime += sameHour.PlannedProductionTime;
-                                                    hourInfo.OperatingTime += sameHour.OperatingTime;
-                                                    hourInfo.IdealOperatingTime += sameHour.IdealOperatingTime;
-                                                    hourInfo.TotalPieces += sameHour.TotalPieces;
-                                                    hourInfo.GoodPieces += sameHour.GoodPieces;
+                                    // Device Status
+                                    hourInfo.Active += sameHour.Active;
+                                    hourInfo.Idle += sameHour.Idle;
+                                    hourInfo.Alert += sameHour.Alert;
 
-                                                    hourInfo.TotalTime += sameHour.TotalTime;
-
-                                                    // Device Status
-                                                    hourInfo.Active += sameHour.Active;
-                                                    hourInfo.Idle += sameHour.Idle;
-                                                    hourInfo.Alert += sameHour.Alert;
-
-                                                    // Production Status
-                                                    hourInfo.Production += sameHour.Production;
-                                                    hourInfo.Setup += sameHour.Setup;
-                                                    hourInfo.Teardown += sameHour.Teardown;
-                                                    hourInfo.Maintenance += sameHour.Maintenance;
-                                                    hourInfo.ProcessDevelopment += sameHour.ProcessDevelopment;
-                                                }
-                                            }
-
-                                            newHours.Add(hourInfo);
-                                        }
-                                    }
+                                    // Production Status
+                                    hourInfo.Production += sameHour.Production;
+                                    hourInfo.Setup += sameHour.Setup;
+                                    hourInfo.Teardown += sameHour.Teardown;
+                                    hourInfo.Maintenance += sameHour.Maintenance;
+                                    hourInfo.ProcessDevelopment += sameHour.ProcessDevelopment;
                                 }
+
+                                newHours.Add(hourInfo);
                             }
 
-                            Hours = newHours;
                         }
+
+                        Hours = newHours;
                     }
                 }
             }
@@ -263,34 +258,52 @@ namespace TrakHound.API
 
             public void AddClass(string id, object obj)
             {
-                lock (Classes)
+                if (!string.IsNullOrEmpty(id))
                 {
-                    var o = GetClass(id);
-                    if (o == null) Classes.Add(id, obj);
-                    else
+                    lock (_lock)
                     {
-                        RemoveClass(id);
-                        AddClass(id, obj);
+                        object o = null;
+                        Classes.TryGetValue(id, out o);
+                        if (o == null) Classes.Add(id, obj);
+                        else
+                        {
+                            Classes.Remove(id);
+                            Classes.Add(id, obj);
+                        }
                     }
-                }
+                }             
             }
 
             public object GetClass(string id)
             {
-                object obj = null;
-                Classes.TryGetValue(id, out obj);
+                if (!string.IsNullOrEmpty(id))
+                {
+                    lock (_lock)
+                    {
+                        object obj = null;
+                        Classes.TryGetValue(id, out obj);
 
-                return obj;
+                        return obj;
+                    }
+                }
+
+                return null;                
             }
 
             public void RemoveClass(string id)
             {
-                if (id != null) Classes.Remove(id);
+                lock (_lock)
+                {
+                    if (id != null) Classes.Remove(id);
+                } 
             }
 
             public void ClearClasses()
             {
-                Classes.Clear();
+                lock (_lock)
+                {
+                    Classes.Clear();
+                }        
             }
 
             #endregion
@@ -303,23 +316,26 @@ namespace TrakHound.API
 
             private object ToJsonObject()
             {
-                var data = new Dictionary<string, object>();
-
-                data.Add("unique_id", UniqueId);
-                data.Add("enabled", Enabled);
-
-                foreach (var c in Classes)
+                lock (_lock)
                 {
-                    object match = false;
-                    if (!data.TryGetValue(c.Key, out match))
+                    var data = new Dictionary<string, object>();
+
+                    data.Add("unique_id", UniqueId);
+                    data.Add("enabled", Enabled);
+
+                    foreach (var c in Classes)
                     {
+                        object match = false;
+                        if (!data.TryGetValue(c.Key, out match))
+                        {
 
-                        data.Add(c.Key, c.Value);
+                            data.Add(c.Key, c.Value);
+                        }
                     }
-                }
 
-                if (data.Count > 1) return data;
-                else return null;
+                    if (data.Count > 1) return data;
+                    else return null;
+                }              
             }
 
             public static string ListToJson(List<DeviceInfo> deviceInfos)
@@ -338,24 +354,35 @@ namespace TrakHound.API
 
             public DeviceInfo Copy()
             {
-                var result = new DeviceInfo();
-                foreach (var c in Classes)
+                lock (_lock)
                 {
-                    result.AddClass(c.Key, c.Value);
-                }
+                    var result = new DeviceInfo();
+                    foreach (var c in Classes)
+                    {
+                        object o = null;
+                        Classes.TryGetValue(c.Key, out o);
+                        if (o == null) Classes.Add(c.Key, c.Value);
+                        else
+                        {
+                            Classes.Remove(c.Key);
+                            Classes.Add(c.Key, c.Value);
+                        }
+                    }
 
-                return result;
+                    return result;
+                }
             }
 
 
-            public void AddHourInfo(Data.HourInfo hourInfo)
+            public void AddHourInfo(HourInfo hourInfo)
             {
-                if (hourInfo != null)
+                lock (_lock)
                 {
-                    lock (this)
+                    if (hourInfo != null)
                     {
+
                         var hours = Hours;
-                        if (hours == null) hours = new List<Data.HourInfo>();
+                        if (hours == null) hours = new List<HourInfo>();
 
                         hours.Add(hourInfo);
 
@@ -364,16 +391,16 @@ namespace TrakHound.API
                 }
             }
 
-            public void AddHourInfos(List<Data.HourInfo> hourInfos)
+            public void AddHourInfos(List<HourInfo> hourInfos)
             {
-                if (hourInfos != null && hourInfos.Count > 0)
+                lock (_lock)
                 {
-                    var _hourInfos = hourInfos.FindAll(o => o != null);
-
-                    lock (this)
+                    if (hourInfos != null && hourInfos.Count > 0)
                     {
+                        var _hourInfos = hourInfos.FindAll(o => o != null);
+
                         var hours = Hours;
-                        if (hours == null) hours = new List<Data.HourInfo>();
+                        if (hours == null) hours = new List<HourInfo>();
 
                         foreach (var hourInfo in _hourInfos)
                         {
