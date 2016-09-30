@@ -37,6 +37,8 @@ namespace TrakHound.Servers.DataStorage
         {
             var apiMonitor = new ApiConfiguration.Monitor();
             apiMonitor.ApiConfigurationChanged += ApiMonitor_ApiConfigurationChanged;
+
+            LoadDevices();
         }
 
         private void ApiMonitor_ApiConfigurationChanged(ApiConfiguration config)
@@ -157,6 +159,28 @@ namespace TrakHound.Servers.DataStorage
 
                                 break;
 
+                            case "devices":
+
+                                // Remove 'data' from path
+                                path = path.Substring(paths[0].Length);
+
+                                // Remove first forward slash
+                                path = path.TrimStart('/');
+
+                                if (context.Request.HttpMethod == "GET")
+                                {
+                                    paths = path.Split('/');
+                                    if (paths.Length > 0)
+                                    {
+                                        switch (paths[0].ToLower())
+                                        {
+                                            case "list": result = Data.List(context.Request.Url.ToString()); break;
+                                        }
+                                    }
+                                }
+
+                                break;
+
                             case "config":
 
                                 var apiConfig = ApiConfiguration.Read();
@@ -194,6 +218,8 @@ namespace TrakHound.Servers.DataStorage
                     var backupInfos = Backup.Load(configs);
                     if (backupInfos != null && backupInfos.Count > 0)
                     {
+                        backupInfos = backupInfos.FindAll(o => o.Enabled).ToList();
+
                         Data.DeviceInfos.AddRange(backupInfos);
                     }
                 }
@@ -283,78 +309,72 @@ namespace TrakHound.Servers.DataStorage
                             {
                                 foreach (var device in devices)
                                 {
-                                    bool newInfo = false;
-
                                     int i = DeviceInfos.FindIndex(o => o.UniqueId == device.UniqueId);
-                                    if (i < 0)
+                                    if (i >= 0)
                                     {
-                                        DeviceInfos.Add(device);
-                                        i = DeviceInfos.FindIndex(o => o.UniqueId == device.UniqueId);
-                                        newInfo = true;
-                                    }
+                                        var info = DeviceInfos[i];
 
-                                    var info = DeviceInfos[i];
+                                        object obj = null;
 
-                                    object obj = null;
+                                        API.Data.StatusInfo status = null;
+                                        obj = device.GetClass("status");
+                                        if (obj != null)
+                                        {
+                                            info.AddClass("status", obj);
+                                            status = (API.Data.StatusInfo)obj;
+                                        }
 
-                                    API.Data.StatusInfo status = null;
-                                    obj = device.GetClass("status");
-                                    if (obj != null)
-                                    {
-                                        info.AddClass("status", obj);
-                                        status = (API.Data.StatusInfo)obj;
-                                    }
+                                        obj = device.GetClass("controller");
+                                        if (obj != null) info.AddClass("controller", obj);
 
-                                    obj = device.GetClass("controller");
-                                    if (obj != null) info.AddClass("controller", obj);
+                                        // Get HourInfos for current day
+                                        List<API.Data.HourInfo> hours = null;
+                                        obj = info.GetClass("hours");
+                                        if (obj != null)
+                                        {
+                                            info.RemoveClass("hours");
+                                            hours = (List<API.Data.HourInfo>)obj;
+                                        }
 
-                                    // Get HourInfos for current day
-                                    List<API.Data.HourInfo> hours = null;
-                                    obj = info.GetClass("hours");
-                                    if (obj != null)
-                                    {
-                                        info.RemoveClass("hours");
-                                        hours = (List<API.Data.HourInfo>)obj;
-                                    }
+                                        // Add new HourInfo objects and then combine them into the current list
+                                        obj = device.GetClass("hours");
+                                        if (obj != null)
+                                        {
+                                            if (hours == null) hours = new List<API.Data.HourInfo>();
 
-                                    // Add new HourInfo objects and then combine them into the current list
-                                    obj = device.GetClass("hours");
-                                    if (obj != null)
-                                    {
-                                        if (hours == null) hours = new List<API.Data.HourInfo>();
+                                            hours.AddRange((List<API.Data.HourInfo>)obj);
+                                        }
 
-                                        hours.AddRange((List<API.Data.HourInfo>)obj);
-                                    }
+                                        if (hours != null)
+                                        {
+                                            hours = hours.FindAll(o => TestHourDate(o));
+                                            hours = API.Data.HourInfo.CombineHours(hours);
 
-                                    if (hours != null)
-                                    {
-                                        hours = hours.FindAll(o => TestHourDate(o));
-                                        hours = API.Data.HourInfo.CombineHours(hours);
+                                            // Add Hours
+                                            info.AddClass("hours", hours);
 
-                                        // Add Hours
-                                        info.AddClass("hours", hours);
+                                            // Add OEE
+                                            var oee = API.Data.HourInfo.GetOeeInfo(hours);
+                                            if (oee != null) info.AddClass("oee", oee);
 
-                                        // Add OEE
-                                        var oee = API.Data.HourInfo.GetOeeInfo(hours);
-                                        if (oee != null) info.AddClass("oee", oee);
+                                            // Add Timers
+                                            var timers = new API.Data.TimersInfo();
+                                            timers.Total = hours.Select(o => o.TotalTime).Sum();
 
-                                        // Add Timers
-                                        var timers = new API.Data.TimersInfo();
-                                        timers.Total = hours.Select(o => o.TotalTime).Sum();
+                                            timers.Active = hours.Select(o => o.Active).Sum();
+                                            timers.Idle = hours.Select(o => o.Idle).Sum();
+                                            timers.Alert = hours.Select(o => o.Alert).Sum();
 
-                                        timers.Active = hours.Select(o => o.Active).Sum();
-                                        timers.Idle = hours.Select(o => o.Idle).Sum();
-                                        timers.Alert = hours.Select(o => o.Alert).Sum();
+                                            timers.Production = hours.Select(o => o.Production).Sum();
+                                            timers.Setup = hours.Select(o => o.Setup).Sum();
+                                            timers.Teardown = hours.Select(o => o.Teardown).Sum();
+                                            timers.Maintenance = hours.Select(o => o.Maintenance).Sum();
+                                            timers.ProcessDevelopment = hours.Select(o => o.ProcessDevelopment).Sum();
 
-                                        timers.Production = hours.Select(o => o.Production).Sum();
-                                        timers.Setup = hours.Select(o => o.Setup).Sum();
-                                        timers.Teardown = hours.Select(o => o.Teardown).Sum();
-                                        timers.Maintenance = hours.Select(o => o.Maintenance).Sum();
-                                        timers.ProcessDevelopment = hours.Select(o => o.ProcessDevelopment).Sum();
+                                            info.AddClass("timers", timers);
 
-                                        info.AddClass("timers", timers);
-
-                                        response = "Devices Updated Successfully";
+                                            response = "Devices Updated Successfully";
+                                        }
                                     }
                                 }
                             }
@@ -362,6 +382,64 @@ namespace TrakHound.Servers.DataStorage
                     }
                 }
                 catch (Exception ex) { Logger.Log("Error Updating Local Server Data :: " + ex.Message, LogLineType.Error); }
+
+                return response;
+            }
+
+            public static string List(string url)
+            {
+                string response = null;
+
+                try
+                {
+                    var uri = new Uri(url);
+
+                    // Get Devices Parameter
+                    string json = HttpUtility.ParseQueryString(uri.Query).Get("devices");
+                    if (!string.IsNullOrEmpty(json))
+                    {
+                        var devices = JSON.ToType<List<API.Data.DeviceListItem>>(json);
+                        if (devices != null)
+                        {
+                            var deviceInfos = new List<API.Data.DeviceInfo>();
+
+                            foreach (var device in devices)
+                            {
+                                var deviceInfo = DeviceInfos.Find(o => o.UniqueId == device.UniqueId);
+                                if (deviceInfo != null)
+                                {
+                                    var info = new API.Data.DeviceInfo();
+                                    info.UniqueId = deviceInfo.UniqueId;
+                                    info.Enabled = deviceInfo.Enabled;
+                                    info.Index = deviceInfo.Index;
+                                    info.Description = deviceInfo.Description;
+
+                                    deviceInfos.Add(info);
+                                }
+                            }
+
+                            if (deviceInfos.Count > 0) response = API.Data.DeviceInfo.ListToJson(deviceInfos);
+                        }
+                    }
+                    else
+                    {
+                        var deviceInfos = new List<API.Data.DeviceInfo>();
+
+                        foreach (var deviceInfo in DeviceInfos)
+                        {
+                            var info = new API.Data.DeviceInfo();
+                            info.UniqueId = deviceInfo.UniqueId;
+                            info.Enabled = deviceInfo.Enabled;
+                            info.Index = deviceInfo.Index;
+                            info.Description = deviceInfo.Description;
+
+                            deviceInfos.Add(info);
+                        }
+
+                        if (deviceInfos.Count > 0) response = API.Data.DeviceInfo.ListToJson(deviceInfos);
+                    }
+                }
+                catch (Exception ex) { Logger.Log("Error Getting Local Server Devices :: " + ex.Message, LogLineType.Error); }
 
                 return response;
             }
@@ -379,9 +457,129 @@ namespace TrakHound.Servers.DataStorage
 
                 if ((hourInfo.Date == fromDate && hourInfo.Hour >= fromHour) ||
                     (hourInfo.Date == toDate && hourInfo.Hour <= toHour)) return true;
-                else return false; 
+                else return false;
             }
         }
+
+        #region "Device Monitor"
+
+        /// <summary>
+        /// Devices Monitor is used to monitor when devices are Changed, Added, or Removed.
+        /// 'Changed' includes whether device was Enabled or Disabled.
+        /// Monitor runs at a fixed interval of 5 seconds and compares Devices with list of tables for current user
+        /// </summary>
+
+        private Thread devicesmonitor_THREAD;
+        private ManualResetEvent monitorstop = null;
+
+        void LoadDevices()
+        {
+            Data.DeviceInfos.Clear();
+
+            DevicesMonitor_Initialize();
+        }
+
+        void AddDevice(DeviceConfiguration config)
+        {
+            var deviceInfo = new API.Data.DeviceInfo();
+            
+            deviceInfo.UniqueId = config.UniqueId;
+            deviceInfo.Enabled = config.Enabled;
+            deviceInfo.Index = config.Index;
+
+            deviceInfo.Description = config.Description;
+
+            Data.DeviceInfos.Add(deviceInfo);
+        }
+
+        void DevicesMonitor_Initialize()
+        {
+            if (devicesmonitor_THREAD != null) devicesmonitor_THREAD.Abort();
+
+            devicesmonitor_THREAD = new Thread(new ThreadStart(DevicesMonitor_Start));
+            devicesmonitor_THREAD.Start();
+        }
+
+        void DevicesMonitor_Start()
+        {
+            monitorstop = new ManualResetEvent(false);
+
+            while (!monitorstop.WaitOne(0, true))
+            {
+                DevicesMonitor_Worker();
+
+                Thread.Sleep(2000);
+            }
+        }
+
+        void DevicesMonitor_Stop()
+        {
+            if (monitorstop != null) monitorstop.Set();
+        }
+
+        void DevicesMonitor_Worker()
+        {
+            CheckLocalDevices();
+        }
+
+        
+        private void CheckLocalDevices()
+        {
+            // Retrieves a list of devices by reading the local 'Devices' folder
+            var configs = DeviceConfiguration.ReadAll(FileLocations.Devices).ToList();
+            if (configs != null)
+            {
+                if (configs.Count > 0)
+                {
+                    foreach (DeviceConfiguration config in configs)
+                    {
+                        if (config != null)
+                        {
+                            int i = Data.DeviceInfos.FindIndex(x => x.UniqueId == config.UniqueId);
+                            if (i >= 0) // Device is already part of list
+                            {
+                                var device = Data.DeviceInfos[i];
+                                if (config.Enabled)
+                                {
+                                    device.Index = config.Index;
+                                    device.Description = config.Description;
+                                }
+                                else Data.DeviceInfos.RemoveAt(i);
+                            }
+                            else // Add Device
+                            {
+                                if (config.Enabled) AddDevice(config);
+                            }
+                        }
+                    }
+
+                    // Find devices that were removed
+                    foreach (var device in Data.DeviceInfos.ToList())
+                    {
+                        if (!configs.Exists(x => x.UniqueId == device.UniqueId))
+                        {
+                            int i = Data.DeviceInfos.FindIndex(x => x.UniqueId == device.UniqueId);
+                            if (i >= 0) Data.DeviceInfos.RemoveAt(i);
+                        }
+                    }
+                }
+                else RemoveAllDevices();
+            }
+            else
+            {
+                RemoveAllDevices();
+            }
+        }
+
+        private void RemoveAllDevices()
+        {
+            if (Data.DeviceInfos != null)
+            {
+                Data.DeviceInfos.Clear();
+            }
+        }
+
+        #endregion
 
     }
 }
