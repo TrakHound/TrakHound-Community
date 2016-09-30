@@ -10,7 +10,6 @@ using System.Linq;
 
 using TrakHound;
 using TrakHound.Configurations;
-using TrakHound.Plugins;
 
 namespace TrakHound_Server.Plugins.Instances
 {
@@ -96,7 +95,7 @@ namespace TrakHound_Server.Plugins.Instances
             data.Data01 = configuration;
             data.Data02 = instanceData;
 
-            SendData?.Invoke(data);    
+            SendData?.Invoke(data);
         }
 
 
@@ -137,6 +136,9 @@ namespace TrakHound_Server.Plugins.Instances
         // Process instance table after receiving Sample Data
         private List<InstanceData> ProcessInstances(MTConnect.Application.Streams.ReturnData currentData, MTConnect.Application.Streams.ReturnData sampleData)
         {
+            var stpw = new System.Diagnostics.Stopwatch();
+            stpw.Start();
+
             var result = new List<InstanceData>();
 
             InstanceData previousData = previousInstanceDataOld;
@@ -161,96 +163,59 @@ namespace TrakHound_Server.Plugins.Instances
                     // Get List of Variables used
                     IEnumerable<string> usedVariables = values.Select(x => x.Id).Distinct();
 
-                    bool anyChanged = false;
+                    var currentDataItems = currentData.DeviceStreams[0].GetAllDataItems();
 
-                    var ic = Configuration.Get(configuration);
-
-                    foreach (string variable in usedVariables.ToList())
+                    foreach (DateTime timestamp in sortedTimestamps.ToList())
                     {
-                        if (ic.Omit.Find(x => x.ToLower() == variable.ToLower()) == null)
+                        if (previousData == null || timestamp > previousData.Timestamp)
                         {
-                            anyChanged = true;
-                            break;
-                        }
-                    }
+                            var data = new InstanceData();
 
-                    if (anyChanged)
-                    {
-                        foreach (DateTime timestamp in sortedTimestamps.ToList())
-                        {
-                            if (previousData == null || timestamp > previousData.Timestamp)
+                            // Preset previous values into new InstanceData object
+                            if (previousData != null) data = previousData;
+                            // Fill unused variables with the values from the CurrentData object
+                            else FillInstanceDataWithCurrentData(usedVariables.ToList(), data, currentDataItems);
+
+                            // Set timestamp for InstanceData object
+                            data.Timestamp = timestamp;
+
+                            data.AgentInstanceId = currentData.Header.InstanceId;
+
+                            // Get List of Values at this timestamp
+                            var valuesAtTimestamp = values.FindAll(x => x.Timestamp == timestamp);
+
+                            foreach (var ivd in valuesAtTimestamp)
                             {
-                                var data = new InstanceData();
-
-                                // Preset previous values into new InstanceData object
-                                if (previousData != null) data = previousData.Copy();
-                                // Fill unused variables with the values from the CurrentData object
-                                else FillInstanceDataWithCurrentData(usedVariables.ToList(), data, currentData);
-
-                                // Set timestamp for InstanceData object
-                                data.Timestamp = timestamp;
-
-                                data.AgentInstanceId = currentData.Header.InstanceId;
-
-                                // Get List of Values at this timestamp
-                                var valuesAtTimestamp = values.FindAll(x => x.Timestamp == timestamp);
-
-                                foreach (var ivd in valuesAtTimestamp)
+                                InstanceData.DataItemValue oldval = data.Values.Find(x => x.Id == ivd.Id);
+                                // if value with id is already in data.values then overwrite the value
+                                if (oldval != null)
                                 {
-                                    InstanceData.DataItemValue oldval = data.Values.Find(x => x.Id == ivd.Id);
-                                    // if value with id is already in data.values then overwrite the value
-                                    if (oldval != null)
+                                    string s = null;
+                                    if (ivd.Value != null) s = ivd.Value.ToString();
+
+                                    if (oldval.Value != s)
                                     {
-                                        string s = null;
-                                        if (ivd.Value != null) s = ivd.Value.ToString();
-
-                                        if (oldval.Value != s)
-                                        {
-                                            oldval.Value = s;
-                                        }
-                                    }
-                                    // if not already in data.values then create new InstanceData.Value object and add it
-                                    else
-                                    {
-                                        var newval = new InstanceData.DataItemValue();
-                                        newval.Id = ivd.Id;
-                                        newval.Type = ivd.Type;
-                                        newval.SubType = ivd.SubType;
-
-                                        if (ivd.Value != null) newval.Value = ivd.Value.ToString();
-                                        data.Values.Add(newval);
-                                    }
-
-                                    data.Sequence = ivd.Sequence;
-                                }
-
-                                previousData = data.Copy();
-
-
-                                bool changed = false;
-
-                                foreach (var value in valuesAtTimestamp)
-                                {
-                                    if (ic.Omit.Find(x => x.ToLower() == value.Id.ToLower()) == null)
-                                    {
-                                        changed = true;
-                                        break;
+                                        oldval.Value = s;
                                     }
                                 }
+                                // if not already in data.values then create new InstanceData.Value object and add it
+                                else
+                                {
+                                    var newval = new InstanceData.DataItemValue();
+                                    newval.Id = ivd.Id;
+                                    newval.Type = ivd.Type;
+                                    newval.SubType = ivd.SubType;
 
-                                if (changed) result.Add(data);
+                                    if (ivd.Value != null) newval.Value = ivd.Value.ToString();
+                                    data.Values.Add(newval);
+                                }
+
+                                data.Sequence = ivd.Sequence;
                             }
-                        }
-                    }
-                    else if (currentData != null)
-                    {
-                        InstanceData instanceData = ProcessInstance(currentData);
 
-                        if (previousData == null || instanceData.Timestamp > previousData.Timestamp)
-                        {
-                            result.Add(instanceData);
+                            previousData = data.Copy();
 
-                            previousData = instanceData.Copy();
+                            result.Add(data);
                         }
                     }
                 }
@@ -280,16 +245,14 @@ namespace TrakHound_Server.Plugins.Instances
             result.AgentInstanceId = currentData.Header.InstanceId;
             result.Sequence = currentData.Header.LastSequence;
 
-            FillInstanceDataWithCurrentData(new List<string>(), result, currentData);
+            var dataItems = currentData.DeviceStreams[0].GetAllDataItems();
+            FillInstanceDataWithCurrentData(new List<string>(), result, dataItems);
 
             return result;
         }
 
-        static void FillInstanceDataWithCurrentData(List<string> usedVariables, InstanceData data, MTConnect.Application.Streams.ReturnData currentData)
+        static void FillInstanceDataWithCurrentData(List<string> usedVariables, InstanceData data, List<MTConnect.Application.Streams.DataItem> dataItems)
         {
-            // Get all of the DataItems from the DeviceStream object
-            var dataItems = currentData.DeviceStreams[0].GetAllDataItems();
-
             foreach (var item in dataItems)
             {
                 if (!usedVariables.Contains(item.DataItemId))
@@ -306,12 +269,11 @@ namespace TrakHound_Server.Plugins.Instances
                     }
                     else value.Value = item.CDATA;
 
-
                     data.Values.Add(value);
                     usedVariables.Add(value.Id);
                 }
             }
         }
-        
+
     }
 }

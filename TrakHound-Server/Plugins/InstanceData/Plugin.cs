@@ -5,7 +5,6 @@
 
 using TrakHound;
 using TrakHound.Configurations;
-using TrakHound.Plugins;
 using TrakHound.Plugins.Server;
 
 namespace TrakHound_Server.Plugins.Instances
@@ -17,12 +16,6 @@ namespace TrakHound_Server.Plugins.Instances
 
         public void Initialize(DeviceConfiguration config)
         {
-            var ic = Configuration.Read(config.Xml);
-            if (ic != null)
-            {
-                config.CustomClasses.Add(ic);
-            }
-
             configuration = config;
         }
 
