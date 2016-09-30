@@ -4,7 +4,7 @@
   Author: Feenux LLC
   -->
   
-![TrakHound Logo] (http://trakhound.com/images/header_03.png)
+![TrakHound Logo] (http://trakhound.com/images/github-header.jpg)
 
 <p align="center">
   <a href="http://www.trakhound.com/">www.TrakHound.com</a>
