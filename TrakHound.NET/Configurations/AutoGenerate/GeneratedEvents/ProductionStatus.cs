@@ -3,6 +3,7 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+using MTConnect;
 using MTConnect.Application.Components;
 using System.Collections.Generic;
 using System.Data;

@@ -26,7 +26,7 @@ namespace TrakHound_Server.Plugins.Status
 
         public DateTime Timestamp { get; set; }
 
-        public MTConnect.Application.Components.DataItemCategory Category { get; set; }
+        public MTConnect.DataItemCategory Category { get; set; }
         public string Id { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
@@ -134,10 +134,10 @@ namespace TrakHound_Server.Plugins.Status
                 info.PreviousValue1 = info.Value1;
                 info.Value1 = item.CDATA;
 
-                if (info.Category == MTConnect.Application.Components.DataItemCategory.CONDITION)
+                if (info.Category == MTConnect.DataItemCategory.CONDITION)
                 {
                     info.PreviousValue2 = info.Value2;
-                    info.Value2 = item.Value;
+                    info.Value2 = ((Condition)item).ConditionValue.ToString();
                 }
             }
         }

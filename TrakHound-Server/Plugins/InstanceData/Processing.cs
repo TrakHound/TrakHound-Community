@@ -106,7 +106,7 @@ namespace TrakHound_Server.Plugins.Instances
             var dataItems = returnData.Devices[0].GetAllDataItems();
 
             // Conditions -------------------------------------------------------------------------
-            foreach (var dataItem in dataItems.FindAll(x => x.Category == MTConnect.Application.Components.DataItemCategory.CONDITION))
+            foreach (var dataItem in dataItems.FindAll(x => x.Category == MTConnect.DataItemCategory.CONDITION))
             {
                 string name = dataItem.Id.ToUpper();
                 if (!result.Contains(name)) result.Add(name);
@@ -114,7 +114,7 @@ namespace TrakHound_Server.Plugins.Instances
             // ------------------------------------------------------------------------------------
 
             // Events -----------------------------------------------------------------------------
-            foreach (var dataItem in dataItems.FindAll(x => x.Category == MTConnect.Application.Components.DataItemCategory.EVENT))
+            foreach (var dataItem in dataItems.FindAll(x => x.Category == MTConnect.DataItemCategory.EVENT))
             {
                 string name = dataItem.Id.ToUpper();
                 if (!result.Contains(name)) result.Add(name);
@@ -122,7 +122,7 @@ namespace TrakHound_Server.Plugins.Instances
             // ------------------------------------------------------------------------------------
 
             // Samples ----------------------------------------------------------------------------
-            foreach (var dataItem in dataItems.FindAll(x => x.Category == MTConnect.Application.Components.DataItemCategory.SAMPLE))
+            foreach (var dataItem in dataItems.FindAll(x => x.Category == MTConnect.DataItemCategory.SAMPLE))
             {
                 string name = dataItem.Id.ToUpper();
                 if (!result.Contains(name)) result.Add(name);
@@ -263,9 +263,9 @@ namespace TrakHound_Server.Plugins.Instances
                     value.Type = item.Type;
                     value.SubType = item.SubType;
 
-                    if (item.Category == MTConnect.Application.Streams.DataItemCategory.CONDITION)
+                    if (item.Category == MTConnect.DataItemCategory.CONDITION)
                     {
-                        value.Value = item.Value;
+                        value.Value = ((MTConnect.Application.Streams.Condition)item).ConditionValue.ToString();
                     }
                     else value.Value = item.CDATA;
 

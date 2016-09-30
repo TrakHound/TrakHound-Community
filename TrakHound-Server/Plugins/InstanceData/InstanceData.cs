@@ -94,9 +94,9 @@ namespace TrakHound_Server.Plugins.Instances
                 data.Type = item.Type;
                 data.SubType = item.SubType;
 
-                if (item.Category == MTConnect.Application.Streams.DataItemCategory.CONDITION)
+                if (item.Category == MTConnect.DataItemCategory.CONDITION)
                 {
-                    data.Value = item.Value;
+                    data.Value = ((MTConnect.Application.Streams.Condition)item).ConditionValue.ToString();
                 }
                 else data.Value = item.CDATA;
 
