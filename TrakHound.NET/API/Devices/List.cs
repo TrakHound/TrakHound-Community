@@ -48,20 +48,21 @@ namespace TrakHound.API
         /// <param name="userConfig">UserConfiguration object for the current user</param>
         /// <param name="deviceUniqueId">The Unique ID of the device to return</param>
         /// <returns></returns>
-        public static DeviceDescription List(UserConfiguration userConfig, string deviceUniqueId)
+        public static DeviceDescription List(UserConfiguration userConfig, string deviceUniqueId, Uri apiHost)
         {
             if (!string.IsNullOrEmpty(deviceUniqueId))
             {
-                Uri apiHost = ApiConfiguration.AuthenticationApiHost;
-
                 string url = new Uri(apiHost, "devices/list/index.php").ToString();
 
-                string format = "{0}?token={1}&sender_id={2}&unique_id={3}";
+                if (userConfig != null)
+                {
+                    string format = "{0}?token={1}&sender_id={2}&unique_id={3}";
 
-                string token = userConfig.SessionToken;
-                string senderId = UserManagement.SenderId.Get();
+                    string token = userConfig.SessionToken;
+                    string senderId = UserManagement.SenderId.Get();
 
-                url = string.Format(format, url, token, senderId, deviceUniqueId);
+                    url = string.Format(format, url, token, senderId, deviceUniqueId);
+                }
 
                 string response = HTTP.GET(url);
                 if (response != null)
@@ -81,12 +82,10 @@ namespace TrakHound.API
             return null;
         }
 
-        public static List<DeviceDescription> List(UserConfiguration userConfig, string[] deviceUniqueIds)
+        public static List<DeviceDescription> List(UserConfiguration userConfig, string[] deviceUniqueIds, Uri apiHost)
         {
             if (deviceUniqueIds != null && deviceUniqueIds.Length > 0)
             {
-                Uri apiHost = ApiConfiguration.AuthenticationApiHost;
-
                 string url = new Uri(apiHost, "devices/list/index.php").ToString();
 
                 var getDeviceInfos = new List<GetDeviceInfo>();
@@ -96,8 +95,13 @@ namespace TrakHound.API
                 if (json != null)
                 {
                     var postDatas = new NameValueCollection();
-                    postDatas["token"] = userConfig.SessionToken;
-                    postDatas["sender_id"] = UserManagement.SenderId.Get();
+
+                    if (userConfig != null)
+                    {
+                        postDatas["token"] = userConfig.SessionToken;
+                        postDatas["sender_id"] = UserManagement.SenderId.Get();
+                    }
+
                     postDatas["devices"] = json;
 
                     string response = HTTP.POST(url, postDatas);
@@ -131,18 +135,19 @@ namespace TrakHound.API
         /// </summary>
         /// <param name="userConfig">UserConfiguration object for the current user</param>
         /// <returns></returns>
-        public static List<DeviceDescription> List(UserConfiguration userConfig)
+        public static List<DeviceDescription> List(UserConfiguration userConfig, Uri apiHost)
         {
-            Uri apiHost = ApiConfiguration.AuthenticationApiHost;
-
             string url = new Uri(apiHost, "devices/list/index.php").ToString();
 
-            string format = "{0}?token={1}&sender_id={2}";
+            if (userConfig != null)
+            {
+                string format = "{0}?token={1}&sender_id={2}";
 
-            string token = userConfig.SessionToken;
-            string senderId = UserManagement.SenderId.Get();
+                string token = userConfig.SessionToken;
+                string senderId = UserManagement.SenderId.Get();
 
-            url = string.Format(format, url, token, senderId);
+                url = string.Format(format, url, token, senderId);
+            }
 
             string response = HTTP.GET(url);
             if (response != null)

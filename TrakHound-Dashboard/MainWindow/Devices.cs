@@ -60,7 +60,7 @@ namespace TrakHound_Dashboard
                 var currentUser = (UserConfiguration)o;
 
                 // Get DeviceDescriptions
-                var devices = TrakHound.API.Devices.List(currentUser);
+                var devices = TrakHound.API.Devices.List(currentUser, TrakHound.API.ApiConfiguration.AuthenticationApiHost);
                 if (devices != null && devices.Count > 0)
                 {
                     foreach (var device in devices)
