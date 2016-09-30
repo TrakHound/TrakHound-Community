@@ -687,7 +687,6 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                         if (config != null)
                         {
                             UpdateIndexXML(config.Xml, info.NewListIndex);
-                            ResetUpdateId(config);
                             DeviceConfiguration.Save(config);
                         }
                     }
