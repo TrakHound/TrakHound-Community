@@ -2002,13 +2002,13 @@
                 <Border.Style>
                     <Style TargetType="Border">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding SystemStatus}" Value="Normal">
+                            <DataTrigger Binding="{Binding SystemStatus}" Value="NORMAL">
                                 <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding SystemStatus}" Value="Warning">
+                            <DataTrigger Binding="{Binding SystemStatus}" Value="WARNING">
                                 <Setter Property="Background" Value="{StaticResource StatusOrange}"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding SystemStatus}" Value="Fault">
+                            <DataTrigger Binding="{Binding SystemStatus}" Value="FAULT">
                                 <Setter Property="Background" Value="{StaticResource StatusRed}"/>
                             </DataTrigger>
                         </Style.Triggers>
@@ -2030,17 +2030,17 @@
                                 <Setter Property="Background" Value="{StaticResource Text}"/>
                                 <Setter Property="Visibility" Value="Collapsed"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding SystemStatus}" Value="Normal">
+                                    <DataTrigger Binding="{Binding SystemStatus}" Value="NORMAL">
                                         <Setter Property="Background" Value="#FFF"/>
                                         <Setter Property="OpacityMask" Value="{StaticResource Status_Normal_IMG}"/>
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding SystemStatus}" Value="Warning">
+                                    <DataTrigger Binding="{Binding SystemStatus}" Value="WARNING">
                                         <Setter Property="Background" Value="#FFF"/>
                                         <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}" />
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding SystemStatus}" Value="Fault">
+                                    <DataTrigger Binding="{Binding SystemStatus}" Value="FAULT">
                                         <Setter Property="Background" Value="#FFF"/>
                                         <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}" />
                                         <Setter Property="Visibility" Value="Visible"/>
@@ -2062,18 +2062,18 @@
                             </Style>
                         </Viewbox.Style>
 
-                        <TextBlock Text="{Binding ExecutionMode}">
+                        <TextBlock Text="{Binding SystemStatus, Converter={StaticResource uppercaseConverter}}">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Foreground" Value="{StaticResource Text}"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding SystemStatus}" Value="Normal">
+                                        <DataTrigger Binding="{Binding SystemStatus}" Value="NORMAL">
                                             <Setter Property="Foreground" Value="#FFF"/>
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding SystemStatus}" Value="Warning">
+                                        <DataTrigger Binding="{Binding SystemStatus}" Value="WARNING">
                                             <Setter Property="Foreground" Value="#FFF"/>
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding SystemStatus}" Value="Fault">
+                                        <DataTrigger Binding="{Binding SystemStatus}" Value="FAULT">
                                             <Setter Property="Foreground" Value="#FFF"/>
                                         </DataTrigger>
                                     </Style.Triggers>

@@ -170,11 +170,6 @@
     <Compile Include="Pages\DeviceManager\Pages\GeneratedEvents\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\DeviceManager\Pages\InstanceData\Controls\CheckBox.cs" />
-    <Compile Include="Pages\DeviceManager\Pages\InstanceData\Info.cs" />
-    <Compile Include="Pages\DeviceManager\Pages\InstanceData\Page.xaml.cs">
-      <DependentUpon>Page.xaml</DependentUpon>
-    </Compile>
     <None Include="Pages\DeviceManager\Pages\MTConnect\Controls\MessageItem.xaml.cs">
       <DependentUpon>MessageItem.xaml</DependentUpon>
     </None>
@@ -189,13 +184,13 @@
     <Compile Include="Pages\DeviceManager\Pages\Parts\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\DeviceManager\Pages\SnapshotData\Controls\SnapshotItem.xaml.cs">
+    <None Include="Pages\DeviceManager\Pages\SnapshotData\Controls\SnapshotItem.xaml.cs">
       <DependentUpon>SnapshotItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\DeviceManager\Pages\SnapshotData\Info.cs" />
-    <Compile Include="Pages\DeviceManager\Pages\SnapshotData\Page.xaml.cs">
+    </None>
+    <None Include="Pages\DeviceManager\Pages\SnapshotData\Info.cs" />
+    <None Include="Pages\DeviceManager\Pages\SnapshotData\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="Program.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -565,10 +560,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\DeviceManager\Pages\InstanceData\Page.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Pages\DeviceManager\Pages\MTConnect\Controls\MessageItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -585,14 +576,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\DeviceManager\Pages\SnapshotData\Controls\SnapshotItem.xaml">
+    <None Include="Pages\DeviceManager\Pages\SnapshotData\Controls\SnapshotItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\DeviceManager\Pages\SnapshotData\Page.xaml">
+    </None>
+    <None Include="Pages\DeviceManager\Pages\SnapshotData\Page.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
+    </None>
     <Page Include="Pages\Options\API\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -758,7 +749,6 @@
     <Resource Include="Resources\Home_02.png" />
     <Resource Include="Resources\Table_01.png" />
     <Resource Include="Resources\blank_profile_01.png" />
-    <Resource Include="Resources\Dashboard_Splash_01.png" />
     <Resource Include="Resources\Plug_01.png" />
     <Resource Include="Resources\Cycle_01.png" />
     <Resource Include="Resources\Outline_01.png" />
@@ -784,10 +774,6 @@
     <Resource Include="Resources\Help_01.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TrakHound-Server\TrakHound-Server.csproj">
-      <Project>{9fcdabec-b317-4375-ae19-f605d836801c}</Project>
-      <Name>TrakHound-Server</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TrakHound-UI\TrakHound-UI.csproj">
       <Project>{b4c046ff-4a7d-4059-aaf8-713059ccf0f3}</Project>
       <Name>TrakHound-UI</Name>
@@ -871,6 +857,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\List_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Dashboard_Splash_02.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

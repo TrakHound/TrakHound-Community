@@ -58,7 +58,7 @@ namespace TrakHound_Dashboard
 
             Splash_UpdateStatus("...Loading Plugins", 60);
             LoadPlugins();
-            TrakHound_Dashboard.Pages.DeviceManager.EditPage.GetPluginPageInfos();
+            Pages.DeviceManager.EditPage.GetPluginPageInfos();
 
             Splash_UpdateStatus("...Finishing Up", 100);
 

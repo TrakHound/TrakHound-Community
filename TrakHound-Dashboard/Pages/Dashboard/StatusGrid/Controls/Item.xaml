@@ -507,10 +507,10 @@
                                 <Setter Property="Height" Value="25"/>
                                 <Setter Property="Width" Value="25"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding SystemStatus}" Value="Warning">
+                                    <DataTrigger Binding="{Binding SystemStatus}" Value="WARNING">
                                         <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding SystemStatus}" Value="Fault">
+                                    <DataTrigger Binding="{Binding SystemStatus}" Value="FAULT">
                                         <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}" />
                                     </DataTrigger>
                                 </Style.Triggers>

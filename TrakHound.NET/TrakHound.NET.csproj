@@ -104,10 +104,10 @@
     <Compile Include="Configurations\AutoGenerate\GeneratedEvents\DeviceStatus.cs" />
     <Compile Include="Configurations\AutoGenerate\GeneratedEvents\PartsCount.cs" />
     <Compile Include="Configurations\AutoGenerate\GeneratedEvents\ProductionStatus.cs" />
-    <Compile Include="Configurations\AutoGenerate\InstanceData.cs" />
+    <None Include="Configurations\AutoGenerate\InstanceData.cs" />
     <Compile Include="Configurations\AutoGenerate\Manufacturers\Okuma.cs" />
     <Compile Include="Configurations\AutoGenerate\Parts.cs" />
-    <Compile Include="Configurations\AutoGenerate\Shifts.cs" />
+    <None Include="Configurations\AutoGenerate\Shifts.cs" />
     <Compile Include="Configurations\AutoGenerate\SnapshotData.cs" />
     <Compile Include="Configurations\Converters\ObjectToXml.cs" />
     <Compile Include="Configurations\Converters\TableToXml.cs" />

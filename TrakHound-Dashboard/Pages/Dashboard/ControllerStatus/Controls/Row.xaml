@@ -808,7 +808,7 @@
                     <Border.Style>
                         <Style TargetType="Border">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding SystemStatus}" Value="Fault">
+                                <DataTrigger Binding="{Binding SystemStatus}" Value="FAULT">
                                     <Setter Property="Background" Value="{StaticResource StatusRed}"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -830,17 +830,17 @@
                                     <Setter Property="Width" Value="30"/>
                                     <Setter Property="Margin" Value="0,0,10,0"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding SystemStatus}" Value="Normal">
+                                        <DataTrigger Binding="{Binding SystemStatus}" Value="NORMAL">
                                             <Setter Property="OpacityMask" Value="{StaticResource Status_Normal_IMG}" />
                                             <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
                                             <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding SystemStatus}" Value="Warning">
+                                        <DataTrigger Binding="{Binding SystemStatus}" Value="WARNING">
                                             <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}" />
                                             <Setter Property="Background" Value="{StaticResource StatusOrange}"/>
                                             <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding SystemStatus}" Value="Fault">
+                                        <DataTrigger Binding="{Binding SystemStatus}" Value="FAULT">
                                             <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}" />
                                             <Setter Property="Background" Value="White"/>
                                             <Setter Property="Visibility" Value="Visible"/>
@@ -853,21 +853,18 @@
                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
 
                             <!--System Condition Text-->
-                            <TextBlock Text="{Binding SystemStatus}" FontSize="16" Margin="0,0,0,2">
+                            <TextBlock Text="{Binding SystemStatus, Converter={StaticResource uppercaseConverter}}" FontSize="16" Margin="0,0,0,2">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Foreground" Value="{StaticResource Text}"/>
                                         <Style.Triggers>
-                                            <Trigger Property="Text" Value="Normal">
+                                            <Trigger Property="Text" Value="NORMAL">
                                                 <Setter Property="Foreground" Value="{StaticResource StatusGreen}"/>
                                             </Trigger>
-                                            <Trigger Property="Text" Value="Fault">
+                                            <DataTrigger Binding="{Binding SystemStatus}" Value="FAULT">
                                                 <Setter Property="Foreground" Value="White"/>
-                                            </Trigger>
+                                            </DataTrigger>
                                             <Trigger Property="Text" Value="UNAVAILABLE">
-                                                <Setter Property="Foreground" Value="{StaticResource Disabled_Text}"/>
-                                            </Trigger>
-                                            <Trigger Property="Text" Value="Unavailable">
                                                 <Setter Property="Foreground" Value="{StaticResource Disabled_Text}"/>
                                             </Trigger>
                                         </Style.Triggers>
@@ -887,7 +884,7 @@
                                             <Trigger Property="Text" Value="">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                             </Trigger>
-                                            <DataTrigger Binding="{Binding SystemStatus}" Value="Fault">
+                                            <DataTrigger Binding="{Binding SystemStatus}" Value="FAULT">
                                                 <Setter Property="Foreground" Value="White"/>
                                             </DataTrigger>
                                             <Trigger Property="Text" Value="UNAVAILABLE">
