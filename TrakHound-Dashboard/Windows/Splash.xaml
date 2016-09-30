@@ -11,7 +11,7 @@
                 
         Title="TrakHound Dashboard"
               
-        Height="300" Width="400"
+        Height="300" Width="500"
         Padding="0"
         Margin="0"
         
@@ -39,7 +39,7 @@
 
     <Border x:Name="root">
         <Border.Background>
-            <ImageBrush ImageSource="/TrakHound-Dashboard;component/Resources/Dashboard_Splash_01.png" Opacity="0.7"/>
+            <ImageBrush ImageSource="/TrakHound-Dashboard;component/Resources/Dashboard_Splash_02.jpg" Opacity="0.7"/>
         </Border.Background>
 
         <Grid>
@@ -70,18 +70,22 @@
 
                 </StackPanel>
 
-                <StackPanel Grid.Row="1" Margin="0,10">
-
-                    <!--Loading Status-->
-                    <TextBlock Text="{Binding Status1}" Margin="20,0" FontSize="10pt" Foreground="#fff" HorizontalAlignment="Right" Visibility="Hidden"/>
+                <StackPanel Grid.Row="1" Margin="0,20,0,0">
 
                     <ui:ProgressBar Margin="0,10,0,0" Height="3" Maximum="100" Value="{Binding LoadingProgress}" Foreground="#FFF" AnimateValueChange="False"  />
+
+                    <!--Loading Status-->
+                    <TextBlock Text="{Binding Status1}" Margin="20,0" FontSize="10" Foreground="#fff" HorizontalAlignment="Center"/>
 
                 </StackPanel>
 
             </StackPanel>
 
-            <TextBlock Text="{Binding Version}" Margin="5" FontSize="8pt" Foreground="#fff" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+            <TextBlock Text="®2016 Feenux LLC, All Rights Reserved" Margin="10,5" FontSize="10" Foreground="#33ffffff" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+
+            <TextBlock Text="www.TrakHound.com" Margin="10,5" FontSize="10" Foreground="#33ffffff" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+
+            <TextBlock Text="{Binding Version}" Margin="10,5" FontSize="10" Foreground="#fff" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
 
         </Grid>
 
