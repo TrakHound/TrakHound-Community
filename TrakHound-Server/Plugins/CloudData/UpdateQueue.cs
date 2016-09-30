@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
 using System.Threading;
 
 using TrakHound.API;
@@ -26,33 +25,33 @@ namespace TrakHound_Server.Plugins.CloudData
 
         private bool started = false;
 
+        private object _lock = new object();
+
 
         public void Add(Data.DeviceInfo deviceInfo)
         {
-            if (deviceInfo != null)
+            lock (_lock)
             {
-                int index = queuedInfos.FindIndex(o => GetUniqueId(o) == deviceInfo.UniqueId);
-                if (index >= 0) queuedInfos[index] = deviceInfo;
-                else queuedInfos.Add(deviceInfo);
-            }
-        }
-
-        // Not sure why a null value is getting added to queuedInfos but it is
-        private static string GetUniqueId(Data.DeviceInfo deviceInfo)
-        {
-            if (deviceInfo != null) return deviceInfo.UniqueId;
-            else return null;
+                if (deviceInfo != null)
+                {
+                    int index = queuedInfos.FindIndex(o => o.UniqueId == deviceInfo.UniqueId);
+                    if (index >= 0) queuedInfos[index] = deviceInfo;
+                    else queuedInfos.Add(deviceInfo);
+                }
+            }         
         }
 
         public void Remove(Data.DeviceInfo deviceInfo)
         {
-            if (deviceInfo != null)
+            lock (_lock)
             {
-                int index = queuedInfos.FindIndex(o => o.UniqueId == deviceInfo.UniqueId);
-                if (index >= 0) queuedInfos.RemoveAt(index);
+                if (deviceInfo != null)
+                {
+                    int index = queuedInfos.FindIndex(o => o.UniqueId == deviceInfo.UniqueId);
+                    if (index >= 0) queuedInfos.RemoveAt(index);
+                }
             }
         }
-
 
         public void Start()
         {
@@ -73,15 +72,19 @@ namespace TrakHound_Server.Plugins.CloudData
         {
             while (!stop.WaitOne(0, true))
             {
-                var sendList = ProcessQueue();
-                if (sendList != null)
+                lock (_lock)
                 {
-                    Update(Plugin.currentUser, sendList);
-
-                    foreach (var queuedInfo in sendList)
+                    var sendList = ProcessQueue();
+                    if (sendList != null)
                     {
-                        var match = queuedInfos.Find(o => o.UniqueId == queuedInfo.UniqueId);
-                        if (match != null) match.ClearClasses();
+
+                        Update(Plugin.currentUser, sendList);
+
+                        foreach (var queuedInfo in sendList)
+                        {
+                            var match = queuedInfos.Find(o => o.UniqueId == queuedInfo.UniqueId);
+                            if (match != null) match.ClearClasses();
+                        }
                     }
                 }
 
@@ -108,9 +111,7 @@ namespace TrakHound_Server.Plugins.CloudData
 
                 long bufferSize = 0;
 
-                var temp = queuedInfos.ToList().FindAll(o => o != null);
-
-                foreach (var queuedInfo in temp)
+                foreach (var queuedInfo in queuedInfos)
                 {
                     queuedInfo.CombineHours();
 
@@ -130,7 +131,7 @@ namespace TrakHound_Server.Plugins.CloudData
 
             return null;
         }
-
+        
         public static void Update(UserConfiguration userConfig, List<Data.DeviceInfo> deviceInfos)
         {
             if (ApiConfiguration.DataApiHost.ToString() != ApiConfiguration.LOCAL_API_HOST) // Remote
