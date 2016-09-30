@@ -295,7 +295,7 @@ namespace TrakHound_Server.Plugins.CloudData
                     var hourInfo = new Data.HourInfo();
                     hourInfo.Date = eventTime.Start.ToString(Data.HourInfo.DateFormat);
                     hourInfo.Hour = eventTime.Start.Hour;
-                    
+
                     // Device Status
                     if (eventTime.Event == "device_status" && !string.IsNullOrEmpty(eventTime.Value))
                     {
@@ -329,7 +329,6 @@ namespace TrakHound_Server.Plugins.CloudData
             }
         }
 
-
         private void UpdateMTConnectStatus(EventData data)
         {
             var status = new Data.StatusInfo();
@@ -361,10 +360,87 @@ namespace TrakHound_Server.Plugins.CloudData
                 if (info != null) controller.ExecutionMode = info.Value1;
 
                 // System status
-                info = infos.Find(x => x.Type == "SYSTEM");
-                if (info != null) controller.SystemMessage = info.Value1;
-                if (info != null) controller.SystemStatus = info.Value2;
+                var systemStatusInfos = infos.FindAll(x => x.Category == MTConnect.DataItemCategory.CONDITION &&
+                x.Type == "SYSTEM" && (x.Address.ToLower().Contains("controller") || x.Address.ToLower().Contains("path")));
 
+                var logicStatusInfos = infos.FindAll(x => x.Category == MTConnect.DataItemCategory.CONDITION &&
+                x.Type == "LOGIC_PROGRAM" && (x.Address.ToLower().Contains("controller") || x.Address.ToLower().Contains("path")));
+
+                var motionStatusInfos = infos.FindAll(x => x.Category == MTConnect.DataItemCategory.CONDITION &&
+                x.Type == "MOTION_PROGRAM" && (x.Address.ToLower().Contains("controller") || x.Address.ToLower().Contains("path")));
+
+                MTConnect.ConditionValue systemStatus = MTConnect.ConditionValue.UNAVAILABLE;
+                string systemMessage = string.Empty;
+
+                // Check System Type first
+                foreach (var sInfo in systemStatusInfos)
+                {
+                    if (sInfo.Value2 != null)
+                    {
+                        MTConnect.ConditionValue s = MTConnect.ConditionValue.UNAVAILABLE;
+
+                        switch (sInfo.Value2.ToLower())
+                        {
+                            case "normal": s = MTConnect.ConditionValue.NORMAL; break;
+                            case "warning": s = MTConnect.ConditionValue.WARNING; break;
+                            case "fault": s = MTConnect.ConditionValue.FAULT; break;
+                        }
+
+                        if (s > systemStatus)
+                        {
+                            systemStatus = s;
+                            systemMessage = sInfo.Value1;
+                        }
+                    }
+                }
+
+                // Check Logic Program Type second
+                foreach (var sInfo in logicStatusInfos)
+                {
+                    if (sInfo.Value2 != null)
+                    {
+                        MTConnect.ConditionValue s = MTConnect.ConditionValue.UNAVAILABLE;
+
+                        switch (sInfo.Value2.ToLower())
+                        {
+                            case "normal": s = MTConnect.ConditionValue.NORMAL; break;
+                            case "warning": s = MTConnect.ConditionValue.WARNING; break;
+                            case "fault": s = MTConnect.ConditionValue.FAULT; break;
+                        }
+
+                        if (s > systemStatus)
+                        {
+                            systemStatus = s;
+                            systemMessage = sInfo.Value1;
+                        }
+                    }
+                }
+
+                // Check Motion Program Type third
+                foreach (var sInfo in motionStatusInfos)
+                {
+                    if (sInfo.Value2 != null)
+                    {
+                        MTConnect.ConditionValue s = MTConnect.ConditionValue.UNAVAILABLE;
+
+                        switch (sInfo.Value2.ToLower())
+                        {
+                            case "normal": s = MTConnect.ConditionValue.NORMAL; break;
+                            case "warning": s = MTConnect.ConditionValue.WARNING; break;
+                            case "fault": s = MTConnect.ConditionValue.FAULT; break;
+                        }
+
+                        if (s > systemStatus)
+                        {
+                            systemStatus = s;
+                            systemMessage = sInfo.Value1;
+                        }
+                    }
+                }
+
+                controller.SystemStatus = systemStatus.ToString();
+                controller.SystemMessage = systemMessage;
+                
                 // Program Name
                 info = infos.Find(x => x.Type == "PROGRAM");
                 if (info != null) controller.ProgramName = info.Value1;
