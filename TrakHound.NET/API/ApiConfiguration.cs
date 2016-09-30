@@ -61,7 +61,6 @@ namespace TrakHound.API
         {
             SetDataHost(apiConfig);
             SetAuthenticationHost(apiConfig);
-            //Create(apiConfig);
         }
 
         public static void SetDataHost(ApiConfiguration apiConfig)

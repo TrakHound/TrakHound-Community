@@ -37,14 +37,11 @@ namespace TrakHound.Configurations.AutoGenerate
                 SetEnabled(dt);
                 Description.Add(dt, probeData.Device);
                 Agent.Add(dt, probeData.Address, probeData.Port, probeData.Device.Name);
-                //Databases.Add(dt);
-                InstanceData.Add(dt, items);
                 SnapshotData.Add(dt, items);
                 GeneratedEvents.DeviceStatus.Add(dt, items);
                 GeneratedEvents.ProductionStatus.Add(dt, items);
                 GeneratedEvents.CycleExecution.Add(dt, items);
                 GeneratedEvents.PartsCount.Add(dt, items);
-                //Shifts.Add(dt, items);
                 Cycles.Add(dt, items);
                 Parts.Add(dt, items);
 

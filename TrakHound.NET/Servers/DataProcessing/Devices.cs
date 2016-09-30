@@ -30,8 +30,6 @@ namespace TrakHound.Servers.DataProcessing
 
         void AddDevice(DeviceConfiguration config)
         {
-            config.Index = Devices.Count;
-
             var deviceThread = new Thread(new ParameterizedThreadStart(StartDeviceServer));
             deviceThread.Start(config);
         }
