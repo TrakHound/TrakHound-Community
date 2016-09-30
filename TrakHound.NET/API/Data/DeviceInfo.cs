@@ -322,6 +322,7 @@ namespace TrakHound.API
 
                     data.Add("unique_id", UniqueId);
                     data.Add("enabled", Enabled);
+                    data.Add("index", Index);
 
                     foreach (var c in Classes)
                     {
