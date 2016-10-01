@@ -75,4 +75,4 @@ TrakHound uses the following external libraries:
 - [SQLite](https://www.sqlite.org/index.html) - [Source Code](https://www.sqlite.org/download.html) - [Public Domain](https://www.sqlite.org/copyright.html)
 
 ##Contributions
-TrakHound welcomes any comments, reccomendations, pull requests, or any other type of contributions! Please fork and contribute back at any time as this project was created as a tool for the community. If you have any questions please contact us at info@TrakHound.org.
+TrakHound welcomes any comments, reccomendations, pull requests, or any other type of contributions! Please fork and contribute back at any time as this project was created as a tool for the community. If you have any questions please contact us at info@TrakHound.com.
