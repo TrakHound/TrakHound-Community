@@ -67,12 +67,12 @@ Below is a diagram showing how a basic setup works. This shows two machines comm
 ![Basic Communications Setup] (http://trakhound.com/images/overview_basic_04.png)
 
 ##Licensing & Dependencies
-TrakHound is licensed under the [GPLv3]("https://www.gnu.org/licenses/gpl-3.0.en.html") software license. For more information about open source licensing or purchasing a commercial license please contact us at info@TrakHound.com.
+TrakHound is licensed under the [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html) software license. For more information about open source licensing or purchasing a commercial license please contact us at info@TrakHound.com.
 
 TrakHound uses the following external libraries:
-- MTConnect.NET by TrakHound - [Source Code]("https://github.com/TrakHound/MTConnect.NET") - [Apache 2.0]("http://www.apache.org/licenses/LICENSE-2.0")
-- [JSON.NET]("http://www.newtonsoft.com/json") by Newtonsoft - [Source Code]("https://github.com/JamesNK/Newtonsoft.Json") - [MIT]("https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md")
-- [SQLite]("https://www.sqlite.org/index.html") - [Source Code]("https://www.sqlite.org/download.html") - [Public Domain]("https://www.sqlite.org/copyright.html")
+- MTConnect.NET by TrakHound - [Source Code](https://github.com/TrakHound/MTConnect.NET) - [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+- [JSON.NET](http://www.newtonsoft.com/json) by Newtonsoft - [Source Code](https://github.com/JamesNK/Newtonsoft.Json) - [MIT](https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md)
+- [SQLite](https://www.sqlite.org/index.html) - [Source Code](https://www.sqlite.org/download.html) - [Public Domain](https://www.sqlite.org/copyright.html)
 
 ##Contributions
 TrakHound welcomes any comments, reccomendations, pull requests, or any other type of contributions! Please fork and contribute back at any time as this project was created as a tool for the community. If you have any questions please contact us at info@TrakHound.org.
