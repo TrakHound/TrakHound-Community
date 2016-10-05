@@ -114,7 +114,10 @@ namespace TrakHound.Tools.Web
         {
             try
             {
-                return JsonConvert.SerializeObject(data);
+                var jss = new JsonSerializerSettings();
+                jss.NullValueHandling = NullValueHandling.Ignore;
+
+                return JsonConvert.SerializeObject(data, jss);
             }
             catch (JsonException jex) { Logger.Log(jex.Message); }
             catch (Exception ex) { Logger.Log(ex.Message); }
