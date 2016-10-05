@@ -18,28 +18,17 @@ namespace TrakHound_Server
   
         private ProcessingServer server;
 
+        private LocalStorageServer dataServer;
+
         public Service1()
         {
             InitializeComponent();
 
-            //UpdateUserSettings();
-
             server = new ProcessingServer();
             server.Login();
 
-            var dataServer = new LocalStorageServer();
-            dataServer.Start();
+            dataServer = new LocalStorageServer();
         }
-
-        //private void UpdateUserSettings()
-        //{
-        //    if (Properties.Settings.Default.UpdateSettings)
-        //    {
-        //        Properties.Settings.Default.Upgrade();
-        //        Properties.Settings.Default.UpdateSettings = false;
-        //        Properties.Settings.Default.Save();
-        //    }
-        //}
 
         #region "Service"
 
@@ -50,9 +39,9 @@ namespace TrakHound_Server
             serviceStatus.dwWaitHint = 10000;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
 
-            Logger.Log("TrakHound-Server Started!");
-
             if (server != null) server.Start();
+
+            if (dataServer != null) dataServer.Start();
 
             // Update the service state to Running.
             serviceStatus.dwCurrentState = ServiceState.SERVICE_RUNNING;
@@ -67,6 +56,8 @@ namespace TrakHound_Server
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
 
             if (server != null) server.Stop();
+
+            if (dataServer != null) dataServer.Stop();
 
             // Update the service state to Stopped.
             serviceStatus.dwCurrentState = ServiceState.SERVICE_STOPPED;
