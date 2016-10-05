@@ -26,43 +26,61 @@ namespace TrakHound_Server
         /// 
         static void Main(string[] args)
         {
-            PrintHeader();
+            Init(args);
+        }
 
-            UpdateUserSettings();
-
-            if (args.Length > 0)
+        private static void Init(string[] args)
+        {
+            try
             {
-                if (args.Length > 1)
-                {
-                    string authenticationParameter = args[1];
-                    switch (authenticationParameter)
-                    {
-                        case "login": SetServerCredentials(); break;
+                PrintHeader();
 
-                        case "logout": ClearServerCredentials(); break;
+                UpdateUserSettings();
+
+                if (args.Length > 0)
+                {
+                    if (args.Length > 1)
+                    {
+                        string authenticationParameter = args[1];
+                        switch (authenticationParameter)
+                        {
+                            case "login": SetServerCredentials(); break;
+
+                            case "logout": ClearServerCredentials(); break;
+                        }
+                    }
+
+                    string installParameter = args[0];
+                    switch (installParameter)
+                    {
+                        case "debug": StartDebug(); break;
+
+                        case "console": StartConsole(); break;
+
+                        case "install": InstallService(); break;
+
+                        case "uninstall": UninstallService(); break;
                     }
                 }
-
-                string installParameter = args[0];
-                switch (installParameter)
+                else
                 {
-                    case "debug": StartDebug(); break;
-
-                    case "console": StartConsole(); break;
-
-                    case "install": InstallService(); break;
-
-                    case "uninstall": UninstallService(); break;
+                    ServiceBase[] ServicesToRun;
+                    ServicesToRun = new ServiceBase[]
+                    {
+                new Service1()
+                    };
+                    ServiceBase.Run(ServicesToRun);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                ServiceBase[] ServicesToRun;
-                ServicesToRun = new ServiceBase[]
-                {
-                new Service1()
-                };
-                ServiceBase.Run(ServicesToRun);
+                Console.WriteLine("TrakHound Server Error :: Restarting Server in 5 Seconds..");
+            }
+            finally
+            {
+                System.Threading.Thread.Sleep(5000);
+
+                Init(args);
             }
         }
 
