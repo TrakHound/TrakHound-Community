@@ -29,6 +29,8 @@ namespace TrakHound_Server.Plugins.CloudData
 
         private Data.DeviceInfo deviceInfo;
 
+        private object _lock = new object();
+
 
         public void Initialize(DeviceConfiguration config)
         {
@@ -36,6 +38,8 @@ namespace TrakHound_Server.Plugins.CloudData
 
             deviceInfo = new Data.DeviceInfo();
             deviceInfo.UniqueId = config.UniqueId;
+            deviceInfo.Enabled = config.Enabled;
+            deviceInfo.Index = config.Index;
         }
 
         public void GetSentData(EventData data)
@@ -92,141 +96,128 @@ namespace TrakHound_Server.Plugins.CloudData
         {
             if (data.Data02 != null)
             {
-                var snapshots = (List<SnapshotData.Snapshot>)data.Data02;
-
-                var status = deviceInfo.Status;
-                bool statusSet = false;
-
-                // Device Status
-                var snapshot = snapshots.Find(o => o.Name == "Device Status");
-                if (snapshot != null)
+                lock(_lock)
                 {
-                    if (status == null) status = new Data.StatusInfo();
-                    status.DeviceStatus = snapshot.Value;
-                    status.DeviceStatusTimer = Math.Max(0, Convert.ToInt32((snapshot.Timestamp - snapshot.PreviousTimestamp).TotalSeconds));
-                    previousDeviceStatusTimestamp = snapshot.Timestamp;
-                    statusSet = true;
+                    var snapshots = (List<SnapshotData.Snapshot>)data.Data02;
+
+                    // Only update is deviceInfo.Status is not null since this doesn't always include the Connected property which causes 
+                    // the device to appear to be turning on and off using a client
+                    if (deviceInfo.Status != null)
+                    {
+                        // Device Status
+                        var snapshot = snapshots.Find(o => o.Name == "Device Status");
+                        if (snapshot != null)
+                        {
+                            deviceInfo.Status.DeviceStatus = snapshot.Value;
+                            deviceInfo.Status.DeviceStatusTimer = Math.Max(0, Convert.ToInt32((snapshot.Timestamp - snapshot.PreviousTimestamp).TotalSeconds));
+                            previousDeviceStatusTimestamp = snapshot.Timestamp;
+                        }
+
+                        // Production Status
+                        snapshot = snapshots.Find(o => o.Name == "Production Status");
+                        if (snapshot != null)
+                        {
+                            deviceInfo.Status.ProductionStatus = snapshot.Value;
+                            deviceInfo.Status.ProductionStatusTimer = Math.Max(0, Convert.ToInt32((snapshot.Timestamp - snapshot.PreviousTimestamp).TotalSeconds));
+                            previousProductionStatusTimestamp = snapshot.Timestamp;
+                        }
+
+
+                        // Day Run Time
+                        snapshot = snapshots.Find(o => o.Name == "Day Run Time");
+                        if (snapshot != null)
+                        {
+                            double val = 0;
+                            double.TryParse(snapshot.Value, out val);
+                            deviceInfo.Status.DayRun = val;
+                        }
+
+                        // Day Operating Time
+                        snapshot = snapshots.Find(o => o.Name == "Day Operating Time");
+                        if (snapshot != null)
+                        {
+                            double val = 0;
+                            double.TryParse(snapshot.Value, out val);
+                            deviceInfo.Status.DayOperating = val;
+                        }
+
+                        // Day Cutting Time
+                        snapshot = snapshots.Find(o => o.Name == "Day Cutting Time");
+                        if (snapshot != null)
+                        {
+                            double val = 0;
+                            double.TryParse(snapshot.Value, out val);
+                            deviceInfo.Status.DayCutting = val;
+                        }
+
+                        // Day Spindle Time
+                        snapshot = snapshots.Find(o => o.Name == "Day Spindle Time");
+                        if (snapshot != null)
+                        {
+                            double val = 0;
+                            double.TryParse(snapshot.Value, out val);
+                            deviceInfo.Status.DaySpindle = val;
+                        }
+
+
+                        // Total Run Time
+                        snapshot = snapshots.Find(o => o.Name == "Total Run Time");
+                        if (snapshot != null)
+                        {
+                            double val = 0;
+                            double.TryParse(snapshot.Value, out val);
+                            deviceInfo.Status.TotalRun = val;
+                        }
+
+                        // Total Operating Time
+                        snapshot = snapshots.Find(o => o.Name == "Total Operating Time");
+                        if (snapshot != null)
+                        {
+                            double val = 0;
+                            double.TryParse(snapshot.Value, out val);
+                            deviceInfo.Status.TotalOperating = val;
+                        }
+
+                        // Total Cutting Time
+                        snapshot = snapshots.Find(o => o.Name == "Total Cutting Time");
+                        if (snapshot != null)
+                        {
+                            double val = 0;
+                            double.TryParse(snapshot.Value, out val);
+                            deviceInfo.Status.TotalCutting = val;
+                        }
+
+                        // Total Spindle Time
+                        snapshot = snapshots.Find(o => o.Name == "Total Spindle Time");
+                        if (snapshot != null)
+                        {
+                            double val = 0;
+                            double.TryParse(snapshot.Value, out val);
+                            deviceInfo.Status.TotalSpindle = val;
+                        }
+
+                        queue.Add(deviceInfo);
+                    }
                 }
-
-                // Production Status
-                snapshot = snapshots.Find(o => o.Name == "Production Status");
-                if (snapshot != null)
-                {
-                    if (status == null) status = new Data.StatusInfo();
-                    status.ProductionStatus = snapshot.Value;
-                    status.ProductionStatusTimer = Math.Max(0, Convert.ToInt32((snapshot.Timestamp - snapshot.PreviousTimestamp).TotalSeconds));
-                    previousProductionStatusTimestamp = snapshot.Timestamp;
-                    statusSet = true;
-                }
-
-
-                // Day Run Time
-                snapshot = snapshots.Find(o => o.Name == "Day Run Time");
-                if (snapshot != null)
-                {
-                    if (status == null) status = new Data.StatusInfo();
-                    double val = 0;
-                    double.TryParse(snapshot.Value, out val);
-                    status.DayRun = val;
-                    statusSet = true;
-                }
-
-                // Day Operating Time
-                snapshot = snapshots.Find(o => o.Name == "Day Operating Time");
-                if (snapshot != null)
-                {
-                    if (status == null) status = new Data.StatusInfo();
-                    double val = 0;
-                    double.TryParse(snapshot.Value, out val);
-                    status.DayOperating = val;
-                    statusSet = true;
-                }
-
-                // Day Cutting Time
-                snapshot = snapshots.Find(o => o.Name == "Day Cutting Time");
-                if (snapshot != null)
-                {
-                    if (status == null) status = new Data.StatusInfo();
-                    double val = 0;
-                    double.TryParse(snapshot.Value, out val);
-                    status.DayCutting = val;
-                    statusSet = true;
-                }
-
-                // Day Spindle Time
-                snapshot = snapshots.Find(o => o.Name == "Day Spindle Time");
-                if (snapshot != null)
-                {
-                    if (status == null) status = new Data.StatusInfo();
-                    double val = 0;
-                    double.TryParse(snapshot.Value, out val);
-                    status.DaySpindle = val;
-                    statusSet = true;
-                }
-
-
-                // Total Run Time
-                snapshot = snapshots.Find(o => o.Name == "Total Run Time");
-                if (snapshot != null)
-                {
-                    if (status == null) status = new Data.StatusInfo();
-                    double val = 0;
-                    double.TryParse(snapshot.Value, out val);
-                    status.TotalRun = val;
-                    statusSet = true;
-                }
-
-                // Total Operating Time
-                snapshot = snapshots.Find(o => o.Name == "Total Operating Time");
-                if (snapshot != null)
-                {
-                    if (status == null) status = new Data.StatusInfo();
-                    double val = 0;
-                    double.TryParse(snapshot.Value, out val);
-                    status.TotalOperating = val;
-                    statusSet = true;
-                }
-
-                // Total Cutting Time
-                snapshot = snapshots.Find(o => o.Name == "Total Cutting Time");
-                if (snapshot != null)
-                {
-                    if (status == null) status = new Data.StatusInfo();
-                    double val = 0;
-                    double.TryParse(snapshot.Value, out val);
-                    status.TotalCutting = val;
-                    statusSet = true;
-                }
-
-                // Total Spindle Time
-                snapshot = snapshots.Find(o => o.Name == "Total Spindle Time");
-                if (snapshot != null)
-                {
-                    if (status == null) status = new Data.StatusInfo();
-                    double val = 0;
-                    double.TryParse(snapshot.Value, out val);
-                    status.TotalSpindle = val;
-                    statusSet = true;
-                }
-
-                if (statusSet) deviceInfo.AddClass("status", status);
-                queue.Add(deviceInfo);
             }
             else
             {
-                var status = new Data.StatusInfo();
-
-                status.DeviceStatus = "Alert";
-                status.ProductionStatus = "Production";
-
-                if (previousDeviceStatusTimestamp > DateTime.MinValue)
+                lock(_lock)
                 {
-                    status.DeviceStatusTimer += (DateTime.UtcNow - previousDeviceStatusTimestamp).TotalSeconds;
+                    if (deviceInfo.Status == null) deviceInfo.Status = new Data.StatusInfo();
+
+                    deviceInfo.Status.DeviceStatus = "Alert";
+                    deviceInfo.Status.ProductionStatus = "Production";
+
+                    if (previousDeviceStatusTimestamp > DateTime.MinValue)
+                    {
+                        deviceInfo.Status.DeviceStatusTimer += (DateTime.UtcNow - previousDeviceStatusTimestamp).TotalSeconds;
+                    }
+
+                    previousDeviceStatusTimestamp = DateTime.UtcNow;
+
+                    queue.Add(deviceInfo);
                 }
-
-                previousDeviceStatusTimestamp = DateTime.UtcNow;
-
-                queue.Add(deviceInfo);
             }
         }
         
@@ -245,230 +236,219 @@ namespace TrakHound_Server.Plugins.CloudData
         {
             if (data.Data01 != null && data.Data02 != null)
             {
-                var events = (List<GeneratedEvents.GeneratedEvent>)data.Data02;
+                    var events = (List<GeneratedEvents.GeneratedEvent>)data.Data02;
 
-                var eventTimes = new List<GeneratedEventTime>();
+                    var eventTimes = new List<GeneratedEventTime>();
 
-                // Convert into GeneratedEventTime objects separated by hour
-                foreach (var e in events)
-                {
-                    if (e.CurrentValue != null && e.PreviousValue != null && e.PreviousValue.Timestamp > DateTime.MinValue)
+                    // Convert into GeneratedEventTime objects separated by hour
+                    foreach (var e in events)
                     {
-                        // Check if event spans into next hour(s)
-                        if (e.PreviousValue.Timestamp.Hour != e.CurrentValue.Timestamp.Hour)
+                        if (e.CurrentValue != null && e.PreviousValue != null && e.PreviousValue.Timestamp > DateTime.MinValue)
                         {
-                            var hourStart = e.PreviousValue.Timestamp;
-
-                            while (hourStart < e.CurrentValue.Timestamp)
+                            // Check if event spans into next hour(s)
+                            if (e.PreviousValue.Timestamp.Hour != e.CurrentValue.Timestamp.Hour)
                             {
-                                var hourPlus = hourStart.AddHours(1);
-                                var hourEnd = new DateTime(hourPlus.Year, hourPlus.Month, hourPlus.Day, hourPlus.Hour, 0, 0);
-                                if (hourEnd > e.CurrentValue.Timestamp) hourEnd = e.CurrentValue.Timestamp;
+                                var hourStart = e.PreviousValue.Timestamp;
 
+                                while (hourStart < e.CurrentValue.Timestamp)
+                                {
+                                    var hourPlus = hourStart.AddHours(1);
+                                    var hourEnd = new DateTime(hourPlus.Year, hourPlus.Month, hourPlus.Day, hourPlus.Hour, 0, 0);
+                                    if (hourEnd > e.CurrentValue.Timestamp) hourEnd = e.CurrentValue.Timestamp;
+
+                                    var eventTime = new GeneratedEventTime();
+                                    eventTime.Event = e.EventName;
+                                    eventTime.Value = e.PreviousValue.Value;
+                                    eventTime.Start = hourStart;
+                                    eventTime.End = hourEnd;
+                                    eventTimes.Add(eventTime);
+
+                                    hourStart = hourEnd;
+                                }
+                            }
+                            else
+                            {
                                 var eventTime = new GeneratedEventTime();
                                 eventTime.Event = e.EventName;
                                 eventTime.Value = e.PreviousValue.Value;
-                                eventTime.Start = hourStart;
-                                eventTime.End = hourEnd;
+                                eventTime.Start = e.PreviousValue.Timestamp;
+                                eventTime.End = e.CurrentValue.Timestamp;
                                 eventTimes.Add(eventTime);
-
-                                hourStart = hourEnd;
                             }
                         }
-                        else
-                        {
-                            var eventTime = new GeneratedEventTime();
-                            eventTime.Event = e.EventName;
-                            eventTime.Value = e.PreviousValue.Value;
-                            eventTime.Start = e.PreviousValue.Timestamp;
-                            eventTime.End = e.CurrentValue.Timestamp;
-                            eventTimes.Add(eventTime);
-                        }
                     }
-                }
 
-                var hours = new List<Data.HourInfo>();
+                    var hours = new List<Data.HourInfo>();
 
-                // Add HourInfo objects for each GeneratedEventTime in list
-                foreach (var eventTime in eventTimes)
-                {
-                    var hourInfo = new Data.HourInfo();
-                    hourInfo.Date = eventTime.Start.ToString(Data.HourInfo.DateFormat);
-                    hourInfo.Hour = eventTime.Start.Hour;
-
-                    // Device Status
-                    if (eventTime.Event == "device_status" && !string.IsNullOrEmpty(eventTime.Value))
+                    // Add HourInfo objects for each GeneratedEventTime in list
+                    foreach (var eventTime in eventTimes)
                     {
-                        hourInfo.TotalTime = eventTime.Duration.TotalSeconds;
+                        var hourInfo = new Data.HourInfo();
+                        hourInfo.Date = eventTime.Start.ToString(Data.HourInfo.DateFormat);
+                        hourInfo.Hour = eventTime.Start.Hour;
 
-                        switch (eventTime.Value.ToLower())
+                        // Device Status
+                        if (eventTime.Event == "device_status" && !string.IsNullOrEmpty(eventTime.Value))
                         {
-                            case "active": hourInfo.Active = eventTime.Duration.TotalSeconds; break;
-                            case "idle": hourInfo.Idle = eventTime.Duration.TotalSeconds; break;
-                            case "alert": hourInfo.Alert = eventTime.Duration.TotalSeconds; break;
+                            hourInfo.TotalTime = eventTime.Duration.TotalSeconds;
+
+                            switch (eventTime.Value.ToLower())
+                            {
+                                case "active": hourInfo.Active = eventTime.Duration.TotalSeconds; break;
+                                case "idle": hourInfo.Idle = eventTime.Duration.TotalSeconds; break;
+                                case "alert": hourInfo.Alert = eventTime.Duration.TotalSeconds; break;
+                            }
                         }
+
+                        // Production Status
+                        if (eventTime.Event == "production_status" && !string.IsNullOrEmpty(eventTime.Value))
+                        {
+                            switch (eventTime.Value.ToLower())
+                            {
+                                case "production": hourInfo.Production = eventTime.Duration.TotalSeconds; break;
+                                case "setup": hourInfo.Setup = eventTime.Duration.TotalSeconds; break;
+                                case "teardown": hourInfo.Teardown = eventTime.Duration.TotalSeconds; break;
+                                case "maintenance": hourInfo.Maintenance = eventTime.Duration.TotalSeconds; break;
+                                case "process_development": hourInfo.ProcessDevelopment = eventTime.Duration.TotalSeconds; break;
+                            }
+                        }
+
+                        hours.Add(hourInfo);
                     }
 
-                    // Production Status
-                    if (eventTime.Event == "production_status" && !string.IsNullOrEmpty(eventTime.Value))
-                    {
-                        switch (eventTime.Value.ToLower())
-                        {
-                            case "production": hourInfo.Production = eventTime.Duration.TotalSeconds; break;
-                            case "setup": hourInfo.Setup = eventTime.Duration.TotalSeconds; break;
-                            case "teardown": hourInfo.Teardown = eventTime.Duration.TotalSeconds; break;
-                            case "maintenance": hourInfo.Maintenance = eventTime.Duration.TotalSeconds; break;
-                            case "process_development": hourInfo.ProcessDevelopment = eventTime.Duration.TotalSeconds; break;
-                        }
-                    }
-
-                    hours.Add(hourInfo);
+                    deviceInfo.AddHourInfos(hours);
                 }
-
-                deviceInfo.AddHourInfos(hours);
-            }
         }
 
         private void UpdateMTConnectStatus(EventData data)
         {
-            var status = new Data.StatusInfo();
-            var controller = new Data.ControllerInfo();
-
             if (data.Data02 != null)
             {
-                var infos = (List<StatusInfo>)data.Data02;
-                StatusInfo info = null;
-
-                // Availability
-                info = infos.Find(x => x.Type == "AVAILABILITY");
-                if (info != null)
+                lock (_lock)
                 {
-                    status.Connected = info.Value1 == "AVAILABLE" ? 1 : 0;
-                    controller.Availability = info.Value1;
-                }
+                    if (deviceInfo.Status == null) deviceInfo.Status = new Data.StatusInfo();
+                    if (deviceInfo.Controller == null) deviceInfo.Controller = new Data.ControllerInfo();
 
-                // Controller Mode
-                info = infos.Find(x => x.Type == "CONTROLLER_MODE");
-                if (info != null) controller.ControllerMode = info.Value1;
+                    var infos = (List<StatusInfo>)data.Data02;
+                    StatusInfo info = null;
 
-                // Emergency Stop
-                info = infos.Find(x => x.Type == "EMERGENCY_STOP");
-                if (info != null) controller.EmergencyStop = info.Value1;
-
-                // Execution Mode
-                info = infos.Find(x => x.Type == "EXECUTION");
-                if (info != null) controller.ExecutionMode = info.Value1;
-
-                // System status
-                var systemStatusInfos = infos.FindAll(x => x.Category == MTConnect.DataItemCategory.CONDITION &&
-                x.Type == "SYSTEM" && (x.Address.ToLower().Contains("controller") || x.Address.ToLower().Contains("path")));
-
-                var logicStatusInfos = infos.FindAll(x => x.Category == MTConnect.DataItemCategory.CONDITION &&
-                x.Type == "LOGIC_PROGRAM" && (x.Address.ToLower().Contains("controller") || x.Address.ToLower().Contains("path")));
-
-                var motionStatusInfos = infos.FindAll(x => x.Category == MTConnect.DataItemCategory.CONDITION &&
-                x.Type == "MOTION_PROGRAM" && (x.Address.ToLower().Contains("controller") || x.Address.ToLower().Contains("path")));
-
-                MTConnect.ConditionValue systemStatus = MTConnect.ConditionValue.UNAVAILABLE;
-                string systemMessage = string.Empty;
-
-                // Check System Type first
-                foreach (var sInfo in systemStatusInfos)
-                {
-                    if (sInfo.Value2 != null)
+                    // Availability
+                    info = infos.Find(x => x.Type == "AVAILABILITY");
+                    if (info != null)
                     {
-                        MTConnect.ConditionValue s = MTConnect.ConditionValue.UNAVAILABLE;
+                        deviceInfo.Status.Connected = info.Value1 == "AVAILABLE" ? 1 : 0;
+                        deviceInfo.Controller.Availability = info.Value1;
+                    }
 
-                        switch (sInfo.Value2.ToLower())
-                        {
-                            case "normal": s = MTConnect.ConditionValue.NORMAL; break;
-                            case "warning": s = MTConnect.ConditionValue.WARNING; break;
-                            case "fault": s = MTConnect.ConditionValue.FAULT; break;
-                        }
+                    // Controller Mode
+                    info = infos.Find(x => x.Type == "CONTROLLER_MODE");
+                    if (info != null) deviceInfo.Controller.ControllerMode = info.Value1;
 
-                        if (s > systemStatus)
+                    // Emergency Stop
+                    info = infos.Find(x => x.Type == "EMERGENCY_STOP");
+                    if (info != null) deviceInfo.Controller.EmergencyStop = info.Value1;
+
+                    // Execution Mode
+                    info = infos.Find(x => x.Type == "EXECUTION");
+                    if (info != null) deviceInfo.Controller.ExecutionMode = info.Value1;
+
+                    // System status
+                    var systemStatusInfos = infos.FindAll(x => x.Category == MTConnect.DataItemCategory.CONDITION &&
+                    x.Type == "SYSTEM" && (x.Address.ToLower().Contains("controller") || x.Address.ToLower().Contains("path")));
+
+                    var logicStatusInfos = infos.FindAll(x => x.Category == MTConnect.DataItemCategory.CONDITION &&
+                    x.Type == "LOGIC_PROGRAM" && (x.Address.ToLower().Contains("controller") || x.Address.ToLower().Contains("path")));
+
+                    var motionStatusInfos = infos.FindAll(x => x.Category == MTConnect.DataItemCategory.CONDITION &&
+                    x.Type == "MOTION_PROGRAM" && (x.Address.ToLower().Contains("controller") || x.Address.ToLower().Contains("path")));
+
+                    MTConnect.ConditionValue systemStatus = MTConnect.ConditionValue.UNAVAILABLE;
+                    string systemMessage = string.Empty;
+
+                    // Check System Type first
+                    foreach (var sInfo in systemStatusInfos)
+                    {
+                        if (sInfo.Value2 != null)
                         {
-                            systemStatus = s;
-                            systemMessage = sInfo.Value1;
+                            MTConnect.ConditionValue s = MTConnect.ConditionValue.UNAVAILABLE;
+
+                            switch (sInfo.Value2.ToLower())
+                            {
+                                case "normal": s = MTConnect.ConditionValue.NORMAL; break;
+                                case "warning": s = MTConnect.ConditionValue.WARNING; break;
+                                case "fault": s = MTConnect.ConditionValue.FAULT; break;
+                            }
+
+                            if (s > systemStatus)
+                            {
+                                systemStatus = s;
+                                systemMessage = sInfo.Value1;
+                            }
                         }
                     }
-                }
 
-                // Check Logic Program Type second
-                foreach (var sInfo in logicStatusInfos)
-                {
-                    if (sInfo.Value2 != null)
+                    // Check Logic Program Type second
+                    foreach (var sInfo in logicStatusInfos)
                     {
-                        MTConnect.ConditionValue s = MTConnect.ConditionValue.UNAVAILABLE;
-
-                        switch (sInfo.Value2.ToLower())
+                        if (sInfo.Value2 != null)
                         {
-                            case "normal": s = MTConnect.ConditionValue.NORMAL; break;
-                            case "warning": s = MTConnect.ConditionValue.WARNING; break;
-                            case "fault": s = MTConnect.ConditionValue.FAULT; break;
-                        }
+                            MTConnect.ConditionValue s = MTConnect.ConditionValue.UNAVAILABLE;
 
-                        if (s > systemStatus)
-                        {
-                            systemStatus = s;
-                            systemMessage = sInfo.Value1;
+                            switch (sInfo.Value2.ToLower())
+                            {
+                                case "normal": s = MTConnect.ConditionValue.NORMAL; break;
+                                case "warning": s = MTConnect.ConditionValue.WARNING; break;
+                                case "fault": s = MTConnect.ConditionValue.FAULT; break;
+                            }
+
+                            if (s > systemStatus)
+                            {
+                                systemStatus = s;
+                                systemMessage = sInfo.Value1;
+                            }
                         }
                     }
-                }
 
-                // Check Motion Program Type third
-                foreach (var sInfo in motionStatusInfos)
-                {
-                    if (sInfo.Value2 != null)
+                    // Check Motion Program Type third
+                    foreach (var sInfo in motionStatusInfos)
                     {
-                        MTConnect.ConditionValue s = MTConnect.ConditionValue.UNAVAILABLE;
-
-                        switch (sInfo.Value2.ToLower())
+                        if (sInfo.Value2 != null)
                         {
-                            case "normal": s = MTConnect.ConditionValue.NORMAL; break;
-                            case "warning": s = MTConnect.ConditionValue.WARNING; break;
-                            case "fault": s = MTConnect.ConditionValue.FAULT; break;
-                        }
+                            MTConnect.ConditionValue s = MTConnect.ConditionValue.UNAVAILABLE;
 
-                        if (s > systemStatus)
-                        {
-                            systemStatus = s;
-                            systemMessage = sInfo.Value1;
+                            switch (sInfo.Value2.ToLower())
+                            {
+                                case "normal": s = MTConnect.ConditionValue.NORMAL; break;
+                                case "warning": s = MTConnect.ConditionValue.WARNING; break;
+                                case "fault": s = MTConnect.ConditionValue.FAULT; break;
+                            }
+
+                            if (s > systemStatus)
+                            {
+                                systemStatus = s;
+                                systemMessage = sInfo.Value1;
+                            }
                         }
                     }
+
+                    deviceInfo.Controller.SystemStatus = systemStatus.ToString();
+                    deviceInfo.Controller.SystemMessage = systemMessage;
+
+                    // Program Name
+                    info = infos.Find(x => x.Type == "PROGRAM");
+                    if (info != null) deviceInfo.Controller.ProgramName = info.Value1;
+
+                    // Program Block
+                    info = infos.Find(x => x.Type == "BLOCK");
+                    if (info != null) deviceInfo.Controller.ProgramBlock = info.Value1;
+
+                    // Program Line
+                    info = infos.Find(x => x.Type == "LINE");
+                    if (info != null) deviceInfo.Controller.ProgramLine = info.Value1;
+
+                    queue.Add(deviceInfo);
                 }
-
-                controller.SystemStatus = systemStatus.ToString();
-                controller.SystemMessage = systemMessage;
-                
-                // Program Name
-                info = infos.Find(x => x.Type == "PROGRAM");
-                if (info != null) controller.ProgramName = info.Value1;
-
-                // Program Block
-                info = infos.Find(x => x.Type == "BLOCK");
-                if (info != null) controller.ProgramBlock = info.Value1;
-
-                // Program Line
-                info = infos.Find(x => x.Type == "LINE");
-                if (info != null) controller.ProgramLine = info.Value1;
             }
-            else
-            {
-                status.Connected = 0;
-                controller.Availability = "UNAVAILABLE";
-                controller.ControllerMode = "UNAVAILABLE";
-                controller.EmergencyStop = "UNAVAILABLE";
-                controller.ExecutionMode = "UNAVAILABLE";
-                controller.SystemMessage = "UNAVAILABLE";
-                controller.SystemStatus = "UNAVAILABLE";
-                controller.ProgramName = "UNAVAILABLE";
-            }
-
-            deviceInfo.AddClass("status", status);
-            deviceInfo.AddClass("controller", controller);
-
-            queue.Add(deviceInfo);
         }
 
 
@@ -478,33 +458,36 @@ namespace TrakHound_Server.Plugins.CloudData
         {
             if (data.Data01 != null && data.Data02 != null)
             {
-                var oeeDatas = (List<OEE.OEEData>)data.Data02;
-                if (oeeDatas != null)
+                lock(_lock)
                 {
-                    foreach (var oeeData in oeeDatas.ToList())
+                    var oeeDatas = (List<OEE.OEEData>)data.Data02;
+                    if (oeeDatas != null)
                     {
-                        var storedOeeData = storedOeeDatas.Find(o => o.Start.Hour == oeeData.Start.Hour && o.CycleId == oeeData.CycleId && o.CycleInstanceId == oeeData.CycleInstanceId);
-                        if (storedOeeData == null)
+                        foreach (var oeeData in oeeDatas.ToList())
                         {
-                            storedOeeData = new OEE.OEEData();
-                            storedOeeDatas.Add(oeeData);
+                            var storedOeeData = storedOeeDatas.Find(o => o.Start.Hour == oeeData.Start.Hour && o.CycleId == oeeData.CycleId && o.CycleInstanceId == oeeData.CycleInstanceId);
+                            if (storedOeeData == null)
+                            {
+                                storedOeeData = new OEE.OEEData();
+                                storedOeeDatas.Add(oeeData);
+                            }
+
+                            var hourInfo = new Data.HourInfo();
+                            hourInfo.Date = oeeData.Start.ToString(Data.HourInfo.DateFormat);
+                            hourInfo.Hour = oeeData.Start.Hour;
+                            hourInfo.PlannedProductionTime = Math.Max(0, oeeData.PlannedProductionTime - storedOeeData.PlannedProductionTime);
+                            hourInfo.OperatingTime = Math.Max(0, oeeData.OperatingTime - storedOeeData.OperatingTime);
+                            hourInfo.IdealOperatingTime = Math.Max(0, oeeData.IdealOperatingTime - storedOeeData.IdealOperatingTime);
+
+                            // Update in stored list
+                            int i = storedOeeDatas.FindIndex(o => o.Start.Hour == oeeData.Start.Hour && o.CycleId == oeeData.CycleId && o.CycleInstanceId == oeeData.CycleInstanceId);
+                            if (i >= 0) storedOeeDatas[i] = oeeData;
+
+                            deviceInfo.AddHourInfo(hourInfo);
                         }
 
-                        var hourInfo = new Data.HourInfo();
-                        hourInfo.Date = oeeData.Start.ToString(Data.HourInfo.DateFormat);
-                        hourInfo.Hour = oeeData.Start.Hour;
-                        hourInfo.PlannedProductionTime = Math.Max(0, oeeData.PlannedProductionTime - storedOeeData.PlannedProductionTime);
-                        hourInfo.OperatingTime = Math.Max(0, oeeData.OperatingTime - storedOeeData.OperatingTime);
-                        hourInfo.IdealOperatingTime = Math.Max(0, oeeData.IdealOperatingTime - storedOeeData.IdealOperatingTime);
-
-                        // Update in stored list
-                        int i = storedOeeDatas.FindIndex(o => o.Start.Hour == oeeData.Start.Hour && o.CycleId == oeeData.CycleId && o.CycleInstanceId == oeeData.CycleInstanceId);
-                        if (i >= 0) storedOeeDatas[i] = oeeData;
-
-                        deviceInfo.AddHourInfo(hourInfo);
+                        queue.Add(deviceInfo);
                     }
-
-                    queue.Add(deviceInfo);
                 }
             }
         }
@@ -516,20 +499,23 @@ namespace TrakHound_Server.Plugins.CloudData
                 var infos = (List<Parts.PartInfo>)data.Data02;
                 if (infos != null)
                 {
-                    var pc = Parts.Configuration.Get(configuration);
-                    if (pc != null)
+                    lock(_lock)
                     {
-                        foreach (var info in infos)
+                        var pc = Parts.Configuration.Get(configuration);
+                        if (pc != null)
                         {
-                            var hourInfo = new Data.HourInfo();
-                            hourInfo.Date = info.Timestamp.ToString(Data.HourInfo.DateFormat);
-                            hourInfo.Hour = info.Timestamp.Hour;
+                            foreach (var info in infos)
+                            {
+                                var hourInfo = new Data.HourInfo();
+                                hourInfo.Date = info.Timestamp.ToString(Data.HourInfo.DateFormat);
+                                hourInfo.Hour = info.Timestamp.Hour;
 
-                            hourInfo.TotalPieces = info.Count;
-                            deviceInfo.AddHourInfo(hourInfo);
+                                hourInfo.TotalPieces = info.Count;
+                                deviceInfo.AddHourInfo(hourInfo);
+                            }
+
+                            queue.Add(deviceInfo);
                         }
-
-                        queue.Add(deviceInfo);
                     }
                 }
             }
@@ -549,39 +535,42 @@ namespace TrakHound_Server.Plugins.CloudData
                 var cycleDatas = (List<Cycles.CycleData>)data.Data02;
                 if (cycleDatas != null)
                 {
-                    var cycleInfos = new List<Data.CycleInfo>();
-
-                    foreach (var cycleData in cycleDatas)
+                    lock(_lock)
                     {
-                        if (cycleData.Completed && cycleData.Duration > TimeSpan.Zero)
+                        var cycleInfos = new List<Data.CycleInfo>();
+
+                        foreach (var cycleData in cycleDatas)
                         {
-                            var cycleInfo = new Data.CycleInfo();
-
-                            cycleInfo.CycleId = cycleData.CycleId;
-                            cycleInfo.CycleInstanceId = cycleData.InstanceId;
-
-                            cycleInfo.CycleName = cycleData.Name;
-                            cycleInfo.CycleEvent = cycleData.Event;
-                            cycleInfo.ProductionType = cycleData.ProductionType.ToString();
-
-                            cycleInfo.Start = cycleData.Start;
-                            cycleInfo.Stop = cycleData.Stop;
-                            cycleInfo.Duration = cycleData.Duration.TotalSeconds;
-
-                            if (previousCycleInfo == null || cycleInfo.CycleId != previousCycleInfo.CycleId || cycleInfo.CycleInstanceId != previousCycleInfo.CycleInstanceId)
+                            if (cycleData.Completed && cycleData.Duration > TimeSpan.Zero)
                             {
-                                cycleInfos.Add(cycleInfo);
+                                var cycleInfo = new Data.CycleInfo();
+
+                                cycleInfo.CycleId = cycleData.CycleId;
+                                cycleInfo.CycleInstanceId = cycleData.InstanceId;
+
+                                cycleInfo.CycleName = cycleData.Name;
+                                cycleInfo.CycleEvent = cycleData.Event;
+                                cycleInfo.ProductionType = cycleData.ProductionType.ToString();
+
+                                cycleInfo.Start = cycleData.Start;
+                                cycleInfo.Stop = cycleData.Stop;
+                                cycleInfo.Duration = cycleData.Duration.TotalSeconds;
+
+                                if (previousCycleInfo == null || cycleInfo.CycleId != previousCycleInfo.CycleId || cycleInfo.CycleInstanceId != previousCycleInfo.CycleInstanceId)
+                                {
+                                    cycleInfos.Add(cycleInfo);
+                                }
+
+                                previousCycleInfo = cycleInfo;
                             }
+                        }
 
-                            previousCycleInfo = cycleInfo;
-                        }                       
-                    }
+                        if (cycleInfos.Count > 0)
+                        {
+                            deviceInfo.AddClass("cycles", cycleInfos);
 
-                    if (cycleInfos.Count > 0)
-                    {
-                        deviceInfo.AddClass("cycles", cycleInfos);
-
-                        queue.Add(deviceInfo);
+                            queue.Add(deviceInfo);
+                        }
                     }
                 }
             }
