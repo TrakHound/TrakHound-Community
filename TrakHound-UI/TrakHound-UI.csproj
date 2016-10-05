@@ -34,10 +34,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ColorWheel.Core, Version=1.7.14.51712, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\ColorWheel.Core.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -85,23 +81,24 @@
     <Compile Include="Controls\TimeDisplay.xaml.cs">
       <DependentUpon>TimeDisplay.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Timeline\Compatibility.cs" />
-    <Compile Include="Controls\Timeline\Controls\DataControlNotifier.cs" />
-    <Compile Include="Controls\Timeline\Controls\ITimelineToolbox.cs" />
-    <Compile Include="Controls\Timeline\Controls\TimelineBand.cs" />
-    <Compile Include="Controls\Timeline\Controls\TimelineToolbox.cs" />
-    <Compile Include="Controls\Timeline\Controls\TimelineTray.cs" />
-    <Compile Include="Controls\Timeline\Controls\TimelineUrls.cs" />
-    <Compile Include="Controls\Timeline\Data\DateTimeConverter.cs" />
-    <Compile Include="Controls\Timeline\Data\TimelineBuilder.cs" />
-    <Compile Include="Controls\Timeline\Data\TimelineCalendar.cs" />
-    <Compile Include="Controls\Timeline\Data\TimelineDisplayEvent.cs" />
-    <Compile Include="Controls\Timeline\Data\TimelineEvent.cs" />
-    <Compile Include="Controls\Timeline\Tools\InertialScroll.cs" />
-    <Compile Include="Controls\Timeline\Tools\TooltipServiceEx.cs" />
-    <Compile Include="Controls\Timeline\Tools\Utilities.cs" />
+    <None Include="Controls\Timeline\Compatibility.cs" />
+    <None Include="Controls\Timeline\Controls\DataControlNotifier.cs" />
+    <None Include="Controls\Timeline\Controls\ITimelineToolbox.cs" />
+    <None Include="Controls\Timeline\Controls\TimelineBand.cs" />
+    <None Include="Controls\Timeline\Controls\TimelineToolbox.cs" />
+    <None Include="Controls\Timeline\Controls\TimelineTray.cs" />
+    <None Include="Controls\Timeline\Controls\TimelineUrls.cs" />
+    <None Include="Controls\Timeline\Data\DateTimeConverter.cs" />
+    <None Include="Controls\Timeline\Data\TimelineBuilder.cs" />
+    <None Include="Controls\Timeline\Data\TimelineCalendar.cs" />
+    <None Include="Controls\Timeline\Data\TimelineDisplayEvent.cs" />
+    <None Include="Controls\Timeline\Data\TimelineEvent.cs" />
+    <None Include="Controls\Timeline\Tools\InertialScroll.cs" />
+    <None Include="Controls\Timeline\Tools\TooltipServiceEx.cs" />
+    <None Include="Controls\Timeline\Tools\Utilities.cs" />
     <Compile Include="Converters\UppercaseFirst.cs" />
     <Compile Include="Extensions\ControlFocus.cs" />
+    <Compile Include="Extensions\VisualTree_Functions.cs" />
     <Compile Include="Functions\Brushes.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -258,22 +255,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\Timeline\Themes\Constants.xaml">
+    <None Include="Controls\Timeline\Themes\Constants.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Timeline\Themes\Generic.xaml">
+    </None>
+    <None Include="Controls\Timeline\Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Timeline\Themes\NavigationButtons.xaml">
+    </None>
+    <None Include="Controls\Timeline\Themes\NavigationButtons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Timeline\Themes\ToolboxButton.xaml">
+    </None>
+    <None Include="Controls\Timeline\Themes\ToolboxButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
+    </None>
     <Page Include="Controls\TimeProgress.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
