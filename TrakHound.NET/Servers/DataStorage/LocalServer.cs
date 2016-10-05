@@ -37,8 +37,6 @@ namespace TrakHound.Servers.DataStorage
         {
             var apiMonitor = new ApiConfiguration.Monitor();
             apiMonitor.ApiConfigurationChanged += ApiMonitor_ApiConfigurationChanged;
-
-            LoadDevices();
         }
 
         private void ApiMonitor_ApiConfigurationChanged(ApiConfiguration config)
@@ -51,41 +49,77 @@ namespace TrakHound.Servers.DataStorage
         {
             Stop();
 
-            listener = new HttpListener();
-            listener.Prefixes.Add("http://localhost:" + PORT + "/api/");
-            listener.Start();
-
-            ThreadPool.QueueUserWorkItem((o) =>
+            try
             {
-                Console.WriteLine("TrakHound Data Server Started...");
-                try
+                listener = new HttpListener();
+                listener.Prefixes.Add("http://localhost:" + PORT + "/api/");
+                listener.Start();
+
+                ThreadPool.QueueUserWorkItem((o) =>
                 {
+                    Console.WriteLine("TrakHound Data Server Started...");
+
                     while (listener.IsListening)
                     {
-                        ThreadPool.QueueUserWorkItem((c) =>
+                        try
                         {
-                            var ctx = c as HttpListenerContext;
+                            //var context = listener.GetContext();
 
-                            try
+                            ThreadPool.QueueUserWorkItem((c) =>
                             {
-                                string rstr = ProcessRequest(ctx);
-                                byte[] buf = Encoding.UTF8.GetBytes(rstr);
-                                ctx.Response.ContentLength64 = buf.Length;
-                                ctx.Response.OutputStream.Write(buf, 0, buf.Length);
-                            }
-                            catch { } // suppress any exceptions
-                            finally
+                                var ctx = c as HttpListenerContext;
+
+                                try
+                                {
+                                    string rstr = ProcessRequest(ctx);
+                                    byte[] buf = Encoding.UTF8.GetBytes(rstr);
+                                    ctx.Response.ContentLength64 = buf.Length;
+                                    ctx.Response.OutputStream.Write(buf, 0, buf.Length);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Logger.Log("Local Data Server :: Exception :: " + ex.Message, LogLineType.Warning);
+                                }
+                                finally
+                                {
+                                    // always close the stream
+                                    ctx.Response.OutputStream.Close();
+                                }
+                            }, listener.GetContext());
+                        }
+                        catch (ObjectDisposedException ex)
+                        {
+                            Logger.Log("Local Data Server :: ObjectDisposedException :: " + ex.Message, LogLineType.Warning);
+                        }
+                        catch (HttpListenerException ex)
+                        {
+                            if (ex.ErrorCode != 995)
                             {
-                                // always close the stream
-                                ctx.Response.OutputStream.Close();
+                                Logger.Log("Local Data Server :: HttpListenerException :: " + ex.ErrorCode + " :: " + ex.Message, LogLineType.Warning);
                             }
-                        }, listener.GetContext());
+                        }
+                        catch (InvalidOperationException ex)
+                        {
+                            Logger.Log("Local Data Server :: InvalidOperationException :: " + ex.Message, LogLineType.Warning);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Log("Local Data Server :: Exception :: " + ex.Message, LogLineType.Warning);
+                        }
                     }
-                }
-                catch { } // suppress any exceptions
-            });
+                });
 
-            StartBackupTimer();
+                StartBackupTimer();
+            }
+            catch (Exception ex)
+            {
+                Logger.Log("Local Data Server :: Error starting server :: Exception :: " + ex.Message, LogLineType.Warning);
+                Logger.Log("Local Data Server :: Error starting server :: Restarting Data Server in 5 Seconds..");
+
+                Thread.Sleep(5000);
+
+                Start();
+            }
         }
 
         public void Stop()
@@ -212,18 +246,6 @@ namespace TrakHound.Servers.DataStorage
         {
             try
             {
-                var configs = DeviceConfiguration.ReadAll(FileLocations.Devices);
-                if (configs != null)
-                {
-                    var backupInfos = Backup.Load(configs);
-                    if (backupInfos != null && backupInfos.Count > 0)
-                    {
-                        backupInfos = backupInfos.FindAll(o => o.Enabled).ToList();
-
-                        Data.DeviceInfos.AddRange(backupInfos);
-                    }
-                }
-
                 if (backupTimer != null) backupTimer.Stop();
                 else
                 {
@@ -275,7 +297,10 @@ namespace TrakHound.Servers.DataStorage
                             foreach (var device in devices)
                             {
                                 var deviceInfo = DeviceInfos.Find(o => o.UniqueId == device.UniqueId);
-                                if (deviceInfo != null) deviceInfos.Add(deviceInfo);
+                                if (deviceInfo != null)
+                                {
+                                    deviceInfos.Add(deviceInfo);
+                                }
                             }
 
                             if (deviceInfos.Count > 0) response = API.Data.DeviceInfo.ListToJson(deviceInfos);
@@ -291,38 +316,53 @@ namespace TrakHound.Servers.DataStorage
                 return response;
             }
 
+            private static bool first = true;
+
+            private static object _lock = new object();
+
             public static string Update(HttpListenerContext context)
             {
                 string response = null;
 
                 try
                 {
-                    using (var reader = new StreamReader(context.Request.InputStream))
+                    lock (_lock)
                     {
-                        var body = reader.ReadToEnd();
-
-                        string json = HTTP.GetPostValue(body, "devices");
-                        if (!string.IsNullOrEmpty(json))
+                        using (var reader = new StreamReader(context.Request.InputStream))
                         {
-                            var devices = JSON.ToType<List<API.Data.DeviceInfo>>(json);
-                            if (devices != null && devices.Count > 0)
+                            var body = reader.ReadToEnd();
+
+                            string json = HTTP.GetPostValue(body, "devices");
+                            if (!string.IsNullOrEmpty(json))
                             {
-                                foreach (var device in devices)
+                                var devices = JSON.ToType<List<API.Data.DeviceInfo>>(json);
+                                if (devices != null && devices.Count > 0)
                                 {
-                                    int i = DeviceInfos.FindIndex(o => o.UniqueId == device.UniqueId);
-                                    if (i >= 0)
+                                    // Load backup data on first pass
+                                    if (first)
                                     {
+                                        var backupInfos = Backup.Load(devices.ToArray());
+                                        if (backupInfos != null && backupInfos.Count > 0)
+                                        {
+                                            DeviceInfos.AddRange(backupInfos);
+                                        }
+                                    }
+
+                                    foreach (var device in devices)
+                                    {
+                                        int i = DeviceInfos.FindIndex(o => o.UniqueId == device.UniqueId);
+                                        if (i < 0)
+                                        {
+                                            DeviceInfos.Add(device);
+                                            i = DeviceInfos.FindIndex(o => o.UniqueId == device.UniqueId);
+                                        }
+
                                         var info = DeviceInfos[i];
 
                                         object obj = null;
 
-                                        API.Data.StatusInfo status = null;
                                         obj = device.GetClass("status");
-                                        if (obj != null)
-                                        {
-                                            info.AddClass("status", obj);
-                                            status = (API.Data.StatusInfo)obj;
-                                        }
+                                        if (obj != null) { info.AddClass("status", obj); }
 
                                         obj = device.GetClass("controller");
                                         if (obj != null) info.AddClass("controller", obj);
@@ -376,6 +416,8 @@ namespace TrakHound.Servers.DataStorage
                                             response = "Devices Updated Successfully";
                                         }
                                     }
+
+                                    first = false;
                                 }
                             }
                         }
@@ -461,125 +503,126 @@ namespace TrakHound.Servers.DataStorage
             }
         }
 
-        #region "Device Monitor"
+        //#region "Device Monitor"
 
-        /// <summary>
-        /// Devices Monitor is used to monitor when devices are Changed, Added, or Removed.
-        /// 'Changed' includes whether device was Enabled or Disabled.
-        /// Monitor runs at a fixed interval of 5 seconds and compares Devices with list of tables for current user
-        /// </summary>
+        ///// <summary>
+        ///// Devices Monitor is used to monitor when devices are Changed, Added, or Removed.
+        ///// 'Changed' includes whether device was Enabled or Disabled.
+        ///// Monitor runs at a fixed interval of 5 seconds and compares Devices with list of tables for current user
+        ///// </summary>
 
-        private Thread devicesmonitor_THREAD;
-        private ManualResetEvent monitorstop = null;
+        //private Thread deviceMonitorThread;
+        //private ManualResetEvent monitorstop = null;
 
-        void LoadDevices()
-        {
-            Data.DeviceInfos.Clear();
+        //void LoadDevices()
+        //{
+        //    Data.DeviceInfos.Clear();
 
-            DevicesMonitor_Initialize();
-        }
+        //    DevicesMonitor_Initialize();
+        //}
 
-        void AddDevice(DeviceConfiguration config)
-        {
-            var deviceInfo = new API.Data.DeviceInfo();
-            
-            deviceInfo.UniqueId = config.UniqueId;
-            deviceInfo.Enabled = config.Enabled;
-            deviceInfo.Index = config.Index;
+        //void AddDevice(DeviceConfiguration config)
+        //{
+        //    var deviceInfo = new API.Data.DeviceInfo();
 
-            deviceInfo.Description = config.Description;
+        //    deviceInfo.UniqueId = config.UniqueId;
+        //    deviceInfo.Enabled = config.Enabled;
+        //    deviceInfo.Index = config.Index;
 
-            Data.DeviceInfos.Add(deviceInfo);
-        }
+        //    deviceInfo.Description = config.Description;
 
-        void DevicesMonitor_Initialize()
-        {
-            if (devicesmonitor_THREAD != null) devicesmonitor_THREAD.Abort();
+        //    Data.DeviceInfos.Add(deviceInfo);
+        //}
 
-            devicesmonitor_THREAD = new Thread(new ThreadStart(DevicesMonitor_Start));
-            devicesmonitor_THREAD.Start();
-        }
+        //void DevicesMonitor_Initialize()
+        //{
+        //    if (deviceMonitorThread != null) deviceMonitorThread.Abort();
 
-        void DevicesMonitor_Start()
-        {
-            monitorstop = new ManualResetEvent(false);
+        //    deviceMonitorThread = new Thread(new ThreadStart(DevicesMonitor_Start));
+        //    deviceMonitorThread.Start();
+        //}
 
-            while (!monitorstop.WaitOne(0, true))
-            {
-                DevicesMonitor_Worker();
+        //void DevicesMonitor_Start()
+        //{
+        //    monitorstop = new ManualResetEvent(false);
 
-                Thread.Sleep(2000);
-            }
-        }
+        //    while (!monitorstop.WaitOne(0, true))
+        //    {
+        //        DevicesMonitor_Worker();
 
-        void DevicesMonitor_Stop()
-        {
-            if (monitorstop != null) monitorstop.Set();
-        }
+        //        Thread.Sleep(2000);
+        //    }
+        //}
 
-        void DevicesMonitor_Worker()
-        {
-            CheckLocalDevices();
-        }
+        //void DevicesMonitor_Stop()
+        //{
+        //    if (monitorstop != null) monitorstop.Set();
+        //    if (deviceMonitorThread != null) deviceMonitorThread.Abort();
+        //}
 
-        
-        private void CheckLocalDevices()
-        {
-            // Retrieves a list of devices by reading the local 'Devices' folder
-            var configs = DeviceConfiguration.ReadAll(FileLocations.Devices).ToList();
-            if (configs != null)
-            {
-                if (configs.Count > 0)
-                {
-                    foreach (DeviceConfiguration config in configs)
-                    {
-                        if (config != null)
-                        {
-                            int i = Data.DeviceInfos.FindIndex(x => x.UniqueId == config.UniqueId);
-                            if (i >= 0) // Device is already part of list
-                            {
-                                var device = Data.DeviceInfos[i];
-                                if (config.Enabled)
-                                {
-                                    device.Index = config.Index;
-                                    device.Description = config.Description;
-                                }
-                                else Data.DeviceInfos.RemoveAt(i);
-                            }
-                            else // Add Device
-                            {
-                                if (config.Enabled) AddDevice(config);
-                            }
-                        }
-                    }
+        //void DevicesMonitor_Worker()
+        //{
+        //    CheckLocalDevices();
+        //}
 
-                    // Find devices that were removed
-                    foreach (var device in Data.DeviceInfos.ToList())
-                    {
-                        if (!configs.Exists(x => x.UniqueId == device.UniqueId))
-                        {
-                            int i = Data.DeviceInfos.FindIndex(x => x.UniqueId == device.UniqueId);
-                            if (i >= 0) Data.DeviceInfos.RemoveAt(i);
-                        }
-                    }
-                }
-                else RemoveAllDevices();
-            }
-            else
-            {
-                RemoveAllDevices();
-            }
-        }
 
-        private void RemoveAllDevices()
-        {
-            if (Data.DeviceInfos != null)
-            {
-                Data.DeviceInfos.Clear();
-            }
-        }
+        //private void CheckLocalDevices()
+        //{
+        //    // Retrieves a list of devices by reading the local 'Devices' folder
+        //    var configs = DeviceConfiguration.ReadAll(FileLocations.Devices).ToList();
+        //    if (configs != null)
+        //    {
+        //        if (configs.Count > 0)
+        //        {
+        //            foreach (DeviceConfiguration config in configs)
+        //            {
+        //                if (config != null)
+        //                {
+        //                    int i = Data.DeviceInfos.FindIndex(x => x.UniqueId == config.UniqueId);
+        //                    if (i >= 0) // Device is already part of list
+        //                    {
+        //                        var device = Data.DeviceInfos[i];
+        //                        if (config.Enabled)
+        //                        {
+        //                            device.Index = config.Index;
+        //                            device.Description = config.Description;
+        //                        }
+        //                        else Data.DeviceInfos.RemoveAt(i);
+        //                    }
+        //                    else // Add Device
+        //                    {
+        //                        if (config.Enabled) AddDevice(config);
+        //                    }
+        //                }
+        //            }
 
-        #endregion
+        //            // Find devices that were removed
+        //            foreach (var device in Data.DeviceInfos.ToList())
+        //            {
+        //                if (!configs.Exists(x => x.UniqueId == device.UniqueId))
+        //                {
+        //                    int i = Data.DeviceInfos.FindIndex(x => x.UniqueId == device.UniqueId);
+        //                    if (i >= 0) Data.DeviceInfos.RemoveAt(i);
+        //                }
+        //            }
+        //        }
+        //        else RemoveAllDevices();
+        //    }
+        //    else
+        //    {
+        //        RemoveAllDevices();
+        //    }
+        //}
+
+        //private void RemoveAllDevices()
+        //{
+        //    if (Data.DeviceInfos != null)
+        //    {
+        //        Data.DeviceInfos.Clear();
+        //    }
+        //}
+
+        //#endregion
 
     }
 }

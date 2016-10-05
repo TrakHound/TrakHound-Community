@@ -64,6 +64,108 @@ namespace TrakHound.Servers.DataStorage
             }
         }
 
+        public static List<Data.DeviceInfo> Load(string[] devices)
+        {
+            var config = Configuration.Read();
+
+            if (File.Exists(config.SQliteDatabasePath))
+            {
+                var connection = Connection.Create(config);
+                if (connection != null)
+                {
+                    DataTable hoursTable = Table.GetHours(connection, devices);
+                    if (hoursTable != null)
+                    {
+                        var hourRowInfos = new List<Row.HourRowInfo>();
+
+                        // Get HourRowInfo objects from DataRows
+                        foreach (DataRow row in hoursTable.Rows)
+                        {
+                            var hourRowInfo = Row.GetHourInfo(connection, row);
+                            if (hourRowInfo != null) hourRowInfos.Add(hourRowInfo);
+                        }
+
+                        var result = new List<Data.DeviceInfo>();
+
+                        // Create DeviceInfo object for each HourRowInfo
+                        foreach (var hourRowInfo in hourRowInfos)
+                        {
+                            Data.DeviceInfo deviceInfo = null;
+                            deviceInfo = result.Find(o => o.UniqueId == hourRowInfo.UniqueId);
+                            if (deviceInfo == null)
+                            {
+                                deviceInfo = new Data.DeviceInfo();
+                                deviceInfo.UniqueId = hourRowInfo.UniqueId;
+                                result.Add(deviceInfo);
+                            }
+
+                            deviceInfo.AddHourInfo(hourRowInfo.HourInfo);
+                        }
+
+                        Logger.Log("Local Data Server : Backup Loaded Successfully");
+
+                        return result;
+                    }
+
+                    Connection.Close(connection);
+                }
+            }
+            else Logger.Log("Local Server Backup File Not Found @ " + config.SQliteDatabasePath);
+
+            return null;
+        }
+
+        public static List<Data.DeviceInfo> Load(API.Data.DeviceInfo[] deviceInfos)
+        {
+            var config = Configuration.Read();
+
+            if (File.Exists(config.SQliteDatabasePath))
+            {
+                var connection = Connection.Create(config);
+                if (connection != null)
+                {
+                    DataTable hoursTable = Table.GetHours(connection, deviceInfos);
+                    if (hoursTable != null)
+                    {
+                        var hourRowInfos = new List<Row.HourRowInfo>();
+
+                        // Get HourRowInfo objects from DataRows
+                        foreach (DataRow row in hoursTable.Rows)
+                        {
+                            var hourRowInfo = Row.GetHourInfo(connection, row);
+                            if (hourRowInfo != null) hourRowInfos.Add(hourRowInfo);
+                        }
+
+                        var result = new List<Data.DeviceInfo>();
+
+                        // Create DeviceInfo object for each HourRowInfo
+                        foreach (var hourRowInfo in hourRowInfos)
+                        {
+                            Data.DeviceInfo deviceInfo = null;
+                            deviceInfo = result.Find(o => o.UniqueId == hourRowInfo.UniqueId);
+                            if (deviceInfo == null)
+                            {
+                                deviceInfo = new Data.DeviceInfo();
+                                deviceInfo.UniqueId = hourRowInfo.UniqueId;
+                                result.Add(deviceInfo);
+                            }
+
+                            deviceInfo.AddHourInfo(hourRowInfo.HourInfo);
+                        }
+
+                        Logger.Log("Local Data Server : Backup Loaded Successfully");
+
+                        return result;
+                    }
+
+                    Connection.Close(connection);
+                }
+            }
+            else Logger.Log("Local Server Backup File Not Found @ " + config.SQliteDatabasePath);
+
+            return null;
+        }
+
         public static List<Data.DeviceInfo> Load(DeviceConfiguration[] deviceConfigs)
         {
             var config = Configuration.Read();
@@ -101,6 +203,8 @@ namespace TrakHound.Servers.DataStorage
 
                             deviceInfo.AddHourInfo(hourRowInfo.HourInfo);
                         }
+
+                        Logger.Log("Local Data Server : Backup Loaded Successfully");
 
                         return result;
                     }
@@ -273,19 +377,19 @@ namespace TrakHound.Servers.DataStorage
                 }
                 catch (ObjectDisposedException ex)
                 {
-                    Logger.Log("ObjectDisposedException :: " + ex.Message, LogLineType.Error);
+                    Logger.Log("ObjectDisposedException :: " + query + " :: " + ex.Message, LogLineType.Error);
                 }
                 catch (InvalidOperationException ex)
                 {
-                    Logger.Log("InvalidOperationException :: " + ex.Message, LogLineType.Error);
+                    Logger.Log("InvalidOperationException :: " + query + " :: " + ex.Message, LogLineType.Error);
                 }
                 catch (SQLiteException ex)
                 {
-                    Logger.Log("SQLiteException :: " + ex.Message, LogLineType.Error);
+                    Logger.Log("SQLiteException :: " + query + " :: " + ex.Message, LogLineType.Error);
                 }
                 catch (Exception ex)
                 {
-                    Logger.Log("Exception :: " + ex.Message, LogLineType.Error);
+                    Logger.Log("Exception :: " + query + " :: " + ex.Message, LogLineType.Error);
                 }
             }
 
@@ -309,19 +413,19 @@ namespace TrakHound.Servers.DataStorage
                 }
                 catch (ObjectDisposedException ex)
                 {
-                    Logger.Log("ObjectDisposedException :: " + ex.Message, LogLineType.Error);
+                    Logger.Log("ObjectDisposedException :: " + query + " :: " + ex.Message, LogLineType.Error);
                 }
                 catch (InvalidOperationException ex)
                 {
-                    Logger.Log("InvalidOperationException :: " + ex.Message, LogLineType.Error);
+                    Logger.Log("InvalidOperationException :: " + query + " :: " + ex.Message, LogLineType.Error);
                 }
                 catch (SQLiteException ex)
                 {
-                    Logger.Log("SQLiteException :: " + ex.Message, LogLineType.Error);
+                    Logger.Log("SQLiteException :: " + query + " :: " + ex.Message, LogLineType.Error);
                 }
                 catch (Exception ex)
                 {
-                    Logger.Log("Exception :: " + ex.Message, LogLineType.Error);
+                    Logger.Log("Exception :: " + query + " :: " + ex.Message, LogLineType.Error);
                 }
 
                 return null;
@@ -392,6 +496,32 @@ namespace TrakHound.Servers.DataStorage
                 string query = "DELETE FROM `hours` WHERE `date` < '" + currentLocalDay + "'";
 
                 Query.Run(connection, query);
+            }
+
+            public static DataTable GetHours(SQLiteConnection connection, string[] devices)
+            {
+                string query = "SELECT * FROM `hours` WHERE ";
+
+                for (var x = 0; x < devices.Length; x++)
+                {
+                    query += "`unique_id`='" + devices[x] + "'";
+                    if (x < devices.Length - 1) query += " OR ";
+                }
+
+                return Query.GetDataTable(connection, query);
+            }
+
+            public static DataTable GetHours(SQLiteConnection connection, API.Data.DeviceInfo[] deviceInfos)
+            {
+                string query = "SELECT * FROM `hours` WHERE ";
+
+                for (var x = 0; x < deviceInfos.Length; x++)
+                {
+                    query += "`unique_id`='" + deviceInfos[x].UniqueId + "'";
+                    if (x < deviceInfos.Length - 1) query += " OR ";
+                }
+
+                return Query.GetDataTable(connection, query);
             }
 
             public static DataTable GetHours(SQLiteConnection connection, DeviceConfiguration[] deviceConfigs)
