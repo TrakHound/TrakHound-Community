@@ -43,6 +43,10 @@ namespace TrakHound_Dashboard.Pages.Account
 
         MainWindow mw;
 
+        public bool ZoomEnabled { get { return false; } }
+
+        public void SetZoom(double zoomPercentage) { }
+
         public void Opened() { }
         public bool Opening() { return true; }
 

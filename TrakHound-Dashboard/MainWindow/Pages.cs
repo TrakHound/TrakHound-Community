@@ -9,7 +9,10 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Collections.Generic;
 using System.Windows.Media.Imaging;
+
+using TrakHound.Tools.Web;
 
 using TrakHound;
 using TrakHound.API.Users;
@@ -171,6 +174,69 @@ namespace TrakHound_Dashboard
             foreach (var tab in TabHeaders) tabsWidth += tab.ActualWidth;
             return tabsWidth;
         }
+
+        private class ZoomLevel
+        {
+            public ZoomLevel(string name, double value)
+            {
+                Name = name;
+                Value = value;
+            }
+
+            public string Name { get; set; }
+            public double Value { get; set; }
+        }
+
+        public static double LoadSavedPageZoomValue(IPage page)
+        {
+            string json = Properties.Settings.Default.SavedPageZoomLevels;
+            if (!string.IsNullOrEmpty(json))
+            {
+                var zoomLevels = JSON.ToType<List<ZoomLevel>>(json); 
+                if (zoomLevels != null)
+                {
+                    var match = zoomLevels.Find(o => o.Name == page.Title);
+                    if (match != null) return match.Value;       
+                }
+            }
+
+            return 1;
+        }
+
+        public static void SavePageZoomLevel(IPage page, double zoomPercentage)
+        {
+                        string json = Properties.Settings.Default.SavedPageZoomLevels;
+            if (!string.IsNullOrEmpty(json))
+            {
+                var zoomLevels = JSON.ToType<List<ZoomLevel>>(json);
+                if (zoomLevels != null)
+                {
+                    int i = zoomLevels.FindIndex(o => o.Name == page.Title);
+                    if (i < 0)
+                    {
+                        var zoomLevel = new ZoomLevel(page.Title, zoomPercentage);
+                        zoomLevels.Add(zoomLevel);
+                        i = zoomLevels.FindIndex(o => o.Name == page.Title);
+                    }
+
+                    zoomLevels[i].Value = zoomPercentage;
+
+                    Properties.Settings.Default.SavedPageZoomLevels = JSON.FromList<ZoomLevel>(zoomLevels);
+                    Properties.Settings.Default.Save();
+                }
+            }
+            else
+            {
+                var zoomLevels = new List<ZoomLevel>();
+
+                var zoomLevel = new ZoomLevel(page.Title, zoomPercentage);
+                zoomLevels.Add(zoomLevel);
+
+                Properties.Settings.Default.SavedPageZoomLevels = JSON.FromList<ZoomLevel>(zoomLevels);
+                Properties.Settings.Default.Save();
+            }
+        
+    }
 
         #region "Select"
 

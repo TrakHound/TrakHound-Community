@@ -16,9 +16,18 @@
             </Grid.RowDefinitions>
 
             <!--Headers-->
-            <Border BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
+            <Border BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1" Background="{StaticResource Background_Alternate}">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsScrollbarVisible}" Value="true">
+                                <Setter Property="Padding" Value="0,0,17,0"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
 
-                <Grid Background="{StaticResource Background_Alternate}">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="30"/>
                         <ColumnDefinition Width="200"/>
@@ -113,7 +122,7 @@
 
             </Border>
 
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" PanningMode="Both">
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" PanningMode="Both" LayoutUpdated="ScrollViewer_LayoutUpdated">
 
                 <!--Rows-->
                 <ItemsControl ItemsSource="{Binding Rows}" Background="{StaticResource Window_Background}"/>

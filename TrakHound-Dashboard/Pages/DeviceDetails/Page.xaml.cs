@@ -40,6 +40,8 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
 
         public Uri Image { get { return null; } }
 
+        public bool ZoomEnabled { get { return false; } }
+
         public event SendData_Handler SendData;
 
         private UserConfiguration _userConfiguration;
@@ -118,6 +120,8 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
         public bool Closing() { return true; }
 
         public void Closed() { }
+
+        public void SetZoom(double zoomPercentage) { }
 
         public void GetSentData(EventData data)
         {

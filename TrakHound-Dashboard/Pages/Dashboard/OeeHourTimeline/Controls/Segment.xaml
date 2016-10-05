@@ -16,7 +16,7 @@
 
             <Rectangle>
                 <Rectangle.ToolTip>
-                    <Grid MinWidth="250">
+                    <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="*"/>
@@ -28,9 +28,6 @@
                         <Run Text="-"/>
                         <Run Text="{Binding HourData.EndTime}"/>
                         </TextBlock>
-                        
-                        <!--Date-->
-                        <TextBlock Text="{Binding HourData.Date}" Foreground="{StaticResource Text}" Margin="5,0,5,5"/>
                         
                     </Grid>
                 </Rectangle.ToolTip>
@@ -90,17 +87,26 @@
                         <Setter Property="Foreground" Value="White"/>
                         <Setter Property="Margin" Value="5"/>
                         <Style.Triggers>
-
                             <DataTrigger Binding="{Binding HourData.Status}" Value="-1">
-                                <Setter Property="Margin" Value="10"/>
-                                <Setter Property="Foreground" Value="{StaticResource Disabled_Text}"/>
-                                <Setter Property="Value" Value="0"/>
+                                <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
-
                         </Style.Triggers>
                     </Style>
                 </ui:NumberDisplay.Style>
             </ui:NumberDisplay>
+
+            <TextBlock Text="N/A" Foreground="{StaticResource Disabled_Text}" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding HourData.Status}" Value="-1">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
 
         </Grid>
         

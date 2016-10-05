@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 
 using TrakHound;
 using TrakHound.API;
@@ -14,6 +15,7 @@ using TrakHound.Configurations;
 using TrakHound.Plugins.Client;
 using TrakHound.Tools;
 using TrakHound_Dashboard.Pages.Dashboard.DeviceStatusTimes.Controls;
+using TrakHound_UI.Extensions;
 
 namespace TrakHound_Dashboard.Pages.Dashboard.DeviceStatusTimes
 {
@@ -30,6 +32,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.DeviceStatusTimes
         public string ParentPluginCategory { get { return "Pages"; } }
 
         public bool OpenOnStartUp { get { return true; } }
+
+        public bool ZoomEnabled { get { return false; } }
 
         public List<PluginConfigurationCategory> SubCategories { get; set; }
 
@@ -53,6 +57,15 @@ namespace TrakHound_Dashboard.Pages.Dashboard.DeviceStatusTimes
             }
         }
 
+        public bool IsScrollbarVisible
+        {
+            get { return (bool)GetValue(IsScrollbarVisibleProperty); }
+            set { SetValue(IsScrollbarVisibleProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsScrollbarVisibleProperty =
+            DependencyProperty.Register("IsScrollbarVisible", typeof(bool), typeof(DeviceStatusTimes), new PropertyMetadata(false));
+
 
         public void Initialize() { }
 
@@ -63,6 +76,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.DeviceStatusTimes
         public bool Closing() { return true; }
 
         public void Closed() { }
+
+        public void SetZoom(double zoomPercentage) { }
 
         public void GetSentData(EventData data)
         {
@@ -245,6 +260,15 @@ namespace TrakHound_Dashboard.Pages.Dashboard.DeviceStatusTimes
             data.Id = "OPEN_DEVICE_DETAILS";
             data.Data01 = row.Device;
             SendData?.Invoke(data);
+        }
+
+        private void ScrollViewer_LayoutUpdated(object sender, EventArgs e)
+        {
+            var scrollviewer = this.GetChildOfType<System.Windows.Controls.ScrollViewer>();
+            if (scrollviewer != null)
+            {
+                IsScrollbarVisible = scrollviewer.ComputedVerticalScrollBarVisibility == Visibility.Visible;
+            }
         }
     }
 }

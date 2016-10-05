@@ -34,7 +34,9 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
         public string ParentPluginCategory { get { return "Pages"; } }
 
         public bool OpenOnStartUp { get { return true; } }
-        
+
+        public bool ZoomEnabled { get { return false; } }
+
         public List<PluginConfigurationCategory> SubCategories { get; set; }
 
         public List<IClientPlugin> Plugins { get; set; }
@@ -79,6 +81,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
 
         public void Closed() { }
 
+        public void SetZoom(double zoomPercentage) { }
 
         public void GetSentData(EventData data)
         {

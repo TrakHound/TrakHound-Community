@@ -26,6 +26,10 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
 
         public Uri Image { get { return null; } }
 
+        public bool ZoomEnabled { get { return false; } }
+
+        public void SetZoom(double zoomPercentage) { }
+
         public string ParentPlugin { get { return null; } }
         public string ParentPluginCategory { get { return null; } }
 

@@ -43,6 +43,10 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
 
         public Uri Image { get { return new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Root.png"); } }
 
+        public bool ZoomEnabled { get { return false; } }
+
+        public void SetZoom(double zoomPercentage) { }
+
         public void Opened() { }
         public bool Opening() { return true; }
 

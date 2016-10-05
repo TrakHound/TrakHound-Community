@@ -30,6 +30,9 @@ namespace TrakHound_Dashboard.Controls
 
         public Uri Image { get { return TabImage; } }
 
+        public bool ZoomEnabled { get { return false; } }
+
+        public void SetZoom(double zoomPercentage) { }
 
         public void Opened() { }
         public bool Opening() { return true; }

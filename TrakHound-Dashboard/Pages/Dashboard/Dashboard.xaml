@@ -151,6 +151,14 @@
 
                     <!--Selected Page Content-->
                     <ContentControl Grid.Row="1" Content="{Binding PageContent}">
+                        <ContentControl.LayoutTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="{Binding ZoomLevel}" ScaleY="{Binding ZoomLevel}"/>
+                                <SkewTransform/>
+                                <RotateTransform/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </ContentControl.LayoutTransform>
                         <ContentControl.Style>
                             <Style TargetType="ContentControl">
                                 <Style.Triggers>

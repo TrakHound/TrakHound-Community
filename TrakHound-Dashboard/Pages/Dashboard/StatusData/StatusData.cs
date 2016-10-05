@@ -36,6 +36,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
 
         public bool OpenOnStartUp { get { return false; } }
 
+        public bool ZoomEnabled { get { return false; } }
+
         public List<PluginConfigurationCategory> SubCategories { get; set; }
 
         public List<IClientPlugin> Plugins { get; set; }
@@ -78,10 +80,13 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
 
         public StatusData()
         {
-            Start();
+            //Start();
         }
 
-        public void Initialize() { }
+        public void Initialize()
+        {
+            Start();
+        }
 
         public void Opened() { }
         public bool Opening() { return true; }
@@ -93,6 +98,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
 
         public bool Closing() { return true; }
 
+        public void SetZoom(double zoomPercentage) { }
 
         public void GetSentData(EventData data)
         {

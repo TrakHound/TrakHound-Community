@@ -36,15 +36,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
             UserConfiguration = userConfig;
 
             Device = device;
-
-            if (device.Description != null)
-            {
-                // Load Device Logo
-                if (!string.IsNullOrEmpty(device.Description.LogoUrl)) LoadDeviceLogo(device.Description.LogoUrl);
-
-                // Load Device Image
-                if (!string.IsNullOrEmpty(device.Description.ImageUrl)) LoadDeviceImage(device.Description.ImageUrl);
-            }
         }
 
 
@@ -64,7 +55,24 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
         public DeviceDescription Device
         {
             get { return (DeviceDescription)GetValue(DeviceProperty); }
-            set { SetValue(DeviceProperty, value); }
+            set
+            {
+                SetValue(DeviceProperty, value);
+
+                if (value != null)
+                {
+                    var device = value;
+
+                    if (device.Description != null)
+                    {
+                        // Load Device Logo
+                        if (!string.IsNullOrEmpty(device.Description.LogoUrl)) LoadDeviceLogo(device.Description.LogoUrl);
+
+                        // Load Device Image
+                        if (!string.IsNullOrEmpty(device.Description.ImageUrl)) LoadDeviceImage(device.Description.ImageUrl);
+                    }
+                }              
+            }
         }
 
         public static readonly DependencyProperty DeviceProperty =
@@ -101,7 +109,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
 
         public static readonly DependencyProperty DeviceStatusTimeProperty =
             DependencyProperty.Register("DeviceStatusTime", typeof(TimeSpan), typeof(Column), new PropertyMetadata(TimeSpan.FromSeconds(0)));
-
 
 
         public double Oee

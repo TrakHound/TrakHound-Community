@@ -34,6 +34,27 @@ namespace TrakHound_Dashboard.Pages.Dashboard
 
         public Uri Image { get { return new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Dashboard_01.png"); } }
 
+        public bool ZoomEnabled { get { return true; } }
+
+        public void SetZoom(double zoomPercentage)
+        {
+            if (PageContent != null)
+            {
+                var page = PageContent as IPage;
+
+                double zoomLevel = MainWindow.LoadSavedPageZoomValue(page);
+                zoomLevel += zoomPercentage;
+
+                if (zoomPercentage > 0) zoomLevel = Math.Min(2, zoomLevel);
+                else if (zoomPercentage < 0) zoomLevel = Math.Max(0.5, zoomLevel);
+                else zoomLevel = 1;
+
+                MainWindow.SavePageZoomLevel(page, zoomLevel);
+
+                ZoomLevel = zoomLevel;
+            }
+        }
+
         public void Opened() { }
         public bool Opening() { return true; }
 
@@ -100,6 +121,15 @@ namespace TrakHound_Dashboard.Pages.Dashboard
 
         public static readonly DependencyProperty PageContentProperty =
             DependencyProperty.Register("PageContent", typeof(object), typeof(Dashboard), new PropertyMetadata(null));
+
+        public double ZoomLevel
+        {
+            get { return (double)GetValue(ZoomLevelProperty); }
+            set { SetValue(ZoomLevelProperty, value); }
+        }
+
+        public static readonly DependencyProperty ZoomLevelProperty =
+            DependencyProperty.Register("ZoomLevel", typeof(double), typeof(Dashboard), new PropertyMetadata(1D));
 
 
         public bool LoggedIn
@@ -509,15 +539,19 @@ namespace TrakHound_Dashboard.Pages.Dashboard
                 }
             }
 
-            var childPlugIn = lb.DataObject as UserControl;
-            PageContent = childPlugIn;
+            // Set Page as PageContent
+            PageContent = lb.DataObject as UserControl;
 
+            // Save selected page
             int index = Pages.ToList().FindIndex(x => x == lb);
             if (index >= 0)
             {
                 Properties.Settings.Default.DashboardSelectedPage = index;
                 Properties.Settings.Default.Save();
             }
+
+            // Load Saved Zoom Level
+            ZoomLevel = MainWindow.LoadSavedPageZoomValue(lb.DataObject as IPage);
         }
 
         private void SelectNextPage()
@@ -555,39 +589,47 @@ namespace TrakHound_Dashboard.Pages.Dashboard
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if (PageContent == null)
+            int selectedPage = Properties.Settings.Default.DashboardSelectedPage;
+
+            if (Pages.Count > selectedPage)
             {
-                int selectedPage = Properties.Settings.Default.DashboardSelectedPage;
-
-                if (Pages.Count > selectedPage)
-                {
-                    ListButton lb = Pages[selectedPage];
-
-                    foreach (var oLB in Pages)
-                    {
-                        if (oLB == lb) oLB.IsSelected = true;
-                        else oLB.IsSelected = false;
-                    }
-
-                    var plugin = lb.DataObject as IClientPlugin;
-                    if (plugin != null)
-                    {
-                        foreach (var category in SubCategories)
-                        {
-                            var config = category.PluginConfigurations.Find(x => x.Name.ToUpper() == plugin.Title.ToUpper());
-                            if (config != null)
-                            {
-                                currentPage = config;
-                                break;
-                            }
-                        }
-
-                        var childPlugIn = lb.DataObject as UserControl;
-                        PageContent = childPlugIn;
-                    }
-                }
+                ListButton lb = Pages[selectedPage];
+                SelectPage(lb);
             }
-        }
+
+                //if (PageContent == null)
+                //{
+                //    int selectedPage = Properties.Settings.Default.DashboardSelectedPage;
+
+                //    if (Pages.Count > selectedPage)
+                //    {
+                //        ListButton lb = Pages[selectedPage];
+
+                //        foreach (var oLB in Pages)
+                //        {
+                //            if (oLB == lb) oLB.IsSelected = true;
+                //            else oLB.IsSelected = false;
+                //        }
+
+                //        var plugin = lb.DataObject as IClientPlugin;
+                //        if (plugin != null)
+                //        {
+                //            foreach (var category in SubCategories)
+                //            {
+                //                var config = category.PluginConfigurations.Find(x => x.Name.ToUpper() == plugin.Title.ToUpper());
+                //                if (config != null)
+                //                {
+                //                    currentPage = config;
+                //                    break;
+                //                }
+                //            }
+
+                //            var childPlugIn = lb.DataObject as UserControl;
+                //            PageContent = childPlugIn;
+                //        }
+                //    }
+                //}
+            }
 
         private void Expand_MouseDown(object sender, MouseButtonEventArgs e)
         {

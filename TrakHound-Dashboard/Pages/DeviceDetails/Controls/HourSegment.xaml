@@ -52,10 +52,6 @@
                                 <Setter Property="Fill" Value="{StaticResource StatusRed_Light}"/>
                             </MultiDataTrigger>
 
-                            <!--<DataTrigger Binding="{Binding HourData.Status}" Value="-1">
-                                <Setter Property="Fill" Value="White"/>
-                            </DataTrigger>-->
-                            
                         </Style.Triggers>
                     </Style>
                 </Rectangle.Style>
@@ -82,15 +78,32 @@
                             </DataTrigger>
 
                             <DataTrigger Binding="{Binding HourData.Status}" Value="-1">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+
+                            <!--<DataTrigger Binding="{Binding HourData.Status}" Value="-1">
                                 <Setter Property="Margin" Value="10"/>
                                 <Setter Property="Foreground" Value="{StaticResource Disabled}"/>
                                 <Setter Property="Value" Value="0"/>
-                            </DataTrigger>
+                            </DataTrigger>-->
 
                         </Style.Triggers>
                     </Style>
                 </ui:NumberDisplay.Style>
             </ui:NumberDisplay>
+
+            <TextBlock Text="N/A" Foreground="{StaticResource Disabled_Text}" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding HourData.Status}" Value="-1">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
 
         </Grid>
         

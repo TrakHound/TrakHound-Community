@@ -40,6 +40,10 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.Parts
 
         public event SendData_Handler SendData;
 
+        public bool ZoomEnabled { get { return false; } }
+
+        public void SetZoom(double zoomPercentage) { }
+
         public void GetSentData(EventData data) { }
 
 
@@ -165,8 +169,34 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.Parts
                         }
                     }
 
-                    PartCountItems.Add(item);
+                    if (!string.IsNullOrEmpty(item.EventName)) PartCountItems.Add(item);
                 }
+            }
+
+            // Try loading deprecated configuration
+            if (PartCountItems.Count == 0 && rows.Length > 0)
+            {
+                var item = new Controls.PartCountEventItem();
+                item.ParentPage = this;
+                item.RemoveClicked += Item_RemoveClicked;
+                item.SettingChanged += Item_SettingChanged;
+
+                foreach (DataRow row in rows)
+                {
+                    string lastNode = DataTable_Functions.TrakHound.GetLastNode(row);
+                   
+                    if (lastNode == "PartsEventValue")
+                    {
+                        string val = DataTable_Functions.GetRowValue("value", row);
+                        if (!string.IsNullOrEmpty(val)) val = String_Functions.UppercaseFirst(val.Replace('_', ' '));
+                        item.EventValue = val;
+                    }
+                    if (lastNode == "PartsEventName") item.EventName = DataTable_Functions.GetRowValue("value", row);
+                    else if (lastNode == "PartsCaptureItemLink") item.CaptureItemLink = DataTable_Functions.GetRowValue("value", row);
+                    else if (lastNode == "CalculationType") item.CalculationType = DataTable_Functions.GetRowValue("value", row);   
+                }
+
+                if (!string.IsNullOrEmpty(item.EventName)) PartCountItems.Add(item);
             }
         }
 

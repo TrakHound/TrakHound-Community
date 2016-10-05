@@ -10,10 +10,20 @@ namespace TrakHound_Dashboard
     public partial class MainWindow
     {
 
+        private bool _navigationMenuShown;
         public bool NavigationMenuShown
         {
             get { return (bool)GetValue(NavigationMenuShownProperty); }
-            set { SetValue(NavigationMenuShownProperty, value); }
+            set
+            {
+                bool previous = _navigationMenuShown;
+
+                SetValue(NavigationMenuShownProperty, value);
+
+                if (previous != value) IsUsernameFocused = true;
+
+                _navigationMenuShown = value;
+            }
         }
 
         public static readonly DependencyProperty NavigationMenuShownProperty =
@@ -58,7 +68,6 @@ namespace TrakHound_Dashboard
 
         public static readonly DependencyProperty IsPasswordFocusedProperty =
             DependencyProperty.Register("IsPasswordFocused", typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
-
 
 
         private void NavigationMenuButton_Clicked(TrakHound_UI.Button bt)
@@ -184,17 +193,26 @@ namespace TrakHound_Dashboard
 
         private void ZoomOut_Clicked(TrakHound_UI.Button bt)
         {
-            if (CurrentPage != null) CurrentPage.ZoomOut();
+            if (CurrentPage != null && CurrentPage.PageContent != null) 
+            {
+                CurrentPage.PageContent.SetZoom(-0.05);
+            }
         }
 
         private void ZoomIn_Clicked(TrakHound_UI.Button bt)
         {
-            if (CurrentPage != null) CurrentPage.ZoomIn();
+            if (CurrentPage != null && CurrentPage.PageContent != null)
+            {
+                CurrentPage.PageContent.SetZoom(0.05);
+            }
         }
 
         private void RestoreZoom_Clicked(TrakHound_UI.Button bt)
         {
-            if (CurrentPage != null) CurrentPage.SetZoom(1);
+            if (CurrentPage != null && CurrentPage.PageContent != null)
+            {
+                CurrentPage.PageContent.SetZoom(0);
+            }
         }
 
     }

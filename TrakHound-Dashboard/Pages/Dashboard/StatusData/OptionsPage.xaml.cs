@@ -31,11 +31,15 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
 
         public Uri Image { get { return new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Generate_01.png"); } }
 
+        public bool ZoomEnabled { get { return false; } }
+
         public void Opened() { }
         public bool Opening() { return true; }
 
         public void Closed() { }
         public bool Closing() { return true; }
+
+        public void SetZoom(double zoomPercentage) { }
 
         public event SendData_Handler SendData;
 

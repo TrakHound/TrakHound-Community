@@ -26,6 +26,8 @@ namespace TrakHound_Dashboard.Controls
             Init();
 
             PageContent = content;
+            PageContent.Opening();
+            PageContent.Opened();
         }
 
         private void Init()
@@ -55,32 +57,6 @@ namespace TrakHound_Dashboard.Controls
             DependencyProperty.Register("Closing", typeof(bool), typeof(TabPage), new PropertyMetadata(false));
 
 
-        #region "Page Control"
-
-        public double ZoomLevel
-        {
-            get { return (double)GetValue(ZoomLevelProperty); }
-            set { SetValue(ZoomLevelProperty, value); }
-        }
-
-        public static readonly DependencyProperty ZoomLevelProperty =
-            DependencyProperty.Register("ZoomLevel", typeof(double), typeof(TabPage), new PropertyMetadata(1D));
-
-        public void SetZoom(double zoom)
-        {
-            ZoomLevel = zoom;
-        }
-
-        public void ZoomOut()
-        {
-            ZoomLevel = Math.Max(ZoomLevel - 0.05, 0.25);
-        }
-
-        public void ZoomIn()
-        {
-            ZoomLevel = Math.Min(ZoomLevel + 0.05, 3.0);
-        }
-
         public void FullScreen()
         {
             var fs = new Windows.Fullscreen();
@@ -91,7 +67,6 @@ namespace TrakHound_Dashboard.Controls
             PageContent = null;
 
             fs.WindowContent = o;
-
             fs.Show();
         }
 
@@ -104,8 +79,6 @@ namespace TrakHound_Dashboard.Controls
                 PageContent = (IPage)o;
             }
         }
-
-        #endregion
 
     }
 }

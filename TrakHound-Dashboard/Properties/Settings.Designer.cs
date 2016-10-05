@@ -237,5 +237,17 @@ namespace TrakHound_Dashboard.Properties {
                 this["AutoDetectPingTimeout"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SavedPageZoomLevels {
+            get {
+                return ((string)(this["SavedPageZoomLevels"]));
+            }
+            set {
+                this["SavedPageZoomLevels"] = value;
+            }
+        }
     }
 }

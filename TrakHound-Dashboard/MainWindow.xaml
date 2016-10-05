@@ -55,6 +55,14 @@
 
         <ui:UppercaseConverter x:Key="uppercaseConverter"/>
 
+        <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Opposite_Foreground}">
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="#33ffffff"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
     </Window.Resources>
 
     <!--Window Content-->
@@ -436,7 +444,7 @@
 
                             <ui:Button Text="Login" Clicked="Login_Clicked" Width="50" HorizontalAlignment="Left" Margin="2,5">
                                 <ui:Button.Style>
-                                    <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Opposite_Foreground}">
+                                    <Style TargetType="ui:Button" BasedOn="{StaticResource {x:Type ui:Button}}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding LoginUsername}" Value="{x:Null}">
                                                 <Setter Property="IsEnabled" Value="False"/>
@@ -455,7 +463,7 @@
                                 </ui:Button.Style>
                             </ui:Button>
 
-                            <ui:Button Text="Create Account" Clicked="CreateAccount_Clicked" Style="{StaticResource Button_Opposite_Foreground}" HorizontalAlignment="Right" Margin="2,5,15,5"/>
+                            <ui:Button Text="Create Account" Clicked="CreateAccount_Clicked" HorizontalAlignment="Right" Margin="2,5,15,5"/>
 
                         </Grid>
 
@@ -604,17 +612,17 @@
                             </Grid.Resources>
 
                             <!--Zoom Out-->
-                            <ui:Button Grid.Column="0" Image="Resources/Minus_04.png" Padding="5,9" Style="{StaticResource Button_Opposite_Foreground}" Clicked="ZoomOut_Clicked"/>
+                            <ui:Button Grid.Column="0" IsEnabled="{Binding CurrentPage.PageContent.ZoomEnabled}" Image="Resources/Minus_04.png" Padding="5,9" Clicked="ZoomOut_Clicked"/>
 
                             <Rectangle Grid.Column="1"/>
 
                             <!--Zoom display and reset button-->
-                            <ui:Button Grid.Column="2" Text="{Binding CurrentPage.ZoomLevel, StringFormat=P0}" Style="{StaticResource Button_Opposite_Foreground}" Clicked="RestoreZoom_Clicked"/>
+                            <ui:Button Grid.Column="2" Text="{Binding CurrentPage.PageContent.ZoomLevel, StringFormat=P0}" IsEnabled="{Binding CurrentPage.PageContent.ZoomEnabled}" Clicked="RestoreZoom_Clicked"/>
 
                             <Rectangle Grid.Column="3"/>
 
                             <!--Zoom In-->
-                            <ui:Button Grid.Column="4" Image="Resources/Plus_04.png" Padding="5,9" Style="{StaticResource Button_Opposite_Foreground}" Clicked="ZoomIn_Clicked"/>
+                            <ui:Button Grid.Column="4" IsEnabled="{Binding CurrentPage.PageContent.ZoomEnabled}" Image="Resources/Plus_04.png" Padding="5,9" Clicked="ZoomIn_Clicked"/>
 
                         </Grid>
 

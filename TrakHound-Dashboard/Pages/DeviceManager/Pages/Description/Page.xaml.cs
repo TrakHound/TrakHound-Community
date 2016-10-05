@@ -49,6 +49,10 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.Description
 
         public event SendData_Handler SendData;
 
+        public bool ZoomEnabled { get { return false; } }
+
+        public void SetZoom(double zoomPercentage) { }
+
         public void GetSentData(EventData data)
         {
             if (data != null)

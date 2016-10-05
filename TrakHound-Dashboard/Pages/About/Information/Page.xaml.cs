@@ -38,6 +38,10 @@ namespace TrakHound_Dashboard.Pages.About.Information
 
         public Uri Image { get { return new Uri("pack://application:,,,/TrakHound-Dashboard;component/Pages/About/Information/Information_01.png"); } }
 
+        public bool ZoomEnabled { get { return false; } }
+
+        public void SetZoom(double zoomPercentage) { }
+
         public void Opened() { }
         public bool Opening() { return true; }
 

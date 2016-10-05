@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 
 using TrakHound;
@@ -14,6 +15,7 @@ using TrakHound.API;
 using TrakHound.Configurations;
 using TrakHound.Plugins.Client;
 using TrakHound.Tools;
+using TrakHound_UI.Extensions;
 
 namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus
 {
@@ -34,11 +36,22 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus
 
         public bool OpenOnStartUp { get { return true; } }
 
+        public bool ZoomEnabled { get { return false; } }
+
         public List<PluginConfigurationCategory> SubCategories { get; set; }
 
         public List<IClientPlugin> Plugins { get; set; }
 
         public IPage Options { get; set; }
+
+        public bool IsScrollbarVisible
+        {
+            get { return (bool)GetValue(IsScrollbarVisibleProperty); }
+            set { SetValue(IsScrollbarVisibleProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsScrollbarVisibleProperty =
+            DependencyProperty.Register("IsScrollbarVisible", typeof(bool), typeof(ControllerStatus), new PropertyMetadata(false));
 
         private ObservableCollection<Controls.Row> _rows;
         public ObservableCollection<Controls.Row> Rows
@@ -62,6 +75,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus
             root.DataContext = this;
         }
 
+        public void SetZoom(double zoomPercentage) { }
 
         public void Initialize() { }
 
@@ -249,5 +263,13 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus
             SendData?.Invoke(data);
         }
 
+        private void ScrollViewer_LayoutUpdated(object sender, EventArgs e)
+        {
+            var scrollviewer = this.GetChildOfType<System.Windows.Controls.ScrollViewer>();
+            if (scrollviewer != null)
+            {
+                IsScrollbarVisible = scrollviewer.ComputedVerticalScrollBarVisibility == Visibility.Visible;
+            }
+        }
     }
 }

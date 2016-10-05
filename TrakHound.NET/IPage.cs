@@ -16,11 +16,16 @@ namespace TrakHound
 
         Uri Image { get; }
 
+        bool ZoomEnabled { get; }
+
         void Opened();
         bool Opening();
 
         void Closed();
         bool Closing();
+
+        void SetZoom(double zoomPercent);
+
 
         /// <summary>
         /// Get Data from another page
