@@ -81,11 +81,15 @@
 
             </StackPanel>
 
-            <TextBlock Text="®2016 Feenux LLC, All Rights Reserved" Margin="10,5" FontSize="10" Foreground="#33ffffff" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+            <StackPanel VerticalAlignment="Bottom" Margin="10,5" HorizontalAlignment="Left">
 
-            <TextBlock Text="www.TrakHound.com" Margin="10,5" FontSize="10" Foreground="#33ffffff" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                <TextBlock Text="www.TrakHound.com" FontSize="10" Foreground="#33ffffff"/>
 
-            <TextBlock Text="{Binding Version}" Margin="10,5" FontSize="10" Foreground="#fff" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                <TextBlock Text="®2016 Feenux LLC, All Rights Reserved" FontSize="10" Foreground="#33ffffff"/>
+
+            </StackPanel>
+
+            <TextBlock Text="{Binding Version}" Margin="10,5" FontSize="10" Foreground="#fff"  HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
 
         </Grid>
 
