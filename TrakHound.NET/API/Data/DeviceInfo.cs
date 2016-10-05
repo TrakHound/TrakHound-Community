@@ -180,6 +180,7 @@ namespace TrakHound.API
                 }
             }
 
+
             public void CombineHours()
             {
                 lock (_lock)
@@ -271,7 +272,7 @@ namespace TrakHound.API
                             Classes.Add(id, obj);
                         }
                     }
-                }             
+                }
             }
 
             public object GetClass(string id)
@@ -287,7 +288,7 @@ namespace TrakHound.API
                     }
                 }
 
-                return null;                
+                return null;
             }
 
             public void RemoveClass(string id)
@@ -295,7 +296,7 @@ namespace TrakHound.API
                 lock (_lock)
                 {
                     if (id != null) Classes.Remove(id);
-                } 
+                }
             }
 
             public void ClearClasses()
@@ -303,7 +304,7 @@ namespace TrakHound.API
                 lock (_lock)
                 {
                     Classes.Clear();
-                }        
+                }
             }
 
             #endregion
@@ -329,14 +330,12 @@ namespace TrakHound.API
                         object match = false;
                         if (!data.TryGetValue(c.Key, out match))
                         {
-
                             data.Add(c.Key, c.Value);
                         }
                     }
 
-                    if (data.Count > 1) return data;
-                    else return null;
-                }              
+                    return data;
+                }
             }
 
             public static string ListToJson(List<DeviceInfo> deviceInfos)

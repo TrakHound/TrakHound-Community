@@ -60,13 +60,13 @@ namespace TrakHound.Servers.DataProcessing
 
         public void Stop()
         {
-            foreach (var device in Devices)
+            foreach (var device in devices)
             {
                 if (device != null) device.Stop();
             }
 
             DevicesMonitor_Stop();
-            if (devicesmonitor_THREAD != null) devicesmonitor_THREAD.Abort();
+            if (devicesMonitorThread != null) devicesMonitorThread.Abort();
 
             IsRunnning = false;
 

@@ -20,8 +20,6 @@ namespace TrakHound.Servers.DataProcessing
             get { return _currentuser; }
             set
             {
-                var previousUser = _currentuser;
-
                 _currentuser = value;
 
                 SendCurrentUserChanged(_currentuser);
@@ -49,19 +47,16 @@ namespace TrakHound.Servers.DataProcessing
 
             if (loginData != null )
             {
-                if (CurrentUser == null || CurrentUser.Username != loginData.Username)
+                while (loginData != null && userConfig == null)
                 {
-                    while (loginData != null && userConfig == null)
+                    userConfig = UserManagement.TokenLogin(loginData.Token);
+                    if (userConfig == null)
                     {
-                        userConfig = UserManagement.TokenLogin(loginData.Token);
-                        if (userConfig == null)
-                        {
-                            Logger.Log(String_Functions.UppercaseFirst(loginData.Username) + " Failed to Login... Retrying in 5 seconds");
+                        Logger.Log(String_Functions.UppercaseFirst(loginData.Username) + " Failed to Login... Retrying in 5 seconds");
 
-                            Thread.Sleep(5000);
+                        Thread.Sleep(5000);
 
-                            loginData = ServerCredentials.Read();
-                        }
+                        loginData = ServerCredentials.Read();
                     }
                 }
 

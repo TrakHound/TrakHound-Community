@@ -215,17 +215,8 @@ namespace TrakHound.Tools
             DataTable dt = table as DataTable;
             if (dt != null)
             {
-                //DataView dv = dt.AsDataView();
-                //dv.RowFilter = keyColumn + "='" + key + "'";
-                //DataTable temp_dt = dv.ToTable();
-
-
                 string filter = keyColumn + "='" + key + "'";
                 return GetRows(dt, filter).ToList();
-
-
-                //foreach (DataRow row in temp_dt.Rows) result.Add(row);
-                //temp_dt.Dispose();
             }
 
             return result;
