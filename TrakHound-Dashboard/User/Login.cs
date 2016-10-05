@@ -99,7 +99,12 @@ namespace TrakHound_Dashboard
         // Update GUI after login using separate thread
         void Login_Finished(UserConfiguration userConfig)
         {
-            CurrentUser = userConfig;
+            if (userConfig == null || CurrentUser != userConfig)
+            {
+                if (userConfig == null) UpdateUser(null);
+
+                CurrentUser = userConfig;
+            }
 
             UserLoadingText = null;
             UserLoading = false;
@@ -114,6 +119,7 @@ namespace TrakHound_Dashboard
             else
             {
                 UserLoginError = true;
+                IsPasswordFocused = true;
             }
         }
 
@@ -121,7 +127,18 @@ namespace TrakHound_Dashboard
         // Set Login File UserConfiguration
         private void Login(UserConfiguration userConfig)
         {
-            if (userConfig != null) ServerCredentials.Create(userConfig);
+            if (userConfig != null)
+            {
+                var userInfo = ServerCredentials.Read();
+                if (userInfo != null)
+                {
+                    if (userInfo.Username != userConfig.Username || userInfo.Token != userConfig.Token)
+                    {
+                        ServerCredentials.Create(userConfig);
+                    }
+                }
+                else ServerCredentials.Create(userConfig);
+            }
             else ServerCredentials.Remove();
         }
 

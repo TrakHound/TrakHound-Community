@@ -17,15 +17,12 @@ namespace TrakHound_Dashboard
             string token = Properties.Settings.Default.LoginRememberToken;
 
             if (!string.IsNullOrEmpty(token)) TokenLogin(token);
-            else CurrentUser = null;
+            else UpdateUser(null);
         }
 
 
         public delegate void CurrentUserChanged_Handler(UserConfiguration userConfig);
         public event CurrentUserChanged_Handler CurrentUserChanged;
-
-
-        private bool firstLogin = true;
 
         private UserConfiguration _currentuser;
         public UserConfiguration CurrentUser
@@ -39,30 +36,10 @@ namespace TrakHound_Dashboard
 
                 _currentuser = value;
 
-                if (previousUser != _currentuser || firstLogin)
+                if (previousUser != _currentuser)
                 {
-                    LoadDevices();
-
-                    // Update other pages
-                    if (accountpage != null) accountpage.LoadUserConfiguration(_currentuser);
-
-                    SendCurrentUser();
-
-                    // Login Server user (set login file)
-                    Login(_currentuser);
-
-                    // Restart Message monitor
-                    StartMessageMonitor();
-                    messageCenter.ClearMessages();
-
-                    // Load the Profile Image (Nav Menu)
-                    LoadProfileImage(_currentuser);
-
-                    // Raise CurrentUserChanged Event
-                    CurrentUserChanged?.Invoke(_currentuser);
+                    UpdateUser(_currentuser);
                 }
-
-                firstLogin = false;
             }
         }
 
@@ -98,6 +75,30 @@ namespace TrakHound_Dashboard
 
         public static readonly DependencyProperty UserLoginErrorProperty =
             DependencyProperty.Register("UserLoginError", typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+
+
+        private void UpdateUser(UserConfiguration userConfig)
+        {
+            LoadDevices();
+
+            // Update other pages
+            if (accountpage != null) accountpage.LoadUserConfiguration(userConfig);
+
+            SendCurrentUser();
+
+            // Login Server user (set login file)
+            Login(userConfig);
+
+            // Restart Message monitor
+            StartMessageMonitor();
+            messageCenter.ClearMessages();
+
+            // Load the Profile Image (Nav Menu)
+            LoadProfileImage(userConfig);
+
+            // Raise CurrentUserChanged Event
+            CurrentUserChanged?.Invoke(userConfig);
+        }
 
         /// <summary>
         /// Send the Current User as a message to other pages
