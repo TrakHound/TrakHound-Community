@@ -17,8 +17,15 @@ namespace TrakHound.API
         {
             if (!string.IsNullOrEmpty(response))
             {
-                string[] x = response.Split('(', ')');
-                if (x != null && x.Length > 1)
+                bool error = false;
+
+                if (response.Length > 2 && response[0] == '(')
+                {
+                    int i = response.IndexOf(')', 1);
+                    if (i >= 0) error = true;
+                }
+
+                if (error)
                 {
                     Logger.Log(label + " : Error : " + response, LogLineType.Warning);
                     return false;
