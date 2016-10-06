@@ -57,6 +57,8 @@ namespace TrakHound_Server
 
                         case "console": StartConsole(); break;
 
+                        case "shell": StartShell(); break;
+
                         case "install": InstallService(); break;
 
                         case "uninstall": UninstallService(); break;
@@ -94,15 +96,24 @@ namespace TrakHound_Server
             ManagedInstallerClass.InstallHelper(new string[] { "/u", Assembly.GetExecutingAssembly().Location });
         }
 
+        private static ProcessingServer deviceServer;
+        private static LocalStorageServer dataServer;
+
         private static void StartServers()
         {
-            var server = new ProcessingServer();
-            server.Login();
+            deviceServer = new ProcessingServer();
+            deviceServer.Login();
+            deviceServer.Start();
 
-            server.Start();
-
-            var dataServer = new LocalStorageServer();
+            dataServer = new LocalStorageServer();
             dataServer.Start();
+        }
+
+        private static void StopServers()
+        {
+            if (deviceServer != null) deviceServer.Stop();
+
+            if (dataServer != null) dataServer.Stop();
         }
 
         private static void StartDebug()
@@ -125,6 +136,20 @@ namespace TrakHound_Server
                 StartServers();
             }
             else Console.WriteLine("Error :: Server Service Could Not Be Stopped :: Aborting Console");
+        }
+
+        private static void StartShell()
+        {
+            while (true) // Loop indefinitely
+            {
+                Console.WriteLine("Enter input:"); // Prompt
+                string line = Console.ReadLine(); // Get string from user
+                switch (line)
+                {
+                    case "start": StartServers(); break;
+                    case "stop": StopServers(); break;
+                }
+            }
         }
 
 
