@@ -596,40 +596,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard
                 ListButton lb = Pages[selectedPage];
                 SelectPage(lb);
             }
-
-                //if (PageContent == null)
-                //{
-                //    int selectedPage = Properties.Settings.Default.DashboardSelectedPage;
-
-                //    if (Pages.Count > selectedPage)
-                //    {
-                //        ListButton lb = Pages[selectedPage];
-
-                //        foreach (var oLB in Pages)
-                //        {
-                //            if (oLB == lb) oLB.IsSelected = true;
-                //            else oLB.IsSelected = false;
-                //        }
-
-                //        var plugin = lb.DataObject as IClientPlugin;
-                //        if (plugin != null)
-                //        {
-                //            foreach (var category in SubCategories)
-                //            {
-                //                var config = category.PluginConfigurations.Find(x => x.Name.ToUpper() == plugin.Title.ToUpper());
-                //                if (config != null)
-                //                {
-                //                    currentPage = config;
-                //                    break;
-                //                }
-                //            }
-
-                //            var childPlugIn = lb.DataObject as UserControl;
-                //            PageContent = childPlugIn;
-                //        }
-                //    }
-                //}
-            }
+        }
 
         private void Expand_MouseDown(object sender, MouseButtonEventArgs e)
         {

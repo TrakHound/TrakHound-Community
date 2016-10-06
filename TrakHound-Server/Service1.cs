@@ -6,7 +6,6 @@
 using System;
 using System.Runtime.InteropServices;
 using System.ServiceProcess;
-using TrakHound.Logging;
 
 using TrakHound.Servers.DataProcessing;
 using TrakHound.Servers.DataStorage;
@@ -34,7 +33,7 @@ namespace TrakHound_Server
 
         protected override void OnStart(string[] args)
         {
-            ServiceStatus serviceStatus = new ServiceStatus();
+            var serviceStatus = new ServiceStatus();
             serviceStatus.dwCurrentState = ServiceState.SERVICE_START_PENDING;
             serviceStatus.dwWaitHint = 10000;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
@@ -50,7 +49,7 @@ namespace TrakHound_Server
 
         protected override void OnStop()
         {
-            ServiceStatus serviceStatus = new ServiceStatus();
+            var serviceStatus = new ServiceStatus();
             serviceStatus.dwCurrentState = ServiceState.SERVICE_STOP_PENDING;
             serviceStatus.dwWaitHint = 10000;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);

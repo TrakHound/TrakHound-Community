@@ -96,11 +96,8 @@ namespace TrakHound.API
                 bool success = ApiError.ProcessResponse(response, "Check Devices");
                 if (success)
                 {
-                    if (success)
-                    {
-                        if (response == "No Devices Found") return null;
-                        else return JSON.ToType<List<CheckInfo>>(response);
-                    }
+                    if (response == "No Devices Found") return null;
+                    else return JSON.ToType<List<CheckInfo>>(response);
                 }
             }
 

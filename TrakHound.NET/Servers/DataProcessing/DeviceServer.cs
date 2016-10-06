@@ -67,8 +67,6 @@ namespace TrakHound.Servers.DataProcessing
             ClosePlugins();
 
             IsRunning = false;
-
-            Logger.Log("Device Server Stopped :: " + Configuration.Description.Description + " [" + Configuration.Description.DeviceId + "]", LogLineType.Notification);
         }
 
 
@@ -77,19 +75,6 @@ namespace TrakHound.Servers.DataProcessing
             Configuration = config;
 
             InitializePlugins(config);
-        }
-
-        private void PrintDeviceHeader(DeviceConfiguration config)
-        {
-            Logger.Log("Device [" + config.Index.ToString() + "] ---------------------------------------", LogLineType.Console);
-
-            Logger.Log("Description ----------------------------", LogLineType.Console);
-            if (config.Description.Description != null) Logger.Log(config.Description.Description, LogLineType.Console);
-            if (config.Description.Manufacturer != null) Logger.Log(config.Description.Manufacturer, LogLineType.Console);
-            if (config.Description.Model != null) Logger.Log(config.Description.Model, LogLineType.Console);
-            if (config.Description.Serial != null) Logger.Log(config.Description.Serial, LogLineType.Console);
-
-            Logger.Log("--------------------------------------------------", LogLineType.Console);
         }
 
         private void InitializePlugins(DeviceConfiguration config)
