@@ -99,12 +99,7 @@ namespace TrakHound_Dashboard
         // Update GUI after login using separate thread
         void Login_Finished(UserConfiguration userConfig)
         {
-            if (userConfig == null || CurrentUser != userConfig)
-            {
-                if (userConfig == null) UpdateUser(null);
-
-                CurrentUser = userConfig;
-            }
+            CurrentUser = userConfig;
 
             UserLoadingText = null;
             UserLoading = false;
