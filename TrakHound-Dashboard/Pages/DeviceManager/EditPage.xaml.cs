@@ -168,6 +168,15 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
         public static readonly DependencyProperty DeviceLoadingProperty =
             DependencyProperty.Register("DeviceLoading", typeof(bool), typeof(EditPage), new PropertyMetadata(true));
 
+        public bool DeviceError
+        {
+            get { return (bool)GetValue(DeviceErrorProperty); }
+            set { SetValue(DeviceErrorProperty, value); }
+        }
+
+        public static readonly DependencyProperty DeviceErrorProperty =
+            DependencyProperty.Register("DeviceError", typeof(bool), typeof(EditPage), new PropertyMetadata(false));
+
         public object CurrentPage
         {
             get { return (object)GetValue(CurrentPageProperty); }
@@ -249,6 +258,10 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                     // Reload Pages with new Device Configuration
                     Dispatcher.BeginInvoke(new Action(RestorePages), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
                 }
+                else
+                {
+                    Dispatcher.BeginInvoke(new Action(() => DeviceError = true), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
+                }
             }
 
             Dispatcher.BeginInvoke(new Action(() => DeviceLoading = false), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
@@ -273,6 +286,10 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
 
                         // Reload Pages with new Device Configuration
                         Dispatcher.BeginInvoke(new Action(RestorePages), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
+                    }
+                    else
+                    {
+                        Dispatcher.BeginInvoke(new Action(() => DeviceError = true), System.Windows.Threading.DispatcherPriority.Background, new object[] { });                  
                     }
                 }
                 catch (Exception ex)
@@ -326,6 +343,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
             }
 
             SaveNeeded = false;
+            DeviceError = false;
         }
 
         private void Save(DataTable dt)
@@ -763,6 +781,10 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
 
         #endregion
 
+        private void Reload_Clicked(TrakHound_UI.Button bt)
+        {
+            LoadDevice();
+        }
     }
 
 }
