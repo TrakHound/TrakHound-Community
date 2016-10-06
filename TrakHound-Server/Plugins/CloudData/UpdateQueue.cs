@@ -19,8 +19,6 @@ namespace TrakHound_Server.Plugins.CloudData
     {
         private static List<Data.DeviceInfo> queuedInfos = new List<Data.DeviceInfo>();
 
-        private Thread queueThread;
-
         private ManualResetEvent stop;
 
         private bool started = false;
@@ -61,45 +59,37 @@ namespace TrakHound_Server.Plugins.CloudData
 
                 started = true;
 
-                if (queueThread != null) queueThread.Abort();
-
-                queueThread = new Thread(new ThreadStart(Update));
-                queueThread.Start();
-            }
-        }
-
-        private void Update()
-        {
-            while (!stop.WaitOne(0, true))
-            {
-                lock (_lock)
+                ThreadPool.QueueUserWorkItem((i) =>
                 {
-                    var sendList = ProcessQueue();
-                    if (sendList != null)
+                    do
                     {
-
-                        Update(Plugin.currentUser, sendList);
-
-                        foreach (var queuedInfo in sendList)
+                        lock (_lock)
                         {
-                            var match = queuedInfos.Find(o => o.UniqueId == queuedInfo.UniqueId);
-                            if (match != null) match.ClearClasses();
+                            var sendList = ProcessQueue();
+                            if (sendList != null)
+                            {
+
+                                Update(Plugin.currentUser, sendList);
+
+                                foreach (var queuedInfo in sendList)
+                                {
+                                    var match = queuedInfos.Find(o => o.UniqueId == queuedInfo.UniqueId);
+                                    if (match != null) match.ClearClasses();
+                                }
+                            }
                         }
-                    }
-                }
 
-                Thread.Sleep(ApiConfiguration.UpdateInterval);
+                    } while (!stop.WaitOne(ApiConfiguration.UpdateInterval, true));
+
+                    Logger.Log("CloudData Queue Stopped");
+                });
             }
-
-            Console.WriteLine("UpdateQueue Loop Exited");
         }
-
+        
         public void Stop()
         {
-            stop.Set();
+            if (stop != null) stop.Set();
             started = false;
-
-            Logger.Log("CloudData Queue Stopped");
         }
 
         private List<Data.DeviceInfo> ProcessQueue()
