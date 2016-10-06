@@ -7,14 +7,11 @@ using System.Threading;
 
 using TrakHound;
 using TrakHound.Configurations;
-using TrakHound.Logging;
 
 namespace TrakHound_Server.Plugins.MTConnectData
 {
     public partial class Plugin
     {
-
-        private System.Timers.Timer requestTimer;
 
         private ManualResetEvent stop;
 
@@ -26,37 +23,31 @@ namespace TrakHound_Server.Plugins.MTConnectData
             if (!started)
             {
                 stop = new ManualResetEvent(false);
-
                 started = true;
+                probeData = null;
 
-                if (requestTimer == null)
+                var ac = config.Agent;
+
+                ThreadPool.QueueUserWorkItem((o) =>
                 {
-                    probeData = null;
-
-                    var ac = config.Agent;
-                    if (ac != null)
+                    do
                     {
-                        requestTimer = new System.Timers.Timer();
-                        requestTimer.Interval = ac.Heartbeat;
-                        requestTimer.Elapsed += RequestTimer_Elapsed;
-                        requestTimer.Enabled = true;
-                    }
-                }
+                        RunRequests(config);
+
+                    } while (!stop.WaitOne(ac.Heartbeat, true));
+                });
             }
         }
 
-        private void RequestTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        private void Stop()
         {
-            var timer = (System.Timers.Timer)sender;
+            if (stop != null) stop.Set();
 
-            timer.Enabled = false;
-            RunRequests(configuration);
-            if (stop != null && !stop.WaitOne(0, true)) timer.Enabled = true;
+            started = false;
         }
-
+        
         private void RunRequests(DeviceConfiguration config)
         {
-            //var ac = Configuration.Get(config);
             var ac = config.Agent;
             if (ac != null)
             {
@@ -101,18 +92,6 @@ namespace TrakHound_Server.Plugins.MTConnectData
                 }
             }
         }
-
-        private void Stop()
-        {
-            stop.Set();
-            started = false;
-
-            Logger.Log("MTConnect Requests Stopped");
-
-            if (requestTimer != null) requestTimer.Enabled = false;
-            requestTimer = null;
-        }
-
 
         private void UpdateAvailability(bool available, DeviceConfiguration config)
         {

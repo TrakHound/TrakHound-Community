@@ -37,5 +37,6 @@ namespace TrakHound_Server.Plugins.MTConnectData
 
         private bool started = false;
 
+        private bool verbose = true;
     }
 }

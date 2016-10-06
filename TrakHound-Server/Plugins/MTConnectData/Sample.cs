@@ -54,7 +54,7 @@ namespace TrakHound_Server.Plugins.MTConnectData
                     result = Requests.Get(url, proxy, 5000, 2);
                     if (result != null)
                     {
-                        Logger.Log("Sample Successful : " + url + " @ " + requestTimestamp.ToString("o"), LogLineType.Console);
+                        if (verbose) Logger.Log("Sample Successful : " + url + " @ " + requestTimestamp.ToString("o"), LogLineType.Console);
                     }
                     else
                     {
