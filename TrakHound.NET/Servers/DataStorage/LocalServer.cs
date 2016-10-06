@@ -13,7 +13,6 @@ using System.Threading;
 using System.Web;
 
 using TrakHound.API;
-using TrakHound.Configurations;
 using TrakHound.Logging;
 using TrakHound.Tools.Web;
 
@@ -29,6 +28,8 @@ namespace TrakHound.Servers.DataStorage
         private HttpListener listener;
 
         private System.Timers.Timer backupTimer;
+
+        private ManualResetEvent stop;
 
         private const int BACKUP_INTERVAL = 300000; // 5 Minutes
 
@@ -49,6 +50,8 @@ namespace TrakHound.Servers.DataStorage
         {
             Stop();
 
+            stop = new ManualResetEvent(false);
+
             try
             {
                 listener = new HttpListener();
@@ -59,12 +62,10 @@ namespace TrakHound.Servers.DataStorage
                 {
                     Console.WriteLine("TrakHound Data Server Started...");
 
-                    while (listener.IsListening)
+                    while (listener.IsListening && !stop.WaitOne(0, true))
                     {
                         try
                         {
-                            //var context = listener.GetContext();
-
                             ThreadPool.QueueUserWorkItem((c) =>
                             {
                                 var ctx = c as HttpListenerContext;
@@ -72,13 +73,16 @@ namespace TrakHound.Servers.DataStorage
                                 try
                                 {
                                     string rstr = ProcessRequest(ctx);
-                                    byte[] buf = Encoding.UTF8.GetBytes(rstr);
-                                    ctx.Response.ContentLength64 = buf.Length;
-                                    ctx.Response.OutputStream.Write(buf, 0, buf.Length);
+                                    if (!string.IsNullOrEmpty(rstr))
+                                    {
+                                        byte[] buf = Encoding.UTF8.GetBytes(rstr);
+                                        ctx.Response.ContentLength64 = buf.Length;
+                                        ctx.Response.OutputStream.Write(buf, 0, buf.Length);
+                                    }
                                 }
                                 catch (Exception ex)
                                 {
-                                    Logger.Log("Local Data Server :: Exception :: " + ex.Message, LogLineType.Warning);
+                                    //Logger.Log("Local Data Server :: Exception :: " + ex.Message, LogLineType.Warning);
                                 }
                                 finally
                                 {
@@ -116,14 +120,19 @@ namespace TrakHound.Servers.DataStorage
                 Logger.Log("Local Data Server :: Error starting server :: Exception :: " + ex.Message, LogLineType.Warning);
                 Logger.Log("Local Data Server :: Error starting server :: Restarting Data Server in 5 Seconds..");
 
-                Thread.Sleep(5000);
+                if (!stop.WaitOne(0, true))
+                {
+                    Thread.Sleep(5000);
 
-                Start();
+                    Start();
+                }
             }
         }
 
         public void Stop()
         {
+            if (stop != null) stop.Set();
+
             if (listener != null)
             {
                 try
@@ -135,6 +144,16 @@ namespace TrakHound.Servers.DataStorage
             }
 
             StopBackupTimer();
+
+            Logger.Log("Local Data Server Stopped", LogLineType.Console);
+        }
+
+        public bool IsStopped
+        {
+            get
+            {
+                return !listener.IsListening && backupTimer == null;
+            }
         }
 
 
@@ -269,7 +288,11 @@ namespace TrakHound.Servers.DataStorage
 
         private void StopBackupTimer()
         {
-            if (backupTimer != null) backupTimer.Stop();
+            if (backupTimer != null)
+            {
+                backupTimer.Stop();
+                backupTimer = null;
+            }
         }
 
 
@@ -502,127 +525,6 @@ namespace TrakHound.Servers.DataStorage
                 else return false;
             }
         }
-
-        //#region "Device Monitor"
-
-        ///// <summary>
-        ///// Devices Monitor is used to monitor when devices are Changed, Added, or Removed.
-        ///// 'Changed' includes whether device was Enabled or Disabled.
-        ///// Monitor runs at a fixed interval of 5 seconds and compares Devices with list of tables for current user
-        ///// </summary>
-
-        //private Thread deviceMonitorThread;
-        //private ManualResetEvent monitorstop = null;
-
-        //void LoadDevices()
-        //{
-        //    Data.DeviceInfos.Clear();
-
-        //    DevicesMonitor_Initialize();
-        //}
-
-        //void AddDevice(DeviceConfiguration config)
-        //{
-        //    var deviceInfo = new API.Data.DeviceInfo();
-
-        //    deviceInfo.UniqueId = config.UniqueId;
-        //    deviceInfo.Enabled = config.Enabled;
-        //    deviceInfo.Index = config.Index;
-
-        //    deviceInfo.Description = config.Description;
-
-        //    Data.DeviceInfos.Add(deviceInfo);
-        //}
-
-        //void DevicesMonitor_Initialize()
-        //{
-        //    if (deviceMonitorThread != null) deviceMonitorThread.Abort();
-
-        //    deviceMonitorThread = new Thread(new ThreadStart(DevicesMonitor_Start));
-        //    deviceMonitorThread.Start();
-        //}
-
-        //void DevicesMonitor_Start()
-        //{
-        //    monitorstop = new ManualResetEvent(false);
-
-        //    while (!monitorstop.WaitOne(0, true))
-        //    {
-        //        DevicesMonitor_Worker();
-
-        //        Thread.Sleep(2000);
-        //    }
-        //}
-
-        //void DevicesMonitor_Stop()
-        //{
-        //    if (monitorstop != null) monitorstop.Set();
-        //    if (deviceMonitorThread != null) deviceMonitorThread.Abort();
-        //}
-
-        //void DevicesMonitor_Worker()
-        //{
-        //    CheckLocalDevices();
-        //}
-
-
-        //private void CheckLocalDevices()
-        //{
-        //    // Retrieves a list of devices by reading the local 'Devices' folder
-        //    var configs = DeviceConfiguration.ReadAll(FileLocations.Devices).ToList();
-        //    if (configs != null)
-        //    {
-        //        if (configs.Count > 0)
-        //        {
-        //            foreach (DeviceConfiguration config in configs)
-        //            {
-        //                if (config != null)
-        //                {
-        //                    int i = Data.DeviceInfos.FindIndex(x => x.UniqueId == config.UniqueId);
-        //                    if (i >= 0) // Device is already part of list
-        //                    {
-        //                        var device = Data.DeviceInfos[i];
-        //                        if (config.Enabled)
-        //                        {
-        //                            device.Index = config.Index;
-        //                            device.Description = config.Description;
-        //                        }
-        //                        else Data.DeviceInfos.RemoveAt(i);
-        //                    }
-        //                    else // Add Device
-        //                    {
-        //                        if (config.Enabled) AddDevice(config);
-        //                    }
-        //                }
-        //            }
-
-        //            // Find devices that were removed
-        //            foreach (var device in Data.DeviceInfos.ToList())
-        //            {
-        //                if (!configs.Exists(x => x.UniqueId == device.UniqueId))
-        //                {
-        //                    int i = Data.DeviceInfos.FindIndex(x => x.UniqueId == device.UniqueId);
-        //                    if (i >= 0) Data.DeviceInfos.RemoveAt(i);
-        //                }
-        //            }
-        //        }
-        //        else RemoveAllDevices();
-        //    }
-        //    else
-        //    {
-        //        RemoveAllDevices();
-        //    }
-        //}
-
-        //private void RemoveAllDevices()
-        //{
-        //    if (Data.DeviceInfos != null)
-        //    {
-        //        Data.DeviceInfos.Clear();
-        //    }
-        //}
-
-        //#endregion
 
     }
 }
