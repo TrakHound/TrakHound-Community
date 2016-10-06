@@ -25,6 +25,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline
             Availability = 0;
             Performance = 0;
             Quality = 0;
+            Status = -1;
         }
 
         private string GetHourString(int hour)
