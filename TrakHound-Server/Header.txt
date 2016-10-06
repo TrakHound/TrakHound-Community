@@ -7,4 +7,4 @@
 
   Open Source CNC Data Acquistion Software
 	  Package using MTConnect
-             www.TrakHound.org
+             www.TrakHound.com
