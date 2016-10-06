@@ -57,12 +57,12 @@ namespace TrakHound.Servers.DataProcessing
 
         private void Server_Started(DeviceServer server)
         {
-            Logger.Log(server.Configuration.UniqueId + " Started..");
+            Logger.Log(server.Configuration.UniqueId + " :: Device Started");
         }
 
         private void Server_Stopped(DeviceServer server)
         {
-            Logger.Log(server.Configuration.UniqueId + " Stopped..");
+            Logger.Log(server.Configuration.UniqueId + " :: Device Stopped");
         }
 
 
@@ -98,12 +98,13 @@ namespace TrakHound.Servers.DataProcessing
         {
             monitorstop = new ManualResetEvent(false);
 
-            while (!monitorstop.WaitOne(0, true))
+            do
             {
                 DevicesMonitor_Worker();
 
-                Thread.Sleep(10000);
-            }
+            } while (!monitorstop.WaitOne(10000, true));
+
+            Logger.Log("Device Monitor Stopped", LogLineType.Console);
         }
 
         private void DevicesMonitor_Stop()
@@ -150,7 +151,6 @@ namespace TrakHound.Servers.DataProcessing
                             {
                                 // Remove from List
                                 devices.RemoveAt(index);
-                                Logger.Log("Device Removed :: " + server.Configuration.Description.Description + " [" + server.Configuration.Description.DeviceId + "]");
                             }
                         }
                     }
