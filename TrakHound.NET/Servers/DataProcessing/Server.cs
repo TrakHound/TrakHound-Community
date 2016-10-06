@@ -20,8 +20,6 @@ namespace TrakHound.Servers.DataProcessing
     {
         public ProcessingServer()
         {
-            //PrintHeader();
-
             // Set Logger Application identifier name
             Logger.AppicationName = "TrakHound-Server";
 
@@ -47,7 +45,7 @@ namespace TrakHound.Servers.DataProcessing
         public event StatusChanged_Handler Started;
         public event StatusChanged_Handler Stopped;
 
-        public bool IsRunnning;
+        public bool IsRunnning { get; set; }
 
         public void Start()
         {
@@ -62,11 +60,18 @@ namespace TrakHound.Servers.DataProcessing
         {
             foreach (var device in devices)
             {
+                if (device != null)
+                {
+                    device.SendPluginData("SERVER_STOPPED", null);
+                }
+            }
+
+            foreach (var device in devices)
+            {
                 if (device != null) device.Stop();
             }
 
             DevicesMonitor_Stop();
-            if (devicesMonitorThread != null) devicesMonitorThread.Abort();
 
             IsRunnning = false;
 
@@ -166,7 +171,6 @@ namespace TrakHound.Servers.DataProcessing
         }
 
         #endregion
-
 
     }
 }
