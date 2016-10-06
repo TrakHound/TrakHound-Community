@@ -4,6 +4,7 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -206,31 +207,66 @@ namespace TrakHound.API
                                 hourInfo.Date = distinctDate;
                                 hourInfo.Hour = distinctHour;
 
-                                var sameHours = _hours.FindAll(o => o.Hour == distinctHour);
+                                double plannedProductionTime = 0;
+                                double operatingtime = 0;
+                                double idealOperatingTime = 0;
+                                int totalPieces = 0;
+                                int goodPieces = 0;
 
+                                double totalTime = 0;
+
+                                double active = 0;
+                                double idle = 0;
+                                double alert = 0;
+
+                                double production = 0;
+                                double setup = 0;
+                                double teardown = 0;
+                                double maintenance = 0;
+                                double processDevelopment = 0;
+
+                                var sameHours = _hours.FindAll(o => o.Hour == distinctHour);
                                 foreach (var sameHour in sameHours.ToList())
                                 {
                                     // OEE
-                                    hourInfo.PlannedProductionTime += sameHour.PlannedProductionTime;
-                                    hourInfo.OperatingTime += sameHour.OperatingTime;
-                                    hourInfo.IdealOperatingTime += sameHour.IdealOperatingTime;
-                                    hourInfo.TotalPieces += sameHour.TotalPieces;
-                                    hourInfo.GoodPieces += sameHour.GoodPieces;
+                                    plannedProductionTime += sameHour.PlannedProductionTime;
+                                    operatingtime += sameHour.OperatingTime;
+                                    idealOperatingTime += sameHour.IdealOperatingTime;
+                                    totalPieces += sameHour.TotalPieces;
+                                    goodPieces += sameHour.GoodPieces;
 
-                                    hourInfo.TotalTime += sameHour.TotalTime;
+                                    totalTime += sameHour.TotalTime;
 
                                     // Device Status
-                                    hourInfo.Active += sameHour.Active;
-                                    hourInfo.Idle += sameHour.Idle;
-                                    hourInfo.Alert += sameHour.Alert;
+                                    active += sameHour.Active;
+                                    idle += sameHour.Idle;
+                                    alert += sameHour.Alert;
 
                                     // Production Status
-                                    hourInfo.Production += sameHour.Production;
-                                    hourInfo.Setup += sameHour.Setup;
-                                    hourInfo.Teardown += sameHour.Teardown;
-                                    hourInfo.Maintenance += sameHour.Maintenance;
-                                    hourInfo.ProcessDevelopment += sameHour.ProcessDevelopment;
+                                    production += sameHour.Production;
+                                    setup += sameHour.Setup;
+                                    teardown += sameHour.Teardown;
+                                    maintenance += sameHour.Maintenance;
+                                    processDevelopment += sameHour.ProcessDevelopment;
                                 }
+
+                                hourInfo.PlannedProductionTime = Math.Round(plannedProductionTime, 2);
+                                hourInfo.OperatingTime = Math.Round(operatingtime, 2);
+                                hourInfo.IdealOperatingTime = Math.Round(idealOperatingTime, 2);
+                                hourInfo.TotalPieces = totalPieces;
+                                hourInfo.GoodPieces = goodPieces;
+
+                                hourInfo.TotalTime = Math.Round(totalTime, 2);
+
+                                hourInfo.Active = Math.Round(active, 2);
+                                hourInfo.Idle = Math.Round(idle, 2);
+                                hourInfo.Alert = Math.Round(alert, 2);
+
+                                hourInfo.Production = Math.Round(production, 2);
+                                hourInfo.Setup = Math.Round(setup, 2);
+                                hourInfo.Teardown = Math.Round(teardown, 2);
+                                hourInfo.Maintenance = Math.Round(maintenance, 2);
+                                hourInfo.ProcessDevelopment = Math.Round(processDevelopment, 2);
 
                                 newHours.Add(hourInfo);
                             }
