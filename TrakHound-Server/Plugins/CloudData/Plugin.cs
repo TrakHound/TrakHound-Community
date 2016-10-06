@@ -70,6 +70,9 @@ namespace TrakHound_Server.Plugins.CloudData
                     case "CYCLES": UpdateCycleData(data); break;
 
                     case "ADD_DEVICE_DATA": AddData(data); break;
+
+                    // Get Server Stopped
+                    case "SERVER_STOPPED": UpdateServerStopped(data); break;
                 }
             }
         }
@@ -79,6 +82,11 @@ namespace TrakHound_Server.Plugins.CloudData
             currentUser = (UserConfiguration)data.Data01;
 
             queue.Start();
+        }
+
+        private void UpdateServerStopped(EventData data)
+        {
+            queue.Stop();
         }
 
         private void AddData(EventData data)
@@ -100,7 +108,7 @@ namespace TrakHound_Server.Plugins.CloudData
                 {
                     var snapshots = (List<SnapshotData.Snapshot>)data.Data02;
 
-                    // Only update is deviceInfo.Status is not null since this doesn't always include the Connected property which causes 
+                    // Only update if deviceInfo.Status is not null since this doesn't always include the Connected property which causes 
                     // the device to appear to be turning on and off using a client
                     if (deviceInfo.Status != null)
                     {
@@ -109,7 +117,7 @@ namespace TrakHound_Server.Plugins.CloudData
                         if (snapshot != null)
                         {
                             deviceInfo.Status.DeviceStatus = snapshot.Value;
-                            deviceInfo.Status.DeviceStatusTimer = Math.Max(0, Convert.ToInt32((snapshot.Timestamp - snapshot.PreviousTimestamp).TotalSeconds));
+                            deviceInfo.Status.DeviceStatusTimer = Math.Round(Math.Max(0, (snapshot.Timestamp - snapshot.PreviousTimestamp).TotalSeconds), 2);
                             previousDeviceStatusTimestamp = snapshot.Timestamp;
                         }
 
@@ -118,7 +126,7 @@ namespace TrakHound_Server.Plugins.CloudData
                         if (snapshot != null)
                         {
                             deviceInfo.Status.ProductionStatus = snapshot.Value;
-                            deviceInfo.Status.ProductionStatusTimer = Math.Max(0, Convert.ToInt32((snapshot.Timestamp - snapshot.PreviousTimestamp).TotalSeconds));
+                            deviceInfo.Status.ProductionStatusTimer = Math.Round(Math.Max(0, (snapshot.Timestamp - snapshot.PreviousTimestamp).TotalSeconds), 2);
                             previousProductionStatusTimestamp = snapshot.Timestamp;
                         }
 
@@ -129,7 +137,7 @@ namespace TrakHound_Server.Plugins.CloudData
                         {
                             double val = 0;
                             double.TryParse(snapshot.Value, out val);
-                            deviceInfo.Status.DayRun = val;
+                            deviceInfo.Status.DayRun = Math.Round(val, 2);
                         }
 
                         // Day Operating Time
@@ -138,7 +146,7 @@ namespace TrakHound_Server.Plugins.CloudData
                         {
                             double val = 0;
                             double.TryParse(snapshot.Value, out val);
-                            deviceInfo.Status.DayOperating = val;
+                            deviceInfo.Status.DayOperating = Math.Round(val, 2);
                         }
 
                         // Day Cutting Time
@@ -147,7 +155,7 @@ namespace TrakHound_Server.Plugins.CloudData
                         {
                             double val = 0;
                             double.TryParse(snapshot.Value, out val);
-                            deviceInfo.Status.DayCutting = val;
+                            deviceInfo.Status.DayCutting = Math.Round(val, 2);
                         }
 
                         // Day Spindle Time
@@ -156,7 +164,7 @@ namespace TrakHound_Server.Plugins.CloudData
                         {
                             double val = 0;
                             double.TryParse(snapshot.Value, out val);
-                            deviceInfo.Status.DaySpindle = val;
+                            deviceInfo.Status.DaySpindle = Math.Round(val, 2);
                         }
 
 
@@ -166,7 +174,7 @@ namespace TrakHound_Server.Plugins.CloudData
                         {
                             double val = 0;
                             double.TryParse(snapshot.Value, out val);
-                            deviceInfo.Status.TotalRun = val;
+                            deviceInfo.Status.TotalRun = Math.Round(val, 2);
                         }
 
                         // Total Operating Time
@@ -175,7 +183,7 @@ namespace TrakHound_Server.Plugins.CloudData
                         {
                             double val = 0;
                             double.TryParse(snapshot.Value, out val);
-                            deviceInfo.Status.TotalOperating = val;
+                            deviceInfo.Status.TotalOperating = Math.Round(val, 2);
                         }
 
                         // Total Cutting Time
@@ -184,7 +192,7 @@ namespace TrakHound_Server.Plugins.CloudData
                         {
                             double val = 0;
                             double.TryParse(snapshot.Value, out val);
-                            deviceInfo.Status.TotalCutting = val;
+                            deviceInfo.Status.TotalCutting = Math.Round(val, 2);
                         }
 
                         // Total Spindle Time
@@ -193,7 +201,7 @@ namespace TrakHound_Server.Plugins.CloudData
                         {
                             double val = 0;
                             double.TryParse(snapshot.Value, out val);
-                            deviceInfo.Status.TotalSpindle = val;
+                            deviceInfo.Status.TotalSpindle = Math.Round(val, 2);
                         }
 
                         queue.Add(deviceInfo);
@@ -211,10 +219,16 @@ namespace TrakHound_Server.Plugins.CloudData
 
                     if (previousDeviceStatusTimestamp > DateTime.MinValue)
                     {
-                        deviceInfo.Status.DeviceStatusTimer += (DateTime.UtcNow - previousDeviceStatusTimestamp).TotalSeconds;
+                        deviceInfo.Status.DeviceStatusTimer = Math.Round((DateTime.UtcNow - previousDeviceStatusTimestamp).TotalSeconds, 2);
+                    }
+
+                    if (previousProductionStatusTimestamp > DateTime.MinValue)
+                    {
+                        deviceInfo.Status.ProductionStatusTimer = Math.Round((DateTime.UtcNow - previousProductionStatusTimestamp).TotalSeconds, 2);
                     }
 
                     previousDeviceStatusTimestamp = DateTime.UtcNow;
+                    previousProductionStatusTimestamp = DateTime.UtcNow;
 
                     queue.Add(deviceInfo);
                 }
@@ -290,13 +304,13 @@ namespace TrakHound_Server.Plugins.CloudData
                         // Device Status
                         if (eventTime.Event == "device_status" && !string.IsNullOrEmpty(eventTime.Value))
                         {
-                            hourInfo.TotalTime = eventTime.Duration.TotalSeconds;
+                            hourInfo.TotalTime = Math.Round(eventTime.Duration.TotalSeconds, 2);
 
                             switch (eventTime.Value.ToLower())
                             {
-                                case "active": hourInfo.Active = eventTime.Duration.TotalSeconds; break;
-                                case "idle": hourInfo.Idle = eventTime.Duration.TotalSeconds; break;
-                                case "alert": hourInfo.Alert = eventTime.Duration.TotalSeconds; break;
+                                case "active": hourInfo.Active = Math.Round(eventTime.Duration.TotalSeconds, 2); break;
+                                case "idle": hourInfo.Idle = Math.Round(eventTime.Duration.TotalSeconds, 2); break;
+                                case "alert": hourInfo.Alert = Math.Round(eventTime.Duration.TotalSeconds, 2); break;
                             }
                         }
 
@@ -305,11 +319,11 @@ namespace TrakHound_Server.Plugins.CloudData
                         {
                             switch (eventTime.Value.ToLower())
                             {
-                                case "production": hourInfo.Production = eventTime.Duration.TotalSeconds; break;
-                                case "setup": hourInfo.Setup = eventTime.Duration.TotalSeconds; break;
-                                case "teardown": hourInfo.Teardown = eventTime.Duration.TotalSeconds; break;
-                                case "maintenance": hourInfo.Maintenance = eventTime.Duration.TotalSeconds; break;
-                                case "process_development": hourInfo.ProcessDevelopment = eventTime.Duration.TotalSeconds; break;
+                                case "production": hourInfo.Production = Math.Round(eventTime.Duration.TotalSeconds, 2); break;
+                                case "setup": hourInfo.Setup = Math.Round(eventTime.Duration.TotalSeconds, 2); break;
+                                case "teardown": hourInfo.Teardown = Math.Round(eventTime.Duration.TotalSeconds, 2); break;
+                                case "maintenance": hourInfo.Maintenance = Math.Round(eventTime.Duration.TotalSeconds, 2); break;
+                                case "process_development": hourInfo.ProcessDevelopment = Math.Round(eventTime.Duration.TotalSeconds, 2); break;
                             }
                         }
 
@@ -475,9 +489,9 @@ namespace TrakHound_Server.Plugins.CloudData
                             var hourInfo = new Data.HourInfo();
                             hourInfo.Date = oeeData.Start.ToString(Data.HourInfo.DateFormat);
                             hourInfo.Hour = oeeData.Start.Hour;
-                            hourInfo.PlannedProductionTime = Math.Max(0, oeeData.PlannedProductionTime - storedOeeData.PlannedProductionTime);
-                            hourInfo.OperatingTime = Math.Max(0, oeeData.OperatingTime - storedOeeData.OperatingTime);
-                            hourInfo.IdealOperatingTime = Math.Max(0, oeeData.IdealOperatingTime - storedOeeData.IdealOperatingTime);
+                            hourInfo.PlannedProductionTime = Math.Round(Math.Min(1, Math.Max(0, oeeData.PlannedProductionTime - storedOeeData.PlannedProductionTime)), 2);
+                            hourInfo.OperatingTime = Math.Round(Math.Min(1, Math.Max(0, oeeData.OperatingTime - storedOeeData.OperatingTime)), 2);
+                            hourInfo.IdealOperatingTime = Math.Round(Math.Min(1, Math.Max(0, oeeData.IdealOperatingTime - storedOeeData.IdealOperatingTime)), 2);
 
                             // Update in stored list
                             int i = storedOeeDatas.FindIndex(o => o.Start.Hour == oeeData.Start.Hour && o.CycleId == oeeData.CycleId && o.CycleInstanceId == oeeData.CycleInstanceId);
