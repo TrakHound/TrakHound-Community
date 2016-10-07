@@ -393,15 +393,19 @@ namespace TrakHound.API
                 lock (_lock)
                 {
                     var result = new DeviceInfo();
-                    foreach (var c in Classes)
+                    result.UniqueId = UniqueId;
+                    result.Enabled = Enabled;
+                    result.Index = Index;
+
+                    foreach (var c in Classes.ToList())
                     {
                         object o = null;
-                        Classes.TryGetValue(c.Key, out o);
-                        if (o == null) Classes.Add(c.Key, c.Value);
+                        result.Classes.TryGetValue(c.Key, out o);
+                        if (o == null) result.Classes.Add(c.Key, c.Value);
                         else
                         {
-                            Classes.Remove(c.Key);
-                            Classes.Add(c.Key, c.Value);
+                            result.Classes.Remove(c.Key);
+                            result.Classes.Add(c.Key, c.Value);
                         }
                     }
 
