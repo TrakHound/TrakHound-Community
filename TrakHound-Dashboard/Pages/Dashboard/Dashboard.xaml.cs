@@ -722,5 +722,14 @@ namespace TrakHound_Dashboard.Pages.Dashboard
         {
             DateMenuShown = !DateMenuShown;
         }
+
+        private void ResetStatusTimes_Clicked(TrakHound_UI.Button bt)
+        {
+            From = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0, DateTimeKind.Local);
+            To = From.AddDays(1);
+
+            SaveDashboardTimespan();
+            SendDashboardTimespan();
+        }
     }
 }

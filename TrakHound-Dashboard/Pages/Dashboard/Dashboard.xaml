@@ -310,6 +310,8 @@
 
                 <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="20,0">
 
+                    <ui:Button Text="Reset" Style="{StaticResource Button_Transparent_Background}" VerticalAlignment="Center" Margin="0,0,20,0" ToolTip="Reset From and To times back to Default" Clicked="ResetStatusTimes_Clicked"/>
+
                     <TextBlock Grid.Column="0" Grid.Row="0" Text="From" FontSize="12" Foreground="{StaticResource Text}" Margin="10,0" VerticalAlignment="Center"/>
                     <ComboBox Grid.Column="0" Grid.Row="1" MinWidth="150" Height="30" ItemsSource="{Binding DateTimes}" SelectedValue="{Binding From, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
 
