@@ -107,6 +107,23 @@ namespace TrakHound_Dashboard.Pages.Dashboard
             }
         }
 
+        private ObservableCollection<DateTime> _dateTimes;
+        public ObservableCollection<DateTime> DateTimes
+        {
+            get
+            {
+                if (_dateTimes == null)
+                    _dateTimes = new ObservableCollection<DateTime>();
+                return _dateTimes;
+            }
+
+            set
+            {
+                _dateTimes = value;
+            }
+        }
+
+
         private PluginConfiguration currentPage;
 
         private List<PluginConfiguration> enabledPlugins;
@@ -162,6 +179,45 @@ namespace TrakHound_Dashboard.Pages.Dashboard
             DependencyProperty.Register("IsExpanded", typeof(bool), typeof(Dashboard), new PropertyMetadata(true));
 
 
+        public DateTime From
+        {
+            get { return (DateTime)GetValue(FromProperty); }
+            set { SetValue(FromProperty, value); }
+        }
+
+        public static readonly DependencyProperty FromProperty =
+            DependencyProperty.Register("From", typeof(DateTime), typeof(Dashboard), new PropertyMetadata(DateTime.MinValue, new PropertyChangedCallback(From_PropertyChanged)));
+
+        public DateTime To
+        {
+            get { return (DateTime)GetValue(ToProperty); }
+            set { SetValue(ToProperty, value); }
+        }
+
+        public static readonly DependencyProperty ToProperty =
+            DependencyProperty.Register("To", typeof(DateTime), typeof(Dashboard), new PropertyMetadata(DateTime.MinValue, new PropertyChangedCallback(To_PropertyChanged)));
+
+        private static void From_PropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        {
+            var o = obj as Dashboard;
+            if (o != null)
+            {
+                o.SaveDashboardFromTime();
+                o.SendDashboardTimespan();
+            }
+        }
+
+        private static void To_PropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        {
+            var o = obj as Dashboard;
+            if (o != null)
+            {
+                o.SaveDashboardToTime();
+                o.SendDashboardTimespan();
+            }
+        }
+
+
         public string CurrentDate
         {
             get { return (string)GetValue(CurrentDateProperty); }
@@ -194,6 +250,28 @@ namespace TrakHound_Dashboard.Pages.Dashboard
             SubCategories.Add(pages);
 
             IsExpanded = Properties.Settings.Default.DashboardIsExpanded;
+
+            // Load Times List
+            var d = DateTime.Now;
+            var from = new DateTime(d.Year, d.Month, d.Day, 0, 0, 0, DateTimeKind.Local);
+            var to = from.AddDays(1);
+            var time = from;
+            while (time <= to)
+            {
+                DateTimes.Add(time);
+                time = time.AddHours(1);
+            }
+
+
+            var savedFrom = Properties.Settings.Default.SavedStatusFromTime;
+            if (savedFrom > DateTime.MinValue) From = savedFrom;
+            else From = from;
+
+            var savedTo = Properties.Settings.Default.SavedStatusToTime;
+            if (savedTo > DateTime.MinValue) To = savedTo;
+            else To = to;
+
+            SendDashboardTimespan();
         }
 
         public void Initialize()
@@ -209,8 +287,42 @@ namespace TrakHound_Dashboard.Pages.Dashboard
                     if (config.Enabled) Plugins_Load(config);
                 }
             }
+
+            SendDashboardTimespan();
         }
 
+        internal void SendDashboardTimespan()
+        {
+            SendDashboardTimespan(From, To);
+        }
+
+        internal void SendDashboardTimespan(DateTime from, DateTime to)
+        {
+            var data = new EventData(this);
+            data.Id = "DASHBOARD_TIMESPAN";
+            data.Data01 = from;
+            data.Data02 = to;
+            SendData?.Invoke(data);
+        }
+
+        internal void SaveDashboardTimespan()
+        {
+            Properties.Settings.Default.SavedStatusFromTime = From;
+            Properties.Settings.Default.SavedStatusToTime = To;
+            Properties.Settings.Default.Save();
+        }
+
+        internal void SaveDashboardFromTime()
+        {
+            Properties.Settings.Default.SavedStatusFromTime = From;
+            Properties.Settings.Default.Save();
+        }
+
+        internal void SaveDashboardToTime()
+        {
+            Properties.Settings.Default.SavedStatusToTime = To;
+            Properties.Settings.Default.Save();
+        }
 
         public void GetSentData(EventData data)
         {

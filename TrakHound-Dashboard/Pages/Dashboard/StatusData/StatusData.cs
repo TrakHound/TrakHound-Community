@@ -25,6 +25,9 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
         private Thread updateThread;
         private ManualResetEvent updateStop;
 
+        private DateTime beginTime;
+        private DateTime endTime;
+
         public string Title { get { return "Status Data"; } }
 
         public string Description { get { return "Retrieve Data from database(s) related to device status"; } }
@@ -78,10 +81,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
         public event SendData_Handler SendData;
 
 
-        public StatusData()
-        {
-            //Start();
-        }
+        public StatusData() { }
 
         public void Initialize()
         {
@@ -103,6 +103,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
         public void GetSentData(EventData data)
         {
             UpdateLogin(data);
+            UpdateTimespan(data);
 
             UpdateDeviceAdded(data);
             UpdateDeviceUpdated(data);
@@ -122,6 +123,20 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
             if (data != null && data.Id == "USER_LOGOUT")
             {
                 UserConfiguration = null;
+            }
+        }
+
+        private void UpdateTimespan(EventData data)
+        {
+            if (data != null && data.Id == "DASHBOARD_TIMESPAN")
+            {
+                if (data.Data01.GetType() == typeof(DateTime) && data.Data02.GetType() == typeof(DateTime))
+                {
+                    beginTime = (DateTime)data.Data01;
+                    endTime = (DateTime)data.Data02;
+
+                    Update();
+                }
             }
         }
 
@@ -177,7 +192,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
 
             updateStop = new ManualResetEvent(false);
 
-            updateThread = new Thread(new ThreadStart(Update));
+            updateThread = new Thread(new ThreadStart(Update_Worker));
             updateThread.Start();
         }
 
@@ -191,41 +206,53 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
             if (updateThread != null) updateThread.Abort();
         }
 
-        private void Update()
+        private void Update_Worker()
         {
             int interval = Math.Max(INTERVAL_MIN, Properties.Settings.Default.DatabaseReadInterval);
 
             while (!updateStop.WaitOne(0, true))
             {
-                // Get Timestamp for current entire day
-                var now = DateTime.Now;
-                DateTime from = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0, DateTimeKind.Local);
-                DateTime to = from.AddDays(1);
+                Update();
 
-                // Get list of UniqueId's from Devices list
-                var devices = Devices.ToList().Select(o => o.UniqueId).ToList();
+                // Put thread to sleep for specified interval (Data Read Interval)
+                interval = Math.Max(INTERVAL_MIN, Properties.Settings.Default.DatabaseReadInterval);
+                Thread.Sleep(interval);
+            }
+        }
 
-                // Retrieve device Data from API
-                List<Data.DeviceInfo> deviceInfos = null;
-                if (UserConfiguration != null) deviceInfos = Data.Get(UserConfiguration, devices, from.ToUniversalTime(), to.ToUniversalTime(), 2000);
-                else deviceInfos = Data.Get(null, devices, from, to, 2000);
-                if (deviceInfos != null)
+        private void Update()
+        {
+            // Get Timestamp for current entire day
+            var now = DateTime.Now;
+            DateTime from = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0, DateTimeKind.Local);
+            DateTime to = from.AddDays(1);
+
+            if (beginTime >= from && endTime <= to)
+            {
+                from = beginTime;
+                to = endTime;
+            }
+
+            // Get list of UniqueId's from Devices list
+            var devices = Devices.ToList().Select(o => o.UniqueId).ToList();
+
+            // Retrieve device Data from API
+            List<Data.DeviceInfo> deviceInfos = null;
+            if (UserConfiguration != null) deviceInfos = Data.Get(UserConfiguration, devices, from.ToUniversalTime(), to.ToUniversalTime(), 2000);
+            else deviceInfos = Data.Get(null, devices, from.ToUniversalTime(), to.ToUniversalTime(), 2000);
+            if (deviceInfos != null)
+            {
+                foreach (var deviceInfo in deviceInfos)
                 {
-                    foreach (var deviceInfo in deviceInfos)
+                    foreach (var c in deviceInfo.Classes)
                     {
-                        foreach (var c in deviceInfo.Classes)
-                        {
-                            var data = new EventData(this);
-                            data.Id = "STATUS_" + c.Key.ToUpper();
-                            data.Data01 = deviceInfo.UniqueId;
-                            data.Data02 = c.Value;
-                            SendDataEvent(data);
-                        }
+                        var data = new EventData(this);
+                        data.Id = "STATUS_" + c.Key.ToUpper();
+                        data.Data01 = deviceInfo.UniqueId;
+                        data.Data02 = c.Value;
+                        SendDataEvent(data);
                     }
                 }
-
-                // Put thread to sleep for specified interval (Data Read Interval
-                Thread.Sleep(interval);
             }
         }
 

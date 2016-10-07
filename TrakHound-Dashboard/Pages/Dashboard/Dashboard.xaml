@@ -11,6 +11,8 @@
              
              xmlns:local="clr-namespace:TrakHound_Dashboard.Pages.Dashboard"
              xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
                           
              mc:Ignorable="d" 
              d:DesignHeight="200"
@@ -306,9 +308,14 @@
 
                 <Rectangle Grid.Column="2" Width="1" Fill="#aaa" Margin="5,2,0,2"/>
 
-                <StackPanel Grid.Column="3" Margin="10,0" VerticalAlignment="Center">
-                    <TextBlock Text="Currently Displaying Data for" FontSize="10" Foreground="{StaticResource Text_Light}" Margin="0,0,0,2"/>
-                    <TextBlock Text="{Binding CurrentDate, RelativeSource={RelativeSource AncestorType=local:Dashboard, Mode=FindAncestor}}" FontSize="16" Foreground="{StaticResource Text}" HorizontalAlignment="Right"/>
+                <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="20,0">
+
+                    <TextBlock Grid.Column="0" Grid.Row="0" Text="From" FontSize="12" Foreground="{StaticResource Text}" Margin="10,0" VerticalAlignment="Center"/>
+                    <ComboBox Grid.Column="0" Grid.Row="1" MinWidth="150" Height="30" ItemsSource="{Binding DateTimes}" SelectedValue="{Binding From, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+
+                    <TextBlock Grid.Column="1" Grid.Row="0" Text="To" FontSize="12" Foreground="{StaticResource Text}" Margin="10,0" VerticalAlignment="Center"/>
+                    <ComboBox Grid.Column="1" Grid.Row="1" MinWidth="150" Height="30" ItemsSource="{Binding DateTimes}" SelectedValue="{Binding To, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+
                 </StackPanel>
 
             </Grid>

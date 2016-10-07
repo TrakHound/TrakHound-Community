@@ -249,5 +249,27 @@ namespace TrakHound_Dashboard.Properties {
                 this["SavedPageZoomLevels"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.DateTime SavedStatusFromTime {
+            get {
+                return ((global::System.DateTime)(this["SavedStatusFromTime"]));
+            }
+            set {
+                this["SavedStatusFromTime"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.DateTime SavedStatusToTime {
+            get {
+                return ((global::System.DateTime)(this["SavedStatusToTime"]));
+            }
+            set {
+                this["SavedStatusToTime"] = value;
+            }
+        }
     }
 }
