@@ -121,6 +121,21 @@ namespace TrakHound.API
                 }
             }
 
+
+            public DateTime GetDateTime()
+            {
+                if (!string.IsNullOrEmpty(Date))
+                {
+                    DateTime date = DateTime.MinValue;
+                    if (DateTime.TryParse(Date, out date))
+                    {
+                        return new DateTime(date.Year, date.Month, date.Day, Hour, 0, 0);
+                    }
+                }
+
+                return DateTime.MinValue;
+            }
+
             public static List<HourInfo> CombineHours(List<HourInfo> hours)
             {
                 var newHours = new List<HourInfo>();
@@ -235,6 +250,57 @@ namespace TrakHound.API
                     result.Quality = Math.Round(Math.Min(1, Math.Max(0, oee.Quality)), 4);
                     result.TotalPieces = oee.TotalPieces;
                     result.GoodPieces = oee.GoodPieces;
+                }
+
+                return result;
+            }
+
+            public static TimersInfo GetTimersInfo(List<HourInfo> hours)
+            {
+                var result = new TimersInfo();
+
+                if (hours.Count > 0)
+                {
+                    double totalTime = 0;
+
+                    double active = 0;
+                    double idle = 0;
+                    double alert = 0;
+
+                    double production = 0;
+                    double setup = 0;
+                    double teardown = 0;
+                    double maintenance = 0;
+                    double processDevelopment = 0;
+
+                    foreach (var hour in hours)
+                    {
+                        totalTime += hour.TotalTime;
+
+                        // Device Status
+                        active += hour.Active;
+                        idle += hour.Idle;
+                        alert += hour.Alert;
+
+                        // Production Status
+                        production += hour.Production;
+                        setup += hour.Setup;
+                        teardown += hour.Teardown;
+                        maintenance += hour.Maintenance;
+                        processDevelopment += hour.ProcessDevelopment;
+                    }
+
+                    result.Total = Math.Round(totalTime, 2);
+
+                    result.Active = Math.Round(active, 2);
+                    result.Idle = Math.Round(idle, 2);
+                    result.Alert = Math.Round(alert, 2);
+
+                    result.Production = Math.Round(production, 2);
+                    result.Setup = Math.Round(setup, 2);
+                    result.Teardown = Math.Round(teardown, 2);
+                    result.Maintenance = Math.Round(maintenance, 2);
+                    result.ProcessDevelopment = Math.Round(processDevelopment, 2);
                 }
 
                 return result;
