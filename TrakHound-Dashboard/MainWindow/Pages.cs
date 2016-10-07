@@ -598,7 +598,7 @@ namespace TrakHound_Dashboard
 
         #region "Add Device"
 
-        public TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Page addDevicePage;
+        public Pages.DeviceManager.AddDevice.Page addDevicePage;
 
         public void DeviceManager_AddDevice_Initialize()
         {

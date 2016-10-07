@@ -157,7 +157,6 @@
     </Compile>
     <Compile Include="Servers\DataProcessing\Devices.cs" />
     <Compile Include="Servers\DataProcessing\DeviceServer.cs" />
-    <None Include="Servers\DataProcessing\Header.cs" />
     <Compile Include="Servers\DataProcessing\Login.cs" />
     <Compile Include="Tables\Names.cs" />
     <None Include="Tables\Variables.cs" />
@@ -197,9 +196,6 @@
     <Compile Include="Tools\XML\InnerText.cs" />
     <Compile Include="Tools\XML\Nodes.cs" />
     <Compile Include="Tools\XML_Functions.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Servers\DataProcessing\Header.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

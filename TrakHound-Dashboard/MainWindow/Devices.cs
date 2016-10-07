@@ -116,7 +116,7 @@ namespace TrakHound_Dashboard
 
         private void SendDevicesLoadingMessage()
         {
-            // Send message to plugins that Devices have been loaded
+            // Send message to plugins that Devices are being loaded
             var data = new EventData(this);
             data.Id = "DEVICES_LOADING";
             SendEventData(data);
