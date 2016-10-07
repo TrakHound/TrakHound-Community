@@ -120,7 +120,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatusTimes
 
         void Update(EventData data)
         {
-            if (data != null && data.Id == "STATUS_STATUS" && data.Data02 != null && data.Data02.GetType() == typeof(Data.StatusInfo))
+            if (data != null && data.Id == "STATUS_STATUS" && data.Data01 != null && data.Data02 != null && data.Data02.GetType() == typeof(Data.StatusInfo))
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
@@ -136,7 +136,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatusTimes
                 }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
             }
 
-            if (data != null && data.Id == "STATUS_TIMERS" && data.Data02 != null && data.Data02.GetType() == typeof(Data.TimersInfo))
+            if (data != null && data.Id == "STATUS_TIMERS" && data.Data01 != null && data.Data02 != null && data.Data02.GetType() == typeof(Data.TimersInfo))
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {

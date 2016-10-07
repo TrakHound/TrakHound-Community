@@ -123,7 +123,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline
 
         void Update(EventData data)
         {
-            if (data != null && data.Id == "STATUS_STATUS" && data.Data02 != null && data.Data02.GetType() == typeof(Data.StatusInfo))
+            if (data != null && data.Id == "STATUS_STATUS" && data.Data01 != null && data.Data02 != null && data.Data02.GetType() == typeof(Data.StatusInfo))
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
@@ -139,7 +139,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeHourTimeline
                 }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
             }
 
-            if (data != null && data.Id == "STATUS_HOURS" && data.Data02 != null && data.Data02.GetType() == typeof(List<Data.HourInfo>))
+            if (data != null && data.Id == "STATUS_HOURS" && data.Data01 != null && data.Data02 != null && data.Data02.GetType() == typeof(List<Data.HourInfo>))
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {

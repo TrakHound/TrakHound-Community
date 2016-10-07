@@ -106,7 +106,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
                 ClearItems();
             }
 
-            if (data != null && data.Id == "STATUS_STATUS" && data.Data02 != null && data.Data02.GetType() == typeof(TrakHound.API.Data.StatusInfo))
+            if (data != null && data.Id == "STATUS_STATUS" && data.Data01 != null && data.Data02 != null && data.Data02.GetType() == typeof(TrakHound.API.Data.StatusInfo))
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
@@ -122,7 +122,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
                 }), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { });
             }
 
-            if (data != null && data.Id == "STATUS_CONTROLLER" && data.Data02 != null && data.Data02.GetType() == typeof(TrakHound.API.Data.ControllerInfo))
+            if (data != null && data.Id == "STATUS_CONTROLLER" && data.Data01 != null && data.Data02 != null && data.Data02.GetType() == typeof(TrakHound.API.Data.ControllerInfo))
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
@@ -138,7 +138,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
                 }), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { });
             }
 
-            if (data != null && data.Id == "STATUS_OEE" && data.Data02 != null && data.Data02.GetType() == typeof(TrakHound.API.Data.OeeInfo))
+            if (data != null && data.Id == "STATUS_OEE" && data.Data01 != null && data.Data02 != null && data.Data02.GetType() == typeof(TrakHound.API.Data.OeeInfo))
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {

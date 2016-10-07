@@ -113,7 +113,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus
 
         void Update(EventData data)
         {
-            if (data != null && data.Id == "STATUS_CONTROLLER" && data.Data02 != null && data.Data02.GetType() == typeof(Data.ControllerInfo))
+            if (data != null && data.Id == "STATUS_CONTROLLER" && data.Data01 != null && data.Data02 != null && data.Data02.GetType() == typeof(Data.ControllerInfo))
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
@@ -129,7 +129,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus
                 }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
             }
 
-            if (data != null && data.Id == "STATUS_STATUS" && data.Data02 != null && data.Data02.GetType() == typeof(Data.StatusInfo))
+            if (data != null && data.Id == "STATUS_STATUS" && data.Data01 != null && data.Data02 != null && data.Data02.GetType() == typeof(Data.StatusInfo))
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
