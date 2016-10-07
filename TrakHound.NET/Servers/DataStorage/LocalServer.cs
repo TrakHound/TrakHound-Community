@@ -298,6 +298,10 @@ namespace TrakHound.Servers.DataStorage
 
         private static class Data
         {
+            private static bool first = true;
+
+            private static object _lock = new object();
+
             public static List<API.Data.DeviceInfo> DeviceInfos = new List<API.Data.DeviceInfo>();
 
             public static string Get(string url)
@@ -306,42 +310,73 @@ namespace TrakHound.Servers.DataStorage
 
                 try
                 {
-                    var uri = new Uri(url);
-
-                    // Get Devices Parameter
-                    string json = HttpUtility.ParseQueryString(uri.Query).Get("devices");
-                    if (!string.IsNullOrEmpty(json))
+                    lock(_lock)
                     {
-                        var devices = JSON.ToType<List<API.Data.DeviceListItem>>(json);
-                        if (devices != null)
+                        var uri = new Uri(url);
+
+                        // Get From Parameter
+                        string sFrom = HttpUtility.ParseQueryString(uri.Query).Get("from");
+                        string sTo = HttpUtility.ParseQueryString(uri.Query).Get("to");
+
+                        DateTime from = DateTime.MinValue;
+                        DateTime to = DateTime.MinValue;
+
+                        DateTime.TryParse(sFrom, out from);
+                        DateTime.TryParse(sTo, out to);
+
+                        var _deviceInfos = new List<API.Data.DeviceInfo>();
+
+                        if (from > DateTime.MinValue && to > DateTime.MinValue)
                         {
-                            var deviceInfos = new List<API.Data.DeviceInfo>();
-
-                            foreach (var device in devices)
+                            foreach (var info in DeviceInfos.ToList())
                             {
-                                var deviceInfo = DeviceInfos.Find(o => o.UniqueId == device.UniqueId);
-                                if (deviceInfo != null)
-                                {
-                                    deviceInfos.Add(deviceInfo);
-                                }
-                            }
+                                var deviceInfo = info.Copy();
 
-                            if (deviceInfos.Count > 0) response = API.Data.DeviceInfo.ListToJson(deviceInfos);
+                                from = from.ToUniversalTime();
+                                to = to.ToUniversalTime();
+
+                                var _hours = deviceInfo.Hours.FindAll(o => TestHourDate(o, from, to));
+                                deviceInfo.Hours = _hours;
+                                deviceInfo.Oee = API.Data.HourInfo.GetOeeInfo(_hours);
+                                deviceInfo.Timers = API.Data.HourInfo.GetTimersInfo(_hours);
+
+                                _deviceInfos.Add(deviceInfo);
+                            }
                         }
-                    }
-                    else
-                    {
-                        response = API.Data.DeviceInfo.ListToJson(DeviceInfos);
+                        else _deviceInfos = DeviceInfos.ToList();
+
+
+                        // Get Devices Parameter
+                        string json = HttpUtility.ParseQueryString(uri.Query).Get("devices");
+                        if (!string.IsNullOrEmpty(json))
+                        {
+                            var devices = JSON.ToType<List<API.Data.DeviceListItem>>(json);
+                            if (devices != null)
+                            {
+                                var deviceInfos = new List<API.Data.DeviceInfo>();
+
+                                foreach (var device in devices)
+                                {
+                                    var deviceInfo = _deviceInfos.Find(o => o.UniqueId == device.UniqueId);
+                                    if (deviceInfo != null)
+                                    {
+                                        deviceInfos.Add(deviceInfo);
+                                    }
+                                }
+
+                                if (deviceInfos.Count > 0) response = API.Data.DeviceInfo.ListToJson(deviceInfos);
+                            }
+                        }
+                        else
+                        {
+                            response = API.Data.DeviceInfo.ListToJson(_deviceInfos);
+                        }
                     }
                 }
                 catch (Exception ex) { Logger.Log("Error Getting Local Server Data :: " + ex.Message, LogLineType.Error); }
 
                 return response;
             }
-
-            private static bool first = true;
-
-            private static object _lock = new object();
 
             public static string Update(HttpListenerContext context)
             {
@@ -410,7 +445,14 @@ namespace TrakHound.Servers.DataStorage
 
                                         if (hours != null)
                                         {
-                                            hours = hours.FindAll(o => TestHourDate(o));
+                                            // Probably a more elegant way of getting the Time Zone Offset could be done here
+                                            int timeZoneOffset = Convert.ToInt32((DateTime.UtcNow - DateTime.Now).TotalHours);
+
+                                            DateTime d = DateTime.Now;
+                                            DateTime from = new DateTime(d.Year, d.Month, d.Day, timeZoneOffset, 0, 0);
+                                            DateTime to = from.AddDays(1);
+
+                                            hours = hours.FindAll(o => TestHourDate(o, from, to));
                                             hours = API.Data.HourInfo.CombineHours(hours);
 
                                             // Add Hours
@@ -509,20 +551,10 @@ namespace TrakHound.Servers.DataStorage
                 return response;
             }
 
-            private static bool TestHourDate(API.Data.HourInfo hourInfo)
+            private static bool TestHourDate(API.Data.HourInfo hourInfo, DateTime from, DateTime to)
             {
-                // Probably a more elegant way of getting the Time Zone Offset could be done here
-                int timeZoneOffset = Convert.ToInt32((DateTime.UtcNow - DateTime.Now).TotalHours);
-
-                string fromDate = DateTime.Now.ToString(API.Data.HourInfo.DateFormat); ;
-                int fromHour = timeZoneOffset;
-
-                string toDate = DateTime.Now.AddDays(1).ToString(API.Data.HourInfo.DateFormat);
-                int toHour = 24 - timeZoneOffset;
-
-                if ((hourInfo.Date == fromDate && hourInfo.Hour >= fromHour) ||
-                    (hourInfo.Date == toDate && hourInfo.Hour <= toHour)) return true;
-                else return false;
+                DateTime hourTime = hourInfo.GetDateTime();
+                return hourTime >= from && hourTime <= to;
             }
         }
 
