@@ -3,6 +3,8 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+using MTConnect;
+using MTConnect.Application.Components;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,6 +21,7 @@ using TrakHound;
 using TrakHound.API;
 using TrakHound.API.Users;
 using TrakHound.Configurations;
+using TrakHound.Configurations.AutoGenerate;
 using TrakHound.Logging;
 using TrakHound.Tools;
 using TrakHound_Dashboard.Pages.DeviceManager.Controls;
@@ -106,24 +109,24 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
 
         #region "Dependency Properties"
 
-        public bool DevicesLoading
+        public bool Loading
         {
-            get { return (bool)GetValue(DevicesLoadingProperty); }
-            set { SetValue(DevicesLoadingProperty, value); }
+            get { return (bool)GetValue(LoadingProperty); }
+            set { SetValue(LoadingProperty, value); }
         }
 
-        public static readonly DependencyProperty DevicesLoadingProperty =
-            DependencyProperty.Register("DevicesLoading", typeof(bool), typeof(DeviceList), new PropertyMetadata(false));
+        public static readonly DependencyProperty LoadingProperty =
+            DependencyProperty.Register("Loading", typeof(bool), typeof(DeviceList), new PropertyMetadata(false));
 
 
-        public bool BackupLoading
+        public string LoadingStatus
         {
-            get { return (bool)GetValue(BackupLoadingProperty); }
-            set { SetValue(BackupLoadingProperty, value); }
+            get { return (string)GetValue(LoadingStatusProperty); }
+            set { SetValue(LoadingStatusProperty, value); }
         }
 
-        public static readonly DependencyProperty BackupLoadingProperty =
-            DependencyProperty.Register("BackupLoading", typeof(bool), typeof(DeviceList), new PropertyMetadata(false));
+        public static readonly DependencyProperty LoadingStatusProperty =
+            DependencyProperty.Register("LoadingStatus", typeof(string), typeof(DeviceList), new PropertyMetadata(null));
 
         #endregion
 
@@ -150,13 +153,14 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
             {
                 if (data.Id == "DEVICES_LOADING")
                 {
-                    DevicesLoading = true;
-                    ClearDevices();
+                    LoadingStatus = "Loading Devices..";
+                    Loading = true;
+                    Devices.Clear();
                 }
 
                 if (data.Id == "DEVICES_LOADED")
                 {
-                    DevicesLoading = false;
+                    Loading = false;
                 }
             }
         }
@@ -207,15 +211,6 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                     }
                 }
             }
-        }
-
-        private void ClearDevices()
-        {
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                Devices.Clear();
-            }
-            ), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { });
         }
 
         #endregion
@@ -830,7 +825,8 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
 
         private void BackupDevices(string[] uniqueIds)
         {
-            BackupLoading = true;
+            LoadingStatus = "Creating Backups..";
+            Loading = true;
 
             if (backupDeviceThread != null) backupDeviceThread.Abort();
 
@@ -882,7 +878,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                 }
             }
 
-            Dispatcher.BeginInvoke(new Action(() => { BackupLoading = false; }));
+            Dispatcher.BeginInvoke(new Action(() => { Loading = false; }));
         }
 
         private void BackupLocalDevices(object o)
@@ -927,11 +923,129 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                 }
             }
 
-            Dispatcher.BeginInvoke(new Action(() => { BackupLoading = false; }));
+            Dispatcher.BeginInvoke(new Action(() => { Loading = false; }));
         }
 
         #endregion
 
+        #region "Device Regenerate"
+
+        private class RegenerateDeviceInfo
+        {
+            public RegenerateDeviceInfo(DeviceDescription[] devices, UserConfiguration userConfig)
+            {
+                Devices = devices;
+                CurrentUser = userConfig;
+            }
+
+            public DeviceDescription[] Devices { get; set; }
+
+            public UserConfiguration CurrentUser { get; set; }
+        }
+
+        private void RegenerateDevice(DeviceDescription[] devices)
+        {
+            var dialogResult = TrakHound_UI.MessageBox.Show("Are you sure you want to Regenerate this Device? Regenerating may remove any customizations.", "Regenerate Device", MessageBoxButtons.YesNo);
+            if (dialogResult == MessageBoxDialogResult.Yes)
+            {
+                LoadingStatus = "Regenerating Device..";
+                Loading = true;
+
+                var info = new RegenerateDeviceInfo(devices, currentUser);
+
+                ThreadPool.QueueUserWorkItem(new WaitCallback(RegenerateDevice_Worker), info);
+            }
+        }
+
+        private void RegenerateDevice_Worker(object o)
+        {
+            var info = (RegenerateDeviceInfo)o;
+
+            bool success = false;
+
+            if (info != null && info.Devices != null)
+            {
+                foreach (var device in info.Devices)
+                {
+                    success = false;
+
+                    if (device.Description != null && device.Agent != null)
+                    {
+                        string url = HTTP.GetUrl(device.Agent.Address, device.Agent.Port, device.Agent.DeviceName) + "probe";
+
+                        var returnData = Requests.Get(url, 5000, 1);
+                        if (returnData != null)
+                        {
+                            var probeData = new Configuration.ProbeData();
+                            probeData.Address = device.Agent.Address;
+                            probeData.Port = device.Agent.Port.ToString();
+                            probeData.Device = returnData.Devices[0];
+
+                            // Generate New Configuration
+                            var config = Configuration.Create(probeData);
+
+                            // Preserve certain parameter from old configuration
+                            var table = config.ToTable();
+                            if (table != null)
+                            {
+                                DeviceConfiguration.EditTable(table, "/UniqueId", device.UniqueId);
+                                DeviceConfiguration.EditTable(table, "/Enabled", device.Enabled);
+                                DeviceConfiguration.EditTable(table, "/Index", device.Index);
+
+                                // Set Description
+                                DeviceConfiguration.EditTable(table, "/Description/Description", device.Description.Description);
+                                DeviceConfiguration.EditTable(table, "/Description/DeviceId", device.Description.DeviceId);
+                                DeviceConfiguration.EditTable(table, "/Description/DeviceType", device.Description.DeviceType);
+                                DeviceConfiguration.EditTable(table, "/Description/Manufacturer", device.Description.Manufacturer);
+                                DeviceConfiguration.EditTable(table, "/Description/Model", device.Description.Model);
+                                DeviceConfiguration.EditTable(table, "/Description/Serial", device.Description.Serial);
+                                DeviceConfiguration.EditTable(table, "/Description/Controller", device.Description.Controller);
+                                DeviceConfiguration.EditTable(table, "/Description/Location", device.Description.Location);
+                                DeviceConfiguration.EditTable(table, "/Description/ImageUrl", device.Description.ImageUrl);
+                                DeviceConfiguration.EditTable(table, "/Description/LogoUrl", device.Description.LogoUrl);
+
+                                // Convert DataTable back to DeviceConfiguration object
+                                //var xml = DeviceConfigurationConverter.TableToXML(table);
+                                var xml = DeviceConfiguration.TableToXml(table);
+                                if (xml != null)
+                                {
+                                    config = DeviceConfiguration.Read(xml);
+
+                                    // Add Device to user (or save to disk if local)
+                                    if (info.CurrentUser != null) success = TrakHound.API.Devices.Update(info.CurrentUser, config);
+                                    else success = DeviceConfiguration.Save(config);
+
+                                    if (success)
+                                    {
+                                        Dispatcher.BeginInvoke(new Action(() =>
+                                        {
+                                            // Send message that device was added
+                                            var data = new EventData(this);
+                                            data.Id = "DEVICE_UPDATED";
+                                            data.Data01 = new DeviceDescription(config);
+                                            SendData?.Invoke(data);
+
+                                        }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (!success) break;
+                }
+            }
+
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                Loading = false;
+
+                if (!success) TrakHound_UI.MessageBox.Show("Error during Regenerate Devices. Please Try Again.", "Regenerate Device Error", TrakHound_UI.MessageBoxButtons.Ok);
+
+            }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
+        }
+
+        #endregion
 
         #region "Button Actions"
 
@@ -990,6 +1104,23 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
             }
         }
 
+        private void RegenerateClicked()
+        {
+            var devices = new List<DeviceDescription>();
+
+            // Get a list of UniqueIds for each selected item in Devices DataTable
+            foreach (var item in Devices_DG.SelectedItems)
+            {
+                var device = (DeviceDescription)item;
+                devices.Add(device);
+            }
+
+            if (devices.Count > 0)
+            {
+                RegenerateDevice(devices.ToArray());
+            }
+        }
+
         #endregion
 
         #region "Datarow Buttons"
@@ -1031,6 +1162,8 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
         private void Remove_Toolbar_Clicked(TrakHound_UI.Button bt) { RemoveClicked(); }
 
         private void Backup_Toolbar_Clicked(TrakHound_UI.Button bt) { BackupClicked(); }
+
+        private void Regenerate_Toolbar_Clicked(TrakHound_UI.Button bt) { RegenerateClicked(); }
 
         #endregion
 
