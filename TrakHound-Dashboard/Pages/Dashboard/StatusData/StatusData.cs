@@ -210,14 +210,14 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusData
         {
             int interval = Math.Max(INTERVAL_MIN, Properties.Settings.Default.DatabaseReadInterval);
 
-            while (!updateStop.WaitOne(0, true))
+            do
             {
                 Update();
 
                 // Put thread to sleep for specified interval (Data Read Interval)
                 interval = Math.Max(INTERVAL_MIN, Properties.Settings.Default.DatabaseReadInterval);
-                Thread.Sleep(interval);
-            }
+
+            } while (!updateStop.WaitOne(interval, true));
         }
 
         private void Update()
