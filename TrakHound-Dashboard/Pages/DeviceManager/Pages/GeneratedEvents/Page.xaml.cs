@@ -3,6 +3,7 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+using MTConnect.Application.Components;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,14 +11,10 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 using TrakHound;
-using TrakHound.Tools;
-using MTConnect.Application.Components;
-using TrakHound.Plugins;
 using TrakHound.Plugins.Server;
+using TrakHound.Tools;
 
 namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.GeneratedEvents
 {
@@ -82,7 +79,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.GeneratedEvents
 
         public void SaveConfiguration(DataTable dt)
         {
-            string prefix = "/GeneratedData/GeneratedEvents/";
+            string prefix = "/GeneratedEvents/";
 
             // Clear all generated event rows first (so that Ids can be sequentially assigned)
             DataTable_Functions.TrakHound.DeleteRows(prefix + "*", "address", dt);
@@ -501,9 +498,10 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.GeneratedEvents
         {
             var result = new List<Event>();
 
-            string address = "/GeneratedData/GeneratedEvents/";
+            string address = "/GeneratedEvents/";
+            string oldAddress = "/GeneratedData/GeneratedEvents/";
 
-            string filter = "address LIKE '" + address + "*'";
+            string filter = "address LIKE '" + address + "*' OR address LIKE '" + oldAddress + "*'";
             DataView dv = dt.AsDataView();
             dv.RowFilter = filter;
             DataTable temp_dt = dv.ToTable();
