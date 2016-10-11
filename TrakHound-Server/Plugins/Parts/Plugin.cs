@@ -62,7 +62,7 @@ namespace TrakHound_Server.Plugins.Parts
 
                 foreach (var partCountEvent in pc.Events)
                 {
-                    var matchedItems = gEventItems.FindAll(x => x.EventName == partCountEvent.EventName);
+                    var matchedItems = gEventItems.FindAll(x => x.EventName == partCountEvent.EventName && x.CurrentValue != null && x.PreviousValue != null);
 
                     foreach (var gEvent in gEventItems)
                     {
