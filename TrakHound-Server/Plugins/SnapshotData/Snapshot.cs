@@ -57,27 +57,17 @@ namespace TrakHound_Server.Plugins.SnapshotData
         {
             public List<Snapshot> PreviousItems { get; set; }
             public ReturnData CurrentData { get; set; }
-            public InstanceData CurrentInstanceData { get; set; }
+            public Instance CurrentInstance { get; set; }
         }
 
         public static void Process(DeviceConfiguration config, ProcessInfo info)
         {
-            if (info.CurrentInstanceData != null)
+            if (info.CurrentInstance != null)
             {
                 var sdc = Configuration.Get(config);
                 if (sdc != null)
                 {
                     DataTable variables_DT = null;
-
-                    // Get Variables Table from MySQL (if any snapshots are set to "Variable")
-                    //if (sdc.Snapshots.FindAll(x => x.Type == SnapshotType.Variable).Count > 0)
-                    //{
-                    //    string tablename;
-                    //    if (config.DatabaseId != null) tablename = config.DatabaseId + "_" + Names.Variables;
-                    //    else tablename = Names.Variables;
-
-                    //    variables_DT = Table.Get(DataManagement.Database.Configuration, tablename);
-                    //}
 
                     foreach (var snapshot in sdc.Snapshots)
                     {
@@ -93,7 +83,7 @@ namespace TrakHound_Server.Plugins.SnapshotData
                                 var gec = GeneratedEvents.Configuration.Get(config);
                                 if (gec != null)
                                 {
-                                    ProcessGenerated(snapshot, gec, info.CurrentInstanceData, info.CurrentData);
+                                    ProcessGenerated(snapshot, gec, info.CurrentInstance, info.CurrentData);
                                 }
                                 
                                 break;
@@ -221,7 +211,7 @@ namespace TrakHound_Server.Plugins.SnapshotData
         }
 
 
-        private static void ProcessGenerated(Snapshot snapshot, GeneratedEvents.Configuration gec, InstanceData currentInstanceData, ReturnData currentData)
+        private static void ProcessGenerated(Snapshot snapshot, GeneratedEvents.Configuration gec, Instance currentInstanceData, ReturnData currentData)
         {
             var e = gec.Events.Find(x => x.Name.ToLower() == snapshot.Link.ToLower());
             if (e != null)

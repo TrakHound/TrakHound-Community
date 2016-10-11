@@ -34,18 +34,18 @@ namespace TrakHound_Server.Plugins.SnapshotData
         {
             if (data != null && data.Id != null && configuration != null)
             {
-                if (data.Id == "CURRENT_INSTANCE_DATA")
+                if (data.Id == "CURRENT_INSTANCE")
                 {
                     if (data.Data02 != null)
                     {
                         var sdc = Configuration.Get(configuration);
                         if (sdc != null)
                         {
-                            var currentInstanceData = (CurrentInstanceData)data.Data02;
+                            var currentInstance = (CurrentInstance)data.Data02;
 
                             var info = new Snapshot.ProcessInfo();
-                            info.CurrentData = currentInstanceData.CurrentData;
-                            info.CurrentInstanceData = currentInstanceData.Data;
+                            info.CurrentData = currentInstance.CurrentData;
+                            info.CurrentInstance = currentInstance.Instance;
 
                             Snapshot.Process(configuration, info);
 
