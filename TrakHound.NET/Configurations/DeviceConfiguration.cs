@@ -5,10 +5,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.IO;
-using System.Linq.Expressions;
+using System.Linq;
 using System.Reflection;
 using System.Xml;
 
@@ -19,10 +18,8 @@ using TrakHound.Tools;
 namespace TrakHound.Configurations
 {
 
-    public class DeviceConfiguration : IComparable, INotifyPropertyChanged
+    public class DeviceConfiguration : IComparable
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public DeviceConfiguration()
         {
             init();
@@ -67,16 +64,18 @@ namespace TrakHound.Configurations
         /// </summary>
         public int Index { get; set; }
 
-        public string FilePath { get; set; }
-
         #endregion
 
         #region "Methods"
+
+        #region "Static"
 
         public static string GenerateUniqueID()
         {
             return Guid.NewGuid().ToString("B");
         }
+
+        #region "Read"
 
         /// <summary>
         /// Reads an XML file to parse configuration information.
@@ -95,10 +94,6 @@ namespace TrakHound.Configurations
                     doc.Load(path);
 
                     result = Read(doc);
-
-                    string filename = Path.GetFileNameWithoutExtension(path);
-                    result.FilePath = filename;
-                    XML_Functions.SetInnerText(result.Xml, "/FilePath", result.FilePath);
 
                     if (result.UniqueId == null)
                     {
@@ -237,6 +232,9 @@ namespace TrakHound.Configurations
             return result;
         }
 
+        #endregion
+
+        #region "Save"
 
         public static bool Save(DeviceConfiguration config)
         {
@@ -252,16 +250,16 @@ namespace TrakHound.Configurations
             return result;
         }
 
-        public static bool Save(DataTable dt)
+        public static bool Save(DataTable table)
         {
-            return Save(dt, FileLocations.Devices);
+            return Save(table, FileLocations.Devices);
         }
 
-        public static bool Save(DataTable dt, string path)
+        public static bool Save(DataTable table, string path)
         {
             bool result = false;
 
-            XmlDocument xml = Converters.DeviceConfigurationConverter.TableToXML(dt);
+            XmlDocument xml = TableToXml(table);
 
             result = Save(xml, path);
 
@@ -281,13 +279,7 @@ namespace TrakHound.Configurations
             {
                 try
                 {
-                    string filePath = XML_Functions.GetInnerText(xml, "FilePath");
-
-                    if (filePath == null)
-                    {
-                        filePath = XML_Functions.GetInnerText(xml, "UniqueId");
-                        XML_Functions.SetInnerText(xml, "FilePath", filePath);
-                    }
+                    string filePath = XML_Functions.GetInnerText(xml, "UniqueId");
 
                     if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
@@ -296,6 +288,317 @@ namespace TrakHound.Configurations
                     result = true;
                 }
                 catch (Exception ex) { Logger.Log("Error during Configuration Xml Save : " + ex.Message, LogLineType.Warning); }
+            }
+
+            return result;
+        }
+
+        #endregion
+
+        #region "Edit"
+
+        public static void EditTable(DataTable table, string address, object value)
+        {
+            DataTable_Functions.UpdateTableValue(table, "address", address, "value", value == null ? string.Empty : value.ToString());
+        }
+
+        public static void EditTable(DataTable table, string address, object value, string attributes)
+        {
+            DataTable_Functions.UpdateTableValue(table, "address", address, "value", value == null ? string.Empty : value.ToString());
+            DataTable_Functions.UpdateTableValue(table, "address", address, "attributes", attributes);
+        }
+
+        #endregion
+
+        #region "Conversion"
+
+        #region "ToXml"
+
+        public static XmlDocument TableToXml(DataTable table)
+        {
+            var result = new XmlDocument();
+
+            // Insert XML Declaration
+            var xmlDeclaration = result.CreateXmlDeclaration("1.0", "UTF-8", null);
+            var root = result.DocumentElement;
+            result.InsertBefore(xmlDeclaration, root);
+
+            var configuration = result.CreateElement(string.Empty, "DeviceConfiguration", string.Empty);
+            result.AppendChild(configuration);
+
+            foreach (DataRow row in table.Rows)
+            {
+                XmlNode node = AddAddress(result, row["address"].ToString());
+                if (node != null)
+                {
+                    // Set Inner Text (Value) and prevent from adding closing tag by checking for ""
+                    if (row["value"] != null) if (row["Value"].ToString() != "") node.InnerText = row["value"].ToString();
+
+                    // Set Attributes
+                    if (row["attributes"] != null)
+                    {
+                        string[] attributes = row["attributes"].ToString().Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                        foreach (string attribute in attributes.ToList())
+                        {
+                            string[] split = attribute.Split(new string[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
+                            if (split.Length > 1)
+                            {
+                                string name = split[0];
+                                string val = split[1];
+
+                                XmlAttribute a = result.CreateAttribute(name);
+                                a.Value = val;
+                                node.Attributes.Append(a);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private static XmlNode AddAddress(XmlDocument doc, string address)
+        {
+            string[] nodes = address.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+
+            XmlNode parent = doc.DocumentElement;
+
+            string xpath = "/" + parent.Name;
+
+            for (int x = 0; x <= nodes.Length - 1; x++)
+            {
+                string node = nodes[x];
+
+                string node_id = "";
+
+                // Check for node with 'id' attribute, if so then use that in xpath expression
+                if (node.Contains("||"))
+                {
+                    int idIndex = node.IndexOf("||");
+
+                    node_id = @"[@id='" + node.Substring(idIndex + 2) + "']";
+                    node = node.Substring(0, idIndex);
+                }
+
+                xpath += "/" + node + node_id;
+
+                XmlNode child = parent.SelectSingleNode(xpath);
+
+                if (child == null)
+                {
+                    child = doc.CreateElement(node);
+                    parent.AppendChild(child);
+                }
+                // Make sure last node in address gets added (even though there may be another node with the same 'name')
+                else if (x == nodes.Length - 1)
+                {
+                    child = doc.CreateElement(node);
+                    parent.AppendChild(child);
+                }
+
+                parent = child;
+            }
+
+            return parent;
+        }
+
+        #endregion
+
+        private class TableConverter
+        {
+            private class TableInfo
+            {
+                public TableInfo() { attributes = new List<Attribute>(); }
+
+                public string address { get; set; }
+                public string name { get; set; }
+
+                public List<Attribute> attributes;
+
+                public string value { get; set; }
+            }
+
+            private class Attribute
+            {
+                public string name { get; set; }
+                public string value { get; set; }
+            }
+
+            public static DataTable Create(XmlNode xml)
+            {
+                var data = CreateData(xml);
+
+                return CreateTable(data);
+            }
+
+            private static List<TableInfo> CreateData(XmlNode xml)
+            {
+                var result = new List<TableInfo>();
+
+                foreach (XmlNode node in xml.ChildNodes)
+                {
+                    if (node.Name.ToLower() == "deviceconfiguration" && node.NodeType == XmlNodeType.Element)
+                    {
+                        foreach (XmlNode child in node.ChildNodes)
+                        {
+                            if (child.NodeType == XmlNodeType.Element)
+                            {
+                                GetData(child, result);
+                            }
+                        }
+                    }
+                }
+
+                return result;
+            }
+
+            private static DataTable CreateTable(List<TableInfo> infos)
+            {
+                var result = new DataTable();
+
+                // Add Columns based on properties of TableInfo class
+                foreach (var col in CreateColumns())
+                {
+                    result.Columns.Add(col);
+                }
+
+                if (result.Columns.Contains("address")) result.PrimaryKey = new DataColumn[] { result.Columns["address"] };
+
+                // Add Rows
+                foreach (var info in infos)
+                {
+                    DataRow row = result.NewRow();
+
+                    foreach (var i in typeof(TableInfo).GetProperties())
+                    {
+                        if (row.Table.Columns.Contains(i.Name)) row[i.Name] = i.GetValue(info, null);
+                    }
+
+                    // Add Xml Attributes
+                    string attVal = "";
+                    foreach (var a in info.attributes) attVal += a.name + "||" + a.value + ";";
+                    if (row.Table.Columns.Contains("attributes")) row["attributes"] = attVal;
+
+                    result.Rows.Add(row);
+                }
+
+                return result;
+            }
+
+            private static List<DataColumn> CreateColumns()
+            {
+                var result = new List<DataColumn>();
+
+                foreach (var info in typeof(TableInfo).GetProperties())
+                {
+                    var col = new DataColumn();
+                    col.ColumnName = info.Name;
+                    col.DataType = info.PropertyType;
+
+                    result.Add(col);
+                }
+
+                // Add Column for Xml Attributes
+                var attCol = new DataColumn();
+                attCol.ColumnName = "attributes";
+                result.Add(attCol);
+
+                return result;
+            }
+
+            private static void GetData(XmlNode node, List<TableInfo> infos)
+            {
+                if (!HasChildren(node) || HasAttributes(node))
+                {
+                    TableInfo info = new TableInfo();
+                    info.name = node.Name;
+                    info.address = GetFullAddress(node);
+                    if (!HasChildren(node)) info.value = node.InnerText;
+
+                    foreach (XmlAttribute att in node.Attributes)
+                    {
+                        Attribute a = new Attribute();
+                        a.name = att.Name;
+                        a.value = att.Value;
+                        info.attributes.Add(a);
+                    }
+
+                    infos.Add(info);
+                }
+
+                foreach (XmlNode child in node.ChildNodes)
+                {
+                    if (child.NodeType == XmlNodeType.Element) GetData(child, infos);
+                }
+            }
+
+            private static bool HasChildren(XmlNode node)
+            {
+                bool result = false;
+
+                foreach (XmlNode child in node.ChildNodes)
+                {
+                    if (child.NodeType == XmlNodeType.Element)
+                    {
+                        result = true;
+                        break;
+                    }
+                }
+
+                return result;
+            }
+
+            private static bool HasAttributes(XmlNode node)
+            {
+                if (node.Attributes.Count == 0) return false;
+                return true;
+            }
+
+            private static string GetFullAddress(XmlNode Node)
+            {
+                string Result = "";
+                XmlNode node = Node;
+
+                do
+                {
+                    if (node.Attributes["id"] != null) Result = node.Name + "||" + node.Attributes["id"].Value + "/" + Result;
+                    else Result = node.Name + "/" + Result;
+
+                    node = node.ParentNode;
+
+                    if (node == null) break;
+
+                } while (node.Name != "DeviceConfiguration");
+
+                if (Result.Length > 0)
+                {
+                    if (Result[0] != Convert.ToChar("/")) Result = "/" + Result;
+                    if (Result.Length > 1)
+                    {
+                        if (Result[Result.Length - 1] == Convert.ToChar("/")) Result = Result.Remove(Result.Length - 1);
+                    }
+                }
+
+                return Result;
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        public DataTable ToTable()
+        {
+            DataTable result = null;
+
+            try
+            {
+                result = TableConverter.Create(Xml);
+            }
+            catch (Exception ex)
+            {
+                Logger.Log("DeviceConfiguration.ToTable() :: Exception :: " + ex.Message, LogLineType.Warning);
             }
 
             return result;
@@ -402,43 +705,6 @@ namespace TrakHound.Configurations
 
         #endregion
 
-    }
-    
-    public static class Extensions
-    {
-        public static bool ChangeAndNotify<T>(this PropertyChangedEventHandler handler,
-             ref T field, T value, Expression<Func<T>> memberExpression)
-        {
-            if (memberExpression == null)
-            {
-                throw new ArgumentNullException("memberExpression");
-            }
-            var body = memberExpression.Body as MemberExpression;
-            if (body == null)
-            {
-                throw new ArgumentException("Lambda must return a property.");
-            }
-            if (EqualityComparer<T>.Default.Equals(field, value))
-            {
-                return false;
-            }
-
-            var vmExpression = body.Expression as ConstantExpression;
-            if (vmExpression != null)
-            {
-                LambdaExpression lambda = Expression.Lambda(vmExpression);
-                Delegate vmFunc = lambda.Compile();
-                object sender = vmFunc.DynamicInvoke();
-
-                if (handler != null)
-                {
-                    handler(sender, new PropertyChangedEventArgs(body.Member.Name));
-                }
-            }
-
-            field = value;
-            return true;
-        }
     }
 
 }
