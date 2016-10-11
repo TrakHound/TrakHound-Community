@@ -3,42 +3,89 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using TrakHound;
 using TrakHound.Configurations;
-using TrakHound.Plugins;
 using TrakHound.Plugins.Server;
-using TrakHound_Server.Plugins.Cycles;
+using TrakHound_Server.Plugins.GeneratedEvents;
+using TrakHound_Server.Plugins.Overrides;
 
 namespace TrakHound_Server.Plugins.OEE
 {
     public class Plugin : IServerPlugin
     {
+        private List<OverrideInstance> overrideInstancesQueue = new List<OverrideInstance>();
+        private List<GeneratedEvent> gEventsQueue = new List<GeneratedEvent>();
+
+        private object _lock = new object();
+
+        private DeviceConfiguration configuration { get; set; }
 
         public string Name { get { return "OEE"; } }
 
         public void Initialize(DeviceConfiguration config)
         {
-            configuration = config;
+            var oc = Configuration.Read(config.Xml);
+            if (oc != null)
+            {
+                config.CustomClasses.Add(oc);
+                configuration = config;
+            }
         }
 
         public void GetSentData(EventData data)
         {
             if (data != null)
             {
-                if (data.Id == "CYCLES")
-                {
-                    if (data.Data02.GetType() == typeof(List<CycleData>))
-                    {
-                        var cycles = (List<CycleData>)data.Data02;
+                bool found = false;
 
-                        var oeeDatas = Process(cycles);
-                        if (oeeDatas.Count > 0)
+                if (data.Id == "OVERRIDE_INSTANCES")
+                {
+                    if (data.Data02.GetType() == typeof(List<OverrideInstance>))
+                    {
+                        var instances = (List<OverrideInstance>)data.Data02;
+                        if (instances != null)
                         {
-                            SendOeeData(oeeDatas);
+                            lock (_lock)
+                            {
+                                overrideInstancesQueue.AddRange(instances);
+                            }
+                            found = true;
                         }
+                    }
+                }
+
+                if (data.Id == "GENERATED_EVENTS")
+                {
+                    if (data.Data02.GetType() == typeof(List<GeneratedEvent>))
+                    {
+                        var gEvents = (List<GeneratedEvent>)data.Data02;
+                        if (gEvents != null)
+                        {
+                            var oc = Configuration.Get(configuration);
+                            if (oc != null)
+                            {
+                                var operatingEvents = gEvents.FindAll(o => o.EventName == oc.OperatingEventName);
+                                if (operatingEvents != null)
+                                {
+                                    lock (_lock)
+                                    {
+                                        gEventsQueue.AddRange(operatingEvents);
+                                    }
+                                    found = true;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (found)
+                {
+                    lock (_lock)
+                    {
+                        ProcessQueue();
                     }
                 }
             }
@@ -50,39 +97,69 @@ namespace TrakHound_Server.Plugins.OEE
 
         public void Closing() { }
 
-        DeviceConfiguration configuration { get; set; }
-
-        private List<OEEData> Process(List<CycleData> cycles)
+        private void ProcessQueue()
         {
-            var result = new List<OEEData>();
+            // Find intersecting Sequences in queues
+            var gEventSequences = gEventsQueue.Select(o => o.CurrentValue.Sequence);
+            var overrideSequences = overrideInstancesQueue.Select(o => o.Sequence);
 
-            foreach (var cycle in cycles)
+            var oc = Configuration.Get(configuration);
+            if (oc != null)
             {
-                // Check if cycle spans two or more hours
-                if (cycle.Start.Hour != cycle.Stop.Hour)
-                {
-                    var hourStart = cycle.Start;
+                bool useOverrides = oc.Overrides.Count > 0;
 
-                    while (hourStart < cycle.Stop)
+                List<long> sequences = null;
+
+                if (useOverrides) sequences = gEventSequences.Intersect(overrideSequences).ToList();
+                else sequences = gEventSequences.ToList();
+
+                if (sequences != null)
+                {
+                    // Create list of OeeData objects
+                    var oeeDatas = new List<OEEData>();
+
+                    foreach (var sequence in sequences)
                     {
-                        var hourPlus = hourStart.AddHours(1);
-                        var hourEnd = new DateTime(hourPlus.Year, hourPlus.Month, hourPlus.Day, hourPlus.Hour, 0, 0);
-                        if (hourEnd > cycle.Stop) hourEnd = cycle.Stop;
+                        // Find Sequence in queue lists
+                        var gEvent = gEventsQueue.Find(o => o.CurrentValue.Sequence == sequence);
+                        var overrideInstance = overrideInstancesQueue.Find(o => o.Sequence == sequence);
 
-                        var oeeData = new OEEData(cycle, hourStart, hourEnd);
-                        result.Add(oeeData);
+                        if (gEvent != null && (overrideInstance != null || !useOverrides))
+                        {
+                            // Create new OeeData object
+                            var oeeData = new OEEData();
+                            oeeData.Timestamp = gEvent.CurrentValue.Timestamp;
+                            oeeData.Sequence = gEvent.CurrentValue.Sequence;
 
-                        hourStart = hourEnd;
+                            double duration = gEvent.Duration.TotalSeconds;
+
+                            // Set Planned Production Time to entire duration
+                            oeeData.PlannedProductionTime = duration;
+
+                            // Test if Event's Value is equal to OEE's configured value
+                            if (gEvent.CurrentValue.Value == oc.OperatingEventValue)
+                            {
+                                // Set Operating Time to entire duration
+                                oeeData.OperatingTime = duration;
+
+                                // Set Ideal OperatingTime to adjusted duration using Feedrate Overrdie average
+                                if (useOverrides) oeeData.IdealOperatingTime = duration * (overrideInstance.FeedrateAverage / 100);
+                                else oeeData.IdealOperatingTime = duration;
+                            }
+
+                            // Add to list
+                            oeeDatas.Add(oeeData);
+                        }
+
+                        // Remove processed items from queue
+                        gEventsQueue.RemoveAll(o => o.CurrentValue.Sequence == sequence);
+                        overrideInstancesQueue.RemoveAll(o => o.Sequence == sequence);
                     }
-                }
-                else
-                {
-                    var oeeData = new OEEData(cycle);
-                    result.Add(oeeData);
+
+                    // Send OeeData objects
+                    if (oeeDatas.Count > 0) SendOeeData(oeeDatas);
                 }
             }
-
-            return result;
         }
 
         private void SendOeeData(List<OEEData> oeeDatas)
@@ -91,8 +168,8 @@ namespace TrakHound_Server.Plugins.OEE
             data.Id = "OEE";
             data.Data01 = configuration;
             data.Data02 = oeeDatas;
-            if (SendData != null) SendData(data);
+            SendData?.Invoke(data);
         }
     }
-    
+
 }
