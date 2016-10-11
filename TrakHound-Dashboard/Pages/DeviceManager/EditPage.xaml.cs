@@ -20,7 +20,6 @@ using TrakHound;
 using TrakHound.API;
 using TrakHound.API.Users;
 using TrakHound.Configurations;
-using TrakHound.Configurations.Converters;
 using TrakHound.Logging;
 using TrakHound.Plugins;
 using TrakHound.Plugins.Server;
@@ -143,8 +142,8 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
 
             if (Configuration != null)
             {
-                DataTable dt = DeviceConfigurationConverter.XMLToTable(Configuration.Xml);
-                Save(dt);
+                DataTable table = Configuration.ToTable();
+                Save(table);
             }
         }
 
@@ -253,7 +252,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                 if (config != null)
                 {
                     Configuration = config;
-                    ConfigurationTable = DeviceConfigurationConverter.XMLToTable(config.Xml);
+                    ConfigurationTable = config.ToTable();
 
                     // Reload Pages with new Device Configuration
                     Dispatcher.BeginInvoke(new Action(RestorePages), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
@@ -282,7 +281,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                     if (config != null)
                     {
                         Configuration = config;
-                        ConfigurationTable = DeviceConfigurationConverter.XMLToTable(config.Xml);
+                        ConfigurationTable = config.ToTable();
 
                         // Reload Pages with new Device Configuration
                         Dispatcher.BeginInvoke(new Action(RestorePages), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
@@ -389,7 +388,8 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
 
             ConfigurationTable = dt.Copy();
 
-            XmlDocument xml = DeviceConfigurationConverter.TableToXML(dt);
+            //XmlDocument xml = DeviceConfigurationConverter.TableToXML(dt);
+            XmlDocument xml = DeviceConfiguration.TableToXml(dt);
             if (xml != null)
             {
                 Configuration = DeviceConfiguration.Read(xml);
