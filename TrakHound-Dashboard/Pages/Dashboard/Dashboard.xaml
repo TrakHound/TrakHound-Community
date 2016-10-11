@@ -61,7 +61,7 @@
                     </Grid.RowDefinitions>
 
                     <!--Collapse/Expand Image-->
-                    <Rectangle Width="25" Height="25" Margin="10,5" RenderTransformOrigin="0.5, 0.5" Cursor="Hand" MouseDown="Expand_MouseDown" HorizontalAlignment="Left" ToolTip="Expand Page List (Show Page Titles)" OpacityMask="{StaticResource Expand_IMG}" Style="{StaticResource RotatingButton}">
+                    <Rectangle Width="25" Height="25" Margin="10,6" RenderTransformOrigin="0.5, 0.5" Cursor="Hand" MouseDown="Expand_MouseDown" HorizontalAlignment="Left" ToolTip="Expand Page List (Show Page Titles)" OpacityMask="{StaticResource Expand_IMG}" Style="{StaticResource RotatingButton}">
                         <Rectangle.RenderTransform>
                             <RotateTransform/>
                         </Rectangle.RenderTransform>
@@ -302,11 +302,7 @@
                         </ui:Button.Style>
                     </ui:Button>
 
-                    <Rectangle Width="1" Fill="#aaa" Margin="5,2"/>
-
                 </StackPanel>
-
-                <Rectangle Grid.Column="2" Width="1" Fill="#aaa" Margin="5,2,0,2"/>
 
                 <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="20,0">
 

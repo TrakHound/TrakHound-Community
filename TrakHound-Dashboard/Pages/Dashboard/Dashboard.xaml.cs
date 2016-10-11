@@ -238,12 +238,12 @@ namespace TrakHound_Dashboard.Pages.Dashboard
             timespanUpdateTimer.Elapsed += TimespanUpdateTimer_Elapsed;
             timespanUpdateTimer.Enabled = true;
 
-            LoadDashboardTimespan();
+            //LoadDashboardTimespan();
         }
 
         private void TimespanUpdateTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            Dispatcher.BeginInvoke(new Action(LoadDashboardTimespan), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
+            Dispatcher.BeginInvoke(new Action(UpdateDashboardTimespan), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
         }
 
         public void Initialize()
@@ -260,37 +260,73 @@ namespace TrakHound_Dashboard.Pages.Dashboard
                 }
             }
 
-            SaveDashboardTimespan();
-            SendDashboardTimespan();
+            LoadDashboardTimespan();
         }
 
-        private void LoadDashboardTimespan()
+        private void UpdateDashboardTimespan()
         {
-            // Load Time List
+            // Load Current Day Start and Day End
             var d = DateTime.Now;
-            var from = new DateTime(d.Year, d.Month, d.Day, 0, 0, 0, DateTimeKind.Local);
-            var to = from.AddDays(1);
+            var dayStart = new DateTime(d.Year, d.Month, d.Day, 0, 0, 0, DateTimeKind.Local);
+            var dayEnd = dayStart.AddDays(1);
 
-            for (var x = 0; x <= 24; x++) DateTimes.Add(from.AddHours(x));
+            DateTime from = DateTime.MinValue;
+            DateTime to = DateTime.MinValue;
 
-            DateTime pFrom = From;
-            DateTime pTo = To;
+            // Set From
+            if (From > dayStart) from = From;
+            else from = dayStart;
 
-            DateTime savedFrom = DateTime.MinValue;
-            if (DateTime.TryParse(Properties.Settings.Default.SavedStatusFromTime, out savedFrom) && savedFrom > from) From = savedFrom;
-            else From = from;
+            // Set To
+            if (To > dayStart && To < dayEnd) to = To;
+            else to = dayEnd;
 
-            DateTime savedTo = DateTime.MinValue;
-            if (DateTime.TryParse(Properties.Settings.Default.SavedStatusToTime, out savedTo) && savedTo > from && savedTo < to) To = savedTo;
-            else To = to;
-
-            if (pFrom != From || pTo != To)
+            //Update Timespan
+            if (From != from || To != to)
             {
+                DateTimes.Clear();
+                for (var x = 0; x <= 24; x++) DateTimes.Add(dayStart.AddHours(x));
+
+                From = from;
+                To = to;
+
                 SaveDashboardTimespan();
                 SendDashboardTimespan();
             }
         }
 
+        private void LoadDashboardTimespan()
+        {
+            // Load Current Day Start and Day End
+            var d = DateTime.Now;
+            var dayStart = new DateTime(d.Year, d.Month, d.Day, 0, 0, 0, DateTimeKind.Local);
+            var dayEnd = dayStart.AddDays(1);
+
+            DateTimes.Clear();
+            for (var x = 0; x <= 24; x++) DateTimes.Add(dayStart.AddHours(x));
+
+            // Load From Setting
+            string fromSetting = Properties.Settings.Default.SavedStatusFromTime;
+            DateTime savedFrom = DateTime.MinValue;
+            DateTime.TryParse(fromSetting, out savedFrom);
+
+            // Load To Setting
+            string toSetting = Properties.Settings.Default.SavedStatusToTime;
+            DateTime savedTo = DateTime.MinValue;
+            DateTime.TryParse(toSetting, out savedTo);
+
+            // Set From
+            if (savedFrom > dayStart) From = savedFrom;
+            else From = dayStart;
+
+            // Set To
+            if (savedTo > dayStart && savedTo < dayEnd) To = savedTo;
+            else To = dayEnd;
+
+            SaveDashboardTimespan();
+            SendDashboardTimespan();
+        }
+        
         internal void SendDashboardTimespan()
         {
             SendDashboardTimespan(From, To);
@@ -734,22 +770,22 @@ namespace TrakHound_Dashboard.Pages.Dashboard
 
         private void From_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //var combo = (ComboBox)sender;
-            //if (combo.IsKeyboardFocused || combo.IsMouseCaptured)
-            //{
-            //    SaveDashboardFromTime();
-            //    SendDashboardTimespan();
-            //}
+            var combo = (ComboBox)sender;
+            if (combo.IsKeyboardFocused || combo.IsMouseCaptured)
+            {
+                SaveDashboardFromTime();
+                SendDashboardTimespan();
+            }
         }
 
         private void To_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //var combo = (ComboBox)sender;
-            //if (combo.IsKeyboardFocused || combo.IsMouseCaptured)
-            //{
-            //    SaveDashboardToTime();
-            //    SendDashboardTimespan();
-            //}
+            var combo = (ComboBox)sender;
+            if (combo.IsKeyboardFocused || combo.IsMouseCaptured)
+            {
+                SaveDashboardToTime();
+                SendDashboardTimespan();
+            }
         }
     }
 }
