@@ -615,22 +615,22 @@
 
                             <TextBlock Text="Device Type" FontSize="10" Margin="0,5,0,2"/>
                             <Viewbox>
-                                <TextBlock Text="{Binding DeviceType}"/>
+                                <TextBlock Text="{Binding Device.Description.DeviceType}"/>
                             </Viewbox>
 
                             <TextBlock Text="Serial" FontSize="10" Margin="0,5,0,2"/>
                             <Viewbox>
-                                <TextBlock Text="{Binding Serial}"/>
+                                <TextBlock Text="{Binding Device.Description.Serial}"/>
                             </Viewbox>
 
                             <TextBlock Text="Controller" FontSize="10" Margin="0,5,0,2"/>
                             <Viewbox>
-                                <TextBlock Text="{Binding Controller}"/>
+                                <TextBlock Text="{Binding Device.Description.Controller}"/>
                             </Viewbox>
 
                             <TextBlock Text="Location" FontSize="10" Margin="0,5,0,2"/>
                             <Viewbox>
-                                <TextBlock Text="{Binding Location}"/>
+                                <TextBlock Text="{Binding Device.Description.Location}"/>
                             </Viewbox>
 
                         </StackPanel>
