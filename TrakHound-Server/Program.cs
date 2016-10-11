@@ -77,9 +77,7 @@ namespace TrakHound_Server
             catch (Exception ex)
             {
                 Console.WriteLine("TrakHound Server Error :: Restarting Server in 5 Seconds..");
-            }
-            finally
-            {
+
                 System.Threading.Thread.Sleep(5000);
 
                 Init(args);
@@ -142,7 +140,7 @@ namespace TrakHound_Server
         {
             while (true) // Loop indefinitely
             {
-                Console.WriteLine("Enter input:"); // Prompt
+                Console.WriteLine(">"); // Prompt
                 string line = Console.ReadLine(); // Get string from user
                 switch (line)
                 {
