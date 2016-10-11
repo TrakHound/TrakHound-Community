@@ -5,11 +5,11 @@
 
 using System;
 
-using TrakHound.Tools;
 using TrakHound_Server.Plugins.GeneratedEvents;
 
 namespace TrakHound_Server.Plugins.Parts
 {
+
     public class PartInfo
     {
         public string Id { get; set; }
@@ -21,31 +21,49 @@ namespace TrakHound_Server.Plugins.Parts
         public int Count { get; set; }
 
 
-        public static PartInfo Get(PartCountEvent partCountEvent, GeneratedEvent genEvent, long lastSequence)
+        public static PartInfo Process(PartCountEvent partCountEvent, GeneratedEvent gEvent, long _lastSequence)
         {
-            if (genEvent.EventName == partCountEvent.EventName && genEvent.CurrentValue != null &&
-                genEvent.CurrentValue.Value == String_Functions.UppercaseFirst(partCountEvent.EventValue.Replace('_', ' ')))
+            if (partCountEvent.ValueType == ValueType.CAPTURE_ITEM)
+            {
+                return ProcessCaptureItemMethod(partCountEvent, gEvent, _lastSequence);
+            }
+            else if (partCountEvent.ValueType == ValueType.STATIC_INCREMENT)
+            {
+                return ProcessStaticIncrementMethod(partCountEvent, gEvent, _lastSequence);
+            }
+
+            return null;
+        }
+
+        private static PartInfo ProcessCaptureItemMethod(PartCountEvent partCountEvent, GeneratedEvent gEvent, long _lastSequence)
+        {
+            long sequence = gEvent.CurrentValue.Sequence;
+
+            if (sequence > _lastSequence)
             {
                 if (!string.IsNullOrEmpty(partCountEvent.CaptureItemLink))
                 {
-                    var captureItem = genEvent.CaptureItems.Find(x => x.Name == partCountEvent.CaptureItemLink);
-                    if (captureItem != null && captureItem.Sequence > lastSequence)
+                    var captureItem = gEvent.CaptureItems.Find(x => x.Name == partCountEvent.CaptureItemLink);
+                    if (captureItem != null && captureItem.Sequence > _lastSequence)
                     {
                         int count = 0;
-                        if (int.TryParse(captureItem.Value, out count))
+                        int.TryParse(captureItem.Value, out count);
+                        if (count > 0)
                         {
-                            DateTime timestamp = genEvent.CurrentValue.Timestamp;
+                            DateTime timestamp = gEvent.CurrentValue.Timestamp;
 
+                            // Create new PartInfo object
                             var info = new PartInfo();
                             info.Id = Guid.NewGuid().ToString();
                             info.Timestamp = timestamp;
                             info.Sequence = captureItem.Sequence;
 
-                            if (partCountEvent.CalculationType == CalculationType.Incremental)
+                            // Calculate Increment Value based on CalculationType
+                            if (partCountEvent.CalculationType == CalculationType.INCREMENTAL)
                             {
                                 info.Count = count;
                             }
-                            else if (partCountEvent.CalculationType == CalculationType.Total)
+                            else if (partCountEvent.CalculationType == CalculationType.TOTAL)
                             {
                                 int previousCount = 0;
                                 int.TryParse(captureItem.PreviousValue, out previousCount);
@@ -64,12 +82,20 @@ namespace TrakHound_Server.Plugins.Parts
 
             return null;
         }
-        
-        public class SequenceInfo
-        {
-            public string UniqueId { get; set; }
 
-            public long Sequence { get; set; }
+        private static PartInfo ProcessStaticIncrementMethod(PartCountEvent partCountEvent, GeneratedEvent gEvent, long _lastSequence)
+        {
+            long sequence = gEvent.CurrentValue.ChangedSequence;
+
+            // Create new PartInfo object
+            var info = new PartInfo();
+            info.Id = Guid.NewGuid().ToString();
+            info.Timestamp = gEvent.CurrentValue.Timestamp;
+            info.Sequence = sequence;
+
+            info.Count = partCountEvent.StaticIncrementValue;
+
+            return info;
         }
     }
 }

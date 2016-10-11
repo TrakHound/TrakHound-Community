@@ -17,12 +17,18 @@ namespace TrakHound_Server.Plugins.Parts
         /// <summary>
         /// Incrementally increased as each event is added to the total
         /// </summary>
-        Incremental,
+        INCREMENTAL,
 
         /// <summary>
         /// Event carries total value
         /// </summary>
-        Total,
+        TOTAL,
+    }
+
+    public enum ValueType
+    {
+        CAPTURE_ITEM,
+        STATIC_INCREMENT
     }
 
     public class Configuration
@@ -61,12 +67,20 @@ namespace TrakHound_Server.Plugins.Parts
                                 {
                                     if (eventChild.NodeType == XmlNodeType.Element)
                                     {
-                                        if (eventChild.Name.ToLower() == "calculationtype") // Deprecated
+                                        if (eventChild.Name.ToLower() == "calculationtype")
                                         {
                                             switch (eventChild.InnerText.ToLower())
                                             {
-                                                case "incremental": partCountEvent.CalculationType = CalculationType.Incremental; break;
-                                                case "total": partCountEvent.CalculationType = CalculationType.Total; break;
+                                                case "incremental": partCountEvent.CalculationType = CalculationType.INCREMENTAL; break;
+                                                case "total": partCountEvent.CalculationType = CalculationType.TOTAL; break;
+                                            }
+                                        }
+                                        else if (eventChild.Name.ToLower() == "valuetype")
+                                        {
+                                            switch (eventChild.InnerText.ToLower())
+                                            {
+                                                case "capture_item": partCountEvent.ValueType = ValueType.CAPTURE_ITEM; break;
+                                                case "static_increment": partCountEvent.ValueType = ValueType.STATIC_INCREMENT; break;
                                             }
                                         }
                                         else
@@ -93,8 +107,8 @@ namespace TrakHound_Server.Plugins.Parts
                                 {
                                     switch (child.InnerText.ToLower())
                                     {
-                                        case "incremental": oldConfig.CalculationType = CalculationType.Incremental; break;
-                                        case "total": oldConfig.CalculationType = CalculationType.Total; break;
+                                        case "incremental": oldConfig.CalculationType = CalculationType.INCREMENTAL; break;
+                                        case "total": oldConfig.CalculationType = CalculationType.TOTAL; break;
                                     }
                                 }
                                 else // Deprecated
@@ -161,8 +175,16 @@ namespace TrakHound_Server.Plugins.Parts
 
         public string EventValue { get; set; }
 
-        public string CaptureItemLink { get; set; }
+        public string PreviousEventValue { get; set; }
+
+
+        public ValueType ValueType { get; set; }
 
         public CalculationType CalculationType { get; set; }
+
+
+        public string CaptureItemLink { get; set; }
+
+        public int StaticIncrementValue { get; set; }
     }
 }

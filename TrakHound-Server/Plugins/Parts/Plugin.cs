@@ -3,13 +3,13 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 using TrakHound;
 using TrakHound.Configurations;
 using TrakHound.Plugins.Server;
+using TrakHound.Tools;
 using TrakHound.Tools.Web;
 using TrakHound_Server.Plugins.GeneratedEvents;
 
@@ -17,6 +17,8 @@ namespace TrakHound_Server.Plugins.Parts
 {
     public class Plugin : IServerPlugin
     {
+        private object _lock = new object();
+
         private long lastSequence = 0;
 
         private DeviceConfiguration configuration;
@@ -32,7 +34,6 @@ namespace TrakHound_Server.Plugins.Parts
                 config.CustomClasses.Add(pc);
 
                 configuration = config;
-
                 lastSequence = LoadStoredSequence();
             }
         }
@@ -41,53 +42,78 @@ namespace TrakHound_Server.Plugins.Parts
         {
             if (data != null)
             {
-                if (data.Id == "MTCONNECT_AGENT_RESET")
-                {
-                    lastSequence = 0;
-                }
+                if (data.Id == "MTCONNECT_AGENT_RESET") { lastSequence = 0; }
 
-                if (data.Id == "GENERATED_EVENTS")
-                {
-                    var genEventItems = (List<GeneratedEvent>)data.Data02;
-                    genEventItems = genEventItems.OrderBy(o => o.CurrentValue.Timestamp).ToList();
+                if (data.Id == "GENERATED_EVENTS") { ProcessGeneratedEvents(data); }
+            }
+        }
 
-                    var pc = Configuration.Get(configuration);
-                    if (pc != null)
+        private void ProcessGeneratedEvents(EventData data)
+        {
+            var gEventItems = (List<GeneratedEvent>)data.Data02;
+            gEventItems = gEventItems.OrderBy(o => o.CurrentValue.Timestamp).ToList();
+
+            var pc = Configuration.Get(configuration);
+            if (pc != null)
+            {
+                var infos = new List<PartInfo>();
+
+                PartInfo saveInfo = null;
+
+                foreach (var partCountEvent in pc.Events)
+                {
+                    var matchedItems = gEventItems.FindAll(x => x.EventName == partCountEvent.EventName);
+
+                    foreach (var gEvent in gEventItems)
                     {
-                        var infos = new List<PartInfo>();
-
-                        PartInfo saveInfo = null;
-
-                        foreach (var partCountEvent in pc.Events)
+                        // Test if current event value matches configured EventName
+                        if (gEvent.CurrentValue != null && gEvent.CurrentValue.Value == String_Functions.UppercaseFirst(partCountEvent.EventValue.Replace('_', ' ')))
                         {
-                            var matchedItems = genEventItems.FindAll(x => x.EventName == partCountEvent.EventName);
+                            bool match = true;
 
-                            foreach (var item in genEventItems)
+                            // Test if previous event value matches configured PreviousEventName
+                            if (!string.IsNullOrEmpty(partCountEvent.PreviousEventValue))
                             {
-                                PartInfo info = PartInfo.Get(partCountEvent, item, lastSequence);
-                                if (info != null && info.Count > 0)
-                                {
-                                    infos.Add(info);
-                                    if (saveInfo == null || saveInfo.Sequence < info.Sequence) saveInfo = info;
+                                match = gEvent.PreviousValue.Value == String_Functions.UppercaseFirst(partCountEvent.PreviousEventValue.Replace('_', ' '));
+                            }
 
-                                    Console.WriteLine(configuration.UniqueId + " :: " + item.EventName + " = " + info.Count);
+                            if (match)
+                            {
+                                lock (_lock)
+                                {
+                                    var partInfo = PartInfo.Process(partCountEvent, gEvent, lastSequence);
+                                    if (partInfo != null)
+                                    {
+                                        infos.Add(partInfo);
+
+                                        saveInfo = partInfo;
+                                        lastSequence = partInfo.Sequence;
+                                    }
                                 }
                             }
                         }
+                    }
 
-                        if (saveInfo != null)
-                        {
-                            lastSequence = saveInfo.Sequence;
-                            SaveStoredSequence(saveInfo);
-                        }
+                    if (saveInfo != null)
+                    {
+                        lock (_lock) lastSequence = saveInfo.Sequence;
+                        SaveStoredSequence(saveInfo);
+                    }
 
-                        if (infos.Count > 0)
-                        {
-                            SendPartInfos(infos);
-                        }
+                    if (infos.Count > 0)
+                    {
+                        SendPartInfos(infos);
                     }
                 }
             }
+        }
+
+
+        public class SequenceInfo
+        {
+            public string UniqueId { get; set; }
+
+            public long Sequence { get; set; }
         }
 
         private void SaveStoredSequence(PartInfo info)
@@ -95,13 +121,13 @@ namespace TrakHound_Server.Plugins.Parts
             string json = Properties.Settings.Default.PartsStoredSequences;
             if (!string.IsNullOrEmpty(json))
             {
-                var sequenceInfos = JSON.ToType<List<PartInfo.SequenceInfo>>(json);
+                var sequenceInfos = JSON.ToType<List<SequenceInfo>>(json);
                 if (sequenceInfos != null)
                 {
                     int i = sequenceInfos.FindIndex(o => o.UniqueId == configuration.UniqueId);
                     if (i < 0)
                     {
-                        var sequenceInfo = new PartInfo.SequenceInfo();
+                        var sequenceInfo = new SequenceInfo();
                         sequenceInfo.UniqueId = configuration.UniqueId;
                         sequenceInfos.Add(sequenceInfo);
                         i = sequenceInfos.FindIndex(o => o.UniqueId == configuration.UniqueId);
@@ -109,20 +135,20 @@ namespace TrakHound_Server.Plugins.Parts
 
                     sequenceInfos[i].Sequence = info.Sequence;
 
-                    Properties.Settings.Default.PartsStoredSequences = JSON.FromList<PartInfo.SequenceInfo>(sequenceInfos);
+                    Properties.Settings.Default.PartsStoredSequences = JSON.FromList<SequenceInfo>(sequenceInfos);
                     Properties.Settings.Default.Save();
                 }
             }
             else
             {
-                var sequenceInfos = new List<PartInfo.SequenceInfo>();
+                var sequenceInfos = new List<SequenceInfo>();
 
-                var sequenceInfo = new PartInfo.SequenceInfo();
+                var sequenceInfo = new SequenceInfo();
                 sequenceInfo.UniqueId = configuration.UniqueId;
                 sequenceInfo.Sequence = info.Sequence;
                 sequenceInfos.Add(sequenceInfo);
 
-                Properties.Settings.Default.PartsStoredSequences = JSON.FromList<PartInfo.SequenceInfo>(sequenceInfos);
+                Properties.Settings.Default.PartsStoredSequences = JSON.FromList<SequenceInfo>(sequenceInfos);
                 Properties.Settings.Default.Save();
             }
         }
@@ -132,7 +158,7 @@ namespace TrakHound_Server.Plugins.Parts
             string json = Properties.Settings.Default.PartsStoredSequences;
             if (!string.IsNullOrEmpty(json))
             {
-                var sequenceInfos = JSON.ToType<List<PartInfo.SequenceInfo>>(json);
+                var sequenceInfos = JSON.ToType<List<SequenceInfo>>(json);
                 if (sequenceInfos != null)
                 {
                     var sequenceInfo = sequenceInfos.Find(o => o.UniqueId == configuration.UniqueId);
@@ -159,4 +185,5 @@ namespace TrakHound_Server.Plugins.Parts
         }
 
     }
+
 }
