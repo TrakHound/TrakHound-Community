@@ -10,7 +10,6 @@ using System.Data;
 
 using TrakHound.API.Users;
 using TrakHound.Configurations;
-using TrakHound.Configurations.Converters;
 using TrakHound.Tools;
 using TrakHound.Tools.Web;
 
@@ -54,7 +53,7 @@ namespace TrakHound.API
 
             if (userConfig != null)
             {
-                var table = DeviceConfigurationConverter.XMLToTable(deviceConfig.Xml);
+                var table = deviceConfig.ToTable();
                 if (table != null)
                 {
                     var infos = new List<DeviceInfo>();

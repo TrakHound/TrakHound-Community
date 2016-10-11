@@ -10,7 +10,6 @@ using System.Collections.Specialized;
 
 using TrakHound.API.Users;
 using TrakHound.Configurations;
-using TrakHound.Configurations.Converters;
 using TrakHound.Tools.Web;
 
 namespace TrakHound.API
@@ -79,7 +78,7 @@ namespace TrakHound.API
                             var table = deviceInfo.ToTable();
                             if (table != null)
                             {
-                                var xml = DeviceConfigurationConverter.TableToXML(table);
+                                var xml = DeviceConfiguration.TableToXml(table);
                                 if (xml != null)
                                 {
                                     var deviceConfig = DeviceConfiguration.Read(xml);
@@ -143,7 +142,7 @@ namespace TrakHound.API
                                     var table = deviceInfo.ToTable();
                                     if (table != null)
                                     {
-                                        var xml = DeviceConfigurationConverter.TableToXML(table);
+                                        var xml = DeviceConfiguration.TableToXml(table);
                                         if (xml != null)
                                         {
                                             var deviceConfig = DeviceConfiguration.Read(xml);
@@ -199,7 +198,7 @@ namespace TrakHound.API
                             var table = deviceInfo.ToTable();
                             if (table != null)
                             {
-                                var xml = DeviceConfigurationConverter.TableToXML(table);
+                                var xml = DeviceConfiguration.TableToXml(table);
                                 if (xml != null)
                                 {
                                     var deviceConfig = DeviceConfiguration.Read(xml);
