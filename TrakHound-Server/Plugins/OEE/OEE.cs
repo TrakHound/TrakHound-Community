@@ -67,7 +67,7 @@ namespace TrakHound_Server.Plugins.OEE
                             var oc = Configuration.Get(configuration);
                             if (oc != null)
                             {
-                                var operatingEvents = gEvents.FindAll(o => o.EventName == oc.OperatingEventName);
+                                var operatingEvents = gEvents.FindAll(o => o.EventName == oc.OperatingEventName && o.CurrentValue != null);
                                 if (operatingEvents != null)
                                 {
                                     lock (_lock)
@@ -99,7 +99,7 @@ namespace TrakHound_Server.Plugins.OEE
 
         private void ProcessQueue()
         {
-            // Find intersecting Sequences in queues
+            // Get Lists of just the Sequence numbers
             var gEventSequences = gEventsQueue.Select(o => o.CurrentValue.Sequence);
             var overrideSequences = overrideInstancesQueue.Select(o => o.Sequence);
 
@@ -110,6 +110,7 @@ namespace TrakHound_Server.Plugins.OEE
 
                 List<long> sequences = null;
 
+                // Find intersecting Sequences in queues
                 if (useOverrides) sequences = gEventSequences.Intersect(overrideSequences).ToList();
                 else sequences = gEventSequences.ToList();
 
