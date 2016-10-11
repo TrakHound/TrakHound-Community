@@ -65,16 +65,19 @@ namespace TrakHound_Server.Plugins.CloudData
                     {
                         lock (_lock)
                         {
-                            var sendList = ProcessQueue();
-                            if (sendList != null)
+                            var sendList = ProcessQueue(queuedInfos);
+                            if (sendList != null && sendList.Count > 0)
                             {
-
                                 Update(Plugin.currentUser, sendList);
 
                                 foreach (var queuedInfo in sendList)
                                 {
                                     var match = queuedInfos.Find(o => o.UniqueId == queuedInfo.UniqueId);
-                                    if (match != null) match.ClearClasses();
+                                    if (match != null)
+                                    {
+                                        match.ClearClasses();
+                                        queuedInfos.Remove(match);
+                                    }
                                 }
                             }
                         }
@@ -92,16 +95,16 @@ namespace TrakHound_Server.Plugins.CloudData
             started = false;
         }
 
-        private List<Data.DeviceInfo> ProcessQueue()
+        private static List<Data.DeviceInfo> ProcessQueue(List<Data.DeviceInfo> _queuedInfos)
         {
-            if (queuedInfos.Count > 0)
+            if (_queuedInfos.Count > 0)
             {
                 // List of infos to actually send to API
                 var sendList = new List<Data.DeviceInfo>();
 
                 long bufferSize = 0;
 
-                foreach (var queuedInfo in queuedInfos)
+                foreach (var queuedInfo in _queuedInfos)
                 {
                     queuedInfo.CombineHours();
 
