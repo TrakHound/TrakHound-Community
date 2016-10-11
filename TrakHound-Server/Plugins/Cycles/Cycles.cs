@@ -16,7 +16,7 @@ using TrakHound_Server.Plugins.Instances;
 
 namespace TrakHound_Server.Plugins.Cycles
 {
-    public class Cycles : IServerPlugin
+    public class Cycles //Disabled
     {
 
         public string Name { get { return "Cycles"; } }
@@ -40,9 +40,9 @@ namespace TrakHound_Server.Plugins.Cycles
                 {
                     case "INSTANCE_DATA":
 
-                        var instanceDatas = (List<InstanceData>)data.Data02;
+                        var instances = (List<Instance>)data.Data02;
 
-                        List<CycleData> cycles = ProcessCycles(instanceDatas);
+                        List<CycleData> cycles = ProcessCycles(instances);
                         if (cycles != null && cycles.Count > 0)
                         {
                             SendCycleData(cycles);
@@ -65,7 +65,7 @@ namespace TrakHound_Server.Plugins.Cycles
         private CycleData storedCycle;
         private DateTime lastTimestamp = DateTime.MinValue;
 
-        private List<CycleData> ProcessCycles(List<InstanceData> data)
+        private List<CycleData> ProcessCycles(List<Instance> data)
         {
             var result = new List<CycleData>();
 
@@ -116,7 +116,7 @@ namespace TrakHound_Server.Plugins.Cycles
         }
 
 
-        private List<CycleData> Process(InstanceData instanceData)
+        private List<CycleData> Process(Instance instanceData)
         {
             var result = new List<CycleData>();
 
@@ -258,7 +258,7 @@ namespace TrakHound_Server.Plugins.Cycles
             return true;
         }
 
-        private static CycleOverride GetOverrideFromInstanceData(string overrideId, InstanceData instanceData)
+        private static CycleOverride GetOverrideFromInstanceData(string overrideId, Instance instanceData)
         {
             CycleOverride result = null;
 
