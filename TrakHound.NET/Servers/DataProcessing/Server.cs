@@ -91,11 +91,11 @@ namespace TrakHound.Servers.DataProcessing
 
         #region "Server Plugins"
 
-        private List<IServerPlugin> serverPlugins;
+        private List<IServerPlugin> serverPlugins = new List<IServerPlugin>();
 
         private void LoadServerPlugins()
         {
-            serverPlugins = new List<IServerPlugin>();
+            serverPlugins.Clear();
 
             string pluginsPath;
 
