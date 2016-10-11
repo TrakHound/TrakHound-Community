@@ -8,9 +8,9 @@ using System.Collections.Generic;
 
 namespace TrakHound_Server.Plugins.Instances
 {
-    public class InstanceData : IDisposable
+    public class Instance : IDisposable
     {
-        public InstanceData() { Values = new List<DataItemValue>(); }
+        private object _lock = new object();
 
         public DateTime Timestamp { get; set; }
         public long Sequence { get; set; }
@@ -18,54 +18,64 @@ namespace TrakHound_Server.Plugins.Instances
 
         public class DataItemValue
         {
+            private object _lock = new object();
+
             public string Id { get; set; }
             public string Type { get; set; }
             public string SubType { get; set; }
             public string Value { get; set; }
+            public long ChangedSequence { get; set; }
 
             public DataItemValue Copy()
             {
-                var result = new DataItemValue();
-                result.Id = Id;
-                result.Type = Type;
-                result.SubType = SubType;
-                result.Value = Value;
-                return result;
+                lock (_lock)
+                {
+                    var result = new DataItemValue();
+                    result.Id = Id;
+                    result.Type = Type;
+                    result.SubType = SubType;
+                    result.Value = Value;
+                    result.ChangedSequence = ChangedSequence;
+                    return result;
+               }
             }
         }
 
-        public InstanceData Copy()
+        public Instance() { Values = new List<DataItemValue>(); }
+
+        public Instance Copy()
         {
-            var result = new InstanceData();
-            result.Timestamp = Timestamp;
-            result.Sequence = Sequence;
-            result.AgentInstanceId = AgentInstanceId;
-
-            foreach (var val in Values)
+            lock (_lock)
             {
-                if (val != null)
-                {
-                    var newval = new DataItemValue();
-                    newval.Id = val.Id;
-                    newval.Type = val.Type;
-                    newval.SubType = val.SubType;
-                    newval.Value = val.Value;
-                    result.Values.Add(newval.Copy());
-                }
-            }
+                var result = new Instance();
+                result.Timestamp = Timestamp;
+                result.Sequence = Sequence;
+                result.AgentInstanceId = AgentInstanceId;
 
-            return result;
+                foreach (var val in Values)
+                {
+                    if (val != null)
+                    {
+                        result.Values.Add(val.Copy());
+                    }
+                }
+
+                return result;
+            }
         }
 
         public List<DataItemValue> Values { get; set; }
 
         public void Dispose()
         {
-            Values.Clear();
-            Values = null;
+            lock (_lock)
+            {
+                Values.Clear();
+                Values = null;
+            }
         }
 
-        ~InstanceData()
+        ~Instance()
         {
             Dispose();
         }
@@ -113,9 +123,9 @@ namespace TrakHound_Server.Plugins.Instances
         }
     }
 
-    public class CurrentInstanceData
+    public class CurrentInstance
     {
         public MTConnect.Application.Streams.ReturnData CurrentData { get; set; }
-        public InstanceData Data { get; set; }
+        public Instance Instance { get; set; }
     }
 }

@@ -21,79 +21,79 @@ namespace TrakHound_Server.Plugins.Instances
         private MTConnect.Application.Streams.ReturnData currentData;
 
         // Before ProcessInstances()
-        private InstanceData previousInstanceDataOld;
+        private Instance previousInstanceDataOld;
         // After ProcessInstances()
-        private InstanceData previousInstanceDataNew;
+        private Instance previousInstanceDataNew;
 
         private DateTime lastTimestamp = DateTime.MinValue;
 
-        private List<InstanceData> bufferedInstanceDatas = new List<InstanceData>();
+        private List<Instance> bufferedInstances = new List<Instance>();
 
 
         public void Update_Current(MTConnect.Application.Streams.ReturnData returnData)
         {
             currentData = returnData;
 
-            InstanceData instanceData = ProcessInstance(returnData);
+            Instance instance = ProcessInstance(returnData);
 
             previousInstanceDataOld = previousInstanceDataNew;
 
-            var cid = new CurrentInstanceData();
+            var cid = new CurrentInstance();
             cid.CurrentData = returnData;
-            cid.Data = instanceData;
+            cid.Instance = instance;
 
-            var instanceDatas = new List<InstanceData>();
-            if (bufferedInstanceDatas != null && bufferedInstanceDatas.Count > 0)
+            var instances = new List<Instance>();
+            if (bufferedInstances != null && bufferedInstances.Count > 0)
             {
-                instanceDatas.AddRange(bufferedInstanceDatas);
+                instances.AddRange(bufferedInstances);
             }
 
             // Only return new instances
-            instanceDatas = instanceDatas.FindAll(o => o.Timestamp > lastTimestamp);
+            instances = instances.FindAll(o => o.Timestamp > lastTimestamp);
 
             // Sort instances ASC by timestamp
-            instanceDatas = instanceDatas.OrderBy(o => o.Timestamp).ToList();
+            instances = instances.OrderBy(o => o.Timestamp).ToList();
 
             // update lastTimestamp
-            if (instanceDatas.Count > 0)
+            if (instances.Count > 0)
             {
-                lastTimestamp = instanceDatas[instanceDatas.Count - 1].Timestamp;
+                lastTimestamp = instances[instances.Count - 1].Timestamp;
             }
 
             // Clear the send buffer
-            bufferedInstanceDatas.Clear();
-            bufferedInstanceDatas.Add(instanceData);
+            bufferedInstances.Clear();
+            bufferedInstances.Add(instance);
 
             SendCurrentInstanceData(configuration, cid);
-            SendInstanceData(configuration, instanceDatas);
+            SendInstanceData(configuration, instances);
         }
 
         public void Update_Sample(MTConnect.Application.Streams.ReturnData returnData)
         {
-            List<InstanceData> instanceDatas = ProcessInstances(currentData, returnData);
+            List<Instance> instances = ProcessInstances(currentData, returnData);
 
-            bufferedInstanceDatas.AddRange(instanceDatas);
+            bufferedInstances.AddRange(instances);
 
             previousInstanceDataOld = previousInstanceDataNew;
         }
 
 
-        private void SendInstanceData(DeviceConfiguration config, List<InstanceData> instanceDatas)
+        private void SendInstanceData(DeviceConfiguration config, List<Instance> instances)
         {
             var data = new EventData(this);
-            data.Id = "INSTANCE_DATA";
+            data.Id = "INSTANCES";
             data.Data01 = config;
-            data.Data02 = instanceDatas;
+            data.Data02 = instances;
 
             SendData?.Invoke(data);
         }
 
-        private void SendCurrentInstanceData(DeviceConfiguration config, CurrentInstanceData instanceData)
+        private void SendCurrentInstanceData(DeviceConfiguration config, CurrentInstance instance)
         {
             var data = new EventData(this);
-            data.Id = "CURRENT_INSTANCE_DATA";
+            data.Id = "CURRENT_INSTANCE";
             data.Data01 = configuration;
-            data.Data02 = instanceData;
+            data.Data02 = instance;
 
             SendData?.Invoke(data);
         }
@@ -134,14 +134,14 @@ namespace TrakHound_Server.Plugins.Instances
 
 
         // Process instance table after receiving Sample Data
-        private List<InstanceData> ProcessInstances(MTConnect.Application.Streams.ReturnData currentData, MTConnect.Application.Streams.ReturnData sampleData)
+        private List<Instance> ProcessInstances(MTConnect.Application.Streams.ReturnData currentData, MTConnect.Application.Streams.ReturnData sampleData)
         {
             var stpw = new System.Diagnostics.Stopwatch();
             stpw.Start();
 
-            var result = new List<InstanceData>();
+            var result = new List<Instance>();
 
-            InstanceData previousData = previousInstanceDataOld;
+            Instance previousData = previousInstanceDataOld;
 
             if (currentData != null && sampleData != null)
             {
@@ -169,7 +169,7 @@ namespace TrakHound_Server.Plugins.Instances
                     {
                         if (previousData == null || timestamp > previousData.Timestamp)
                         {
-                            var data = new InstanceData();
+                            var data = new Instance();
 
                             // Preset previous values into new InstanceData object
                             if (previousData != null) data = previousData;
@@ -186,7 +186,7 @@ namespace TrakHound_Server.Plugins.Instances
 
                             foreach (var ivd in valuesAtTimestamp)
                             {
-                                InstanceData.DataItemValue oldval = data.Values.Find(x => x.Id == ivd.Id);
+                                Instance.DataItemValue oldval = data.Values.Find(x => x.Id == ivd.Id);
                                 // if value with id is already in data.values then overwrite the value
                                 if (oldval != null)
                                 {
@@ -196,15 +196,17 @@ namespace TrakHound_Server.Plugins.Instances
                                     if (oldval.Value != s)
                                     {
                                         oldval.Value = s;
+                                        oldval.ChangedSequence = ivd.Sequence;
                                     }
                                 }
                                 // if not already in data.values then create new InstanceData.Value object and add it
                                 else
                                 {
-                                    var newval = new InstanceData.DataItemValue();
+                                    var newval = new Instance.DataItemValue();
                                     newval.Id = ivd.Id;
                                     newval.Type = ivd.Type;
                                     newval.SubType = ivd.SubType;
+                                    newval.ChangedSequence = ivd.Sequence;
 
                                     if (ivd.Value != null) newval.Value = ivd.Value.ToString();
                                     data.Values.Add(newval);
@@ -222,7 +224,7 @@ namespace TrakHound_Server.Plugins.Instances
             }
             else if (currentData != null)
             {
-                InstanceData instanceData = ProcessInstance(currentData);
+                Instance instanceData = ProcessInstance(currentData);
 
                 if (previousData == null || instanceData.Timestamp > previousData.Timestamp)
                 {
@@ -238,9 +240,9 @@ namespace TrakHound_Server.Plugins.Instances
         }
 
         // Process InstanceData after receiving Current Data
-        public static InstanceData ProcessInstance(MTConnect.Application.Streams.ReturnData currentData)
+        public static Instance ProcessInstance(MTConnect.Application.Streams.ReturnData currentData)
         {
-            var result = new InstanceData(); ;
+            var result = new Instance(); ;
             result.Timestamp = currentData.Header.CreationTime; // Agent.MTConnect.org only outputs to the nearest second (not fractional seconds), check if issue with Open Source Agent
             result.AgentInstanceId = currentData.Header.InstanceId;
             result.Sequence = currentData.Header.LastSequence;
@@ -251,17 +253,18 @@ namespace TrakHound_Server.Plugins.Instances
             return result;
         }
 
-        static void FillInstanceDataWithCurrentData(List<string> usedVariables, InstanceData data, List<MTConnect.Application.Streams.DataItem> dataItems)
+        static void FillInstanceDataWithCurrentData(List<string> usedVariables, Instance data, List<MTConnect.Application.Streams.DataItem> dataItems)
         {
             foreach (var item in dataItems)
             {
                 if (!usedVariables.Contains(item.DataItemId))
                 {
-                    var value = new InstanceData.DataItemValue();
+                    var value = new Instance.DataItemValue();
                     value.Id = item.DataItemId;
 
                     value.Type = item.Type;
                     value.SubType = item.SubType;
+                    value.ChangedSequence = item.Sequence;
 
                     if (item.Category == MTConnect.DataItemCategory.CONDITION)
                     {
