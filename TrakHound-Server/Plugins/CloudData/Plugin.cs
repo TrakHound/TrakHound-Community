@@ -234,7 +234,7 @@ namespace TrakHound_Server.Plugins.CloudData
                 var statusInfo = new GeneratedEventStatusInfo();
 
                 // Get Device Status
-                var deviceStatusEvents = gEvents.FindAll(o => o.EventName == "device_status");
+                var deviceStatusEvents = gEvents.FindAll(o => o.EventName == "device_status" && o.CurrentValue != null);
                 if (deviceStatusEvents.Any())
                 {
                     var deviceStatusEvent = deviceStatusEvents.OrderBy(o => o.CurrentValue.Timestamp).Last();
@@ -246,7 +246,7 @@ namespace TrakHound_Server.Plugins.CloudData
                 }
 
                 // Get Production Status
-                var productionStatusEvents = gEvents.FindAll(o => o.EventName == "production_status");
+                var productionStatusEvents = gEvents.FindAll(o => o.EventName == "production_status" && o.CurrentValue != null);
                 if (productionStatusEvents.Any())
                 {
                     var productionStatusEvent = productionStatusEvents.OrderBy(o => o.CurrentValue.Timestamp).Last();
@@ -276,39 +276,42 @@ namespace TrakHound_Server.Plugins.CloudData
 
                 foreach (var gEvent in gEvents)
                 {
-                    var hourInfo = new Data.HourInfo();
-                    hourInfo.Date = gEvent.CurrentValue.Timestamp.ToString(Data.HourInfo.DateFormat);
-                    hourInfo.Hour = gEvent.CurrentValue.Timestamp.Hour;
-
-                    double duration = Math.Round(gEvent.Duration.TotalSeconds, 2);
-
-                    // Device Status
-                    if (gEvent.EventName == "device_status" && !string.IsNullOrEmpty(gEvent.CurrentValue.Value))
+                    if (gEvent.CurrentValue != null)
                     {
-                        hourInfo.TotalTime = duration;
+                        var hourInfo = new Data.HourInfo();
+                        hourInfo.Date = gEvent.CurrentValue.Timestamp.ToString(Data.HourInfo.DateFormat);
+                        hourInfo.Hour = gEvent.CurrentValue.Timestamp.Hour;
 
-                        switch (gEvent.CurrentValue.Value.ToLower())
+                        double duration = Math.Round(gEvent.Duration.TotalSeconds, 2);
+
+                        // Device Status
+                        if (gEvent.EventName == "device_status" && !string.IsNullOrEmpty(gEvent.CurrentValue.Value))
                         {
-                            case "active": hourInfo.Active = duration; break;
-                            case "idle": hourInfo.Idle = duration; break;
-                            case "alert": hourInfo.Alert = duration; break;
-                        }
-                    }
+                            hourInfo.TotalTime = duration;
 
-                    // Production Status
-                    if (gEvent.EventName == "production_status" && !string.IsNullOrEmpty(gEvent.CurrentValue.Value))
-                    {
-                        switch (gEvent.CurrentValue.Value.ToLower())
+                            switch (gEvent.CurrentValue.Value.ToLower())
+                            {
+                                case "active": hourInfo.Active = duration; break;
+                                case "idle": hourInfo.Idle = duration; break;
+                                case "alert": hourInfo.Alert = duration; break;
+                            }
+                        }
+
+                        // Production Status
+                        if (gEvent.EventName == "production_status" && !string.IsNullOrEmpty(gEvent.CurrentValue.Value))
                         {
-                            case "production": hourInfo.Production = duration; break;
-                            case "setup": hourInfo.Setup = duration; break;
-                            case "teardown": hourInfo.Teardown = duration; break;
-                            case "maintenance": hourInfo.Maintenance = duration; break;
-                            case "process_development": hourInfo.ProcessDevelopment = duration; break;
+                            switch (gEvent.CurrentValue.Value.ToLower())
+                            {
+                                case "production": hourInfo.Production = duration; break;
+                                case "setup": hourInfo.Setup = duration; break;
+                                case "teardown": hourInfo.Teardown = duration; break;
+                                case "maintenance": hourInfo.Maintenance = duration; break;
+                                case "process_development": hourInfo.ProcessDevelopment = duration; break;
+                            }
                         }
-                    }
 
-                    hours.Add(hourInfo);
+                        hours.Add(hourInfo);
+                    }
                 }
 
                 return hours;
@@ -477,28 +480,25 @@ namespace TrakHound_Server.Plugins.CloudData
                 var overrides = (List<Overrides.OverrideItem>)data.Data02;
                 if (overrides != null)
                 {
-                    lock (_lock)
+                    var infos = new List<Data.OverrideInfo>();
+
+                    foreach (var ovr in overrides)
                     {
-                        var infos = new List<Data.OverrideInfo>();
+                        var info = new Data.OverrideInfo();
+                        info.Name = ovr.Name;
+                        info.Type = ovr.Type.ToString();
+                        info.Value = Math.Round(ovr.Value, 2);
+                        info.Timestamp = ovr.Timestamp;
 
-                        foreach (var ovr in overrides)
-                        {
-                            var info = new Data.OverrideInfo();
-                            info.Name = ovr.Name;
-                            info.Type = ovr.Type.ToString();
-                            info.Value = Math.Round(ovr.Value, 2);
-                            info.Timestamp = ovr.Timestamp;
+                        infos.Add(info);
+                    }
 
-                            infos.Add(info);
-                        }
+                    if (infos.Count > 0)
+                    {
+                        if (deviceInfo.Overrides == null) deviceInfo.Overrides = new List<Data.OverrideInfo>();
+                        deviceInfo.Overrides.AddRange(infos);
 
-                        if (infos.Count > 0)
-                        {
-                            if (deviceInfo.Overrides == null) deviceInfo.Overrides = new List<Data.OverrideInfo>();
-                            deviceInfo.Overrides.AddRange(infos);
-
-                            queue.Add(deviceInfo);
-                        }
+                        queue.Add(deviceInfo);
                     }
                 }
             }
