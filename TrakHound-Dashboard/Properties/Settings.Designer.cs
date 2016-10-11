@@ -252,9 +252,10 @@ namespace TrakHound_Dashboard.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::System.DateTime SavedStatusFromTime {
+        [global::System.Configuration.DefaultSettingValueAttribute("2016-10-01")]
+        public string SavedStatusFromTime {
             get {
-                return ((global::System.DateTime)(this["SavedStatusFromTime"]));
+                return ((string)(this["SavedStatusFromTime"]));
             }
             set {
                 this["SavedStatusFromTime"] = value;
@@ -263,9 +264,10 @@ namespace TrakHound_Dashboard.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::System.DateTime SavedStatusToTime {
+        [global::System.Configuration.DefaultSettingValueAttribute("2016-10-01")]
+        public string SavedStatusToTime {
             get {
-                return ((global::System.DateTime)(this["SavedStatusToTime"]));
+                return ((string)(this["SavedStatusToTime"]));
             }
             set {
                 this["SavedStatusToTime"] = value;

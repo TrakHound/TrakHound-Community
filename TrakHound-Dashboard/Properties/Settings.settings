@@ -59,11 +59,11 @@
     <Setting Name="SavedPageZoomLevels" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="SavedStatusFromTime" Type="System.DateTime" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="SavedStatusFromTime" Type="System.String" Scope="User">
+      <Value Profile="(Default)">2016-10-01</Value>
     </Setting>
-    <Setting Name="SavedStatusToTime" Type="System.DateTime" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="SavedStatusToTime" Type="System.String" Scope="User">
+      <Value Profile="(Default)">2016-10-01</Value>
     </Setting>
   </Settings>
 </SettingsFile>
