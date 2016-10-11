@@ -32,6 +32,7 @@ namespace TrakHound.Servers.DataStorage
         private ManualResetEvent stop;
 
         private const int BACKUP_INTERVAL = 300000; // 5 Minutes
+        private const int LISTENER_ERROR_RETRY_INTERVAL = 5000; // 5 Seconds
 
 
         public LocalStorageServer()
@@ -52,17 +53,24 @@ namespace TrakHound.Servers.DataStorage
 
             stop = new ManualResetEvent(false);
 
+            StartBackupTimer();
+
+            ThreadPool.QueueUserWorkItem(new WaitCallback(Worker));
+        }
+
+        public void Worker(object o)
+        {
             try
             {
                 listener = new HttpListener();
                 listener.Prefixes.Add("http://localhost:" + PORT + "/api/");
                 listener.Start();
 
-                ThreadPool.QueueUserWorkItem((o) =>
+                ThreadPool.QueueUserWorkItem((x) =>
                 {
                     Console.WriteLine("TrakHound Data Server Started...");
 
-                    while (listener.IsListening && !stop.WaitOne(0, true))
+                    while (listener.IsListening && !stop.WaitOne(10, true))
                     {
                         try
                         {
@@ -112,20 +120,13 @@ namespace TrakHound.Servers.DataStorage
                         }
                     }
                 });
-
-                StartBackupTimer();
             }
             catch (Exception ex)
             {
                 Logger.Log("Local Data Server :: Error starting server :: Exception :: " + ex.Message, LogLineType.Warning);
                 Logger.Log("Local Data Server :: Error starting server :: Restarting Data Server in 5 Seconds..");
 
-                if (!stop.WaitOne(0, true))
-                {
-                    Thread.Sleep(5000);
-
-                    Start();
-                }
+                if (!stop.WaitOne(LISTENER_ERROR_RETRY_INTERVAL, true)) Worker(null);
             }
         }
 
@@ -334,11 +335,14 @@ namespace TrakHound.Servers.DataStorage
 
                                 from = from.ToUniversalTime();
                                 to = to.ToUniversalTime();
-
-                                var _hours = deviceInfo.Hours.FindAll(o => TestHourDate(o, from, to));
-                                deviceInfo.Hours = _hours;
-                                deviceInfo.Oee = API.Data.HourInfo.GetOeeInfo(_hours);
-                                deviceInfo.Timers = API.Data.HourInfo.GetTimersInfo(_hours);
+                                
+                                if (deviceInfo.Hours != null)
+                                {
+                                    var _hours = deviceInfo.Hours.FindAll(o => TestHourDate(o, from, to));
+                                    deviceInfo.Hours = _hours;
+                                    deviceInfo.Oee = API.Data.HourInfo.GetOeeInfo(_hours);
+                                    deviceInfo.Timers = API.Data.HourInfo.GetTimersInfo(_hours);
+                                }
 
                                 _deviceInfos.Add(deviceInfo);
                             }
