@@ -70,45 +70,52 @@ namespace TrakHound.Servers.DataStorage
 
             if (File.Exists(config.SQliteDatabasePath))
             {
-                var connection = Connection.Create(config);
-                if (connection != null)
+                try
                 {
-                    DataTable hoursTable = Table.GetHours(connection, devices);
-                    if (hoursTable != null)
+                    var connection = Connection.Create(config);
+                    if (connection != null)
                     {
-                        var hourRowInfos = new List<Row.HourRowInfo>();
-
-                        // Get HourRowInfo objects from DataRows
-                        foreach (DataRow row in hoursTable.Rows)
+                        DataTable hoursTable = Table.GetHours(connection, devices);
+                        if (hoursTable != null)
                         {
-                            var hourRowInfo = Row.GetHourInfo(connection, row);
-                            if (hourRowInfo != null) hourRowInfos.Add(hourRowInfo);
-                        }
+                            var hourRowInfos = new List<Row.HourRowInfo>();
 
-                        var result = new List<Data.DeviceInfo>();
-
-                        // Create DeviceInfo object for each HourRowInfo
-                        foreach (var hourRowInfo in hourRowInfos)
-                        {
-                            Data.DeviceInfo deviceInfo = null;
-                            deviceInfo = result.Find(o => o.UniqueId == hourRowInfo.UniqueId);
-                            if (deviceInfo == null)
+                            // Get HourRowInfo objects from DataRows
+                            foreach (DataRow row in hoursTable.Rows)
                             {
-                                deviceInfo = new Data.DeviceInfo();
-                                deviceInfo.UniqueId = hourRowInfo.UniqueId;
-                                result.Add(deviceInfo);
+                                var hourRowInfo = Row.GetHourInfo(connection, row);
+                                if (hourRowInfo != null) hourRowInfos.Add(hourRowInfo);
                             }
 
-                            deviceInfo.AddHourInfo(hourRowInfo.HourInfo);
+                            var result = new List<Data.DeviceInfo>();
+
+                            // Create DeviceInfo object for each HourRowInfo
+                            foreach (var hourRowInfo in hourRowInfos)
+                            {
+                                Data.DeviceInfo deviceInfo = null;
+                                deviceInfo = result.Find(o => o.UniqueId == hourRowInfo.UniqueId);
+                                if (deviceInfo == null)
+                                {
+                                    deviceInfo = new Data.DeviceInfo();
+                                    deviceInfo.UniqueId = hourRowInfo.UniqueId;
+                                    result.Add(deviceInfo);
+                                }
+
+                                deviceInfo.AddHourInfo(hourRowInfo.HourInfo);
+                            }
+
+                            Logger.Log("Local Data Server : Backup Loaded Successfully");
+
+                            return result;
                         }
 
-                        Logger.Log("Local Data Server : Backup Loaded Successfully");
-
-                        return result;
+                        Connection.Close(connection);
                     }
-
-                    Connection.Close(connection);
                 }
+                catch (Exception ex)
+                {
+                    Logger.Log("Local Data Server : Error Loading Backup :: " + ex.Message);
+                }           
             }
             else Logger.Log("Local Server Backup File Not Found @ " + config.SQliteDatabasePath);
 
@@ -121,44 +128,51 @@ namespace TrakHound.Servers.DataStorage
 
             if (File.Exists(config.SQliteDatabasePath))
             {
-                var connection = Connection.Create(config);
-                if (connection != null)
+                try
                 {
-                    DataTable hoursTable = Table.GetHours(connection, deviceInfos);
-                    if (hoursTable != null)
+                    var connection = Connection.Create(config);
+                    if (connection != null)
                     {
-                        var hourRowInfos = new List<Row.HourRowInfo>();
-
-                        // Get HourRowInfo objects from DataRows
-                        foreach (DataRow row in hoursTable.Rows)
+                        DataTable hoursTable = Table.GetHours(connection, deviceInfos);
+                        if (hoursTable != null)
                         {
-                            var hourRowInfo = Row.GetHourInfo(connection, row);
-                            if (hourRowInfo != null) hourRowInfos.Add(hourRowInfo);
-                        }
+                            var hourRowInfos = new List<Row.HourRowInfo>();
 
-                        var result = new List<Data.DeviceInfo>();
-
-                        // Create DeviceInfo object for each HourRowInfo
-                        foreach (var hourRowInfo in hourRowInfos)
-                        {
-                            Data.DeviceInfo deviceInfo = null;
-                            deviceInfo = result.Find(o => o.UniqueId == hourRowInfo.UniqueId);
-                            if (deviceInfo == null)
+                            // Get HourRowInfo objects from DataRows
+                            foreach (DataRow row in hoursTable.Rows)
                             {
-                                deviceInfo = new Data.DeviceInfo();
-                                deviceInfo.UniqueId = hourRowInfo.UniqueId;
-                                result.Add(deviceInfo);
+                                var hourRowInfo = Row.GetHourInfo(connection, row);
+                                if (hourRowInfo != null) hourRowInfos.Add(hourRowInfo);
                             }
 
-                            deviceInfo.AddHourInfo(hourRowInfo.HourInfo);
+                            var result = new List<Data.DeviceInfo>();
+
+                            // Create DeviceInfo object for each HourRowInfo
+                            foreach (var hourRowInfo in hourRowInfos)
+                            {
+                                Data.DeviceInfo deviceInfo = null;
+                                deviceInfo = result.Find(o => o.UniqueId == hourRowInfo.UniqueId);
+                                if (deviceInfo == null)
+                                {
+                                    deviceInfo = new Data.DeviceInfo();
+                                    deviceInfo.UniqueId = hourRowInfo.UniqueId;
+                                    result.Add(deviceInfo);
+                                }
+
+                                deviceInfo.AddHourInfo(hourRowInfo.HourInfo);
+                            }
+
+                            Logger.Log("Local Data Server : Backup Loaded Successfully");
+
+                            return result;
                         }
 
-                        Logger.Log("Local Data Server : Backup Loaded Successfully");
-
-                        return result;
+                        Connection.Close(connection);
                     }
-
-                    Connection.Close(connection);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log("Local Data Server : Error Loading Backup :: " + ex.Message);
                 }
             }
             else Logger.Log("Local Server Backup File Not Found @ " + config.SQliteDatabasePath);
@@ -172,44 +186,51 @@ namespace TrakHound.Servers.DataStorage
 
             if (File.Exists(config.SQliteDatabasePath))
             {
-                var connection = Connection.Create(config);
-                if (connection != null)
+                try
                 {
-                    DataTable hoursTable = Table.GetHours(connection, deviceConfigs);
-                    if (hoursTable != null)
+                    var connection = Connection.Create(config);
+                    if (connection != null)
                     {
-                        var hourRowInfos = new List<Row.HourRowInfo>();
-
-                        // Get HourRowInfo objects from DataRows
-                        foreach (DataRow row in hoursTable.Rows)
+                        DataTable hoursTable = Table.GetHours(connection, deviceConfigs);
+                        if (hoursTable != null)
                         {
-                            var hourRowInfo = Row.GetHourInfo(connection, row);
-                            if (hourRowInfo != null) hourRowInfos.Add(hourRowInfo);
-                        }
+                            var hourRowInfos = new List<Row.HourRowInfo>();
 
-                        var result = new List<Data.DeviceInfo>();
-
-                        // Create DeviceInfo object for each HourRowInfo
-                        foreach (var hourRowInfo in hourRowInfos)
-                        {
-                            Data.DeviceInfo deviceInfo = null;
-                            deviceInfo = result.Find(o => o.UniqueId == hourRowInfo.UniqueId);
-                            if (deviceInfo == null)
+                            // Get HourRowInfo objects from DataRows
+                            foreach (DataRow row in hoursTable.Rows)
                             {
-                                deviceInfo = new Data.DeviceInfo();
-                                deviceInfo.UniqueId = hourRowInfo.UniqueId;
-                                result.Add(deviceInfo);
+                                var hourRowInfo = Row.GetHourInfo(connection, row);
+                                if (hourRowInfo != null) hourRowInfos.Add(hourRowInfo);
                             }
 
-                            deviceInfo.AddHourInfo(hourRowInfo.HourInfo);
+                            var result = new List<Data.DeviceInfo>();
+
+                            // Create DeviceInfo object for each HourRowInfo
+                            foreach (var hourRowInfo in hourRowInfos)
+                            {
+                                Data.DeviceInfo deviceInfo = null;
+                                deviceInfo = result.Find(o => o.UniqueId == hourRowInfo.UniqueId);
+                                if (deviceInfo == null)
+                                {
+                                    deviceInfo = new Data.DeviceInfo();
+                                    deviceInfo.UniqueId = hourRowInfo.UniqueId;
+                                    result.Add(deviceInfo);
+                                }
+
+                                deviceInfo.AddHourInfo(hourRowInfo.HourInfo);
+                            }
+
+                            Logger.Log("Local Data Server : Backup Loaded Successfully");
+
+                            return result;
                         }
 
-                        Logger.Log("Local Data Server : Backup Loaded Successfully");
-
-                        return result;
+                        Connection.Close(connection);
                     }
-
-                    Connection.Close(connection);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log("Local Data Server : Error Loading Backup :: " + ex.Message);
                 }
             }
             else Logger.Log("Local Server Backup File Not Found @ " + config.SQliteDatabasePath);
