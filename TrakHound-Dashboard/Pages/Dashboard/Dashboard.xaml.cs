@@ -27,6 +27,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard
     /// </summary>
     public partial class Dashboard : UserControl, IClientPlugin
     {
+        private System.Timers.Timer timespanUpdateTimer;
+
 
         public string Title { get { return "Dashboard"; } }
 
@@ -186,7 +188,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard
         }
 
         public static readonly DependencyProperty FromProperty =
-            DependencyProperty.Register("From", typeof(DateTime), typeof(Dashboard), new PropertyMetadata(DateTime.MinValue, new PropertyChangedCallback(From_PropertyChanged)));
+            DependencyProperty.Register("From", typeof(DateTime), typeof(Dashboard), new PropertyMetadata(DateTime.MinValue));
 
         public DateTime To
         {
@@ -195,27 +197,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard
         }
 
         public static readonly DependencyProperty ToProperty =
-            DependencyProperty.Register("To", typeof(DateTime), typeof(Dashboard), new PropertyMetadata(DateTime.MinValue, new PropertyChangedCallback(To_PropertyChanged)));
-
-        private static void From_PropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
-        {
-            var o = obj as Dashboard;
-            if (o != null)
-            {
-                o.SaveDashboardFromTime();
-                o.SendDashboardTimespan();
-            }
-        }
-
-        private static void To_PropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
-        {
-            var o = obj as Dashboard;
-            if (o != null)
-            {
-                o.SaveDashboardToTime();
-                o.SendDashboardTimespan();
-            }
-        }
+            DependencyProperty.Register("To", typeof(DateTime), typeof(Dashboard), new PropertyMetadata(DateTime.MinValue));
 
 
         public string CurrentDate
@@ -251,27 +233,17 @@ namespace TrakHound_Dashboard.Pages.Dashboard
 
             IsExpanded = Properties.Settings.Default.DashboardIsExpanded;
 
-            // Load Times List
-            var d = DateTime.Now;
-            var from = new DateTime(d.Year, d.Month, d.Day, 0, 0, 0, DateTimeKind.Local);
-            var to = from.AddDays(1);
-            var time = from;
-            while (time <= to)
-            {
-                DateTimes.Add(time);
-                time = time.AddHours(1);
-            }
+            timespanUpdateTimer = new System.Timers.Timer();
+            timespanUpdateTimer.Interval = 5000;
+            timespanUpdateTimer.Elapsed += TimespanUpdateTimer_Elapsed;
+            timespanUpdateTimer.Enabled = true;
 
+            LoadDashboardTimespan();
+        }
 
-            var savedFrom = Properties.Settings.Default.SavedStatusFromTime;
-            if (savedFrom > DateTime.MinValue) From = savedFrom;
-            else From = from;
-
-            var savedTo = Properties.Settings.Default.SavedStatusToTime;
-            if (savedTo > DateTime.MinValue) To = savedTo;
-            else To = to;
-
-            SendDashboardTimespan();
+        private void TimespanUpdateTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(new Action(LoadDashboardTimespan), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
         }
 
         public void Initialize()
@@ -288,7 +260,35 @@ namespace TrakHound_Dashboard.Pages.Dashboard
                 }
             }
 
+            SaveDashboardTimespan();
             SendDashboardTimespan();
+        }
+
+        private void LoadDashboardTimespan()
+        {
+            // Load Time List
+            var d = DateTime.Now;
+            var from = new DateTime(d.Year, d.Month, d.Day, 0, 0, 0, DateTimeKind.Local);
+            var to = from.AddDays(1);
+
+            for (var x = 0; x <= 24; x++) DateTimes.Add(from.AddHours(x));
+
+            DateTime pFrom = From;
+            DateTime pTo = To;
+
+            DateTime savedFrom = DateTime.MinValue;
+            if (DateTime.TryParse(Properties.Settings.Default.SavedStatusFromTime, out savedFrom) && savedFrom > from) From = savedFrom;
+            else From = from;
+
+            DateTime savedTo = DateTime.MinValue;
+            if (DateTime.TryParse(Properties.Settings.Default.SavedStatusToTime, out savedTo) && savedTo > from && savedTo < to) To = savedTo;
+            else To = to;
+
+            if (pFrom != From || pTo != To)
+            {
+                SaveDashboardTimespan();
+                SendDashboardTimespan();
+            }
         }
 
         internal void SendDashboardTimespan()
@@ -307,20 +307,20 @@ namespace TrakHound_Dashboard.Pages.Dashboard
 
         internal void SaveDashboardTimespan()
         {
-            Properties.Settings.Default.SavedStatusFromTime = From;
-            Properties.Settings.Default.SavedStatusToTime = To;
+            Properties.Settings.Default.SavedStatusFromTime = From.ToString();
+            Properties.Settings.Default.SavedStatusToTime = To.ToString();
             Properties.Settings.Default.Save();
         }
 
         internal void SaveDashboardFromTime()
         {
-            Properties.Settings.Default.SavedStatusFromTime = From;
+            Properties.Settings.Default.SavedStatusFromTime = From.ToString();
             Properties.Settings.Default.Save();
         }
 
         internal void SaveDashboardToTime()
         {
-            Properties.Settings.Default.SavedStatusToTime = To;
+            Properties.Settings.Default.SavedStatusToTime = To.ToString();
             Properties.Settings.Default.Save();
         }
 
@@ -730,6 +730,26 @@ namespace TrakHound_Dashboard.Pages.Dashboard
 
             SaveDashboardTimespan();
             SendDashboardTimespan();
+        }
+
+        private void From_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //var combo = (ComboBox)sender;
+            //if (combo.IsKeyboardFocused || combo.IsMouseCaptured)
+            //{
+            //    SaveDashboardFromTime();
+            //    SendDashboardTimespan();
+            //}
+        }
+
+        private void To_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //var combo = (ComboBox)sender;
+            //if (combo.IsKeyboardFocused || combo.IsMouseCaptured)
+            //{
+            //    SaveDashboardToTime();
+            //    SendDashboardTimespan();
+            //}
         }
     }
 }
