@@ -217,7 +217,7 @@ namespace TrakHound.Servers.DataProcessing
                         {
                             int index = -1;
 
-                            index = devices.FindIndex(x => x.Configuration.FilePath == config.FilePath);
+                            index = devices.FindIndex(x => x.Configuration.UniqueId == config.UniqueId);
                             if (index >= 0) // Server is already part of list
                             {
                                 var server = devices[index];
