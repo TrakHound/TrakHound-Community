@@ -287,12 +287,6 @@ namespace TrakHound.API
                                 hourInfo.Maintenance = Math.Round(maintenance, 2);
                                 hourInfo.ProcessDevelopment = Math.Round(processDevelopment, 2);
 
-                                if (hourInfo.OperatingTime != hourInfo.Active)
-                                {
-                                    string format = "OperatingTime = {0}({1}) :: Active = {2}({3})";
-                                    Console.WriteLine(format, hourInfo.OperatingTime, operatingtime, hourInfo.Active, active);
-                                }
-
                                 newHours.Add(hourInfo);
                             }
 
