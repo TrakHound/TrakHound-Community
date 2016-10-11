@@ -10,7 +10,7 @@ namespace TrakHound_Dashboard
     public partial class MainWindow
     {
 
-        void WelcomeMessage()
+        private void AddWelcomeMessage()
         {
             if (Properties.Settings.Default.FirstOpen)
             {
@@ -32,6 +32,32 @@ namespace TrakHound_Dashboard
         {
             System.Diagnostics.Process.Start("https://github.com/TrakHound/TrakHound/wiki");
         }
+
+        //private void AddRegenerateUpdateMessage()
+        //{
+        //    if (Properties.Settings.Default.FirstOpen)
+        //    {
+        //        // Add Notification to Message Center
+        //        var message = new Controls.Message_Center.MessageData();
+        //        message.Title = "Update Notifications for v1.4.3";
+        //        message.Text = "Changes were made prior to v1.4.3 and Device Configurations may need to be updated to apply these changes. This Regenerate feature will however remove ";
+        //        message.Type = TrakHound.API.Messages.MessageType.TRAKHOUND_PRIVATE;
+        //        message.Image = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Update_01.png"));
+        //        message.Action = new Action<object>(RegenerateUpdateMessage_Clicked);
+        //        messageCenter.AddMessage(message);
+
+        //        Properties.Settings.Default.FirstOpen = false;
+        //        Properties.Settings.Default.Save();
+        //    }
+        //}
+
+        //public void RegenerateUpdateMessage_Clicked(object obj)
+        //{
+
+
+
+        //    System.Diagnostics.Process.Start("https://github.com/TrakHound/TrakHound/wiki");
+        //}
 
     }
 }
