@@ -441,7 +441,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
         public static readonly DependencyProperty PartCountProperty =
             DependencyProperty.Register("PartCount", typeof(int), typeof(Item), new PropertyMetadata(0));
 
-
         #endregion
 
         #region "Images"
@@ -624,6 +623,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
                 Availability = info.Availability;
                 Performance = info.Performance;
                 Quality = info.Quality;
+                PartCount = info.TotalPieces;
             }
         }
 

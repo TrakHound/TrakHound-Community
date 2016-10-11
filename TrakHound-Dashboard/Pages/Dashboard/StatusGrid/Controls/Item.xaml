@@ -54,7 +54,7 @@
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
+                <RowDefinition Height="60"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="30"/>
@@ -64,7 +64,7 @@
             <Image Source="{Binding DeviceLogo}" HorizontalAlignment="Center" Stretch="Uniform" VerticalAlignment="Top">
                 <Image.Style>
                     <Style TargetType="Image">
-                        <Setter Property="MaxHeight" Value="50"/>
+                        <Setter Property="MaxHeight" Value="60"/>
                         <Setter Property="MaxWidth" Value="300"/>
                         <Setter Property="Margin" Value="10,15,10,5"/>
                         <Style.Triggers>
@@ -543,6 +543,12 @@
                         <TextBlock Text="OEE" Foreground="#FFFFFF" FontSize="14" VerticalAlignment="Center" />
 
                         <ui:MeterDisplay Margin="10,0,0,0" Width="100" ValueFormat="P0" MaxHeight="25" Value="{Binding Oee}" Foreground="#FFFFFF" ActiveLevelBrush="#FFFFFF" InactiveLevelBrush="#20FFFFFF" Maximum="1"/>
+
+                        <TextBlock Text="Parts" Foreground="#FFFFFF" FontSize="14" VerticalAlignment="Center" Margin="0,0,10,0"/>
+
+                        <ui:NumberDisplay Value="{Binding PartCount}" Foreground="#FFFFFF" ValueFormat="N0" MaxHeight="25"/>
+
+                        <Rectangle Fill="#10000000" Width="1" Margin="10,0"/>
 
                     </StackPanel>
                     
