@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 using TrakHound_Server.Plugins.Instances;
 
@@ -18,7 +17,10 @@ namespace TrakHound_Server.Plugins.GeneratedEvents
         {
             Values = new List<Value>();
             CaptureItems = new List<CaptureItem>();
+            Id = Guid.NewGuid().ToString();
         }
+
+        public string Id { get; set; }
 
         public string Name { get; set; }
 
@@ -34,216 +36,82 @@ namespace TrakHound_Server.Plugins.GeneratedEvents
         public Return PreviousValue { get; set; }
 
 
-        public Return Process(InstanceData instanceData)
+        public Return Process(Instance instance)
         {
-            Return result;
-
-            // Initially set to return the default value for the Event
-            result = new Return();
-            result.Value = Default.Value;
-            result.NumVal = Default.NumVal;
-
             bool conditionsMet = false;
 
-            if (instanceData != null)
+            // Set Result to Default Value (in case nothing changes)
+            Return result = Default;
+
+            foreach (Value value in Values)
             {
-                foreach (Value Value in Values)
+                conditionsMet = false;
+
+                foreach (var trigger in value.Triggers)
                 {
-                    conditionsMet = false;
-
-                    foreach (var trigger in Value.Triggers)
-                    {
-                        InstanceData.DataItemValue instanceValue = instanceData.Values.Find(x => FindTrigger(x, trigger));
-                        if (instanceValue != null)
-                        {
-                            if (trigger.Modifier == TriggerModifier.NOT)
-                            {
-                                if (Tools.GetValue(instanceValue, "Value") != Tools.GetValue(trigger, "Value")) conditionsMet = true;
-                                else conditionsMet = false;
-                            }
-                            else if (trigger.Modifier == TriggerModifier.GREATER_THAN)
-                            {
-                                double trigger_val = double.MinValue;
-                                double val = double.MinValue;
-                                if (double.TryParse(instanceValue.Value, out val) && double.TryParse(trigger.Value, out trigger_val))
-                                {
-                                    if (val > trigger_val) conditionsMet = true;
-                                    else conditionsMet = false;
-                                }
-                                else conditionsMet = false;
-                            }
-                            else if (trigger.Modifier == TriggerModifier.LESS_THAN)
-                            {
-                                double trigger_val = double.MinValue;
-                                double val = double.MinValue;
-                                if (double.TryParse(instanceValue.Value, out val) && double.TryParse(trigger.Value, out trigger_val))
-                                {
-                                    if (val < trigger_val) conditionsMet = true;
-                                    else conditionsMet = false;
-                                }
-                                else conditionsMet = false;
-                            }
-                            else if (trigger.Modifier == TriggerModifier.CONTAINS)
-                            {
-                                if (Regex.IsMatch(instanceValue.Value, "^(?=.*" + trigger.Value + ").+$", RegexOptions.IgnoreCase)) conditionsMet = true;
-                                else conditionsMet = false;
-                            }
-                            else if (trigger.Modifier == TriggerModifier.CONTAINS_MATCH_CASE)
-                            {
-                                if (Regex.IsMatch(instanceValue.Value, "^(?=.*" + trigger.Value + ").+$")) conditionsMet = true;
-                                else conditionsMet = false;
-                            }
-                            else if (trigger.Modifier == TriggerModifier.CONTAINS_WHOLE_WORD)
-                            {
-                                if (Regex.IsMatch(instanceValue.Value, trigger.Value + "\\b", RegexOptions.IgnoreCase)) conditionsMet = true;
-                                else conditionsMet = false;
-                            }
-                            else if (trigger.Modifier == TriggerModifier.CONTAINS_WHOLE_WORD_MATCH_CASE)
-                            {
-                                if (Regex.IsMatch(instanceValue.Value, trigger.Value + "\\b")) conditionsMet = true;
-                                else conditionsMet = false;
-                            }
-                            else
-                            {
-                                if (Tools.GetValue(instanceValue, "Value") == Tools.GetValue(trigger, "Value")) conditionsMet = true;
-                                else conditionsMet = false;
-                            }
-                        }
-
-                        // if any triggers are not met then break
-                        if (!conditionsMet) break;
-                    }
-                    
-                    if (conditionsMet || Value.Triggers.Count == 0)
-                    {
-                        foreach (MultiTrigger multiTrigger in Value.MultiTriggers)
-                        {
-                            foreach (Trigger trigger in multiTrigger.Triggers)
-                            {
-                                InstanceData.DataItemValue instanceValue = instanceData.Values.Find(x => FindTrigger(x, trigger));
-                                if (instanceValue != null)
-                                {
-                                    if (trigger.Modifier == TriggerModifier.NOT)
-                                    {
-                                        if (Tools.GetValue(instanceValue, "Value") != Tools.GetValue(trigger, "Value")) conditionsMet = true;
-                                        else conditionsMet = false;
-                                    }
-                                    else if (trigger.Modifier == TriggerModifier.GREATER_THAN)
-                                    {
-                                        double trigger_val = double.MinValue;
-                                        double val = double.MinValue;
-                                        if (double.TryParse(instanceValue.Value, out val) && double.TryParse(trigger.Value, out trigger_val))
-                                        {
-                                            if (val > trigger_val) conditionsMet = true;
-                                            else conditionsMet = false;
-                                        }
-                                        else conditionsMet = false;
-                                    }
-                                    else if (trigger.Modifier == TriggerModifier.LESS_THAN)
-                                    {
-                                        double trigger_val = double.MinValue;
-                                        double val = double.MinValue;
-                                        if (double.TryParse(instanceValue.Value, out val) && double.TryParse(trigger.Value, out trigger_val))
-                                        {
-                                            if (val < trigger_val) conditionsMet = true;
-                                            else conditionsMet = false;
-                                        }
-                                        else conditionsMet = false;
-                                    }
-                                    else if (trigger.Modifier == TriggerModifier.CONTAINS)
-                                    {
-                                        if (Regex.IsMatch(instanceValue.Value, "^(?=.*" + trigger.Value + ").+$", RegexOptions.IgnoreCase)) conditionsMet = true;
-                                        else conditionsMet = false;
-                                    }
-                                    else if (trigger.Modifier == TriggerModifier.CONTAINS_MATCH_CASE)
-                                    {
-                                        if (Regex.IsMatch(instanceValue.Value, "^(?=.*" + trigger.Value + ").+$")) conditionsMet = true;
-                                        else conditionsMet = false;
-                                    }
-                                    else if (trigger.Modifier == TriggerModifier.CONTAINS_WHOLE_WORD)
-                                    {
-                                        if (Regex.IsMatch(instanceValue.Value, trigger.Value + "\\b", RegexOptions.IgnoreCase)) conditionsMet = true;
-                                        else conditionsMet = false;
-                                    }
-                                    else if (trigger.Modifier == TriggerModifier.CONTAINS_WHOLE_WORD_MATCH_CASE)
-                                    {
-                                        if (Regex.IsMatch(instanceValue.Value, trigger.Value + "\\b")) conditionsMet = true;
-                                        else conditionsMet = false;
-                                    }
-                                    else
-                                    {
-                                        if (Tools.GetValue(instanceValue, "Value") == Tools.GetValue(trigger, "Value")) conditionsMet = true;
-                                        else conditionsMet = false;
-                                    }
-                                }
-
-                                // if any trigger is met then break (only one has to be met)
-                                if (conditionsMet) break;
-                            }
-
-                            // if none of the triggers were met then break (at least one has to be met)
-                            if (!conditionsMet) break;
-                        }
-                    }
-
-                    if (conditionsMet)
-                    {
-                        result = new Return();
-                        result.Value = Value.Result.Value;
-                        result.NumVal = Value.Result.NumVal;
-
-                        // Break from loop since it shouldn't be able to meet any more Value's conditions
-                        break;
-                    }
-                }
-
-                // Get CaptureItems
-                foreach (var captureItem in CaptureItems)
-                {
-                    captureItem.PreviousValue = captureItem.Value;
-
-                    var instanceValue = instanceData.Values.ToList().Find(x => Tools.GetValue(x, "Id") == Tools.GetValue(captureItem, "Link"));
+                    var instanceValue = instance.Values.Find(x => FindTrigger(x, trigger));
                     if (instanceValue != null)
                     {
-                        if (instanceValue.Value != captureItem.Value)
-                        {
-                            captureItem.Value = instanceValue.Value;
-                            captureItem.Sequence = instanceData.Sequence;
-                        }
+                        conditionsMet = trigger.Process(instanceValue);
                     }
-                    else captureItem.Value = "";
 
-                    result.CaptureItems = CaptureItems.ToList();
+                    // if any triggers are not met then break
+                    if (!conditionsMet) break;
                 }
 
-                result.TimeStamp = instanceData.Timestamp;
-            }
-            else
-            {
-                foreach (CaptureItem captureItem in CaptureItems)
+                if (conditionsMet || value.Triggers.Count == 0)
                 {
-                    var match = result.CaptureItems.Find(x => x.Id == captureItem.Id);
-                    if (match == null)
+                    foreach (MultiTrigger multiTrigger in value.MultiTriggers)
                     {
-                        match = new CaptureItem();
-                        match.Id = captureItem.Id;
-                        match.Name = captureItem.Name;
-                        match.Link = captureItem.Link;
-                        result.CaptureItems.Add(match);
+                        foreach (Trigger trigger in multiTrigger.Triggers)
+                        {
+                            var instanceValue = instance.Values.Find(x => FindTrigger(x, trigger));
+                            if (instanceValue != null)
+                            {
+                                conditionsMet = trigger.Process(instanceValue);
+                            }
+
+                            // if any trigger is met then break (only one has to be met)
+                            if (conditionsMet) break;
+                        }
+
+                        // if none of the triggers were met then break (at least one has to be met)
+                        if (!conditionsMet) break;
                     }
-
-                    match.PreviousValue = match.Value;
-
-                    match.Value = "UNAVAILABLE";
                 }
 
-                result.TimeStamp = DateTime.UtcNow;
+                if (conditionsMet)
+                {
+                    result = value.Result;
+
+                    // Break from loop since it shouldn't be able to meet any more Value's conditions
+                    break;
+                }
+            }
+
+            // Get CaptureItems
+            foreach (var captureItem in CaptureItems)
+            {
+                captureItem.PreviousValue = captureItem.Value;
+
+                var instanceValue = instance.Values.ToList().Find(x => Tools.GetValue(x, "Id") == Tools.GetValue(captureItem, "Link"));
+                if (instanceValue != null)
+                {
+                    if (instanceValue.Value != captureItem.Value)
+                    {
+                        captureItem.Value = instanceValue.Value;
+                        captureItem.Sequence = instance.Sequence;
+                    }
+                }
+                else captureItem.Value = "";
+
+                result.CaptureItems = CaptureItems.ToList();
             }
 
             return result;
         }
-        
-        private static bool FindTrigger(InstanceData.DataItemValue value, Trigger trigger)
+
+        private static bool FindTrigger(Instance.DataItemValue value, Trigger trigger)
         {
             if (trigger.Link != null)
             {
@@ -260,7 +128,7 @@ namespace TrakHound_Server.Plugins.GeneratedEvents
             return false;
         }
 
-        private static string FormatDataItemType(InstanceData.DataItemValue value)
+        private static string FormatDataItemType(Instance.DataItemValue value)
         {
             if (!string.IsNullOrEmpty(value.Type))
             {
@@ -269,6 +137,7 @@ namespace TrakHound_Server.Plugins.GeneratedEvents
 
             return null;
         }
+
     }
 
 }

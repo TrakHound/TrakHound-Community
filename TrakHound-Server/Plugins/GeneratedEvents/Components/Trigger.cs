@@ -3,7 +3,10 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+using System.Text.RegularExpressions;
 using System.Xml;
+
+using TrakHound_Server.Plugins.Instances;
 
 namespace TrakHound_Server.Plugins.GeneratedEvents
 {
@@ -31,6 +34,54 @@ namespace TrakHound_Server.Plugins.GeneratedEvents
         public string Link { get; set; }
         public string Value { get; set; }
         public TriggerModifier Modifier { get; set; }
+
+        public bool Process(Instance.DataItemValue instanceValue)
+        {
+            if (Modifier == TriggerModifier.NOT)
+            {
+                if (Tools.GetValue(instanceValue, "Value") != Tools.GetValue(this, "Value")) return true;
+            }
+            else if (Modifier == TriggerModifier.GREATER_THAN)
+            {
+                double trigger_val = double.MinValue;
+                double val = double.MinValue;
+                if (double.TryParse(instanceValue.Value, out val) && double.TryParse(Value, out trigger_val))
+                {
+                    if (val > trigger_val) return true;
+                }
+            }
+            else if (Modifier == TriggerModifier.LESS_THAN)
+            {
+                double trigger_val = double.MinValue;
+                double val = double.MinValue;
+                if (double.TryParse(instanceValue.Value, out val) && double.TryParse(Value, out trigger_val))
+                {
+                    if (val < trigger_val) return true;
+                }
+            }
+            else if (Modifier == TriggerModifier.CONTAINS)
+            {
+                if (Regex.IsMatch(instanceValue.Value, "^(?=.*" + Value + ").+$", RegexOptions.IgnoreCase)) return true;
+            }
+            else if (Modifier == TriggerModifier.CONTAINS_MATCH_CASE)
+            {
+                if (Regex.IsMatch(instanceValue.Value, "^(?=.*" + Value + ").+$")) return true;
+            }
+            else if (Modifier == TriggerModifier.CONTAINS_WHOLE_WORD)
+            {
+                if (Regex.IsMatch(instanceValue.Value, Value + "\\b", RegexOptions.IgnoreCase)) return true;
+            }
+            else if (Modifier == TriggerModifier.CONTAINS_WHOLE_WORD_MATCH_CASE)
+            {
+                if (Regex.IsMatch(instanceValue.Value, Value + "\\b")) return true;
+            }
+            else
+            {
+                if (Tools.GetValue(instanceValue, "Value") == Tools.GetValue(this, "Value")) return true;
+            }
+
+            return false;
+        }
 
         public static Trigger Read(XmlNode Node)
         {

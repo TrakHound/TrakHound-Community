@@ -28,7 +28,8 @@ namespace TrakHound_Server.Plugins.GeneratedEvents
         {
             var result = new Configuration();
 
-            XmlNodeList nodes = configXML.SelectNodes("//GeneratedData/GeneratedEvents");
+            //XmlNodeList nodes = configXML.SelectNodes("//GeneratedData/GeneratedEvents");
+            XmlNodeList nodes = configXML.SelectNodes("//GeneratedEvents");
 
             if (nodes != null)
             {
@@ -79,6 +80,7 @@ namespace TrakHound_Server.Plugins.GeneratedEvents
                                                         case "default":
 
                                                             var d = Return.Read(Childnode);
+                                                            d.Id = "DEFAULT_ID";
                                                             ev.Default = d;
 
                                                             break;
@@ -98,6 +100,8 @@ namespace TrakHound_Server.Plugins.GeneratedEvents
                                                     }
                                                 }
                                             }
+
+                                            ev.PreviousValue = ev.Default;
 
                                             result.Events.Add(ev);
 

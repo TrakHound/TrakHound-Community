@@ -8,7 +8,6 @@ using System.Linq;
 
 using TrakHound;
 using TrakHound.Configurations;
-using TrakHound.Plugins;
 using TrakHound.Plugins.Server;
 using TrakHound_Server.Plugins.Instances;
 
@@ -37,11 +36,11 @@ namespace TrakHound_Server.Plugins.GeneratedEvents
                 var gec = Configuration.Get(configuration);
                 if (gec != null)
                 {
-                    if (data.Id == "INSTANCE_DATA")
+                    if (data.Id == "INSTANCES")
                     {
-                        var instanceDatas = (List<InstanceData>)data.Data02;
+                        var instances = (List<Instance>)data.Data02;
 
-                        var events = GeneratedEvent.Process(configuration, instanceDatas);
+                        var events = GeneratedEvent.Process(configuration, instances);
 
                         // Send List of GeneratedEventItems to other Plugins
                         SendGeneratedEvents(events);

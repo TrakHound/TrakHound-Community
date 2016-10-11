@@ -21,6 +21,9 @@ namespace TrakHound_Server.Plugins.GeneratedEvents
         {
             public string Id { get; set; }
             public DateTime Timestamp { get; set; }
+            public long Sequence { get; set; }
+            public DateTime ChangedTimestamp { get; set; }
+            public long ChangedSequence { get; set; }
             public string Value { get; set; }
             public int Numval { get; set; }
 
@@ -35,6 +38,9 @@ namespace TrakHound_Server.Plugins.GeneratedEvents
 
                 Value = eventReturn.Value;
                 Timestamp = eventReturn.TimeStamp;
+                Sequence = eventReturn.Sequence;
+                ChangedTimestamp = eventReturn.ChangedTimeStamp;
+                ChangedSequence = eventReturn.ChangedSequence;
                 Numval = eventReturn.NumVal;
             }
         }
@@ -43,15 +49,26 @@ namespace TrakHound_Server.Plugins.GeneratedEvents
 
         public ValueData PreviousValue { get; set; }
 
-
-        //public string PreviousId { get; set; }
-        //public DateTime PreviousTimestamp { get; set; }
-        //public string PreviousValue { get; set; }
-        //public int PreviousNumval { get; set; }
-
         public List<CaptureItem> CaptureItems { get; set; }
 
-        public static List<GeneratedEvent> Process(DeviceConfiguration config, List<InstanceData> instanceDatas)
+        public TimeSpan Duration
+        {
+            get
+            {
+                if (CurrentValue != null && PreviousValue != null)
+                {
+                    if (CurrentValue.Timestamp > DateTime.MinValue && PreviousValue.Timestamp > DateTime.MinValue)
+                    {
+                        return CurrentValue.Timestamp - PreviousValue.Timestamp;
+                    }
+                }
+
+                return TimeSpan.Zero;
+            }
+        }
+
+
+        public static List<GeneratedEvent> Process(DeviceConfiguration config, List<Instance> instances)
         {
             var result = new List<GeneratedEvent>();
 
@@ -59,25 +76,19 @@ namespace TrakHound_Server.Plugins.GeneratedEvents
             var gec = Configuration.Get(config);
             if (gec != null)
             {
-                if (instanceDatas != null)
+                if (instances != null)
                 {
+                    var _instances = instances.FindAll(o => o != null);
+
                     // Loop through each InstanceData object in instanceDatas
-                    foreach (var instanceData in instanceDatas)
+                    foreach (var instance in _instances)
                     {
                         // Loop through all of the Events and process Event using instanceData object
                         foreach (var e in gec.Events)
                         {
-                            var genEvent = ProcessEvent(e, instanceData);
+                            var genEvent = ProcessEvent(e, instance);
                             result.Add(genEvent);
                         }
-                    }
-                }
-                else
-                {
-                    foreach (var e in gec.Events)
-                    {
-                        var genEvent = ProcessEvent(e, null);
-                        result.Add(genEvent);
                     }
                 }
             }
@@ -85,37 +96,38 @@ namespace TrakHound_Server.Plugins.GeneratedEvents
             return result;
         }
 
-        private static GeneratedEvent ProcessEvent(Event e, InstanceData instanceData)
+        private static GeneratedEvent ProcessEvent(Event e, Instance instance)
         {
+            // Process Event using InstanceData
+            Return eventReturn = e.Process(instance);
+
+            if (e.PreviousValue == null) e.PreviousValue = e.Default.Copy();
+            if (e.CurrentValue != null)
+            {
+                e.PreviousValue = e.CurrentValue.Copy();
+                e.PreviousValue.Id = e.CurrentValue.Id;
+            }
+
+            if (eventReturn != e.CurrentValue)
+            {
+                e.CurrentValue = eventReturn.Copy();
+                e.CurrentValue.ChangedTimeStamp = instance.Timestamp;
+                e.CurrentValue.ChangedSequence = instance.Sequence;
+            }
+
+            e.CurrentValue.TimeStamp = instance.Timestamp;
+            e.CurrentValue.Sequence = instance.Sequence;
+
+            // Set Duration
+            TimeSpan ts = e.CurrentValue.TimeStamp - e.PreviousValue.TimeStamp;
+            eventReturn.Duration = ts.TotalSeconds;
+
+            // Create new GeneratedEvent object
             var result = new GeneratedEvent();
             result.EventName = e.Name;
-
-            if (e.CurrentValue != null)
-            {
-                result.CurrentValue = new ValueData(e.CurrentValue);
-            }
-
-            Return eventReturn = e.Process(instanceData);
-
-            e.PreviousValue = e.CurrentValue;
-            e.CurrentValue = eventReturn;
-
-            if (e.PreviousValue != null)
-            {
-                if (e.CurrentValue.Value != e.PreviousValue.Value)
-                {
-                    TimeSpan ts = e.CurrentValue.TimeStamp - e.PreviousValue.TimeStamp;
-                    eventReturn.Duration = ts.TotalSeconds;
-                }
-
-                result.PreviousValue = new ValueData(e.PreviousValue);
-            }
-
-            if (e.CurrentValue != null)
-            {
-                result.CurrentValue = new ValueData(e.CurrentValue);
-                result.CaptureItems.AddRange(e.CurrentValue.CaptureItems);
-            }
+            result.PreviousValue = new ValueData(e.PreviousValue);
+            result.CurrentValue = new ValueData(e.CurrentValue);
+            result.CaptureItems.AddRange(e.CurrentValue.CaptureItems);
 
             return result;
         }

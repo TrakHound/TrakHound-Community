@@ -62,6 +62,7 @@ namespace TrakHound_Server.Plugins.GeneratedEvents
                         case "result":
 
                             var returnResult = new Return();
+                            returnResult.Id = "DEFAULT_ID";
 
                             if (childNode.Attributes != null)
                                 if (childNode.Attributes["numval"] != null)
