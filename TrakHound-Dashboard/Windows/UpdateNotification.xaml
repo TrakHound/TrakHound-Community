@@ -1,0 +1,81 @@
+﻿<Window x:Class="TrakHound_Dashboard.UpdateNotification"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TrakHound_Dashboard.Windows"
+        
+        xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
+        
+        mc:Ignorable="d"
+        Title="TrakHound Update Notification" 
+        Icon="/TrakHound-Dashboard;component/Resources/TrakHound_Logo_Initials_10.ico"
+        Width="600" ResizeMode="CanMinimize" SizeToContent="Height" WindowStartupLocation="CenterScreen" Topmost="True" 
+        >
+    
+    <Grid>
+
+        <StackPanel Margin="20">
+
+            <!--Update Information-->
+            <Grid HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--Image-->
+                <Grid Width="75" Height="75" FocusManager.IsFocusScope="False">
+                    <Grid.Resources>
+                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Update_02_100px.png" />
+                    </Grid.Resources>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                            <Setter Property="Background" Value="#333"/>
+                        </Style>
+                    </Grid.Style>
+                </Grid>
+
+                <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="20,0" Foreground="#333">
+                        <Run Text="Update" FontSize="28"/>
+                        <Run Text="v1.4.3" FontSize="16"/>
+                </TextBlock>
+
+            </Grid>
+
+            <Rectangle Fill="{StaticResource Border}" Height="1" Margin="0,10"/>
+
+            <!--General Description-->
+            <TextBlock Foreground="#333" TextWrapping="Wrap">
+                Update v1.4.3 introduces several updates to both the user interface and data collection functionalities including OEE and Parts.               
+            </TextBlock>
+
+            <!--Notice-->
+            <StackPanel Margin="0,10">
+
+                <TextBlock Text="Notice:" Foreground="{StaticResource TrakHound_Blue}" FontSize="16" FontWeight="Bold"/>
+                
+                <TextBlock Foreground="{StaticResource TrakHound_Blue}" TextWrapping="Wrap" FontSize="16">
+                Device Configurations need to be Regenerated in order to read the new OEE, Parts, and Override data. Regenerate is a new feature available on the Device Manager page.
+                </TextBlock>
+
+            </StackPanel>
+
+            <TextBlock Foreground="#333" TextWrapping="Wrap">
+                Note that Regenerating devices will remove customizations, other than device Description information, so please direct any questions on updates to info@trakhound.com.
+            </TextBlock>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+
+                <ui:Button Text="Close" Style="{StaticResource Button_Transparent_Background}" Margin="0,0,10,0" Clicked="Close_Clicked"/>
+
+                <ui:Button Text="Device Manager" Style="{StaticResource Button_Accent_Background}" Clicked="DeviceManager_Clicked"/>
+
+            </StackPanel>
+
+        </StackPanel>
+
+    </Grid>
+    
+</Window>

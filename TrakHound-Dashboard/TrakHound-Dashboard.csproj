@@ -78,6 +78,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Windows\UpdateNotification.xaml.cs">
+      <DependentUpon>UpdateNotification.xaml</DependentUpon>
+    </Compile>
     <None Include="Pages\Dashboard\OverrideStatus\Controls\Row.xaml.cs">
       <DependentUpon>Row.xaml</DependentUpon>
     </None>
@@ -295,7 +298,7 @@
     <Compile Include="MainWindow\Report Bug.cs" />
     <Compile Include="MainWindow\Server Management.cs" />
     <Compile Include="MainWindow\Splash Screen.cs" />
-    <Compile Include="MainWindow\Welcome Message.cs" />
+    <Compile Include="MainWindow\Default Messages.cs" />
     <Compile Include="MainWindow\Window.cs" />
     <Compile Include="Controls\MenuItem.xaml.cs">
       <DependentUpon>MenuItem.xaml</DependentUpon>
@@ -612,6 +615,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Windows\UpdateNotification.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Pages\About\Information\Information_01.png" />
@@ -860,6 +867,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Dashboard_Splash_02.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Update_02_100px.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
