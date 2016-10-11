@@ -66,8 +66,11 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.Parts
                 DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix, "attributes", "id||" + i.ToString("00") + ";");
                 DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/EventName", "value", item.EventName);
                 DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/EventValue", "value", item.EventValue);
+                DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/PreviousEventValue", "value", item.PreviousEventValue);
+                DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/ValueType", "value", FormatValue(item.ValueType));
                 DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/CaptureItemLink", "value", item.CaptureItemLink);
                 DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/CalculationType", "value", item.CalculationType);
+                DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/StaticIncrementValue", "value", item.StaticIncrementValue.ToString());
 
                 i++;
             }
@@ -164,8 +167,11 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.Parts
                         {
                             case "EventName": item.EventName = DataTable_Functions.GetRowValue("value", eventRow); break;
                             case "EventValue": item.EventValue = DataTable_Functions.GetRowValue("value", eventRow); break;
+                            case "PreviousEventValue": item.PreviousEventValue = DataTable_Functions.GetRowValue("value", eventRow); break;
+                            case "ValueType": item.ValueType = GetFormattedValue(DataTable_Functions.GetRowValue("value", eventRow)); break;
                             case "CaptureItemLink": item.CaptureItemLink = DataTable_Functions.GetRowValue("value", eventRow); break;
                             case "CalculationType": item.CalculationType = DataTable_Functions.GetRowValue("value", eventRow); break;
+                            case "StaticIncrementValue": item.StaticIncrementValue = DataTable_Functions.GetIntegerFromRow("value", eventRow); break;
                         }
                     }
 
@@ -184,13 +190,8 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.Parts
                 foreach (DataRow row in rows)
                 {
                     string lastNode = DataTable_Functions.TrakHound.GetLastNode(row);
-                   
-                    if (lastNode == "PartsEventValue")
-                    {
-                        string val = DataTable_Functions.GetRowValue("value", row);
-                        if (!string.IsNullOrEmpty(val)) val = String_Functions.UppercaseFirst(val.Replace('_', ' '));
-                        item.EventValue = val;
-                    }
+
+                    if (lastNode == "PartsEventValue") item.EventValue = GetFormattedValue(DataTable_Functions.GetRowValue("value", row));
                     if (lastNode == "PartsEventName") item.EventName = DataTable_Functions.GetRowValue("value", row);
                     else if (lastNode == "PartsCaptureItemLink") item.CaptureItemLink = DataTable_Functions.GetRowValue("value", row);
                     else if (lastNode == "CalculationType") item.CalculationType = DataTable_Functions.GetRowValue("value", row);   
@@ -198,6 +199,18 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.Parts
 
                 if (!string.IsNullOrEmpty(item.EventName)) PartCountItems.Add(item);
             }
+        }
+
+        private string GetFormattedValue(string s)
+        {
+            if (!string.IsNullOrEmpty(s)) return String_Functions.UppercaseFirst(s.Replace('_', ' '));
+            else return null;
+        }
+
+        private string FormatValue(string s)
+        {
+            if (!string.IsNullOrEmpty(s)) return s.Replace(' ', '_').ToLower();
+            else return null;
         }
 
         private void Add_Clicked(TrakHound_UI.Button bt)

@@ -28,7 +28,7 @@
             <Setter Property="Margin" Value="10,0"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
-        
+
     </UserControl.Resources>
 
     <Border Name="root" Background="Transparent" BorderBrush="{StaticResource Border}" BorderThickness="1" CornerRadius="2" Padding="10">
@@ -51,7 +51,48 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="10"/>
                     <RowDefinition Height="auto"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
+                <Grid.Resources>
+
+                    <Style x:Key="CaptureItemLinkMember_TextBlock" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ValueType}" Value="Capture Item">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+
+                    <Style x:Key="CaptureItemLinkMember_ComboBox" TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ValueType}" Value="Capture Item">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+
+                    <Style x:Key="StaticIncrementMember_TextBlock" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ValueType}" Value="Static Increment">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+
+                    <Style x:Key="StaticIncrementMember_ComboBox" TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ValueType}" Value="Static Increment">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+
+                </Grid.Resources>
 
                 <!--Event Name-->
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Event Name"/>
@@ -59,25 +100,57 @@
 
                 <!--Event Value-->
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Event Value"/>
-                <ComboBox Grid.Row="2" Grid.Column="1" SelectedValue="{Binding EventValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding GeneratedEventValues}" SelectionChanged="COMBO_SelectionChanged"/>
+                <ComboBox Grid.Row="2" Grid.Column="1" SelectedValue="{Binding EventValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding GeneratedEventValues}" SelectionChanged="EventValue_COMBO_SelectionChanged"/>
+
+                <!--Previous Event Value-->
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="Previous Event Value"/>
+                <ComboBox Grid.Row="4" Grid.Column="1" SelectedValue="{Binding PreviousEventValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding PreviousGeneratedEventValues}" SelectionChanged="COMBO_SelectionChanged"/>
+
+
+                <!--Value Type-->
+                <TextBlock Grid.Row="0" Grid.Column="3" Text="Value Type"/>
+                <ComboBox Grid.Row="0" Grid.Column="4" SelectedValue="{Binding ValueType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="COMBO_SelectionChanged">
+                    <ComboBox.Items>
+                        <sys:String>Capture Item</sys:String>
+                        <sys:String>Static Increment</sys:String>
+                    </ComboBox.Items>
+                </ComboBox>
 
                 <!--Capture Item Link-->
-                <TextBlock Grid.Row="0" Grid.Column="3" Text="Capture Item Link"/>
-                <ComboBox Grid.Row="0" Grid.Column="4" SelectedValue="{Binding CaptureItemLink, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Id" DisplayMemberPath="Name" ItemsSource="{Binding GeneratedEventCaptureItems}" SelectionChanged="COMBO_SelectionChanged"/>
+                <TextBlock Grid.Row="2" Grid.Column="3" Text="Capture Item Link" Style="{StaticResource CaptureItemLinkMember_TextBlock}"/>
+                <ComboBox Grid.Row="2" Grid.Column="4" SelectedValue="{Binding CaptureItemLink, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Id" DisplayMemberPath="Name" ItemsSource="{Binding GeneratedEventCaptureItems}" SelectionChanged="COMBO_SelectionChanged" Style="{StaticResource CaptureItemLinkMember_ComboBox}"/>
 
                 <!--Calculation Type-->
-                <TextBlock Grid.Row="2" Grid.Column="3" Text="Calculation Type"/>
-                <ComboBox Grid.Row="2" Grid.Column="4" SelectedValue="{Binding CalculationType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="COMBO_SelectionChanged">
+                <TextBlock Grid.Row="4" Grid.Column="3" Text="Calculation Type" Style="{StaticResource CaptureItemLinkMember_TextBlock}"/>
+                <ComboBox Grid.Row="4" Grid.Column="4" SelectedValue="{Binding CalculationType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="COMBO_SelectionChanged" Style="{StaticResource CaptureItemLinkMember_ComboBox}">
                     <ComboBox.Items>
                         <sys:String>Incremental</sys:String>
                         <sys:String>Total</sys:String>
                     </ComboBox.Items>
                 </ComboBox>
 
+
+                <!--Static Increment-->
+                <TextBlock Grid.Row="2" Grid.Column="3" Text="Static Increment" Style="{StaticResource StaticIncrementMember_TextBlock}"/>
+                <ComboBox Grid.Row="2" Grid.Column="4" SelectedValue="{Binding StaticIncrementValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="COMBO_SelectionChanged" Style="{StaticResource StaticIncrementMember_ComboBox}">
+                    <ComboBox.Items>
+                        <sys:Int32>1</sys:Int32>
+                        <sys:Int32>2</sys:Int32>
+                        <sys:Int32>3</sys:Int32>
+                        <sys:Int32>4</sys:Int32>
+                        <sys:Int32>5</sys:Int32>
+                        <sys:Int32>6</sys:Int32>
+                        <sys:Int32>7</sys:Int32>
+                        <sys:Int32>8</sys:Int32>
+                        <sys:Int32>9</sys:Int32>
+                        <sys:Int32>10</sys:Int32>
+                    </ComboBox.Items>
+                </ComboBox>
+
             </Grid>
 
             <!--Remove Button-->
-            <ui:Button Grid.Column="1" Image="/TrakHound-Dashboard;component/Resources/X_01.png" Margin="20,0,0,0" Clicked="Remove_Clicked" Style="{StaticResource Button_Accent_Foreground}"/>
+            <ui:Button Grid.Column="1" Image="/TrakHound-Dashboard;component/Resources/X_01.png" Margin="20,0,0,0" Clicked="Remove_Clicked" VerticalAlignment="Top" Style="{StaticResource Button_Accent_Foreground}"/>
 
         </Grid>
 

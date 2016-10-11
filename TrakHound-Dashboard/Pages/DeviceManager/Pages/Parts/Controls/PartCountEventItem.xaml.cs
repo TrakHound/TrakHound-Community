@@ -66,6 +66,26 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.Parts.Controls
             DependencyProperty.Register("EventValue", typeof(string), typeof(PartCountEventItem), new PropertyMetadata(null));
 
 
+        public string PreviousEventValue
+        {
+            get { return (string)GetValue(PreviousEventValueProperty); }
+            set { SetValue(PreviousEventValueProperty, value); }
+        }
+
+        public static readonly DependencyProperty PreviousEventValueProperty =
+            DependencyProperty.Register("PreviousEventValue", typeof(string), typeof(PartCountEventItem), new PropertyMetadata(null));
+
+
+        public string ValueType
+        {
+            get { return (string)GetValue(ValueTypeProperty); }
+            set { SetValue(ValueTypeProperty, value); }
+        }
+
+        public static readonly DependencyProperty ValueTypeProperty =
+            DependencyProperty.Register("ValueType", typeof(string), typeof(PartCountEventItem), new PropertyMetadata("Capture Item"));
+
+
         public string CaptureItemLink
         {
             get { return (string)GetValue(CaptureItemLinkProperty); }
@@ -85,6 +105,15 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.Parts.Controls
         public static readonly DependencyProperty CalculationTypeProperty =
             DependencyProperty.Register("CalculationType", typeof(string), typeof(PartCountEventItem), new PropertyMetadata("Total"));
 
+
+        public int StaticIncrementValue
+        {
+            get { return (int)GetValue(StaticIncrementValueProperty); }
+            set { SetValue(StaticIncrementValueProperty, value); }
+        }
+
+        public static readonly DependencyProperty StaticIncrementValueProperty =
+            DependencyProperty.Register("StaticIncrementValue", typeof(int), typeof(PartCountEventItem), new PropertyMetadata(1));
 
         #endregion
 
@@ -107,6 +136,20 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.Parts.Controls
 
             GetGeneratedEventValues(val);
             GetCaptureItems(val);
+
+            if (combo.IsKeyboardFocusWithin || combo.IsMouseCaptured)
+            {
+                SettingChanged?.Invoke();
+            }
+        }
+
+        private void EventValue_COMBO_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox combo = (ComboBox)sender;
+
+            string val = (string)combo.SelectedValue;
+
+            GetPreviousGeneratedEventValues(val);
 
             if (combo.IsKeyboardFocusWithin || combo.IsMouseCaptured)
             {
@@ -137,6 +180,22 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.Parts.Controls
             }
         }
 
+        private ObservableCollection<object> _previousGeneratedEventValues;
+        public ObservableCollection<object> PreviousGeneratedEventValues
+        {
+            get
+            {
+                if (_previousGeneratedEventValues == null)
+                    _previousGeneratedEventValues = new ObservableCollection<object>();
+                return _previousGeneratedEventValues;
+            }
+
+            set
+            {
+                _previousGeneratedEventValues = value;
+            }
+        }
+
         private void GetGeneratedEventValues(string Id)
         {
             GeneratedEventValues.Clear();
@@ -157,6 +216,21 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.Parts.Controls
                     {
                         if (e.Event.Default != null) GeneratedEventValues.Add(e.Event.Default.value);
                     }
+                }
+            }
+        }
+
+        private void GetPreviousGeneratedEventValues(string Id)
+        {
+            PreviousGeneratedEventValues.Clear();
+
+            if (GeneratedEventValues != null)
+            {
+                PreviousGeneratedEventValues.Add(string.Empty);
+
+                foreach (var gEventValue in GeneratedEventValues)
+                {
+                    if ((string)gEventValue != EventValue) PreviousGeneratedEventValues.Add(gEventValue);
                 }
             }
         }
