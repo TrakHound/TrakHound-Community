@@ -24,7 +24,7 @@ namespace TrakHound_Dashboard
 
         public MainWindow()
         {
-            init();
+            init();        
         }
 
         private const int DEFAULT_ANIMATION_FRAMERATE = 60;
@@ -62,7 +62,7 @@ namespace TrakHound_Dashboard
 
             Splash_UpdateStatus("...Finishing Up", 100);
 
-            WelcomeMessage();
+            AddWelcomeMessage();
             CheckVersion();
 
             Splash_Close();
@@ -127,9 +127,23 @@ namespace TrakHound_Dashboard
 
         private void CheckVersion()
         {
+            // v1.4.3 Regenerate Device Configuration Notice
+            Version version = null;
+            if (Version.TryParse(Properties.Settings.Default.LastVersion, out version))
+            {
+                if (version < new Version("1.4.3"))
+                {
+                    var u = new UpdateNotification();
+                    u.mw = this;
+                    u.Show();
+                    u.Focus();
+                }
+            }
+
+
             // Build Information
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            Version version = assembly.GetName().Version;
+            version = assembly.GetName().Version;
 
             string format = "{0}.{1}.{2}";
             string s = string.Format(format, version.Major, version.Minor, version.Build);
