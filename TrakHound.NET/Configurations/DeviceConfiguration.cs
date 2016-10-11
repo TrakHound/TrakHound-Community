@@ -295,7 +295,9 @@ namespace TrakHound.Configurations
 
         #endregion
 
-        #region "Edit"
+        #region "Table"
+
+
 
         public static void EditTable(DataTable table, string address, object value)
         {
@@ -306,6 +308,16 @@ namespace TrakHound.Configurations
         {
             DataTable_Functions.UpdateTableValue(table, "address", address, "value", value == null ? string.Empty : value.ToString());
             DataTable_Functions.UpdateTableValue(table, "address", address, "attributes", attributes);
+        }
+
+        public static string GetTableValue(DataTable table, string address)
+        {
+            return DataTable_Functions.GetTableValue(table, "address", address, "value");
+        }
+
+        public static string GetTableAttributes(DataTable table, string address)
+        {
+            return DataTable_Functions.GetTableValue(table, "address", address, "attributes");
         }
 
         #endregion
