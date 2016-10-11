@@ -7,33 +7,31 @@ using MTConnect;
 using MTConnect.Application.Components;
 using System.Collections.Generic;
 using System.Data;
-using TrakHound.Tools;
 
 namespace TrakHound.Configurations.AutoGenerate
 {
     public static class Cycles
     {
-        public static void Add(DataTable dt, List<DataItem> probeItems)
+        public static void Add(DataTable table, List<DataItem> dataItems)
         {
-            DataTable_Functions.UpdateTableValue(dt, "address", "/Cycles/CycleEventName", "value", "cycle_execution");
-            DataTable_Functions.UpdateTableValue(dt, "address", "/Cycles/StoppedEventValue", "value", "Stopped");
+            DeviceConfiguration.EditTable(table, "/Cycles/CycleEventName", "cycle_execution", null);
+            DeviceConfiguration.EditTable(table, "/Cycles/StoppedEventValue", "Stopped", null);
 
-            var item = probeItems.Find(x => x.Category == DataItemCategory.EVENT && x.Type == "PROGRAM");
-            if (item != null) DataTable_Functions.UpdateTableValue(dt, "address", "/Cycles/CycleNameLink", "value", item.Id);
+            var item = dataItems.Find(x => x.Category == DataItemCategory.EVENT && x.Type == "PROGRAM");
+            if (item != null) DeviceConfiguration.EditTable(table, "/Cycles/CycleNameLink", item.Id, null);
 
             // Add Production Types
-            DataTable_Functions.UpdateTableValue(dt, "address", "/Cycles/ProductionTypes/Value||00", "attributes", "id||00;name||Started;type||IN_PRODUCTION;");
-            DataTable_Functions.UpdateTableValue(dt, "address", "/Cycles/ProductionTypes/Value||01", "attributes", "id||01;name||Paused;type||PAUSED;");
-            DataTable_Functions.UpdateTableValue(dt, "address", "/Cycles/ProductionTypes/Value||02", "attributes", "id||02;name||Stopped;type||STOPPED;");
+            DeviceConfiguration.EditTable(table, "/Cycles/ProductionTypes/Value||00", null, "id||00;name||Started;type||IN_PRODUCTION;");
+            DeviceConfiguration.EditTable(table, "/Cycles/ProductionTypes/Value||01", null, "id||01;name||Paused;type||PAUSED;");
+            DeviceConfiguration.EditTable(table, "/Cycles/ProductionTypes/Value||02", null, "id||02;name||Stopped;type||STOPPED;");
 
             // Add Override Values
-            var ovrItems = probeItems.FindAll(x => x.Category == DataItemCategory.EVENT && x.Type == "PATH_FEEDRATE_OVERRIDE" && x.SubType != "JOG");
+            var ovrItems = dataItems.FindAll(x => x.Category == DataItemCategory.EVENT && x.Type == "PATH_FEEDRATE_OVERRIDE" && x.SubType != "JOG");
             if (ovrItems != null)
             {
                 for (var x = 0; x < ovrItems.Count; x++)
                 {
-                    DataTable_Functions.UpdateTableValue(dt, "address", "/Cycles/OverrideLinks/Value||" + x.ToString("00"), "attributes", "id||" + x.ToString("00"));
-                    DataTable_Functions.UpdateTableValue(dt, "address", "/Cycles/OverrideLinks/Value||" + x.ToString("00"), "value", ovrItems[x].Id);
+                    DeviceConfiguration.EditTable(table, "/Cycles/OverrideLinks/Value||" + x.ToString("00"), ovrItems[x].Id, "id||" + x.ToString("00"));
                 }
             }
         }

@@ -5,80 +5,72 @@
 
 using MTConnect;
 using MTConnect.Application.Components;
-using System.Data;
 using System.Collections.Generic;
-using TrakHound.Tools;
+using System.Data;
 
 namespace TrakHound.Configurations.AutoGenerate.Manufacturers
 {
     public static class Okuma
     {
-
-        public static void Process(DataTable table, Device probeDevice)
+        public static void Process(DataTable table, Device device)
         {
-            if (probeDevice != null && probeDevice.Description != null && !string.IsNullOrEmpty(probeDevice.Description.Manufacturer))
+            if (device != null && device.Description != null && !string.IsNullOrEmpty(device.Description.Manufacturer))
             {
-                if (probeDevice.Description.Manufacturer.ToLower() == "okuma")
+                if (device.Description.Manufacturer.ToLower() == "okuma")
                 {
                     SetDescription(table);
 
-                    var items = probeDevice.GetAllDataItems();
+                    var items = device.GetAllDataItems();
 
                     AddTimers(table, items);
                 }
             }
         }
 
-
         private static void SetDescription(DataTable table)
         {
             // Read IP Address
-            string ip = DataTable_Functions.GetTableValue(table, "address", "/Agent/Address", "value");
+            string ip = DeviceConfiguration.GetTableValue(table, "/Agent/Address");
             if (!string.IsNullOrEmpty(ip))
             {
-                DataTable_Functions.UpdateTableValue(table, "address", "/Description/Description", "value", ip);
+                DeviceConfiguration.EditTable(table, "/Description/Description", ip, null);
             }
             else
             {
-                DataTable_Functions.UpdateTableValue(table, "address", "/Description/Description", "value", "");
+                DeviceConfiguration.EditTable(table, "/Description/Description", string.Empty, null);
             }
         }
 
-        //private static void RemoveDescription(DataTable table)
-        //{
-        //    DataTable_Functions.UpdateTableValue(table, "address", "/Description/Description", "value", "");
-        //}
-
-        private static void AddTimers(DataTable table, List<DataItem> probeItems)
+        private static void AddTimers(DataTable table, List<DataItem> dataItems)
         {
             // Run Time
-            var item = probeItems.Find(x => x.Category == DataItemCategory.SAMPLE && x.Type == "ACCUMULATED_TIME" && x.SubType == "x:RUNNING_TIME");
-            if (item != null) DataTable_Functions.UpdateTableValue(table, "address", "/GeneratedData/SnapShotData/Collected||90", "attributes", "id||90;name||Day Run Time;link||" + item.Id + ";");
+            var item = dataItems.Find(x => x.Category == DataItemCategory.SAMPLE && x.Type == "ACCUMULATED_TIME" && x.SubType == "x:RUNNING_TIME");
+            if (item != null) DeviceConfiguration.EditTable(table, "/GeneratedData/SnapShotData/Collected||90", null, "id||90;name||Day Run Time;link||" + item.Id + ";");
 
-            item = probeItems.Find(x => x.Category == DataItemCategory.SAMPLE && x.Type == "ACCUMULATED_TIME" && x.SubType == "x:TOTAL_RUNNING_TIME");
-            if (item != null) DataTable_Functions.UpdateTableValue(table, "address", "/GeneratedData/SnapShotData/Collected||91", "attributes", "id||91;name||Total Run Time;link||" + item.Id + ";");
+            item = dataItems.Find(x => x.Category == DataItemCategory.SAMPLE && x.Type == "ACCUMULATED_TIME" && x.SubType == "x:TOTAL_RUNNING_TIME");
+            if (item != null) DeviceConfiguration.EditTable(table, "/GeneratedData/SnapShotData/Collected||91", null, "id||91;name||Total Run Time;link||" + item.Id + ";");
 
             // Operating Time
-            item = probeItems.Find(x => x.Category == DataItemCategory.SAMPLE && x.Type == "ACCUMULATED_TIME" && x.SubType == "x:OPERATING_TIME");
-            if (item != null) DataTable_Functions.UpdateTableValue(table, "address", "/GeneratedData/SnapShotData/Collected||92", "attributes", "id||92;name||Day Operating Time;link||" + item.Id + ";");
+            item = dataItems.Find(x => x.Category == DataItemCategory.SAMPLE && x.Type == "ACCUMULATED_TIME" && x.SubType == "x:OPERATING_TIME");
+            if (item != null) DeviceConfiguration.EditTable(table, "/GeneratedData/SnapShotData/Collected||92", null, "id||92;name||Day Operating Time;link||" + item.Id + ";");
 
-            item = probeItems.Find(x => x.Category == DataItemCategory.SAMPLE && x.Type == "ACCUMULATED_TIME" && x.SubType == "x:TOTAL_OPERATING_TIME");
-            if (item != null) DataTable_Functions.UpdateTableValue(table, "address", "/GeneratedData/SnapShotData/Collected||93", "attributes", "id||93;name||Total Operating Time;link||" + item.Id + ";");
+            item = dataItems.Find(x => x.Category == DataItemCategory.SAMPLE && x.Type == "ACCUMULATED_TIME" && x.SubType == "x:TOTAL_OPERATING_TIME");
+            if (item != null) DeviceConfiguration.EditTable(table, "/GeneratedData/SnapShotData/Collected||93", null, "id||93;name||Total Operating Time;link||" + item.Id + ";");
 
             // Cutting Time
-            item = probeItems.Find(x => x.Category == DataItemCategory.SAMPLE && x.Type == "ACCUMULATED_TIME" && x.SubType == "x:CUTTING_TIME");
-            if (item != null) DataTable_Functions.UpdateTableValue(table, "address", "/GeneratedData/SnapShotData/Collected||94", "attributes", "id||94;name||Day Cutting Time;link||" + item.Id + ";");
+            item = dataItems.Find(x => x.Category == DataItemCategory.SAMPLE && x.Type == "ACCUMULATED_TIME" && x.SubType == "x:CUTTING_TIME");
+            if (item != null) DeviceConfiguration.EditTable(table, "/GeneratedData/SnapShotData/Collected||94", null, "id||94;name||Day Cutting Time;link||" + item.Id + ";");
 
-            item = probeItems.Find(x => x.Category == DataItemCategory.SAMPLE && x.Type == "ACCUMULATED_TIME" && x.SubType == "x:TOTAL_CUTTING_TIME");
-            if (item != null) DataTable_Functions.UpdateTableValue(table, "address", "/GeneratedData/SnapShotData/Collected||95", "attributes", "id||95;name||Total Cutting Time;link||" + item.Id + ";");
+            item = dataItems.Find(x => x.Category == DataItemCategory.SAMPLE && x.Type == "ACCUMULATED_TIME" && x.SubType == "x:TOTAL_CUTTING_TIME");
+            if (item != null) DeviceConfiguration.EditTable(table, "/GeneratedData/SnapShotData/Collected||95", null, "id||95;name||Total Cutting Time;link||" + item.Id + ";");
 
             // Spindle Run Time
-            item = probeItems.Find(x => x.Category == DataItemCategory.SAMPLE && x.Type == "ACCUMULATED_TIME" && x.SubType == "x:SPINDLE_RUN_TIME");
-            if (item != null) DataTable_Functions.UpdateTableValue(table, "address", "/GeneratedData/SnapShotData/Collected||96", "attributes", "id||96;name||Day Spindle Time;link||" + item.Id + ";");
+            item = dataItems.Find(x => x.Category == DataItemCategory.SAMPLE && x.Type == "ACCUMULATED_TIME" && x.SubType == "x:SPINDLE_RUN_TIME");
+            if (item != null) DeviceConfiguration.EditTable(table, "/GeneratedData/SnapShotData/Collected||96", null, "id||96;name||Day Spindle Time;link||" + item.Id + ";");
 
-            item = probeItems.Find(x => x.Category == DataItemCategory.SAMPLE && x.Type == "ACCUMULATED_TIME" && x.SubType == "x:TOTAL_SPINDLE_RUN_TIME");
-            if (item != null) DataTable_Functions.UpdateTableValue(table, "address", "/GeneratedData/SnapShotData/Collected||97", "attributes", "id||97;name||Total Spindle Time;link||" + item.Id + ";");
+            item = dataItems.Find(x => x.Category == DataItemCategory.SAMPLE && x.Type == "ACCUMULATED_TIME" && x.SubType == "x:TOTAL_SPINDLE_RUN_TIME");
+            if (item != null) DeviceConfiguration.EditTable(table, "/GeneratedData/SnapShotData/Collected||97", null, "id||97;name||Total Spindle Time;link||" + item.Id + ";");
         }
-
     }
 }
+

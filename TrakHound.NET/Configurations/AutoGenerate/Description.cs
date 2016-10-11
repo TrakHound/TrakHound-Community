@@ -6,21 +6,18 @@
 using MTConnect.Application.Components;
 using System.Data;
 
-using TrakHound.Tools;
-
 namespace TrakHound.Configurations.AutoGenerate
 {
     public static class Description
     {
-
-        public static void Add(DataTable dt, Device probeDevice)
+        public static void Add(DataTable table, Device device)
         {
-            if (probeDevice.Description != null)
+            if (device.Description != null)
             {
-                DataTable_Functions.UpdateTableValue(dt, "address", "/Description/Manufacturer", "value", Trim(probeDevice.Description.Manufacturer));
-                DataTable_Functions.UpdateTableValue(dt, "address", "/Description/Model", "value", Trim(probeDevice.Description.Model));
-                DataTable_Functions.UpdateTableValue(dt, "address", "/Description/Serial", "value", Trim(probeDevice.Description.SerialNumber));
-                DataTable_Functions.UpdateTableValue(dt, "address", "/Description/Description", "value", Trim(probeDevice.Description.CDATA));
+                DeviceConfiguration.EditTable(table, "/Description/Manufacturer", Trim(device.Description.Manufacturer), null);
+                DeviceConfiguration.EditTable(table, "/Description/Model", Trim(device.Description.Model), null);
+                DeviceConfiguration.EditTable(table, "/Description/Serial", Trim(device.Description.SerialNumber), null);
+                DeviceConfiguration.EditTable(table, "/Description/Description", Trim(device.Description.CDATA), null);
             }
         }
 
@@ -32,7 +29,6 @@ namespace TrakHound.Configurations.AutoGenerate
             }
 
             return null;
-        }
-        
+        }        
     }
 }

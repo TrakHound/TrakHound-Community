@@ -3,12 +3,8 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
-
-using System.Data;
-
-using TrakHound.Configurations;
-using TrakHound.Tools;
 using MTConnect.Application.Components;
+using System.Data;
 
 namespace TrakHound.Configurations.AutoGenerate
 {
@@ -25,30 +21,32 @@ namespace TrakHound.Configurations.AutoGenerate
         {
             if (probeData != null && probeData.Device != null)
             {
-                var dt = new DataTable();
-                dt.Columns.Add("address");
-                dt.Columns.Add("name");
-                dt.Columns.Add("value");
-                dt.Columns.Add("attributes");
+                var table = new DataTable();
+                table.Columns.Add("address");
+                table.Columns.Add("name");
+                table.Columns.Add("value");
+                table.Columns.Add("attributes");
 
                 var items = probeData.Device.GetAllDataItems();
 
-                SetIds(dt);
-                SetEnabled(dt);
-                Description.Add(dt, probeData.Device);
-                Agent.Add(dt, probeData.Address, probeData.Port, probeData.Device.Name);
-                SnapshotData.Add(dt, items);
-                GeneratedEvents.DeviceStatus.Add(dt, items);
-                GeneratedEvents.ProductionStatus.Add(dt, items);
-                GeneratedEvents.CycleExecution.Add(dt, items);
-                GeneratedEvents.PartsCount.Add(dt, items);
-                Cycles.Add(dt, items);
-                Parts.Add(dt, items);
+                SetIds(table);
+                SetEnabled(table);
+                Description.Add(table, probeData.Device);
+                Agent.Add(table, probeData.Address, probeData.Port, probeData.Device.Name);
+                GeneratedEvents.DeviceStatus.Add(table, items);
+                GeneratedEvents.ProductionStatus.Add(table, items);
+                GeneratedEvents.CycleExecution.Add(table, items);
+                GeneratedEvents.PartsCount.Add(table, items);
+                Cycles.Add(table, items);
+                Parts.Add(table, items);
+                Overrides.Add(table, items);
+                Oee.Add(table, items);
 
                 // Manufacturer Specific Processing
-                Manufacturers.Okuma.Process(dt, probeData.Device);
+                Manufacturers.Okuma.Process(table, probeData.Device);
 
-                var xml = Converters.DeviceConfigurationConverter.TableToXML(dt);
+                //var xml = Converters.DeviceConfigurationConverter.TableToXML(dt);
+                var xml = DeviceConfiguration.TableToXml(table);
 
                 return DeviceConfiguration.Read(xml);
             }
@@ -56,15 +54,15 @@ namespace TrakHound.Configurations.AutoGenerate
             return null;
         }
 
-        private static void SetIds(DataTable dt)
+        private static void SetIds(DataTable table)
         {
-            DataTable_Functions.UpdateTableValue(dt, "address", "/UniqueId", "value", DeviceConfiguration.GenerateUniqueID());
-            DataTable_Functions.UpdateTableValue(dt, "address", "/UpdateId", "value", DeviceConfiguration.GenerateUniqueID());
+            DeviceConfiguration.EditTable(table, "/UniqueId", DeviceConfiguration.GenerateUniqueID(), null);
+            DeviceConfiguration.EditTable(table, "/UpdateId", DeviceConfiguration.GenerateUniqueID(), null);
         }
 
-        private static void SetEnabled(DataTable dt)
+        private static void SetEnabled(DataTable table)
         {
-            DataTable_Functions.UpdateTableValue(dt, "address", "/Enabled", "value", "True");
+            DeviceConfiguration.EditTable(table, "/Enabled", true, null);
         }
 
     }

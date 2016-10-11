@@ -4,20 +4,17 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System.Data;
-using TrakHound.Tools;
 
 namespace TrakHound.Configurations.AutoGenerate
 {
     public static class Agent
     {
-
-        public static void Add(DataTable dt, string address, string port, string deviceName)
+        public static void Add(DataTable table, string address, string port, string deviceName)
         {
-            DataTable_Functions.UpdateTableValue(dt, "address", "/Agent/Address", "value", address);
-            DataTable_Functions.UpdateTableValue(dt, "address", "/Agent/Port", "value", port);
-            DataTable_Functions.UpdateTableValue(dt, "address", "/Agent/DeviceName", "value", deviceName);
-            DataTable_Functions.UpdateTableValue(dt, "address", "/Agent/Heartbeat", "value", "5000");
+            DeviceConfiguration.EditTable(table, "/Agent/Address", address, null);
+            DeviceConfiguration.EditTable(table, "/Agent/Port", port, null);
+            DeviceConfiguration.EditTable(table, "/Agent/DeviceName", deviceName, null);
+            DeviceConfiguration.EditTable(table, "/Agent/Heartbeat", 5000, null);
         }
-
     }
 }

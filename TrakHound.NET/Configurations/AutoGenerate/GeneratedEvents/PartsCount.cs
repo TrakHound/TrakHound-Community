@@ -8,59 +8,53 @@ using MTConnect.Application.Components;
 using System.Collections.Generic;
 using System.Data;
 
-using TrakHound.Tools;
-
 namespace TrakHound.Configurations.AutoGenerate.GeneratedEvents
 {
     public static class PartsCount
     {
-        public static void Add(DataTable dt, List<DataItem> probeItems)
+        public static void Add(DataTable table, List<DataItem> dataItems)
         {
             int i = 1;
             int e = 3;
 
-            var partCountItems = probeItems.FindAll(x => x.Category == DataItemCategory.EVENT && x.Type == "PART_COUNT");
+            var partCountItems = dataItems.FindAll(x => x.Category == DataItemCategory.EVENT && x.Type == "PART_COUNT");
             foreach (var partCountItem in partCountItems)
             {
                 // Add Event
-                // Add Event
-                string eventPrefix = "/GeneratedData/GeneratedEvents/Event||" + e.ToString("00");
-                DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix, "attributes", "id||" + e.ToString("00") + ";name||parts_count_" + i.ToString() + ";");
+                string eventPrefix = "/GeneratedEvents/Event||" + e.ToString("00");
+                DeviceConfiguration.EditTable(table, eventPrefix, null, "id||" + e.ToString("00") + ";name||parts_count_" + i.ToString() + ";");
 
-                AddPartsProducedValue(eventPrefix, dt, partCountItem);
-                AddCaptureItems(eventPrefix, dt, partCountItem);
+                AddPartsProducedValue(eventPrefix, table, partCountItem);
+                AddCaptureItems(eventPrefix, table, partCountItem);
 
                 // Add Default
-                DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/Default", "value", "No Parts Produced");
-                DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/Default", "attributes", "numval||0;");
+                DeviceConfiguration.EditTable(table, eventPrefix + "/Default", "No Parts Produced", "numval||0;");
 
                 i++;
                 e++;
             }
         }
 
-        private static void AddPartsProducedValue(string eventPrefix, DataTable dt, DataItem probeItem)
+        private static void AddPartsProducedValue(string prefix, DataTable table, DataItem dataItem)
         {
             // Add Value
-            string valuePrefix = eventPrefix + "/Value||00";
-            DataTable_Functions.UpdateTableValue(dt, "address", valuePrefix, "attributes", "id||00;");
+            string valuePrefix = prefix + "/Value||00";
+            DeviceConfiguration.EditTable(table, valuePrefix, null, "id||00;");
 
             // Add Triggers
             string triggerPrefix = valuePrefix + "/Triggers";
 
-            DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||00", "attributes", "id||00;link||" + probeItem.Id + ";link_type||ID;value||UNAVAILABLE;modifier||not;");
+            DeviceConfiguration.EditTable(table, triggerPrefix + "/Trigger||00", null, "id||00;link||" + dataItem.Id + ";link_type||ID;value||UNAVAILABLE;modifier||not;");
 
             // Add Result
-            DataTable_Functions.UpdateTableValue(dt, "address", valuePrefix + "/Result", "value", "Parts Produced");
-            DataTable_Functions.UpdateTableValue(dt, "address", valuePrefix + "/Result", "attributes", "numval||1;");
+            DeviceConfiguration.EditTable(table, valuePrefix + "/Result", "Parts Produced", "numval||1;");
         }
 
-        private static void AddCaptureItems(string eventPrefix, DataTable dt, DataItem probeItem)
+        private static void AddCaptureItems(string prefix, DataTable table, DataItem dataItem)
         {
-            string capturePrefix = eventPrefix + "/Capture";
+            string capturePrefix = prefix + "/Capture";
 
-            DataTable_Functions.UpdateTableValue(dt, "address", capturePrefix + "/Item||00", "attributes", "id||00;name||part_count;link||" + probeItem.Id + ";");
+            DeviceConfiguration.EditTable(table, capturePrefix + "/Item||00", null, "id||00;name||part_count;link||" + dataItem.Id + ";");
         }
-
     }
 }

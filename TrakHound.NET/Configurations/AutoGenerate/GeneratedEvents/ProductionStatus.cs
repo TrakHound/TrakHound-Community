@@ -8,112 +8,103 @@ using MTConnect.Application.Components;
 using System.Collections.Generic;
 using System.Data;
 
-using TrakHound.Tools;
-
 namespace TrakHound.Configurations.AutoGenerate.GeneratedEvents
 {
     public static class ProductionStatus
     {
-
-        public static void Add(DataTable dt, List<DataItem> probeItems)
+        public static void Add(DataTable table, List<DataItem> dataItems)
         {
             // Add Event
-            string eventPrefix = "/GeneratedData/GeneratedEvents/Event||01";
-            DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix, "attributes", "id||01;name||production_status;");
+            string eventPrefix = "/GeneratedEvents/Event||01";
+            DeviceConfiguration.EditTable(table, eventPrefix, null, "id||01;name||production_status;");
 
-            AddSetupValue(eventPrefix, dt, probeItems);
-            AddTeardownValue(eventPrefix, dt, probeItems);
-            AddMaintenanceValue(eventPrefix, dt, probeItems);
-            AddProcessDevelopmentValue(eventPrefix, dt, probeItems);
+            AddSetupValue(eventPrefix, table, dataItems);
+            AddTeardownValue(eventPrefix, table, dataItems);
+            AddMaintenanceValue(eventPrefix, table, dataItems);
+            AddProcessDevelopmentValue(eventPrefix, table, dataItems);
 
             // Add Default
-            DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/Default", "value", "Production");
-            DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/Default", "attributes", "numval||0;");
+            DeviceConfiguration.EditTable(table, eventPrefix + "/Default", "Production", "numval||0;");
         }
 
-        private static void AddSetupValue(string eventPrefix, DataTable dt, List<DataItem> probeItems)
+        private static void AddSetupValue(string prefix, DataTable table, List<DataItem> dataItems)
         {
             // Only add if there is a Functional Mode tag available
-            if (probeItems.Exists(x => x.Category == DataItemCategory.EVENT && x.Type == "FUNCTIONAL_MODE"))
+            if (dataItems.Exists(x => x.Category == DataItemCategory.EVENT && x.Type == "FUNCTIONAL_MODE"))
             {
                 // Add Value
-                string valuePrefix = eventPrefix + "/Value||00";
-                DataTable_Functions.UpdateTableValue(dt, "address", valuePrefix, "attributes", "id||00;");
+                string valuePrefix = prefix + "/Value||00";
+                DeviceConfiguration.EditTable(table, valuePrefix, null, "id||00;");
 
                 // Add Triggers
                 string triggerPrefix = valuePrefix + "/Triggers";
 
-                var item = probeItems.Find(x => x.Category == DataItemCategory.EVENT && x.Type == "FUNCTIONAL_MODE");
-                if (item != null) DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||00", "attributes", "id||00;link||" + item.Id + ";link_type||ID;value||SETUP;");
+                var item = dataItems.Find(x => x.Category == DataItemCategory.EVENT && x.Type == "FUNCTIONAL_MODE");
+                if (item != null) DeviceConfiguration.EditTable(table, triggerPrefix + "/Trigger||00", null, "id||00;link||" + item.Id + ";link_type||ID;value||SETUP;");
 
                 // Add Result
-                DataTable_Functions.UpdateTableValue(dt, "address", valuePrefix + "/Result", "value", "Setup");
-                DataTable_Functions.UpdateTableValue(dt, "address", valuePrefix + "/Result", "attributes", "numval||1;");
+                DeviceConfiguration.EditTable(table, valuePrefix + "/Result", "Setup", "numval||1;");
             }
         }
 
-        private static void AddTeardownValue(string eventPrefix, DataTable dt, List<DataItem> probeItems)
+        private static void AddTeardownValue(string prefix, DataTable table, List<DataItem> dataItems)
         {
             // Only add if there is a Functional Mode tag available
-            if (probeItems.Exists(x => x.Category == DataItemCategory.EVENT && x.Type == "FUNCTIONAL_MODE"))
+            if (dataItems.Exists(x => x.Category == DataItemCategory.EVENT && x.Type == "FUNCTIONAL_MODE"))
             {
                 // Add Value
-                string valuePrefix = eventPrefix + "/Value||01";
-                DataTable_Functions.UpdateTableValue(dt, "address", valuePrefix, "attributes", "id||01;");
+                string valuePrefix = prefix + "/Value||01";
+                DeviceConfiguration.EditTable(table, valuePrefix, null, "id||01;");
 
                 // Add Triggers
                 string triggerPrefix = valuePrefix + "/Triggers";
 
-                var item = probeItems.Find(x => x.Category == DataItemCategory.EVENT && x.Type == "FUNCTIONAL_MODE");
-                if (item != null) DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||00", "attributes", "id||00;link||" + item.Id + ";link_type||ID;value||TEARDOWN;");
+                var item = dataItems.Find(x => x.Category == DataItemCategory.EVENT && x.Type == "FUNCTIONAL_MODE");
+                if (item != null) DeviceConfiguration.EditTable(table, triggerPrefix + "/Trigger||00", null, "id||00;link||" + item.Id + ";link_type||ID;value||TEARDOWN;");
 
                 // Add Result
-                DataTable_Functions.UpdateTableValue(dt, "address", valuePrefix + "/Result", "value", "Teardown");
-                DataTable_Functions.UpdateTableValue(dt, "address", valuePrefix + "/Result", "attributes", "numval||2;");
+                DeviceConfiguration.EditTable(table, valuePrefix + "/Result", "Teardown", "numval||2;");
             }
         }
 
-        private static void AddMaintenanceValue(string eventPrefix, DataTable dt, List<DataItem> probeItems)
+        private static void AddMaintenanceValue(string prefix, DataTable table, List<DataItem> dataItems)
         {
             // Only add if there is a Functional Mode tag available
-            if (probeItems.Exists(x => x.Category == DataItemCategory.EVENT && x.Type == "FUNCTIONAL_MODE"))
+            if (dataItems.Exists(x => x.Category == DataItemCategory.EVENT && x.Type == "FUNCTIONAL_MODE"))
             {
                 // Add Value
-                string valuePrefix = eventPrefix + "/Value||02";
-                DataTable_Functions.UpdateTableValue(dt, "address", valuePrefix, "attributes", "id||02;");
+                string valuePrefix = prefix + "/Value||02";
+                DeviceConfiguration.EditTable(table, valuePrefix, null, "id||02;");
 
                 // Add Triggers
                 string triggerPrefix = valuePrefix + "/Triggers";
 
-                var item = probeItems.Find(x => x.Category == DataItemCategory.EVENT && x.Type == "FUNCTIONAL_MODE");
-                if (item != null) DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||00", "attributes", "id||00;link||" + item.Id + ";link_type||ID;value||MAINTENANCE;");
+                var item = dataItems.Find(x => x.Category == DataItemCategory.EVENT && x.Type == "FUNCTIONAL_MODE");
+                if (item != null) DeviceConfiguration.EditTable(table, triggerPrefix + "/Trigger||00", null, "id||00;link||" + item.Id + ";link_type||ID;value||MAINTENANCE;");
 
                 // Add Result
-                DataTable_Functions.UpdateTableValue(dt, "address", valuePrefix + "/Result", "value", "Maintenance");
-                DataTable_Functions.UpdateTableValue(dt, "address", valuePrefix + "/Result", "attributes", "numval||43");
+                DeviceConfiguration.EditTable(table, valuePrefix + "/Result", "Maintenance", "numval||3");
             }
         }
 
-        private static void AddProcessDevelopmentValue(string eventPrefix, DataTable dt, List<DataItem> probeItems)
+        private static void AddProcessDevelopmentValue(string prefix, DataTable table, List<DataItem> dataItems)
         {
             // Only add if there is a Functional Mode tag available
-            if (probeItems.Exists(x => x.Category == DataItemCategory.EVENT && x.Type == "FUNCTIONAL_MODE"))
+            if (dataItems.Exists(x => x.Category == DataItemCategory.EVENT && x.Type == "FUNCTIONAL_MODE"))
             {
                 // Add Value
-                string valuePrefix = eventPrefix + "/Value||03";
-                DataTable_Functions.UpdateTableValue(dt, "address", valuePrefix, "attributes", "id||03;");
+                string valuePrefix = prefix + "/Value||03";
+                DeviceConfiguration.EditTable(table, valuePrefix, null, "id||03;");
 
                 // Add Triggers
                 string triggerPrefix = valuePrefix + "/Triggers";
 
-                var item = probeItems.Find(x => x.Category == DataItemCategory.EVENT && x.Type == "FUNCTIONAL_MODE");
-                if (item != null) DataTable_Functions.UpdateTableValue(dt, "address", triggerPrefix + "/Trigger||00", "attributes", "id||00;link||" + item.Id + ";link_type||ID;value||PROCESS_DEVELOPMENT;");
+                var item = dataItems.Find(x => x.Category == DataItemCategory.EVENT && x.Type == "FUNCTIONAL_MODE");
+                if (item != null) DeviceConfiguration.EditTable(table, triggerPrefix + "/Trigger||00", null, "id||00;link||" + item.Id + ";link_type||ID;value||PROCESS_DEVELOPMENT;");
 
                 // Add Result
-                DataTable_Functions.UpdateTableValue(dt, "address", valuePrefix + "/Result", "value", "Process Development");
-                DataTable_Functions.UpdateTableValue(dt, "address", valuePrefix + "/Result", "attributes", "numval||4;");
+                DeviceConfiguration.EditTable(table, valuePrefix + "/Result", "Process Development", "numval||4;");
             }
         }
-
     }
 }
