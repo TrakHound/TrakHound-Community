@@ -475,7 +475,7 @@ namespace TrakHound_Dashboard
                 {
                     sendDataInfo.Plugin.GetSentData(sendDataInfo.Data);
                 }
-                catch (Exception ex) { Logger.Log("Plugin Error :: " + ex.Message); }
+                catch (Exception ex) { Logger.Log("Plugin Error :: " + ex.Message, LogLineType.Error); }
             }
         }
 

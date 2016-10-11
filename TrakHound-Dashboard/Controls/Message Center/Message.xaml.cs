@@ -55,7 +55,6 @@ namespace TrakHound_Dashboard.Controls.Message_Center
         public static readonly DependencyProperty ReadProperty =
             DependencyProperty.Register("Read", typeof(bool), typeof(Message), new PropertyMetadata(false));
 
-
         #endregion
 
         #region "Click Events"

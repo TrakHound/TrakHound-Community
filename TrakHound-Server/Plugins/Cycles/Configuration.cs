@@ -80,9 +80,7 @@ namespace TrakHound_Server.Plugins.Cycles
                             }
                             else
                             {
-                                Type Setting = typeof(Configuration);
-                                PropertyInfo info = Setting.GetProperty(child.Name);
-
+                                var info = typeof(Configuration).GetProperty(child.Name);
                                 if (info != null)
                                 {
                                     Type t = info.PropertyType;
