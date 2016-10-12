@@ -11,6 +11,7 @@ using System.Windows.Navigation;
 
 using TrakHound;
 using TrakHound.API.Users;
+using TrakHound.Logging;
 using TrakHound.Tools;
 using TrakHound.Tools.Web;
 using TrakHound_UI;
@@ -812,14 +813,21 @@ namespace TrakHound_Dashboard.Pages.Account
                     var img = TrakHound.API.Files.DownloadImage(userConfig, userConfig.ImageUrl);
                     if (img != null)
                     {
-                        var bmp = new System.Drawing.Bitmap(img);
+                        try
+                        {
+                            var bmp = new System.Drawing.Bitmap(img);
 
-                        IntPtr bmpPt = bmp.GetHbitmap();
-                        BitmapSource bmpSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                        bmpSource = TrakHound_UI.Functions.Images.SetImageSize(bmpSource, 200, 200);
-                        bmpSource.Freeze();
+                            IntPtr bmpPt = bmp.GetHbitmap();
+                            BitmapSource bmpSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                            bmpSource = TrakHound_UI.Functions.Images.SetImageSize(bmpSource, 200, 200);
+                            bmpSource.Freeze();
 
-                        Dispatcher.BeginInvoke(new Action<BitmapSource>(LoadProfileImage_GUI), priority, new object[] { bmpSource });
+                            Dispatcher.BeginInvoke(new Action<BitmapSource>(LoadProfileImage_GUI), priority, new object[] { bmpSource });
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Log("Error Loading Profile Image : " + ex.Message);
+                        }
                     }
                 }
 
@@ -863,22 +871,26 @@ namespace TrakHound_Dashboard.Pages.Account
             string imagePath = OpenImageBrowse();
             if (imagePath != null)
             {
-                // Crop and Resize image
-                System.Drawing.Image img = ProcessImage(imagePath);
-                if (img != null)
+                try
                 {
-                    profileImageFilename = imagePath;
-                    profileImageChanged = true;
+                    // Crop and Resize image
+                    System.Drawing.Image img = ProcessImage(imagePath);
+                    if (img != null)
+                    {
+                        profileImageFilename = imagePath;
+                        profileImageChanged = true;
 
-                    img = Image_Functions.CropImageToCenter(img);
-
-                    profileImage = img;
-
-                    ProfileImage = TrakHound_UI.Functions.Images.SourceFromImage(img);
-
-                    if (ProfileImage != null) ProfileImageSet = true;
-                    else ProfileImageSet = false;
+                        ProfileImage = TrakHound_UI.Functions.Images.SourceFromImage(img);
+                        profileImage = img;
+                    }
                 }
+                catch (Exception ex)
+                {
+                    Logger.Log("Error Loading Profile Image : " + ex.Message);
+                }
+
+                if (ProfileImage != null) ProfileImageSet = true;
+                else ProfileImageSet = false;
             }
         }
 
@@ -901,7 +913,8 @@ namespace TrakHound_Dashboard.Pages.Account
 
                     // Create new full path of temp file
                     string localPath = Path.Combine(FileLocations.TrakHoundTemp, newFilename);
-                    if (ext != null) localPath += "." + ext;
+                    //if (ext != null) localPath += "." + ext;
+                    if (ext != null) localPath = Path.ChangeExtension(localPath, ext);
 
                     // Save the processed image to the new temp path
                     img.Save(localPath);
@@ -980,7 +993,8 @@ namespace TrakHound_Dashboard.Pages.Account
 
             if (File.Exists(path))
             {
-                System.Drawing.Image img = Image_Functions.CropImageToCenter(System.Drawing.Image.FromFile(path));
+                var img = System.Drawing.Image.FromFile(path);
+                img = Image_Functions.CropImageToCenter(img);
 
                 result = Image_Functions.SetImageSize(img, 200, 200);
             }
