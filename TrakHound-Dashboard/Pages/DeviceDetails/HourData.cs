@@ -20,6 +20,7 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
         public void Reset()
         {
             Value = 0;
+            Status = -1;
         }
 
 
