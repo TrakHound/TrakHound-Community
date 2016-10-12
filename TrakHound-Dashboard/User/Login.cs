@@ -11,6 +11,8 @@ namespace TrakHound_Dashboard
 {
     public partial class MainWindow
     {
+        private bool first = true;
+
         private class Login_Info
         {
             public string username { get; set; }
@@ -99,6 +101,7 @@ namespace TrakHound_Dashboard
         // Update GUI after login using separate thread
         void Login_Finished(UserConfiguration userConfig)
         {
+            if (first && userConfig == null) UpdateUser(null);
             CurrentUser = userConfig;
 
             UserLoadingText = null;
@@ -116,6 +119,8 @@ namespace TrakHound_Dashboard
                 UserLoginError = true;
                 IsPasswordFocused = true;
             }
+
+            first = false;
         }
 
 
