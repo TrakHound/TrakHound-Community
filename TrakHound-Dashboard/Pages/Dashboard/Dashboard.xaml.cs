@@ -275,10 +275,12 @@ namespace TrakHound_Dashboard.Pages.Dashboard
 
             // Set From
             if (From > dayStart) from = From;
+            else if (From > DateTime.MinValue) from = new DateTime(dayStart.Year, dayStart.Month, dayStart.Day, From.Hour, 0, 0);
             else from = dayStart;
 
             // Set To
             if (To > dayStart && To < dayEnd) to = To;
+            else if (To > DateTime.MinValue) to = new DateTime(dayStart.Year, dayStart.Month, dayStart.Day, To.Hour, 0, 0);
             else to = dayEnd;
 
             //Update Timespan
@@ -317,10 +319,12 @@ namespace TrakHound_Dashboard.Pages.Dashboard
 
             // Set From
             if (savedFrom > dayStart) From = savedFrom;
+            else if (savedFrom > DateTime.MinValue) From = new DateTime(dayStart.Year, dayStart.Month, dayStart.Day, savedFrom.Hour, savedFrom.Minute, 0);
             else From = dayStart;
 
             // Set To
             if (savedTo > dayStart && savedTo < dayEnd) To = savedTo;
+            else if (savedTo > DateTime.MinValue) To = new DateTime(dayStart.Year, dayStart.Month, dayStart.Day, savedTo.Hour, savedTo.Minute, 0);
             else To = dayEnd;
 
             SaveDashboardTimespan();
