@@ -164,10 +164,10 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus.Controls
         {
             if (info != null)
             {
-                if (!string.IsNullOrEmpty(info.Availability)) Availability = info.Availability;
-                if (!string.IsNullOrEmpty(info.EmergencyStop)) EmergencyStop = info.EmergencyStop;
-                if (!string.IsNullOrEmpty(info.ControllerMode)) ControllerMode = info.ControllerMode;
-                if (!string.IsNullOrEmpty(info.ExecutionMode)) ExecutionMode = info.ExecutionMode;
+                Availability = info.Availability;
+                EmergencyStop = info.EmergencyStop;
+                ControllerMode = info.ControllerMode;
+                ExecutionMode = info.ExecutionMode;
                 Program = info.ProgramName;
                 Block = info.ProgramBlock;
                 Line = info.ProgramLine;

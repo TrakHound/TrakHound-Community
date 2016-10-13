@@ -231,12 +231,9 @@
                             </Border.Style>
 
                             <Grid>
-                                <Grid.Resources>
-                                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/On_01.png" />
-                                </Grid.Resources>
                                 <Grid.Style>
                                     <Style TargetType="Grid">
-                                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                        <Setter Property="OpacityMask" Value="{StaticResource On_Large_IMG}" />
                                         <Setter Property="Background" Value="{StaticResource Disabled_Text}"/>
                                         <Setter Property="Height" Value="40"/>
                                         <Style.Triggers>
@@ -265,12 +262,9 @@
                             </Border.Style>
 
                             <Grid>
-                                <Grid.Resources>
-                                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Off_01.png" />
-                                </Grid.Resources>
                                 <Grid.Style>
                                     <Style TargetType="Grid">
-                                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                        <Setter Property="OpacityMask" Value="{StaticResource Off_Large_IMG}" />
                                         <Setter Property="Background" Value="{StaticResource Disabled_Text}"/>
                                         <Setter Property="Height" Value="40"/>
                                         <Style.Triggers>
