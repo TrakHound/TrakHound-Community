@@ -88,10 +88,7 @@ namespace TrakHound.Servers.DataStorage
                                         ctx.Response.OutputStream.Write(buf, 0, buf.Length);
                                     }
                                 }
-                                catch (Exception ex)
-                                {
-                                    //Logger.Log("Local Data Server :: Exception :: " + ex.Message, LogLineType.Warning);
-                                }
+                                catch (Exception ex) { }
                                 finally
                                 {
                                     // always close the stream
@@ -449,11 +446,8 @@ namespace TrakHound.Servers.DataStorage
 
                                         if (hours != null)
                                         {
-                                            // Probably a more elegant way of getting the Time Zone Offset could be done here
-                                            int timeZoneOffset = Convert.ToInt32((DateTime.UtcNow - DateTime.Now).TotalHours);
-
                                             DateTime d = DateTime.Now;
-                                            DateTime from = new DateTime(d.Year, d.Month, d.Day, timeZoneOffset, 0, 0);
+                                            DateTime from = new DateTime(d.Year, d.Month, d.Day, 0, 0, 0, DateTimeKind.Local);
                                             DateTime to = from.AddDays(1);
 
                                             hours = hours.FindAll(o => TestHourDate(o, from, to));
@@ -468,7 +462,7 @@ namespace TrakHound.Servers.DataStorage
 
                                             // Add Timers
                                             var timers = new API.Data.TimersInfo();
-                                            timers.Total = hours.Select(o => o.TotalTime).Sum();
+                                            timers.Total = hours.Select(o => o.PlannedProductionTime).Sum();
 
                                             timers.Active = hours.Select(o => o.Active).Sum();
                                             timers.Idle = hours.Select(o => o.Idle).Sum();

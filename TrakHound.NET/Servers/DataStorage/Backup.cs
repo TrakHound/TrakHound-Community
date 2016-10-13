@@ -494,7 +494,6 @@ namespace TrakHound.Servers.DataStorage
                     "`total_pieces` int(10), " +
                     "`good_pieces` int(10), " +
 
-                    "`total_time` double, " +
                     "`active` double, " +
                     "`idle` double, " +
                     "`alert` double, " +
@@ -579,7 +578,6 @@ namespace TrakHound.Servers.DataStorage
                     string.Format(columnFormat, "total_pieces") + ", " +
                     string.Format(columnFormat, "good_pieces") + ", " +
 
-                    string.Format(columnFormat, "total_time") + ", " +
                     string.Format(columnFormat, "active") + ", " +
                     string.Format(columnFormat, "idle") + ", " +
                     string.Format(columnFormat, "alert") + ", " +
@@ -603,7 +601,6 @@ namespace TrakHound.Servers.DataStorage
                     string.Format(valueFormat, hourInfo.TotalPieces) + ", " +
                     string.Format(valueFormat, hourInfo.GoodPieces) + ", " +
 
-                    string.Format(valueFormat, hourInfo.TotalTime) + ", " +
                     string.Format(valueFormat, hourInfo.Active) + ", " +
                     string.Format(valueFormat, hourInfo.Idle) + ", " +
                     string.Format(valueFormat, hourInfo.Alert) + ", " +
@@ -646,8 +643,6 @@ namespace TrakHound.Servers.DataStorage
                     hourInfo.IdealOperatingTime = DataTable_Functions.GetDoubleFromRow("ideal_operating_time", row);
                     hourInfo.TotalPieces = DataTable_Functions.GetIntegerFromRow("total_pieces", row);
                     hourInfo.GoodPieces = DataTable_Functions.GetIntegerFromRow("good_pieces", row);
-
-                    hourInfo.TotalTime = DataTable_Functions.GetDoubleFromRow("total_time", row);
 
                     hourInfo.Active = DataTable_Functions.GetDoubleFromRow("active", row);
                     hourInfo.Idle = DataTable_Functions.GetDoubleFromRow("idle", row);

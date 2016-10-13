@@ -1071,9 +1071,9 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
                     var match = ActiveHourDatas.Find(o => o.StartHour == h);
                     if (match != null)
                     {
-                        if (hour.TotalTime > 0)
+                        if (hour.PlannedProductionTime > 0)
                         {
-                            match.Value = hour.Active / hour.TotalTime;
+                            match.Value = hour.Active / hour.PlannedProductionTime;
                             match.Status = 2;
                         }
                         else match.Status = -1;
@@ -1098,9 +1098,9 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
                     var match = IdleHourDatas.Find(o => o.StartHour == h);
                     if (match != null)
                     {
-                        if (hour.TotalTime > 0)
+                        if (hour.PlannedProductionTime > 0)
                         {
-                            match.Value = hour.Idle / hour.TotalTime;
+                            match.Value = hour.Idle / hour.PlannedProductionTime;
                             match.Status = 1;
                         }
                         else match.Status = -1;
@@ -1125,9 +1125,9 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
                     var match = AlertHourDatas.Find(o => o.StartHour == h);
                     if (match != null)
                     {
-                        if (hour.TotalTime > 0)
+                        if (hour.PlannedProductionTime > 0)
                         {
-                            match.Value = hour.Alert / hour.TotalTime;
+                            match.Value = hour.Alert / hour.PlannedProductionTime;
                             match.Status = 0;
                         }
                         else match.Status = -1;
@@ -1153,7 +1153,7 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
                     var match = OeeHourDatas.Find(o => o.StartHour == h);
                     if (match != null)
                     {
-                        if (hour.TotalTime > 0)
+                        if (hour.PlannedProductionTime > 0)
                         {
                             match.Value = hour.Oee;
 
@@ -1183,7 +1183,7 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
                     var match = AvailabilityHourDatas.Find(o => o.StartHour == h);
                     if (match != null)
                     {
-                        if (hour.TotalTime > 0)
+                        if (hour.PlannedProductionTime > 0)
                         {
                             match.Value = hour.Availability;
 
@@ -1213,7 +1213,7 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
                     var match = PerformanceHourDatas.Find(o => o.StartHour == h);
                     if (match != null)
                     {
-                        if (hour.TotalTime > 0)
+                        if (hour.PlannedProductionTime > 0)
                         {
                             match.Value = hour.Performance;
 
@@ -1243,7 +1243,7 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
                     var match = QualityHourDatas.Find(o => o.StartHour == h);
                     if (match != null)
                     {
-                        if (hour.TotalTime > 0)
+                        if (hour.PlannedProductionTime > 0)
                         {
                             match.Value = hour.Quality;
 
@@ -1273,7 +1273,7 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
                     var match = PartCountHourDatas.Find(o => o.StartHour == h);
                     if (match != null)
                     {
-                        if (hour.TotalTime > 0)
+                        if (hour.PlannedProductionTime > 0)
                         {
                             match.Value = hour.TotalPieces;
                             match.Status = 3;

@@ -232,8 +232,6 @@ namespace TrakHound.API
                                 int totalPieces = 0;
                                 int goodPieces = 0;
 
-                                double totalTime = 0;
-
                                 double active = 0;
                                 double idle = 0;
                                 double alert = 0;
@@ -254,8 +252,6 @@ namespace TrakHound.API
                                     totalPieces += sameHour.TotalPieces;
                                     goodPieces += sameHour.GoodPieces;
 
-                                    totalTime += sameHour.TotalTime;
-
                                     // Device Status
                                     active += sameHour.Active;
                                     idle += sameHour.Idle;
@@ -275,8 +271,6 @@ namespace TrakHound.API
                                 hourInfo.TotalPieces = totalPieces;
                                 hourInfo.GoodPieces = goodPieces;
 
-                                hourInfo.TotalTime = Math.Round(totalTime, 2);
-
                                 hourInfo.Active = Math.Round(active, 2);
                                 hourInfo.Idle = Math.Round(idle, 2);
                                 hourInfo.Alert = Math.Round(alert, 2);
@@ -289,7 +283,6 @@ namespace TrakHound.API
 
                                 newHours.Add(hourInfo);
                             }
-
                         }
 
                         Hours = newHours;

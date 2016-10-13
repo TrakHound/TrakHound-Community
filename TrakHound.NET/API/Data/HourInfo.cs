@@ -39,10 +39,6 @@ namespace TrakHound.API
             public int GoodPieces { get; set; }
 
 
-            [JsonProperty("total_time")]
-            public double TotalTime { get; set; }
-
-
             [JsonProperty("active")]
             public double Active { get; set; }
 
@@ -129,7 +125,14 @@ namespace TrakHound.API
                     DateTime date = DateTime.MinValue;
                     if (DateTime.TryParse(Date, out date))
                     {
-                        return new DateTime(date.Year, date.Month, date.Day, Hour, 0, 0);
+                        try
+                        {
+                            return new DateTime(date.Year, date.Month, date.Day, Hour, 0, 0, DateTimeKind.Utc);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logging.Logger.Log("GetDateTime() :: Exception :: " + ex.Message);
+                        }
                     }
                 }
 
@@ -164,8 +167,6 @@ namespace TrakHound.API
                         int totalPieces = 0;
                         int goodPieces = 0;
 
-                        double totalTime = 0;
-
                         double active = 0;
                         double idle = 0;
                         double alert = 0;
@@ -186,8 +187,6 @@ namespace TrakHound.API
                             totalPieces += sameHour.TotalPieces;
                             goodPieces += sameHour.GoodPieces;
 
-                            totalTime += sameHour.TotalTime;
-
                             // Device Status
                             active += sameHour.Active;
                             idle += sameHour.Idle;
@@ -206,8 +205,6 @@ namespace TrakHound.API
                         hourInfo.IdealOperatingTime = Math.Round(idealOperatingTime, 2);
                         hourInfo.TotalPieces = totalPieces;
                         hourInfo.GoodPieces = goodPieces;
-
-                        hourInfo.TotalTime = Math.Round(totalTime, 2);
 
                         hourInfo.Active = Math.Round(active, 2);
                         hourInfo.Idle = Math.Round(idle, 2);
@@ -275,7 +272,7 @@ namespace TrakHound.API
 
                     foreach (var hour in hours)
                     {
-                        totalTime += hour.TotalTime;
+                        totalTime += hour.PlannedProductionTime;
 
                         // Device Status
                         active += hour.Active;
