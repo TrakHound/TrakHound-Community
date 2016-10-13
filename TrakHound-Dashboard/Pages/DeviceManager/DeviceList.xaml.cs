@@ -6,6 +6,7 @@
 using MTConnect;
 using MTConnect.Application.Components;
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -66,30 +67,13 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceAdded), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { data });
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceUpdated), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { data });
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceRemoved), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { data });
+
+            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceAvailability), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { data });
         }
 
         #endregion
 
         private UserConfiguration currentUser;
-
-        ObservableCollection<DeviceDescription> _devices;
-        /// <summary>
-        /// Collection of DeviceDescription objects
-        /// </summary>
-        public ObservableCollection<DeviceDescription> Devices
-        {
-            get
-            {
-                if (_devices == null)
-                    _devices = new ObservableCollection<DeviceDescription>();
-                return _devices;
-            }
-
-            set
-            {
-                _devices = value;
-            }
-        }
 
         /// <summary>
         /// Event to request to open the Edit Page
@@ -155,7 +139,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                 {
                     LoadingStatus = "Loading Devices..";
                     Loading = true;
-                    Devices.Clear();
+                    DeviceListItems.Clear();
                 }
 
                 if (data.Id == "DEVICES_LOADED")
@@ -165,14 +149,32 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
             }
         }
 
+        void UpdateDeviceAvailability(EventData data)
+        {
+            if (data != null && data.Id == "STATUS_CONTROLLER" && data.Data01 != null && data.Data02 != null && data.Data02.GetType() == typeof(Data.ControllerInfo))
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    string uniqueId = data.Data01.ToString();
+                    var info = (Data.ControllerInfo)data.Data02;
+
+                    int index = DeviceListItems.ToList().FindIndex(x => x.UniqueId == uniqueId);
+                    if (index >= 0)
+                    {
+                        var item = DeviceListItems[index];
+                        item.Availability = info.Availability == "AVAILABLE";
+                    }
+                }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
+            }
+        }
+
         void UpdateDeviceAdded(EventData data)
         {
             if (data != null)
             {
                 if (data.Id == "DEVICE_ADDED" && data.Data01 != null)
                 {
-                    Devices.Add((DeviceDescription)data.Data01);
-                    Devices.Sort();
+                    AddDeviceListItem((DeviceDescription)data.Data01);
                 }
             }
         }
@@ -183,15 +185,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
             {
                 if (data.Id == "DEVICE_UPDATED" && data.Data01 != null)
                 {
-                    var device = (DeviceDescription)data.Data01;
-
-                    int i = Devices.ToList().FindIndex(x => x.UniqueId == device.UniqueId);
-                    if (i >= 0)
-                    {
-                        Devices.RemoveAt(i);
-                        Devices.Insert(i, device);
-                        Devices.Sort();
-                    }
+                    UpdateDeviceListItem((DeviceDescription)data.Data01);
                 }
             }
         }
@@ -202,19 +196,108 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
             {
                 if (data.Id == "DEVICE_REMOVED" && data.Data01 != null)
                 {
-                    var device = (DeviceDescription)data.Data01;
-
-                    int i = Devices.ToList().FindIndex(x => x.UniqueId == device.UniqueId);
-                    if (i >= 0)
-                    {
-                        Devices.RemoveAt(i);
-                    }
+                    RemoveDeviceListItem((DeviceDescription)data.Data01);
                 }
             }
         }
 
         #endregion
 
+        #region "Device List Items"
+
+        public class DeviceListItem : DeviceDescription, INotifyPropertyChanged
+        {
+            public DeviceListItem(DeviceDescription device)
+            {
+                UniqueId = device.UniqueId;
+                Index = device.Index;
+                Enabled = device.Enabled;
+
+                Description = device.Description;
+                Agent = device.Agent;
+            }
+
+            private bool availability;
+            public bool Availability
+            {
+                get { return availability; }
+                set { SetField(ref availability, value, "Availability"); }
+            }
+
+
+            public event PropertyChangedEventHandler PropertyChanged;
+            protected virtual void OnPropertyChanged(string propertyName)
+            {
+                PropertyChangedEventHandler handler = PropertyChanged;
+                handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
+            protected bool SetField<T>(ref T field, T value, string propertyName)
+            {
+                if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+                field = value;
+                OnPropertyChanged(propertyName);
+                return true;
+            }
+        }
+
+        ObservableCollection<DeviceListItem> _deviceListItems;
+        public ObservableCollection<DeviceListItem> DeviceListItems
+        {
+            get
+            {
+                if (_deviceListItems == null)
+                    _deviceListItems = new ObservableCollection<DeviceListItem>();
+                return _deviceListItems;
+            }
+
+            set
+            {
+                _deviceListItems = value;
+            }
+        }
+
+        private void AddDeviceListItem(DeviceDescription device)
+        {
+            lock(DeviceListItems)
+            {
+                int i = DeviceListItems.ToList().FindIndex(x => x.UniqueId == device.UniqueId);
+                if (i < 0)
+                {
+                    var item = new DeviceListItem(device);
+                    DeviceListItems.Add(item);
+                    DeviceListItems.Sort();
+                }
+            }
+        }
+
+        private void UpdateDeviceListItem(DeviceDescription device)
+        {
+            lock(DeviceListItems)
+            {
+                int i = DeviceListItems.ToList().FindIndex(x => x.UniqueId == device.UniqueId);
+                if (i >= 0)
+                {
+                    DeviceListItems.RemoveAt(i);
+                    var item = new DeviceListItem(device);
+                    DeviceListItems.Insert(i, item);
+                    DeviceListItems.Sort();
+                }
+            }
+        }
+
+        private void RemoveDeviceListItem(DeviceDescription device)
+        {
+            lock (DeviceListItems)
+            {
+                int i = DeviceListItems.ToList().FindIndex(x => x.UniqueId == device.UniqueId);
+                if (i >= 0)
+                {
+                    DeviceListItems.RemoveAt(i);
+                }
+            }
+        }
+
+        #endregion
 
         #region "Remove Devices"
 
@@ -294,8 +377,8 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
             { 
                 foreach (var device in removeInfo.Devices)
                 {
-                    int index = Devices.ToList().FindIndex(o => o.UniqueId == device.UniqueId);
-                    if (index >= 0) Devices.RemoveAt(index);
+                    int index = DeviceListItems.ToList().FindIndex(o => o.UniqueId == device.UniqueId);
+                    if (index >= 0) DeviceListItems.RemoveAt(index);
                 }
 
                 foreach (var device in removeInfo.Devices)
@@ -589,24 +672,24 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                     for (var x = 0; x <= infos.Count - 1; x++)
                     {
                         var info = infos[x];
-                        var device = Devices[info.OldListIndex];
+                        var device = DeviceListItems[info.OldListIndex];
 
                         // Set new Index value
                         device.Index = info.NewListIndex;
                         info.Device = device;
 
                         // Move item in list to new index (Device List only)
-                        Devices.RemoveAt(info.OldListIndex);
-                        Devices.Insert(info.NewListIndex, device);
+                        DeviceListItems.RemoveAt(info.OldListIndex);
+                        DeviceListItems.Insert(info.NewListIndex, device);
 
                         selectedIndexes[x] = info.NewListIndex;
                     }
 
                     // Create list of new indexes (include unchanged)
                     var allIndexes = new List<MoveInfo>();
-                    foreach (var device in Devices.ToList())
+                    foreach (var device in DeviceListItems.ToList())
                     {
-                        int index = Devices.IndexOf(device);
+                        int index = DeviceListItems.IndexOf(device);
                         device.Index = index;
                         allIndexes.Add(new MoveInfo(device, -1, index, -1));
                     }
@@ -1176,6 +1259,8 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
         private void Remove_DataGridRowContextMenu_Click(object sender, RoutedEventArgs e) { RemoveClicked(); }
 
         private void Backup_DataGridRowContextMenu_Click(object sender, RoutedEventArgs e) { BackupClicked(); }
+
+        private void Regenerate_DataGridRowContextMenu_Click(object sender, RoutedEventArgs e) { RegenerateClicked(); }
 
         #endregion
 

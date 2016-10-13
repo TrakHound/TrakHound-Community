@@ -425,6 +425,8 @@ namespace TrakHound_Dashboard
             ShowDeviceManagerRequested(data);
             ShowRequested(data);
 
+            if (deviceListPage != null) deviceListPage.GetSentData(data);
+
             foreach (var tabHeader in TabHeaders)
             {
                 Dispatcher.BeginInvoke(new Action(() =>
@@ -565,19 +567,9 @@ namespace TrakHound_Dashboard
             {
                 deviceListPage = new DeviceList();
 
-                deviceListPage.PageClosed += DeviceListPage_PageClosed;
                 deviceListPage.AddDeviceSelected += DeviceManager_DeviceList_AddDeviceSelected;
                 deviceListPage.EditSelected += DeviceManager_DeviceList_DeviceEditSelected;
             }
-        }
-
-        private void DeviceListPage_PageClosed()
-        {
-            deviceListPage.PageClosed -= DeviceListPage_PageClosed;
-            deviceListPage.AddDeviceSelected -= DeviceManager_DeviceList_AddDeviceSelected;
-            deviceListPage.EditSelected -= DeviceManager_DeviceList_DeviceEditSelected;
-
-            deviceListPage = null;
         }
 
         public void DeviceManager_DeviceList_Open()

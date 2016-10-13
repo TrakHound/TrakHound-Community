@@ -52,6 +52,8 @@ namespace TrakHound_Dashboard
 
             Application.Current.MainWindow = this;
 
+            DeviceManager_DeviceList_Initialize();
+
             // Read Users and Login
             Splash_UpdateStatus("...Logging in User", 40);
             Users_Initialize();

@@ -27,6 +27,7 @@
             <controls:DataGridMenuItem Header="Remove" DataObject="{Binding}" Click="Remove_DataGridRowContextMenu_Click"/>
             <Separator/>
             <controls:DataGridMenuItem Header="Backup.." DataObject="{Binding}" Click="Backup_DataGridRowContextMenu_Click"/>
+            <controls:DataGridMenuItem Header="Regenerate.." DataObject="{Binding}" Click="Regenerate_DataGridRowContextMenu_Click"/>
         </ContextMenu>
 
         <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
@@ -155,7 +156,7 @@
         </Border>
 
         <!--Device Tables-->
-        <DataGrid x:Name="Devices_DG" Grid.Row="1" ItemsSource="{Binding Devices}"
+        <DataGrid x:Name="Devices_DG" Grid.Row="1" ItemsSource="{Binding DeviceListItems}"
                   AutoGenerateColumns="False"
                   HeadersVisibility="Column"
                   SelectionMode="Extended"
@@ -163,10 +164,10 @@
             <DataGrid.Style>
                 <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Devices}" Value="{x:Null}">
+                        <DataTrigger Binding="{Binding DeviceListItems}" Value="{x:Null}">
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding Devices.Count}" Value="0">
+                        <DataTrigger Binding="{Binding DeviceListItems.Count}" Value="0">
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                     </Style.Triggers>
@@ -193,12 +194,67 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
+                <!--Availability-->
+                <DataGridTemplateColumn Header="Availability">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="5"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!--On-->
+                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
+                                            <Setter Property="OpacityMask" Value="{StaticResource On_IMG}" />
+                                            <Setter Property="Background" Value="{StaticResource Disabled}"/>
+                                            <Setter Property="Height" Value="25"/>
+                                            <Setter Property="Width" Value="25"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Availability}" Value="true">
+                                                    <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+                                </Grid>
+
+                                <!--Off-->
+                                <Grid Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
+                                            <Setter Property="OpacityMask" Value="{StaticResource Off_IMG}" />
+                                            <Setter Property="Background" Value="{StaticResource Disabled}"/>
+                                            <Setter Property="Height" Value="25"/>
+                                            <Setter Property="Width" Value="25"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Availability}" Value="false">
+                                                    <Setter Property="Background" Value="{StaticResource StatusRed}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+                                </Grid>
+
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
                 <!--Description Columns-->
                 <DataGridTextColumn Header="Description" Binding="{Binding Description.Description}"/>
+                <DataGridTextColumn Header="Device ID" Binding="{Binding Description.DeviceId}"/>
                 <DataGridTextColumn Header="Manufacturer" Binding="{Binding Description.Manufacturer}"/>
                 <DataGridTextColumn Header="Model" Binding="{Binding Description.Model}"/>
                 <DataGridTextColumn Header="Serial" Binding="{Binding Description.Serial}"/>
-                <DataGridTextColumn Header="Device ID" Binding="{Binding Description.DeviceId}"/>
+                <DataGridTextColumn Header="Controller" Binding="{Binding Description.Controller}"/>
+                <DataGridTextColumn Header="Location" Binding="{Binding Description.Location}"/>
+                <DataGridTextColumn Header="Agent Address" Binding="{Binding Agent.Address}"/>
+                <DataGridTextColumn Header="Agent Port" Binding="{Binding Agent.Port}"/>
+                <DataGridTextColumn Header="Agent Device Name" Binding="{Binding Agent.DeviceName}"/>
 
             </DataGrid.Columns>
 
@@ -210,10 +266,10 @@
                 <Style TargetType="StackPanel">
                     <Setter Property="Visibility" Value="Collapsed"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Devices}" Value="{x:Null}">
+                        <DataTrigger Binding="{Binding DeviceListItems}" Value="{x:Null}">
                             <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding Devices.Count}" Value="0">
+                        <DataTrigger Binding="{Binding DeviceListItems.Count}" Value="0">
                             <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
                     </Style.Triggers>
