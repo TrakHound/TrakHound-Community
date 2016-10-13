@@ -21,7 +21,14 @@
                     <ImageBrush x:Key="Power_Large_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Power_01_100px.png"/>
                     <ImageBrush x:Key="Power_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Power_01.png"  />
                     <ImageBrush x:Key="Status_Normal_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/CheckMark_01.png" />
+
+                    <!--Availability Icons-->
                     
+                    <ImageBrush x:Key="On_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/On_01_25px.png" />
+                    <ImageBrush x:Key="Off_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Off_01_25px.png" />
+                    <ImageBrush x:Key="On_Large_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/On_01.png" />
+                    <ImageBrush x:Key="Off_Large_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Off_01.png" />
+
                     <!--Device Status Icons-->
                     <ImageBrush x:Key="Active_Large_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Active_01_100px.png" />
                     <ImageBrush x:Key="Idle_Large_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Hourglass_01_100px.png" />
