@@ -54,6 +54,9 @@ namespace TrakHound_Server.Plugins.CloudData
                     // Get Cycle Data
                     //case "CYCLES": UpdateCycleData(data); break;
 
+                    // Get Device Availability
+                    case "DEVICE_AVAILABILITY": UpdateDeviceAvailability(data); break;
+
                     // Get Generated Event Item data
                     case "GENERATED_EVENTS": UpdateGeneratedEvents(data); break;
 
@@ -98,6 +101,20 @@ namespace TrakHound_Server.Plugins.CloudData
             if (data.Data02 != null && data.Data03 != null)
             {
                 deviceInfo.AddClass(data.Data02.ToString(), data.Data03);
+            }
+        }
+
+        private void UpdateDeviceAvailability(EventData data)
+        {
+            if (data.Data02 != null)
+            {
+                bool availability = (bool)data.Data02;
+
+                if (deviceInfo.Status == null) deviceInfo.Status = new Data.StatusInfo();
+                deviceInfo.Status.Connected = availability ? 1 : 0;
+
+                if (!availability || deviceInfo.Controller == null) deviceInfo.Controller = new Data.ControllerInfo();
+                deviceInfo.Controller.Availability = availability ? "AVAILABLE" : "UNAVAILABLE";
             }
         }
 
@@ -287,7 +304,7 @@ namespace TrakHound_Server.Plugins.CloudData
                         // Device Status
                         if (gEvent.EventName == "device_status" && !string.IsNullOrEmpty(gEvent.CurrentValue.Value))
                         {
-                            hourInfo.TotalTime = duration;
+                            //hourInfo.TotalTime = duration;
 
                             switch (gEvent.CurrentValue.Value.ToLower())
                             {

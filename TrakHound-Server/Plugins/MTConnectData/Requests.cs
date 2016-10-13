@@ -56,8 +56,6 @@ namespace TrakHound_Server.Plugins.MTConnectData
                 {
                     probeData = GetProbe(ac);
 
-                    if (probeData != null) UpdateAgentData(probeData.Header);
-
                     // Send the Probe data to other plugins
                     SendProbeData(probeData, config);
                 }
@@ -67,6 +65,8 @@ namespace TrakHound_Server.Plugins.MTConnectData
                     currentData = GetCurrent(ac);
                     if (currentData != null)
                     {
+                        if (currentData != null) UpdateAgentData(currentData.Header);
+
                         // Send the Current data to other plugins
                         SendCurrentData(currentData, config);
 
@@ -75,22 +75,14 @@ namespace TrakHound_Server.Plugins.MTConnectData
 
                         // Send the Sample data to other plugins
                         SendSampleData(sampleData, config);
-
-                        // Update the 'device_available' variable in the Variables table
-                        bool available = GetAvailability(currentData);
-                        UpdateAvailability(available, config);
                     }
                     else
                     {
                         probeData = null;
                         UpdateAvailability(false, config);
                     }
-                }
-                else
-                {
-                    UpdateAvailability(false, config);
-                }
-            }
+                } else UpdateAvailability(false, config);
+            } else UpdateAvailability(false, config);
         }
 
         private void UpdateAvailability(bool available, DeviceConfiguration config)
@@ -100,21 +92,6 @@ namespace TrakHound_Server.Plugins.MTConnectData
             data.Data01 = config;
             data.Data02 = available;
             SendData?.Invoke(data);
-        }
-
-        private bool GetAvailability(MTConnect.Application.Streams.ReturnData data)
-        {
-            if (data.DeviceStreams.Count > 0)
-            {
-                var deviceStream = data.DeviceStreams[0];
-                var avail = deviceStream.GetAllDataItems().Find(x => x.Type.ToLower() == "availability");
-                if (avail != null)
-                {
-                    if (avail.CDATA == "AVAILABLE") return true;
-                }
-            }
-
-            return false;
         }
 
         private void UpdateAgentData(MTConnect.Application.Headers.Devices header)
