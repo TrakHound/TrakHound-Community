@@ -119,8 +119,14 @@ namespace TrakHound_Server.Plugins.GeneratedEvents
             e.CurrentValue.Sequence = instance.Sequence;
 
             // Set Duration
-            TimeSpan ts = e.CurrentValue.TimeStamp - e.PreviousValue.TimeStamp;
-            eventReturn.Duration = ts.TotalSeconds;
+            if (e.CurrentValue.TimeStamp > DateTime.MinValue && e.PreviousValue.TimeStamp > DateTime.MinValue)
+            {
+                eventReturn.Duration = (e.CurrentValue.TimeStamp - e.PreviousValue.TimeStamp).TotalSeconds;
+            }
+            else
+            {
+                eventReturn.Duration = 0;
+            }
 
             // Create new GeneratedEvent object
             var result = new GeneratedEvent();
