@@ -1068,8 +1068,6 @@
                                 <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
                                     <Setter Property="Background" Value="{StaticResource StatusRed}"/>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding AlertPercentage}" Value="0">
-                                </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </Border.Style>
@@ -1086,9 +1084,12 @@
                                 <Style TargetType="Grid">
                                     <Setter Property="Height" Value="20"/>
                                     <Setter Property="Width" Value="20"/>
-                                    <Setter Property="Background" Value="{StaticResource Text}"/>
+                                    <Setter Property="Background" Value="{StaticResource StatusRed}"/>
                                     <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}" />
                                     <Style.Triggers>
+                                        <DataTrigger Binding="{Binding AlertPercentage}" Value="0">
+                                            <Setter Property="Background" Value="{StaticResource Text}"/>
+                                        </DataTrigger>
                                         <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
                                             <Setter Property="Background" Value="#FFFFFF"/>
                                         </DataTrigger>
@@ -1123,8 +1124,11 @@
                                 <ui:TimeDisplay Time="{Binding AlertTime}" MaxHeight="35" Margin="10,0" HorizontalAlignment="Center">
                                     <ui:TimeDisplay.Style>
                                         <Style TargetType="ui:TimeDisplay">
-                                            <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                                            <Setter Property="Foreground" Value="{StaticResource StatusRed}"/>
                                             <Style.Triggers>
+                                                <DataTrigger Binding="{Binding AlertPercentage}" Value="0">
+                                                    <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                                                </DataTrigger>
                                                 <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
                                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                                 </DataTrigger>
@@ -1139,13 +1143,16 @@
                             <ui:NumberDisplay Value="{Binding AlertPercentage}" Margin="5,0">
                                 <ui:NumberDisplay.Style>
                                     <Style TargetType="ui:NumberDisplay">
-                                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                                        <Setter Property="Foreground" Value="{StaticResource StatusRed}"/>
                                         <Setter Property="MaxHeight" Value="45"/>
                                         <Setter Property="ValueFormat" Value="N1"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding WidthStatus}" Value="0">
                                                 <Setter Property="MaxHeight" Value="30"/>
                                                 <Setter Property="ValueFormat" Value="N0"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding AlertPercentage}" Value="0">
+                                                <Setter Property="Foreground" Value="{StaticResource Text}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
                                                 <Setter Property="Foreground" Value="#FFFFFF"/>
@@ -1798,22 +1805,22 @@
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding ControllerMode}" Value="SEMI_AUTOMATIC">
-                                        <Setter Property="Background" Value="#FFF"/>
+                                        <!--<Setter Property="Background" Value="#FFF"/>-->
                                         <Setter Property="OpacityMask" Value="{StaticResource SemiAuto_IMG}" />
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding ControllerMode}" Value="MANUAL_DATA_INPUT">
-                                        <Setter Property="Background" Value="#FFF"/>
+                                        <!--<Setter Property="Background" Value="#FFF"/>-->
                                         <Setter Property="OpacityMask" Value="{StaticResource MDI_IMG}" />
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding ControllerMode}" Value="MANUAL">
-                                        <Setter Property="Background" Value="#FFF"/>
+                                        <!--<Setter Property="Background" Value="#FFF"/>-->
                                         <Setter Property="OpacityMask" Value="{StaticResource Manual_IMG}" />
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding ControllerMode}" Value="EDIT">
-                                        <Setter Property="Background" Value="#FFF"/>
+                                        <!--<Setter Property="Background" Value="#FFF"/>-->
                                         <Setter Property="OpacityMask" Value="{StaticResource Edit_IMG}" />
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
@@ -1842,7 +1849,7 @@
                                         <DataTrigger Binding="{Binding ControllerMode}" Value="AUTOMATIC">
                                             <Setter Property="Foreground" Value="#FFF"/>
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding ControllerMode}" Value="SEMI_AUTOMATIC">
+                                        <!--<DataTrigger Binding="{Binding ControllerMode}" Value="SEMI_AUTOMATIC">
                                             <Setter Property="Foreground" Value="#FFF"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding ControllerMode}" Value="MANUAL_DATA_INPUT">
@@ -1853,7 +1860,7 @@
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding ControllerMode}" Value="EDIT">
                                             <Setter Property="Foreground" Value="#FFF"/>
-                                        </DataTrigger>
+                                        </DataTrigger>-->
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
