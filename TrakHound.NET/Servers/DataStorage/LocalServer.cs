@@ -142,6 +142,7 @@ namespace TrakHound.Servers.DataStorage
             }
 
             StopBackupTimer();
+            Backup.Create(Data.DeviceInfos.ToList());
 
             Logger.Log("Local Data Server Stopped", LogLineType.Console);
         }
@@ -552,7 +553,7 @@ namespace TrakHound.Servers.DataStorage
             private static bool TestHourDate(API.Data.HourInfo hourInfo, DateTime from, DateTime to)
             {
                 DateTime hourTime = hourInfo.GetDateTime();
-                return hourTime >= from && hourTime <= to;
+                return hourTime >= from.ToUniversalTime() && hourTime < to.ToUniversalTime();
             }
         }
 
