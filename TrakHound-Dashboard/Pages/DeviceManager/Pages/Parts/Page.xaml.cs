@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Shapes;
 
 using TrakHound;
+using TrakHound.Configurations;
 using TrakHound.Plugins.Server;
 using TrakHound.Tools;
 
@@ -23,6 +24,9 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.Parts
     /// </summary>
     public partial class Page : UserControl, IConfigurationPage
     {
+        const string prefix = "/Parts/";
+
+
         public Page()
         {
             InitializeComponent();
@@ -61,23 +65,23 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.Parts
 
             foreach (var item in PartCountItems)
             {
-                string eventPrefix = prefix + "/Event||" + i.ToString("00");
+                if (!string.IsNullOrEmpty(item.EventName) && !string.IsNullOrEmpty(item.EventValue))
+                {
+                    string eventPrefix = prefix + "Event||" + i.ToString("00");
 
-                DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix, "attributes", "id||" + i.ToString("00") + ";");
-                DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/EventName", "value", item.EventName);
-                DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/EventValue", "value", item.EventValue);
-                DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/PreviousEventValue", "value", item.PreviousEventValue);
-                DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/ValueType", "value", FormatValue(item.ValueType));
-                DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/CaptureItemLink", "value", item.CaptureItemLink);
-                DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/CalculationType", "value", item.CalculationType);
-                DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/StaticIncrementValue", "value", item.StaticIncrementValue.ToString());
+                    DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix, "attributes", "id||" + i.ToString("00") + ";");
+                    DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/EventName", "value", item.EventName);
+                    DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/EventValue", "value", item.EventValue);
+                    DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/PreviousEventValue", "value", item.PreviousEventValue);
+                    DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/ValueType", "value", FormatValue(item.ValueType));
+                    DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/CaptureItemLink", "value", item.CaptureItemLink);
+                    DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/CalculationType", "value", item.CalculationType);
+                    DataTable_Functions.UpdateTableValue(dt, "address", eventPrefix + "/StaticIncrementValue", "value", item.StaticIncrementValue.ToString());
 
-                i++;
+                    i++;
+                }
             }
         }
-
-        const string prefix = "/Parts/";
-
 
         private ObservableCollection<GeneratedEventItem> _generatedEventItems;
         public ObservableCollection<GeneratedEventItem> GeneratedEventItems
