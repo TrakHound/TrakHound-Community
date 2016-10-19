@@ -12,6 +12,12 @@ namespace TrakHound_Server.Plugins.MTConnectData
 {
     public partial class Plugin
     {
+        private DeviceConfiguration configuration;
+
+        private bool started = false;
+        private bool verbose = true;
+        private bool first = true;
+        private object _lock = new object();
 
         private ManualResetEvent stop;
 
@@ -32,7 +38,8 @@ namespace TrakHound_Server.Plugins.MTConnectData
                 {
                     do
                     {
-                        RunRequests(config);
+                         RunRequests(config);
+                        lock (_lock) first = false;
 
                     } while (!stop.WaitOne(ac.Heartbeat, true));
                 });
@@ -65,7 +72,11 @@ namespace TrakHound_Server.Plugins.MTConnectData
                     currentData = GetCurrent(ac);
                     if (currentData != null)
                     {
-                        if (currentData != null) UpdateAgentData(currentData.Header);
+                        if (currentData != null && currentData.Header != null)
+                        {
+                            if (first) UpdateAgentData(currentData.Header.InstanceId, currentData.Header.LastSequence);
+                            else UpdateAgentData(currentData.Header.InstanceId);
+                        }
 
                         // Send the Current data to other plugins
                         SendCurrentData(currentData, config);
@@ -94,32 +105,26 @@ namespace TrakHound_Server.Plugins.MTConnectData
             SendData?.Invoke(data);
         }
 
-        private void UpdateAgentData(MTConnect.Application.Headers.Devices header)
+        private void UpdateAgentData(long instanceId)
         {
-            if (header != null)
+            if (instanceId != agentInstanceId)
             {
-                if (header.InstanceId != agentInstanceId)
-                {
-                    SendAgentReset(configuration);
-                    AgentData.Save(header, configuration);
-                }
+                SendAgentReset(configuration);
+                AgentData.Save(configuration, instanceId);
 
-                agentInstanceId = header.InstanceId;
+                agentInstanceId = instanceId;
             }
         }
 
-        private void UpdateAgentData(MTConnect.Application.Headers.Streams header)
+        private void UpdateAgentData(long instanceId, long sequence)
         {
-            if (header != null)
+            if (instanceId != agentInstanceId || sequence != lastSequenceSampled)
             {
-                if (header.InstanceId != agentInstanceId)
-                {
-                    SendAgentReset(configuration);
-                    AgentData.Save(header, configuration);
-                }
-
-                agentInstanceId = header.InstanceId;
-            }
+                AgentData.Save(configuration, instanceId, sequence);
+                agentInstanceId = instanceId;
+                lastSequenceSampled = sequence;
+                if (instanceId != agentInstanceId) SendAgentReset(configuration);
+            }            
         }
 
         private void SendAgentReset(DeviceConfiguration config)

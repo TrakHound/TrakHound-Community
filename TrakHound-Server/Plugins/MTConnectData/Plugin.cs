@@ -17,7 +17,15 @@ namespace TrakHound_Server.Plugins.MTConnectData
         {
             configuration = config;
 
-            agentInstanceId = AgentData.Load(config);
+            var agentData = AgentData.Load(config);
+            if (agentData != null)
+            {
+                agentInstanceId = agentData.InstanceId;
+                lastInstanceId = agentData.InstanceId;
+                lastSequenceSampled = agentData.LastSequence;
+
+                System.Console.WriteLine(config.UniqueId + " :: " + agentInstanceId + " : " + lastSequenceSampled);
+            }
 
             Start(config);
         }
@@ -33,10 +41,5 @@ namespace TrakHound_Server.Plugins.MTConnectData
             Stop();
         }
 
-        DeviceConfiguration configuration;
-
-        private bool started = false;
-
-        private bool verbose = true;
     }
 }

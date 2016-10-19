@@ -39,9 +39,6 @@ namespace TrakHound_Server.Plugins.MTConnectData
             proxy.Address = ac.ProxyAddress;
             proxy.Port = ac.ProxyPort;
 
-            lastInstanceId = agentInstanceId;
-            UpdateAgentData(header);
-
             SampleInfo info = GetSampleInfo(header, config);
             if (info != null)
             {
@@ -54,6 +51,8 @@ namespace TrakHound_Server.Plugins.MTConnectData
                     result = Requests.Get(url, proxy, 5000, 2);
                     if (result != null)
                     {
+                        UpdateAgentData(header.InstanceId, info.From + info.Count);
+
                         if (verbose) Logger.Log("Sample Successful : " + url + " @ " + requestTimestamp.ToString("o"), LogLineType.Console);
                     }
                     else
@@ -61,7 +60,7 @@ namespace TrakHound_Server.Plugins.MTConnectData
                         Logger.Log("Sample Error : " + url + " @ " + requestTimestamp.ToString("o"));
                     }
                 }
-                //else Logger.Log("No New Data :: Sample Skipped", LogLineType.Console);
+                else UpdateAgentData(header.InstanceId, header.LastSequence);
             }
 
             return result;
@@ -121,8 +120,6 @@ namespace TrakHound_Server.Plugins.MTConnectData
             }
 
             result.Count = sampleCount;
-
-            lastSequenceSampled = last;
 
             return result;
         }

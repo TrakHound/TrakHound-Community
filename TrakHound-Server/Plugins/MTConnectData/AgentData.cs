@@ -16,7 +16,15 @@ namespace TrakHound_Server.Plugins.MTConnectData
 
         public long InstanceId { get; set; }
 
-        public static void Save(MTConnect.Application.Headers.Devices header, DeviceConfiguration config)
+        public long LastSequence { get; set; }
+
+
+        public static void Save(DeviceConfiguration config, long instanceId)
+        {
+            Save(config, instanceId, -1);
+        }
+
+        public static void Save(DeviceConfiguration config, long instanceId, long sequence)
         {
             string json = Properties.Settings.Default.StoredAgentData;
             if (!string.IsNullOrEmpty(json))
@@ -33,11 +41,13 @@ namespace TrakHound_Server.Plugins.MTConnectData
                         i = agentDatas.FindIndex(o => o.UniqueId == config.UniqueId);
                     }
 
-                    agentDatas[i].InstanceId = header.InstanceId;
+                    agentDatas[i].InstanceId = instanceId;
+                    if (sequence >= 0) agentDatas[i].LastSequence = sequence;
 
                     Properties.Settings.Default.StoredAgentData = JSON.FromList<AgentData>(agentDatas);
                     Properties.Settings.Default.Save();
                 }
+                else System.Console.WriteLine(config.UniqueId + " :: Error Saving AgentData");
             }
             else
             {
@@ -45,7 +55,8 @@ namespace TrakHound_Server.Plugins.MTConnectData
 
                 var agentData = new AgentData();
                 agentData.UniqueId = config.UniqueId;
-                agentData.InstanceId = header.InstanceId;
+                agentData.InstanceId = instanceId;
+                if (sequence >= 0) agentData.LastSequence = sequence;
                 agentDatas.Add(agentData);
 
                 Properties.Settings.Default.StoredAgentData = JSON.FromList<AgentData>(agentDatas);
@@ -53,44 +64,7 @@ namespace TrakHound_Server.Plugins.MTConnectData
             }
         }
 
-        public static void Save(MTConnect.Application.Headers.Streams header, DeviceConfiguration config)
-        {
-            string json = Properties.Settings.Default.StoredAgentData;
-            if (!string.IsNullOrEmpty(json))
-            {
-                var agentDatas = JSON.ToType<List<AgentData>>(json);
-                if (agentDatas != null)
-                {
-                    int i = agentDatas.FindIndex(o => o.UniqueId == config.UniqueId);
-                    if (i < 0)
-                    {
-                        var agentData = new AgentData();
-                        agentData.UniqueId = config.UniqueId;
-                        agentDatas.Add(agentData);
-                        i = agentDatas.FindIndex(o => o.UniqueId == config.UniqueId);
-                    }
-
-                    agentDatas[i].InstanceId = header.InstanceId;
-
-                    Properties.Settings.Default.StoredAgentData = JSON.FromList<AgentData>(agentDatas);
-                    Properties.Settings.Default.Save();
-                }
-            }
-            else
-            {
-                var agentDatas = new List<AgentData>();
-
-                var agentData = new AgentData();
-                agentData.UniqueId = config.UniqueId;
-                agentData.InstanceId = header.InstanceId;
-                agentDatas.Add(agentData);
-
-                Properties.Settings.Default.StoredAgentData = JSON.FromList<AgentData>(agentDatas);
-                Properties.Settings.Default.Save();
-            }
-        }
-
-        public static long Load(DeviceConfiguration config)
+        public static AgentData Load(DeviceConfiguration config)
         {
             string json = Properties.Settings.Default.StoredAgentData;
             if (!string.IsNullOrEmpty(json))
@@ -99,11 +73,12 @@ namespace TrakHound_Server.Plugins.MTConnectData
                 if (agentDatas != null)
                 {
                     var agentData = agentDatas.Find(o => o.UniqueId == config.UniqueId);
-                    if (agentData != null) return agentData.InstanceId;
+                    if (agentData != null) return agentData;
                 }
             }
 
-            return 0;
+            return null;
         }
+
     }
 }
