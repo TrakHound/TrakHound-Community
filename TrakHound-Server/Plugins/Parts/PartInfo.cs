@@ -37,45 +37,41 @@ namespace TrakHound_Server.Plugins.Parts
 
         private static PartInfo ProcessCaptureItemMethod(PartCountEvent partCountEvent, GeneratedEvent gEvent, long _lastSequence)
         {
-            long sequence = gEvent.CurrentValue.Sequence;
-
-            if (sequence > _lastSequence)
+            if (!string.IsNullOrEmpty(partCountEvent.CaptureItemLink))
             {
-                if (!string.IsNullOrEmpty(partCountEvent.CaptureItemLink))
+                var captureItem = gEvent.CaptureItems.Find(x => x.Name == partCountEvent.CaptureItemLink);
+
+                if (captureItem != null && captureItem.Sequence > _lastSequence)
                 {
-                    var captureItem = gEvent.CaptureItems.Find(x => x.Name == partCountEvent.CaptureItemLink);
-                    if (captureItem != null && captureItem.Sequence > _lastSequence)
+                    int count = 0;
+                    int.TryParse(captureItem.Value, out count);
+                    if (count > 0)
                     {
-                        int count = 0;
-                        int.TryParse(captureItem.Value, out count);
-                        if (count > 0)
+                        DateTime timestamp = gEvent.CurrentValue.Timestamp;
+
+                        // Create new PartInfo object
+                        var info = new PartInfo();
+                        info.Id = Guid.NewGuid().ToString();
+                        info.Timestamp = timestamp;
+                        info.Sequence = captureItem.Sequence;
+
+                        // Calculate Increment Value based on CalculationType
+                        if (partCountEvent.CalculationType == CalculationType.INCREMENTAL)
                         {
-                            DateTime timestamp = gEvent.CurrentValue.Timestamp;
-
-                            // Create new PartInfo object
-                            var info = new PartInfo();
-                            info.Id = Guid.NewGuid().ToString();
-                            info.Timestamp = timestamp;
-                            info.Sequence = captureItem.Sequence;
-
-                            // Calculate Increment Value based on CalculationType
-                            if (partCountEvent.CalculationType == CalculationType.INCREMENTAL)
-                            {
-                                info.Count = count;
-                            }
-                            else if (partCountEvent.CalculationType == CalculationType.TOTAL)
-                            {
-                                int previousCount = 0;
-                                int.TryParse(captureItem.PreviousValue, out previousCount);
-
-                                // If Part Count is less than stored value then assume
-                                // it has been reset and needs to be incremented the entire new amount
-                                if (count < previousCount) info.Count = count;
-                                else info.Count = count - previousCount;
-                            }
-
-                            return info;
+                            info.Count = count;
                         }
+                        else if (partCountEvent.CalculationType == CalculationType.TOTAL)
+                        {
+                            int previousCount = 0;
+                            int.TryParse(captureItem.PreviousValue, out previousCount);
+
+                            // If Part Count is less than or equal to stored value then assume
+                            // it has been reset and needs to be incremented the entire new amount
+                            if (count <= previousCount) info.Count = count;
+                            else info.Count = count - previousCount;
+                        }
+
+                        return info;
                     }
                 }
             }
