@@ -304,8 +304,6 @@ namespace TrakHound_Server.Plugins.CloudData
                         // Device Status
                         if (gEvent.EventName == "device_status" && !string.IsNullOrEmpty(gEvent.CurrentValue.Value))
                         {
-                            //hourInfo.TotalTime = duration;
-
                             switch (gEvent.CurrentValue.Value.ToLower())
                             {
                                 case "active": hourInfo.Active = duration; break;
@@ -539,7 +537,7 @@ namespace TrakHound_Server.Plugins.CloudData
 
                             hourInfo.TotalPieces = info.Count;
 
-                            deviceInfo.AddHourInfo(hourInfo);
+                            lock (_lock) deviceInfo.AddHourInfo(hourInfo);
                         }
 
                         queue.Add(deviceInfo);
