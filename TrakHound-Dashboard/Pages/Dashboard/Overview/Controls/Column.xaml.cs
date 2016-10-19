@@ -664,9 +664,9 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
                     AlertPercentage = (alert / total) * 100;
                 }
 
-                ActiveTime = TimeSpan.FromSeconds(active);
-                IdleTime = TimeSpan.FromSeconds(idle);
-                AlertTime = TimeSpan.FromSeconds(alert);
+                ActiveTime = TimeSpan.FromSeconds(Math.Min(active, double.MaxValue));
+                IdleTime = TimeSpan.FromSeconds(Math.Min(idle, double.MaxValue));
+                AlertTime = TimeSpan.FromSeconds(Math.Min(alert, double.MaxValue));
 
                 // Production Status
                 double production = info.Production;
@@ -684,11 +684,11 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
                     ProcessDevelopmentPercentage = (processDevelopment / total) * 100;
                 }
 
-                ProductionTime = TimeSpan.FromSeconds(production);
-                SetupTime = TimeSpan.FromSeconds(setup);
-                TeardownTime = TimeSpan.FromSeconds(teardown);
-                MaintenanceTime = TimeSpan.FromSeconds(maintenance);
-                ProcessDevelopmentTime = TimeSpan.FromSeconds(processDevelopment);
+                ProductionTime = TimeSpan.FromSeconds(Math.Min(production, double.MaxValue));
+                SetupTime = TimeSpan.FromSeconds(Math.Min(setup, double.MaxValue));
+                TeardownTime = TimeSpan.FromSeconds(Math.Min(teardown, double.MaxValue));
+                MaintenanceTime = TimeSpan.FromSeconds(Math.Min(maintenance, double.MaxValue));
+                ProcessDevelopmentTime = TimeSpan.FromSeconds(Math.Min(processDevelopment, double.MaxValue));
             }
         }
 

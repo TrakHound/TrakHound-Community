@@ -67,14 +67,15 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatus.Controls
             DependencyProperty.Register("ProductionStatus", typeof(string), typeof(Row), new PropertyMetadata(null));
 
 
-        public double DayRunTime
+
+        public TimeSpan DayRunTime
         {
-            get { return (double)GetValue(DayRunTimeProperty); }
+            get { return (TimeSpan)GetValue(DayRunTimeProperty); }
             set { SetValue(DayRunTimeProperty, value); }
         }
 
         public static readonly DependencyProperty DayRunTimeProperty =
-            DependencyProperty.Register("DayRunTime", typeof(double), typeof(Row), new PropertyMetadata(0d));
+            DependencyProperty.Register("DayRunTime", typeof(TimeSpan), typeof(Row), new PropertyMetadata(TimeSpan.Zero));
 
         public double TotalRunTime
         {
@@ -86,14 +87,14 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatus.Controls
             DependencyProperty.Register("TotalRunTime", typeof(double), typeof(Row), new PropertyMetadata(0d));
 
 
-        public double DayOperatingTime
+        public TimeSpan DayOperatingTime
         {
-            get { return (double)GetValue(DayOperatingTimeProperty); }
+            get { return (TimeSpan)GetValue(DayOperatingTimeProperty); }
             set { SetValue(DayOperatingTimeProperty, value); }
         }
 
         public static readonly DependencyProperty DayOperatingTimeProperty =
-            DependencyProperty.Register("DayOperatingTime", typeof(double), typeof(Row), new PropertyMetadata(0d));
+            DependencyProperty.Register("DayOperatingTime", typeof(TimeSpan), typeof(Row), new PropertyMetadata(TimeSpan.Zero));
 
         public double TotalOperatingTime
         {
@@ -105,14 +106,15 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatus.Controls
             DependencyProperty.Register("TotalOperatingTime", typeof(double), typeof(Row), new PropertyMetadata(0d));
 
 
-        public double DayCuttingTime
+
+        public TimeSpan DayCuttingTime
         {
-            get { return (double)GetValue(DayCuttingTimeProperty); }
+            get { return (TimeSpan)GetValue(DayCuttingTimeProperty); }
             set { SetValue(DayCuttingTimeProperty, value); }
         }
 
         public static readonly DependencyProperty DayCuttingTimeProperty =
-            DependencyProperty.Register("DayCuttingTime", typeof(double), typeof(Row), new PropertyMetadata(0d));
+            DependencyProperty.Register("DayCuttingTime", typeof(TimeSpan), typeof(Row), new PropertyMetadata(TimeSpan.Zero));
 
         public double TotalCuttingTime
         {
@@ -124,14 +126,15 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatus.Controls
             DependencyProperty.Register("TotalCuttingTime", typeof(double), typeof(Row), new PropertyMetadata(0d));
 
 
-        public double DaySpindleTime
+
+        public TimeSpan DaySpindleTime
         {
-            get { return (double)GetValue(DaySpindleTimeProperty); }
+            get { return (TimeSpan)GetValue(DaySpindleTimeProperty); }
             set { SetValue(DaySpindleTimeProperty, value); }
         }
 
         public static readonly DependencyProperty DaySpindleTimeProperty =
-            DependencyProperty.Register("DaySpindleTime", typeof(double), typeof(Row), new PropertyMetadata(0d));
+            DependencyProperty.Register("DaySpindleTime", typeof(TimeSpan), typeof(Row), new PropertyMetadata(TimeSpan.Zero));
 
         public double TotalSpindleTime
         {
@@ -181,10 +184,10 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ProductionStatus.Controls
                 if (!string.IsNullOrEmpty(info.DeviceStatus)) DeviceStatus = info.DeviceStatus;
                 if (!string.IsNullOrEmpty(info.ProductionStatus)) ProductionStatus = info.ProductionStatus;
 
-                DayRunTime = info.DayRun / 3600;
-                DayOperatingTime = info.DayOperating / 3600;
-                DayCuttingTime = info.DayCutting / 3600;
-                DaySpindleTime = info.DaySpindle / 3600;
+                DayRunTime = TimeSpan.FromSeconds(info.DayRun);
+                DayOperatingTime = TimeSpan.FromSeconds(info.DayOperating);
+                DayCuttingTime = TimeSpan.FromSeconds(info.DayCutting);
+                DaySpindleTime = TimeSpan.FromSeconds(info.DaySpindle);
 
                 TotalRunTime = info.TotalRun / 3600;
                 TotalOperatingTime = info.TotalOperating / 3600;

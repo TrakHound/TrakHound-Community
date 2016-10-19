@@ -170,9 +170,9 @@ namespace TrakHound_Dashboard.Pages.Dashboard.DeviceStatusTimes.Controls
                 else if (idle > alert && idle > active) Status = 1;
                 else Status = 0;
 
-                ActiveTime = TimeSpan.FromSeconds(active);
-                IdleTime = TimeSpan.FromSeconds(idle);
-                AlertTime = TimeSpan.FromSeconds(alert);
+                ActiveTime = TimeSpan.FromSeconds(Math.Min(active, double.MaxValue));
+                IdleTime = TimeSpan.FromSeconds(Math.Min(idle, double.MaxValue));
+                AlertTime = TimeSpan.FromSeconds(Math.Min(alert, double.MaxValue));
             }
         }
 
