@@ -250,9 +250,9 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
         {
             if (info != null)
             {
-                ActiveTime = TimeSpan.FromSeconds(info.Active);
-                IdleTime = TimeSpan.FromSeconds(info.Idle);
-                AlertTime = TimeSpan.FromSeconds(info.Alert);
+                ActiveTime = TimeSpan.FromSeconds(Math.Min(info.Active, double.MaxValue));
+                IdleTime = TimeSpan.FromSeconds(Math.Min(info.Idle, double.MaxValue));
+                AlertTime = TimeSpan.FromSeconds(Math.Min(info.Alert, double.MaxValue));
 
                 if (info.Total > 0)
                 {
@@ -265,15 +265,15 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
 
                 // Update Active Pie Chart Value
                 i = DeviceStatusPieChartData.ToList().FindIndex(o => o.ID == "Active");
-                if (i >= 0) DeviceStatusPieChartData[i].Value = ActivePercentage;
+                if (i >= 0) DeviceStatusPieChartData[i].Value = Math.Min(ActivePercentage, double.MaxValue);
 
                 // Update Idle Pie Chart Value
                 i = DeviceStatusPieChartData.ToList().FindIndex(o => o.ID == "Idle");
-                if (i >= 0) DeviceStatusPieChartData[i].Value = IdlePercentage;
+                if (i >= 0) DeviceStatusPieChartData[i].Value = Math.Min(IdlePercentage, double.MaxValue);
 
                 // Update Alert Pie Chart Value
                 i = DeviceStatusPieChartData.ToList().FindIndex(o => o.ID == "Alert");
-                if (i >= 0) DeviceStatusPieChartData[i].Value = AlertPercentage;
+                if (i >= 0) DeviceStatusPieChartData[i].Value = Math.Min(AlertPercentage, double.MaxValue);
             }
         }
 
