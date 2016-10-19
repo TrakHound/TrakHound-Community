@@ -248,9 +248,9 @@
 
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="7*"/>
+                            <RowDefinition Height="6*"/>
                             <RowDefinition Height="auto"/>
-                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="4*"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
@@ -258,7 +258,7 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Text="Day" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
-                        <ui:NumberDisplay Grid.Column="1" Value="{Binding DayRunTime}" ValueFormat="N1" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <ui:TimeDisplay Grid.Column="1" Time="{Binding DayRunTime}" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center" MaxHeight="30"/>
 
                         <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Fill="{StaticResource Border}" Height="1" Margin="0,2"/>
 
@@ -274,9 +274,9 @@
 
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="7*"/>
+                            <RowDefinition Height="6*"/>
                             <RowDefinition Height="auto"/>
-                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="4*"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
@@ -284,7 +284,7 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Text="Day" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
-                        <ui:NumberDisplay Grid.Column="1" Value="{Binding DayOperatingTime}" ValueFormat="N1" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <ui:TimeDisplay Grid.Column="1" Time="{Binding DayOperatingTime}" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center" MaxHeight="30"/>
 
                         <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Fill="{StaticResource Border}" Height="1" Margin="0,2"/>
 
@@ -300,9 +300,9 @@
 
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="7*"/>
+                            <RowDefinition Height="6*"/>
                             <RowDefinition Height="auto"/>
-                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="4*"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
@@ -310,7 +310,7 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Text="Day" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
-                        <ui:NumberDisplay Grid.Column="1" Value="{Binding DayCuttingTime}" ValueFormat="N1" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <ui:TimeDisplay Grid.Column="1" Time="{Binding DayCuttingTime}" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center" MaxHeight="30"/>
 
                         <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Fill="{StaticResource Border}" Height="1" Margin="0,2"/>
 
@@ -326,9 +326,9 @@
 
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="7*"/>
+                            <RowDefinition Height="6*"/>
                             <RowDefinition Height="auto"/>
-                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="4*"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
@@ -336,7 +336,7 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Text="Day" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
-                        <ui:NumberDisplay Grid.Column="1" Value="{Binding DaySpindleTime}" ValueFormat="N1" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <ui:TimeDisplay Grid.Column="1" Time="{Binding DaySpindleTime}" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center" MaxHeight="30"/>
 
                         <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Fill="{StaticResource Border}" Height="1" Margin="0,2"/>
 
