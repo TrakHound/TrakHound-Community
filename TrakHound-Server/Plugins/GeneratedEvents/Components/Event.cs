@@ -100,8 +100,9 @@ namespace TrakHound_Server.Plugins.GeneratedEvents
                     if (instanceValue.Value != captureItem.Value)
                     {
                         captureItem.Value = instanceValue.Value;
-                        captureItem.Sequence = instance.Sequence;
                     }
+
+                    captureItem.Sequence = instanceValue.ChangedSequence;
                 }
                 else captureItem.Value = "";
 

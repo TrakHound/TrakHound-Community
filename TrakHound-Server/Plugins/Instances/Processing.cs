@@ -193,11 +193,8 @@ namespace TrakHound_Server.Plugins.Instances
                                     string s = null;
                                     if (ivd.Value != null) s = ivd.Value.ToString();
 
-                                    if (oldval.Value != s)
-                                    {
-                                        oldval.Value = s;
-                                        oldval.ChangedSequence = ivd.Sequence;
-                                    }
+                                    oldval.Value = s;
+                                    oldval.ChangedSequence = ivd.Sequence;
                                 }
                                 // if not already in data.values then create new InstanceData.Value object and add it
                                 else
