@@ -30,8 +30,11 @@ namespace TrakHound.Servers.DataProcessing
 
         private void AddDevice(DeviceConfiguration config)
         {
-            var deviceThread = new Thread(new ParameterizedThreadStart(StartDeviceServer));
-            deviceThread.Start(config);
+            if (config != null)
+            {
+                var deviceThread = new Thread(new ParameterizedThreadStart(StartDeviceServer));
+                deviceThread.Start(config);
+            }
         }
 
         private void StartDeviceServer(object obj)
@@ -134,7 +137,7 @@ namespace TrakHound.Servers.DataProcessing
                 {
                     int index = -1;
 
-                    index = devices.FindIndex(x => x.Configuration.UniqueId == checkInfo.UniqueId);
+                    index = devices.FindIndex(x => x != null && x.Configuration.UniqueId == checkInfo.UniqueId);
                     if (index >= 0) // Server is already part of list
                     {
                         var server = devices[index];
@@ -160,9 +163,9 @@ namespace TrakHound.Servers.DataProcessing
                 // Find devices that were removed
                 foreach (var device in devices.ToList())
                 {
-                    if (!checkInfos.Exists(x => x.UniqueId == device.Configuration.UniqueId))
+                    if (!checkInfos.Exists(x => x != null && x.UniqueId == device.Configuration.UniqueId))
                     {
-                        var d = devices.Find(x => x.Configuration.UniqueId == device.Configuration.UniqueId);
+                        var d = devices.Find(x => x != null && x.Configuration.UniqueId == device.Configuration.UniqueId);
                         if (d != null)
                         {
                             d.Stop();
@@ -178,7 +181,7 @@ namespace TrakHound.Servers.DataProcessing
                     var configs = API.Devices.Get(userConfig, getIds.ToArray());
                     foreach (var config in configs)
                     {
-                        int index = devices.FindIndex(x => x.Configuration.UniqueId == config.UniqueId);
+                        int index = devices.FindIndex(x => x != null && x.Configuration.UniqueId == config.UniqueId);
                         if (index >= 0)
                         {
                             var server = devices[index];
@@ -217,7 +220,7 @@ namespace TrakHound.Servers.DataProcessing
                         {
                             int index = -1;
 
-                            index = devices.FindIndex(x => x.Configuration.UniqueId == config.UniqueId);
+                            index = devices.FindIndex(x => x != null && x.Configuration.UniqueId == config.UniqueId);
                             if (index >= 0) // Server is already part of list
                             {
                                 var server = devices[index];
@@ -253,9 +256,9 @@ namespace TrakHound.Servers.DataProcessing
                     // Find devices that were removed
                     foreach (var device in devices.ToList())
                     {
-                        if (!configs.Exists(x => x.UniqueId == device.Configuration.UniqueId))
+                        if (!configs.Exists(x => x != null && x.UniqueId == device.Configuration.UniqueId))
                         {
-                            var d = devices.Find(x => x.Configuration.UniqueId == device.Configuration.UniqueId);
+                            var d = devices.Find(x => x != null && x.Configuration.UniqueId == device.Configuration.UniqueId);
                             if (d != null)
                             {
                                 d.Stop();
