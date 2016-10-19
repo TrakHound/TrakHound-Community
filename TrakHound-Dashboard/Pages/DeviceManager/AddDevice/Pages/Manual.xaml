@@ -177,6 +177,20 @@
             </ui:Button>
 
         </StackPanel>
+
+        <StackPanel Grid.Column="1" Margin="20,0">
+
+            <TextBlock Text="Demo Agents" Foreground="{StaticResource Text}" FontSize="12"/>
+
+            <ui:Button Text="MTConnect Demo" Style="{StaticResource Button_Transparent_Background}" HorizontalAlignment="Left" Margin="0,5" Clicked="MTConnect_Demo_Clicked"/>
+
+            <ui:Button Text="Okuma Lathe Demo" Style="{StaticResource Button_Transparent_Background}" HorizontalAlignment="Left" Margin="0,5" Clicked="Okuma_Lathe_Demo_Clicked"/>
+
+            <ui:Button Text="Okuma Machining Center Demo" Style="{StaticResource Button_Transparent_Background}" HorizontalAlignment="Left" Margin="0,5" Clicked="Okuma_MachiningCenter_Demo_Clicked"/>
+
+            <ui:Button Text="Okuma Grinder Demo" Style="{StaticResource Button_Transparent_Background}" HorizontalAlignment="Left" Margin="0,5" Clicked="Okuma_Grinder_Demo_Clicked"/>
+
+        </StackPanel>
         
     </Grid>
 

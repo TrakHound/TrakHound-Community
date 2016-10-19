@@ -326,5 +326,32 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
             }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
         }
 
+        private void MTConnect_Demo_Clicked(TrakHound_UI.Button bt)
+        {
+            Address = "agent.mtconnect.org";
+            Port = null;
+            DeviceName = "VMC-3Axis";
+        }
+
+        private void Okuma_Lathe_Demo_Clicked(TrakHound_UI.Button bt)
+        {
+            Address = "74.203.109.245";
+            Port = "5001";
+            DeviceName = "OKUMA.Lathe";
+        }
+
+        private void Okuma_MachiningCenter_Demo_Clicked(TrakHound_UI.Button bt)
+        {
+            Address = "74.203.109.245";
+            Port = "5002";
+            DeviceName = "OKUMA.MachiningCenter";
+        }
+
+        private void Okuma_Grinder_Demo_Clicked(TrakHound_UI.Button bt)
+        {
+            Address = "74.203.109.245";
+            Port = "5003";
+            DeviceName = "OKUMA.Grinder";
+        }
     }
 }
