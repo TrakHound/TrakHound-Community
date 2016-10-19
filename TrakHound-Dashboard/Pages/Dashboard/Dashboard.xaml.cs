@@ -237,8 +237,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard
             timespanUpdateTimer.Interval = 5000;
             timespanUpdateTimer.Elapsed += TimespanUpdateTimer_Elapsed;
             timespanUpdateTimer.Enabled = true;
-
-            //LoadDashboardTimespan();
         }
 
         private void TimespanUpdateTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -265,70 +263,84 @@ namespace TrakHound_Dashboard.Pages.Dashboard
 
         private void UpdateDashboardTimespan()
         {
-            // Load Current Day Start and Day End
-            var d = DateTime.Now;
-            var dayStart = new DateTime(d.Year, d.Month, d.Day, 0, 0, 0, DateTimeKind.Local);
-            var dayEnd = dayStart.AddDays(1);
-
-            DateTime from = DateTime.MinValue;
-            DateTime to = DateTime.MinValue;
-
-            // Set From
-            if (From > dayStart) from = From;
-            else if (From > DateTime.MinValue) from = new DateTime(dayStart.Year, dayStart.Month, dayStart.Day, From.Hour, 0, 0);
-            else from = dayStart;
-
-            // Set To
-            if (To > dayStart && To < dayEnd) to = To;
-            else if (To > DateTime.MinValue) to = new DateTime(dayStart.Year, dayStart.Month, dayStart.Day, To.Hour, 0, 0);
-            else to = dayEnd;
-
-            //Update Timespan
-            if (From != from || To != to)
+            try
             {
-                DateTimes.Clear();
-                for (var x = 0; x <= 24; x++) DateTimes.Add(dayStart.AddHours(x));
+                // Load Current Day Start and Day End
+                var d = DateTime.Now;
+                var dayStart = new DateTime(d.Year, d.Month, d.Day, 0, 0, 0, DateTimeKind.Local);
+                var dayEnd = dayStart.AddDays(1);
 
-                From = from;
-                To = to;
+                DateTime from = DateTime.MinValue;
+                DateTime to = DateTime.MinValue;
 
-                SaveDashboardTimespan();
-                SendDashboardTimespan();
+                // Set From
+                if (From > dayStart) from = From;
+                else if (From > DateTime.MinValue) from = new DateTime(dayStart.Year, dayStart.Month, dayStart.Day, From.Hour, 0, 0);
+                else from = dayStart;
+
+                // Set To
+                if (To > dayStart && To <= dayEnd) to = To;
+                else if (To > DateTime.MinValue) to = new DateTime(dayStart.Year, dayStart.Month, dayStart.Day, To.Hour, 0, 0);
+                else to = dayEnd;
+
+                // Update Timespan
+                if (From != from || To != to)
+                {
+                    DateTimes.Clear();
+                    for (var x = 0; x <= 24; x++) DateTimes.Add(dayStart.AddHours(x));
+
+                    From = from;
+                    To = to;
+
+                    SaveDashboardTimespan();
+                    SendDashboardTimespan();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Log("UpdateDashboardTimespan :: Exception :: " + ex.Message);
             }
         }
 
         private void LoadDashboardTimespan()
         {
-            // Load Current Day Start and Day End
-            var d = DateTime.Now;
-            var dayStart = new DateTime(d.Year, d.Month, d.Day, 0, 0, 0, DateTimeKind.Local);
-            var dayEnd = dayStart.AddDays(1);
+            try
+            {
+                // Load Current Day Start and Day End
+                var d = DateTime.Now;
+                var dayStart = new DateTime(d.Year, d.Month, d.Day, 0, 0, 0, DateTimeKind.Local);
+                var dayEnd = dayStart.AddDays(1);
 
-            DateTimes.Clear();
-            for (var x = 0; x <= 24; x++) DateTimes.Add(dayStart.AddHours(x));
+                DateTimes.Clear();
+                for (var x = 0; x <= 24; x++) DateTimes.Add(dayStart.AddHours(x));
 
-            // Load From Setting
-            string fromSetting = Properties.Settings.Default.SavedStatusFromTime;
-            DateTime savedFrom = DateTime.MinValue;
-            DateTime.TryParse(fromSetting, out savedFrom);
+                // Load From Setting
+                string fromSetting = Properties.Settings.Default.SavedStatusFromTime;
+                DateTime savedFrom = DateTime.MinValue;
+                DateTime.TryParse(fromSetting, out savedFrom);
 
-            // Load To Setting
-            string toSetting = Properties.Settings.Default.SavedStatusToTime;
-            DateTime savedTo = DateTime.MinValue;
-            DateTime.TryParse(toSetting, out savedTo);
+                // Load To Setting
+                string toSetting = Properties.Settings.Default.SavedStatusToTime;
+                DateTime savedTo = DateTime.MinValue;
+                DateTime.TryParse(toSetting, out savedTo);
 
-            // Set From
-            if (savedFrom > dayStart) From = savedFrom;
-            else if (savedFrom > DateTime.MinValue) From = new DateTime(dayStart.Year, dayStart.Month, dayStart.Day, savedFrom.Hour, savedFrom.Minute, 0);
-            else From = dayStart;
+                // Set From
+                if (savedFrom > dayStart) From = savedFrom;
+                else if (savedFrom > DateTime.MinValue) From = new DateTime(dayStart.Year, dayStart.Month, dayStart.Day, savedFrom.Hour, 0, 0);
+                else From = dayStart;
 
-            // Set To
-            if (savedTo > dayStart && savedTo < dayEnd) To = savedTo;
-            else if (savedTo > DateTime.MinValue) To = new DateTime(dayStart.Year, dayStart.Month, dayStart.Day, savedTo.Hour, savedTo.Minute, 0);
-            else To = dayEnd;
+                // Set To
+                if (savedTo > dayStart && savedTo < dayEnd) To = savedTo;
+                else if (savedTo > DateTime.MinValue) To = new DateTime(dayEnd.Year, dayEnd.Month, dayEnd.Day, savedTo.Hour, 0, 0);
+                else To = dayEnd;
 
-            SaveDashboardTimespan();
-            SendDashboardTimespan();
+                SaveDashboardTimespan();
+                SendDashboardTimespan();
+            }
+            catch (Exception ex)
+            {
+                Logger.Log("LoadDashboardTimespan :: Exception :: " + ex.Message);
+            }        
         }
         
         internal void SendDashboardTimespan()
