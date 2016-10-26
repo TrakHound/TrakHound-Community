@@ -160,27 +160,41 @@ namespace TrakHound.Tools
 
             private void StartPing(IPAddress ipAddress, int index)
             {
-                var ping = new Ping();
-                ping.PingCompleted += Ping_PingCompleted;
-                queuedPings.Add(ping);
-                ping.SendAsync(ipAddress, timeout, index);
+                try
+                {
+                    var ping = new Ping();
+                    ping.PingCompleted += Ping_PingCompleted;
+                    queuedPings.Add(ping);
+                    ping.SendAsync(ipAddress, timeout, index);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Logger.Log("PingNodes() :: Exception :: " + ex.Message);
+                }  
             }
 
             private void Ping_PingCompleted(object sender, PingCompletedEventArgs e)
             {
-                if (!e.Cancelled)
+                try
                 {
-                    var status = e.Reply.Status;
-                    var ip = e.Reply.Address;
-                    var index = e.UserState;
-
-                    if (status == IPStatus.Success)
+                    if (!e.Cancelled)
                     {
-                        PingSuccessful?.Invoke(e.Reply);
-                    }
+                        var status = e.Reply.Status;
+                        var ip = e.Reply.Address;
+                        var index = e.UserState;
 
-                    returnedIndexes += 1;
-                    if (returnedIndexes >= expectedIndexes) Finished?.Invoke();
+                        if (status == IPStatus.Success)
+                        {
+                            PingSuccessful?.Invoke(e.Reply);
+                        }
+
+                        returnedIndexes += 1;
+                        if (returnedIndexes >= expectedIndexes) Finished?.Invoke();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logging.Logger.Log("Ping_PingCompleted() :: Exception :: " + ex.Message);
                 }
             }
         }
