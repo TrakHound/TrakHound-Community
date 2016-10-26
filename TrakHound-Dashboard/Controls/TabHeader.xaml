@@ -124,7 +124,7 @@
                                     <Style TargetType="Rectangle">
                                         <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
                                         <Setter Property="Visibility" Value="Visible"/>
-                                        <Setter Property="Fill" Value="{StaticResource Text}"/>
+                                        <Setter Property="Fill" Value="{StaticResource Foreground}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -234,7 +234,7 @@
                                     </Rectangle.RenderTransform>
                                     <Rectangle.Style>
                                         <Style TargetType="Rectangle">
-                                            <Setter Property="Fill" Value="{StaticResource Text}"/>
+                                            <Setter Property="Fill" Value="{StaticResource Foreground}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding MouseOver}" Value="true">
                                                     <Setter Property="Fill" Value="{StaticResource TrakHound_Blue}"/>
@@ -261,7 +261,7 @@
                                     </Rectangle.RenderTransform>
                                     <Rectangle.Style>
                                         <Style TargetType="Rectangle">
-                                            <Setter Property="Fill" Value="{StaticResource Text}"/>
+                                            <Setter Property="Fill" Value="{StaticResource Foreground}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding MouseOver}" Value="true">
                                                     <Setter Property="Fill" Value="{StaticResource TrakHound_Blue}"/>
