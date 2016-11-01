@@ -124,7 +124,7 @@
         </StackPanel>
 
         <!--Restore Defaults Button-->
-        <ui:Button Text="Restore Defaults" Clicked="RestoreDefaults_Clicked" Style="{StaticResource Button_Accent_Background}" HorizontalAlignment="Left"/>
+        <ui:Button Text="Restore Defaults" Clicked="RestoreDefaults_Clicked" Style="{StaticResource Button_Transparent_Background}" HorizontalAlignment="Left"/>
 
     </StackPanel>
 

@@ -19,7 +19,7 @@
                 Width="500" HorizontalAlignment="Left"/>
 
         <!--Restore Defaults Button-->
-        <ui:Button Text="Restore Defaults" Clicked="RestoreDefaults_Clicked" Style="{StaticResource Button_Accent_Background}" HorizontalAlignment="Left" Margin="0,30"/>
+        <ui:Button Text="Restore Defaults" Clicked="RestoreDefaults_Clicked" Style="{StaticResource Button_Transparent_Background}" HorizontalAlignment="Left" Margin="0,30"/>
 
     </StackPanel>
 
