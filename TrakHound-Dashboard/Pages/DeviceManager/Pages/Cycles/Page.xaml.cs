@@ -23,7 +23,8 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.Cycles
     /// <summary>
     /// Interaction logic for Page.xaml
     /// </summary>
-    public partial class Page : UserControl, IConfigurationPage
+    //public partial class Page : UserControl, IConfigurationPage
+    public partial class Page : UserControl
     {
         public Page()
         {
@@ -74,7 +75,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.Cycles
             LoadStoppedEventValueName(dt);
             LoadCycleNameLink(dt);
             LoadProductionTypes(dt);
-            LoadOverrideLinks(dt);
+            //LoadOverrideLinks(dt);
 
             if (!Loaded) LoadCollectedItems(probeData);
         }
@@ -87,7 +88,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.Cycles
             SaveStoppedEventValueName(dt);
             SaveCycleNameLink(dt);
             SaveProductionTypes(dt);
-            SaveOverrideLinks(dt);
+            //SaveOverrideLinks(dt);
         }
 
         DataTable configurationTable;
@@ -546,81 +547,81 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.Cycles
 
         #region "Override Links"
 
-        ObservableCollection<object> overrideLinks;
-        public ObservableCollection<object> OverrideLinks
-        {
-            get
-            {
-                if (overrideLinks == null)
-                    overrideLinks = new ObservableCollection<object>();
-                return overrideLinks;
-            }
+        //ObservableCollection<object> overrideLinks;
+        //public ObservableCollection<object> OverrideLinks
+        //{
+        //    get
+        //    {
+        //        if (overrideLinks == null)
+        //            overrideLinks = new ObservableCollection<object>();
+        //        return overrideLinks;
+        //    }
 
-            set
-            {
-                overrideLinks = value;
-            }
-        }
+        //    set
+        //    {
+        //        overrideLinks = value;
+        //    }
+        //}
 
-        private void AddOverrideLink_Clicked(TrakHound_UI.Button bt)
-        {
-            var item = new Controls.OverrideLinkItem();
-            item.ParentPage = this;
-            item.RemoveClicked += OverrideLinkItem_RemoveClicked;
-            item.SettingChanged += OverrideLinkItem_SettingChanged;
-            OverrideLinks.Add(item);
-        }
+        //private void AddOverrideLink_Clicked(TrakHound_UI.Button bt)
+        //{
+        //    var item = new Controls.OverrideLinkItem();
+        //    item.ParentPage = this;
+        //    item.RemoveClicked += OverrideLinkItem_RemoveClicked;
+        //    item.SettingChanged += OverrideLinkItem_SettingChanged;
+        //    OverrideLinks.Add(item);
+        //}
 
-        void LoadOverrideLinks(DataTable dt)
-        {
-            OverrideLinks.Clear();
+        //void LoadOverrideLinks(DataTable dt)
+        //{
+        //    OverrideLinks.Clear();
 
-            string query = "Address LIKE '" + prefix + "OverrideLinks/*'";
+        //    string query = "Address LIKE '" + prefix + "OverrideLinks/*'";
 
-            var rows = dt.Select(query);
-            if (rows != null)
-            {
-                foreach (var row in rows)
-                {
-                    var item = new Controls.OverrideLinkItem();
-                    item.ParentPage = this;
-                    item.SelectedId = DataTable_Functions.GetRowValue("value", row);
-                    item.RemoveClicked += OverrideLinkItem_RemoveClicked;
-                    item.SettingChanged += OverrideLinkItem_SettingChanged;
-                    OverrideLinks.Add(item);
-                }
-            }
-        }
+        //    var rows = dt.Select(query);
+        //    if (rows != null)
+        //    {
+        //        foreach (var row in rows)
+        //        {
+        //            var item = new Controls.OverrideLinkItem();
+        //            item.ParentPage = this;
+        //            item.SelectedId = DataTable_Functions.GetRowValue("value", row);
+        //            item.RemoveClicked += OverrideLinkItem_RemoveClicked;
+        //            item.SettingChanged += OverrideLinkItem_SettingChanged;
+        //            OverrideLinks.Add(item);
+        //        }
+        //    }
+        //}
 
-        void OverrideLinkItem_SettingChanged()
-        {
-            if (SettingChanged != null) SettingChanged("Override Link", null, null);
-        }
+        //void OverrideLinkItem_SettingChanged()
+        //{
+        //    if (SettingChanged != null) SettingChanged("Override Link", null, null);
+        //}
 
-        void OverrideLinkItem_RemoveClicked(Controls.OverrideLinkItem item)
-        {
-            if (OverrideLinks.Contains(item)) OverrideLinks.Remove(item);
-        }
+        //void OverrideLinkItem_RemoveClicked(Controls.OverrideLinkItem item)
+        //{
+        //    if (OverrideLinks.Contains(item)) OverrideLinks.Remove(item);
+        //}
 
-        void SaveOverrideLinks(DataTable dt)
-        {
-            foreach (var overrideLink in OverrideLinks)
-            {
-                var item = (Controls.OverrideLinkItem)overrideLink;
+        //void SaveOverrideLinks(DataTable dt)
+        //{
+        //    foreach (var overrideLink in OverrideLinks)
+        //    {
+        //        var item = (Controls.OverrideLinkItem)overrideLink;
 
-                int id = DataTable_Functions.TrakHound.GetUnusedAddressId(prefix + "OverrideLinks/Value", dt);
-                string adr = prefix + "OverrideLinks/Value||" + id.ToString("00");
+        //        int id = DataTable_Functions.TrakHound.GetUnusedAddressId(prefix + "OverrideLinks/Value", dt);
+        //        string adr = prefix + "OverrideLinks/Value||" + id.ToString("00");
 
-                string val = null;
-                if (item.SelectedId != null) val = item.SelectedId.ToString();
+        //        string val = null;
+        //        if (item.SelectedId != null) val = item.SelectedId.ToString();
 
-                string attr = "";
-                attr += "id||" + id.ToString("00") + ";";
+        //        string attr = "";
+        //        attr += "id||" + id.ToString("00") + ";";
 
-                DataTable_Functions.UpdateTableValue(dt, "address", adr, "attributes", attr);
-                DataTable_Functions.UpdateTableValue(dt, "address", adr, "value", val);
-            }
-        }
+        //        DataTable_Functions.UpdateTableValue(dt, "address", adr, "attributes", attr);
+        //        DataTable_Functions.UpdateTableValue(dt, "address", adr, "value", val);
+        //    }
+        //}
 
         #endregion
 

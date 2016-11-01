@@ -286,8 +286,7 @@
 
                 </StackPanel>
 
-
-                <!--Override Links-->
+                <!--Override Links--><!--
                 <StackPanel Margin="0,20">
                     <StackPanel.Resources>
                         <Style TargetType="control:OverrideLinkItem">
@@ -295,13 +294,13 @@
                         </Style>
                     </StackPanel.Resources>
 
-                    <!--Title and Help-->
+                    --><!--Title and Help--><!--
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
 
-                        <!--Title-->
+                        --><!--Title--><!--
                         <TextBlock Text="Override Links" Foreground="{StaticResource Text}" Margin="0,0,10,0" FontSize="12" VerticalAlignment="Center"/>
 
-                        <!--Help-->
+                        --><!--Help--><!--
                         <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
                             <Rectangle.ToolTip>
                                 <ToolTip MaxWidth="400">
@@ -339,10 +338,10 @@
 
                     <ItemsControl ItemsSource="{Binding OverrideLinks}"/>
 
-                    <!--Add Value Button-->
+                    --><!--Add Value Button--><!--
                     <ui:Button Height="40" Text="Add Override Link" ImageTextPadding="10" Image="/TrakHound-Dashboard;component/Resources/Add_01.png" Margin="0,20" Clicked="AddOverrideLink_Clicked" HorizontalAlignment="Left" Style="{StaticResource Button_Accent_Foreground}"/>
 
-                </StackPanel>
+                </StackPanel>-->
 
             </StackPanel>
 

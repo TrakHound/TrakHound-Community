@@ -9,7 +9,8 @@ using TrakHound.Plugins.Server;
 
 namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.Cycles
 {
-    public class Info : IConfigurationInfo
+    //public class Info : IConfigurationInfo
+    public class Info
     {
         public string Title { get { return "Cycles"; } }
 
