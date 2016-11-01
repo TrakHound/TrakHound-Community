@@ -296,7 +296,7 @@ namespace TrakHound_Server.Plugins.CloudData
                     if (gEvent.CurrentValue != null)
                     {
                         var hourInfo = new Data.HourInfo();
-                        hourInfo.Date = gEvent.CurrentValue.Timestamp.ToString(Data.HourInfo.DateFormat);
+                        hourInfo.Date = gEvent.CurrentValue.Timestamp.ToString(Data.HourInfo.DATE_FORMAT);
                         hourInfo.Hour = gEvent.CurrentValue.Timestamp.Hour;
 
                         double duration = Math.Round(gEvent.Duration.TotalSeconds, 2);
@@ -474,7 +474,7 @@ namespace TrakHound_Server.Plugins.CloudData
                     foreach (var oeeData in oeeDatas)
                     {
                         var info = new Data.HourInfo();
-                        info.Date = oeeData.Timestamp.ToString(Data.HourInfo.DateFormat);
+                        info.Date = oeeData.Timestamp.ToString(Data.HourInfo.DATE_FORMAT);
                         info.Hour = oeeData.Timestamp.Hour;
                         info.PlannedProductionTime = Math.Round(Math.Max(0, oeeData.PlannedProductionTime), 2);
                         info.OperatingTime = Math.Round(Math.Max(0, oeeData.OperatingTime), 2);
@@ -532,7 +532,7 @@ namespace TrakHound_Server.Plugins.CloudData
                         foreach (var info in infos)
                         {
                             var hourInfo = new Data.HourInfo();
-                            hourInfo.Date = info.Timestamp.ToString(Data.HourInfo.DateFormat);
+                            hourInfo.Date = info.Timestamp.ToString(Data.HourInfo.DATE_FORMAT);
                             hourInfo.Hour = info.Timestamp.Hour;
 
                             hourInfo.TotalPieces = info.Count;
