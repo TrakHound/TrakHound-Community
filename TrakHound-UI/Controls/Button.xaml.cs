@@ -82,7 +82,24 @@ namespace TrakHound_UI
         public static readonly DependencyProperty ButtonContentProperty =
             DependencyProperty.Register("ButtonContent", typeof(object), typeof(Button), new PropertyMetadata(null));
 
-        
+
+        public Brush ImageForeground
+        {
+            get { return (Brush)GetValue(ImageForegroundProperty); }
+            set { SetValue(ImageForegroundProperty, value); }
+        }
+
+        public static readonly DependencyProperty ImageForegroundProperty =
+            DependencyProperty.Register("ImageForeground", typeof(Brush), typeof(Button), new PropertyMetadata(new SolidColorBrush(Colors.Black)));
+
+        public Brush TextForeground
+        {
+            get { return (Brush)GetValue(TextForegroundProperty); }
+            set { SetValue(TextForegroundProperty, value); }
+        }
+
+        public static readonly DependencyProperty TextForegroundProperty =
+            DependencyProperty.Register("TextForeground", typeof(Brush), typeof(Button), new PropertyMetadata(new SolidColorBrush(Colors.Black)));
 
 
         public Brush Background

@@ -46,7 +46,7 @@
                     </Style>
                 </Border.Style>
 
-                <Grid FocusManager.IsFocusScope="False">
+                <Grid FocusManager.IsFocusScope="False" HorizontalAlignment="Center">
 
                     <Grid.ColumnDefinitions>
 
@@ -136,7 +136,7 @@
                             <Grid.Style>
                                 <Style TargetType="Grid">
                                     <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                    <Setter Property="Background" Value="{Binding Foreground}"/>
+                                    <Setter Property="Background" Value="{Binding ImageForeground}"/>
                                 </Style>
                             </Grid.Style>
                         </Grid>
@@ -167,7 +167,7 @@
                         <TextBlock Text="{Binding Text}" FontSize="{Binding FontSize}" VerticalAlignment="Center" FocusManager.IsFocusScope="False">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="{Binding Foreground}"/>
+                                    <Setter Property="Foreground" Value="{Binding TextForeground}"/>
                                     <Setter Property="HorizontalAlignment" Value="Center"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
