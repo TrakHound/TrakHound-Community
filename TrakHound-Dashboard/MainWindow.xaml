@@ -30,7 +30,9 @@
         WindowState="Maximized"         
         SizeChanged="Main_Window_SizeChanged"
         
-        FontFamily="open sans"
+
+        TextOptions.TextRenderingMode="Aliased"
+        TextOptions.TextHintingMode="Fixed"
         
         PreviewMouseDown="Main_Window_PreviewMouseDown"
         PreviewKeyUp="Main_Window_PreviewKeyUp"
