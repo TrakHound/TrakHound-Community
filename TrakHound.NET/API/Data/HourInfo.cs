@@ -14,7 +14,8 @@ namespace TrakHound.API
     {
         public class HourInfo
         {
-            public const string DateFormat = "yyyy-MM-dd";
+            public const string DATE_FORMAT = "yyyy-MM-dd";
+            public const int MAX_VALUE = 3600;
 
             [JsonProperty("date")]
             public string Date { get; set; }
@@ -23,14 +24,41 @@ namespace TrakHound.API
             public int Hour { get; set; }
 
 
+            private double plannedProductionTime;
             [JsonProperty("planned_production_time")]
-            public double PlannedProductionTime { get; set; }
+            public double PlannedProductionTime
+            {
+                get { return plannedProductionTime; }
+                set
+                {
+                    var val = Math.Min(value, MAX_VALUE);
+                    plannedProductionTime = val;
+                }
+            }
 
+            private double operatingTime;
             [JsonProperty("operating_time")]
-            public double OperatingTime { get; set; }
+            public double OperatingTime
+            {
+                get { return operatingTime; }
+                set
+                {
+                    var val = Math.Min(value, MAX_VALUE);
+                    operatingTime = val;
+                }
+            }
 
+            private double idealOperatingTime;
             [JsonProperty("ideal_operating_time")]
-            public double IdealOperatingTime { get; set; }
+            public double IdealOperatingTime
+            {
+                get { return idealOperatingTime; }
+                set
+                {
+                    var val = Math.Min(value, MAX_VALUE);
+                    idealOperatingTime = val;
+                }
+            }
 
             [JsonProperty("total_pieces")]
             public int TotalPieces { get; set; }
@@ -39,30 +67,102 @@ namespace TrakHound.API
             public int GoodPieces { get; set; }
 
 
+            private double active;
             [JsonProperty("active")]
-            public double Active { get; set; }
+            public double Active
+            {
+                get { return active; }
+                set
+                {
+                    var val = Math.Min(value, MAX_VALUE);
+                    active = val;
+                }
+            }
 
+            private double idle;
             [JsonProperty("idle")]
-            public double Idle { get; set; }
+            public double Idle
+            {
+                get { return idle; }
+                set
+                {
+                    var val = Math.Min(value, MAX_VALUE);
+                    idle = val;
+                }
+            }
 
+            private double alert;
             [JsonProperty("alert")]
-            public double Alert { get; set; }
+            public double Alert
+            {
+                get { return alert; }
+                set
+                {
+                    var val = Math.Min(value, MAX_VALUE);
+                    alert = val;
+                }
+            }
 
 
+            private double production;
             [JsonProperty("production")]
-            public double Production { get; set; }
+            public double Production
+            {
+                get { return production; }
+                set
+                {
+                    var val = Math.Min(value, MAX_VALUE);
+                    production = val;
+                }
+            }
 
+            private double setup;
             [JsonProperty("setup")]
-            public double Setup { get; set; }
+            public double Setup
+            {
+                get { return setup; }
+                set
+                {
+                    var val = Math.Min(value, MAX_VALUE);
+                    setup = val;
+                }
+            }
 
+            private double teardown;
             [JsonProperty("teardown")]
-            public double Teardown { get; set; }
+            public double Teardown
+            {
+                get { return teardown; }
+                set
+                {
+                    var val = Math.Min(value, MAX_VALUE);
+                    teardown = val;
+                }
+            }
 
+            private double maintenance;
             [JsonProperty("maintenance")]
-            public double Maintenance { get; set; }
+            public double Maintenance
+            {
+                get { return maintenance; }
+                set
+                {
+                    var val = Math.Min(value, MAX_VALUE);
+                    maintenance = val;
+                }
+            }
 
+            private double processDevelopment;
             [JsonProperty("process_development")]
-            public double ProcessDevelopment { get; set; }
+            public double ProcessDevelopment
+            {
+                get { return processDevelopment; }
+                set
+                {
+                    var val = Math.Min(value, MAX_VALUE);
+                    processDevelopment = val;
+                }
+            }
 
 
             [JsonProperty("oee")]
