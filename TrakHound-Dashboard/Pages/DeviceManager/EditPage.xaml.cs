@@ -119,11 +119,6 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
         #endregion
 
         /// <summary>
-        /// Configuration object that is being edited
-        /// </summary>
-        public DeviceConfiguration Configuration { get; set; }
-
-        /// <summary>
         /// Configuration DataTable object that is being edited
         /// </summary>
         public DataTable ConfigurationTable { get; set; }
@@ -157,6 +152,24 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
         #endregion
 
         #region "Dependency Properties"
+
+        private DeviceConfiguration _configuration;
+        /// <summary>
+        /// Configuration object that is being edited
+        /// </summary>
+        public DeviceConfiguration Configuration
+        {
+            get { return (DeviceConfiguration)GetValue(ConfigurationProperty); }
+            set
+            {
+                SetValue(ConfigurationProperty, value);
+                _configuration = value;
+            }
+        }
+
+        public static readonly DependencyProperty ConfigurationProperty =
+            DependencyProperty.Register("Configuration", typeof(DeviceConfiguration), typeof(EditPage), new PropertyMetadata(null));
+
 
         public bool DeviceLoading
         {
@@ -251,8 +264,14 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                 var config = Devices.Get(loadDeviceInfo.UserConfiguration, loadDeviceInfo.UniqueId);
                 if (config != null)
                 {
-                    Configuration = config;
-                    ConfigurationTable = config.ToTable();
+                    // Set Configuration Properties to new values
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        Configuration = config;
+                        ConfigurationTable = config.ToTable();
+
+                    }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
+
 
                     // Reload Pages with new Device Configuration
                     Dispatcher.BeginInvoke(new Action(RestorePages), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
@@ -280,8 +299,13 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                     var config = DeviceConfiguration.Read(path);
                     if (config != null)
                     {
-                        Configuration = config;
-                        ConfigurationTable = config.ToTable();
+                        // Set Configuration Properties to new values
+                        Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            Configuration = config;
+                            ConfigurationTable = config.ToTable();
+
+                        }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
 
                         // Reload Pages with new Device Configuration
                         Dispatcher.BeginInvoke(new Action(RestorePages), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
@@ -384,15 +408,20 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                 {
                     success = DeviceConfiguration.Save(dt);
                 }
-            }
 
-            ConfigurationTable = dt.Copy();
+                if (success)
+                {
+                    XmlDocument xml = DeviceConfiguration.TableToXml(dt);
+                    if (xml != null)
+                    {
+                        Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            Configuration = DeviceConfiguration.Read(xml);
+                            ConfigurationTable = dt.Copy();
 
-            //XmlDocument xml = DeviceConfigurationConverter.TableToXML(dt);
-            XmlDocument xml = DeviceConfiguration.TableToXml(dt);
-            if (xml != null)
-            {
-                Configuration = DeviceConfiguration.Read(xml);
+                        }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
+                    }
+                }          
             }
 
             Dispatcher.BeginInvoke(new Action<bool>(Save_Finished), System.Windows.Threading.DispatcherPriority.Background, new object[] { success });
@@ -400,17 +429,20 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
 
         private void Save_Finished(bool success)
         {
-            if (!success) TrakHound_UI.MessageBox.Show("Device did not save correctly. Try Again." + Environment.NewLine + @"A backup of the Device has been created in the 'C:\TrakHound\Temp directory'");
+            if (!success) TrakHound_UI.MessageBox.Show("Device did not save correctly. Please try again.");
+            else
+            {
+                RestorePages();
 
-            RestorePages();
+                SaveNeeded = false;
 
-            SaveNeeded = false;
+                var data = new EventData(this);
+                data.Id = "DEVICE_UPDATED";
+                data.Data01 = new DeviceDescription(_configuration);
+                SendData?.Invoke(data);
+            }
+
             Saving = false;
-
-            var data = new EventData(this);
-            data.Id = "DEVICE_UPDATED";
-            data.Data01 = new DeviceDescription(Configuration);
-            SendData?.Invoke(data);
         }
 
         #endregion
