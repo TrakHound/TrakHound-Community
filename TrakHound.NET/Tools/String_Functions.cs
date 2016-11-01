@@ -47,7 +47,19 @@ namespace TrakHound.Tools
                 return null;
             }
 
-            return System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(s.ToLower());
+            bool upper = false;
+
+            foreach (var c in s)
+            {
+                if (char.IsUpper(c))
+                {
+                    upper = true;
+                    break;
+                }
+            }
+
+            if (!upper) return System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(s.ToLower());
+            return s;
         }
 
         public static string LowercaseFirstCharacter(string s)
