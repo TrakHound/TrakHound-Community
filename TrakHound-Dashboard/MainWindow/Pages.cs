@@ -628,8 +628,12 @@ namespace TrakHound_Dashboard
 
         public void DeviceManager_EditDevice_Open(DeviceDescription device)
         {
-            string title = "Edit Device - " + device.Description.Description;
-            if (device.Description.DeviceId != null) title += " (" + device.Description.DeviceId + ")";
+            string title = "Edit Device";
+            if (device.Description != null)
+            {
+                if (device.Description.Description != null) title += " - " + device.Description.Description;
+                if (device.Description.DeviceId != null) title += " (" + device.Description.DeviceId + ")";
+            }
 
             string tag = device.UniqueId;
 
