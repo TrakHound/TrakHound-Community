@@ -85,16 +85,16 @@ namespace TrakHound.Tools
 
             private List<IPAddress> addressRange;
 
-            public delegate void PingSuccessful_Handler(PingReply reply);
-            public event PingSuccessful_Handler PingSuccessful;
+            public delegate void PingReply_Handler(IPAddress ip, PingReply reply);
+            public event PingReply_Handler PingReplied;
+
+            public delegate void PingError_Handler(IPAddress ip, string msg);
+            public event PingError_Handler PingError;
 
             public delegate void Finished_Handler();
             public event Finished_Handler Finished;
 
-            public PingNodes()
-            {
-
-            }
+            public PingNodes() { }
 
             public PingNodes(List<IPAddress> _addressRange)
             {
@@ -165,10 +165,11 @@ namespace TrakHound.Tools
                     var ping = new Ping();
                     ping.PingCompleted += Ping_PingCompleted;
                     queuedPings.Add(ping);
-                    ping.SendAsync(ipAddress, timeout, index);
+                    ping.SendAsync(ipAddress, timeout, ipAddress);
                 }
                 catch (Exception ex)
                 {
+                    PingError?.Invoke(ipAddress, ex.Message);
                     Logging.Logger.Log("PingNodes() :: Exception :: " + ex.Message);
                 }  
             }
@@ -179,14 +180,7 @@ namespace TrakHound.Tools
                 {
                     if (!e.Cancelled)
                     {
-                        var status = e.Reply.Status;
-                        var ip = e.Reply.Address;
-                        var index = e.UserState;
-
-                        if (status == IPStatus.Success)
-                        {
-                            PingSuccessful?.Invoke(e.Reply);
-                        }
+                        if (e.UserState != null) PingReplied?.Invoke((IPAddress)e.UserState, e.Reply);
 
                         returnedIndexes += 1;
                         if (returnedIndexes >= expectedIndexes) Finished?.Invoke();
@@ -194,6 +188,8 @@ namespace TrakHound.Tools
                 }
                 catch (Exception ex)
                 {
+                    if (e != null && e.Reply != null && e.Reply.Address != null) PingError?.Invoke(e.Reply.Address, ex.Message);
+
                     Logging.Logger.Log("Ping_PingCompleted() :: Exception :: " + ex.Message);
                 }
             }
@@ -208,7 +204,6 @@ namespace TrakHound.Tools
             public IPAddressRange(IPAddress lower, IPAddress upper)
             {
                 // Assert that lower.AddressFamily == upper.AddressFamily
-
                 addressFamily = lower.AddressFamily;
                 lowerBytes = lower.GetAddressBytes();
                 upperBytes = upper.GetAddressBytes();
