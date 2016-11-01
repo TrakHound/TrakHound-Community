@@ -100,6 +100,15 @@
                     </Grid.ColumnDefinitions>
 
                     <Grid Margin="10,0">
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding TextWrapping}" Value="true">
+                                        <Setter Property="VerticalAlignment" Value="Top"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
 
                         <!--Example-->
                         <TextBlock FontSize="{Binding FontSize}" FontStyle="Italic" Foreground="#aaa" VerticalAlignment="Center" Margin="2,0" >
@@ -169,7 +178,7 @@
                              Foreground="{StaticResource Text}"
                              VerticalAlignment="Center"
                              Padding="0,8"
-                             Height="30"
+                             Height="auto"
                              CaretBrush="Black"
                              Focusable="True"
                              PreviewKeyDown="txt_PreviewKeyDown"
@@ -187,7 +196,8 @@
                                         <DataTrigger Binding="{Binding TextWrapping}" Value="true">
                                             <Setter Property="TextWrapping" Value="Wrap"/>
                                             <Setter Property="MaxLines" Value="1000"/>
-                                            <Setter Property="VerticalAlignment" Value="Stretch"/>
+                                            <Setter Property="VerticalAlignment" Value="Top"/>
+                                            <Setter Property="AcceptsReturn" Value="True"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
