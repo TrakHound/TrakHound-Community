@@ -471,8 +471,15 @@ namespace TrakHound.Servers.DataStorage
             {
                 if (!File.Exists(config.SQliteDatabasePath))
                 {
-                    SQLiteConnection.CreateFile(config.SQliteDatabasePath);
-                    Logger.Log("SQLite Database File Created : " + config.SQliteDatabasePath, LogLineType.Notification);
+                    try
+                    {
+                        SQLiteConnection.CreateFile(config.SQliteDatabasePath);
+                        Logger.Log("SQLite Database File Created : " + config.SQliteDatabasePath, LogLineType.Notification);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Log("Exception :: " + ex.Message, LogLineType.Error);
+                    }
                 }
             }
         }
@@ -511,7 +518,7 @@ namespace TrakHound.Servers.DataStorage
 
             public static void CleanHours(SQLiteConnection connection)
             {
-                string currentLocalDay = DateTime.Now.ToString(API.Data.HourInfo.DateFormat);
+                string currentLocalDay = DateTime.Now.Subtract(TimeSpan.FromDays(1)).ToString(Data.HourInfo.DATE_FORMAT);
 
                 string query = "DELETE FROM `hours` WHERE `date` < '" + currentLocalDay + "'";
 
@@ -520,41 +527,56 @@ namespace TrakHound.Servers.DataStorage
 
             public static DataTable GetHours(SQLiteConnection connection, string[] devices)
             {
-                string query = "SELECT * FROM `hours` WHERE ";
-
-                for (var x = 0; x < devices.Length; x++)
+                if (devices != null && devices.Length > 0)
                 {
-                    query += "`unique_id`='" + devices[x] + "'";
-                    if (x < devices.Length - 1) query += " OR ";
+                    string query = "SELECT * FROM `hours` WHERE ";
+
+                    for (var x = 0; x < devices.Length; x++)
+                    {
+                        query += "`unique_id`='" + devices[x] + "'";
+                        if (x < devices.Length - 1) query += " OR ";
+                    }
+
+                    return Query.GetDataTable(connection, query);
                 }
 
-                return Query.GetDataTable(connection, query);
+                return null;
             }
 
             public static DataTable GetHours(SQLiteConnection connection, API.Data.DeviceInfo[] deviceInfos)
             {
-                string query = "SELECT * FROM `hours` WHERE ";
-
-                for (var x = 0; x < deviceInfos.Length; x++)
+                if (deviceInfos != null && deviceInfos.Length > 0)
                 {
-                    query += "`unique_id`='" + deviceInfos[x].UniqueId + "'";
-                    if (x < deviceInfos.Length - 1) query += " OR ";
+                    string query = "SELECT * FROM `hours` WHERE ";
+
+                    for (var x = 0; x < deviceInfos.Length; x++)
+                    {
+                        query += "`unique_id`='" + deviceInfos[x].UniqueId + "'";
+                        if (x < deviceInfos.Length - 1) query += " OR ";
+                    }
+
+                    return Query.GetDataTable(connection, query);
                 }
 
-                return Query.GetDataTable(connection, query);
+                return null;
             }
 
             public static DataTable GetHours(SQLiteConnection connection, DeviceConfiguration[] deviceConfigs)
             {
-                string query = "SELECT * FROM `hours` WHERE ";
-
-                for (var x = 0; x < deviceConfigs.Length; x++)
+                if (deviceConfigs != null && deviceConfigs.Length > 0)
                 {
-                    query += "`unique_id`='" + deviceConfigs[x].UniqueId + "'";
-                    if (x < deviceConfigs.Length - 1) query += " OR ";
+                    string query = "SELECT * FROM `hours` WHERE ";
+
+                    for (var x = 0; x < deviceConfigs.Length; x++)
+                    {
+                        query += "`unique_id`='" + deviceConfigs[x].UniqueId + "'";
+                        if (x < deviceConfigs.Length - 1) query += " OR ";
+                    }
+
+                    return Query.GetDataTable(connection, query);
                 }
 
-                return Query.GetDataTable(connection, query);
+                return null;
             }
         }
 
