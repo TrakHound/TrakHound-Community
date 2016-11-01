@@ -279,7 +279,7 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
 
         private void UpdateDeviceInfo(List<Data.HourInfo> info)
         {
-            if (info != null)
+            if (info != null && info.Count > 0)
             {
                 UpdateActiveData(info);
                 UpdateIdleData(info);
