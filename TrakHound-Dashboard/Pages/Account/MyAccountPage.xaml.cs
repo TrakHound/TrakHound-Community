@@ -795,11 +795,14 @@ namespace TrakHound_Dashboard.Pages.Account
 
         void LoadProfileImage(UserConfiguration userConfig)
         {
-            ProfileImageLoading = true;
-            ProfileImageSet = false;
-            ProfileImage = null;
+            if (userConfig != null && !string.IsNullOrEmpty(userConfig.ImageUrl))
+            {
+                ProfileImageLoading = true;
+                ProfileImageSet = false;
+                ProfileImage = null;
 
-            ThreadPool.QueueUserWorkItem(new WaitCallback(LoadProfileImage_Worker), userConfig);
+                ThreadPool.QueueUserWorkItem(new WaitCallback(LoadProfileImage_Worker), userConfig);
+            }
         }
 
         void LoadProfileImage_Worker(object o)
