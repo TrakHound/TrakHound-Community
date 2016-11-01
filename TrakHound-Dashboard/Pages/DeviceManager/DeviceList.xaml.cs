@@ -217,6 +217,34 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                 Agent = device.Agent;
             }
 
+            private int index;
+            public new int Index
+            {
+                get { return index; }
+                set { SetField(ref index, value, "Index"); }
+            }
+
+            private bool enabled;
+            public new bool Enabled
+            {
+                get { return enabled; }
+                set { SetField(ref enabled, value, "Enabled"); }
+            }
+
+            private Data.DescriptionInfo description;
+            public new Data.DescriptionInfo Description
+            {
+                get { return description; }
+                set { SetField(ref description, value, "Description"); }
+            }
+
+            private Data.AgentInfo agent;
+            public new Data.AgentInfo Agent
+            {
+                get { return agent; }
+                set { SetField(ref agent, value, "Agent"); }
+            }
+
             private bool availability;
             public bool Availability
             {
@@ -1015,18 +1043,18 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
 
         private class RegenerateDeviceInfo
         {
-            public RegenerateDeviceInfo(DeviceDescription[] devices, UserConfiguration userConfig)
+            public RegenerateDeviceInfo(DeviceListItem[] devices, UserConfiguration userConfig)
             {
                 Devices = devices;
                 CurrentUser = userConfig;
             }
 
-            public DeviceDescription[] Devices { get; set; }
+            public DeviceListItem[] Devices { get; set; }
 
             public UserConfiguration CurrentUser { get; set; }
         }
 
-        private void RegenerateDevice(DeviceDescription[] devices)
+        private void RegenerateDevice(DeviceListItem[] devices)
         {
             var dialogResult = TrakHound_UI.MessageBox.Show("Are you sure you want to Regenerate this Device? Regenerating may remove any customizations.", "Regenerate Device", MessageBoxButtons.YesNo);
             if (dialogResult == MessageBoxDialogResult.Yes)
@@ -1067,7 +1095,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                             // Generate New Configuration
                             var config = Configuration.Create(probeData);
 
-                            // Preserve certain parameter from old configuration
+                            // Preserve certain parameters from old configuration
                             var table = config.ToTable();
                             if (table != null)
                             {
@@ -1189,12 +1217,12 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
 
         private void RegenerateClicked()
         {
-            var devices = new List<DeviceDescription>();
+            var devices = new List<DeviceListItem>();
 
             // Get a list of UniqueIds for each selected item in Devices DataTable
             foreach (var item in Devices_DG.SelectedItems)
             {
-                var device = (DeviceDescription)item;
+                var device = (DeviceListItem)item;
                 devices.Add(device);
             }
 
