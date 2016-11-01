@@ -41,6 +41,8 @@
 
     <!--Button with Accent Color as Background-->
     <Style x:Key="Button_Accent_Background" TargetType="{x:Type ui:Button}">
+        <Setter Property="ImageForeground" Value="{StaticResource Text_Alternate}"/>
+        <Setter Property="TextForeground" Value="{StaticResource Text_Alternate}"/>
         <Setter Property="Foreground" Value="{StaticResource Text_Alternate}"/>
         <Setter Property="Background" Value="{StaticResource TrakHound_Blue}"/>
         <Setter Property="FontSize" Value="12"/>
@@ -52,6 +54,8 @@
                 <Setter Property="Background" Value="{StaticResource TrakHound_LightBlue}"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="ImageForeground" Value="{StaticResource Disabled_Text}"/>
+                <Setter Property="TextForeground" Value="{StaticResource Disabled_Text}"/>
                 <Setter Property="Foreground" Value="{StaticResource Disabled_Text}"/>
                 <Setter Property="Background" Value="{StaticResource Disabled}"/>
             </Trigger>
@@ -60,6 +64,8 @@
 
     <!--Button with Accent Color as Foreground-->
     <Style x:Key="Button_Accent_Foreground" TargetType="{x:Type ui:Button}">
+        <Setter Property="ImageForeground" Value="{StaticResource TrakHound_Blue}"/>
+        <Setter Property="TextForeground" Value="{StaticResource TrakHound_Blue}"/>
         <Setter Property="Foreground" Value="{StaticResource TrakHound_Blue}"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="FontSize" Value="12"/>
@@ -71,7 +77,9 @@
                 <Trigger.EnterActions>
                     <BeginStoryboard>
                         <Storyboard>
-                            <ColorAnimation To="{StaticResource TrakHound_LightBlue_Color}" Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
+                            <ColorAnimation To="{StaticResource TrakHound_LightBlue_Color}" Storyboard.TargetProperty="(ui:Button.ImageForeground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
+                            <ColorAnimation To="{StaticResource TrakHound_LightBlue_Color}" Storyboard.TargetProperty="(ui:Button.TextForeground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
+                            <ColorAnimation To="{StaticResource TrakHound_LightBlue_Color}" Storyboard.TargetProperty="(ui:Button.Foreground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
                         </Storyboard>
                     </BeginStoryboard>
                 </Trigger.EnterActions>
@@ -79,7 +87,9 @@
                 <Trigger.ExitActions>
                     <BeginStoryboard>
                         <Storyboard FillBehavior="Stop">
-                            <ColorAnimation To="{StaticResource TrakHound_Blue_Color}" Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
+                            <ColorAnimation To="{StaticResource TrakHound_Blue_Color}" Storyboard.TargetProperty="(ui:Button.ImageForeground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
+                            <ColorAnimation To="{StaticResource TrakHound_Blue_Color}" Storyboard.TargetProperty="(ui:Button.TextForeground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
+                            <ColorAnimation To="{StaticResource TrakHound_Blue_Color}" Storyboard.TargetProperty="(ui:Button.Foreground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
                         </Storyboard>
                     </BeginStoryboard>
                 </Trigger.ExitActions>
@@ -87,6 +97,8 @@
             </Trigger>
 
             <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="ImageForeground" Value="{StaticResource Disabled_Text}"/>
+                <Setter Property="TextForeground" Value="{StaticResource Disabled_Text}"/>
                 <Setter Property="Foreground" Value="{StaticResource Disabled_Text}"/>
             </Trigger>
 
@@ -95,6 +107,8 @@
 
     <!--Button with Opposite Color as Foreground-->
     <Style x:Key="Button_Opposite_Foreground" TargetType="ui:Button">
+        <Setter Property="ImageForeground" Value="{StaticResource Text_Alternate}"/>
+        <Setter Property="TextForeground" Value="{StaticResource Text_Alternate}"/>
         <Setter Property="Foreground" Value="{StaticResource Text_Alternate}"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Height" Value="35"/>
@@ -118,6 +132,8 @@
             </Trigger>
 
             <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="ImageForeground" Value="{StaticResource Disabled_Text}"/>
+                <Setter Property="TextForeground" Value="{StaticResource Disabled_Text}"/>
                 <Setter Property="Foreground" Value="{StaticResource Disabled_Text}"/>
             </Trigger>
         </Style.Triggers>
@@ -125,6 +141,8 @@
 
     <!--Button with Transparent Background but with a border-->
     <Style x:Key="Button_Transparent_Background" TargetType="{x:Type ui:Button}">
+        <Setter Property="ImageForeground" Value="{StaticResource Foreground}"/>
+        <Setter Property="TextForeground" Value="{StaticResource Text}"/>
         <Setter Property="Foreground" Value="{StaticResource Text}"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="FontSize" Value="12"/>
@@ -139,6 +157,8 @@
                 <Setter Property="Background" Value="#10000000"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="ImageForeground" Value="{StaticResource Disabled_Text}"/>
+                <Setter Property="TextForeground" Value="{StaticResource Disabled_Text}"/>
                 <Setter Property="Foreground" Value="{StaticResource Disabled_Text}"/>
                 <Setter Property="Background" Value="Transparent"/>
             </Trigger>
@@ -147,6 +167,8 @@
 
     <!--Toolbar Button-->
     <Style x:Key="ToolBar_Button" TargetType="{x:Type ui:Button}">
+        <Setter Property="ImageForeground" Value="{StaticResource Foreground}"/>
+        <Setter Property="TextForeground" Value="{StaticResource Text}"/>
         <Setter Property="Foreground" Value="{StaticResource Text}"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="FontSize" Value="12"/>
@@ -158,19 +180,25 @@
                 <Trigger.EnterActions>
                     <BeginStoryboard>
                         <Storyboard>
-                            <ColorAnimation To="{StaticResource TrakHound_Blue_Color}" Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
+                            <ColorAnimation To="{StaticResource TrakHound_Blue_Color}" Storyboard.TargetProperty="(ui:Button.ImageForeground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
+                            <ColorAnimation To="{StaticResource TrakHound_Blue_Color}" Storyboard.TargetProperty="(ui:Button.TextForeground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
+                            <ColorAnimation To="{StaticResource TrakHound_Blue_Color}" Storyboard.TargetProperty="(ui:Button.Foreground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
                         </Storyboard>
                     </BeginStoryboard>
                 </Trigger.EnterActions>
                 <Trigger.ExitActions>
                     <BeginStoryboard>
                         <Storyboard FillBehavior="Stop">
-                            <ColorAnimation To="{StaticResource Text_Color}" Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
+                            <ColorAnimation To="{StaticResource Text_Color}" Storyboard.TargetProperty="(ui:Button.ImageForeground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
+                            <ColorAnimation To="{StaticResource Text_Color}" Storyboard.TargetProperty="(ui:Button.TextForeground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
+                            <ColorAnimation To="{StaticResource Text_Color}" Storyboard.TargetProperty="(ui:Button.Foreground).(SolidColorBrush.Color)" Duration="0:0:0.1"/>
                         </Storyboard>
                     </BeginStoryboard>
                 </Trigger.ExitActions>
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="ImageForeground" Value="{StaticResource Disabled}"/>
+                <Setter Property="TextForeground" Value="{StaticResource Disabled}"/>
                 <Setter Property="Foreground" Value="{StaticResource Disabled}"/>
             </Trigger>
         </Style.Triggers>
