@@ -14,7 +14,12 @@ namespace TrakHound_UI.Windows
 
         private void Close_Clicked(Button bt)
         {
-            Close();
+            DialogResult = false;
+        }
+
+        private void Restart_Clicked(Button bt)
+        {
+            DialogResult = true;
         }
     }
 }

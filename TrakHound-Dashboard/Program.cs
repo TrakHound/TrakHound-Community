@@ -4,8 +4,14 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Windows;
+
+using TrakHound;
+using TrakHound.API;
+using TrakHound_UI.Windows;
 
 namespace TrakHound_Dashboard
 {
@@ -14,30 +20,65 @@ namespace TrakHound_Dashboard
         public static bool CloseApp = false;
 
         static Mutex mutex = new Mutex(true, "{8C1E94A7-0783-41A5-8F80-6463BC0524C6}");
+
+        //private static App app;
+
         [STAThread]
         static void Main()
         {
-            if (!CloseApp)
+            if (mutex.WaitOne(TimeSpan.Zero, true))
             {
-                if (mutex.WaitOne(TimeSpan.Zero, true))
-                {
-                    var app = new TrakHound_Dashboard.App();
-                    app.InitializeComponent();
-                    app.Run();
-                }
-                else
-                {
-                    // send our Win32 message to make the currently running instance
-                    // jump on top of all the other windows
-                    NativeMethods.PostMessage(
-                        (IntPtr)NativeMethods.HWND_BROADCAST,
-                        NativeMethods.WM_SHOWME,
-                        IntPtr.Zero,
-                        IntPtr.Zero);
-                }
+                RunApp();
+            }
+            else
+            {
+                // send our Win32 message to make the currently running instance
+                // jump on top of all the other windows
+                NativeMethods.PostMessage(
+                    (IntPtr)NativeMethods.HWND_BROADCAST,
+                    NativeMethods.WM_SHOWME,
+                    IntPtr.Zero,
+                    IntPtr.Zero);
             }
         }
 
+        private static void RunApp()
+        {
+            try
+            {
+                var app = new TrakHound_Dashboard.App();
+                app.InitializeComponent();
+                app.Run();
+            }
+            catch (Exception ex)
+            {
+                if (SendBugReport(ex))
+                {
+                    var window = new BugReportSent();
+                    var restart = window.ShowDialog();
+                    if (restart == true)
+                    {
+                        // Restart Application
+                        System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
+                    }
+                }
+
+                //Shutdown Current Application
+                Application.Current.Shutdown();
+            }
+        }
+
+        private static bool SendBugReport(Exception ex)
+        {
+            var bugInfo = new Bugs.BugInfo(ex);
+            bugInfo.Application = ApplicationNames.TRAKHOUND_DASHBOARD;
+            bugInfo.Type = 0;
+
+            var bugInfos = new List<Bugs.BugInfo>();
+            bugInfos.Add(bugInfo);
+
+            return Bugs.Send(null, bugInfos);
+        }
     }
 
     // this class just wraps some Win32 stuff that we're going to use

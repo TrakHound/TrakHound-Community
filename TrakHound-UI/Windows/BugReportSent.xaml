@@ -75,7 +75,13 @@
 
                 </StackPanel>
 
-                <ui:Button Text="Close" Width="80" Style="{StaticResource Button_Accent_Background}" HorizontalAlignment="Right" Clicked="Close_Clicked"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+
+                    <ui:Button Text="Close" Width="80" Style="{StaticResource Button_Transparent_Background}" HorizontalAlignment="Right" Clicked="Close_Clicked" Margin="0,0,20,0"/>
+
+                    <ui:Button Text="Restart" Width="80" Style="{StaticResource Button_Accent_Background}" HorizontalAlignment="Right" Clicked="Restart_Clicked"/>
+
+                </StackPanel>
 
             </StackPanel>
 

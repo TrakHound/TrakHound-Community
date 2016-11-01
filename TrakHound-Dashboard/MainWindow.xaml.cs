@@ -24,7 +24,7 @@ namespace TrakHound_Dashboard
 
         public MainWindow()
         {
-            init();        
+            init();
         }
 
         private const int DEFAULT_ANIMATION_FRAMERATE = 60;
@@ -32,9 +32,6 @@ namespace TrakHound_Dashboard
         public void init()
         {
             UpdateUserSettings();
-
-            // Set Unhandled Exception handler
-            AppDomain.CurrentDomain.UnhandledException += currentDomain_UnhandledException;
 
             // Set Animation Framerate
             Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(Timeline), new FrameworkPropertyMetadata { DefaultValue = DEFAULT_ANIMATION_FRAMERATE });
@@ -101,30 +98,6 @@ namespace TrakHound_Dashboard
         private void Main_Window_Closed(object sender, EventArgs e)
         {
             FileLocations.CleanTempDirectory(1);
-        }
-
-        void currentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
-            SendBugReport((Exception)e.ExceptionObject);
-
-            Program.CloseApp = true;
-            if (e.IsTerminating) Close();
-        }
-
-        private void SendBugReport(Exception ex)
-        {
-            var bugInfo = new Bugs.BugInfo(ex);
-            bugInfo.Application = ApplicationNames.TRAKHOUND_DASHBOARD;
-            bugInfo.Type = 0;
-
-            var bugInfos = new List<Bugs.BugInfo>();
-            bugInfos.Add(bugInfo);
-
-            if (Bugs.Send(_currentuser, bugInfos))
-            {
-                var window = new BugReportSent();
-                window.ShowDialog();
-            }
         }
 
         private void CheckVersion()
