@@ -7,6 +7,7 @@ using MTConnect.Application.Components;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -257,6 +258,26 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
             DependencyProperty.Register("NetworkNodesFound", typeof(int), typeof(AutoDetect), new PropertyMetadata(0));
 
 
+        public bool DetailsShown
+        {
+            get { return (bool)GetValue(DetailsShownProperty); }
+            set { SetValue(DetailsShownProperty, value); }
+        }
+
+        public static readonly DependencyProperty DetailsShownProperty =
+            DependencyProperty.Register("DetailsShown", typeof(bool), typeof(AutoDetect), new PropertyMetadata(true));
+
+
+        public string DetailsText
+        {
+            get { return (string)GetValue(DetailsTextProperty); }
+            set { SetValue(DetailsTextProperty, value); }
+        }
+
+        public static readonly DependencyProperty DetailsTextProperty =
+            DependencyProperty.Register("DetailsText", typeof(string), typeof(AutoDetect), new PropertyMetadata(null));
+
+
         public double SearchProgressValue
         {
             get { return (double)GetValue(SearchProgressValueProperty); }
@@ -366,6 +387,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
             nodesChecked = 0;
             DeviceInfos.Clear();
             addressRange = null;
+            LogItems.Clear();
 
             pingTimeout = PingTimeout;
 
@@ -390,6 +412,10 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
 
                         if (start != null && end != null)
                         {
+                            AddtoLog(LogType.INFO, "Starting Auto Detect..");
+                            AddtoLog(LogType.INFO, "IP Address Range : From " + start.ToString() + " to " + end.ToString());
+                            AddtoLog(LogType.INFO, "Port Range : From " + portRangeStart.ToString() + " to " + portRangeStop.ToString());
+
                             var range = new Network_Functions.IPAddressRange(start, end);
 
                             addressRange = ips.FindAll(o => range.IsInRange(o));
@@ -415,33 +441,44 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
         public void FindDevices_Worker(object o)
         {
             ping = new Network_Functions.PingNodes(addressRange, pingTimeout);
-            ping.PingSuccessful += Ping_PingSuccessful;
+            ping.PingError += Ping_PingError;
+            ping.PingReplied += Ping_PingReplied;
             ping.Start();
         }
 
-        private void Ping_PingSuccessful(System.Net.NetworkInformation.PingReply reply)
+        private void Ping_PingError(IPAddress ip, string msg)
         {
-            Console.WriteLine(reply.Address + " Ping Returned Successful");
+            string format = "{0} : Exception : {1}";
+            AddtoLog(LogType.PING, string.Format(format, ip.ToString(), msg));
+        }
 
-            Dispatcher.BeginInvoke(new Action(() =>
+        private void Ping_PingReplied(IPAddress ip, System.Net.NetworkInformation.PingReply reply)
+        {
+            string format = "{0} : {1}ms : {2}";
+            AddtoLog(LogType.PING, string.Format(format, ip.ToString(), reply.RoundtripTime, reply.Status.ToString()));
+
+            if (reply.Status == System.Net.NetworkInformation.IPStatus.Success)
             {
-                NetworkNodesFound++;
-                SearchProgressMaximum += (portRangeStop - portRangeStart); // Increment number of ports to probe
-
-            }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
-
-            for (var p = portRangeStart; p < ((portRangeStop - portRangeStart) + portRangeStart); p++)
-            {
-                if (!stop.WaitOne(0, true))
+                Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    var info = new TestInfo();
-                    info.Address = reply.Address.ToString();
-                    info.Port = p;
+                    NetworkNodesFound++;
+                    SearchProgressMaximum += (portRangeStop - portRangeStart); // Increment number of ports to probe
 
-                    ThreadPool.QueueUserWorkItem(new WaitCallback(TestPort), info);
+                }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
+
+                for (var p = portRangeStart; p < ((portRangeStop - portRangeStart) + portRangeStart); p++)
+                {
+                    if (!stop.WaitOne(0, true))
+                    {
+                        var info = new TestInfo();
+                        info.Address = reply.Address.ToString();
+                        info.Port = p;
+
+                        ThreadPool.QueueUserWorkItem(new WaitCallback(TestPort), info);
+                    }
+                    else break;
                 }
-                else break;
-            }
+            } 
         }
 
         private class TestInfo
@@ -458,9 +495,10 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
 
                 bool open = Network_Functions.IsPortOpen(info.Address, info.Port, pingTimeout);
 
-                if (open && !stop.WaitOne(0, true))
+                if (!stop.WaitOne(0, true))
                 {
-                    TestProbe(info.Address, info.Port);
+                    if (open) TestProbe(info.Address, info.Port);
+                    else AddtoLog(LogType.PORT, "Port Closed :: " + info.Port);
                 }
 
                 Dispatcher.BeginInvoke(new Action(() =>
@@ -516,6 +554,8 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
             var probeReturn = Requests.Get(url, 500, 1);
             if (probeReturn != null && probeReturn.Devices != null)
             {
+                AddtoLog(LogType.PROBE, "MTConnect Probe Successful : " + url);
+
                 foreach (var device in probeReturn.Devices)
                 {
                     if (stop.WaitOne(0, true)) break;
@@ -561,6 +601,10 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
                         }
                     }
                 }
+            }
+            else
+            {
+                AddtoLog(LogType.PROBE, "MTConnect Probe Failed : " + url);
             }
         }
 
@@ -656,6 +700,138 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
 
         #endregion
 
+        #region "Details Log"
+
+        private ObservableCollection<LogItem> _logItems;
+        public ObservableCollection<LogItem> LogItems
+        {
+            get
+            {
+                if (_logItems == null)
+                {
+                    _logItems = new ObservableCollection<LogItem>();
+                }
+                return _logItems;
+            }
+            set
+            {
+                _logItems = value;
+            }
+        }
+
+        public enum LogType
+        {
+            INFO,
+            PING,
+            PORT,
+            PROBE
+        }
+
+        public class LogItem : INotifyPropertyChanged
+        {
+            public LogItem(LogType type, string text)
+            {
+                Type = type;
+                Text = text;
+            }
+
+            private LogType _type;
+            public LogType Type
+            {
+                get { return _type; }
+                set { SetField(ref _type, value, "Type"); }
+            }
+
+            private string _text;
+            public string Text
+            {
+                get { return _text; }
+                set { SetField(ref _text, value, "Text"); }
+            }
+
+            private bool _shown = true;
+            public bool Shown
+            {
+                get { return _shown; }
+                set { SetField(ref _shown, value, "Shown"); }
+            }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+            protected virtual void OnPropertyChanged(string propertyName)
+            {
+                PropertyChangedEventHandler handler = PropertyChanged;
+                handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
+            protected bool SetField<T>(ref T field, T value, string propertyName)
+            {
+                if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+                field = value;
+                OnPropertyChanged(propertyName);
+                return true;
+            }
+        }
+
+        private void AddtoLog(LogType type, string line)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                LogItems.Add(new LogItem(type, line));
+
+            }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
+        }
+
+
+        public bool DisplayPingLog
+        {
+            get { return (bool)GetValue(DisplayPingLogProperty); }
+            set { SetValue(DisplayPingLogProperty, value); }
+        }
+
+        public static readonly DependencyProperty DisplayPingLogProperty =
+            DependencyProperty.Register("DisplayPingLog", typeof(bool), typeof(AutoDetect), new PropertyMetadata(true));
+
+        public bool DisplayPortLog
+        {
+            get { return (bool)GetValue(DisplayPortLogProperty); }
+            set { SetValue(DisplayPortLogProperty, value); }
+        }
+
+        public static readonly DependencyProperty DisplayPortLogProperty =
+            DependencyProperty.Register("DisplayPortLog", typeof(bool), typeof(AutoDetect), new PropertyMetadata(true));
+
+        public bool DisplayProbeLog
+        {
+            get { return (bool)GetValue(DisplayProbeLogProperty); }
+            set { SetValue(DisplayProbeLogProperty, value); }
+        }
+
+        public static readonly DependencyProperty DisplayProbeLogProperty =
+            DependencyProperty.Register("DisplayProbeLog", typeof(bool), typeof(AutoDetect), new PropertyMetadata(true));
+
+
+        private void FilterLogItems()
+        {
+            lock(LogItems)
+            {
+                foreach (var logItem in LogItems)
+                {
+                    switch (logItem.Type)
+                    {
+                        case LogType.PING: logItem.Shown = DisplayPingLog; break;
+                        case LogType.PORT: logItem.Shown = DisplayPortLog; break;
+                        case LogType.PROBE: logItem.Shown = DisplayProbeLog; break;
+                    }
+                }
+            }
+        }
+
+        private void LogFilterCheckBox_Changed(object sender, RoutedEventArgs e)
+        {
+            FilterLogItems();
+        }
+
+        #endregion
+
         private void DeviceManager_Clicked(TrakHound_UI.Button bt) { if (ParentPage != null) ParentPage.OpenDeviceList(); }
 
         private void AddDevicesManually_Clicked(TrakHound_UI.Button bt) { if (ParentPage != null) ParentPage.ShowManual(); }
@@ -700,5 +876,6 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
             if (ping != null) ping.Cancel();
             DevicesLoading = false;
         }
+
     }
 }

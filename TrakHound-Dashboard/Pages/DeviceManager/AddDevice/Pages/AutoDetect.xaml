@@ -22,6 +22,10 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="800"/>
+            <ColumnDefinition Width="*" MinWidth="400"/>
+        </Grid.ColumnDefinitions>
 
         <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{StaticResource Text}" Margin="10,0,10,20">
             <Run Text="Find devices on the network and automatically generate a Device Configuration using MTConnect"/>
@@ -78,7 +82,7 @@
                 </StackPanel>
                 
                 <!--Reset to Default Settings-->
-                <ui:Button Text="Reset to Default" Height="30" Clicked="ResetDefault_Clicked" Style="{StaticResource Button_Accent_Background}"/>
+                <ui:Button Text="Reset to Default" Height="30" Clicked="ResetDefault_Clicked" Style="{StaticResource Button_Transparent_Background}"/>
 
             </WrapPanel>
 
@@ -280,10 +284,10 @@
                     </StackPanel.Style>
 
                     <!--Device Manager-->
-                    <ui:Button Text="Device Manager" Margin="40,0,20,0" Height="30" Image="/TrakHound-Dashboard;component/Resources/Root.png" Clicked="DeviceManager_Clicked" Style="{StaticResource Button_Accent_Background}"/>
+                    <ui:Button Text="Device Manager" Margin="40,0,20,0" Height="30" Image="/TrakHound-Dashboard;component/Resources/Root.png" Clicked="DeviceManager_Clicked" Style="{StaticResource Button_Transparent_Background}"/>
 
                     <!--Add Devices Manually-->
-                    <ui:Button Grid.Column="1" Height="30" Text="Add Devices Manually" VerticalAlignment="Center" HorizontalAlignment="Center" Clicked="AddDevicesManually_Clicked" Style="{StaticResource Button_Accent_Background}"/>
+                    <ui:Button Grid.Column="1" Height="30" Text="Add Devices Manually" VerticalAlignment="Center" HorizontalAlignment="Center" Clicked="AddDevicesManually_Clicked" Style="{StaticResource Button_Transparent_Background}"/>
 
                 </StackPanel>
 
@@ -367,7 +371,6 @@
                     VerticalScrollBarVisibility="Auto"  
                     HeadersVisibility="Column"
                     SelectionMode="Single"
-                    MaxWidth="800"
                     HorizontalAlignment="Left"
                     >
             <DataGrid.Style>
@@ -519,6 +522,40 @@
 
         </DataGrid>
 
+        <!--Details Log-->
+        <StackPanel Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Margin="40,0,0,0">
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+
+                <TextBlock Text="Details Log" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="0,0,20,0"/>
+
+                <CheckBox Content="Ping" IsChecked="{Binding DisplayPingLog, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Checked="LogFilterCheckBox_Changed" Unchecked="LogFilterCheckBox_Changed"/>
+                <CheckBox Content="Port" IsChecked="{Binding DisplayPortLog, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Checked="LogFilterCheckBox_Changed" Unchecked="LogFilterCheckBox_Changed"/>
+                <CheckBox Content="Probe" IsChecked="{Binding DisplayProbeLog, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Checked="LogFilterCheckBox_Changed" Unchecked="LogFilterCheckBox_Changed"/>
+
+            </StackPanel>
+
+            <ItemsControl ItemsSource="{Binding LogItems}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Text}">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Shown}" Value="false">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+
+            </ItemsControl>
+
+        </StackPanel>
+ 
     </Grid>
 
 </UserControl>
