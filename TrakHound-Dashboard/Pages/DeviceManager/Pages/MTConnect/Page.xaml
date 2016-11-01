@@ -89,7 +89,7 @@
                         <!--Buttton-->
                         <ui:Button Text="Test Connection" Clicked="TestConnection_Clicked" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <ui:Button.Style>
-                                <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Accent_Background}">
+                                <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Transparent_Background}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Loading}" Value="true">
                                             <Setter Property="Visibility" Value="Hidden"/>
