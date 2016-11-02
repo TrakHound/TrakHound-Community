@@ -24,7 +24,7 @@
         <Border.Style>
             <Style TargetType="Border">
                 <Setter Property="Height" Value="250"/>
-                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Background" Value="{StaticResource Disabled_Text}"/>
                 <Style.Triggers>
 
                     <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
@@ -40,7 +40,7 @@
                     </DataTrigger>
 
                     <DataTrigger Binding="{Binding Connected}" Value="false">
-                        <Setter Property="Background" Value="{StaticResource Disabled}"/>
+                        <Setter Property="Background" Value="{StaticResource Disabled_Text}"/>
                     </DataTrigger>
 
                 </Style.Triggers>
@@ -96,13 +96,13 @@
                             <Setter Property="Width" Value="50"/>
                             <Setter Property="Margin" Value="5"/>
                             <Setter Property="OpacityMask" Value="{StaticResource Power_Large_IMG}"/>
-                            <Setter Property="Opacity" Value="0"/>
+                            <Setter Property="Opacity" Value="1"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Connected}" Value="false">
+                                <DataTrigger Binding="{Binding Connected}" Value="true">
                                     <DataTrigger.EnterActions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <DoubleAnimation Duration="00:00:1.0" Storyboard.TargetProperty="Opacity" From="0" To="1.0" >
+                                                <DoubleAnimation Duration="00:00:1.0" Storyboard.TargetProperty="Opacity" From="1" To="0" >
                                                     <DoubleAnimation.EasingFunction>
                                                         <CubicEase EasingMode="EaseOut"/>
                                                     </DoubleAnimation.EasingFunction>
@@ -113,7 +113,7 @@
                                     <DataTrigger.ExitActions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <DoubleAnimation Duration="00:00:1.0" Storyboard.TargetProperty="Opacity" From="1.0" To="0" >
+                                                <DoubleAnimation Duration="00:00:1.0" Storyboard.TargetProperty="Opacity" From="0" To="1" >
                                                     <DoubleAnimation.EasingFunction>
                                                         <CubicEase EasingMode="EaseOut"/>
                                                     </DoubleAnimation.EasingFunction>

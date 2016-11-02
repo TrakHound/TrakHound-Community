@@ -53,6 +53,7 @@
                 <Border Grid.Column="0" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
                     <Border.Style>
                         <Style TargetType="Border">
+                            <Setter Property="Background" Value="{StaticResource Disabled_Text}"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
                                     <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
@@ -64,7 +65,7 @@
                                     <Setter Property="Background" Value="{StaticResource StatusRed}"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Connected}" Value="false">
-                                    <Setter Property="Background" Value="{StaticResource Disabled}"/>
+                                    <Setter Property="Background" Value="{StaticResource Disabled_Text}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -212,6 +213,15 @@
                 </Border>
 
                 <UniformGrid Grid.Column="3" Columns="4">
+                    <UniformGrid.Style>
+                        <Style TargetType="UniformGrid">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Connected}" Value="false">
+                                    <Setter Property="Opacity" Value="0.4"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </UniformGrid.Style>
 
                     <!--OEE-->
                     <Border BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">

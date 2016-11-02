@@ -35,17 +35,6 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="90"/>
-                <RowDefinition Height="180"/>
-                <RowDefinition Height="300"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
@@ -54,7 +43,7 @@
                 <Border.Style>
                     <Style TargetType="Border">
                         <Setter Property="Height" Value="200"/>
-                        <Setter Property="Background" Value="#60000000"/>
+                        <Setter Property="Background" Value="{StaticResource Disabled_Text}"/>
                         <Style.Triggers>
 
                             <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
@@ -72,13 +61,13 @@
                             <DataTrigger Binding="{Binding WidthStatus}" Value="0">
                                 <Setter Property="Height" Value="260"/>
                             </DataTrigger>
-                            
+
                             <DataTrigger Binding="{Binding WidthStatus}" Value="1">
                                 <Setter Property="Height" Value="320"/>
                             </DataTrigger>
 
                             <DataTrigger Binding="{Binding Connected}" Value="false">
-                                <Setter Property="Background" Value="{StaticResource Disabled}"/>
+                                <Setter Property="Background" Value="{StaticResource Disabled_Text}"/>
                             </DataTrigger>
 
                         </Style.Triggers>
@@ -634,7 +623,7 @@
                             </Viewbox>
 
                         </StackPanel>
-                        
+
                     </Grid>
 
                     <!--Mouse Over Cover-->
@@ -697,435 +686,485 @@
             </Border>
             <Rectangle Grid.Row="0" Height="1" VerticalAlignment="Bottom"/>
 
-            <!--OEE-->
-            <ui:MeterDisplay Height="50" Grid.Row="1" Value="{Binding Oee}" >
-                <ui:MeterDisplay.Style>
-                    <Style TargetType="ui:MeterDisplay" BasedOn="{StaticResource {x:Type ui:MeterDisplay}}">
-                        <Setter Property="ValueFormat" Value="N1"/>
-                        <Setter Property="Maximum" Value="100"/>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="90"/>
+                    <RowDefinition Height="180"/>
+                    <RowDefinition Height="300"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.Style>
+                    <Style TargetType="Grid">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding OeeStatus}" Value="0">
-                                <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusRed}"/>
-                                <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusRed_Hover}"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding OeeStatus}" Value="1">
-                                <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusOrange}"/>
-                                <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusOrange_Hover}"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding OeeStatus}" Value="2">
-                                <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
-                                <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding WidthStatus}" Value="1">
-                                <Setter Property="ValueFormat" Value="N1"/>
+                            <DataTrigger Binding="{Binding Connected}" Value="false">
+                                <Setter Property="Opacity" Value="0.4"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </ui:MeterDisplay.Style>
-            </ui:MeterDisplay>
-            <ui:NumberDisplay Grid.Row="1" Value="{Binding Oee}" Foreground="{StaticResource Text}">
-                <ui:NumberDisplay.Style>
-                    <Style TargetType="ui:NumberDisplay">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Setter Property="ValueFormat" Value="N1"/>
-                        <Setter Property="Height" Value="50"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                <Setter Property="Visibility" Value="Visible"/>
-                                <Setter Property="Height" Value="30"/>
-                                <Setter Property="ValueFormat" Value="N0"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ui:NumberDisplay.Style>
-            </ui:NumberDisplay>
-            <Rectangle Grid.Row="1" Height="1" VerticalAlignment="Bottom"/>
+                </Grid.Style>
 
-            <!--Availability-->
-            <ui:MeterDisplay Height="50" Grid.Row="2" Value="{Binding Availability}" >
-                <ui:MeterDisplay.Style>
-                    <Style TargetType="ui:MeterDisplay" BasedOn="{StaticResource {x:Type ui:MeterDisplay}}">
-                        <Setter Property="ValueFormat" Value="N1"/>
-                        <Setter Property="Maximum" Value="100"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding AvailabilityStatus}" Value="0">
-                                <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusRed}"/>
-                                <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusRed_Hover}"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding AvailabilityStatus}" Value="1">
-                                <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusOrange}"/>
-                                <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusOrange_Hover}"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding AvailabilityStatus}" Value="2">
-                                <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
-                                <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding WidthStatus}" Value="1">
-                                <Setter Property="ValueFormat" Value="N1"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ui:MeterDisplay.Style>
-            </ui:MeterDisplay>
-            <ui:NumberDisplay Grid.Row="2" Value="{Binding Availability}" Foreground="{StaticResource Text}">
-                <ui:NumberDisplay.Style>
-                    <Style TargetType="ui:NumberDisplay">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Setter Property="ValueFormat" Value="N1"/>
-                        <Setter Property="Height" Value="50"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                <Setter Property="Visibility" Value="Visible"/>
-                                <Setter Property="Height" Value="30"/>
-                                <Setter Property="ValueFormat" Value="N0"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ui:NumberDisplay.Style>
-            </ui:NumberDisplay>
-            <Rectangle Grid.Row="2" Height="1" VerticalAlignment="Bottom"/>
-
-            <!--Performance-->
-            <ui:MeterDisplay Height="50" Grid.Row="3" Value="{Binding Performance}">
-                <ui:MeterDisplay.Style>
-                    <Style TargetType="ui:MeterDisplay" BasedOn="{StaticResource {x:Type ui:MeterDisplay}}">
-                        <Setter Property="ValueFormat" Value="N1"/>
-                        <Setter Property="Maximum" Value="100"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding PerformanceStatus}" Value="0">
-                                <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusRed}"/>
-                                <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusRed_Hover}"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding PerformanceStatus}" Value="1">
-                                <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusOrange}"/>
-                                <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusOrange_Hover}"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding PerformanceStatus}" Value="2">
-                                <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
-                                <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding WidthStatus}" Value="1">
-                                <Setter Property="ValueFormat" Value="N1"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ui:MeterDisplay.Style>
-            </ui:MeterDisplay>
-            <ui:NumberDisplay Grid.Row="3" Value="{Binding Performance}" Foreground="{StaticResource Text}">
-                <ui:NumberDisplay.Style>
-                    <Style TargetType="ui:NumberDisplay">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Setter Property="ValueFormat" Value="N1"/>
-                        <Setter Property="Height" Value="50"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                <Setter Property="Visibility" Value="Visible"/>
-                                <Setter Property="Height" Value="30"/>
-                                <Setter Property="ValueFormat" Value="N0"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ui:NumberDisplay.Style>
-            </ui:NumberDisplay>
-            <Rectangle Grid.Row="3" Height="1" VerticalAlignment="Bottom"/>
-
-            <!--Part Count-->
-            <ui:NumberDisplay Grid.Row="4" Value="{Binding PartCount}" Foreground="{StaticResource Text}">
-                <ui:NumberDisplay.Style>
-                    <Style TargetType="ui:NumberDisplay">
-                        <Setter Property="ValueFormat" Value="N0"/>
-                        <Setter Property="Height" Value="80"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                <Setter Property="Visibility" Value="Visible"/>
-                                <Setter Property="Height" Value="40"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ui:NumberDisplay.Style>
-            </ui:NumberDisplay>
-            <Rectangle Grid.Row="4" Height="1" VerticalAlignment="Bottom"/>
-
-            <!--Device Status-->
-            <StackPanel Grid.Row="5">
-
-                <!--Active-->
-                <Border Height="60" BorderBrush="#aaa" BorderThickness="0,0,0,1">
-                    <Border.Style>
-                        <Style TargetType="Border">
+                <!--OEE-->
+                <ui:MeterDisplay Height="50" Grid.Row="0" Value="{Binding Oee}" >
+                    <ui:MeterDisplay.Style>
+                        <Style TargetType="ui:MeterDisplay" BasedOn="{StaticResource {x:Type ui:MeterDisplay}}">
+                            <Setter Property="ValueFormat" Value="N1"/>
+                            <Setter Property="Maximum" Value="100"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
-                                    <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
+                                <DataTrigger Binding="{Binding OeeStatus}" Value="0">
+                                    <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusRed}"/>
+                                    <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusRed_Hover}"/>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding ActivePercentage}" Value="0">
+                                <DataTrigger Binding="{Binding OeeStatus}" Value="1">
+                                    <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusOrange}"/>
+                                    <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusOrange_Hover}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding OeeStatus}" Value="2">
+                                    <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
+                                    <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding WidthStatus}" Value="1">
+                                    <Setter Property="ValueFormat" Value="N1"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </Border.Style>
+                    </ui:MeterDisplay.Style>
+                </ui:MeterDisplay>
+                <ui:NumberDisplay Grid.Row="0" Value="{Binding Oee}" Foreground="{StaticResource Text}">
+                    <ui:NumberDisplay.Style>
+                        <Style TargetType="ui:NumberDisplay">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Setter Property="ValueFormat" Value="N1"/>
+                            <Setter Property="Height" Value="50"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Height" Value="30"/>
+                                    <Setter Property="ValueFormat" Value="N0"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ui:NumberDisplay.Style>
+                </ui:NumberDisplay>
+                <Rectangle Grid.Row="0" Height="1" VerticalAlignment="Bottom"/>
 
-                    <Grid Margin="10,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                <!--Availability-->
+                <ui:MeterDisplay Height="50" Grid.Row="1" Value="{Binding Availability}" >
+                    <ui:MeterDisplay.Style>
+                        <Style TargetType="ui:MeterDisplay" BasedOn="{StaticResource {x:Type ui:MeterDisplay}}">
+                            <Setter Property="ValueFormat" Value="N1"/>
+                            <Setter Property="Maximum" Value="100"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding AvailabilityStatus}" Value="0">
+                                    <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusRed}"/>
+                                    <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusRed_Hover}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding AvailabilityStatus}" Value="1">
+                                    <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusOrange}"/>
+                                    <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusOrange_Hover}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding AvailabilityStatus}" Value="2">
+                                    <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
+                                    <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding WidthStatus}" Value="1">
+                                    <Setter Property="ValueFormat" Value="N1"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ui:MeterDisplay.Style>
+                </ui:MeterDisplay>
+                <ui:NumberDisplay Grid.Row="1" Value="{Binding Availability}" Foreground="{StaticResource Text}">
+                    <ui:NumberDisplay.Style>
+                        <Style TargetType="ui:NumberDisplay">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Setter Property="ValueFormat" Value="N1"/>
+                            <Setter Property="Height" Value="50"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Height" Value="30"/>
+                                    <Setter Property="ValueFormat" Value="N0"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ui:NumberDisplay.Style>
+                </ui:NumberDisplay>
+                <Rectangle Grid.Row="1" Height="1" VerticalAlignment="Bottom"/>
 
-                        <!--Icon-->
-                        <Grid>
-                            <Grid.Style>
-                                <Style TargetType="Grid">
-                                    <Setter Property="Height" Value="20"/>
-                                    <Setter Property="Width" Value="20"/>
-                                    <Setter Property="Background" Value="{StaticResource Text}"/>
-                                    <Setter Property="OpacityMask" Value="{StaticResource Active_IMG}" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
-                                            <Setter Property="Background" Value="#FFFFFF"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
-                        </Grid>
+                <!--Performance-->
+                <ui:MeterDisplay Height="50" Grid.Row="2" Value="{Binding Performance}">
+                    <ui:MeterDisplay.Style>
+                        <Style TargetType="ui:MeterDisplay" BasedOn="{StaticResource {x:Type ui:MeterDisplay}}">
+                            <Setter Property="ValueFormat" Value="N1"/>
+                            <Setter Property="Maximum" Value="100"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding PerformanceStatus}" Value="0">
+                                    <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusRed}"/>
+                                    <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusRed_Hover}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding PerformanceStatus}" Value="1">
+                                    <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusOrange}"/>
+                                    <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusOrange_Hover}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding PerformanceStatus}" Value="2">
+                                    <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
+                                    <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding WidthStatus}" Value="1">
+                                    <Setter Property="ValueFormat" Value="N1"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ui:MeterDisplay.Style>
+                </ui:MeterDisplay>
+                <ui:NumberDisplay Grid.Row="2" Value="{Binding Performance}" Foreground="{StaticResource Text}">
+                    <ui:NumberDisplay.Style>
+                        <Style TargetType="ui:NumberDisplay">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Setter Property="ValueFormat" Value="N1"/>
+                            <Setter Property="Height" Value="50"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Height" Value="30"/>
+                                    <Setter Property="ValueFormat" Value="N0"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ui:NumberDisplay.Style>
+                </ui:NumberDisplay>
+                <Rectangle Grid.Row="2" Height="1" VerticalAlignment="Bottom"/>
 
-                        <UniformGrid Grid.Column="1" Rows="1">
+                <!--Part Count-->
+                <ui:NumberDisplay Grid.Row="3" Value="{Binding PartCount}" Foreground="{StaticResource Text}">
+                    <ui:NumberDisplay.Style>
+                        <Style TargetType="ui:NumberDisplay">
+                            <Setter Property="ValueFormat" Value="N0"/>
+                            <Setter Property="Height" Value="80"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Height" Value="40"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ui:NumberDisplay.Style>
+                </ui:NumberDisplay>
+                <Rectangle Grid.Row="3" Height="1" VerticalAlignment="Bottom"/>
 
-                            <!--Time Display-->
-                            <Border BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
-                                <Border.Style>
-                                    <Style TargetType="Border">
+                <!--Device Status-->
+                <StackPanel Grid.Row="4">
+
+                    <!--Active-->
+                    <Border Height="60" BorderBrush="#aaa" BorderThickness="0,0,0,1">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
+                                        <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ActivePercentage}" Value="0">
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <Grid Margin="10,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!--Icon-->
+                            <Grid>
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Height" Value="20"/>
+                                        <Setter Property="Width" Value="20"/>
+                                        <Setter Property="Background" Value="{StaticResource Text}"/>
+                                        <Setter Property="OpacityMask" Value="{StaticResource Active_IMG}" />
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
-                                                <Setter Property="BorderBrush" Value="#FFFFFF"/>
+                                                <Setter Property="Background" Value="#FFFFFF"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding WidthStatus}" Value="0">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding WidthStatus}" Value="1">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
-                                </Border.Style>
+                                </Grid.Style>
+                            </Grid>
 
-                                <ui:TimeDisplay Time="{Binding ActiveTime}" MaxHeight="35" Margin="10,0" HorizontalAlignment="Center">
-                                    <ui:TimeDisplay.Style>
-                                        <Style TargetType="ui:TimeDisplay">
-                                            <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                            <UniformGrid Grid.Column="1" Rows="1">
+
+                                <!--Time Display-->
+                                <Border BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
                                             <Style.Triggers>
+                                                <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
+                                                    <Setter Property="BorderBrush" Value="#FFFFFF"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WidthStatus}" Value="1">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+
+                                    <ui:TimeDisplay Time="{Binding ActiveTime}" MaxHeight="35" Margin="10,0" HorizontalAlignment="Center">
+                                        <ui:TimeDisplay.Style>
+                                            <Style TargetType="ui:TimeDisplay">
+                                                <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
+                                                        <Setter Property="Foreground" Value="#FFFFFF"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ui:TimeDisplay.Style>
+                                    </ui:TimeDisplay>
+
+                                </Border>
+
+                                <!--Percentage-->
+                                <ui:NumberDisplay Value="{Binding ActivePercentage}" Margin="5,0">
+                                    <ui:NumberDisplay.Style>
+                                        <Style TargetType="ui:NumberDisplay">
+                                            <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                                            <Setter Property="MaxHeight" Value="45"/>
+                                            <Setter Property="ValueFormat" Value="N1"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                                    <Setter Property="MaxHeight" Value="30"/>
+                                                    <Setter Property="ValueFormat" Value="N0"/>
+                                                </DataTrigger>
                                                 <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
                                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
-                                    </ui:TimeDisplay.Style>
-                                </ui:TimeDisplay>
+                                    </ui:NumberDisplay.Style>
+                                </ui:NumberDisplay>
 
-                            </Border>
+                            </UniformGrid>
 
-                            <!--Percentage-->
-                            <ui:NumberDisplay Value="{Binding ActivePercentage}" Margin="5,0">
-                                <ui:NumberDisplay.Style>
-                                    <Style TargetType="ui:NumberDisplay">
-                                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
-                                        <Setter Property="MaxHeight" Value="45"/>
-                                        <Setter Property="ValueFormat" Value="N1"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                                <Setter Property="MaxHeight" Value="30"/>
-                                                <Setter Property="ValueFormat" Value="N0"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
-                                                <Setter Property="Foreground" Value="#FFFFFF"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ui:NumberDisplay.Style>
-                            </ui:NumberDisplay>
-
-                        </UniformGrid>
-
-                    </Grid>
-
-                </Border>
-
-                <!--Idle-->
-                <Border Height="60" BorderBrush="#aaa" BorderThickness="0,0,0,1">
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding DeviceStatus}" Value="Idle">
-                                    <Setter Property="Background" Value="{StaticResource StatusOrange}"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding IdlePercentage}" Value="0">
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-
-                    <Grid Margin="10,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <!--Icon-->
-                        <Grid>
-                            <Grid.Style>
-                                <Style TargetType="Grid">
-                                    <Setter Property="Height" Value="20"/>
-                                    <Setter Property="Width" Value="20"/>
-                                    <Setter Property="Background" Value="{StaticResource Text}"/>
-                                    <Setter Property="OpacityMask" Value="{StaticResource Idle_IMG}" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding DeviceStatus}" Value="Idle">
-                                            <Setter Property="Background" Value="#FFFFFF"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
                         </Grid>
 
-                        <UniformGrid Grid.Column="1" Rows="1">
+                    </Border>
 
-                            <!--Time Display-->
-                            <Border BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
-                                <Border.Style>
-                                    <Style TargetType="Border">
+                    <!--Idle-->
+                    <Border Height="60" BorderBrush="#aaa" BorderThickness="0,0,0,1">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DeviceStatus}" Value="Idle">
+                                        <Setter Property="Background" Value="{StaticResource StatusOrange}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IdlePercentage}" Value="0">
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <Grid Margin="10,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!--Icon-->
+                            <Grid>
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Height" Value="20"/>
+                                        <Setter Property="Width" Value="20"/>
+                                        <Setter Property="Background" Value="{StaticResource Text}"/>
+                                        <Setter Property="OpacityMask" Value="{StaticResource Idle_IMG}" />
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding DeviceStatus}" Value="Idle">
-                                                <Setter Property="BorderBrush" Value="#FFFFFF"/>
+                                                <Setter Property="Background" Value="#FFFFFF"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding WidthStatus}" Value="0">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding WidthStatus}" Value="1">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
-                                </Border.Style>
+                                </Grid.Style>
+                            </Grid>
 
-                                <ui:TimeDisplay Time="{Binding IdleTime}" MaxHeight="35" Margin="10,0" HorizontalAlignment="Center">
-                                    <ui:TimeDisplay.Style>
-                                        <Style TargetType="ui:TimeDisplay">
-                                            <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                            <UniformGrid Grid.Column="1" Rows="1">
+
+                                <!--Time Display-->
+                                <Border BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
                                             <Style.Triggers>
+                                                <DataTrigger Binding="{Binding DeviceStatus}" Value="Idle">
+                                                    <Setter Property="BorderBrush" Value="#FFFFFF"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WidthStatus}" Value="1">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+
+                                    <ui:TimeDisplay Time="{Binding IdleTime}" MaxHeight="35" Margin="10,0" HorizontalAlignment="Center">
+                                        <ui:TimeDisplay.Style>
+                                            <Style TargetType="ui:TimeDisplay">
+                                                <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding DeviceStatus}" Value="Idle">
+                                                        <Setter Property="Foreground" Value="#FFFFFF"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ui:TimeDisplay.Style>
+                                    </ui:TimeDisplay>
+
+                                </Border>
+
+                                <!--Percentage-->
+                                <ui:NumberDisplay Value="{Binding IdlePercentage}" Margin="5,0">
+                                    <ui:NumberDisplay.Style>
+                                        <Style TargetType="ui:NumberDisplay">
+                                            <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                                            <Setter Property="MaxHeight" Value="45"/>
+                                            <Setter Property="ValueFormat" Value="N1"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                                    <Setter Property="MaxHeight" Value="30"/>
+                                                    <Setter Property="ValueFormat" Value="N0"/>
+                                                </DataTrigger>
                                                 <DataTrigger Binding="{Binding DeviceStatus}" Value="Idle">
                                                     <Setter Property="Foreground" Value="#FFFFFF"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
-                                    </ui:TimeDisplay.Style>
-                                </ui:TimeDisplay>
+                                    </ui:NumberDisplay.Style>
+                                </ui:NumberDisplay>
 
-                            </Border>
+                            </UniformGrid>
 
-                            <!--Percentage-->
-                            <ui:NumberDisplay Value="{Binding IdlePercentage}" Margin="5,0">
-                                <ui:NumberDisplay.Style>
-                                    <Style TargetType="ui:NumberDisplay">
-                                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
-                                        <Setter Property="MaxHeight" Value="45"/>
-                                        <Setter Property="ValueFormat" Value="N1"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                                <Setter Property="MaxHeight" Value="30"/>
-                                                <Setter Property="ValueFormat" Value="N0"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding DeviceStatus}" Value="Idle">
-                                                <Setter Property="Foreground" Value="#FFFFFF"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ui:NumberDisplay.Style>
-                            </ui:NumberDisplay>
-
-                        </UniformGrid>
-
-                    </Grid>
-
-                </Border>
-
-                <!--Alert-->
-                <Border Height="60" BorderBrush="#aaa" BorderThickness="0,0,0,1">
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
-                                    <Setter Property="Background" Value="{StaticResource StatusRed}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-
-                    <Grid Margin="10,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <!--Icon-->
-                        <Grid>
-                            <Grid.Style>
-                                <Style TargetType="Grid">
-                                    <Setter Property="Height" Value="20"/>
-                                    <Setter Property="Width" Value="20"/>
-                                    <Setter Property="Background" Value="{StaticResource StatusRed}"/>
-                                    <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding AlertPercentage}" Value="0">
-                                            <Setter Property="Background" Value="{StaticResource Text}"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
-                                            <Setter Property="Background" Value="#FFFFFF"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
                         </Grid>
 
-                        <UniformGrid Grid.Column="1" Rows="1">
+                    </Border>
 
-                            <!--Time Display-->
-                            <Border BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
-                                <Border.Style>
-                                    <Style TargetType="Border">
+                    <!--Alert-->
+                    <Border Height="60" BorderBrush="#aaa" BorderThickness="0,0,0,1">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
+                                        <Setter Property="Background" Value="{StaticResource StatusRed}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <Grid Margin="10,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!--Icon-->
+                            <Grid>
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Height" Value="20"/>
+                                        <Setter Property="Width" Value="20"/>
+                                        <Setter Property="Background" Value="{StaticResource StatusRed}"/>
+                                        <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}" />
                                         <Style.Triggers>
+                                            <DataTrigger Binding="{Binding AlertPercentage}" Value="0">
+                                                <Setter Property="Background" Value="{StaticResource Text}"/>
+                                            </DataTrigger>
                                             <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
-                                                <Setter Property="BorderBrush" Value="#FFFFFF"/>
+                                                <Setter Property="Background" Value="#FFFFFF"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding WidthStatus}" Value="0">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding WidthStatus}" Value="1">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
-                                </Border.Style>
+                                </Grid.Style>
+                            </Grid>
 
-                                <ui:TimeDisplay Time="{Binding AlertTime}" MaxHeight="35" Margin="10,0" HorizontalAlignment="Center">
-                                    <ui:TimeDisplay.Style>
-                                        <Style TargetType="ui:TimeDisplay">
-                                            <Setter Property="Foreground" Value="{StaticResource StatusRed}"/>
+                            <UniformGrid Grid.Column="1" Rows="1">
+
+                                <!--Time Display-->
+                                <Border BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
                                             <Style.Triggers>
+                                                <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
+                                                    <Setter Property="BorderBrush" Value="#FFFFFF"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WidthStatus}" Value="1">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+
+                                    <ui:TimeDisplay Time="{Binding AlertTime}" MaxHeight="35" Margin="10,0" HorizontalAlignment="Center">
+                                        <ui:TimeDisplay.Style>
+                                            <Style TargetType="ui:TimeDisplay">
+                                                <Setter Property="Foreground" Value="{StaticResource StatusRed}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding AlertPercentage}" Value="0">
+                                                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
+                                                        <Setter Property="Foreground" Value="#FFFFFF"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ui:TimeDisplay.Style>
+                                    </ui:TimeDisplay>
+
+                                </Border>
+
+                                <!--Percentage-->
+                                <ui:NumberDisplay Value="{Binding AlertPercentage}" Margin="5,0">
+                                    <ui:NumberDisplay.Style>
+                                        <Style TargetType="ui:NumberDisplay">
+                                            <Setter Property="Foreground" Value="{StaticResource StatusRed}"/>
+                                            <Setter Property="MaxHeight" Value="45"/>
+                                            <Setter Property="ValueFormat" Value="N1"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                                    <Setter Property="MaxHeight" Value="30"/>
+                                                    <Setter Property="ValueFormat" Value="N0"/>
+                                                </DataTrigger>
                                                 <DataTrigger Binding="{Binding AlertPercentage}" Value="0">
                                                     <Setter Property="Foreground" Value="{StaticResource Text}"/>
                                                 </DataTrigger>
@@ -1134,1020 +1173,957 @@
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
-                                    </ui:TimeDisplay.Style>
-                                </ui:TimeDisplay>
+                                    </ui:NumberDisplay.Style>
+                                </ui:NumberDisplay>
 
-                            </Border>
+                            </UniformGrid>
 
-                            <!--Percentage-->
-                            <ui:NumberDisplay Value="{Binding AlertPercentage}" Margin="5,0">
-                                <ui:NumberDisplay.Style>
-                                    <Style TargetType="ui:NumberDisplay">
-                                        <Setter Property="Foreground" Value="{StaticResource StatusRed}"/>
-                                        <Setter Property="MaxHeight" Value="45"/>
-                                        <Setter Property="ValueFormat" Value="N1"/>
+                        </Grid>
+
+                    </Border>
+
+                </StackPanel>
+
+                <!--Production Status-->
+                <StackPanel Grid.Row="5">
+
+                    <!--Production-->
+                    <Border Height="60" BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ProductionStatus}" Value="Production">
+                                        <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <Grid Margin="10,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!--Icon-->
+                            <Grid>
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Height" Value="20"/>
+                                        <Setter Property="Width" Value="20"/>
+                                        <Setter Property="Background" Value="{StaticResource Text}"/>
+                                        <Setter Property="OpacityMask" Value="{StaticResource Production_IMG}" />
                                         <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ProductionStatus}" Value="Production">
+                                                <Setter Property="Background" Value="#FFFFFF"/>
+                                            </DataTrigger>
                                             <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                                <Setter Property="MaxHeight" Value="30"/>
-                                                <Setter Property="ValueFormat" Value="N0"/>
+                                                <Setter Property="Visibility" Value="Collapsed"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding AlertPercentage}" Value="0">
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                            </Grid>
+
+                            <UniformGrid Grid.Column="1" Rows="1">
+
+                                <!--Time Display-->
+                                <Border Grid.Column="1" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ProductionStatus}" Value="Production">
+                                                    <Setter Property="BorderBrush" Value="#FFFFFF"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WidthStatus}" Value="1">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+
+                                    <ui:TimeDisplay Time="{Binding ProductionTime}" MaxHeight="35" Margin="10,0" HorizontalAlignment="Center">
+                                        <ui:TimeDisplay.Style>
+                                            <Style TargetType="ui:TimeDisplay">
                                                 <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ProductionStatus}" Value="Production">
+                                                        <Setter Property="Foreground" Value="#FFFFFF"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ui:TimeDisplay.Style>
+                                    </ui:TimeDisplay>
+
+                                </Border>
+
+                                <!--Percentage-->
+                                <ui:NumberDisplay Grid.Column="2" Value="{Binding ProductionPercentage}" Margin="5,0">
+                                    <ui:NumberDisplay.Style>
+                                        <Style TargetType="ui:NumberDisplay">
+                                            <Setter Property="MaxHeight" Value="45"/>
+                                            <Setter Property="ValueFormat" Value="N1"/>
+                                            <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ProductionStatus}" Value="Production">
+                                                    <Setter Property="Foreground" Value="#FFFFFF"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                                    <Setter Property="MaxHeight" Value="30"/>
+                                                    <Setter Property="ValueFormat" Value="N0"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ui:NumberDisplay.Style>
+                                </ui:NumberDisplay>
+
+                            </UniformGrid>
+
+                        </Grid>
+                    </Border>
+
+                    <!--Setup-->
+                    <Border Height="60" BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ProductionStatus}" Value="Setup">
+                                        <Setter Property="Background" Value="{StaticResource StatusBlue}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <Grid Margin="10,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!--Icon-->
+                            <Grid>
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Height" Value="20"/>
+                                        <Setter Property="Width" Value="20"/>
+                                        <Setter Property="Background" Value="{StaticResource Text}"/>
+                                        <Setter Property="OpacityMask" Value="{StaticResource Setup_IMG}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ProductionStatus}" Value="Setup">
+                                                <Setter Property="Background" Value="#FFFFFF"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding DeviceStatus}" Value="Alert">
+                                            <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                            </Grid>
+
+                            <UniformGrid Grid.Column="1" Rows="1">
+
+                                <!--Time Display-->
+                                <Border Grid.Column="1" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ProductionStatus}" Value="Setup">
+                                                    <Setter Property="BorderBrush" Value="#FFFFFF"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WidthStatus}" Value="1">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+
+                                    <ui:TimeDisplay Time="{Binding SetupTime}" MaxHeight="35" Margin="10,0" HorizontalAlignment="Center">
+                                        <ui:TimeDisplay.Style>
+                                            <Style TargetType="ui:TimeDisplay">
+                                                <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ProductionStatus}" Value="Setup">
+                                                        <Setter Property="Foreground" Value="#FFFFFF"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ui:TimeDisplay.Style>
+                                    </ui:TimeDisplay>
+
+                                </Border>
+
+                                <!--Percentage-->
+                                <ui:NumberDisplay Grid.Column="2" Value="{Binding SetupPercentage}" Margin="5,0">
+                                    <ui:NumberDisplay.Style>
+                                        <Style TargetType="ui:NumberDisplay">
+                                            <Setter Property="MaxHeight" Value="45"/>
+                                            <Setter Property="ValueFormat" Value="N1"/>
+                                            <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ProductionStatus}" Value="Setup">
+                                                    <Setter Property="Foreground" Value="#FFFFFF"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                                    <Setter Property="MaxHeight" Value="30"/>
+                                                    <Setter Property="ValueFormat" Value="N0"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ui:NumberDisplay.Style>
+                                </ui:NumberDisplay>
+
+                            </UniformGrid>
+
+                        </Grid>
+                    </Border>
+
+                    <!--Teardown-->
+                    <Border Height="60" BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ProductionStatus}" Value="Teardown">
+                                        <Setter Property="Background" Value="{StaticResource StatusOrange}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <Grid Margin="10,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!--Icon-->
+                            <Grid>
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Height" Value="20"/>
+                                        <Setter Property="Width" Value="20"/>
+                                        <Setter Property="Background" Value="{StaticResource Text}"/>
+                                        <Setter Property="OpacityMask" Value="{StaticResource Teardown_IMG}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ProductionStatus}" Value="Teardown">
+                                                <Setter Property="Background" Value="#FFFFFF"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                            </Grid>
+
+                            <UniformGrid Grid.Column="1" Rows="1">
+
+                                <!--Time Display-->
+                                <Border Grid.Column="1" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ProductionStatus}" Value="Teardown">
+                                                    <Setter Property="BorderBrush" Value="#FFFFFF"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WidthStatus}" Value="1">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+
+                                    <ui:TimeDisplay Time="{Binding TeardownTime}" MaxHeight="35" Margin="10,0" HorizontalAlignment="Center">
+                                        <ui:TimeDisplay.Style>
+                                            <Style TargetType="ui:TimeDisplay">
+                                                <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ProductionStatus}" Value="Teardown">
+                                                        <Setter Property="Foreground" Value="#FFFFFF"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ui:TimeDisplay.Style>
+                                    </ui:TimeDisplay>
+
+                                </Border>
+
+                                <!--Percentage-->
+                                <ui:NumberDisplay Grid.Column="2" Value="{Binding TeardownPercentage}" Margin="5,0">
+                                    <ui:NumberDisplay.Style>
+                                        <Style TargetType="ui:NumberDisplay">
+                                            <Setter Property="MaxHeight" Value="45"/>
+                                            <Setter Property="ValueFormat" Value="N1"/>
+                                            <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ProductionStatus}" Value="Teardown">
+                                                    <Setter Property="Foreground" Value="#FFFFFF"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                                    <Setter Property="MaxHeight" Value="30"/>
+                                                    <Setter Property="ValueFormat" Value="N0"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ui:NumberDisplay.Style>
+                                </ui:NumberDisplay>
+
+                            </UniformGrid>
+
+                        </Grid>
+                    </Border>
+
+                    <!--Maintenance-->
+                    <Border Height="60" BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ProductionStatus}" Value="Maintenance">
+                                        <Setter Property="Background" Value="{StaticResource StatusTeal}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <Grid Margin="10,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!--Icon-->
+                            <Grid>
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Height" Value="20"/>
+                                        <Setter Property="Width" Value="20"/>
+                                        <Setter Property="Background" Value="{StaticResource Text}"/>
+                                        <Setter Property="OpacityMask" Value="{StaticResource Maintenance_IMG}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ProductionStatus}" Value="Maintenance">
+                                                <Setter Property="Background" Value="#FFFFFF"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                            </Grid>
+
+                            <UniformGrid Grid.Column="1" Rows="1">
+
+                                <!--Time Display-->
+                                <Border Grid.Column="1" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ProductionStatus}" Value="Maintenance">
+                                                    <Setter Property="BorderBrush" Value="#FFFFFF"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WidthStatus}" Value="1">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+
+                                    <ui:TimeDisplay Time="{Binding MaintenanceTime}" MaxHeight="35" Margin="10,0" HorizontalAlignment="Center">
+                                        <ui:TimeDisplay.Style>
+                                            <Style TargetType="ui:TimeDisplay">
+                                                <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ProductionStatus}" Value="Maintenance">
+                                                        <Setter Property="Foreground" Value="#FFFFFF"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ui:TimeDisplay.Style>
+                                    </ui:TimeDisplay>
+
+                                </Border>
+
+                                <!--Percentage-->
+                                <ui:NumberDisplay Grid.Column="2" Value="{Binding MaintenancePercentage}" Margin="5,0">
+                                    <ui:NumberDisplay.Style>
+                                        <Style TargetType="ui:NumberDisplay">
+                                            <Setter Property="MaxHeight" Value="45"/>
+                                            <Setter Property="ValueFormat" Value="N1"/>
+                                            <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ProductionStatus}" Value="Maintenance">
+                                                    <Setter Property="Foreground" Value="#FFFFFF"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                                    <Setter Property="MaxHeight" Value="30"/>
+                                                    <Setter Property="ValueFormat" Value="N0"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ui:NumberDisplay.Style>
+                                </ui:NumberDisplay>
+
+                            </UniformGrid>
+
+                        </Grid>
+                    </Border>
+
+                    <!--Process Development-->
+                    <Border Height="60" BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ProductionStatus}" Value="ProcessDevelopment">
+                                        <Setter Property="Background" Value="{StaticResource StatusPurple}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <Grid Margin="10,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!--Icon-->
+                            <Grid>
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Height" Value="20"/>
+                                        <Setter Property="Width" Value="20"/>
+                                        <Setter Property="Background" Value="{StaticResource Text}"/>
+                                        <Setter Property="OpacityMask" Value="{StaticResource ProcessDevelopment_IMG}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ProductionStatus}" Value="ProcessDevelopment">
+                                                <Setter Property="Background" Value="#FFFFFF"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                            </Grid>
+
+                            <UniformGrid Grid.Column="1" Rows="1">
+
+                                <!--Time Display-->
+                                <Border Grid.Column="1" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ProductionStatus}" Value="ProcessDevelopment">
+                                                    <Setter Property="BorderBrush" Value="#FFFFFF"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WidthStatus}" Value="1">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+
+                                    <ui:TimeDisplay Time="{Binding ProcessDevelopmentTime}" MaxHeight="35" Margin="10,0" HorizontalAlignment="Center">
+                                        <ui:TimeDisplay.Style>
+                                            <Style TargetType="ui:TimeDisplay">
+                                                <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ProductionStatus}" Value="ProcessDevelopment">
+                                                        <Setter Property="Foreground" Value="#FFFFFF"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ui:TimeDisplay.Style>
+                                    </ui:TimeDisplay>
+
+                                </Border>
+
+                                <!--Percentage-->
+                                <ui:NumberDisplay Grid.Column="2" Value="{Binding ProcessDevelopmentPercentage}" Margin="5,0">
+                                    <ui:NumberDisplay.Style>
+                                        <Style TargetType="ui:NumberDisplay">
+                                            <Setter Property="MaxHeight" Value="45"/>
+                                            <Setter Property="ValueFormat" Value="N1"/>
+                                            <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ProductionStatus}" Value="ProcessDevelopment">
+                                                    <Setter Property="Foreground" Value="#FFFFFF"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                                    <Setter Property="MaxHeight" Value="30"/>
+                                                    <Setter Property="ValueFormat" Value="N0"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ui:NumberDisplay.Style>
+                                </ui:NumberDisplay>
+
+                            </UniformGrid>
+
+                        </Grid>
+                    </Border>
+
+                </StackPanel>
+
+                <!--Current Program-->
+                <Border Grid.Row="6" BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
+
+                    <!--Text-->
+                    <Viewbox Grid.Column="1" MaxHeight="30" VerticalAlignment="Center" Margin="10,0,0,0">
+                        <Viewbox.Style>
+                            <Style TargetType="Viewbox">
+                                <Setter Property="MaxWidth" Value="140"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding WidthStatus}" Value="2">
+                                        <Setter Property="MaxWidth" Value="300"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding WidthStatus}" Value="3">
+                                        <Setter Property="MaxWidth" Value="400"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Viewbox.Style>
+
+                        <TextBlock Text="{Binding Program}" Foreground="{StaticResource Text}"/>
+
+                    </Viewbox>
+
+                </Border>
+
+                <!--Emergency Stop-->
+                <Border Grid.Row="7" BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding EmergencyStop}" Value="ARMED">
+                                    <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding EmergencyStop}" Value="TRIGGERED">
+                                    <Setter Property="Background" Value="{StaticResource StatusRed}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+
+                    <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!--Icon-->
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="Height" Value="40"/>
+                                    <Setter Property="Width" Value="40"/>
+                                    <Setter Property="Background" Value="{StaticResource Text}"/>
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding EmergencyStop}" Value="ARMED">
+                                            <Setter Property="OpacityMask" Value="{StaticResource Estop_IMG}"/>
+                                            <Setter Property="Background" Value="#FFFFFF"/>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding EmergencyStop}" Value="TRIGGERED">
+                                            <Setter Property="OpacityMask" Value="{StaticResource Estop_IMG}"/>
+                                            <Setter Property="Background" Value="#FFFFFF"/>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                        </Grid>
+
+                        <!--Text-->
+                        <Viewbox Grid.Column="1" MaxHeight="20" VerticalAlignment="Center" Margin="10,0,0,0">
+                            <Viewbox.Style>
+                                <Style TargetType="Viewbox">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Viewbox.Style>
+
+                            <TextBlock Text="{Binding EmergencyStop, Converter={StaticResource uppercaseConverter}}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding EmergencyStop}" Value="ARMED">
+                                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding EmergencyStop}" Value="TRIGGERED">
                                                 <Setter Property="Foreground" Value="#FFFFFF"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
-                                </ui:NumberDisplay.Style>
-                            </ui:NumberDisplay>
+                                </TextBlock.Style>
+                            </TextBlock>
 
-                        </UniformGrid>
+                        </Viewbox>
 
                     </Grid>
 
                 </Border>
-                
-            </StackPanel>
 
-            <!--Production Status-->
-            <StackPanel Grid.Row="6">
-
-                <!--Production-->
-                <Border Height="60" BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
+                <!--Controller Mode-->
+                <Border Grid.Row="8" BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
                     <Border.Style>
                         <Style TargetType="Border">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ProductionStatus}" Value="Production">
+                                <DataTrigger Binding="{Binding ControllerMode}" Value="AUTOMATIC">
                                     <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </Border.Style>
 
-                    <Grid Margin="10,0">
+                    <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
 
                         <!--Icon-->
                         <Grid>
                             <Grid.Style>
                                 <Style TargetType="Grid">
-                                    <Setter Property="Height" Value="20"/>
-                                    <Setter Property="Width" Value="20"/>
+                                    <Setter Property="Height" Value="40"/>
+                                    <Setter Property="Width" Value="40"/>
                                     <Setter Property="Background" Value="{StaticResource Text}"/>
-                                    <Setter Property="OpacityMask" Value="{StaticResource Production_IMG}" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ProductionStatus}" Value="Production">
-                                            <Setter Property="Background" Value="#FFFFFF"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
-                        </Grid>
-
-                        <UniformGrid Grid.Column="1" Rows="1">
-
-                            <!--Time Display-->
-                            <Border Grid.Column="1" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
-                                <Border.Style>
-                                    <Style TargetType="Border">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ProductionStatus}" Value="Production">
-                                                <Setter Property="BorderBrush" Value="#FFFFFF"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding WidthStatus}" Value="1">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
-
-                                <ui:TimeDisplay Time="{Binding ProductionTime}" MaxHeight="35" Margin="10,0" HorizontalAlignment="Center">
-                                    <ui:TimeDisplay.Style>
-                                        <Style TargetType="ui:TimeDisplay">
-                                            <Setter Property="Foreground" Value="{StaticResource Text}"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding ProductionStatus}" Value="Production">
-                                                    <Setter Property="Foreground" Value="#FFFFFF"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </ui:TimeDisplay.Style>
-                                </ui:TimeDisplay>
-
-                            </Border>
-
-                            <!--Percentage-->
-                            <ui:NumberDisplay Grid.Column="2" Value="{Binding ProductionPercentage}" Margin="5,0">
-                                <ui:NumberDisplay.Style>
-                                    <Style TargetType="ui:NumberDisplay">
-                                        <Setter Property="MaxHeight" Value="45"/>
-                                        <Setter Property="ValueFormat" Value="N1"/>
-                                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ProductionStatus}" Value="Production">
-                                                <Setter Property="Foreground" Value="#FFFFFF"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                                <Setter Property="MaxHeight" Value="30"/>
-                                                <Setter Property="ValueFormat" Value="N0"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ui:NumberDisplay.Style>
-                            </ui:NumberDisplay>
-
-                        </UniformGrid>
-
-                    </Grid>
-                </Border>
-                
-                <!--Setup-->
-                <Border Height="60" BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ProductionStatus}" Value="Setup">
-                                    <Setter Property="Background" Value="{StaticResource StatusBlue}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-
-                    <Grid Margin="10,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <!--Icon-->
-                        <Grid>
-                            <Grid.Style>
-                                <Style TargetType="Grid">
-                                    <Setter Property="Height" Value="20"/>
-                                    <Setter Property="Width" Value="20"/>
-                                    <Setter Property="Background" Value="{StaticResource Text}"/>
-                                    <Setter Property="OpacityMask" Value="{StaticResource Setup_IMG}" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ProductionStatus}" Value="Setup">
-                                            <Setter Property="Background" Value="#FFFFFF"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
-                        </Grid>
-
-                        <UniformGrid Grid.Column="1" Rows="1">
-
-                            <!--Time Display-->
-                            <Border Grid.Column="1" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
-                                <Border.Style>
-                                    <Style TargetType="Border">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ProductionStatus}" Value="Setup">
-                                                <Setter Property="BorderBrush" Value="#FFFFFF"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding WidthStatus}" Value="1">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
-
-                                <ui:TimeDisplay Time="{Binding SetupTime}" MaxHeight="35" Margin="10,0" HorizontalAlignment="Center">
-                                    <ui:TimeDisplay.Style>
-                                        <Style TargetType="ui:TimeDisplay">
-                                            <Setter Property="Foreground" Value="{StaticResource Text}"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding ProductionStatus}" Value="Setup">
-                                                    <Setter Property="Foreground" Value="#FFFFFF"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </ui:TimeDisplay.Style>
-                                </ui:TimeDisplay>
-
-                            </Border>
-
-                            <!--Percentage-->
-                            <ui:NumberDisplay Grid.Column="2" Value="{Binding SetupPercentage}" Margin="5,0">
-                                <ui:NumberDisplay.Style>
-                                    <Style TargetType="ui:NumberDisplay">
-                                        <Setter Property="MaxHeight" Value="45"/>
-                                        <Setter Property="ValueFormat" Value="N1"/>
-                                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ProductionStatus}" Value="Setup">
-                                                <Setter Property="Foreground" Value="#FFFFFF"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                                <Setter Property="MaxHeight" Value="30"/>
-                                                <Setter Property="ValueFormat" Value="N0"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ui:NumberDisplay.Style>
-                            </ui:NumberDisplay>
-
-                        </UniformGrid>
-
-                    </Grid>
-                </Border>
-                
-                <!--Teardown-->
-                <Border Height="60" BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ProductionStatus}" Value="Teardown">
-                                    <Setter Property="Background" Value="{StaticResource StatusOrange}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-
-                    <Grid Margin="10,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <!--Icon-->
-                        <Grid>
-                            <Grid.Style>
-                                <Style TargetType="Grid">
-                                    <Setter Property="Height" Value="20"/>
-                                    <Setter Property="Width" Value="20"/>
-                                    <Setter Property="Background" Value="{StaticResource Text}"/>
-                                    <Setter Property="OpacityMask" Value="{StaticResource Teardown_IMG}" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ProductionStatus}" Value="Teardown">
-                                            <Setter Property="Background" Value="#FFFFFF"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
-                        </Grid>
-
-                        <UniformGrid Grid.Column="1" Rows="1">
-
-                            <!--Time Display-->
-                            <Border Grid.Column="1" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
-                                <Border.Style>
-                                    <Style TargetType="Border">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ProductionStatus}" Value="Teardown">
-                                                <Setter Property="BorderBrush" Value="#FFFFFF"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding WidthStatus}" Value="1">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
-
-                                <ui:TimeDisplay Time="{Binding TeardownTime}" MaxHeight="35" Margin="10,0" HorizontalAlignment="Center">
-                                    <ui:TimeDisplay.Style>
-                                        <Style TargetType="ui:TimeDisplay">
-                                            <Setter Property="Foreground" Value="{StaticResource Text}"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding ProductionStatus}" Value="Teardown">
-                                                    <Setter Property="Foreground" Value="#FFFFFF"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </ui:TimeDisplay.Style>
-                                </ui:TimeDisplay>
-
-                            </Border>
-
-                            <!--Percentage-->
-                            <ui:NumberDisplay Grid.Column="2" Value="{Binding TeardownPercentage}" Margin="5,0">
-                                <ui:NumberDisplay.Style>
-                                    <Style TargetType="ui:NumberDisplay">
-                                        <Setter Property="MaxHeight" Value="45"/>
-                                        <Setter Property="ValueFormat" Value="N1"/>
-                                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ProductionStatus}" Value="Teardown">
-                                                <Setter Property="Foreground" Value="#FFFFFF"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                                <Setter Property="MaxHeight" Value="30"/>
-                                                <Setter Property="ValueFormat" Value="N0"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ui:NumberDisplay.Style>
-                            </ui:NumberDisplay>
-
-                        </UniformGrid>
-
-                    </Grid>
-                </Border>
-
-                <!--Maintenance-->
-                <Border Height="60" BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ProductionStatus}" Value="Maintenance">
-                                    <Setter Property="Background" Value="{StaticResource StatusTeal}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-
-                    <Grid Margin="10,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <!--Icon-->
-                        <Grid>
-                            <Grid.Style>
-                                <Style TargetType="Grid">
-                                    <Setter Property="Height" Value="20"/>
-                                    <Setter Property="Width" Value="20"/>
-                                    <Setter Property="Background" Value="{StaticResource Text}"/>
-                                    <Setter Property="OpacityMask" Value="{StaticResource Maintenance_IMG}" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ProductionStatus}" Value="Maintenance">
-                                            <Setter Property="Background" Value="#FFFFFF"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
-                        </Grid>
-
-                        <UniformGrid Grid.Column="1" Rows="1">
-
-                            <!--Time Display-->
-                            <Border Grid.Column="1" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
-                                <Border.Style>
-                                    <Style TargetType="Border">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ProductionStatus}" Value="Maintenance">
-                                                <Setter Property="BorderBrush" Value="#FFFFFF"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding WidthStatus}" Value="1">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
-
-                                <ui:TimeDisplay Time="{Binding MaintenanceTime}" MaxHeight="35" Margin="10,0" HorizontalAlignment="Center">
-                                    <ui:TimeDisplay.Style>
-                                        <Style TargetType="ui:TimeDisplay">
-                                            <Setter Property="Foreground" Value="{StaticResource Text}"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding ProductionStatus}" Value="Maintenance">
-                                                    <Setter Property="Foreground" Value="#FFFFFF"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </ui:TimeDisplay.Style>
-                                </ui:TimeDisplay>
-
-                            </Border>
-
-                            <!--Percentage-->
-                            <ui:NumberDisplay Grid.Column="2" Value="{Binding MaintenancePercentage}" Margin="5,0">
-                                <ui:NumberDisplay.Style>
-                                    <Style TargetType="ui:NumberDisplay">
-                                        <Setter Property="MaxHeight" Value="45"/>
-                                        <Setter Property="ValueFormat" Value="N1"/>
-                                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ProductionStatus}" Value="Maintenance">
-                                                <Setter Property="Foreground" Value="#FFFFFF"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                                <Setter Property="MaxHeight" Value="30"/>
-                                                <Setter Property="ValueFormat" Value="N0"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ui:NumberDisplay.Style>
-                            </ui:NumberDisplay>
-
-                        </UniformGrid>
-
-                    </Grid>
-                </Border>
-
-                <!--Process Development-->
-                <Border Height="60" BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ProductionStatus}" Value="ProcessDevelopment">
-                                    <Setter Property="Background" Value="{StaticResource StatusPurple}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-
-                    <Grid Margin="10,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <!--Icon-->
-                        <Grid>
-                            <Grid.Style>
-                                <Style TargetType="Grid">
-                                    <Setter Property="Height" Value="20"/>
-                                    <Setter Property="Width" Value="20"/>
-                                    <Setter Property="Background" Value="{StaticResource Text}"/>
-                                    <Setter Property="OpacityMask" Value="{StaticResource ProcessDevelopment_IMG}" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ProductionStatus}" Value="ProcessDevelopment">
-                                            <Setter Property="Background" Value="#FFFFFF"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
-                        </Grid>
-
-                        <UniformGrid Grid.Column="1" Rows="1">
-
-                            <!--Time Display-->
-                            <Border Grid.Column="1" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
-                                <Border.Style>
-                                    <Style TargetType="Border">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ProductionStatus}" Value="ProcessDevelopment">
-                                                <Setter Property="BorderBrush" Value="#FFFFFF"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding WidthStatus}" Value="1">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
-
-                                <ui:TimeDisplay Time="{Binding ProcessDevelopmentTime}" MaxHeight="35" Margin="10,0" HorizontalAlignment="Center">
-                                    <ui:TimeDisplay.Style>
-                                        <Style TargetType="ui:TimeDisplay">
-                                            <Setter Property="Foreground" Value="{StaticResource Text}"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding ProductionStatus}" Value="ProcessDevelopment">
-                                                    <Setter Property="Foreground" Value="#FFFFFF"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </ui:TimeDisplay.Style>
-                                </ui:TimeDisplay>
-
-                            </Border>
-
-                            <!--Percentage-->
-                            <ui:NumberDisplay Grid.Column="2" Value="{Binding ProcessDevelopmentPercentage}" Margin="5,0">
-                                <ui:NumberDisplay.Style>
-                                    <Style TargetType="ui:NumberDisplay">
-                                        <Setter Property="MaxHeight" Value="45"/>
-                                        <Setter Property="ValueFormat" Value="N1"/>
-                                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ProductionStatus}" Value="ProcessDevelopment">
-                                                <Setter Property="Foreground" Value="#FFFFFF"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                                <Setter Property="MaxHeight" Value="30"/>
-                                                <Setter Property="ValueFormat" Value="N0"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ui:NumberDisplay.Style>
-                            </ui:NumberDisplay>
-
-                        </UniformGrid>
-
-                    </Grid>
-                </Border>
-
-            </StackPanel>
-
-            <!--Current Program-->
-            <Border Grid.Row="7" BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
-
-                <!--Text-->
-                <Viewbox Grid.Column="1" MaxHeight="30" VerticalAlignment="Center" Margin="10,0,0,0">
-                    <Viewbox.Style>
-                        <Style TargetType="Viewbox">
-                            <Setter Property="MaxWidth" Value="140"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding WidthStatus}" Value="0">
                                     <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding WidthStatus}" Value="2">
-                                    <Setter Property="MaxWidth" Value="300"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding WidthStatus}" Value="3">
-                                    <Setter Property="MaxWidth" Value="400"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Viewbox.Style>
-
-                    <TextBlock Text="{Binding Program}" Foreground="{StaticResource Text}"/>
-
-                </Viewbox>
-
-            </Border>
-
-            <!--Emergency Stop-->
-            <Border Grid.Row="8" BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
-                <Border.Style>
-                    <Style TargetType="Border">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding EmergencyStop}" Value="ARMED">
-                                <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding EmergencyStop}" Value="TRIGGERED">
-                                <Setter Property="Background" Value="{StaticResource StatusRed}"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Border.Style>
-
-                <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <!--Icon-->
-                    <Grid>
-                        <Grid.Style>
-                            <Style TargetType="Grid">
-                                <Setter Property="Height" Value="40"/>
-                                <Setter Property="Width" Value="40"/>
-                                <Setter Property="Background" Value="{StaticResource Text}"/>
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding EmergencyStop}" Value="ARMED">
-                                        <Setter Property="OpacityMask" Value="{StaticResource Estop_IMG}"/>
-                                        <Setter Property="Background" Value="#FFFFFF"/>
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding EmergencyStop}" Value="TRIGGERED">
-                                        <Setter Property="OpacityMask" Value="{StaticResource Estop_IMG}"/>
-                                        <Setter Property="Background" Value="#FFFFFF"/>
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
-                    </Grid>
-
-                    <!--Text-->
-                    <Viewbox Grid.Column="1" MaxHeight="20" VerticalAlignment="Center" Margin="10,0,0,0">
-                        <Viewbox.Style>
-                            <Style TargetType="Viewbox">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Viewbox.Style>
-
-                        <TextBlock Text="{Binding EmergencyStop, Converter={StaticResource uppercaseConverter}}">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="{StaticResource Text}"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding EmergencyStop}" Value="ARMED">
-                                            <Setter Property="Foreground" Value="#FFFFFF"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding EmergencyStop}" Value="TRIGGERED">
-                                            <Setter Property="Foreground" Value="#FFFFFF"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-
-                    </Viewbox>
-
-                </Grid>
-
-            </Border>
-            
-            <!--Controller Mode-->
-            <Border Grid.Row="9" BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
-                <Border.Style>
-                    <Style TargetType="Border">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ControllerMode}" Value="AUTOMATIC">
-                                <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Border.Style>
-
-                <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <!--Icon-->
-                    <Grid>
-                        <Grid.Style>
-                            <Style TargetType="Grid">
-                                <Setter Property="Height" Value="40"/>
-                                <Setter Property="Width" Value="40"/>
-                                <Setter Property="Background" Value="{StaticResource Text}"/>
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ControllerMode}" Value="AUTOMATIC">
-                                        <Setter Property="Background" Value="#FFF"/>
-                                        <Setter Property="OpacityMask" Value="{StaticResource Auto_IMG}" />
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ControllerMode}" Value="SEMI_AUTOMATIC">
-                                        <!--<Setter Property="Background" Value="#FFF"/>-->
-                                        <Setter Property="OpacityMask" Value="{StaticResource SemiAuto_IMG}" />
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ControllerMode}" Value="MANUAL_DATA_INPUT">
-                                        <!--<Setter Property="Background" Value="#FFF"/>-->
-                                        <Setter Property="OpacityMask" Value="{StaticResource MDI_IMG}" />
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ControllerMode}" Value="MANUAL">
-                                        <!--<Setter Property="Background" Value="#FFF"/>-->
-                                        <Setter Property="OpacityMask" Value="{StaticResource Manual_IMG}" />
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ControllerMode}" Value="EDIT">
-                                        <!--<Setter Property="Background" Value="#FFF"/>-->
-                                        <Setter Property="OpacityMask" Value="{StaticResource Edit_IMG}" />
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
-                    </Grid>
-
-                    <!--Text-->
-                    <Viewbox Grid.Column="1" MaxHeight="20" VerticalAlignment="Center" Margin="10,0,0,0">
-                        <Viewbox.Style>
-                            <Style TargetType="Viewbox">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Viewbox.Style>
-
-                        <TextBlock Text="{Binding ControllerMode, Converter={StaticResource uppercaseConverter}}">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="{StaticResource Text}"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ControllerMode}" Value="AUTOMATIC">
-                                            <Setter Property="Foreground" Value="#FFF"/>
+                                            <Setter Property="Background" Value="#FFF"/>
+                                            <Setter Property="OpacityMask" Value="{StaticResource Auto_IMG}" />
+                                            <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
-                                        <!--<DataTrigger Binding="{Binding ControllerMode}" Value="SEMI_AUTOMATIC">
-                                            <Setter Property="Foreground" Value="#FFF"/>
+                                        <DataTrigger Binding="{Binding ControllerMode}" Value="SEMI_AUTOMATIC">
+                                            <Setter Property="OpacityMask" Value="{StaticResource SemiAuto_IMG}" />
+                                            <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding ControllerMode}" Value="MANUAL_DATA_INPUT">
-                                            <Setter Property="Foreground" Value="#FFF"/>
+                                            <Setter Property="OpacityMask" Value="{StaticResource MDI_IMG}" />
+                                            <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding ControllerMode}" Value="MANUAL">
-                                            <Setter Property="Foreground" Value="#FFF"/>
+                                            <Setter Property="OpacityMask" Value="{StaticResource Manual_IMG}" />
+                                            <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding ControllerMode}" Value="EDIT">
-                                            <Setter Property="Foreground" Value="#FFF"/>
-                                        </DataTrigger>-->
+                                            <Setter Property="OpacityMask" Value="{StaticResource Edit_IMG}" />
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
+                            </Grid.Style>
+                        </Grid>
 
-                    </Viewbox>
+                        <!--Text-->
+                        <Viewbox Grid.Column="1" MaxHeight="20" VerticalAlignment="Center" Margin="10,0,0,0">
+                            <Viewbox.Style>
+                                <Style TargetType="Viewbox">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Viewbox.Style>
 
-                </Grid>
+                            <TextBlock Text="{Binding ControllerMode, Converter={StaticResource uppercaseConverter}}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ControllerMode}" Value="AUTOMATIC">
+                                                <Setter Property="Foreground" Value="#FFF"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
 
-            </Border>
-            
-            <!--Execution Mode-->
-            <Border Grid.Row="10" BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
-                <Border.Style>
-                    <Style TargetType="Border">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ExecutionMode}" Value="ACTIVE">
-                                <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding ExecutionMode}" Value="STOPPED">
-                                <Setter Property="Background" Value="{StaticResource StatusRed}"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Border.Style>
+                        </Viewbox>
 
-                <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <!--Icon-->
-                    <Grid>
-                        <Grid.Resources>
-                            <ImageBrush x:Key="Started_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Start_02.png" />
-                            <ImageBrush x:Key="Idle_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Pause_02.png" />
-                            <ImageBrush x:Key="Stopped_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Stop_02.png" />
-                        </Grid.Resources>
-                        <Grid.Style>
-                            <Style TargetType="Grid">
-                                <Setter Property="Height" Value="30"/>
-                                <Setter Property="Width" Value="30"/>
-                                <Setter Property="Background" Value="{StaticResource Text}"/>
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ExecutionMode}" Value="ACTIVE">
-                                        <Setter Property="Background" Value="#FFF"/>
-                                        <Setter Property="OpacityMask" Value="{StaticResource Started_IMG}" />
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ExecutionMode}" Value="READY">
-                                        <Setter Property="Background" Value="#FFF"/>
-                                        <Setter Property="OpacityMask" Value="{StaticResource Idle_IMG}" />
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ExecutionMode}" Value="FEED_HOLD">
-                                        <Setter Property="Background" Value="#FFF"/>
-                                        <Setter Property="OpacityMask" Value="{StaticResource Idle_IMG}" />
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ExecutionMode}" Value="INTERRUPTED">
-                                        <Setter Property="Background" Value="#FFF"/>
-                                        <Setter Property="OpacityMask" Value="{StaticResource Idle_IMG}" />
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ExecutionMode}" Value="OPTIONAL_STOP">
-                                        <Setter Property="Background" Value="#FFF"/>
-                                        <Setter Property="OpacityMask" Value="{StaticResource Idle_IMG}" />
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ExecutionMode}" Value="PROGRAM_STOPPED">
-                                        <Setter Property="Background" Value="#FFF"/>
-                                        <Setter Property="OpacityMask" Value="{StaticResource Idle_IMG}" />
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ExecutionMode}" Value="PROGRAM_COMPLETED">
-                                        <Setter Property="Background" Value="#FFF"/>
-                                        <Setter Property="OpacityMask" Value="{StaticResource Idle_IMG}" />
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ExecutionMode}" Value="STOPPED">
-                                        <Setter Property="Background" Value="#FFF"/>
-                                        <Setter Property="OpacityMask" Value="{StaticResource Stopped_IMG}" />
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
                     </Grid>
 
-                    <!--Text-->
-                    <Viewbox Grid.Column="1" MaxHeight="20" VerticalAlignment="Center" Margin="10,0,0,0">
-                        <Viewbox.Style>
-                            <Style TargetType="Viewbox">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Viewbox.Style>
+                </Border>
 
-                        <TextBlock Text="{Binding ExecutionMode, Converter={StaticResource uppercaseConverter}}">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="{StaticResource Text}"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ExecutionMode}" Value="ACTIVE">
-                                            <Setter Property="Foreground" Value="#FFF"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding ExecutionMode}" Value="READY">
-                                            <Setter Property="Foreground" Value="#FFF"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding ExecutionMode}" Value="FEED_HOLD">
-                                            <Setter Property="Foreground" Value="#FFF"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding ExecutionMode}" Value="INTERRUPTED">
-                                            <Setter Property="Foreground" Value="#FFF"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding ExecutionMode}" Value="OPTIONAL_STOP">
-                                            <Setter Property="Foreground" Value="#FFF"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding ExecutionMode}" Value="PROGRAM_STOPPED">
-                                            <Setter Property="Foreground" Value="#FFF"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding ExecutionMode}" Value="PROGRAM_COMPLETED">
-                                            <Setter Property="Foreground" Value="#FFF"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding ExecutionMode}" Value="STOPPED">
-                                            <Setter Property="Foreground" Value="#FFF"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-
-                    </Viewbox>
-
-                </Grid>
-
-            </Border>
-
-            <!--System Status-->
-            <Border Grid.Row="11" BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
-                <Border.Style>
-                    <Style TargetType="Border">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding SystemStatus}" Value="NORMAL">
-                                <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding SystemStatus}" Value="WARNING">
-                                <Setter Property="Background" Value="{StaticResource StatusOrange}"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding SystemStatus}" Value="FAULT">
-                                <Setter Property="Background" Value="{StaticResource StatusRed}"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Border.Style>
-
-                <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <!--Icon-->
-                    <Grid>
-                        <Grid.Style>
-                            <Style TargetType="Grid">
-                                <Setter Property="Height" Value="40"/>
-                                <Setter Property="Width" Value="40"/>
-                                <Setter Property="Background" Value="{StaticResource Text}"/>
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding SystemStatus}" Value="NORMAL">
-                                        <Setter Property="Background" Value="#FFF"/>
-                                        <Setter Property="OpacityMask" Value="{StaticResource Status_Normal_IMG}"/>
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding SystemStatus}" Value="WARNING">
-                                        <Setter Property="Background" Value="#FFF"/>
-                                        <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}" />
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding SystemStatus}" Value="FAULT">
-                                        <Setter Property="Background" Value="#FFF"/>
-                                        <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}" />
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
-                    </Grid>
-
-                    <!--Text-->
-                    <Viewbox Grid.Column="1" MaxHeight="20" VerticalAlignment="Center" Margin="10,0,0,0">
-                        <Viewbox.Style>
-                            <Style TargetType="Viewbox">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Viewbox.Style>
-
-                        <TextBlock Text="{Binding SystemStatus, Converter={StaticResource uppercaseConverter}}">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="{StaticResource Text}"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding SystemStatus}" Value="NORMAL">
-                                            <Setter Property="Foreground" Value="#FFF"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding SystemStatus}" Value="WARNING">
-                                            <Setter Property="Foreground" Value="#FFF"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding SystemStatus}" Value="FAULT">
-                                            <Setter Property="Foreground" Value="#FFF"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-
-                    </Viewbox>
-
-                </Grid>
-
-            </Border>
-            
-            <!--System Message-->
-            <Border Grid.Row="12" BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
-                <Border.Style>
-                    <Style TargetType="Border">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding SystemStatus}" Value="Warning">
-                                <Setter Property="Background" Value="{StaticResource StatusOrange}"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding SystemStatus}" Value="Fault">
-                                <Setter Property="Background" Value="{StaticResource StatusRed}"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Border.Style>
-
-                <!--Text-->
-                <Viewbox Grid.Column="1" MaxHeight="30" VerticalAlignment="Center" Margin="10,0,0,0">
-                    <Viewbox.Style>
-                        <Style TargetType="Viewbox">
-                            <Setter Property="MaxWidth" Value="200"/>
+                <!--Execution Mode-->
+                <Border Grid.Row="9" BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
+                    <Border.Style>
+                        <Style TargetType="Border">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                <DataTrigger Binding="{Binding ExecutionMode}" Value="ACTIVE">
+                                    <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding WidthStatus}" Value="2">
-                                    <Setter Property="MaxWidth" Value="300"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding WidthStatus}" Value="3">
-                                    <Setter Property="MaxWidth" Value="400"/>
+                                <DataTrigger Binding="{Binding ExecutionMode}" Value="STOPPED">
+                                    <Setter Property="Background" Value="{StaticResource StatusRed}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </Viewbox.Style>
+                    </Border.Style>
 
-                    <TextBlock Text="{Binding SystemMessage}">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                    <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!--Icon-->
+                        <Grid>
+                            <Grid.Resources>
+                                <ImageBrush x:Key="Started_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Start_02.png" />
+                                <ImageBrush x:Key="Idle_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Pause_02.png" />
+                                <ImageBrush x:Key="Stopped_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Stop_02.png" />
+                            </Grid.Resources>
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="Height" Value="30"/>
+                                    <Setter Property="Width" Value="30"/>
+                                    <Setter Property="Background" Value="{StaticResource Text}"/>
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ExecutionMode}" Value="ACTIVE">
+                                            <Setter Property="Background" Value="#FFF"/>
+                                            <Setter Property="OpacityMask" Value="{StaticResource Started_IMG}" />
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ExecutionMode}" Value="READY">
+                                            <Setter Property="OpacityMask" Value="{StaticResource Idle_IMG}" />
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ExecutionMode}" Value="FEED_HOLD">
+                                            <Setter Property="OpacityMask" Value="{StaticResource Idle_IMG}" />
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ExecutionMode}" Value="INTERRUPTED">
+                                            <Setter Property="OpacityMask" Value="{StaticResource Idle_IMG}" />
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ExecutionMode}" Value="OPTIONAL_STOP">
+                                            <Setter Property="OpacityMask" Value="{StaticResource Idle_IMG}" />
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ExecutionMode}" Value="PROGRAM_STOPPED">
+                                            <Setter Property="OpacityMask" Value="{StaticResource Idle_IMG}" />
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ExecutionMode}" Value="PROGRAM_COMPLETED">
+                                            <Setter Property="OpacityMask" Value="{StaticResource Idle_IMG}" />
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ExecutionMode}" Value="STOPPED">
+                                            <Setter Property="Background" Value="#FFF"/>
+                                            <Setter Property="OpacityMask" Value="{StaticResource Stopped_IMG}" />
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                        </Grid>
+
+                        <!--Text-->
+                        <Viewbox Grid.Column="1" MaxHeight="20" VerticalAlignment="Center" Margin="10,0,0,0">
+                            <Viewbox.Style>
+                                <Style TargetType="Viewbox">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Viewbox.Style>
+
+                            <TextBlock Text="{Binding ExecutionMode, Converter={StaticResource uppercaseConverter}}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ExecutionMode}" Value="ACTIVE">
+                                                <Setter Property="Foreground" Value="#FFF"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ExecutionMode}" Value="STOPPED">
+                                                <Setter Property="Foreground" Value="#FFF"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+
+                        </Viewbox>
+
+                    </Grid>
+
+                </Border>
+
+                <!--System Status-->
+                <Border Grid.Row="10" BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SystemStatus}" Value="NORMAL">
+                                    <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding SystemStatus}" Value="WARNING">
+                                    <Setter Property="Background" Value="{StaticResource StatusOrange}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding SystemStatus}" Value="FAULT">
+                                    <Setter Property="Background" Value="{StaticResource StatusRed}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+
+                    <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!--Icon-->
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="Height" Value="40"/>
+                                    <Setter Property="Width" Value="40"/>
+                                    <Setter Property="Background" Value="{StaticResource Text}"/>
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SystemStatus}" Value="NORMAL">
+                                            <Setter Property="Background" Value="#FFF"/>
+                                            <Setter Property="OpacityMask" Value="{StaticResource Status_Normal_IMG}"/>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding SystemStatus}" Value="WARNING">
+                                            <Setter Property="Background" Value="#FFF"/>
+                                            <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}" />
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding SystemStatus}" Value="FAULT">
+                                            <Setter Property="Background" Value="#FFF"/>
+                                            <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}" />
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                        </Grid>
+
+                        <!--Text-->
+                        <Viewbox Grid.Column="1" MaxHeight="20" VerticalAlignment="Center" Margin="10,0,0,0">
+                            <Viewbox.Style>
+                                <Style TargetType="Viewbox">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Viewbox.Style>
+
+                            <TextBlock Text="{Binding SystemStatus, Converter={StaticResource uppercaseConverter}}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SystemStatus}" Value="NORMAL">
+                                                <Setter Property="Foreground" Value="#FFF"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding SystemStatus}" Value="WARNING">
+                                                <Setter Property="Foreground" Value="#FFF"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding SystemStatus}" Value="FAULT">
+                                                <Setter Property="Foreground" Value="#FFF"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+
+                        </Viewbox>
+
+                    </Grid>
+
+                </Border>
+
+                <!--System Message-->
+                <Border Grid.Row="11" BorderBrush="{StaticResource Border}" BorderThickness="0,0,0,1">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SystemStatus}" Value="Warning">
+                                    <Setter Property="Background" Value="{StaticResource StatusOrange}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding SystemStatus}" Value="Fault">
+                                    <Setter Property="Background" Value="{StaticResource StatusRed}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+
+                    <!--Text-->
+                    <Viewbox Grid.Column="1" MaxHeight="30" VerticalAlignment="Center" Margin="10,0,0,0">
+                        <Viewbox.Style>
+                            <Style TargetType="Viewbox">
+                                <Setter Property="MaxWidth" Value="200"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding SystemStatus}" Value="Warning">
-                                        <Setter Property="Foreground" Value="#FFFFFF"/>
+                                    <DataTrigger Binding="{Binding WidthStatus}" Value="0">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding SystemStatus}" Value="Fault">
-                                        <Setter Property="Foreground" Value="#FFFFFF"/>
+                                    <DataTrigger Binding="{Binding WidthStatus}" Value="2">
+                                        <Setter Property="MaxWidth" Value="300"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding WidthStatus}" Value="3">
+                                        <Setter Property="MaxWidth" Value="400"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
+                        </Viewbox.Style>
 
-                </Viewbox>
+                        <TextBlock Text="{Binding SystemMessage}">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SystemStatus}" Value="Warning">
+                                            <Setter Property="Foreground" Value="#FFFFFF"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding SystemStatus}" Value="Fault">
+                                            <Setter Property="Foreground" Value="#FFFFFF"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
 
-            </Border>
+                    </Viewbox>
 
+                </Border>
+
+            </Grid>
+            
         </Grid>
 
     </Border>

@@ -99,7 +99,7 @@
         <ScrollViewer VerticalScrollBarVisibility="Auto" PanningMode="VerticalOnly">
             <ScrollViewer.Style>
                 <Style TargetType="ScrollViewer">
-                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Background" Value="{StaticResource Disabled_Text}"/>
                     <Style.Triggers>
 
                         <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
@@ -115,7 +115,7 @@
                         </DataTrigger>
 
                         <DataTrigger Binding="{Binding Connected}" Value="false">
-                            <Setter Property="Background" Value="{StaticResource Disabled}"/>
+                            <Setter Property="Background" Value="{StaticResource Disabled_Text}"/>
                         </DataTrigger>
 
                     </Style.Triggers>

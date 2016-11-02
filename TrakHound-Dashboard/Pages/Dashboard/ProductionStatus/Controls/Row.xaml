@@ -28,18 +28,19 @@
                     <ColumnDefinition Width="30"/>
                     <ColumnDefinition Width="200"/>
                     <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="150"/>
+                    
+                    <ColumnDefinition Width="*"/>
+                    <!--<ColumnDefinition Width="*" MinWidth="100"/>
                     <ColumnDefinition Width="*" MinWidth="100"/>
                     <ColumnDefinition Width="*" MinWidth="100"/>
-                    <ColumnDefinition Width="*" MinWidth="100"/>
-                    <ColumnDefinition Width="*" MinWidth="100"/>
-                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="150"/>-->
                 </Grid.ColumnDefinitions>
 
                 <!--Status Indicator-->
                 <Border Grid.Column="0" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
                     <Border.Style>
                         <Style TargetType="Border">
+                            <Setter Property="Background" Value="{StaticResource Disabled_Text}"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding DeviceStatus}" Value="Active">
                                     <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
@@ -51,7 +52,7 @@
                                     <Setter Property="Background" Value="{StaticResource StatusRed}"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Connected}" Value="false">
-                                    <Setter Property="Background" Value="{StaticResource Disabled}"/>
+                                    <Setter Property="Background" Value="{StaticResource Disabled_Text}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -198,162 +199,184 @@
 
                 </Border>
 
-                <!--Production Status-->
-                <Border Grid.Column="3" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
-                    <Border.Style>
-                        <Style TargetType="Border">
+                <!--Data-->
+                <Grid Grid.Column="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*" MinWidth="100"/>
+                        <ColumnDefinition Width="*" MinWidth="100"/>
+                        <ColumnDefinition Width="*" MinWidth="100"/>
+                        <ColumnDefinition Width="*" MinWidth="100"/>
+                        <ColumnDefinition Width="150"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ProductionStatus}" Value="Production">
-                                    <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding ProductionStatus}" Value="Alarm">
-                                    <Setter Property="Background" Value="{StaticResource StatusRed}"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding ProductionStatus}" Value="Setup">
-                                    <Setter Property="Background" Value="{StaticResource StatusBlue}"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding ProductionStatus}" Value="Teardown">
-                                    <Setter Property="Background" Value="{StaticResource StatusOrange}"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding ProductionStatus}" Value="Maintenance">
-                                    <Setter Property="Background" Value="{StaticResource StatusTeal}"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding ProductionStatus}" Value="Process Development">
-                                    <Setter Property="Background" Value="{StaticResource StatusPurple}"/>
+                                <DataTrigger Binding="{Binding Connected}" Value="false">
+                                    <Setter Property="Opacity" Value="0.4"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </Border.Style>
+                    </Grid.Style>
 
-                    <Viewbox MaxHeight="26" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <!--Production Status-->
+                    <Border Grid.Column="0" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ProductionStatus}" Value="Production">
+                                        <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ProductionStatus}" Value="Alarm">
+                                        <Setter Property="Background" Value="{StaticResource StatusRed}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ProductionStatus}" Value="Setup">
+                                        <Setter Property="Background" Value="{StaticResource StatusBlue}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ProductionStatus}" Value="Teardown">
+                                        <Setter Property="Background" Value="{StaticResource StatusOrange}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ProductionStatus}" Value="Maintenance">
+                                        <Setter Property="Background" Value="{StaticResource StatusTeal}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ProductionStatus}" Value="Process Development">
+                                        <Setter Property="Background" Value="{StaticResource StatusPurple}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
 
-                        <TextBlock Text="{Binding ProductionStatus}" Foreground="White">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Style.Triggers>
-                                        <Trigger Property="Text" Value="{x:Null}">
-                                            <Setter Property="Foreground" Value="#ccc"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
+                        <Viewbox MaxHeight="26" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Center">
 
-                    </Viewbox>
+                            <TextBlock Text="{Binding ProductionStatus}" Foreground="White">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <Trigger Property="Text" Value="{x:Null}">
+                                                <Setter Property="Foreground" Value="#ccc"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
 
-                </Border>
+                        </Viewbox>
 
-                <!--Run Time-->
-                <Border Grid.Column="4" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
+                    </Border>
 
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="6*"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="4*"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                    <!--Run Time-->
+                    <Border Grid.Column="1" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
 
-                        <TextBlock Text="Day" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
-                        <ui:TimeDisplay Grid.Column="1" Time="{Binding DayRunTime}" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center" MaxHeight="30"/>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="6*"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="4*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                        <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Fill="{StaticResource Border}" Height="1" Margin="0,2"/>
+                            <TextBlock Text="Day" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
+                            <ui:TimeDisplay Grid.Column="1" Time="{Binding DayRunTime}" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center" MaxHeight="30"/>
 
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Total" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
-                        <ui:NumberDisplay Grid.Row="2" Grid.Column="1" Value="{Binding TotalRunTime}" ValueFormat="N1" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Fill="{StaticResource Border}" Height="1" Margin="0,2"/>
 
-                    </Grid>
-                    
-                </Border>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Total" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
+                            <ui:NumberDisplay Grid.Row="2" Grid.Column="1" Value="{Binding TotalRunTime}" ValueFormat="N1" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
-                <!--Operating Time-->
-                <Border Grid.Column="5" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
+                        </Grid>
 
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="6*"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="4*"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                    </Border>
 
-                        <TextBlock Text="Day" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
-                        <ui:TimeDisplay Grid.Column="1" Time="{Binding DayOperatingTime}" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center" MaxHeight="30"/>
+                    <!--Operating Time-->
+                    <Border Grid.Column="2" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
 
-                        <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Fill="{StaticResource Border}" Height="1" Margin="0,2"/>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="6*"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="4*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Total" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
-                        <ui:NumberDisplay Grid.Row="2" Grid.Column="1" Value="{Binding TotalOperatingTime}" ValueFormat="N1" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Day" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
+                            <ui:TimeDisplay Grid.Column="1" Time="{Binding DayOperatingTime}" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center" MaxHeight="30"/>
 
-                    </Grid>
-                    
-                </Border>
+                            <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Fill="{StaticResource Border}" Height="1" Margin="0,2"/>
 
-                <!--Cutting Time-->
-                <Border Grid.Column="6" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Total" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
+                            <ui:NumberDisplay Grid.Row="2" Grid.Column="1" Value="{Binding TotalOperatingTime}" ValueFormat="N1" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="6*"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="4*"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                        </Grid>
 
-                        <TextBlock Text="Day" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
-                        <ui:TimeDisplay Grid.Column="1" Time="{Binding DayCuttingTime}" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center" MaxHeight="30"/>
+                    </Border>
 
-                        <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Fill="{StaticResource Border}" Height="1" Margin="0,2"/>
+                    <!--Cutting Time-->
+                    <Border Grid.Column="3" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
 
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Total" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
-                        <ui:NumberDisplay Grid.Row="2" Grid.Column="1" Value="{Binding TotalCuttingTime}" ValueFormat="N1" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="6*"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="4*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                    </Grid>
-                    
-                </Border>
+                            <TextBlock Text="Day" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
+                            <ui:TimeDisplay Grid.Column="1" Time="{Binding DayCuttingTime}" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center" MaxHeight="30"/>
 
-                <!--Spindle Run Time-->
-                <Border Grid.Column="7" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
+                            <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Fill="{StaticResource Border}" Height="1" Margin="0,2"/>
 
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="6*"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="4*"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Total" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
+                            <ui:NumberDisplay Grid.Row="2" Grid.Column="1" Value="{Binding TotalCuttingTime}" ValueFormat="N1" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
-                        <TextBlock Text="Day" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
-                        <ui:TimeDisplay Grid.Column="1" Time="{Binding DaySpindleTime}" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center" MaxHeight="30"/>
+                        </Grid>
 
-                        <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Fill="{StaticResource Border}" Height="1" Margin="0,2"/>
+                    </Border>
 
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Total" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
-                        <ui:NumberDisplay Grid.Row="2" Grid.Column="1" Value="{Binding TotalSpindleTime}" ValueFormat="N1" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <!--Spindle Run Time-->
+                    <Border Grid.Column="4" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
 
-                    </Grid>
-                    
-                </Border>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="6*"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="4*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                <!--Part Count-->
-                <Border Grid.Column="8" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
+                            <TextBlock Text="Day" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
+                            <ui:TimeDisplay Grid.Column="1" Time="{Binding DaySpindleTime}" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center" MaxHeight="30"/>
 
-                    <ui:NumberDisplay Value="{Binding PartCount}" ValueFormat="N0" Foreground="{StaticResource Text}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Fill="{StaticResource Border}" Height="1" Margin="0,2"/>
 
-                </Border>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Total" FontSize="10" Foreground="{StaticResource Text_Light}" VerticalAlignment="Center" Margin="5"/>
+                            <ui:NumberDisplay Grid.Row="2" Grid.Column="1" Value="{Binding TotalSpindleTime}" ValueFormat="N1" Foreground="{StaticResource Text}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
+                        </Grid>
+
+                    </Border>
+
+                    <!--Part Count-->
+                    <Border Grid.Column="5" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
+
+                        <ui:NumberDisplay Value="{Binding PartCount}" ValueFormat="N0" Foreground="{StaticResource Text}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                    </Border>
+
+                </Grid>
+                
             </Grid>
 
             <!--Mouse Over Cover-->
