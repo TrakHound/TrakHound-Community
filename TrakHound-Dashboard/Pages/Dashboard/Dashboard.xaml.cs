@@ -48,7 +48,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard
                 zoomLevel += zoomPercentage;
 
                 if (zoomPercentage > 0) zoomLevel = Math.Min(2, zoomLevel);
-                else if (zoomPercentage < 0) zoomLevel = Math.Max(0.5, zoomLevel);
+                else if (zoomPercentage < 0) zoomLevel = Math.Max(0.25, zoomLevel);
                 else zoomLevel = 1;
 
                 MainWindow.SavePageZoomLevel(page, zoomLevel);
