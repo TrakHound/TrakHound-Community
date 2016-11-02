@@ -36,57 +36,64 @@
         <!--Number of Devices Found-->
         <StackPanel Grid.Row="1" Margin="10,0,0,20">
 
-            <WrapPanel Orientation="Horizontal">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
 
-                <!--MTConnect IP Address Range-->
-                <StackPanel Margin="0,0,20,20" HorizontalAlignment="Left">
+                <WrapPanel Orientation="Horizontal">
 
-                    <TextBlock Text="MTConnect IP Address Range" Foreground="{StaticResource Text_Light}" HorizontalAlignment="Center" Margin="0,0,20,5"/>
+                    <!--MTConnect IP Address Range-->
+                    <StackPanel Margin="0,0,20,20" HorizontalAlignment="Left">
 
-                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="MTConnect IP Address Range" Foreground="{StaticResource Text_Light}" HorizontalAlignment="Center" Margin="0,0,20,5"/>
 
-                        <ui:TextBox Text="{Binding StartAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="100"/>
+                        <StackPanel Orientation="Horizontal">
 
-                        <TextBlock Text="To" VerticalAlignment="Center" Margin="0,0,15,0" Foreground="{StaticResource Text}"/>
+                            <ui:TextBox Text="{Binding StartAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="100"/>
 
-                        <ui:TextBox Text="{Binding EndAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="100"/>
+                            <TextBlock Text="To" VerticalAlignment="Center" Margin="0,0,15,0" Foreground="{StaticResource Text}"/>
+
+                            <ui:TextBox Text="{Binding EndAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="100"/>
+
+                        </StackPanel>
+
+                    </StackPanel>
+                
+                    <!--MTConnect Port Range-->
+                    <StackPanel Margin="0,0,20,20" HorizontalAlignment="Left">
+
+                        <TextBlock Text="MTConnect Port Range" Foreground="{StaticResource Text_Light}" HorizontalAlignment="Center" Margin="0,0,20,5"/>
+
+                        <StackPanel Orientation="Horizontal">
+
+                            <ui:TextBox Text="{Binding StartPort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="100"/>
+
+                            <TextBlock Text="To" VerticalAlignment="Center" Margin="0,0,15,0" Foreground="{StaticResource Text}"/>
+
+                            <ui:TextBox Text="{Binding EndPort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="100"/>
+
+                        </StackPanel>
 
                     </StackPanel>
 
-                </StackPanel>
-                
-                <!--MTConnect Port Range-->
-                <StackPanel Margin="0,0,20,20" HorizontalAlignment="Left">
+                    <!--Ping Timeout-->
+                    <StackPanel Margin="0,0,20,20" HorizontalAlignment="Left">
 
-                    <TextBlock Text="MTConnect Port Range" Foreground="{StaticResource Text_Light}" HorizontalAlignment="Center" Margin="0,0,20,5"/>
+                        <TextBlock Text="Ping Timeout" Foreground="{StaticResource Text_Light}" HorizontalAlignment="Center" Margin="0,0,20,5"/>
 
-                    <StackPanel Orientation="Horizontal">
-
-                        <ui:TextBox Text="{Binding StartPort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="100"/>
-
-                        <TextBlock Text="To" VerticalAlignment="Center" Margin="0,0,15,0" Foreground="{StaticResource Text}"/>
-
-                        <ui:TextBox Text="{Binding EndPort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="100"/>
+                        <ui:TextBox Text="{Binding PingTimeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="100"/>
 
                     </StackPanel>
-
-                </StackPanel>
-
-                <!--Ping Timeout-->
-                <StackPanel Margin="0,0,20,20" HorizontalAlignment="Left">
-
-                    <TextBlock Text="Ping Timeout" Foreground="{StaticResource Text_Light}" HorizontalAlignment="Center" Margin="0,0,20,5"/>
-
-                    <ui:TextBox Text="{Binding PingTimeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="100"/>
-
-                </StackPanel>
                 
+                </WrapPanel>
+
                 <!--Reset to Default Settings-->
-                <ui:Button Text="Reset to Default" Height="30" Clicked="ResetDefault_Clicked" Style="{StaticResource Button_Transparent_Background}"/>
+                <ui:Button Grid.Column="1" Text="Reset to Default" Height="30" Clicked="ResetDefault_Clicked" Style="{StaticResource Button_Transparent_Background}"/>
 
-            </WrapPanel>
+            </Grid>
 
-            
             <Grid Margin="0,0,0,10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -294,7 +301,7 @@
             </Grid>
 
             <!--Statistics-->
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
 
                 <!--Number Of Devices Already Added-->
                 <TextBlock Foreground="{StaticResource Text}" VerticalAlignment="Center">
