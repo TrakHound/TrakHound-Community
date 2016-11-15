@@ -19,7 +19,7 @@ We have been hard at work getting TrakHound ready for 2017 and are excited to an
 Early 2017 we will be launching TrakHound v2 which features a brand new API that will follow a standard RESTful model, store more detailed device data, and be compatible with most programming languages and applications. Along with TrakHound Server, this API provides a fully featured open source data collection solution for any MTConnect application. Applications only have to interface with the API using HTTP where they can directly access fully processed manufacturing data which can then be easily displayed or graphed on any Web, Mobile, or PC application.
 
 #### TrakHound Server
-TrakHound Server is constantly being improved upon in order to provide more data and be more stable. Our goal with TrakHound Server is to be to MTConnect what Apache is to HTTP. Having a widely used and open source server application for MTConnect will drastically expand the usage and accessibility of the protocol.
+TrakHound Server is constantly being improved upon in order to provide more data and be more stable. Our goal with TrakHound Server is to be to MTConnect what Apache is to HTTP. Having a widely used and open source server application for MTConnect will drastically expand the accessibility and adoption of the protocol.
 
 
 ## Help Needed!
