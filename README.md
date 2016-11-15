@@ -13,7 +13,7 @@
 ## News
 ### Update 11/15/16 
 
-We have been hard at work getting TrakHound ready for 2017 and are excited to announce some upcoming changes! We have learned a lot since the beginning of this project and feel TrakHound will very quickly represent the next step in IIoT for advanced manufacturing.
+We have been hard at work getting TrakHound ready for 2017 and are excited to announce some upcoming changes! We have learned a lot since the beginning of this project and feel TrakHound will very quickly represent the next step in the IIoT for advanced manufacturing.
 
 #### TrakHound API
 Early 2017 we will be launching TrakHound v2 which features a brand new API that will follow a standard RESTful model, store more detailed device data, and be compatible with most programming languages and applications. Along with TrakHound Server, this API provides a fully featured open source data collection solution for any MTConnect application. Applications only have to interface with the API using HTTP where they can directly access fully processed manufacturing data which can then be easily displayed or graphed on any Web, Mobile, or PC application.
