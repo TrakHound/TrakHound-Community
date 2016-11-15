@@ -11,20 +11,15 @@
 </p>
 
 ## News
-**Update 9/8/16 - v1.3 Official Release** 
+### Update 11/15/16 
 
-### User Interface
+We have been hard at work getting TrakHound ready for 2017 and are excited to announce some upcoming changes! We have learned a lot since the beginning of this project and feel TrakHound will very quickly represent the next step in IIoT.
 
-The User Interface has been updated and now features a cleaner interface that should be eaiser to read as status colors stand out better on the lighter background. We are also working on a Themes feature where user-defined themes can be used.
+#### TrakHound API
+Early 2017 we will be launching TrakHound v2 which features a brand new API that will follow a standard RESTful model, store more detailed device data, and be compatible with most programming languages and applications. Along with TrakHound Server, this API provides a fully featured open source data collection solution for any MTConnect application. Applications only have to interface with the API using HTTP where they can directly access fully processed manufacturing data which can then be easily displayed or graphed on any Web, Mobile, or PC application.
 
-### New TrakHound API
-- The Server is now broken down into two parts. The Data Processing Server, which collects data using MTConnect and then processes it using plugins, now sends that processed data to a Data Storage Server using HTTP and JSON. The benefit to seperating these is that the data storage server can be written in many different formats and languages and provides the ability to store data in many more ways. 
-- The TrakHound Server application/service runs both the Data Processing Server and a local Data Storage Server. The local Data Storage Server recieves the JSON data and stores it in a local SQLite database. We also have an Apache/PHP/MySQL based Data Storage Server that receives the JSON data and stores it in a remote MySQL database. The Apache/PHP/MySQL based application is not open source as of yet but we plan to once we can implement a better authentication system. 
-- The best advantage of this setup is that data can be retrieved using the TrakHound API HTTP functions which allows for clients to easily be developed on many different platforms. This also allows TrakHound to supplement other systems/software as it can be easily integrated. Previous to this change, data was read directly from the database which meant that it was up to the client to establish communication with the database server itself. This caused issues when trying to communicate with different database types (MySQL, SQLite, SQL Server, etc.). Now, the client just has to communicate using the standard API and basic HTTP functions.
-- Using the new HTTP based API now makes TrakHound fully cloud compatible!
-
-### IMTS 2016
-- TrakHound is going to be featured in Okuma's booth at IMTS 2016 (booth S-8500) as TrakHound is now part of the Okuma App Store. Okuma customers can now go to the Okuma App Store to download their MTConnect Agent/Adapter and will now see TrakHound Community (listed as MTConnect Display) right beside it. Check it out at <a href="https://www.myokuma.com/mtconnect-display">Okuma App Store - MTConnect Display</a>.
+#### TrakHound Server
+TrakHound Server is constantly being improved upon in order to provide more data and be more stable. Our goal with TrakHound Server is to be to MTConnect what Apache is to HTTP. Having a widely used and open source server application for MTConnect will drastically expand the usage and accessibility of the protocol.
 
 
 ## Help Needed!
