@@ -134,9 +134,9 @@
       <DependentUpon>EditPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\DeviceManager\Global.cs" />
-    <Compile Include="Pages\DeviceManager\Pages\Cycles\Controls\OverrideLinkItem.xaml.cs">
+    <None Include="Pages\DeviceManager\Pages\Cycles\Controls\OverrideLinkItem.xaml.cs">
       <DependentUpon>OverrideLinkItem.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="Pages\DeviceManager\Pages\Cycles\Controls\ProductionTypeItem.xaml.cs">
       <DependentUpon>ProductionTypeItem.xaml</DependentUpon>
     </Compile>
@@ -515,10 +515,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\DeviceManager\Pages\Cycles\Controls\OverrideLinkItem.xaml">
+    <None Include="Pages\DeviceManager\Pages\Cycles\Controls\OverrideLinkItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
+    </None>
     <Page Include="Pages\DeviceManager\Pages\Cycles\Controls\ProductionTypeItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -876,6 +876,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\On_01_25px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Send_01.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
