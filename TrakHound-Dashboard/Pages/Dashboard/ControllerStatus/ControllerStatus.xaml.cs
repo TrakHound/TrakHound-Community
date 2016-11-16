@@ -150,7 +150,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ControllerStatus
         {
             if (data != null)
             {
-                if (data.Id == "LOADING_DEVICES")
+                if (data.Id == "DEVICES_LOADING")
                 {
                     ClearRows();
                 }

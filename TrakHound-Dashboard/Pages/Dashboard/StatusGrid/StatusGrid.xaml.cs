@@ -159,7 +159,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
         {
             if (data != null)
             {
-                if (data.Id == "LOADING_DEVICES")
+                if (data.Id == "DEVICES_LOADING")
                 {
                     ClearItems();
                 }
