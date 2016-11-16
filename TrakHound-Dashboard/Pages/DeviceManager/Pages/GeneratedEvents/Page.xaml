@@ -41,11 +41,11 @@
                         </Grid.Style>
                     </Grid>
 
-                    <TextBlock Text="Generated Events" FontSize="25" Foreground="{StaticResource Text}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                    <TextBlock Text="Generated Events" FontSize="25" Foreground="{StaticResource Text}" Margin="10,0,0,5" VerticalAlignment="Center"/>
 
                 </StackPanel>
 
-                <TextBlock Grid.Column="1" FontSize="12" Foreground="{StaticResource Text_Light}" Margin="20,5" MaxWidth="800" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center">
+                <TextBlock Grid.Column="1" FontSize="12" Foreground="{StaticResource Text_Light}" Margin="20,0" MaxWidth="800" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center">
                 Generated Events are used to process raw MTConnect data items. Events are made up of Values and then the Default Value.
                 Values have logical Triggers that define the conditions needed to be met for the Value to be 'True'.
                 </TextBlock>
@@ -57,7 +57,7 @@
 
         </StackPanel>
 
-        <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Border}" Margin="0,15,0,0"/>
+        <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Border}" Margin="0,10"/>
 
         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
 
