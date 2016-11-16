@@ -13,7 +13,7 @@ using TrakHound.API.Users;
 using TrakHound.Logging;
 using TrakHound.Tools.Web;
 
-namespace TrakHound_Server.Plugins.CloudData
+namespace TrakHound_Server.Plugins.TrakHoundCloud
 {
     public class UpdateQueue
     {
@@ -59,34 +59,37 @@ namespace TrakHound_Server.Plugins.CloudData
 
                 started = true;
 
-                ThreadPool.QueueUserWorkItem((i) =>
-                {
-                    do
-                    {
-                        lock (_lock)
-                        {
-                            var sendList = ProcessQueue(queuedInfos);
-                            if (sendList != null && sendList.Count > 0)
-                            {
-                                Update(Plugin.currentUser, sendList);
+                var queueThread = new Thread(new ThreadStart(Worker));
+                queueThread.Start();
+            }
+        }
 
-                                foreach (var queuedInfo in sendList)
-                                {
-                                    var match = queuedInfos.Find(o => o.UniqueId == queuedInfo.UniqueId);
-                                    if (match != null)
-                                    {
-                                        match.ClearClasses();
-                                        queuedInfos.Remove(match);
-                                    }
-                                }
+        private void Worker()
+        {
+            do
+            {
+                lock (_lock)
+                {
+                    var sendList = ProcessQueue(queuedInfos);
+                    if (sendList != null && sendList.Count > 0)
+                    {
+                        Update(Plugin.currentUser, sendList);
+
+                        foreach (var queuedInfo in sendList)
+                        {
+                            var match = queuedInfos.Find(o => o.UniqueId == queuedInfo.UniqueId);
+                            if (match != null)
+                            {
+                                match.ClearClasses();
+                                queuedInfos.Remove(match);
                             }
                         }
+                    }
+                }
 
-                    } while (!stop.WaitOne(ApiConfiguration.UpdateInterval, true));
+            } while (!stop.WaitOne(ApiConfiguration.UpdateInterval, true));
 
-                    Logger.Log("CloudData Queue Stopped");
-                });
-            }
+            Logger.Log("CloudData Queue Stopped");
         }
         
         public void Stop()

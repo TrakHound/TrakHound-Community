@@ -14,12 +14,12 @@ using TrakHound.Configurations;
 using TrakHound.Plugins.Server;
 using TrakHound_Server.Plugins.Status;
 
-namespace TrakHound_Server.Plugins.CloudData
+namespace TrakHound_Server.Plugins.TrakHoundCloud
 {
 
     public class Plugin : IServerPlugin
     {
-        public string Name { get { return "Cloud Data"; } }
+        public string Name { get { return "TrakHound Cloud"; } }
 
         public static UpdateQueue queue = new UpdateQueue();
 
