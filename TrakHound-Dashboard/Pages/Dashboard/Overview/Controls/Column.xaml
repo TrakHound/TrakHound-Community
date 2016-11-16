@@ -468,7 +468,6 @@
                         <Image.Style>
                             <Style TargetType="Image">
                                 <Setter Property="Grid.Row" Value="2"/>
-                                <!--<Setter Property="MaxWidth" Value="180"/>-->
                                 <Setter Property="MaxHeight" Value="180"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding WidthStatus}" Value="0">

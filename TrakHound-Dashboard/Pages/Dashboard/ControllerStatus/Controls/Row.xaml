@@ -39,12 +39,6 @@
                     <ColumnDefinition Width="200"/>
                     <ColumnDefinition Width="100"/>
                     <ColumnDefinition Width="*"/>
-                    <!--<ColumnDefinition Width="120"/>
-                    <ColumnDefinition Width="150"/>
-                    <ColumnDefinition Width="150"/>
-                    <ColumnDefinition Width="*" MinWidth="200"/>
-                    <ColumnDefinition Width="300"/>
-                    <ColumnDefinition Width="300"/>-->
                 </Grid.ColumnDefinitions>
 
                 <!--Status Indicator-->

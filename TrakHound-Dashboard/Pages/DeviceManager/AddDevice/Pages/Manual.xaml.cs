@@ -14,7 +14,6 @@ using TrakHound;
 using TrakHound.API.Users;
 using TrakHound.Configurations;
 using TrakHound.Configurations.AutoGenerate;
-using TrakHound.Tools;
 
 namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
 {
