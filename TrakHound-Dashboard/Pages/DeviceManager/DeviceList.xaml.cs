@@ -212,37 +212,8 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                 UniqueId = device.UniqueId;
                 Index = device.Index;
                 Enabled = device.Enabled;
-
                 Description = device.Description;
                 Agent = device.Agent;
-            }
-
-            private int index;
-            public new int Index
-            {
-                get { return index; }
-                set { SetField(ref index, value, "Index"); }
-            }
-
-            private bool enabled;
-            public new bool Enabled
-            {
-                get { return enabled; }
-                set { SetField(ref enabled, value, "Enabled"); }
-            }
-
-            private Data.DescriptionInfo description;
-            public new Data.DescriptionInfo Description
-            {
-                get { return description; }
-                set { SetField(ref description, value, "Description"); }
-            }
-
-            private Data.AgentInfo agent;
-            public new Data.AgentInfo Agent
-            {
-                get { return agent; }
-                set { SetField(ref agent, value, "Agent"); }
             }
 
             private bool availability;
@@ -267,6 +238,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                 return true;
             }
         }
+
 
         ObservableCollection<DeviceListItem> _deviceListItems;
         public ObservableCollection<DeviceListItem> DeviceListItems
@@ -298,20 +270,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
             }
         }
 
-        private void UpdateDeviceListItem(DeviceDescription device)
-        {
-            lock(DeviceListItems)
-            {
-                int i = DeviceListItems.ToList().FindIndex(x => x.UniqueId == device.UniqueId);
-                if (i >= 0)
-                {
-                    DeviceListItems.RemoveAt(i);
-                    var item = new DeviceListItem(device);
-                    DeviceListItems.Insert(i, item);
-                    DeviceListItems.Sort();
-                }
-            }
-        }
+        private void UpdateDeviceListItem(DeviceDescription device) { }
 
         private void RemoveDeviceListItem(DeviceDescription device)
         {
@@ -599,7 +558,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
 
         private class MoveInfo
         {
-            public MoveInfo(DeviceDescription device, int oldListIndex, int newListIndex, int deviceIndex)
+            public MoveInfo(DeviceListItem device, int oldListIndex, int newListIndex, int deviceIndex)
             {
                 Device = device;
 
@@ -608,7 +567,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                 DeviceIndex = deviceIndex;
             }
 
-            public DeviceDescription Device { get; set; }
+            public DeviceListItem Device { get; set; }
 
             public int OldListIndex { get; set; }
             public int NewListIndex { get; set; }
@@ -638,8 +597,8 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
         {
             var items = Devices_DG.Items;
 
-            var selectedItems = new List<DeviceDescription>();
-            foreach (var selectedItem in Devices_DG.SelectedItems) selectedItems.Add((DeviceDescription)selectedItem);
+            var selectedItems = new List<DeviceListItem>();
+            foreach (var selectedItem in Devices_DG.SelectedItems) selectedItems.Add((DeviceListItem)selectedItem);
 
             // Insure order of selectedItems is by DeviceDescription.Index
             if (change > 0) selectedItems = selectedItems.OrderBy(o => items.IndexOf(o)).ToList();
@@ -830,7 +789,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
             {
                 var eventData = new EventData(this);
                 eventData.Id = "DEVICE_UPDATED";
-                eventData.Data01 = info.Device;
+                eventData.Data01 = info.Device as DeviceDescription;
                 SendData?.Invoke(eventData);
             }
         }
