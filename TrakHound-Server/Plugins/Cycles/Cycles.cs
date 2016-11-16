@@ -16,7 +16,8 @@ using TrakHound_Server.Plugins.Instances;
 
 namespace TrakHound_Server.Plugins.Cycles
 {
-    public class Cycles //Disabled
+    //public class Cycles : IServerPlugin
+    public class Cycles // Disabled
     {
 
         public string Name { get { return "Cycles"; } }

@@ -134,14 +134,20 @@ namespace TrakHound.Servers.DataProcessing
             {
                 foreach (var plugin in plugins)
                 {
-                    var sendDataInfo = new SendDataInfo(plugin, data);
-
-                    ThreadPool.QueueUserWorkItem(new WaitCallback(PluginSendData), sendDataInfo); 
+                    try
+                    {
+                        plugin.GetSentData(data);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Log("Plugin Send Data :: Exception : " + plugin.Name + " :: " + ex.Message, LogLineType.Error);
+                    }
                 }
             }
 
             SendData?.Invoke(data);
         }
+
 
         private void PluginSendData(object o)
         {
