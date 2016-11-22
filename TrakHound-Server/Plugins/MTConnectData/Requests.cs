@@ -61,7 +61,7 @@ namespace TrakHound_Server.Plugins.MTConnectData
 
             } while (!stop.WaitOne(ac.Heartbeat, true));
 
-            System.Console.WriteLine("Requests Worker Stopped");
+            Console.WriteLine("Requests Worker Stopped");
         }
 
         private void Stop()

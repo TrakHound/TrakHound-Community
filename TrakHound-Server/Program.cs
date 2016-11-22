@@ -7,6 +7,7 @@ using System;
 using System.Configuration.Install;
 using System.Reflection;
 using System.ServiceProcess;
+using System.Threading;
 
 using TrakHound;
 using TrakHound.API.Users;
@@ -20,6 +21,9 @@ namespace TrakHound_Server
     {
         static bool serverServiceWasRunning = false;
 
+        static ManualResetEvent stop;
+        const int ERROR_RETRY = 5000;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -27,60 +31,59 @@ namespace TrakHound_Server
         static void Main(string[] args)
         {
             Init(args);
+            stop = new ManualResetEvent(false);
         }
 
         private static void Init(string[] args)
         {
-            try
+            PrintHeader();
+
+            UpdateUserSettings();
+
+            if (args.Length > 0)
             {
-                PrintHeader();
-
-                UpdateUserSettings();
-
-                if (args.Length > 0)
+                if (args.Length > 1)
                 {
-                    if (args.Length > 1)
+                    string authenticationParameter = args[1];
+                    switch (authenticationParameter)
                     {
-                        string authenticationParameter = args[1];
-                        switch (authenticationParameter)
-                        {
-                            case "login": SetServerCredentials(); break;
+                        case "login": SetServerCredentials(); break;
 
-                            case "logout": ClearServerCredentials(); break;
-                        }
-                    }
-
-                    string installParameter = args[0];
-                    switch (installParameter)
-                    {
-                        case "debug": StartDebug(); break;
-
-                        case "console": StartConsole(); break;
-
-                        case "shell": StartShell(); break;
-
-                        case "install": InstallService(); break;
-
-                        case "uninstall": UninstallService(); break;
+                        case "logout": ClearServerCredentials(); break;
                     }
                 }
-                else
+
+                string installParameter = args[0];
+                switch (installParameter)
+                {
+                    case "debug": StartDebug(); break;
+
+                    case "console": StartConsole(); break;
+
+                    case "shell": StartShell(); break;
+
+                    case "install": InstallService(); break;
+
+                    case "uninstall": UninstallService(); break;
+                }
+            }
+            else
+            {
+                try
                 {
                     ServiceBase[] ServicesToRun;
                     ServicesToRun = new ServiceBase[]
                     {
-                new Service1()
+                        new Service1()
                     };
                     ServiceBase.Run(ServicesToRun);
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("TrakHound Server Error :: Restarting Server in 5 Seconds..");
+                catch (Exception ex)
+                {
+                    Console.WriteLine("TrakHound Server Error :: Restarting Server in 5 Seconds..");
 
-                System.Threading.Thread.Sleep(5000);
-
-                Init(args);
+                    if (!stop.WaitOne(ERROR_RETRY, true)) Init(args);
+                }
             }
         }
 
@@ -109,6 +112,8 @@ namespace TrakHound_Server
 
         private static void StopServers()
         {
+            if (stop != null) stop.Set();
+
             if (deviceServer != null) deviceServer.Stop();
 
             if (dataServer != null) dataServer.Stop();
@@ -160,6 +165,7 @@ namespace TrakHound_Server
         public static bool StartServerService()
         {
             bool result = true;
+            if (stop == null) stop = new ManualResetEvent(false);
 
             var service = Service_Functions.GetServiceController(ApplicationNames.TRAKHOUND_SERVER_SEVICE_NAME);
             if (service != null)
@@ -177,6 +183,7 @@ namespace TrakHound_Server
         public static bool StopServerService()
         {
             bool result = true;
+            if (stop != null) stop.Set();
 
             var service = Service_Functions.GetServiceController(ApplicationNames.TRAKHOUND_SERVER_SEVICE_NAME);
             if (service != null)
@@ -194,11 +201,18 @@ namespace TrakHound_Server
 
         private static void UpdateUserSettings()
         {
-            if (Properties.Settings.Default.UpdateSettings)
+            try
             {
-                Properties.Settings.Default.Upgrade();
-                Properties.Settings.Default.UpdateSettings = false;
-                Properties.Settings.Default.Save();
+                if (Properties.Settings.Default.UpdateSettings)
+                {
+                    Properties.Settings.Default.Upgrade();
+                    Properties.Settings.Default.UpdateSettings = false;
+                    Properties.Settings.Default.Save();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error Updating User Settings : " + ex.Message);
             }
         }
 
