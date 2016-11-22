@@ -474,7 +474,9 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
                         info.Address = reply.Address.ToString();
                         info.Port = p;
 
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(TestPort), info);
+                        TestPort(info);
+
+                        //ThreadPool.QueueUserWorkItem(new WaitCallback(TestPort), info);
                     }
                     else break;
                 }

@@ -78,6 +78,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Pages\Dashboard\ShopStatus\Controls\DeviceItem.xaml.cs" />
+    <Compile Include="Pages\Dashboard\ShopStatus\Controls\ListItem.xaml.cs" />
+    <Compile Include="Pages\Dashboard\ShopStatus\Controls\MoveThumb.cs" />
+    <Compile Include="Pages\Dashboard\ShopStatus\Controls\ResizeThumb.cs" />
+    <Compile Include="Pages\Dashboard\ShopStatus\ShopStatus.xaml.cs">
+      <DependentUpon>ShopStatus.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\UpdateNotification.xaml.cs">
       <DependentUpon>UpdateNotification.xaml</DependentUpon>
     </Compile>
@@ -404,6 +411,18 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\Dashboard\Dashboard.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Dashboard\ShopStatus\Controls\DeviceItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Dashboard\ShopStatus\Controls\ListItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Dashboard\ShopStatus\ShopStatus.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

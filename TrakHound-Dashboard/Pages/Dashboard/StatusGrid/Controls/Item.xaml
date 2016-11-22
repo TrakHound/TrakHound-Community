@@ -299,30 +299,10 @@
                 </Image.Effect>
                 <Image.Style>
                     <Style TargetType="Image">
-                        <!--<Setter Property="Grid.Row" Value="2"/>-->
-                        <!--<Setter Property="MaxWidth" Value="180"/>-->
                         <Setter Property="MaxHeight" Value="180"/>
                         <Setter Property="Grid.Row" Value="0"/>
                         <Setter Property="Grid.Column" Value="1"/>
                         <Setter Property="Grid.RowSpan" Value="3"/>
-                        <!--<Style.Triggers>
-                            <DataTrigger Binding="{Binding WidthStatus}" Value="0">
-                                <Setter Property="MaxWidth" Value="50"/>
-                                <Setter Property="MaxHeight" Value="50"/>
-                                <Setter Property="Grid.Row" Value="3"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding WidthStatus}" Value="2">
-                                <Setter Property="MaxWidth" Value="180"/>
-                                <Setter Property="Grid.Row" Value="0"/>
-                                <Setter Property="Grid.RowSpan" Value="5"/>
-                                <Setter Property="Grid.Column" Value="1"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding WidthStatus}" Value="3">
-                                <Setter Property="Grid.Row" Value="0"/>
-                                <Setter Property="Grid.Column" Value="1"/>
-                                <Setter Property="Grid.RowSpan" Value="5"/>
-                            </DataTrigger>
-                        </Style.Triggers>-->
                     </Style>
                 </Image.Style>
             </Image>

@@ -1,16 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Collections.ObjectModel;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+using TrakHound.Tools.Web;
+
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
 
 using TrakHound;
+using TrakHound.API.Users;
 using TrakHound.Configurations;
 using TrakHound.Plugins.Client;
-using TrakHound.Tools.Web;
+using TrakHound.Tools;
 
 namespace TrakHound_Dashboard.Pages.Dashboard.ShopStatus
 {
@@ -81,8 +97,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ShopStatus
 
         public void GetSentData(EventData data)
         {
-            Dispatcher.BeginInvoke(new Action<EventData>(UpdateDevicesLoading), System.Windows.Threading.DispatcherPriority.Normal, new object[] { data });
-
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceAdded), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { data });
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceUpdated), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { data });
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceRemoved), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { data });
@@ -117,18 +131,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ShopStatus
                         column.UpdateData(info);
                     }
                 }), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { });
-            }
-        }
-
-        void UpdateDevicesLoading(EventData data)
-        {
-            if (data != null)
-            {
-                if (data.Id == "DEVICES_LOADING")
-                {
-                    ListItems.Clear();
-                    ClearDeviceItems();
-                }
             }
         }
 
@@ -344,17 +346,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ShopStatus
             shopCanvas.Children.Remove(deviceItem);
             DeviceItems.Remove(deviceItem);
             RemoveDeviceItemLocation(deviceItem);
-        }
-
-        private void ClearDeviceItems()
-        {
-            foreach (var deviceItem in DeviceItems)
-            {
-                shopCanvas.Children.Remove(deviceItem);
-                RemoveDeviceItemLocation(deviceItem);
-            }
-
-            DeviceItems.Clear();
         }
 
         private Controls.ListItem AddListItem(DeviceDescription device)
