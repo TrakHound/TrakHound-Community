@@ -273,5 +273,17 @@ namespace TrakHound_Dashboard.Properties {
                 this["SavedStatusToTime"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ShopStatusItemLocations {
+            get {
+                return ((string)(this["ShopStatusItemLocations"]));
+            }
+            set {
+                this["ShopStatusItemLocations"] = value;
+            }
+        }
     }
 }

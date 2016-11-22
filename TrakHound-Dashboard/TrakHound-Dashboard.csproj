@@ -78,6 +78,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Pages\Dashboard\ShopStatus\Controls\DeviceItem.xaml.cs" />
+    <Compile Include="Pages\Dashboard\ShopStatus\Controls\ListItem.xaml.cs" />
+    <Compile Include="Pages\Dashboard\ShopStatus\Controls\MoveThumb.cs" />
+    <Compile Include="Pages\Dashboard\ShopStatus\Controls\ResizeThumb.cs" />
+    <Compile Include="Pages\Dashboard\ShopStatus\ShopStatus.xaml.cs">
+      <DependentUpon>ShopStatus.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\UpdateNotification.xaml.cs">
       <DependentUpon>UpdateNotification.xaml</DependentUpon>
     </Compile>
@@ -134,9 +141,9 @@
       <DependentUpon>EditPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\DeviceManager\Global.cs" />
-    <Compile Include="Pages\DeviceManager\Pages\Cycles\Controls\OverrideLinkItem.xaml.cs">
+    <None Include="Pages\DeviceManager\Pages\Cycles\Controls\OverrideLinkItem.xaml.cs">
       <DependentUpon>OverrideLinkItem.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="Pages\DeviceManager\Pages\Cycles\Controls\ProductionTypeItem.xaml.cs">
       <DependentUpon>ProductionTypeItem.xaml</DependentUpon>
     </Compile>
@@ -407,6 +414,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Pages\Dashboard\ShopStatus\Controls\DeviceItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Dashboard\ShopStatus\Controls\ListItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Dashboard\ShopStatus\ShopStatus.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\DeviceDetails\Controls\HourTimeline.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -515,10 +534,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\DeviceManager\Pages\Cycles\Controls\OverrideLinkItem.xaml">
+    <None Include="Pages\DeviceManager\Pages\Cycles\Controls\OverrideLinkItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
+    </None>
     <Page Include="Pages\DeviceManager\Pages\Cycles\Controls\ProductionTypeItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -876,6 +895,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\On_01_25px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Send_01.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -65,5 +65,8 @@
     <Setting Name="SavedStatusToTime" Type="System.String" Scope="User">
       <Value Profile="(Default)">2016-10-01</Value>
     </Setting>
+    <Setting Name="ShopStatusItemLocations" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>
