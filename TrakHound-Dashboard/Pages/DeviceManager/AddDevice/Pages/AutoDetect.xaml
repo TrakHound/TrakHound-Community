@@ -358,15 +358,16 @@
                 <!--Search Progress Bar-->
                 <ui:ProgressBar Value="{Binding SearchProgressValue}" Maximum="{Binding SearchProgressMaximum}" Height="10" Foreground="#00ff00" Background="#1000ff00" Margin="20,0" Width="150">
                     <ui:ProgressBar.Style>
-                            <Style TargetType="ui:ProgressBar">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding DevicesLoading}" Value="true">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ui:ProgressBar.Style>
+                        <Style TargetType="ui:ProgressBar">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Setter Property="AnimateValueChange" Value="False"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DevicesLoading}" Value="true">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ui:ProgressBar.Style>
                 </ui:ProgressBar>
 
             </StackPanel>

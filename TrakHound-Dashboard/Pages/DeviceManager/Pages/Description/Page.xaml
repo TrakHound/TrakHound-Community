@@ -32,13 +32,13 @@
                 </Grid.Style>
             </Grid>
 
-            <TextBlock Text="Description" FontSize="25" Height="30" Foreground="{StaticResource Text}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+            <TextBlock Text="Description" FontSize="25" Foreground="{StaticResource Text}" Margin="10,0,0,5" VerticalAlignment="Center"/>
 
-            <TextBlock Text="General Device Desciption Settings" FontSize="12" Foreground="{StaticResource Text_Light}" Margin="20,5" VerticalAlignment="Center"/>
+            <TextBlock Text="General Device Desciption Settings" FontSize="12" Foreground="{StaticResource Text_Light}" Margin="20,0" VerticalAlignment="Center"/>
 
         </StackPanel>
 
-        <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Border}" Margin="0,15,0,0"/>
+        <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Border}" Margin="0,10"/>
 
         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
 

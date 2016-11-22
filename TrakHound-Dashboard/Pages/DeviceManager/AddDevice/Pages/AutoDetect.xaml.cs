@@ -551,7 +551,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
         {
             string url = "http://" + address + ":" + port;
 
-            var probeReturn = Requests.Get(url, 500, 1);
+            var probeReturn = Requests.Get(url, Math.Max(500, pingTimeout), 1);
             if (probeReturn != null && probeReturn.Devices != null)
             {
                 AddtoLog(LogType.PROBE, "MTConnect Probe Successful : " + url);
@@ -661,7 +661,8 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
                         DevicesNotAdded = DeviceInfos.Count;
                         DevicesAlreadyAdded += 1;
 
-                    }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
+                    }));
+                    //}), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
                 }
             }
 
@@ -775,7 +776,20 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                LogItems.Add(new LogItem(type, line));
+                bool shown = false;
+
+                switch (type)
+                {
+                    case LogType.PING: shown = DisplayPingLog; break;
+                    case LogType.PORT: shown = DisplayPortLog; break;
+                    case LogType.PROBE: shown = DisplayProbeLog; break;
+                    default: shown = true; break;
+                }
+
+                var item = new LogItem(type, line);
+                item.Shown = shown;
+
+                LogItems.Add(item);           
 
             }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
         }

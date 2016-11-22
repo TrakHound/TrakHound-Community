@@ -55,10 +55,11 @@ namespace TrakHound.Servers.DataStorage
 
             StartBackupTimer();
 
-            ThreadPool.QueueUserWorkItem(new WaitCallback(Worker));
+            var listenerThread = new Thread(new ThreadStart(Worker));
+            listenerThread.Start();
         }
 
-        public void Worker(object o)
+        public void Worker()
         {
             try
             {
@@ -123,7 +124,7 @@ namespace TrakHound.Servers.DataStorage
                 Logger.Log("Local Data Server :: Error starting server :: Exception :: " + ex.Message, LogLineType.Warning);
                 Logger.Log("Local Data Server :: Error starting server :: Restarting Data Server in 5 Seconds..");
 
-                if (!stop.WaitOne(LISTENER_ERROR_RETRY_INTERVAL, true)) Worker(null);
+                if (!stop.WaitOne(LISTENER_ERROR_RETRY_INTERVAL, true)) Worker();
             }
         }
 

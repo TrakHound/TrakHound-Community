@@ -20,35 +20,31 @@
 
         <StackPanel>
 
-            <StackPanel Orientation="Horizontal">
+            <!--Title and Image-->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
 
-                <!--Title and Image-->
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                <!--Image-->
+                <Grid Height="25" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,0,0" VerticalAlignment="Center">
+                    <Grid.Resources>
+                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding Image}" />
+                    </Grid.Resources>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                            <Setter Property="Background" Value="{StaticResource Foreground}"/>
+                        </Style>
+                    </Grid.Style>
+                </Grid>
 
-                    <!--Image-->
-                    <Grid Height="25" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,0,0" VerticalAlignment="Center">
-                        <Grid.Resources>
-                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding Image}" />
-                        </Grid.Resources>
-                        <Grid.Style>
-                            <Style TargetType="Grid">
-                                <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                <Setter Property="Background" Value="{StaticResource Foreground}"/>
-                            </Style>
-                        </Grid.Style>
-                    </Grid>
+                <TextBlock Text="Parts" FontSize="25" Foreground="{StaticResource Text}" Margin="10,0,0,5" VerticalAlignment="Center"/>
 
-                    <TextBlock Text="Parts" FontSize="25" Foreground="{StaticResource Text}" Margin="10,0,0,0" VerticalAlignment="Center"/>
-
-                </StackPanel>
-
-                <TextBlock Grid.Column="1" FontSize="12" Foreground="{StaticResource Text_Light}" Margin="20,5" TextWrapping="Wrap" MaxWidth="800" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <TextBlock Grid.Column="1" FontSize="12" Foreground="{StaticResource Text_Light}" Margin="20,0" TextWrapping="Wrap" MaxWidth="800" HorizontalAlignment="Left" VerticalAlignment="Center">
                     Use Parts to track Part Count.
                     Uses a Generated Event with that corresponds to an event such as 'Parts Produced'.
                 </TextBlock>
 
             </StackPanel>
-           
+
             <!--Add Item-->
             <ui:Button Text="Add Part Count Event" Clicked="Add_Clicked" Style="{StaticResource Button_Accent_Background}" HorizontalAlignment="Left" Margin="0,20,0,0" Image="/TrakHound-Dashboard;component/Resources/Add_01.png"/>
 

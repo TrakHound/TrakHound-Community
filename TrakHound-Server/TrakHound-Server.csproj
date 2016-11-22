@@ -59,8 +59,8 @@
     <Compile Include="..\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
-    <Compile Include="Plugins\CloudData\Plugin.cs" />
-    <Compile Include="Plugins\CloudData\UpdateQueue.cs" />
+    <Compile Include="Plugins\TrakHoundCloud\Plugin.cs" />
+    <Compile Include="Plugins\TrakHoundCloud\UpdateQueue.cs" />
     <Compile Include="Plugins\Cycles\Configuration.cs" />
     <Compile Include="Plugins\Cycles\CycleData.cs" />
     <Compile Include="Plugins\Cycles\CycleProductionType.cs" />
@@ -80,11 +80,8 @@
     <Compile Include="Plugins\Instances\Plugin.cs" />
     <Compile Include="Plugins\Instances\Processing.cs" />
     <Compile Include="Plugins\MTConnectData\AgentData.cs" />
-    <Compile Include="Plugins\MTConnectData\Current.cs" />
     <Compile Include="Plugins\MTConnectData\Plugin.cs" />
-    <Compile Include="Plugins\MTConnectData\Probe.cs" />
     <Compile Include="Plugins\MTConnectData\Requests.cs" />
-    <Compile Include="Plugins\MTConnectData\Sample.cs" />
     <Compile Include="Plugins\OEE\Configuration.cs" />
     <Compile Include="Plugins\OEE\OEE.cs" />
     <Compile Include="Plugins\OEE\OEEData.cs" />

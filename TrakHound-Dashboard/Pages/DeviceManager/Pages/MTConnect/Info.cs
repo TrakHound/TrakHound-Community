@@ -10,7 +10,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.MTConnectConfig
 {
     public class Info : IConfigurationInfo
     {
-        public string Title { get { return "Agent"; } }
+        public string Title { get { return "MTConnect Agent"; } }
 
         public Uri Image { get { return new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/MTConnect_01.png"); } }
 
