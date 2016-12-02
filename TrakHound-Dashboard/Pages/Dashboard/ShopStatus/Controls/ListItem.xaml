@@ -40,6 +40,20 @@
 
                 <!--Manufacturer & Model-->
                 <TextBlock FontWeight="Bold">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="White"/>
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Device.Description.Manufacturer}" Value="{x:Null}"/>
+                                        <Condition Binding="{Binding Device.Description.Model}" Value="{x:Null}"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
                 <Run Text="{Binding Device.Description.Manufacturer}"/>
                 <Run Text="{Binding Device.Description.Model}"/>
                 </TextBlock>
@@ -56,6 +70,8 @@
                     <DropShadowEffect Direction="225" Color="#66000000" ShadowDepth="2" BlurRadius="5" Opacity="0.3"/>
                 </Image.Effect>
             </Image>
+
+            <Rectangle Grid.ColumnSpan="2" Fill="Transparent"/>
 
         </Grid>
 
