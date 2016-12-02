@@ -92,7 +92,7 @@
                 </ui:NumberDisplay.Style>
             </ui:NumberDisplay>
 
-            <TextBlock Text="N/A" Foreground="{StaticResource Disabled_Text}" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Text="N/A" Foreground="{StaticResource Disabled_Text}" Margin="2" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Visibility" Value="Collapsed"/>

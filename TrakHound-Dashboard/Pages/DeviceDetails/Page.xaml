@@ -16,33 +16,33 @@
     <UserControl.Resources>
 
         <Style x:Key="Heading1" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="FontSize" Value="24"/>
             <Setter Property="Margin" Value="0,0,0,20"/>
         </Style>
 
         <Style x:Key="Heading2" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="26"/>
+            <Setter Property="FontSize" Value="20"/>
             <Setter Property="Margin" Value="0,0,0,10"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="TextAlignment" Value="Center"/>
         </Style>
 
         <Style x:Key="Heading3" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontSize" Value="12"/>
             <Setter Property="Margin" Value="0,0,0,10"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="TextAlignment" Value="Center"/>
         </Style>
 
         <Style x:Key="Heading4" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontSize" Value="10"/>
             <Setter Property="Margin" Value="0,0,0,5"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="TextAlignment" Value="Center"/>
         </Style>
 
         <Style x:Key="Heading5" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontSize" Value="10"/>
             <Setter Property="Margin" Value="0,0,0,5"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="TextAlignment" Value="Center"/>
