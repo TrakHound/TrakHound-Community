@@ -102,65 +102,11 @@
 
                 <StackPanel Orientation="Horizontal">
 
-                    <!--Number Of Devices Not Added-->
-                    <StackPanel Orientation="Horizontal">
+                    <!--Search / Loading-->
+                    <Grid>
 
-                        <!--Number Of Devices-->
-                        <TextBlock Text="{Binding DevicesNotAdded}" Foreground="{StaticResource TrakHound_Blue}" FontWeight="Bold" FontSize="20pt" VerticalAlignment="Center" Margin="0,0,10,0">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding DevicesNotAdded}" Value="{x:Null}">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding DevicesNotAdded}" Value="0">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-
-                        <!--Text-->
-                        <TextBlock Foreground="{StaticResource Text}" MinWidth="200" FontSize="12" VerticalAlignment="Center">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Text" Value="Devices Found on Network"/>
-                                    <Style.Triggers>
-
-                                        <DataTrigger Binding="{Binding DevicesNotAdded}" Value="0">
-                                            <Setter Property="Text" Value="All Devices Found Have Been Added"/>
-                                        </DataTrigger>
-
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding DevicesNotAdded}" Value="0"/>
-                                                <Condition Binding="{Binding DevicesAlreadyAdded}" Value="0"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Text" Value="No Devices Found on Network"/>
-                                        </MultiDataTrigger>
-
-                                        <DataTrigger Binding="{Binding DevicesNotAdded}" Value="1">
-                                            <Setter Property="Text" Value="Device Found on Network"/>
-                                        </DataTrigger>
-
-                                        <DataTrigger Binding="{Binding DevicesLoading}" Value="true">
-                                            <Setter Property="Text" Value="Searching for Devices.."/>
-                                        </DataTrigger>
-
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-
-                    </StackPanel>
-
-                    <!--Refresh / Loading-->
-                    <Grid Margin="20,0,0,0">
-
-                        <!--Refresh Button-->
-                        <ui:Button Image="/TrakHound-Dashboard;component/Resources/Refresh_01.png" Clicked="Refresh_Clicked" ToolTip="Refresh Available Devices List" VerticalAlignment="Center">
+                        <!--Search Button-->
+                        <ui:Button Text="Search" Image="/TrakHound-Dashboard;component/Resources/Search_01.png" Clicked="Search_Clicked" ToolTip="Search for Devices" VerticalAlignment="Center">
                             <ui:Button.Style>
                                 <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Accent_Foreground}">
                                     <Setter Property="Visibility" Value="Visible"/>
@@ -250,7 +196,61 @@
                         </Grid>
 
                     </Grid>
-                    
+
+                    <!--Number Of Devices Not Added-->
+                    <StackPanel Orientation="Horizontal" Margin="20,0,0,0">
+
+                        <!--Number Of Devices-->
+                        <TextBlock Text="{Binding DevicesNotAdded}" Foreground="{StaticResource TrakHound_Blue}" FontWeight="Bold" FontSize="20pt" VerticalAlignment="Center" Margin="0,0,10,0">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding DevicesNotAdded}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding DevicesNotAdded}" Value="0">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <!--Text-->
+                        <TextBlock Foreground="{StaticResource Text}" MinWidth="200" FontSize="12" VerticalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Text" Value="Devices Found on Network"/>
+                                    <Style.Triggers>
+
+                                        <DataTrigger Binding="{Binding DevicesNotAdded}" Value="0">
+                                            <Setter Property="Text" Value="All Devices Found Have Been Added"/>
+                                        </DataTrigger>
+
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding DevicesNotAdded}" Value="0"/>
+                                                <Condition Binding="{Binding DevicesAlreadyAdded}" Value="0"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Text" Value="No Devices Found on Network"/>
+                                        </MultiDataTrigger>
+
+                                        <DataTrigger Binding="{Binding DevicesNotAdded}" Value="1">
+                                            <Setter Property="Text" Value="Device Found on Network"/>
+                                        </DataTrigger>
+
+                                        <DataTrigger Binding="{Binding DevicesLoading}" Value="true">
+                                            <Setter Property="Text" Value="Searching for Devices.."/>
+                                        </DataTrigger>
+
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                    </StackPanel>
+
                 </StackPanel>
 
                 <!--Add All Button-->

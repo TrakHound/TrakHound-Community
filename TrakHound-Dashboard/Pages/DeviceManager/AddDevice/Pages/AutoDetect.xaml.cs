@@ -688,7 +688,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
             }
         }
 
-        private void Refresh_Clicked(TrakHound_UI.Button bt)
+        private void Search_Clicked(TrakHound_UI.Button bt)
         {
             FindDevices();
         }
