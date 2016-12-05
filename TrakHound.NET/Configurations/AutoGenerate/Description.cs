@@ -4,6 +4,7 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using MTConnect.Application.Components;
+using System;
 using System.Data;
 
 namespace TrakHound.Configurations.AutoGenerate
@@ -18,6 +19,20 @@ namespace TrakHound.Configurations.AutoGenerate
                 DeviceConfiguration.EditTable(table, "/Description/Model", Trim(device.Description.Model), null);
                 DeviceConfiguration.EditTable(table, "/Description/Serial", Trim(device.Description.SerialNumber), null);
                 DeviceConfiguration.EditTable(table, "/Description/Description", Trim(device.Description.CDATA), null);
+
+                if (!string.IsNullOrEmpty(device.Description.Manufacturer))
+                {
+                    string logoUrl = new Uri("http://dev.trakhound.com/api/images/device_images/download?manufacturer=" + device.Description.Manufacturer).ToString();
+                    DeviceConfiguration.EditTable(table, "/Description/LogoUrl", logoUrl, null);
+
+                    if (!string.IsNullOrEmpty(device.Description.Model))
+                    {
+                        string imageUrl = new Uri("http://dev.trakhound.com/api/images/device_images/download?manufacturer=" + device.Description.Manufacturer + "&model=" + device.Description.Model).ToString();
+                        DeviceConfiguration.EditTable(table, "/Description/ImageUrl", imageUrl, null);
+                    }
+                }
+                
+                
             }
         }
 

@@ -481,12 +481,9 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
 
                 System.Drawing.Image img = null;
 
-                if (UserConfiguration != null) img = Files.DownloadImage(UserConfiguration, fileId);
-                else
-                {
-                    string path = Path.Combine(FileLocations.Storage, fileId);
-                    if (File.Exists(path)) img = System.Drawing.Image.FromFile(path);
-                }
+                string path = Path.Combine(FileLocations.Storage, fileId);
+                if (File.Exists(path)) img = System.Drawing.Image.FromFile(path);
+                else img = Files.DownloadImage(UserConfiguration, fileId);
 
                 if (img != null)
                 {
@@ -543,12 +540,9 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
 
                 System.Drawing.Image img = null;
 
-                if (UserConfiguration != null) img = Files.DownloadImage(UserConfiguration, fileId);
-                else
-                {
-                    string path = Path.Combine(FileLocations.Storage, fileId);
-                    if (File.Exists(path)) img = System.Drawing.Image.FromFile(path);
-                }
+                string path = Path.Combine(FileLocations.Storage, fileId);
+                if (File.Exists(path)) img = System.Drawing.Image.FromFile(path);
+                else img = Files.DownloadImage(UserConfiguration, fileId);
 
                 if (img != null)
                 {

@@ -440,12 +440,9 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.Description
                 {
                     System.Drawing.Image img = null;
 
-                    if (img == null && info.UserConfig != null) img = Files.DownloadImage(info.UserConfig, info.FileId);
-                    else
-                    {
-                        string path = Path.Combine(FileLocations.Storage, info.FileId);
-                        if (File.Exists(path)) img = System.Drawing.Image.FromFile(path);
-                    }
+                    string path = Path.Combine(FileLocations.Storage, info.FileId);
+                    if (File.Exists(path)) img = System.Drawing.Image.FromFile(path);
+                    else img = Files.DownloadImage(info.UserConfig, info.FileId);
 
                     if (img != null)
                     {
@@ -686,12 +683,10 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.Description
                 if (info.FileId != null)
                 {
                     System.Drawing.Image img = null;
-                    if (info.UserConfig != null) img = Files.DownloadImage(info.UserConfig, info.FileId);
-                    else
-                    {
-                        string path = Path.Combine(FileLocations.Storage, info.FileId);
-                        if (File.Exists(path)) img = System.Drawing.Image.FromFile(path);
-                    }
+
+                    string path = Path.Combine(FileLocations.Storage, info.FileId);
+                    if (File.Exists(path)) img = System.Drawing.Image.FromFile(path);
+                    else img = Files.DownloadImage(info.UserConfig, info.FileId);
 
                     if (img != null)
                     {

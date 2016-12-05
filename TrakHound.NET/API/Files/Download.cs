@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Web;
 
 using TrakHound.API.Users;
 using TrakHound.Logging;
@@ -184,6 +185,19 @@ namespace TrakHound.API
 
         public static Image DownloadImage(UserConfiguration userConfig, string fileId, bool useCache)
         {
+            Uri uri;
+            if (Uri.TryCreate(fileId, UriKind.Absolute, out uri))
+            {
+                return DownloadImagev2(uri, useCache);
+            }
+            else
+            {
+                return DownloadImagev1(userConfig, fileId, useCache);
+            }
+        }
+
+        public static Image DownloadImagev1(UserConfiguration userConfig, string fileId, bool useCache)
+        {
             Image result = null;
 
             if (useCache)
@@ -244,6 +258,51 @@ namespace TrakHound.API
             }
 
             return result;
+        }
+
+        public static Image DownloadImagev2(Uri uri, bool useCache)
+        {
+            string manufacturer = HttpUtility.ParseQueryString(uri.Query).Get("manufacturer");
+            string model = HttpUtility.ParseQueryString(uri.Query).Get("model");
+
+            Image result = null;
+
+            if (useCache)
+            {
+                if (cachedImages == null) LoadCachedImages();
+
+                var cachedImage = cachedImages.Find(o => o.Id == CreateCachePath(manufacturer, model));
+                if (cachedImage != null) result = cachedImage.Image;
+            }
+
+            if (result == null)
+            {
+                var image = v2.Images.DeviceImage.Download(manufacturer, model);
+                if (image != null)
+                {
+                    using (var ms = new MemoryStream(image.Bytes))
+                    {
+                        var img = Image.FromStream(ms);
+
+                        // Add Image to Cache
+                        if (img != null)
+                        {
+                            AddImageToCache(new CachedImage(CreateCachePath(manufacturer, model), img));
+                        }
+
+                        result = img;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private static string CreateCachePath(string manufacturer, string model)
+        {
+            string s = manufacturer;
+            if (!string.IsNullOrEmpty(model)) s += "_" + model;
+            return s;
         }
 
     }

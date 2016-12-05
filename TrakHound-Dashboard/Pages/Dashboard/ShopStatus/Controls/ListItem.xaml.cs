@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.IO;
 using System.Threading;
 using System.Windows;
@@ -66,12 +71,9 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ShopStatus.Controls
 
                 System.Drawing.Image img = null;
 
-                if (UserConfiguration != null) img = Files.DownloadImage(UserConfiguration, fileId);
-                else
-                {
-                    string path = Path.Combine(FileLocations.Storage, fileId);
-                    if (File.Exists(path)) img = System.Drawing.Image.FromFile(path);
-                }
+                string path = Path.Combine(FileLocations.Storage, fileId);
+                if (File.Exists(path)) img = System.Drawing.Image.FromFile(path);
+                else img = Files.DownloadImage(UserConfiguration, fileId);
 
                 if (img != null)
                 {
