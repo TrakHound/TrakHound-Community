@@ -135,42 +135,49 @@ namespace TrakHound.Servers.DataProcessing
 
                 foreach (var checkInfo in checkInfos)
                 {
-                    int index = -1;
-
-                    index = devices.FindIndex(x => x != null && x.Configuration.UniqueId == checkInfo.UniqueId);
-                    if (index >= 0) // Server is already part of list
+                    lock (_lock)
                     {
-                        var server = devices[index];
+                        int index = -1;
 
-                        // Check if Configuration has changed
-                        if (server.Configuration.UpdateId != checkInfo.UpdateId || !server.IsRunning)
+                        index = devices.FindIndex(x => x != null && x.Configuration.UniqueId == checkInfo.UniqueId);
+                        if (index >= 0) // Server is already part of list
                         {
-                            // If changed at all then stop the current server
-                            server.Stop();
+                            var server = devices[index];
 
-                            // If changed and still enabled then restart server
-                            if (checkInfo.Enabled) getIds.Add(checkInfo.UniqueId);
-                            else 
+                            // Check if Configuration has changed
+                            if (server.Configuration.UpdateId != checkInfo.UpdateId || !server.IsRunning)
                             {
-                                // Remove from List
-                                devices.RemoveAt(index);
+                                // If changed at all then stop the current server
+                                server.Stop();
+
+                                // If changed and still enabled then restart server
+                                if (checkInfo.Enabled) getIds.Add(checkInfo.UniqueId);
+                                else
+                                {
+                                    // Remove from List
+                                    devices.RemoveAt(index);
+                                }
                             }
                         }
+                        else if (checkInfo.Enabled) getIds.Add(checkInfo.UniqueId);
                     }
-                    else if (checkInfo.Enabled) getIds.Add(checkInfo.UniqueId);
                 }
 
-                // Find devices that were removed
-                foreach (var device in devices.ToList())
+                lock (_lock)
                 {
-                    if (!checkInfos.Exists(x => x != null && x.UniqueId == device.Configuration.UniqueId))
+                    // Find devices that were removed
+                    foreach (var device in devices.ToList())
                     {
-                        var d = devices.Find(x => x != null && x.Configuration.UniqueId == device.Configuration.UniqueId);
-                        if (d != null)
+                        if (!checkInfos.Exists(x => x != null && x.UniqueId == device.Configuration.UniqueId))
                         {
-                            d.Stop();
 
-                            devices.Remove(d);
+                            var d = devices.Find(x => x != null && x.Configuration.UniqueId == device.Configuration.UniqueId);
+                            if (d != null)
+                            {
+                                d.Stop();
+
+                                devices.Remove(d);
+                            }
                         }
                     }
                 }
@@ -181,21 +188,24 @@ namespace TrakHound.Servers.DataProcessing
                     var configs = API.Devices.Get(userConfig, getIds.ToArray());
                     foreach (var config in configs)
                     {
-                        int index = devices.FindIndex(x => x != null && x.Configuration.UniqueId == config.UniqueId);
-                        if (index >= 0)
+                        lock(_lock)
                         {
-                            var server = devices[index];
-                            server.Stop();
+                            int index = devices.FindIndex(x => x != null && x.Configuration.UniqueId == config.UniqueId);
+                            if (index >= 0)
+                            {
+                                var server = devices[index];
+                                server.Stop();
 
-                            server.Configuration = config;
-                            server.Start();
+                                server.Configuration = config;
+                                server.Start();
 
-                            UpdateLoginInformation(server);
-                        }
-                        else
-                        {
-                            AddDevice(config);
-                        }
+                                UpdateLoginInformation(server);
+                            }
+                            else
+                            {
+                                AddDevice(config);
+                            }
+                        }               
                     }
                 }
             }
@@ -218,52 +228,58 @@ namespace TrakHound.Servers.DataProcessing
                     {
                         if (config != null)
                         {
-                            int index = -1;
-
-                            index = devices.FindIndex(x => x != null && x.Configuration.UniqueId == config.UniqueId);
-                            if (index >= 0) // Server is already part of list
+                            lock (_lock)
                             {
-                                var server = devices[index];
+                                int index = -1;
 
-                                // Check if Configuration has changed
-                                if (server.Configuration.UpdateId != config.UpdateId || !server.IsRunning)
+                                index = devices.FindIndex(x => x != null && x.Configuration.UniqueId == config.UniqueId);
+                                if (index >= 0) // Server is already part of list
                                 {
-                                    // If changed at all then stop the current server
-                                    server.Stop();
+                                    var server = devices[index];
 
-                                    // If changed and still enabled then restart server
-                                    if (config.Enabled)
+                                    // Check if Configuration has changed
+                                    if (server.Configuration.UpdateId != config.UpdateId || !server.IsRunning)
                                     {
-                                        server.Configuration = config;
-                                        server.Start();
+                                        // If changed at all then stop the current server
+                                        server.Stop();
 
-                                        UpdateLoginInformation(server);
-                                    }
-                                    else // Remove from List
-                                    {
-                                        devices.RemoveAt(index);
-                                        Logger.Log("Device Removed :: " + server.Configuration.Description.Description + " [" + server.Configuration.Description.DeviceId + "]");
+                                        // If changed and still enabled then restart server
+                                        if (config.Enabled)
+                                        {
+                                            server.Configuration = config;
+                                            server.Start();
+
+                                            UpdateLoginInformation(server);
+                                        }
+                                        else // Remove from List
+                                        {
+                                            devices.RemoveAt(index);
+                                            Logger.Log("Device Removed :: " + server.Configuration.Description.Description + " [" + server.Configuration.Description.DeviceId + "]");
+                                        }
                                     }
                                 }
-                            }
-                            else // Create & Add Device Server
-                            {
-                                if (config.Enabled) AddDevice(config);
+                                else // Create & Add Device Server
+                                {
+                                    if (config.Enabled) AddDevice(config);
+                                }
                             }
                         }
                     }
 
-                    // Find devices that were removed
-                    foreach (var device in devices.ToList())
+                    lock (_lock)
                     {
-                        if (!configs.Exists(x => x != null && x.UniqueId == device.Configuration.UniqueId))
+                        // Find devices that were removed
+                        foreach (var device in devices.ToList())
                         {
-                            var d = devices.Find(x => x != null && x.Configuration.UniqueId == device.Configuration.UniqueId);
-                            if (d != null)
+                            if (!configs.Exists(x => x != null && x.UniqueId == device.Configuration.UniqueId))
                             {
-                                d.Stop();
+                                var d = devices.Find(x => x != null && x.Configuration.UniqueId == device.Configuration.UniqueId);
+                                if (d != null)
+                                {
+                                    d.Stop();
 
-                                devices.Remove(d);
+                                    devices.Remove(d);
+                                }
                             }
                         }
                     }
@@ -278,21 +294,27 @@ namespace TrakHound.Servers.DataProcessing
 
         private void RemoveAllDevices()
         {
-            if (devices != null)
+            lock (_lock)
             {
-                foreach (var device in devices) device.Stop();
+                if (devices != null)
+                {
+                    foreach (var device in devices) device.Stop();
 
-                devices.Clear();
+                    devices.Clear();
+                }
             }
         }
-        
+
         #endregion
 
         private void SendPluginData(string id, string message)
         {
-            foreach (var device in devices)
+            lock (_lock)
             {
-                device.SendPluginData(id, message);
+                foreach (var device in devices)
+                {
+                    device.SendPluginData(id, message);
+                }
             }
         }
 

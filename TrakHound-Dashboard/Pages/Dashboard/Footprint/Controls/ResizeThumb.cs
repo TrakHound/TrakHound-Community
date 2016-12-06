@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
-namespace TrakHound_Dashboard.Pages.Dashboard.ShopStatus.Controls
+namespace TrakHound_Dashboard.Pages.Dashboard.Footprint.Controls
 {
     public class ResizeThumb : Thumb
     {

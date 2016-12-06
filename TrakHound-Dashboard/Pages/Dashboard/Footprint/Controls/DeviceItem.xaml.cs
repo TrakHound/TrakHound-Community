@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.IO;
 using System.Threading;
 using System.Windows;
@@ -14,14 +19,14 @@ using TrakHound.Configurations;
 using TrakHound.Logging;
 using TrakHound_UI.Functions;
 
-namespace TrakHound_Dashboard.Pages.Dashboard.ShopStatus.Controls
+namespace TrakHound_Dashboard.Pages.Dashboard.Footprint.Controls
 {
     /// <summary>
     /// Interaction logic for DeviceItem.xaml
     /// </summary>
     public partial class DeviceItem : UserControl
     {
-        public DeviceItem(ShopStatus parent, DeviceDescription device)
+        public DeviceItem(Footprint parent, DeviceDescription device)
         {
             InitializeComponent();
             root.DataContext = this;
@@ -57,14 +62,14 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ShopStatus.Controls
 
 
 
-        public ShopStatus Parent
+        public Footprint Parent
         {
-            get { return (ShopStatus)GetValue(ParentProperty); }
+            get { return (Footprint)GetValue(ParentProperty); }
             set { SetValue(ParentProperty, value); }
         }
 
         public static readonly DependencyProperty ParentProperty =
-            DependencyProperty.Register("Parent", typeof(ShopStatus), typeof(DeviceItem), new PropertyMetadata(null));
+            DependencyProperty.Register("Parent", typeof(Footprint), typeof(DeviceItem), new PropertyMetadata(null));
 
 
 
@@ -119,16 +124,13 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ShopStatus.Controls
 
         #endregion
 
-
-
-
         public UserConfiguration UserConfiguration { get; set; }
-
-
 
         public delegate void Handler(DeviceItem item);
         public event Handler Moved;
         public event Handler Resized;
+        public event Handler ViewDetails;
+        public event Handler EditDevice;
         public event Handler CloseClicked;
 
         Point controlPoint;
@@ -152,9 +154,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ShopStatus.Controls
 
                 Connected = info.Connected == 1;
                 if (!string.IsNullOrEmpty(info.DeviceStatus)) DeviceStatus = info.DeviceStatus;
-                //if (!string.IsNullOrEmpty(info.ProductionStatus)) ProductionStatus = info.ProductionStatus;
-
-                //DeviceStatusTime = TimeSpan.FromSeconds(info.DeviceStatusTimer);
             }
         }
 
@@ -163,29 +162,30 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ShopStatus.Controls
             if (info != null)
             {
                 Availability = info.Availability;
-                //EmergencyStop = info.EmergencyStop;
                 ControllerMode = info.ControllerMode;
                 ExecutionMode = info.ExecutionMode;
-                //Program = info.ProgramName;
-                //Block = info.ProgramBlock;
-                //Line = info.ProgramLine;
-                //if (!string.IsNullOrEmpty(info.SystemStatus)) SystemStatus = info.SystemStatus;
-                //SystemMessage = info.SystemMessage;
             }
+        }
+
+        public void StartDrag()
+        {
+            isInDrag = true;
         }
 
         private void root_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (Parent.EditEnabled)
             {
-                var element = sender as FrameworkElement;
-
                 // Get Point relative to this Control (relative position of the cursor on the control)
                 controlPoint = e.GetPosition(this);
-
+                var element = sender as FrameworkElement;
                 element.CaptureMouse();
-                isInDrag = true;
+                StartDrag();
                 e.Handled = true;
+            }
+            else
+            {
+                ViewDetails?.Invoke(this);
             }
         }
 
@@ -251,12 +251,9 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ShopStatus.Controls
 
                 System.Drawing.Image img = null;
 
-                if (UserConfiguration != null) img = Files.DownloadImage(UserConfiguration, fileId);
-                else
-                {
-                    string path = Path.Combine(FileLocations.Storage, fileId);
-                    if (File.Exists(path)) img = System.Drawing.Image.FromFile(path);
-                }
+                string path = Path.Combine(FileLocations.Storage, fileId);
+                if (File.Exists(path)) img = System.Drawing.Image.FromFile(path);
+                else img = Files.DownloadImage(UserConfiguration, fileId);
 
                 if (img != null)
                 {
@@ -304,6 +301,43 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ShopStatus.Controls
         private void ResizeThumb_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
         {
             Resized?.Invoke(this);
+        }
+
+        private void MenuItem_ViewDetails_Click(object sender, RoutedEventArgs e)
+        {
+            ViewDetails?.Invoke(this);
+        }
+
+        private void MenuItem_Edit_Click(object sender, RoutedEventArgs e)
+        {
+            EditDevice?.Invoke(this);
+        }
+
+        private void MenuItem_Close_Click(object sender, RoutedEventArgs e)
+        {
+            CloseClicked?.Invoke(this);
+        }
+
+        public void IncreaseSize()
+        {
+            Width += 20;
+            Height += 20;
+        }
+
+        public void DecreaseSize()
+        {
+            Width -= 20;
+            Height -= 20;
+        }
+
+        private void MenuItem_IncreaseSize_Clicked(TrakHound_UI.Button bt)
+        {
+            IncreaseSize();
+        }
+
+        private void MenuItem_DecreaseSize_Clicked(TrakHound_UI.Button bt)
+        {
+            DecreaseSize();
         }
     }
 }

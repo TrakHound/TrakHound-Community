@@ -423,6 +423,7 @@ namespace TrakHound_Dashboard
         {
             LoadDevicesRequested(data);
             ShowDeviceManagerRequested(data);
+            ShowEditDeviceRequested(data);
             ShowRequested(data);
 
             if (deviceListPage != null) deviceListPage.GetSentData(data);
@@ -460,6 +461,19 @@ namespace TrakHound_Dashboard
                 if (data.Id == "SHOW_DEVICE_MANAGER")
                 {
                     DeviceManager_DeviceList_Open();
+                }
+            }
+        }
+
+        private void ShowEditDeviceRequested(EventData data)
+        {
+            if (data != null && data.Id != null)
+            {
+                if (data.Id == "SHOW_EDIT_DEVICE" && data.Data01 != null && data.Data01.GetType() == typeof(DeviceDescription))
+                {
+                    var device = (DeviceDescription)data.Data01;
+
+                    DeviceManager_EditDevice_Open(device);
                 }
             }
         }

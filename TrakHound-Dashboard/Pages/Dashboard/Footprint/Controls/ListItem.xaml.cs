@@ -17,7 +17,7 @@ using TrakHound.API.Users;
 using TrakHound.Configurations;
 using TrakHound.Logging;
 
-namespace TrakHound_Dashboard.Pages.Dashboard.ShopStatus.Controls
+namespace TrakHound_Dashboard.Pages.Dashboard.Footprint.Controls
 {
     /// <summary>
     /// Interaction logic for ListItem.xaml

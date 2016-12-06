@@ -78,12 +78,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Pages\Dashboard\ShopStatus\Controls\DeviceItem.xaml.cs" />
-    <Compile Include="Pages\Dashboard\ShopStatus\Controls\ListItem.xaml.cs" />
-    <Compile Include="Pages\Dashboard\ShopStatus\Controls\MoveThumb.cs" />
-    <Compile Include="Pages\Dashboard\ShopStatus\Controls\ResizeThumb.cs" />
-    <Compile Include="Pages\Dashboard\ShopStatus\ShopStatus.xaml.cs">
-      <DependentUpon>ShopStatus.xaml</DependentUpon>
+    <Compile Include="Pages\Dashboard\Footprint\Controls\DeviceItem.xaml.cs" />
+    <Compile Include="Pages\Dashboard\Footprint\Controls\ListItem.xaml.cs" />
+    <None Include="Pages\Dashboard\Footprint\Controls\MoveThumb.cs" />
+    <Compile Include="Pages\Dashboard\Footprint\Controls\ResizeThumb.cs" />
+    <Compile Include="Pages\Dashboard\Footprint\Footprint.xaml.cs">
+      <DependentUpon>Footprint.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\UpdateNotification.xaml.cs">
       <DependentUpon>UpdateNotification.xaml</DependentUpon>
@@ -414,15 +414,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\Dashboard\ShopStatus\Controls\DeviceItem.xaml">
+    <Page Include="Pages\Dashboard\Footprint\Controls\DeviceItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\Dashboard\ShopStatus\Controls\ListItem.xaml">
+    <Page Include="Pages\Dashboard\Footprint\Controls\ListItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\Dashboard\ShopStatus\ShopStatus.xaml">
+    <Page Include="Pages\Dashboard\Footprint\Footprint.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -901,6 +901,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Search_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Footprint_01.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

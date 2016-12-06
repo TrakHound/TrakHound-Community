@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -12,29 +17,28 @@ using TrakHound.Configurations;
 using TrakHound.Plugins.Client;
 using TrakHound.Tools.Web;
 
-namespace TrakHound_Dashboard.Pages.Dashboard.ShopStatus
+namespace TrakHound_Dashboard.Pages.Dashboard.Footprint
 {
     /// <summary>
     /// Interaction logic for ShopStatus.xaml
     /// </summary>
-    public partial class ShopStatus : UserControl, IClientPlugin
+    public partial class Footprint : UserControl, IClientPlugin
     {
 
         private object dragDropItem;
 
 
-
-        public ShopStatus()
+        public Footprint()
         {
             InitializeComponent();
             root.DataContext = this;
         }
 
-        public string Title { get { return "Shop Status"; } }
+        public string Title { get { return "Footprint"; } }
 
-        public string Description { get { return "View basic overview data for each device"; } }
+        public string Description { get { return "View devices in a layout matching your shop's footprint"; } }
 
-        public Uri Image { get { return new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Analyse_01.png"); } }
+        public Uri Image { get { return new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Footprint_01.png"); } }
 
         public string ParentPlugin { get { return "Dashboard"; } }
 
@@ -164,6 +168,9 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ShopStatus
                         else Devices.RemoveAt(i);
                     }
                     else if (device.Enabled) Devices.Add(device);
+
+                    UpdateDeviceItem(device);
+                    UpdateListItem(device);
                 }
             }
         }
@@ -181,6 +188,9 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ShopStatus
                     {
                         Devices.RemoveAt(i);
                     }
+
+                    RemoveListItem(device.UniqueId);
+                    RemoveDeviceItem(device.UniqueId);
                 }
             }
         }
@@ -193,8 +203,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ShopStatus
         }
 
         public static readonly DependencyProperty EditEnabledProperty =
-            DependencyProperty.Register("EditEnabled", typeof(bool), typeof(ShopStatus), new PropertyMetadata(false));
-
+            DependencyProperty.Register("EditEnabled", typeof(bool), typeof(Footprint), new PropertyMetadata(false));
 
 
         #region "List Items"
@@ -211,6 +220,38 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ShopStatus
             {
                 _listItems = value;
             }
+        }
+
+        private Controls.ListItem AddListItem(DeviceDescription device)
+        {
+            var listItem = new Controls.ListItem(device);
+            ListItems.Add(listItem);
+
+            return listItem;
+        }
+
+        private void UpdateListItem(DeviceDescription device)
+        {
+            int i = ListItems.ToList().FindIndex(x => x.Device.UniqueId == device.UniqueId);
+            if (i >= 0)
+            {
+                if (device.Enabled) ListItems[i].Device = device;
+                else RemoveListItem(ListItems[i]);
+            }
+        }
+
+        private void RemoveListItem(Controls.ListItem listItem)
+        {
+            ListItems.Remove(listItem);
+        }
+
+        private void RemoveListItem(string uniqueId)
+        {
+            int i = ListItems.ToList().FindIndex(x => x.Device.UniqueId == uniqueId);
+            if (i >= 0)
+            {
+                RemoveListItem(ListItems[i]);
+            } 
         }
 
         private void ShopCanvas_Drop(object sender, DragEventArgs e)
@@ -328,6 +369,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ShopStatus
             var deviceItem = new Controls.DeviceItem(this, device);
             deviceItem.Moved += DeviceItem_Updated;
             deviceItem.Resized += DeviceItem_Updated;
+            deviceItem.ViewDetails += DeviceItem_ViewDetails;
+            deviceItem.EditDevice += DeviceItem_EditDevice;
             deviceItem.CloseClicked += DeviceItem_CloseClicked;
 
             // Add to Canvas
@@ -339,11 +382,30 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ShopStatus
             return deviceItem;
         }
 
+        private void UpdateDeviceItem(DeviceDescription device)
+        {
+            int i = DeviceItems.ToList().FindIndex(x => x.Device.UniqueId == device.UniqueId);
+            if (i >= 0)
+            {
+                if (device.Enabled) DeviceItems[i].Device = device;
+                else RemoveDeviceItem(DeviceItems[i]);
+            }
+        }
+
         private void RemoveDeviceItem(Controls.DeviceItem deviceItem)
         {
             shopCanvas.Children.Remove(deviceItem);
             DeviceItems.Remove(deviceItem);
             RemoveDeviceItemLocation(deviceItem);
+        }
+
+        private void RemoveDeviceItem(string uniqueId)
+        {
+            int i = DeviceItems.ToList().FindIndex(x => x.Device.UniqueId == uniqueId);
+            if (i >= 0)
+            {
+                RemoveDeviceItem(DeviceItems[i]);
+            } 
         }
 
         private void ClearDeviceItems()
@@ -356,20 +418,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ShopStatus
 
             DeviceItems.Clear();
         }
-
-        private Controls.ListItem AddListItem(DeviceDescription device)
-        {
-            var listItem = new Controls.ListItem(device);
-            ListItems.Add(listItem);
-
-            return listItem;
-        }
-
-        private void RemoveListItem(Controls.ListItem listItem)
-        {
-            ListItems.Remove(listItem);
-        }
-
 
         private void LoadDeviceItem(DeviceDescription device)
         {
@@ -390,10 +438,26 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ShopStatus
             }
         }
 
+        private void DeviceItem_ViewDetails(Controls.DeviceItem item)
+        {
+            var data = new EventData(this);
+            data.Id = "OPEN_DEVICE_DETAILS";
+            data.Data01 = item.Device;
+            SendData?.Invoke(data);
+        }
+
+
+        private void DeviceItem_EditDevice(Controls.DeviceItem item)
+        {
+            var data = new EventData(this);
+            data.Id = "SHOW_EDIT_DEVICE";
+            data.Data01 = item.Device;
+            SendData?.Invoke(data);
+        }
+
         private void DeviceItem_CloseClicked(Controls.DeviceItem item)
         {
             AddListItem(item.Device);
-
             RemoveDeviceItem(item);
         }
 
@@ -508,6 +572,18 @@ namespace TrakHound_Dashboard.Pages.Dashboard.ShopStatus
             EditEnabled = false;
         }
 
+        private void ClearAll_Clicked(TrakHound_UI.Button bt)
+        {
+            var result = TrakHound_UI.MessageBox.Show("Are you sure you want to clear the enire layout?", "Clear Layout", TrakHound_UI.MessageBoxButtons.YesNo);
+            if (result == TrakHound_UI.MessageBoxDialogResult.Yes)
+            {
+                foreach (var deviceItem in DeviceItems)
+                {
+                    AddListItem(deviceItem.Device);
+                }
 
+                ClearDeviceItems();
+            }
+        }
     }
 }
