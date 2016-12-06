@@ -47,6 +47,8 @@ namespace TrakHound.Servers.DataProcessing
 
         public bool IsRunnning { get; set; }
 
+        private object _lock = new object();
+
         public void Start()
         {
             LoadDevices();
