@@ -637,14 +637,8 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
                 var config = Configuration.Create(probeData);
 
                 // Add Device to user (or save to disk if local)
-                if (currentUser != null)
-                {
-                    success = TrakHound.API.Devices.Update(currentUser, config);
-                }
-                else
-                {
-                    success = DeviceConfiguration.Save(config);
-                }
+                if (currentUser != null) success = TrakHound.API.Devices.Update(currentUser, config);
+                else success = DeviceConfiguration.Save(config);
 
                 if (success)
                 {
@@ -662,9 +656,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
                         // Increment counters
                         DevicesNotAdded = DeviceInfos.Count;
                         DevicesAlreadyAdded += 1;
-
                     }));
-                    //}), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
                 }
             }
 
