@@ -399,7 +399,8 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
         {
             int timeZoneOffset = (DateTime.UtcNow - DateTime.Now).Hours;
             int h = utcHour - timeZoneOffset;
-            if (h < 0) h = 24 - Math.Abs(h);
+            if (h > 23) h = h - 24;
+            else if (h < 0) h = 24 + h;
             return h;
         }
 
