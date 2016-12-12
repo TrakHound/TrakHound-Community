@@ -15,18 +15,9 @@ namespace TrakHound.Configurations.AutoGenerate
         {
             int e = 0;
 
-            //DeviceConfiguration.EditTable(table, "/Parts/Event||" + e.ToString("00"), null, "id||" + e.ToString("00") + ";");
-
-            //DeviceConfiguration.EditTable(table, "/Parts/Event||" + e.ToString("00") + "/EventName", "device_status", null);
-            //DeviceConfiguration.EditTable(table, "/Parts/Event||" + e.ToString("00") + "/EventValue", "Idle", null);
-            //DeviceConfiguration.EditTable(table, "/Parts/Event||" + e.ToString("00") + "/PreviousEventValue", "Active", null);
-            //DeviceConfiguration.EditTable(table, "/Parts/Event||" + e.ToString("00") + "/ValueType", "static_increment", null);
-            //DeviceConfiguration.EditTable(table, "/Parts/Event||" + e.ToString("00") + "/StaticIncrementValue", 1, null);
-
             DeviceConfiguration.EditTable(table, "/Parts/Event||" + e.ToString("00"), null, "id||" + e.ToString("00") + ";");
-
             DeviceConfiguration.EditTable(table, "/Parts/Event||" + e.ToString("00") + "/EventName", "cycle_execution", null);
-            DeviceConfiguration.EditTable(table, "/Parts/Event||" + e.ToString("00") + "/EventValue", "Paused", null);
+            DeviceConfiguration.EditTable(table, "/Parts/Event||" + e.ToString("00") + "/EventValue", "Stopped", null);
             DeviceConfiguration.EditTable(table, "/Parts/Event||" + e.ToString("00") + "/PreviousEventValue", "Started", null);
             DeviceConfiguration.EditTable(table, "/Parts/Event||" + e.ToString("00") + "/ValueType", "static_increment", null);
             DeviceConfiguration.EditTable(table, "/Parts/Event||" + e.ToString("00") + "/StaticIncrementValue", 1, null);
