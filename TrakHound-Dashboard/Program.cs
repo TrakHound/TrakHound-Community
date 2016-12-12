@@ -44,6 +44,11 @@ namespace TrakHound_Dashboard
 
         private static void RunApp()
         {
+#if DEBUG
+            var app = new TrakHound_Dashboard.App();
+            app.InitializeComponent();
+            app.Run();
+#else
             try
             {
                 var app = new TrakHound_Dashboard.App();
@@ -66,6 +71,7 @@ namespace TrakHound_Dashboard
                 //Shutdown Current Application
                 Application.Current.Shutdown();
             }
+#endif
         }
 
         private static bool SendBugReport(Exception ex)
