@@ -29,14 +29,26 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Footprint.Controls
             InitializeComponent();
             root.DataContext = this;
             Device = device;
-
-            if (!string.IsNullOrEmpty(device.Description.ImageUrl)) LoadDeviceImage(device.Description.ImageUrl);
         }
 
         public DeviceDescription Device
         {
             get { return (DeviceDescription)GetValue(DeviceProperty); }
-            set { SetValue(DeviceProperty, value); }
+            set
+            {
+                SetValue(DeviceProperty, value);
+
+                if (value != null)
+                {
+                    var device = value;
+
+                    if (device.Description != null)
+                    {
+                        // Load Device Image
+                        if (!string.IsNullOrEmpty(device.Description.ImageUrl)) LoadDeviceImage(device.Description.ImageUrl);
+                    }
+                }
+            }
         }
 
         public static readonly DependencyProperty DeviceProperty =

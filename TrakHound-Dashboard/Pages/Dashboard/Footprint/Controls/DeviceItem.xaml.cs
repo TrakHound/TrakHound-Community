@@ -34,8 +34,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Footprint.Controls
             Device = device;
 
             StatusBrush = Brush_Functions.GetSolidBrushFromResource(this, "Disabled");
-
-            if (!string.IsNullOrEmpty(device.Description.ImageUrl)) LoadDeviceImage(device.Description.ImageUrl);
         }
 
         #region "Dependancy Properties"
@@ -43,7 +41,21 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Footprint.Controls
         public DeviceDescription Device
         {
             get { return (DeviceDescription)GetValue(DeviceProperty); }
-            set { SetValue(DeviceProperty, value); }
+            set
+            {
+                SetValue(DeviceProperty, value);
+
+                if (value != null)
+                {
+                    var device = value;
+
+                    if (device.Description != null)
+                    {
+                        // Load Device Image
+                        if (!string.IsNullOrEmpty(device.Description.ImageUrl)) LoadDeviceImage(device.Description.ImageUrl);
+                    }
+                }
+            }
         }
 
         public static readonly DependencyProperty DeviceProperty =
