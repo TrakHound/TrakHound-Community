@@ -79,11 +79,15 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.GeneratedEvents
 
         public void SaveConfiguration(DataTable dt)
         {
-            string prefix = "/GeneratedEvents/";
+            // Clear old style tags         
+            string filter = "/GeneratedData/GeneratedEvents/*";
+            DataTable_Functions.TrakHound.DeleteRows(filter, "address", dt);
 
             // Clear all generated event rows first (so that Ids can be sequentially assigned)
-            DataTable_Functions.TrakHound.DeleteRows(prefix + "*", "address", dt);
-           
+            filter = "/GeneratedEvents/*";
+            DataTable_Functions.TrakHound.DeleteRows(filter, "address", dt);
+
+
             if (GeneratedEvents != null)
             {
                 foreach (Event e in GeneratedEvents)
@@ -494,15 +498,36 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.GeneratedEvents
 
         #region "Load"
 
+        /// <summary>
+        /// Remove Old Style 'GeneratedData' prefix
+        /// </summary>
+        private static DataTable UpdateTable(DataTable table)
+        {
+            string filter = "address LIKE '/GeneratedData/GeneratedEvents/*'";
+            var rows = table.Select(filter);
+            if (rows != null)
+            {
+                foreach (var row in rows)
+                {
+                    Console.WriteLine(row[0].ToString());
+                    string a = (string)row[0];
+                    string s = "/GeneratedData";
+                    row[0] = a.Substring(s.Length);
+                    Console.WriteLine(row[0].ToString());
+                }
+            }
+
+            return table;
+        }
+
         public static List<Event> GetGeneratedEvents(DataTable dt)
         {
             var result = new List<Event>();
 
+            var table = UpdateTable(dt);
             string address = "/GeneratedEvents/";
-            string oldAddress = "/GeneratedData/GeneratedEvents/";
-
-            string filter = "address LIKE '" + address + "*' OR address LIKE '" + oldAddress + "*'";
-            DataView dv = dt.AsDataView();
+            string filter = "address LIKE '" + address + "*'";
+            DataView dv = table.AsDataView();
             dv.RowFilter = filter;
             DataTable temp_dt = dv.ToTable();
             temp_dt.PrimaryKey = new DataColumn[] { temp_dt.Columns["address"] };
@@ -518,7 +543,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.GeneratedEvents
             foreach (Event e in result)
             {
                 string eventfilter = "address LIKE '" + address + "Event||" + e.id.ToString("00") + "/";
-                dv = dt.AsDataView();
+                dv = table.AsDataView();
                 dv.RowFilter = eventfilter + "*'";
                 temp_dt = dv.ToTable();
                 temp_dt.PrimaryKey = new DataColumn[] { temp_dt.Columns["address"] };
@@ -538,7 +563,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.GeneratedEvents
                 foreach (Value v in e.values)
                 {
                     filter = eventfilter + "Value||" + v.id.ToString("00") + "/" + "*'";
-                    dv = dt.AsDataView();
+                    dv = table.AsDataView();
                     dv.RowFilter = filter;
                     temp_dt = dv.ToTable();
                     temp_dt.PrimaryKey = new DataColumn[] { temp_dt.Columns["address"] };
