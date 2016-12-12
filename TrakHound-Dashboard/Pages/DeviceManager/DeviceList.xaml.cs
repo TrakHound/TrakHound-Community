@@ -25,6 +25,7 @@ using TrakHound.Configurations;
 using TrakHound.Configurations.AutoGenerate;
 using TrakHound.Logging;
 using TrakHound.Tools;
+using TrakHound_Dashboard;
 using TrakHound_Dashboard.Pages.DeviceManager.Controls;
 using TrakHound_UI;
 
@@ -69,6 +70,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceRemoved), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { data });
 
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceAvailability), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { data });
+            Dispatcher.BeginInvoke(new Action<EventData>(SortItems), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { data });
         }
 
         #endregion
@@ -205,41 +207,6 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
 
         #region "Device List Items"
 
-        public class DeviceListItem : DeviceDescription, INotifyPropertyChanged
-        {
-            public DeviceListItem(DeviceDescription device)
-            {
-                UniqueId = device.UniqueId;
-                Index = device.Index;
-                Enabled = device.Enabled;
-                Description = device.Description;
-                Agent = device.Agent;
-            }
-
-            private bool availability;
-            public bool Availability
-            {
-                get { return availability; }
-                set { SetField(ref availability, value, "Availability"); }
-            }
-
-
-            public event PropertyChangedEventHandler PropertyChanged;
-            protected virtual void OnPropertyChanged(string propertyName)
-            {
-                PropertyChangedEventHandler handler = PropertyChanged;
-                handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
-            protected bool SetField<T>(ref T field, T value, string propertyName)
-            {
-                if (EqualityComparer<T>.Default.Equals(field, value)) return false;
-                field = value;
-                OnPropertyChanged(propertyName);
-                return true;
-            }
-        }
-
-
         ObservableCollection<DeviceListItem> _deviceListItems;
         public ObservableCollection<DeviceListItem> DeviceListItems
         {
@@ -264,13 +231,26 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                 if (i < 0)
                 {
                     var item = new DeviceListItem(device);
+                    item.ComparisonType = comparisonType;
                     DeviceListItems.Add(item);
                     DeviceListItems.Sort();
                 }
             }
         }
 
-        private void UpdateDeviceListItem(DeviceDescription device) { }
+        private void UpdateDeviceListItem(DeviceDescription device)
+        {
+            lock (DeviceListItems)
+            {
+                int i = DeviceListItems.ToList().FindIndex(x => x.UniqueId == device.UniqueId);
+                if (i < 0)
+                {
+                    var item = DeviceListItems[i];
+                    item.Update(device);
+                    DeviceListItems.Sort();
+                }
+            }
+        }
 
         private void RemoveDeviceListItem(DeviceDescription device)
         {
@@ -281,6 +261,20 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                 {
                     DeviceListItems.RemoveAt(i);
                 }
+            }
+        }
+
+        private DeviceComparisonTypes comparisonType;
+
+        private void SortItems(EventData data)
+        {
+            if (data != null && data.Id == "SORT_DEVICES")
+            {
+                var type = (DeviceComparisonTypes)data.Data01;
+                comparisonType = type;
+
+                foreach (var item in DeviceListItems) item.ComparisonType = type;
+                DeviceListItems.Sort();
             }
         }
 
