@@ -293,7 +293,7 @@
             </Grid>
 
             <!--Device Image-->
-            <Image Source="{Binding DeviceImage}" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Image Source="{Binding DeviceImage}" Margin="10,20,10,10" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Image.Effect>
                     <DropShadowEffect Direction="225" Color="#66000000" ShadowDepth="2" BlurRadius="5" Opacity="0.3"/>
                 </Image.Effect>
@@ -306,6 +306,13 @@
                     </Style>
                 </Image.Style>
             </Image>
+
+            <!--Location-->
+            <Viewbox Grid.Column="1" MaxHeight="20" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="10,5">
+
+                <TextBlock Text="{Binding Device.Description.Location}" TextAlignment="Center" Foreground="#fff"/>
+
+            </Viewbox>
 
             <!--Device Info-->
             <Border Margin="0,0,0,10">
