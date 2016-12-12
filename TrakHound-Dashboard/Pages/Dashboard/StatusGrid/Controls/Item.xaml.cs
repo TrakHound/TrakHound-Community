@@ -16,7 +16,6 @@ using TrakHound.API;
 using TrakHound.API.Users;
 using TrakHound.Configurations;
 using TrakHound.Logging;
-using TrakHound.Tools;
 
 namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
 {
@@ -33,15 +32,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
             UserConfiguration = userConfig;
             Device = device;
             UniqueId = device.UniqueId;
-
-            if (device.Description != null)
-            {
-                // Load Device Logo
-                if (!string.IsNullOrEmpty(device.Description.LogoUrl)) LoadDeviceLogo(device.Description.LogoUrl);
-
-                // Load Device Image
-                if (!string.IsNullOrEmpty(device.Description.ImageUrl)) LoadDeviceImage(device.Description.ImageUrl);
-            }
         }
 
         public string UniqueId { get; set; }
@@ -62,7 +52,24 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
         public DeviceDescription Device
         {
             get { return (DeviceDescription)GetValue(DeviceProperty); }
-            set { SetValue(DeviceProperty, value); }
+            set
+            {
+                SetValue(DeviceProperty, value);
+
+                if (value != null)
+                {
+                    var device = value;
+
+                    if (device.Description != null)
+                    {
+                        // Load Device Logo
+                        if (!string.IsNullOrEmpty(device.Description.LogoUrl)) LoadDeviceLogo(device.Description.LogoUrl);
+
+                        // Load Device Image
+                        if (!string.IsNullOrEmpty(device.Description.ImageUrl)) LoadDeviceImage(device.Description.ImageUrl);
+                    }
+                }
+            }
         }
 
         public static readonly DependencyProperty DeviceProperty =
@@ -676,6 +683,9 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
             Clicked?.Invoke(this);          
         }
 
+        public DeviceComparisonTypes ComparisonType { get; set; }
+
+
         #region "IComparable"
 
         public int CompareTo(object obj)
@@ -700,7 +710,22 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
             if (object.ReferenceEquals(i1, null) && !object.ReferenceEquals(i2, null)) return false;
             if (object.ReferenceEquals(i1, null) && object.ReferenceEquals(i2, null)) return true;
 
-            return i1.Index == i2.Index;
+            bool uniqueId = i1.Device.UniqueId == i2.Device.UniqueId;
+
+            if (i1 != null && i2 != null && i1.Device.Description != null & i2.Device.Description != null)
+            {
+                var type = i1.ComparisonType;
+                switch (type)
+                {
+                    case DeviceComparisonTypes.CONTROLLER: return uniqueId && i1.Device.Description.Controller == i2.Device.Description.Controller;
+                    case DeviceComparisonTypes.DESCRIPTION: return uniqueId && i1.Device.Description.Description == i2.Device.Description.Description;
+                    case DeviceComparisonTypes.DEVICE_ID: return uniqueId && i1.Device.Description.DeviceId == i2.Device.Description.DeviceId;
+                    case DeviceComparisonTypes.LOCATION: return uniqueId && i1.Device.Description.Location == i2.Device.Description.Location;
+                    case DeviceComparisonTypes.MANUFACTURER: return uniqueId && i1.Device.Description.Manufacturer == i2.Device.Description.Manufacturer;
+                }
+            }
+
+            return uniqueId && i1.Index == i2.Index;
         }
 
         static bool NotEqualTo(Item i1, Item i2)
@@ -709,19 +734,106 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
             if (object.ReferenceEquals(i1, null) && !object.ReferenceEquals(i2, null)) return true;
             if (object.ReferenceEquals(i1, null) && object.ReferenceEquals(i2, null)) return false;
 
-            return i1.Index != i2.Index;
+            bool uniqueId = i1.Device.UniqueId != i2.Device.UniqueId;
+
+            if (i1 != null && i2 != null && i1.Device.Description != null & i2.Device.Description != null)
+            {
+                var type = i1.ComparisonType;
+                switch (type)
+                {
+                    case DeviceComparisonTypes.CONTROLLER: return uniqueId || i1.Device.Description.Controller != i2.Device.Description.Controller;
+                    case DeviceComparisonTypes.DESCRIPTION: return uniqueId || i1.Device.Description.Description != i2.Device.Description.Description;
+                    case DeviceComparisonTypes.DEVICE_ID: return uniqueId || i1.Device.Description.DeviceId != i2.Device.Description.DeviceId;
+                    case DeviceComparisonTypes.LOCATION: return uniqueId || i1.Device.Description.Location != i2.Device.Description.Location;
+                    case DeviceComparisonTypes.MANUFACTURER: return uniqueId || i1.Device.Description.Manufacturer != i2.Device.Description.Manufacturer;
+                }
+            }
+
+            return uniqueId && i1.Index == i2.Index;
         }
 
         static bool LessThan(Item i1, Item i2)
         {
+            if (i1 != null && i2 != null && i1.Device.Description != null && i2.Device.Description != null)
+            {
+                var type = i1.ComparisonType;
+                switch (type)
+                {
+                    case DeviceComparisonTypes.CONTROLLER: return LessThan(i1, i2, "Controller");
+                    case DeviceComparisonTypes.DESCRIPTION: return LessThan(i1, i2, "Description");
+                    case DeviceComparisonTypes.DEVICE_ID: return LessThan(i1, i2, "DeviceId");
+                    case DeviceComparisonTypes.LOCATION: return LessThan(i1, i2, "Location");
+                    case DeviceComparisonTypes.MANUFACTURER: return LessThan(i1, i2, "Manufacturer");
+                }
+            }
+
             if (i1.Index > i2.Index) return false;
             else return true;
         }
 
+        static bool LessThan(Item i1, Item i2, string propertyName)
+        {
+            var property = typeof(Data.DescriptionInfo).GetProperty(propertyName);
+            if (property != null)
+            {
+                var p1 = property.GetValue(i1.Device.Description, null);
+                var p2 = property.GetValue(i2.Device.Description, null);
+
+                string s1 = p1 != null ? p1 as string : null;
+                string s2 = p2 != null ? p2 as string : null;
+
+                // Check for null values and put them at the bottom of the list
+                if (string.IsNullOrEmpty(s1) && string.IsNullOrEmpty(s2)) return false;
+                if (string.IsNullOrEmpty(s1) && !string.IsNullOrEmpty(s2)) return false;
+                if (!string.IsNullOrEmpty(s1) && string.IsNullOrEmpty(s2)) return true;
+
+                // Evaluate property comparison
+                return string.Compare(s1, s2) <= 0;
+            }
+
+            return false;
+        }
+
         static bool GreaterThan(Item i1, Item i2)
         {
+            if (i1 != null && i2 != null && i1.Device.Description != null & i2.Device.Description != null)
+            {
+                var type = i1.ComparisonType;
+                switch (type)
+                {
+                    case DeviceComparisonTypes.CONTROLLER: return GreaterThan(i1, i2, "Controller");
+                    case DeviceComparisonTypes.DESCRIPTION: return GreaterThan(i1, i2, "Description");
+                    case DeviceComparisonTypes.DEVICE_ID: return GreaterThan(i1, i2, "DeviceId");
+                    case DeviceComparisonTypes.LOCATION: return GreaterThan(i1, i2, "Location");
+                    case DeviceComparisonTypes.MANUFACTURER: return GreaterThan(i1, i2, "Manufacturer");
+                }
+            }
+
             if (i1.Index < i2.Index) return false;
             else return true;
+        }
+
+        static bool GreaterThan(Item i1, Item i2, string propertyName)
+        {
+            var property = typeof(Data.DescriptionInfo).GetProperty(propertyName);
+            if (property != null)
+            {
+                var p1 = property.GetValue(i1.Device.Description, null);
+                var p2 = property.GetValue(i2.Device.Description, null);
+
+                string s1 = p1 != null ? p1 as string : null;
+                string s2 = p2 != null ? p2 as string : null;
+
+                // Check for null values and put them at the bottom of the list
+                if (string.IsNullOrEmpty(s1) && string.IsNullOrEmpty(s2)) return true;
+                if (string.IsNullOrEmpty(s1) && !string.IsNullOrEmpty(s2)) return true;
+                if (!string.IsNullOrEmpty(s1) && string.IsNullOrEmpty(s2)) return false;
+
+                // Evaluate property comparison
+                return string.Compare(s1, s2) >= 0;
+            }
+
+            return false;
         }
 
         #endregion
@@ -757,6 +869,88 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
         {
             return GreaterThan(i1, i2) || EqualTo(i1, i2);
         }
+
+        //#region "IComparable"
+
+        //public int CompareTo(object obj)
+        //{
+        //    if (obj == null) return 1;
+
+        //    var i = obj as Item;
+        //    if (i != null)
+        //    {
+        //        if (i > this) return -1;
+        //        else if (i < this) return 1;
+        //        else return 0;
+        //    }
+        //    else return 1;
+        //}
+
+        //#region "Private"
+
+        //static bool EqualTo(Item i1, Item i2)
+        //{
+        //    if (!object.ReferenceEquals(i1, null) && object.ReferenceEquals(i2, null)) return false;
+        //    if (object.ReferenceEquals(i1, null) && !object.ReferenceEquals(i2, null)) return false;
+        //    if (object.ReferenceEquals(i1, null) && object.ReferenceEquals(i2, null)) return true;
+
+        //    return i1.Index == i2.Index;
+        //}
+
+        //static bool NotEqualTo(Item i1, Item i2)
+        //{
+        //    if (!object.ReferenceEquals(i1, null) && object.ReferenceEquals(i2, null)) return true;
+        //    if (object.ReferenceEquals(i1, null) && !object.ReferenceEquals(i2, null)) return true;
+        //    if (object.ReferenceEquals(i1, null) && object.ReferenceEquals(i2, null)) return false;
+
+        //    return i1.Index != i2.Index;
+        //}
+
+        //static bool LessThan(Item i1, Item i2)
+        //{
+        //    if (i1.Index > i2.Index) return false;
+        //    else return true;
+        //}
+
+        //static bool GreaterThan(Item i1, Item i2)
+        //{
+        //    if (i1.Index < i2.Index) return false;
+        //    else return true;
+        //}
+
+        //#endregion
+
+        //public static bool operator ==(Item i1, Item i2)
+        //{
+        //    return EqualTo(i1, i2);
+        //}
+
+        //public static bool operator !=(Item i1, Item i2)
+        //{
+        //    return NotEqualTo(i1, i2);
+        //}
+
+
+        //public static bool operator <(Item i1, Item i2)
+        //{
+        //    return LessThan(i1, i2);
+        //}
+
+        //public static bool operator >(Item i1, Item i2)
+        //{
+        //    return GreaterThan(i1, i2);
+        //}
+
+
+        //public static bool operator <=(Item i1, Item i2)
+        //{
+        //    return LessThan(i1, i2) || EqualTo(i1, i2);
+        //}
+
+        //public static bool operator >=(Item i1, Item i2)
+        //{
+        //    return GreaterThan(i1, i2) || EqualTo(i1, i2);
+        //}
 
         #endregion
     }

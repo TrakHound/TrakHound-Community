@@ -285,5 +285,17 @@ namespace TrakHound_Dashboard.Properties {
                 this["ShopStatusItemLocations"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DashboardComparisonType {
+            get {
+                return ((string)(this["DashboardComparisonType"]));
+            }
+            set {
+                this["DashboardComparisonType"] = value;
+            }
+        }
     }
 }

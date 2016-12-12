@@ -9,6 +9,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
+             xmlns:th="clr-namespace:TrakHound_Dashboard"
              xmlns:local="clr-namespace:TrakHound_Dashboard.Pages.Dashboard"
              xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
@@ -143,6 +144,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
 
                             <!--Page Description-->
@@ -158,10 +160,28 @@
 
                             </Grid>
 
-                            <!--Slideshow Controls-->
-                            <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="10,0">
+                            <!--Sorting-->
+                            <StackPanel Grid.Column="2" Orientation="Horizontal">
 
-                                <TextBlock Text="Slideshow" Foreground="#333" FontSize="10" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <TextBlock Text="Sort" FontSize="12" Foreground="{StaticResource Text}" Margin="10,0" VerticalAlignment="Center"/>
+
+                                <ComboBox SelectedValue="{Binding ComparisonType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="ComparisonType_SelectionChanged" MinWidth="150" Height="30" VerticalAlignment="Center">
+                                    <th:DeviceComparisonTypes>CONTROLLER</th:DeviceComparisonTypes>
+                                    <th:DeviceComparisonTypes>DESCRIPTION</th:DeviceComparisonTypes>
+                                    <th:DeviceComparisonTypes>DEVICE_ID</th:DeviceComparisonTypes>
+                                    <th:DeviceComparisonTypes>INDEX</th:DeviceComparisonTypes>
+                                    <th:DeviceComparisonTypes>LOCATION</th:DeviceComparisonTypes>
+                                    <th:DeviceComparisonTypes>MANUFACTURER</th:DeviceComparisonTypes>
+                                </ComboBox>
+
+                            </StackPanel>
+
+                            <!--Slideshow Controls-->
+                            <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="10,0">
+
+                                <!--<TextBlock Text="Slideshow" Foreground="#333" FontSize="10" VerticalAlignment="Center" Margin="0,0,10,0"/>-->
+
+                                <TextBlock Text="Slideshow" FontSize="12" Foreground="{StaticResource Text}" Margin="10,0" VerticalAlignment="Center"/>
 
                                 <!--Start Button-->
                                 <ui:Button Image="/TrakHound-Dashboard;component/Resources/Start_02.png" Clicked="StartSlideshow_Clicked">
@@ -197,15 +217,15 @@
                             </StackPanel>
 
                             <!--Selected Timespan-->
-                            <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="20,0">
+                            <StackPanel Grid.Column="4" Orientation="Horizontal" Margin="20,0">
 
                                 <ui:Button Text="Reset" Style="{StaticResource Button_Transparent_Background}" VerticalAlignment="Center" Margin="0,0,20,0" ToolTip="Reset From and To times back to Default" Clicked="ResetStatusTimes_Clicked"/>
 
-                                <TextBlock Grid.Column="0" Grid.Row="0" Text="From" FontSize="12" Foreground="{StaticResource Text}" Margin="10,0" VerticalAlignment="Center"/>
-                                <ComboBox Grid.Column="0" Grid.Row="1" MinWidth="150" Height="30" ItemsSource="{Binding DateTimes}" SelectedValue="{Binding From, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" SelectionChanged="From_SelectionChanged"/>
+                                <TextBlock Text="From" FontSize="12" Foreground="{StaticResource Text}" Margin="10,0" VerticalAlignment="Center"/>
+                                <ComboBox MinWidth="150" Height="30" ItemsSource="{Binding DateTimes}" SelectedValue="{Binding From, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" SelectionChanged="From_SelectionChanged"/>
 
-                                <TextBlock Grid.Column="1" Grid.Row="0" Text="To" FontSize="12" Foreground="{StaticResource Text}" Margin="10,0" VerticalAlignment="Center"/>
-                                <ComboBox Grid.Column="1" Grid.Row="1" MinWidth="150" Height="30" ItemsSource="{Binding DateTimes}" SelectedValue="{Binding To, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" SelectionChanged="To_SelectionChanged"/>
+                                <TextBlock Text="To" FontSize="12" Foreground="{StaticResource Text}" Margin="10,0" VerticalAlignment="Center"/>
+                                <ComboBox MinWidth="150" Height="30" ItemsSource="{Binding DateTimes}" SelectedValue="{Binding To, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" SelectionChanged="To_SelectionChanged"/>
 
                             </StackPanel>
 

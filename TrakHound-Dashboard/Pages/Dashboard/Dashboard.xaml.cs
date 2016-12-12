@@ -218,6 +218,17 @@ namespace TrakHound_Dashboard.Pages.Dashboard
         public static readonly DependencyProperty DateMenuShownProperty =
             DependencyProperty.Register("DateMenuShown", typeof(bool), typeof(Dashboard), new PropertyMetadata(false));
 
+
+        public DeviceComparisonTypes ComparisonType
+        {
+            get { return (DeviceComparisonTypes)GetValue(ComparisonTypeProperty); }
+            set { SetValue(ComparisonTypeProperty, value); }
+        }
+
+
+        public static readonly DependencyProperty ComparisonTypeProperty =
+            DependencyProperty.Register("ComparisonType", typeof(DeviceComparisonTypes), typeof(Dashboard), new PropertyMetadata(DeviceComparisonTypes.INDEX));
+
         #endregion
 
 
@@ -259,6 +270,11 @@ namespace TrakHound_Dashboard.Pages.Dashboard
             }
 
             LoadDashboardTimespan();
+
+            // Load Comparison Type
+            var type = LoadComparisonType();
+            UpdateComparisonType(type);
+            ComparisonType = type;
         }
 
         private void UpdateDashboardTimespan()
@@ -392,7 +408,6 @@ namespace TrakHound_Dashboard.Pages.Dashboard
                 foreach (IClientPlugin plugin in Plugins)
                 {
                     var sendDataInfo = new SendDataInfo(plugin, data);
-
                     ThreadPool.QueueUserWorkItem(new WaitCallback(ProcessSendData), sendDataInfo);
                 }
             }
@@ -685,6 +700,39 @@ namespace TrakHound_Dashboard.Pages.Dashboard
 
         #endregion
 
+        #region "Sort"
+
+        private DeviceComparisonTypes LoadComparisonType()
+        {
+            var p = Properties.Settings.Default.DashboardComparisonType;
+            if (!string.IsNullOrEmpty(p))
+            {
+                DeviceComparisonTypes type;
+                if (Enum.TryParse<DeviceComparisonTypes>(p, out type)) return type;
+            }
+
+            return DeviceComparisonTypes.INDEX;
+        }
+
+        private void SaveComparisonType(DeviceComparisonTypes type)
+        {
+            Properties.Settings.Default.DashboardComparisonType = type.ToString();
+            Properties.Settings.Default.Save();
+        }
+
+        private void UpdateComparisonType(DeviceComparisonTypes comparisonType)
+        {
+            var data = new EventData(this);
+            data.Id = "SORT_DEVICES";
+            data.Data01 = comparisonType;
+
+            GetSentData(data);
+
+            SendData?.Invoke(data);
+        }
+
+        #endregion
+
         private void SelectPage(ListButton lb)
         {
             foreach (var olb in Pages)
@@ -803,5 +851,27 @@ namespace TrakHound_Dashboard.Pages.Dashboard
                 SendDashboardTimespan();
             }
         }
+
+        private void Sort_Clicked(TrakHound_UI.Button bt)
+        {
+            var type = DeviceComparisonTypes.DEVICE_ID;
+            UpdateComparisonType(type);
+            SaveComparisonType(type);
+        }
+
+        private void ComparisonType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var cmbx = (ComboBox)sender;
+            var val = cmbx.SelectedValue;
+            if (val != null)
+            {
+                var type = (DeviceComparisonTypes)val;
+                UpdateComparisonType(type);
+                SaveComparisonType(type);
+            }
+        }
     }
+
+
+
 }

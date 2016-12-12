@@ -209,6 +209,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeStatus.Controls
             Clicked?.Invoke(this);
         }
 
+        public DeviceComparisonTypes ComparisonType { get; set; }
+
         #region "IComparable"
 
         public int CompareTo(object obj)
@@ -233,7 +235,22 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeStatus.Controls
             if (object.ReferenceEquals(r1, null) && !object.ReferenceEquals(r2, null)) return false;
             if (object.ReferenceEquals(r1, null) && object.ReferenceEquals(r2, null)) return true;
 
-            return r1.Index == r2.Index;
+            bool uniqueId = r1.Device.UniqueId == r2.Device.UniqueId;
+
+            if (r1 != null && r2 != null && r1.Device.Description != null & r2.Device.Description != null)
+            {
+                var type = r1.ComparisonType;
+                switch (type)
+                {
+                    case DeviceComparisonTypes.CONTROLLER: return uniqueId && r1.Device.Description.Controller == r2.Device.Description.Controller;
+                    case DeviceComparisonTypes.DESCRIPTION: return uniqueId && r1.Device.Description.Description == r2.Device.Description.Description;
+                    case DeviceComparisonTypes.DEVICE_ID: return uniqueId && r1.Device.Description.DeviceId == r2.Device.Description.DeviceId;
+                    case DeviceComparisonTypes.LOCATION: return uniqueId && r1.Device.Description.Location == r2.Device.Description.Location;
+                    case DeviceComparisonTypes.MANUFACTURER: return uniqueId && r1.Device.Description.Manufacturer == r2.Device.Description.Manufacturer;
+                }
+            }
+
+            return uniqueId && r1.Index == r2.Index;
         }
 
         static bool NotEqualTo(Row r1, Row r2)
@@ -242,20 +259,137 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeStatus.Controls
             if (object.ReferenceEquals(r1, null) && !object.ReferenceEquals(r2, null)) return true;
             if (object.ReferenceEquals(r1, null) && object.ReferenceEquals(r2, null)) return false;
 
-            return r1.Index != r2.Index;
+            bool uniqueId = r1.Device.UniqueId != r2.Device.UniqueId;
+
+            if (r1 != null && r2 != null && r1.Device.Description != null & r2.Device.Description != null)
+            {
+                var type = r1.ComparisonType;
+                switch (type)
+                {
+                    case DeviceComparisonTypes.CONTROLLER: return uniqueId || r1.Device.Description.Controller != r2.Device.Description.Controller;
+                    case DeviceComparisonTypes.DESCRIPTION: return uniqueId || r1.Device.Description.Description != r2.Device.Description.Description;
+                    case DeviceComparisonTypes.DEVICE_ID: return uniqueId || r1.Device.Description.DeviceId != r2.Device.Description.DeviceId;
+                    case DeviceComparisonTypes.LOCATION: return uniqueId || r1.Device.Description.Location != r2.Device.Description.Location;
+                    case DeviceComparisonTypes.MANUFACTURER: return uniqueId || r1.Device.Description.Manufacturer != r2.Device.Description.Manufacturer;
+                }
+            }
+
+            return uniqueId && r1.Index == r2.Index;
         }
 
         static bool LessThan(Row r1, Row r2)
         {
+            if (r1 != null && r2 != null && r1.Device.Description != null && r2.Device.Description != null)
+            {
+                var type = r1.ComparisonType;
+                switch (type)
+                {
+                    case DeviceComparisonTypes.CONTROLLER: return LessThan(r1, r2, "Controller");
+                    case DeviceComparisonTypes.DESCRIPTION: return LessThan(r1, r2, "Description");
+                    case DeviceComparisonTypes.DEVICE_ID: return LessThan(r1, r2, "DeviceId");
+                    case DeviceComparisonTypes.LOCATION: return LessThan(r1, r2, "Location");
+                    case DeviceComparisonTypes.MANUFACTURER: return LessThan(r1, r2, "Manufacturer");
+                }
+            }
+
             if (r1.Index > r2.Index) return false;
             else return true;
         }
 
+        static bool LessThan(Row r1, Row r2, string propertyName)
+        {
+            var property = typeof(Data.DescriptionInfo).GetProperty(propertyName);
+            if (property != null)
+            {
+                var p1 = property.GetValue(r1.Device.Description, null);
+                var p2 = property.GetValue(r2.Device.Description, null);
+
+                string s1 = p1 != null ? p1 as string : null;
+                string s2 = p2 != null ? p2 as string : null;
+
+                // Check for null values and put them at the bottom of the list
+                if (string.IsNullOrEmpty(s1) && string.IsNullOrEmpty(s2)) return false;
+                if (string.IsNullOrEmpty(s1) && !string.IsNullOrEmpty(s2)) return false;
+                if (!string.IsNullOrEmpty(s1) && string.IsNullOrEmpty(s2)) return true;
+
+                // Evaluate property comparison
+                return string.Compare(s1, s2) <= 0;
+            }
+
+            return false;
+        }
+
         static bool GreaterThan(Row r1, Row r2)
         {
+            if (r1 != null && r2 != null && r1.Device.Description != null & r2.Device.Description != null)
+            {
+                var type = r1.ComparisonType;
+                switch (type)
+                {
+                    case DeviceComparisonTypes.CONTROLLER: return GreaterThan(r1, r2, "Controller");
+                    case DeviceComparisonTypes.DESCRIPTION: return GreaterThan(r1, r2, "Description");
+                    case DeviceComparisonTypes.DEVICE_ID: return GreaterThan(r1, r2, "DeviceId");
+                    case DeviceComparisonTypes.LOCATION: return GreaterThan(r1, r2, "Location");
+                    case DeviceComparisonTypes.MANUFACTURER: return GreaterThan(r1, r2, "Manufacturer");
+                }
+            }
+
             if (r1.Index < r2.Index) return false;
             else return true;
         }
+
+        static bool GreaterThan(Row r1, Row r2, string propertyName)
+        {
+            var property = typeof(Data.DescriptionInfo).GetProperty(propertyName);
+            if (property != null)
+            {
+                var p1 = property.GetValue(r1.Device.Description, null);
+                var p2 = property.GetValue(r2.Device.Description, null);
+
+                string s1 = p1 != null ? p1 as string : null;
+                string s2 = p2 != null ? p2 as string : null;
+
+                // Check for null values and put them at the bottom of the list
+                if (string.IsNullOrEmpty(s1) && string.IsNullOrEmpty(s2)) return true;
+                if (string.IsNullOrEmpty(s1) && !string.IsNullOrEmpty(s2)) return true;
+                if (!string.IsNullOrEmpty(s1) && string.IsNullOrEmpty(s2)) return false;
+
+                // Evaluate property comparison
+                return string.Compare(s1, s2) >= 0;
+            }
+
+            return false;
+        }
+
+        //static bool EqualTo(Row r1, Row r2)
+        //{
+        //    if (!object.ReferenceEquals(r1, null) && object.ReferenceEquals(r2, null)) return false;
+        //    if (object.ReferenceEquals(r1, null) && !object.ReferenceEquals(r2, null)) return false;
+        //    if (object.ReferenceEquals(r1, null) && object.ReferenceEquals(r2, null)) return true;
+
+        //    return r1.Index == r2.Index;
+        //}
+
+        //static bool NotEqualTo(Row r1, Row r2)
+        //{
+        //    if (!object.ReferenceEquals(r1, null) && object.ReferenceEquals(r2, null)) return true;
+        //    if (object.ReferenceEquals(r1, null) && !object.ReferenceEquals(r2, null)) return true;
+        //    if (object.ReferenceEquals(r1, null) && object.ReferenceEquals(r2, null)) return false;
+
+        //    return r1.Index != r2.Index;
+        //}
+
+        //static bool LessThan(Row r1, Row r2)
+        //{
+        //    if (r1.Index > r2.Index) return false;
+        //    else return true;
+        //}
+
+        //static bool GreaterThan(Row r1, Row r2)
+        //{
+        //    if (r1.Index < r2.Index) return false;
+        //    else return true;
+        //}
 
         #endregion
 

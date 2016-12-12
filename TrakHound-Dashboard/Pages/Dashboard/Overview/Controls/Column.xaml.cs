@@ -695,6 +695,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
             Clicked?.Invoke(this);
         }
 
+        public DeviceComparisonTypes ComparisonType { get; set; }
+
         #region "IComparable"
 
         public int CompareTo(object obj)
@@ -719,7 +721,22 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
             if (object.ReferenceEquals(c1, null) && !object.ReferenceEquals(c2, null)) return false;
             if (object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return true;
 
-            return c1.Index == c2.Index;
+            bool uniqueId = c1.Device.UniqueId == c2.Device.UniqueId;
+
+            if (c1 != null && c2 != null && c1.Device.Description != null & c2.Device.Description != null)
+            {
+                var type = c1.ComparisonType;
+                switch (type)
+                {
+                    case DeviceComparisonTypes.CONTROLLER: return uniqueId && c1.Device.Description.Controller == c2.Device.Description.Controller;
+                    case DeviceComparisonTypes.DESCRIPTION: return uniqueId && c1.Device.Description.Description == c2.Device.Description.Description;
+                    case DeviceComparisonTypes.DEVICE_ID: return uniqueId && c1.Device.Description.DeviceId == c2.Device.Description.DeviceId;
+                    case DeviceComparisonTypes.LOCATION: return uniqueId && c1.Device.Description.Location == c2.Device.Description.Location;
+                    case DeviceComparisonTypes.MANUFACTURER: return uniqueId && c1.Device.Description.Manufacturer == c2.Device.Description.Manufacturer;
+                }
+            }
+
+            return uniqueId && c1.Index == c2.Index;
         }
 
         static bool NotEqualTo(Column c1, Column c2)
@@ -728,20 +745,137 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
             if (object.ReferenceEquals(c1, null) && !object.ReferenceEquals(c2, null)) return true;
             if (object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return false;
 
-            return c1.Index != c2.Index;
+            bool uniqueId = c1.Device.UniqueId != c2.Device.UniqueId;
+
+            if (c1 != null && c2 != null && c1.Device.Description != null & c2.Device.Description != null)
+            {
+                var type = c1.ComparisonType;
+                switch (type)
+                {
+                    case DeviceComparisonTypes.CONTROLLER: return uniqueId || c1.Device.Description.Controller != c2.Device.Description.Controller;
+                    case DeviceComparisonTypes.DESCRIPTION: return uniqueId || c1.Device.Description.Description != c2.Device.Description.Description;
+                    case DeviceComparisonTypes.DEVICE_ID: return uniqueId || c1.Device.Description.DeviceId != c2.Device.Description.DeviceId;
+                    case DeviceComparisonTypes.LOCATION: return uniqueId || c1.Device.Description.Location != c2.Device.Description.Location;
+                    case DeviceComparisonTypes.MANUFACTURER: return uniqueId || c1.Device.Description.Manufacturer != c2.Device.Description.Manufacturer;
+                }
+            }
+
+            return uniqueId && c1.Index == c2.Index;
         }
 
         static bool LessThan(Column c1, Column c2)
         {
+            if (c1 != null && c2 != null && c1.Device.Description != null && c2.Device.Description != null)
+            {
+                var type = c1.ComparisonType;
+                switch (type)
+                {
+                    case DeviceComparisonTypes.CONTROLLER: return LessThan(c1, c2, "Controller");
+                    case DeviceComparisonTypes.DESCRIPTION: return LessThan(c1, c2, "Description");
+                    case DeviceComparisonTypes.DEVICE_ID: return LessThan(c1, c2, "DeviceId");
+                    case DeviceComparisonTypes.LOCATION: return LessThan(c1, c2, "Location");
+                    case DeviceComparisonTypes.MANUFACTURER: return LessThan(c1, c2, "Manufacturer");
+                }
+            }
+
             if (c1.Index > c2.Index) return false;
             else return true;
         }
 
+        static bool LessThan(Column c1, Column c2, string propertyName)
+        {
+            var property = typeof(Data.DescriptionInfo).GetProperty(propertyName);
+            if (property != null)
+            {
+                var p1 = property.GetValue(c1.Device.Description, null);
+                var p2 = property.GetValue(c2.Device.Description, null);
+
+                string s1 = p1 != null ? p1 as string : null;
+                string s2 = p2 != null ? p2 as string : null;
+
+                // Check for null values and put them at the bottom of the list
+                if (string.IsNullOrEmpty(s1) && string.IsNullOrEmpty(s2)) return false;
+                if (string.IsNullOrEmpty(s1) && !string.IsNullOrEmpty(s2)) return false;
+                if (!string.IsNullOrEmpty(s1) && string.IsNullOrEmpty(s2)) return true;
+
+                // Evaluate property comparison
+                return string.Compare(s1, s2) <= 0;
+            }
+
+            return false;
+        }
+
         static bool GreaterThan(Column c1, Column c2)
         {
+            if (c1 != null && c2 != null && c1.Device.Description != null & c2.Device.Description != null)
+            {
+                var type = c1.ComparisonType;
+                switch (type)
+                {
+                    case DeviceComparisonTypes.CONTROLLER: return GreaterThan(c1, c2, "Controller");
+                    case DeviceComparisonTypes.DESCRIPTION: return GreaterThan(c1, c2, "Description");
+                    case DeviceComparisonTypes.DEVICE_ID: return GreaterThan(c1, c2, "DeviceId");
+                    case DeviceComparisonTypes.LOCATION: return GreaterThan(c1, c2, "Location");
+                    case DeviceComparisonTypes.MANUFACTURER: return GreaterThan(c1, c2, "Manufacturer");
+                }
+            }
+
             if (c1.Index < c2.Index) return false;
             else return true;
         }
+
+        static bool GreaterThan(Column c1, Column c2, string propertyName)
+        {
+            var property = typeof(Data.DescriptionInfo).GetProperty(propertyName);
+            if (property != null)
+            {
+                var p1 = property.GetValue(c1.Device.Description, null);
+                var p2 = property.GetValue(c2.Device.Description, null);
+
+                string s1 = p1 != null ? p1 as string : null;
+                string s2 = p2 != null ? p2 as string : null;
+
+                // Check for null values and put them at the bottom of the list
+                if (string.IsNullOrEmpty(s1) && string.IsNullOrEmpty(s2)) return true;
+                if (string.IsNullOrEmpty(s1) && !string.IsNullOrEmpty(s2)) return true;
+                if (!string.IsNullOrEmpty(s1) && string.IsNullOrEmpty(s2)) return false;
+
+                // Evaluate property comparison
+                return string.Compare(s1, s2) >= 0;
+            }
+
+            return false;
+        }
+
+        //static bool EqualTo(Column c1, Column c2)
+        //{
+        //    if (!object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return false;
+        //    if (object.ReferenceEquals(c1, null) && !object.ReferenceEquals(c2, null)) return false;
+        //    if (object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return true;
+
+        //    return c1.Index == c2.Index;
+        //}
+
+        //static bool NotEqualTo(Column c1, Column c2)
+        //{
+        //    if (!object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return true;
+        //    if (object.ReferenceEquals(c1, null) && !object.ReferenceEquals(c2, null)) return true;
+        //    if (object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return false;
+
+        //    return c1.Index != c2.Index;
+        //}
+
+        //static bool LessThan(Column c1, Column c2)
+        //{
+        //    if (c1.Index > c2.Index) return false;
+        //    else return true;
+        //}
+
+        //static bool GreaterThan(Column c1, Column c2)
+        //{
+        //    if (c1.Index < c2.Index) return false;
+        //    else return true;
+        //}
 
         #endregion
 

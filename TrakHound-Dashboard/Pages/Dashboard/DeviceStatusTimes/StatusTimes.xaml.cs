@@ -143,6 +143,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.DeviceStatusTimes
                     }
                 }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
             }
+
+            Dispatcher.BeginInvoke(new Action<EventData>(SortRows), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { data });
         }
 
         void UpdateDevicesLoading(EventData data)
@@ -156,6 +158,19 @@ namespace TrakHound_Dashboard.Pages.Dashboard.DeviceStatusTimes
             }
         }
 
+        private DeviceComparisonTypes comparisonType;
+
+        private void SortRows(EventData data)
+        {
+            if (data != null && data.Id == "SORT_DEVICES")
+            {
+                var type = (DeviceComparisonTypes)data.Data01;
+                comparisonType = type;
+
+                foreach (var row in Rows) row.ComparisonType = type;
+                Rows.Sort();
+            }
+        }
 
         private void ClearRows()
         {
@@ -224,6 +239,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.DeviceStatusTimes
             if (device != null && device.Enabled && !Rows.ToList().Exists(o => o.Device.UniqueId == device.UniqueId))
             {
                 var row = new Controls.Row(device);
+                row.ComparisonType = comparisonType;
                 row.Clicked += Row_Clicked;
                 Rows.Add(row);
                 Rows.Sort();

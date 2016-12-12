@@ -78,6 +78,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DeviceComparisonTypes.cs" />
     <Compile Include="Pages\Dashboard\Footprint\Controls\DeviceItem.xaml.cs" />
     <Compile Include="Pages\Dashboard\Footprint\Controls\ListItem.xaml.cs" />
     <None Include="Pages\Dashboard\Footprint\Controls\MoveThumb.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="Pages\Dashboard\Footprint\Footprint.xaml.cs">
       <DependentUpon>Footprint.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\DeviceManager\DeviceListItem.cs" />
     <Compile Include="Windows\UpdateNotification.xaml.cs">
       <DependentUpon>UpdateNotification.xaml</DependentUpon>
     </Compile>

@@ -110,6 +110,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceUpdated), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { data });
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceRemoved), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { data });
 
+            Dispatcher.BeginInvoke(new Action<EventData>(SortColumns), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { data });
+
             if (data != null && data.Id == "USER_LOGIN")
             {
                 if (data.Data01.GetType() == typeof(UserConfiguration))
@@ -206,6 +208,20 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
             }
         }
 
+        private DeviceComparisonTypes comparisonType;
+
+        private void SortColumns(EventData data)
+        {
+            if (data != null && data.Id == "SORT_DEVICES")
+            {
+                var type = (DeviceComparisonTypes)data.Data01;
+                comparisonType = type;
+
+                foreach (var column in Columns) column.ComparisonType = type;
+                Columns.Sort();
+            }
+        }
+
         private void ClearColumns()
         {
             var columns = Columns.ToList();
@@ -272,6 +288,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
             if (device != null && device.Enabled && !Columns.ToList().Exists(o => o.Device.UniqueId == device.UniqueId))
             {
                 var column = new Controls.Column(device, userConfiguration);
+                column.ComparisonType = comparisonType;
                 column.Clicked += ColumnClicked;
                 Columns.Add(column);
                 Columns.Sort();

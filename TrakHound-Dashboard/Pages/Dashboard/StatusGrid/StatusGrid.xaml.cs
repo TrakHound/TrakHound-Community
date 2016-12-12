@@ -91,6 +91,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceUpdated), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { data });
             Dispatcher.BeginInvoke(new Action<EventData>(UpdateDeviceRemoved), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { data });
 
+            Dispatcher.BeginInvoke(new Action<EventData>(SortItems), System.Windows.Threading.DispatcherPriority.DataBind, new object[] { data });
+
             if (data != null && data.Id == "USER_LOGIN")
             {
                 if (data.Data01.GetType() == typeof(UserConfiguration))
@@ -166,6 +168,20 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
             }
         }
 
+        private DeviceComparisonTypes comparisonType;
+
+        private void SortItems(EventData data)
+        {
+            if (data != null && data.Id == "SORT_DEVICES")
+            {
+                var type = (DeviceComparisonTypes)data.Data01;
+                comparisonType = type;
+
+                foreach (var item in Items) item.ComparisonType = type;
+                Items.Sort();
+            }
+        }
+
         private void ClearItems()
         {
             var items = Items.ToList();
@@ -233,9 +249,10 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid
         {
             if (device != null && device.Enabled && !Items.ToList().Exists(o => o.Device.UniqueId == device.UniqueId))
             {
-                var column = new Controls.Item(device, userConfiguration);
-                column.Clicked += Item_Clicked;
-                Items.Add(column);
+                var item = new Controls.Item(device, userConfiguration);
+                item.ComparisonType = comparisonType;
+                item.Clicked += Item_Clicked;
+                Items.Add(item);
                 Items.Sort();
             }
         }
