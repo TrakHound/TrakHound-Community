@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("TrakHound.NET")]
 [assembly: AssemblyDescription(".NET library containing functions for the TrakHound MDC software package")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Feenux LLC")]
+[assembly: AssemblyCompany("TrakHound Inc.")]
 [assembly: AssemblyProduct("TrakHound.NET")]
-[assembly: AssemblyCopyright("©  2016 Feenux LLC, All Rights Reserved")]
+[assembly: AssemblyCopyright("Copyright © 2017 TrakHound Inc., All Rights Reserved")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

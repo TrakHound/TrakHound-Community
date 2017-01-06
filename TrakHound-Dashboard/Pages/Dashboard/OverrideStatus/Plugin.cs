@@ -28,7 +28,7 @@ namespace TrakHound_Overview.Pages.Dashboard.OverrideStatus
 
         public string Author { get { return "TrakHound"; } }
 
-        public string AuthorText { get { return "©2016 Feenux LLC. All Rights Reserved"; } }
+        public string AuthorText { get { return "©2017 TrakHound Inc.. All Rights Reserved"; } }
 
         public ImageSource AuthorImage { get { return null; } }
 

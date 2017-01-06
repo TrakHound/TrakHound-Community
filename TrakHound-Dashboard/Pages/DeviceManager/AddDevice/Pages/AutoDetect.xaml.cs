@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2017 TrakHound Inc., All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
@@ -475,8 +475,6 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
                         info.Port = p;
 
                         TestPort(info);
-
-                        //ThreadPool.QueueUserWorkItem(new WaitCallback(TestPort), info);
                     }
                     else break;
                 }

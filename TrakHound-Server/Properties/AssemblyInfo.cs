@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("TrakHound Server")]
 [assembly: AssemblyDescription("Server Application for the TrakHound Software Package")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Feenux LLC")]
+[assembly: AssemblyCompany("TrakHound Inc.")]
 [assembly: AssemblyProduct("TrakHound Server")]
-[assembly: AssemblyCopyright("Copyright © 2016 Feenux LLC, All Rights Reserved")]
+[assembly: AssemblyCopyright("Copyright © 2017 TrakHound Inc., All Rights Reserved")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("TrakHound Dashboard")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Feenux LLC")]
+[assembly: AssemblyCompany("TrakHound Inc.")]
 [assembly: AssemblyProduct("TrakHound Dashboard")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCopyright("Copyright © 2017 TrakHound Inc., All Rights Reserved")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
