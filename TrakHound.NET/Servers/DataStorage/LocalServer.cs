@@ -26,9 +26,7 @@ namespace TrakHound.Servers.DataStorage
         public const int PORT = 8472; // ASCII Dec for 'T' and 'H'
 
         private HttpListener listener;
-
         private System.Timers.Timer backupTimer;
-
         private ManualResetEvent stop;
 
         private const int BACKUP_INTERVAL = 300000; // 5 Minutes
@@ -64,7 +62,8 @@ namespace TrakHound.Servers.DataStorage
             try
             {
                 listener = new HttpListener();
-                listener.Prefixes.Add("http://localhost:" + PORT + "/api/");
+                listener.Prefixes.Add("http://+:" + PORT + "/api/");
+                //listener.Prefixes.Add("http://localhost:" + PORT + "/api/");
                 listener.Start();
 
                 ThreadPool.QueueUserWorkItem((x) =>
