@@ -56,9 +56,15 @@ namespace TrakHound_Server.Plugins.MTConnectData
 
             do
             {
-                RunRequests(config);
-                lock (_lock) first = false;
-
+                try
+                {
+                    RunRequests(config);
+                    lock (_lock) first = false;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
             } while (!stop.WaitOne(ac.Heartbeat, true));
 
             Console.WriteLine("Requests Worker Stopped");
