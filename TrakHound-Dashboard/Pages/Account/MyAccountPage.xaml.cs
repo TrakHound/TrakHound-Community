@@ -1,4 +1,10 @@
-﻿using System;
+﻿// Copyright (c) 2017 TrakHound Inc., All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE', which is part of this source code package.
+
+using NLog;
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -8,10 +14,8 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-
 using TrakHound;
 using TrakHound.API.Users;
-using TrakHound.Logging;
 using TrakHound.Tools;
 using TrakHound.Tools.Web;
 using TrakHound_UI;
@@ -24,7 +28,9 @@ namespace TrakHound_Dashboard.Pages.Account
     /// </summary>
     public partial class Page : UserControl, IPage
     {
-        const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.ContextIdle;
+        private const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.ContextIdle;
+
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public Page()
         {
@@ -829,7 +835,7 @@ namespace TrakHound_Dashboard.Pages.Account
                         }
                         catch (Exception ex)
                         {
-                            Logger.Log("Error Loading Profile Image : " + ex.Message);
+                            logger.Error(ex);
                         }
                     }
                 }
@@ -889,7 +895,7 @@ namespace TrakHound_Dashboard.Pages.Account
                 }
                 catch (Exception ex)
                 {
-                    Logger.Log("Error Loading Profile Image : " + ex.Message);
+                    logger.Error(ex);
                 }
 
                 if (ProfileImage != null) ProfileImageSet = true;

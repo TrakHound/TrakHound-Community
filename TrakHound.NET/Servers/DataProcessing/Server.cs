@@ -10,7 +10,6 @@ using System.Reflection;
 
 using TrakHound.API;
 using TrakHound.API.Users;
-using TrakHound.Logging;
 using TrakHound.Plugins;
 using TrakHound.Plugins.Server;
 
@@ -20,9 +19,6 @@ namespace TrakHound.Servers.DataProcessing
     {
         public ProcessingServer()
         {
-            // Set Logger Application identifier name
-            Logger.AppicationName = "TrakHound-Server";
-
             // Insure all standard TrakHound directories are created
             FileLocations.CreateAllDirectories();
 
@@ -134,7 +130,7 @@ namespace TrakHound.Servers.DataProcessing
                     LoadServerPlugins(directory);
                 }
             }
-            else Logger.Log("Plugins Directory Doesn't Exist (" + path + ")", LogLineType.Warning);
+            else logger.Warn("Plugins Directory Doesn't Exist (" + path + ")");
         }
 
         private void LoadServerPlugins(Assembly assembly)
@@ -151,9 +147,9 @@ namespace TrakHound.Servers.DataProcessing
 
         private static void PrintServerPluginInfo(List<IServerPlugin> plugins)
         {
-            Logger.Log("Server Plugins --------------------------", LogLineType.Console);
-            Logger.Log(plugins.Count.ToString() + " Plugins Found", LogLineType.Console);
-            Logger.Log("------------------------------", LogLineType.Console);
+            logger.Info("Server Plugins --------------------------");
+            logger.Info(plugins.Count.ToString() + " Plugins Found");
+            logger.Info("------------------------------");
             foreach (var plugin in plugins)
             {
                 string name = plugin.Name;
@@ -167,9 +163,9 @@ namespace TrakHound.Servers.DataProcessing
                     version = "v" + v.Major.ToString() + "." + v.Minor.ToString() + "." + v.Build.ToString() + "." + v.Revision.ToString();
                 }
 
-                Logger.Log(plugin.Name + " : " + version, LogLineType.Notification);
+                logger.Info(plugin.Name + " : " + version);
             }
-            Logger.Log("----------------------------------------", LogLineType.Console);
+            logger.Info("----------------------------------------");
         }
 
         #endregion

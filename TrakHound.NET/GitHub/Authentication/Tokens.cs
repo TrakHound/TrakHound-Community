@@ -4,16 +4,13 @@
 // file 'LICENSE', which is part of this source code package.
 
 using Newtonsoft.Json;
+using NLog;
+using System;
 using System.IO;
-using System.Text;
-
-using TrakHound.Logging;
-using TrakHound.Tools;
 using TrakHound.Tools.Web;
 
 namespace TrakHound.GitHub
 {
-
     public enum TokenReturnType
     {
         Created,
@@ -22,6 +19,8 @@ namespace TrakHound.GitHub
 
     public class OAuth2Token
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public TokenReturnType ReturnType { get; set; }
 
         public string Id { get; set; }
@@ -39,9 +38,9 @@ namespace TrakHound.GitHub
             {
                 result = (OAuth2Token)serializer.Deserialize(new JsonTextReader(new StringReader(s)), typeof(OAuth2Token));
             }
-            catch
+            catch (Exception ex)
             {
-                Logger.Log("Error During GitHub OAuth2 Token JSON Parse : " + s, LogLineType.Error);
+                logger.Error(ex);
             }
 
             return result;

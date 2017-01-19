@@ -4,16 +4,13 @@
 // file 'LICENSE', which is part of this source code package.
 
 using System.Threading;
-
 using TrakHound.API.Users;
-using TrakHound.Logging;
 using TrakHound.Tools;
 
 namespace TrakHound.Servers.DataProcessing
 {
     public partial class ProcessingServer
     {
-
         UserConfiguration _currentuser;
         public UserConfiguration CurrentUser
         {
@@ -52,7 +49,7 @@ namespace TrakHound.Servers.DataProcessing
                     userConfig = UserManagement.TokenLogin(loginData.Token);
                     if (userConfig == null)
                     {
-                        Logger.Log(String_Functions.UppercaseFirst(loginData.Username) + " Failed to Login... Retrying in 5 seconds");
+                        logger.Warn(String_Functions.UppercaseFirst(loginData.Username) + " Failed to Login... Retrying in 5 seconds");
 
                         Thread.Sleep(5000);
 
@@ -60,7 +57,7 @@ namespace TrakHound.Servers.DataProcessing
                     }
                 }
 
-                if (userConfig != null) Logger.Log(String_Functions.UppercaseFirst(userConfig.Username) + " Logged in Successfully");
+                if (userConfig != null) logger.Info(String_Functions.UppercaseFirst(userConfig.Username) + " Logged in Successfully");
             }
 
             CurrentUser = userConfig;
@@ -70,7 +67,7 @@ namespace TrakHound.Servers.DataProcessing
         {
             CurrentUser = userConfig;
 
-            if (userConfig != null) Logger.Log(String_Functions.UppercaseFirst(userConfig.Username) + " Logged in Successfully");
+            if (userConfig != null) logger.Info(String_Functions.UppercaseFirst(userConfig.Username) + " Logged in Successfully");
         }
 
         public void Logout()

@@ -49,6 +49,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\MTConnect.NET.dll</HintPath>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.4.1\lib\net40\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -81,6 +85,7 @@
     <Compile Include="DeviceComparisonTypes.cs" />
     <Compile Include="Pages\Dashboard\Footprint\Controls\DeviceItem.xaml.cs" />
     <Compile Include="Pages\Dashboard\Footprint\Controls\ListItem.xaml.cs" />
+    <None Include="packages.config" />
     <None Include="Pages\Dashboard\Footprint\Controls\MoveThumb.cs" />
     <Compile Include="Pages\Dashboard\Footprint\Controls\ResizeThumb.cs" />
     <Compile Include="Pages\Dashboard\Footprint\Footprint.xaml.cs">
@@ -324,9 +329,9 @@
     <Compile Include="Pages\Options\General\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Options\Logger\Page.xaml.cs">
+    <None Include="Pages\Options\Logger\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
-    </Compile>
+    </None>
     <None Include="Pages\Options\Updates\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </None>
@@ -616,10 +621,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\Options\Logger\Page.xaml">
+    <None Include="Pages\Options\Logger\Page.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
+    </None>
     <None Include="Pages\Options\Updates\Page.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

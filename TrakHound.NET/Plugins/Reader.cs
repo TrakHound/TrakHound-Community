@@ -3,13 +3,12 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Reflection;
-
-using TrakHound.Logging;
 
 namespace TrakHound.Plugins
 {
@@ -18,9 +17,10 @@ namespace TrakHound.Plugins
         IEnumerable<Lazy<object>> Plugins { get; set; }
     }
 
-
     public static class Reader
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public static List<T> FindPlugins<T>(string path, ReaderContainer readerContainer, string extension = null)
         {
             var result = new List<T>();
@@ -59,8 +59,8 @@ namespace TrakHound.Plugins
 
                         container = new CompositionContainer(directoryCatalog);
                     }
-                    catch (UnauthorizedAccessException ex) { Logger.Log("UnauthorizedAccessException : " + ex.Message); }
-                    catch (Exception ex) { Logger.Log("Exception : " + ex.Message); }
+                    catch (UnauthorizedAccessException ex) { logger.Error(ex); }
+                    catch (Exception ex) { logger.Error(ex); }
                 }
 
                 if (container != null)
@@ -70,18 +70,13 @@ namespace TrakHound.Plugins
                     {
                         container.SatisfyImportsOnce(readerContainer);
                     }
-                    catch (ReflectionTypeLoadException rtex)
+                    catch (ReflectionTypeLoadException ex)
                     {
-                        Logger.Log("ReflectionTypeLoadException : " + rtex.Message);
-
-                        foreach (var lex in rtex.LoaderExceptions)
-                        {
-                            Logger.Log("LoaderException : " + lex.Message);
-                        }
+                        logger.Error(ex);
                     }
                     catch (Exception ex)
                     {
-                        Logger.Log("Exception : " + ex.Message);
+                        logger.Error(ex);
                     }
 
                     if (readerContainer.Plugins != null)
@@ -95,7 +90,7 @@ namespace TrakHound.Plugins
                             }
                             catch (Exception ex)
                             {
-                                Logger.Log("Plugin Initialization Error :: " + ex.Message);
+                                logger.Error(ex);
                             }
                         }
                     }
@@ -126,18 +121,13 @@ namespace TrakHound.Plugins
                     {
                         container.SatisfyImportsOnce(readerContainer);
                     }
-                    catch (ReflectionTypeLoadException rtex)
+                    catch (ReflectionTypeLoadException ex)
                     {
-                        Logger.Log("ReflectionTypeLoadException : " + rtex.Message);
-
-                        foreach (var lex in rtex.LoaderExceptions)
-                        {
-                            Logger.Log("LoaderException : " + lex.Message);
-                        }
+                        logger.Error(ex);
                     }
                     catch (Exception ex)
                     {
-                        Logger.Log("Exception : " + ex.Message);
+                        logger.Error(ex);
                     }
 
                     if (readerContainer.Plugins != null)
@@ -151,7 +141,7 @@ namespace TrakHound.Plugins
                             }
                             catch (Exception ex)
                             {
-                                Logger.Log("Plugin Initialization Error :: " + ex.Message);
+                                logger.Error(ex);
                             }
                         }
                     }
@@ -205,18 +195,13 @@ namespace TrakHound.Plugins
                     {
                         container.SatisfyImportsOnce(readerContainer);
                     }
-                    catch (System.Reflection.ReflectionTypeLoadException rtex)
+                    catch (ReflectionTypeLoadException ex)
                     {
-                        Logger.Log("ReflectionTypeLoadException : " + rtex.Message);
-
-                        foreach (var lex in rtex.LoaderExceptions)
-                        {
-                            Logger.Log("LoaderException : " + lex.Message);
-                        }
+                        logger.Error(ex);
                     }
                     catch (Exception ex)
                     {
-                        Logger.Log("Exception : " + ex.Message);
+                        logger.Error(ex);
                     }
 
                     if (readerContainer.Plugins != null)
@@ -242,7 +227,7 @@ namespace TrakHound.Plugins
             }
             catch (Exception ex)
             {
-                Logger.Log(path + " :: " + ex.Message);
+                logger.Error(ex);
             }
 
             return result;

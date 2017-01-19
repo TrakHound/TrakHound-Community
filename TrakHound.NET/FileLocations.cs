@@ -3,16 +3,16 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
+using NLog;
 using System;
 using System.IO;
-
-using TrakHound.Logging;
 using TrakHound.Tools;
 
 namespace TrakHound
 {
     public static class FileLocations
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public static string TrakHound = Environment.GetEnvironmentVariable("SystemDrive") + Path.DirectorySeparatorChar.ToString() + "TrakHound";
 
@@ -123,8 +123,8 @@ namespace TrakHound
                                 {
                                     File.Delete(filePath);
                                 }
-                                catch (IOException ex) { Logger.Log("IO Exception :: " + ex.Message); }
-                                catch (Exception ex) { Logger.Log("Exception :: " + ex.Message); }
+                                catch (IOException ex) { logger.Error(ex); }
+                                catch (Exception ex) { logger.Error(ex); }
                             }
                         }
                     }

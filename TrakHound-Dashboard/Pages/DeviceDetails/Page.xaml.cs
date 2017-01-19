@@ -20,7 +20,7 @@ using TrakHound;
 using TrakHound.API;
 using TrakHound.API.Users;
 using TrakHound.Configurations;
-using TrakHound.Logging;
+using NLog;
 using TrakHound.Tools;
 
 namespace TrakHound_Dashboard.Pages.DeviceDetails
@@ -33,6 +33,7 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
         private const double OEE_HIGH = 0.70;
         private const double OEE_LOW = 0.50;
 
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public string Title { get { return "Device Details Page"; } }
 
@@ -1351,7 +1352,7 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
                             }
                         }
                     }
-                    catch (Exception ex) { Logger.Log("Error Loading Device Image :: " + ex.Message, LogLineType.Error); }
+                    catch (Exception ex) { logger.Error(ex); }
                 }
             }
 
@@ -1410,7 +1411,7 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
                             }
                         }
                     }
-                    catch (Exception ex) { Logger.Log("Error Loading Device Image :: " + ex.Message, LogLineType.Error); }
+                    catch (Exception ex) { logger.Error(ex); }
                 }
             }
 

@@ -3,14 +3,13 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Threading;
-
 using TrakHound.API;
 using TrakHound.API.Users;
-using TrakHound.Logging;
 using TrakHound.Tools.Web;
 
 namespace TrakHound_Server.Plugins.TrakHoundCloud
@@ -18,6 +17,8 @@ namespace TrakHound_Server.Plugins.TrakHoundCloud
     public class UpdateQueue
     {
         private static List<Data.DeviceInfo> queuedInfos = new List<Data.DeviceInfo>();
+
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private ManualResetEvent stop;
 
@@ -89,7 +90,7 @@ namespace TrakHound_Server.Plugins.TrakHoundCloud
 
             } while (!stop.WaitOne(ApiConfiguration.UpdateInterval, true));
 
-            Logger.Log("CloudData Queue Stopped");
+            logger.Warn("CloudData Queue Stopped");
         }
         
         public void Stop()

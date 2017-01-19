@@ -3,12 +3,11 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Threading;
-
 using TrakHound.Configurations;
-using TrakHound.Logging;
 using TrakHound.Plugins.Server;
 
 namespace TrakHound.Servers.DataProcessing
@@ -18,6 +17,7 @@ namespace TrakHound.Servers.DataProcessing
     /// </summary>
     public partial class DeviceServer
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public DeviceConfiguration Configuration { get; set; }
 
@@ -91,7 +91,7 @@ namespace TrakHound.Servers.DataProcessing
                     }
                     catch (Exception ex)
                     {
-                        Logger.Log("Initialize :: Exception :: " + plugin.Name + " :: " + ex.Message, LogLineType.Error);
+                        logger.Error(ex);
                     }
                 }
             }
@@ -140,7 +140,7 @@ namespace TrakHound.Servers.DataProcessing
                     }
                     catch (Exception ex)
                     {
-                        Logger.Log("Plugin Send Data :: Exception : " + plugin.Name + " :: " + ex.Message, LogLineType.Error);
+                        logger.Error(ex);
                     }
                 }
             }
@@ -161,7 +161,7 @@ namespace TrakHound.Servers.DataProcessing
                 }
                 catch (Exception ex)
                 {
-                    Logger.Log("Plugin Send Data :: Exception : " + sendDataInfo.Plugin.Name + " :: " + ex.Message, LogLineType.Error);
+                    logger.Error(ex);
                 }
             }  
         }
@@ -179,7 +179,7 @@ namespace TrakHound.Servers.DataProcessing
                     }
                     catch (Exception ex)
                     {
-                        Logger.Log("Starting :: Exception :: " + plugin.Name + " :: " + ex.Message, LogLineType.Error);
+                        logger.Error(ex);
                     }
                 }
             }
@@ -197,7 +197,7 @@ namespace TrakHound.Servers.DataProcessing
                     }
                     catch (Exception ex)
                     {
-                        Logger.Log("Plugin :: Exception :: " + plugin.Name + " :: " + ex.Message);
+                        logger.Error(ex);
                     }
                 }
             }

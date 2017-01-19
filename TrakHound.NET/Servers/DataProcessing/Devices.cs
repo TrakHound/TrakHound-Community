@@ -3,15 +3,14 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-
 using TrakHound.API.Users;
 using TrakHound.Configurations;
-using TrakHound.Logging;
 using TrakHound.Plugins.Server;
 using TrakHound.Tools;
 
@@ -19,6 +18,8 @@ namespace TrakHound.Servers.DataProcessing
 {
     public partial class ProcessingServer
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         private List<DeviceServer> devices = new List<DeviceServer>();
 
         private void LoadDevices()
@@ -60,12 +61,12 @@ namespace TrakHound.Servers.DataProcessing
 
         private void Server_Started(DeviceServer server)
         {
-            Logger.Log(server.Configuration.UniqueId + " :: Device Started");
+            logger.Info(server.Configuration.UniqueId + " :: Device Started");
         }
 
         private void Server_Stopped(DeviceServer server)
         {
-            Logger.Log(server.Configuration.UniqueId + " :: Device Stopped");
+            logger.Info(server.Configuration.UniqueId + " :: Device Stopped");
         }
 
 
@@ -107,7 +108,7 @@ namespace TrakHound.Servers.DataProcessing
 
             } while (!monitorstop.WaitOne(10000, true));
 
-            Logger.Log("Device Monitor Stopped", LogLineType.Console);
+            logger.Warn("Device Monitor Stopped");
         }
 
         private void DevicesMonitor_Stop()
@@ -254,7 +255,7 @@ namespace TrakHound.Servers.DataProcessing
                                         else // Remove from List
                                         {
                                             devices.RemoveAt(index);
-                                            Logger.Log("Device Removed :: " + server.Configuration.Description.Description + " [" + server.Configuration.Description.DeviceId + "]");
+                                            logger.Info("Device Removed :: " + server.Configuration.Description.Description + " [" + server.Configuration.Description.DeviceId + "]");
                                         }
                                     }
                                 }

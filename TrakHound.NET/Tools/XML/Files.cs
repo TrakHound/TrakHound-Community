@@ -12,16 +12,16 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+using NLog;
 using System;
 using System.IO;
 using System.Xml;
-
-using TrakHound.Logging;
 
 namespace TrakHound.Tools.XML
 {
     public static class Files
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public static bool WriteDocument(XmlDocument doc, string path, bool overwrite = false)
         {
@@ -57,8 +57,8 @@ namespace TrakHound.Tools.XML
                                 }
                             }
                         }
-                        catch (XmlException ex) { Logger.Log("XmlException :: " + ex.Message); }
-                        catch (Exception ex) { Logger.Log("Exception :: " + ex.Message); }
+                        catch (XmlException ex) { logger.Error(ex); }
+                        catch (Exception ex) { logger.Error(ex); }
 
                         if (!success)
                         {
@@ -75,7 +75,7 @@ namespace TrakHound.Tools.XML
                     if (File.Exists(tempPath)) File.Delete(tempPath);
                 }
             }
-            catch (Exception ex) { Logger.Log("Error Writing XMl Document :: " + ex.Message, LogLineType.Error); }
+            catch (Exception ex) { logger.Error(ex); }
 
             return success;
         }
@@ -104,8 +104,8 @@ namespace TrakHound.Tools.XML
                             }
                         }
                     }
-                    catch (XmlException ex) { Logger.Log("XmlException :: " + ex.Message); }
-                    catch (Exception ex) { Logger.Log("Exception :: " + ex.Message); }
+                    catch (XmlException ex) { logger.Error(ex); }
+                    catch (Exception ex) { logger.Error(ex); }
 
                     if (!success) System.Threading.Thread.Sleep(50);
 

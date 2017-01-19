@@ -3,13 +3,12 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
+using NLog;
 using System;
 using System.Collections.Specialized;
 using System.Drawing;
 using System.IO;
 using System.Net;
-
-using TrakHound.Logging;
 using TrakHound.Tools;
 using TrakHound.Tools.Web;
 
@@ -17,6 +16,8 @@ namespace TrakHound.API.Users
 {
     public static class UserManagement
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         /// <summary>
         /// Used to Create a new User Account
         /// </summary>
@@ -276,7 +277,7 @@ namespace TrakHound.API.Users
 
                                     success = true;
                                 }
-                                catch (Exception ex) { Logger.Log("Exception : " + ex.Message); }
+                                catch (Exception ex) { logger.Error(ex); }
                             }
                         }
                     }

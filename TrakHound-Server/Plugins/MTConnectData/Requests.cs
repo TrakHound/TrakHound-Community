@@ -5,19 +5,19 @@
 
 using MTConnect;
 using MTConnect.Application.Headers;
-
+using NLog;
 using System;
 using System.Threading;
-
 using TrakHound;
 using TrakHound.API;
 using TrakHound.Configurations;
-using TrakHound.Logging;
 
 namespace TrakHound_Server.Plugins.MTConnectData
 {
     public partial class Plugin
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         private DeviceConfiguration configuration;
 
         private bool started = false;
@@ -140,11 +140,11 @@ namespace TrakHound_Server.Plugins.MTConnectData
             result = MTConnect.Application.Components.Requests.Get(url, proxy, 2000, 1);
             if (result != null)
             {
-                if (verbose) Logger.Log("Probe Successful : " + url + " @ " + requestTimestamp.ToString("o"), LogLineType.Console);
+                if (verbose) logger.Info("Probe Successful : " + url + " @ " + requestTimestamp.ToString("o"));
             }
             else
             {
-                Logger.Log("Probe Error : " + url + " @ " + requestTimestamp.ToString("o") + " : Retrying in " + (config.Heartbeat / 1000) + " sec..");
+                logger.Warn("Probe Error : " + url + " @ " + requestTimestamp.ToString("o") + " : Retrying in " + (config.Heartbeat / 1000) + " sec..");
             }
 
             return result;
@@ -170,11 +170,11 @@ namespace TrakHound_Server.Plugins.MTConnectData
             result = MTConnect.Application.Streams.Requests.Get(url, proxy, 2000, 1);
             if (result != null)
             {
-                if (verbose) Logger.Log("Current Successful : " + url + " @ " + requestTimestamp.ToString("o") + " : " + result.Header.LastSequence, LogLineType.Console);
+                if (verbose) logger.Info("Current Successful : " + url + " @ " + requestTimestamp.ToString("o") + " : " + result.Header.LastSequence);
             }
             else
             {
-                Logger.Log("Current Error : " + url + " @ " + requestTimestamp.ToString("o") + " : Retrying in " + (config.Heartbeat / 1000) + " sec..");
+                logger.Info("Current Error : " + url + " @ " + requestTimestamp.ToString("o") + " : Retrying in " + (config.Heartbeat / 1000) + " sec..");
             }
 
             return result;
@@ -255,11 +255,11 @@ namespace TrakHound_Server.Plugins.MTConnectData
                     {
                         UpdateAgentData(header.InstanceId, info.From + info.Count);
 
-                        if (verbose) Logger.Log("Sample Successful : " + url + " @ " + requestTimestamp.ToString("o"), LogLineType.Console);
+                        if (verbose) logger.Info("Sample Successful : " + url + " @ " + requestTimestamp.ToString("o"));
                     }
                     else
                     {
-                        Logger.Log("Sample Error : " + url + " @ " + requestTimestamp.ToString("o"));
+                        logger.Info("Sample Error : " + url + " @ " + requestTimestamp.ToString("o"));
                     }
                 }
                 else UpdateAgentData(header.InstanceId, header.LastSequence);

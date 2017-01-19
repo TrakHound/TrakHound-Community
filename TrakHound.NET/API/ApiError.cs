@@ -3,15 +3,15 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
+using NLog;
 using System.Text;
-
-using TrakHound.Logging;
 using TrakHound.Tools.Web;
 
 namespace TrakHound.API
 {
     public static class ApiError
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public static bool ProcessResponse(string response, string label = null)
         {
@@ -27,12 +27,12 @@ namespace TrakHound.API
 
                 if (error)
                 {
-                    Logger.Log(label + " : Error : " + response, LogLineType.Warning);
+                    logger.Warn("API Error : " + response);
                     return false;
                 }
                 else
                 {
-                    Logger.Log(label + " Successful", LogLineType.Console);
+                    logger.Debug(label + " Successful");
                     return true;
                 }
             }

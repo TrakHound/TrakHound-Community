@@ -3,15 +3,13 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
+using NLog;
 using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Shapes;
-
 using TrakHound;
-using TrakHound.Logging;
-using TrakHound.Tools;
 
 namespace TrakHound_Dashboard.Pages.Options.Logger
 {
@@ -20,6 +18,7 @@ namespace TrakHound_Dashboard.Pages.Options.Logger
     /// </summary>
     public partial class Page : UserControl, IPage
     {
+        private static NLog.Logger logger = LogManager.GetCurrentClassLogger();
 
         public Page()
         {
@@ -50,8 +49,6 @@ namespace TrakHound_Dashboard.Pages.Options.Logger
 
         private void Load()
         {
-            var config = LoggerConfiguration.Read();
-
             QueueWriteInterval = config.QueueWriteInterval;
 
             DebugEnabled = config.Debug;

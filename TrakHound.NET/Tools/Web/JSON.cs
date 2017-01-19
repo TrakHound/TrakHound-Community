@@ -3,19 +3,18 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
+using Newtonsoft.Json;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-using Newtonsoft.Json;
-
-using TrakHound.Logging;
-
 namespace TrakHound.Tools.Web
 {
     public static class JSON
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public static DataTable ToTable(string data)
         {
@@ -37,8 +36,8 @@ namespace TrakHound.Tools.Web
 
                         result = DT;
                     }
-                    catch (JsonException jex) { Logger.Log(jex.Message); }
-                    catch (Exception ex) { Logger.Log(ex.Message); }
+                    catch (JsonException ex) { logger.Error(ex); }
+                    catch (Exception ex) { logger.Error(ex); }
                 }
 
             return result;
@@ -61,8 +60,8 @@ namespace TrakHound.Tools.Web
 
                         return (T)JsonConvert.DeserializeObject(data, (typeof(T)), jss);
                     }
-                    catch (JsonException jex) { Logger.Log(jex.Message); }
-                    catch (Exception ex) { Logger.Log(ex.Message); }
+                    catch (JsonException ex) { logger.Error(ex); }
+                    catch (Exception ex) { logger.Error(ex); }
                 }
 
             return default(T);
@@ -83,8 +82,8 @@ namespace TrakHound.Tools.Web
 
                     return JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(json, jss);
                 }
-                catch (JsonException jex) { Logger.Log(jex.Message); }
-                catch (Exception ex) { Logger.Log(ex.Message); }
+                catch (JsonException ex) { logger.Error(ex); }
+                catch (Exception ex) { logger.Error(ex); }
             }
 
             return null;
@@ -104,8 +103,8 @@ namespace TrakHound.Tools.Web
 
                 return JsonConvert.SerializeObject(data.ToList(), jss);
             }
-            catch (JsonException jex) { Logger.Log(jex.Message); }
-            catch (Exception ex) { Logger.Log(ex.Message); }
+            catch (JsonException ex) { logger.Error(ex); }
+            catch (Exception ex) { logger.Error(ex); }
 
             return null;
         }
@@ -119,8 +118,8 @@ namespace TrakHound.Tools.Web
 
                 return JsonConvert.SerializeObject(data, jss);
             }
-            catch (JsonException jex) { Logger.Log(jex.Message); }
-            catch (Exception ex) { Logger.Log(ex.Message); }
+            catch (JsonException ex) { logger.Error(ex); }
+            catch (Exception ex) { logger.Error(ex); }
 
             return null;
         }

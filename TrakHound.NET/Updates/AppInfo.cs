@@ -7,8 +7,7 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Net;
-
-using TrakHound.Logging;
+using NLog;
 
 namespace TrakHound.Updates
 {
@@ -33,6 +32,8 @@ namespace TrakHound.Updates
     /// </summary>
     public class AppInfo
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         /// <summary>
         /// Name of the application
         /// Format: No Spaces (Use dashes instead), lowercase
@@ -120,7 +121,7 @@ namespace TrakHound.Updates
             string path = FileLocations.CreateTempPath();
 
             // Download File
-            Logger.Log("Downloading AppInfo File...", LogLineType.Notification);
+            logger.Info("Downloading AppInfo File...");
             if (Download(url, path))
             {
                 // Parse File as AppInfo class
@@ -149,9 +150,9 @@ namespace TrakHound.Updates
                     {
                         result = (AppInfo)serializer.Deserialize(new JsonTextReader(new StringReader(json)), typeof(AppInfo));
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        Logger.Log("Error During AppInfo File JSON Parse : " + path, LogLineType.Error);
+                        logger.Error(ex);
                     }
                 }
             }
@@ -168,14 +169,14 @@ namespace TrakHound.Updates
                 using (WebClient webClient = new WebClient())
                 {
                     webClient.DownloadFile(url, path);
-                    Logger.Log("Download Complete", LogLineType.Notification);
+                    logger.Info("Download Complete");
                 }
 
                 result = true;
             }
             catch (Exception ex)
             {
-                Logger.Log("Error during Update DownloadFile() : " + ex.Message, LogLineType.Error);
+                logger.Error(ex);
             }
 
             return result;

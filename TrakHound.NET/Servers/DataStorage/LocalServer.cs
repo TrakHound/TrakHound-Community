@@ -3,6 +3,7 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,9 +12,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Web;
-
 using TrakHound.API;
-using TrakHound.Logging;
 using TrakHound.Tools.Web;
 
 namespace TrakHound.Servers.DataStorage
@@ -24,14 +23,14 @@ namespace TrakHound.Servers.DataStorage
         /// API Server Port
         /// </summary>
         public const int PORT = 8472; // ASCII Dec for 'T' and 'H'
+        private const int BACKUP_INTERVAL = 300000; // 5 Minutes
+        private const int LISTENER_ERROR_RETRY_INTERVAL = 5000; // 5 Seconds
+
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private HttpListener listener;
         private System.Timers.Timer backupTimer;
         private ManualResetEvent stop;
-
-        private const int BACKUP_INTERVAL = 300000; // 5 Minutes
-        private const int LISTENER_ERROR_RETRY_INTERVAL = 5000; // 5 Seconds
-
 
         public LocalStorageServer()
         {
@@ -97,30 +96,30 @@ namespace TrakHound.Servers.DataStorage
                         }
                         catch (ObjectDisposedException ex)
                         {
-                            Logger.Log("Local Data Server :: ObjectDisposedException :: " + ex.Message, LogLineType.Warning);
+                            logger.Error(ex);
                         }
                         catch (HttpListenerException ex)
                         {
                             if (ex.ErrorCode != 995)
                             {
-                                Logger.Log("Local Data Server :: HttpListenerException :: " + ex.ErrorCode + " :: " + ex.Message, LogLineType.Warning);
+                                logger.Error(ex);
                             }
                         }
                         catch (InvalidOperationException ex)
                         {
-                            Logger.Log("Local Data Server :: InvalidOperationException :: " + ex.Message, LogLineType.Warning);
+                            logger.Error(ex);
                         }
                         catch (Exception ex)
                         {
-                            Logger.Log("Local Data Server :: Exception :: " + ex.Message, LogLineType.Warning);
+                            logger.Error(ex);
                         }
                     }
                 });
             }
             catch (Exception ex)
             {
-                Logger.Log("Local Data Server :: Error starting server :: Exception :: " + ex.Message, LogLineType.Warning);
-                Logger.Log("Local Data Server :: Error starting server :: Restarting Data Server in 5 Seconds..");
+                logger.Error(ex);
+                logger.Warn("Local Data Server :: Error starting server :: Restarting Data Server in 5 Seconds..");
 
                 if (!stop.WaitOne(LISTENER_ERROR_RETRY_INTERVAL, true)) Worker();
             }
@@ -143,7 +142,7 @@ namespace TrakHound.Servers.DataStorage
             StopBackupTimer();
             Backup.Create(Data.DeviceInfos.ToList());
 
-            Logger.Log("Local Data Server Stopped", LogLineType.Console);
+            logger.Warn("Local Data Server Stopped");
         }
 
         public bool IsStopped
@@ -253,7 +252,7 @@ namespace TrakHound.Servers.DataStorage
                     }
                 }
             }
-            catch (Exception ex) { Logger.Log("Error Processing Local Server Request :: " + ex.Message, LogLineType.Error); }
+            catch (Exception ex) { logger.Error(ex); }
 
             return result;
         }
@@ -273,7 +272,7 @@ namespace TrakHound.Servers.DataStorage
 
                 backupTimer.Start();
             }
-            catch (Exception ex) { Logger.Log("Error Starting Local Server Backup Timer :: " + ex.Message, LogLineType.Error); }
+            catch (Exception ex) { logger.Error(ex); }
         }
 
         private void BackupTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -374,7 +373,7 @@ namespace TrakHound.Servers.DataStorage
                         }
                     }
                 }
-                catch (Exception ex) { Logger.Log("Error Getting Local Server Data :: " + ex.Message, LogLineType.Error); }
+                catch (Exception ex) { logger.Error(ex); }
 
                 return response;
             }
@@ -486,7 +485,7 @@ namespace TrakHound.Servers.DataStorage
                         }
                     }
                 }
-                catch (Exception ex) { Logger.Log("Error Updating Local Server Data :: " + ex.Message, LogLineType.Error); }
+                catch (Exception ex) { logger.Error(ex); }
 
                 return response;
             }
@@ -544,7 +543,7 @@ namespace TrakHound.Servers.DataStorage
                         if (deviceInfos.Count > 0) response = API.Data.DeviceInfo.ListToJson(deviceInfos);
                     }
                 }
-                catch (Exception ex) { Logger.Log("Error Getting Local Server Devices :: " + ex.Message, LogLineType.Error); }
+                catch (Exception ex) { logger.Error(ex); }
 
                 return response;
             }

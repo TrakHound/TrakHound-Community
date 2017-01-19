@@ -3,21 +3,22 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Web;
-
 using TrakHound.API.Users;
-using TrakHound.Logging;
 using TrakHound.Tools.Web;
 
 namespace TrakHound.API
 {
     public static partial class Files
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public static bool Download(UserConfiguration userConfig, string fileId, string destinationPath)
         {
             bool result = false;
@@ -70,7 +71,7 @@ namespace TrakHound.API
                                             }
                                         }
                                     }
-                                } catch (Exception ex) { Logger.Log("Error Reading Filename from Download Response Header"); }
+                                } catch (Exception ex) { logger.Error(ex); }
                             }
                         }
 
@@ -87,14 +88,14 @@ namespace TrakHound.API
                                     memStream.WriteTo(fileStream);
                                 }
 
-                                Logger.Log("Download File Successful", LogLineType.Notification);
+                                logger.Info("Download File Successful");
                                 result = true;
                             }
-                            catch (Exception ex) { Logger.Log("Download File Error : Exception : " + ex.Message); }
+                            catch (Exception ex) { logger.Error(ex); }
                         }
                     }
                 }
-                else Logger.Log("Download File Failed : File Already Exists @ " + destinationPath, LogLineType.Error);
+                else logger.Warn("Download File Failed : File Already Exists @ " + destinationPath);
             }
 
             return result;
@@ -117,7 +118,7 @@ namespace TrakHound.API
 
                     image.Save(Path);
                 }
-                catch (Exception ex) { Logger.Log("Error Adding Image to Cache :: " + ex.Message, LogLineType.Error); }
+                catch (Exception ex) { logger.Error(ex); }
 
             }
 
@@ -133,7 +134,7 @@ namespace TrakHound.API
                         {
                             if (File.Exists(Path)) return System.Drawing.Image.FromFile(Path);
                         }
-                        catch (Exception ex) { Logger.Log("Error Loading Image from Cache :: " + ex.Message, LogLineType.Error); }
+                        catch (Exception ex) { logger.Error(ex); }
                     }
 
                     return null;
@@ -172,7 +173,7 @@ namespace TrakHound.API
                                 cachedImages.Add(new CachedImage(id, img));
                             }
                         }
-                        catch (Exception ex) { Logger.Log("Image Cache Load Error :: " + ex.Message); }
+                        catch (Exception ex) { logger.Error(ex); }
                     }
                 }
             }
@@ -243,10 +244,10 @@ namespace TrakHound.API
                             {
                                 memStream.Write(response.Body, 0, response.Body.Length);
                                 result = Image.FromStream(memStream);
-                                Logger.Log("Download File Successful", LogLineType.Notification);
+                                logger.Info("Download File Successful");
                             }
                         }
-                        catch (Exception ex) { Logger.Log("Response Not an Image : Exception : " + ex.Message); }
+                        catch (Exception ex) { logger.Error(ex); }
                     }
 
                     // Add Image to Cache

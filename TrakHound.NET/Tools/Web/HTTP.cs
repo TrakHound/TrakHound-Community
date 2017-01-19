@@ -3,16 +3,15 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
+using NLog;
 using System;
-using System.Collections.Specialized;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web;
-
-using TrakHound.Logging;
 
 namespace TrakHound.Tools.Web
 {
@@ -21,6 +20,8 @@ namespace TrakHound.Tools.Web
         const int CONNECTION_ATTEMPTS = 3;
 
         const int TIMEOUT = 10000;
+
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public class HeaderData
         {
@@ -413,7 +414,7 @@ namespace TrakHound.Tools.Web
                 if (!success) System.Threading.Thread.Sleep(500);
             }
 
-            if (!success) Logger.Log("Send :: " + attempts.ToString() + " Attempts :: URL = " + url + " :: " + message);
+            if (!success) logger.Info("Send :: " + attempts.ToString() + " Attempts :: URL = " + url + " :: " + message);
 
             return result;
         }

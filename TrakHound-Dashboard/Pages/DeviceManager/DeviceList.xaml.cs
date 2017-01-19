@@ -5,8 +5,8 @@
 
 using MTConnect;
 using MTConnect.Application.Components;
+using NLog;
 using System;
-using System.ComponentModel;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -17,15 +17,12 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Xml;
-
 using TrakHound;
 using TrakHound.API;
 using TrakHound.API.Users;
 using TrakHound.Configurations;
 using TrakHound.Configurations.AutoGenerate;
-using TrakHound.Logging;
 using TrakHound.Tools;
-using TrakHound_Dashboard;
 using TrakHound_Dashboard.Pages.DeviceManager.Controls;
 using TrakHound_UI;
 
@@ -36,6 +33,8 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
     /// </summary>
     public partial class DeviceList : UserControl, IPage
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public DeviceList()
         {
             InitializeComponent();
@@ -343,7 +342,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                     }
                     catch (Exception ex)
                     {
-                        Logger.Log("Remove Local Device :: Exception :: " + path + " :: " + ex.Message);
+                        logger.Error(ex);
                         break; 
                     }
                 }
@@ -933,7 +932,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                     }
                     catch (Exception ex)
                     {
-                        Logger.Log("Device Backup Error :: Error Opening Windows Explorer :: Exception :: " + ex.Message);
+                        logger.Error(ex);
                     }
                 }
                 else
@@ -972,7 +971,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                     }
                     catch (Exception ex)
                     {
-                        Logger.Log("Local Device Backup Error :: Exception :: " + ex.Message);
+                        logger.Error(ex);
                     }
                 }
 
@@ -983,7 +982,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                 }
                 catch (Exception ex)
                 {
-                    Logger.Log("Device Backup Error :: Error Opening Windows Explorer :: Exception :: " + ex.Message);
+                    logger.Error(ex);
                 }
             }
 

@@ -12,16 +12,16 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+using NLog;
 using System;
 using System.IO;
 using System.Xml;
-
-using TrakHound.Logging;
 
 namespace TrakHound.Tools.XML
 {
     public static class Documents
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public static XmlDocument FromString(string str)
         {
@@ -32,7 +32,7 @@ namespace TrakHound.Tools.XML
 
                 return xml;
             }
-            catch (Exception ex) { Logger.Log("XML.Documents.FromString() :: Exception :: " + ex.Message); }
+            catch (Exception ex) { logger.Error(ex); }
 
             return null;
         }
@@ -49,7 +49,7 @@ namespace TrakHound.Tools.XML
                     return stringWriter.GetStringBuilder().ToString();
                 }
             }
-            catch (Exception ex) { Logger.Log("XML.Documents.ToString() :: Exception :: " + ex.Message); }
+            catch (Exception ex) { logger.Error(ex); }
 
             return null;
         }

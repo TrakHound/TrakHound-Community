@@ -3,6 +3,7 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
+using NLog;
 using System;
 using System.IO;
 using System.Threading;
@@ -10,12 +11,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-
 using TrakHound;
 using TrakHound.API;
 using TrakHound.API.Users;
 using TrakHound.Configurations;
-using TrakHound.Logging;
 
 namespace TrakHound_Dashboard.Pages.Dashboard.Footprint.Controls
 {
@@ -24,6 +23,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Footprint.Controls
     /// </summary>
     public partial class ListItem : UserControl
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public ListItem(DeviceDescription device)
         {
             InitializeComponent();
@@ -111,7 +112,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Footprint.Controls
                             }
                         }
                     }
-                    catch (Exception ex) { Logger.Log("Error Loading Device Image :: " + ex.Message, LogLineType.Error); }
+                    catch (Exception ex) { logger.Error(ex); }
                 }
             }
 

@@ -3,6 +3,7 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
+using NLog;
 using System;
 using System.IO;
 using System.Threading;
@@ -10,13 +11,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-
 using TrakHound;
 using TrakHound.API;
 using TrakHound.API.Users;
 using TrakHound.Configurations;
-using TrakHound.Logging;
-using TrakHound.Tools;
 
 namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
 {
@@ -25,6 +23,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
     /// </summary>
     public partial class Column : UserControl, IComparable
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         private const int OEE_HIGH = 70;
         private const int OEE_LOW = 50;
 
@@ -528,7 +528,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
                             }
                         }
                     }
-                    catch (Exception ex) { Logger.Log("Error Loading Device Logo :: " + ex.Message, LogLineType.Error); }  
+                    catch (Exception ex) { logger.Error(ex); }  
                 }
             }
 
@@ -587,7 +587,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview.Controls
                             }
                         }
                     }
-                    catch (Exception ex) { Logger.Log("Error Loading Device Image :: " + ex.Message, LogLineType.Error); }
+                    catch (Exception ex) { logger.Error(ex); }
                 }
             }
 

@@ -3,6 +3,7 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,8 @@ namespace TrakHound.Tools
 {
     public static class Network_Functions
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public static IPAddress GetHostIP()
         {
             var host = Dns.GetHostEntry(Dns.GetHostName());
@@ -170,7 +173,7 @@ namespace TrakHound.Tools
                 catch (Exception ex)
                 {
                     PingError?.Invoke(ipAddress, ex.Message);
-                    Logging.Logger.Log("PingNodes() :: Exception :: " + ex.Message);
+                    logger.Error(ex);
                 }  
             }
 
@@ -190,7 +193,7 @@ namespace TrakHound.Tools
                 {
                     if (e != null && e.Reply != null && e.Reply.Address != null) PingError?.Invoke(e.Reply.Address, ex.Message);
 
-                    Logging.Logger.Log("Ping_PingCompleted() :: Exception :: " + ex.Message);
+                    logger.Error(ex);
                 }
             }
         }

@@ -4,6 +4,7 @@
 // file 'LICENSE', which is part of this source code package.
 
 using Newtonsoft.Json;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,8 @@ namespace TrakHound.API
     {
         public class HourInfo
         {
+            private static Logger logger = LogManager.GetCurrentClassLogger();
+
             public const string DATE_FORMAT = "yyyy-MM-dd";
             public const int MAX_VALUE = 3600;
 
@@ -231,7 +234,7 @@ namespace TrakHound.API
                         }
                         catch (Exception ex)
                         {
-                            Logging.Logger.Log("GetDateTime() :: Exception :: " + ex.Message);
+                            logger.Error(ex);
                         }
                     }
                 }

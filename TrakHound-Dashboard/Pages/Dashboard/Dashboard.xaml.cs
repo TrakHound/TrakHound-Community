@@ -3,6 +3,7 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,10 +13,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-
 using TrakHound;
 using TrakHound.Configurations;
-using TrakHound.Logging;
 using TrakHound.Plugins.Client;
 using TrakHound.Tools;
 using TrakHound_UI;
@@ -27,6 +26,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard
     /// </summary>
     public partial class Dashboard : UserControl, IClientPlugin
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         private System.Timers.Timer timespanUpdateTimer;
 
 
@@ -314,7 +315,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard
             }
             catch (Exception ex)
             {
-                Logger.Log("UpdateDashboardTimespan :: Exception :: " + ex.Message);
+                logger.Error(ex);
             }
         }
 
@@ -355,7 +356,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard
             }
             catch (Exception ex)
             {
-                Logger.Log("LoadDashboardTimespan :: Exception :: " + ex.Message);
+                logger.Error(ex);
             }        
         }
         
@@ -435,7 +436,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard
                 {
                     sendDataInfo.Plugin.GetSentData(sendDataInfo.Data);
                 }
-                catch (Exception ex) { Logger.Log("Plugin Error :: " + ex.Message); }
+                catch (Exception ex) { logger.Error(ex); }
             }
         }
 

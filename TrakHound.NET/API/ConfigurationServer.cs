@@ -3,14 +3,13 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
+using NLog;
 using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-
-using TrakHound.Logging;
 using TrakHound.Tools.Web;
 
 namespace TrakHound.API
@@ -21,6 +20,8 @@ namespace TrakHound.API
         /// API Configuration Server Port
         /// </summary>
         public const int PORT = 8472; // ASCII Dec for 'T' and 'H'
+
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private TcpListener tcpListener;
         private Thread listenThread;
@@ -46,7 +47,8 @@ namespace TrakHound.API
                 }
                 catch (Exception ex)
                 {
-                    Logger.Log("Error Connecting to " + address.ToString() + " :: " + ex.Message);
+                    logger.Info("Error Connecting to " + address.ToString());
+                    logger.Debug(ex);
                 }
             }
 

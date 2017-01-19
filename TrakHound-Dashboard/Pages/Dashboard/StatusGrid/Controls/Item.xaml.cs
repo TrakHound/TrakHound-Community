@@ -15,7 +15,7 @@ using TrakHound;
 using TrakHound.API;
 using TrakHound.API.Users;
 using TrakHound.Configurations;
-using TrakHound.Logging;
+using NLog;
 
 namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
 {
@@ -24,6 +24,8 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
     /// </summary>
     public partial class Item : UserControl, IComparable
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public Item(DeviceDescription device, UserConfiguration userConfig)
         {
             InitializeComponent();
@@ -516,7 +518,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
                             }
                         }
                     }
-                    catch (Exception ex) { Logger.Log("Error Loading Device Image :: " + ex.Message, LogLineType.Error); }
+                    catch (Exception ex) { logger.Error(ex); }
                 }
             }
 
@@ -575,7 +577,7 @@ namespace TrakHound_Dashboard.Pages.Dashboard.StatusGrid.Controls
                             }
                         }
                     }
-                    catch (Exception ex) { Logger.Log("Error Loading Device Image :: " + ex.Message, LogLineType.Error); }
+                    catch (Exception ex) { logger.Error(ex); }
                 }
             }
 

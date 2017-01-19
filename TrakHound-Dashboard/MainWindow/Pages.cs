@@ -721,7 +721,7 @@ namespace TrakHound_Dashboard
                 optionsManager.TabImage = new Uri("pack://application:,,,/TrakHound-Dashboard;component/Resources/Options_01.png");
                 optionsManager.AddPage(new Pages.Options.General.Page());
                 optionsManager.AddPage(new Pages.Options.API.Page());
-                optionsManager.AddPage(new Pages.Options.Logger.Page());
+                //optionsManager.AddPage(new Pages.Options.Logger.Page());
             }
         }
 

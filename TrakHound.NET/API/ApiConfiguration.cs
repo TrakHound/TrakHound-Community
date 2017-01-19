@@ -4,12 +4,11 @@
 // file 'LICENSE', which is part of this source code package.
 
 using Newtonsoft.Json;
+using NLog;
 using System;
 using System.IO;
 using System.Reflection;
 using System.Xml;
-
-using TrakHound.Logging;
 
 namespace TrakHound.API
 {
@@ -21,6 +20,8 @@ namespace TrakHound.API
         public const long DEFAULT_BUFFER_SIZE = 500000; // 5 kB
         public const int DEFAULT_UPDATE_INTERVAL = 5000; // 5 Seconds
         public const int DEFAULT_TIMEOUT = 2000; // 2 Seconds
+
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public static Uri DataApiHost = new Uri(LOCAL_API_HOST);
         public static Uri AuthenticationApiHost = new Uri(CLOUD_API_HOST);
@@ -71,14 +72,18 @@ namespace TrakHound.API
                 {
                     DataApiHost = new Uri(apiConfig.DataHost);
                 }
-                catch (Exception ex) { Logger.Log("API Data Host Configuration Error : Exception : " + ex.Message); }
+                catch (Exception ex)
+                {
+                    logger.Error("API Data Host Configuration Error");
+                    logger.Error(ex);
+                }
             }
             else
             {
                 DataApiHost = new Uri(LOCAL_API_HOST);
             }
 
-            Logger.Log("TrakHound Data API Host set to " + DataApiHost);
+            logger.Info("TrakHound Data API Host set to " + DataApiHost);
         }
 
         public static void SetAuthenticationHost(ApiConfiguration apiConfig)
@@ -89,14 +94,18 @@ namespace TrakHound.API
                 {
                     AuthenticationApiHost = new Uri(apiConfig.AuthenticationHost);
                 }
-                catch (Exception ex) { Logger.Log("API Authentication Host Configuration Error : Exception : " + ex.Message); }
+                catch (Exception ex)
+                {
+                    logger.Error("API Authentication Host Configuration Error");
+                    logger.Error(ex);
+                }
             }
             else
             {
                 AuthenticationApiHost = new Uri(CLOUD_API_HOST);
             }
 
-            Logger.Log("TrakHound Authentication API Host set to " + AuthenticationApiHost);
+            logger.Error("TrakHound Authentication API Host set to " + AuthenticationApiHost);
         }
 
         public static bool Create(ApiConfiguration config)
@@ -143,7 +152,7 @@ namespace TrakHound.API
                         }
                     }
                 }
-                catch (Exception ex) { Logger.Log("Exception :: " + ex.Message); }
+                catch (Exception ex) { logger.Error(ex); }
             }
 
             return result;
@@ -183,7 +192,7 @@ namespace TrakHound.API
 
             public Monitor()
             {
-                Logger.Log("API Configuration File Monitor Started", LogLineType.Notification);
+                logger.Info("API Configuration File Monitor Started");
 
                 string dir = FileLocations.TrakHound;
 
@@ -216,7 +225,7 @@ namespace TrakHound.API
 
             private void DelayTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
             {
-                Logger.Log("API Configuration Changed", LogLineType.Notification);
+                logger.Debug("API Configuration Changed");
 
                 var timer = (System.Timers.Timer)sender;
                 timer.Stop();

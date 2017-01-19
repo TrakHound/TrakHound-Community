@@ -3,6 +3,7 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,12 +16,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Xml;
-
 using TrakHound;
 using TrakHound.API;
 using TrakHound.API.Users;
 using TrakHound.Configurations;
-using TrakHound.Logging;
 using TrakHound.Plugins;
 using TrakHound.Plugins.Server;
 using TrakHound.Tools;
@@ -33,6 +32,8 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
     /// </summary>
     public partial class EditPage : UserControl, IPage
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public EditPage(UserConfiguration _userConfig, string _uniqueId)
         {
             InitializeComponent();
@@ -317,7 +318,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                 }
                 catch (Exception ex)
                 {
-                    Logger.Log("Local Device Backup Error :: Exception :: " + ex.Message);
+                    logger.Error(ex);
                 }
             }
 
@@ -612,7 +613,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                     }
                 }
             }
-            catch (Exception ex) { Logger.Log("LoadPlugins() : Exception : " + ex.Message, LogLineType.Error); }
+            catch (Exception ex) { logger.Error(ex); }
         }
 
         private static void GetPluginPageInfos(string path, List<IConfigurationInfo> infos)
@@ -630,7 +631,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                         }
                     }
                 }
-                catch (Exception ex) { Logger.Log("LoadPlugins() : Exception : " + ex.Message, LogLineType.Error); }
+                catch (Exception ex) { logger.Error(ex); }
 
                 // Search Subdirectories
                 foreach (string directory in Directory.GetDirectories(path))

@@ -1,18 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// Copyright (c) 2017 TrakHound Inc., All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE', which is part of this source code package.
+
+using NLog;
+using System;
 using System.Drawing;
-
-using System.Net;
 using System.IO;
-
-using TrakHound.Logging;
+using System.Net;
 
 namespace TrakHound.Tools.Web
 {
     public static class Download
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public static Image Image(string url)
         {
@@ -31,7 +32,7 @@ namespace TrakHound.Tools.Web
                             result = System.Drawing.Image.FromStream(mem);
                         }
                     }
-                    catch (Exception ex) { Logger.Log("Exception : " + ex.Message); }
+                    catch (Exception ex) { logger.Error(ex); }
                 }
             }
 

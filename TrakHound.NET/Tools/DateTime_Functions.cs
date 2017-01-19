@@ -1,11 +1,16 @@
-﻿using System;
+﻿// Copyright (c) 2017 TrakHound Inc., All Rights Reserved.
 
-using TrakHound.Logging;
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE', which is part of this source code package.
+
+using System;
+using NLog;
 
 namespace TrakHound.Tools
 {
     public static class DateTime_Functions
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Convert string to UTC DateTime (DateTime.TryParse seems to always convert to local time even with DateTimeStyle.AssumeUniveral)
@@ -62,7 +67,7 @@ namespace TrakHound.Tools
             }
             catch (Exception ex)
             {
-                Logger.Log("ConvertStringToUTC() : Input = " + s + " : Exception : " + ex.Message);
+                logger.Error(ex);
             }
 
             return result;

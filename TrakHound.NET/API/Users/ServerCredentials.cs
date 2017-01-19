@@ -3,11 +3,10 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
+using NLog;
 using System;
 using System.IO;
 using System.Xml;
-
-using TrakHound.Logging;
 using TrakHound.Tools;
 
 namespace TrakHound.API.Users
@@ -15,6 +14,8 @@ namespace TrakHound.API.Users
     public static class ServerCredentials
     {
         public const string SERVER_CREDENTIALS_FILENAME = "server_credentials.xml";
+
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public static bool Create(UserConfiguration userConfig)
         {
@@ -61,7 +62,7 @@ namespace TrakHound.API.Users
                         result.Token = token;
                     }
                 }
-                catch (Exception ex) { Logger.Log("Exception :: " + ex.Message); }
+                catch (Exception ex) { logger.Error(ex); }
             }
 
             return result;
@@ -114,7 +115,7 @@ namespace TrakHound.API.Users
                     doc.Save(writer);
                 }
             }
-            catch (Exception ex) { Logger.Log("Exception :: " + ex.Message); }
+            catch (Exception ex) { logger.Error(ex); }
         }
 
 

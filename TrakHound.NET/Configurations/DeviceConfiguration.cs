@@ -3,6 +3,7 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,16 +11,15 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml;
-
 using TrakHound.API;
-using TrakHound.Logging;
 using TrakHound.Tools;
 
 namespace TrakHound.Configurations
 {
-
     public class DeviceConfiguration : IComparable
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public DeviceConfiguration()
         {
             init();
@@ -101,12 +101,12 @@ namespace TrakHound.Configurations
                         XML_Functions.SetInnerText(result.Xml, "/UniqueId", result.UniqueId);
                     }
                 }
-                catch (XmlException ex) { Logger.Log("XmlException :: " + ex.Message); }
-                catch (Exception ex) { Logger.Log("Exception :: " + ex.Message); }
+                catch (XmlException ex) { logger.Error(ex); }
+                catch (Exception ex) { logger.Error(ex); }
             }
             else
             {
-                Logger.Log("Configuration File Not Found : " + path, LogLineType.Warning);
+                logger.Warn("Configuration File Not Found : " + path);
             }
 
             return result;
@@ -176,7 +176,7 @@ namespace TrakHound.Configurations
             }
             else
             {
-                Logger.Log("Configuration File Directory Not Found : " + path, LogLineType.Warning);
+                logger.Warn("Configuration File Directory Not Found : " + path);
             }
 
             return result.ToArray();
@@ -287,7 +287,7 @@ namespace TrakHound.Configurations
 
                     result = true;
                 }
-                catch (Exception ex) { Logger.Log("Error during Configuration Xml Save : " + ex.Message, LogLineType.Warning); }
+                catch (Exception ex) { logger.Error(ex); }
             }
 
             return result;
@@ -610,7 +610,7 @@ namespace TrakHound.Configurations
             }
             catch (Exception ex)
             {
-                Logger.Log("DeviceConfiguration.ToTable() :: Exception :: " + ex.Message, LogLineType.Warning);
+                logger.Error(ex);
             }
 
             return result;

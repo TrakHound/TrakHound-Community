@@ -3,6 +3,7 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,10 +12,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml;
-
 using TrakHound.API;
 using TrakHound.Configurations;
-using TrakHound.Logging;
 using TrakHound.Tools;
 
 namespace TrakHound.Servers.DataStorage
@@ -24,6 +23,7 @@ namespace TrakHound.Servers.DataStorage
         public const string DEFAULT_DATABASE_NAME = "Local-Server-Backup.db";
         public static string DEFAULT_DATABASE_PATH = Path.Combine(FileLocations.Backup, DEFAULT_DATABASE_NAME);
 
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public static void Create(List<Data.DeviceInfo> deviceInfos)
         {
@@ -60,7 +60,7 @@ namespace TrakHound.Servers.DataStorage
                 // Close the database connection
                 Connection.Close(connection);
 
-                Logger.Log("SQLite Data Backup Successful", LogLineType.Console);
+                logger.Info("SQLite Data Backup Successful");
             }
         }
 
@@ -104,7 +104,7 @@ namespace TrakHound.Servers.DataStorage
                                 deviceInfo.AddHourInfo(hourRowInfo.HourInfo);
                             }
 
-                            Logger.Log("Local Data Server : Backup Loaded Successfully");
+                            logger.Info("Local Data Server : Backup Loaded Successfully");
 
                             return result;
                         }
@@ -114,10 +114,10 @@ namespace TrakHound.Servers.DataStorage
                 }
                 catch (Exception ex)
                 {
-                    Logger.Log("Local Data Server : Error Loading Backup :: " + ex.Message);
+                    logger.Error(ex);
                 }           
             }
-            else Logger.Log("Local Server Backup File Not Found @ " + config.SQliteDatabasePath);
+            else logger.Warn("Local Server Backup File Not Found @ " + config.SQliteDatabasePath);
 
             return null;
         }
@@ -162,7 +162,7 @@ namespace TrakHound.Servers.DataStorage
                                 deviceInfo.AddHourInfo(hourRowInfo.HourInfo);
                             }
 
-                            Logger.Log("Local Data Server : Backup Loaded Successfully");
+                            logger.Info("Local Data Server : Backup Loaded Successfully");
 
                             return result;
                         }
@@ -172,10 +172,10 @@ namespace TrakHound.Servers.DataStorage
                 }
                 catch (Exception ex)
                 {
-                    Logger.Log("Local Data Server : Error Loading Backup :: " + ex.Message);
+                    logger.Error(ex);
                 }
             }
-            else Logger.Log("Local Server Backup File Not Found @ " + config.SQliteDatabasePath);
+            else logger.Warn("Local Server Backup File Not Found @ " + config.SQliteDatabasePath);
 
             return null;
         }
@@ -220,7 +220,7 @@ namespace TrakHound.Servers.DataStorage
                                 deviceInfo.AddHourInfo(hourRowInfo.HourInfo);
                             }
 
-                            Logger.Log("Local Data Server : Backup Loaded Successfully");
+                            logger.Info("Local Data Server : Backup Loaded Successfully");
 
                             return result;
                         }
@@ -230,10 +230,10 @@ namespace TrakHound.Servers.DataStorage
                 }
                 catch (Exception ex)
                 {
-                    Logger.Log("Local Data Server : Error Loading Backup :: " + ex.Message);
+                    logger.Error(ex);
                 }
             }
-            else Logger.Log("Local Server Backup File Not Found @ " + config.SQliteDatabasePath);
+            else logger.Warn("Local Server Backup File Not Found @ " + config.SQliteDatabasePath);
 
             return null;
         }
@@ -296,7 +296,7 @@ namespace TrakHound.Servers.DataStorage
                             }
                         }
                     }
-                    catch (Exception ex) { Logger.Log("Exception :: " + ex.Message, LogLineType.Error); }
+                    catch (Exception ex) { logger.Error(ex); }
                 }
 
                 return result;
@@ -345,19 +345,19 @@ namespace TrakHound.Servers.DataStorage
                 }
                 catch (ObjectDisposedException ex)
                 {
-                    Logger.Log("ObjectDisposedException :: " + ex.Message, LogLineType.Error);
+                    logger.Error(ex);
                 }
                 catch (InvalidOperationException ex)
                 {
-                    Logger.Log("InvalidOperationException :: " + ex.Message, LogLineType.Error);
+                    logger.Error(ex);
                 }
                 catch (SQLiteException ex)
                 {
-                    Logger.Log("SQLiteException :: " + ex.Message, LogLineType.Error);
+                    logger.Error(ex);
                 }
                 catch (Exception ex)
                 {
-                    Logger.Log("Exception :: " + ex.Message, LogLineType.Error);
+                    logger.Error(ex);
                 }
 
                 return null;
@@ -375,7 +375,7 @@ namespace TrakHound.Servers.DataStorage
                 }
                 catch (Exception ex)
                 {
-                    Logger.Log("Exception :: " + ex.Message, LogLineType.Error);
+                    logger.Error(ex);
                 }
             }
 
@@ -398,19 +398,19 @@ namespace TrakHound.Servers.DataStorage
                 }
                 catch (ObjectDisposedException ex)
                 {
-                    Logger.Log("ObjectDisposedException :: " + query + " :: " + ex.Message, LogLineType.Error);
+                    logger.Error(ex);
                 }
                 catch (InvalidOperationException ex)
                 {
-                    Logger.Log("InvalidOperationException :: " + query + " :: " + ex.Message, LogLineType.Error);
+                    logger.Error(ex);
                 }
                 catch (SQLiteException ex)
                 {
-                    Logger.Log("SQLiteException :: " + query + " :: " + ex.Message, LogLineType.Error);
+                    logger.Error(ex);
                 }
                 catch (Exception ex)
                 {
-                    Logger.Log("Exception :: " + query + " :: " + ex.Message, LogLineType.Error);
+                    logger.Error(ex);
                 }
             }
 
@@ -434,19 +434,19 @@ namespace TrakHound.Servers.DataStorage
                 }
                 catch (ObjectDisposedException ex)
                 {
-                    Logger.Log("ObjectDisposedException :: " + query + " :: " + ex.Message, LogLineType.Error);
+                    logger.Error(ex);
                 }
                 catch (InvalidOperationException ex)
                 {
-                    Logger.Log("InvalidOperationException :: " + query + " :: " + ex.Message, LogLineType.Error);
+                    logger.Error(ex);
                 }
                 catch (SQLiteException ex)
                 {
-                    Logger.Log("SQLiteException :: " + query + " :: " + ex.Message, LogLineType.Error);
+                    logger.Error(ex);
                 }
                 catch (Exception ex)
                 {
-                    Logger.Log("Exception :: " + query + " :: " + ex.Message, LogLineType.Error);
+                    logger.Error(ex);
                 }
 
                 return null;
@@ -474,11 +474,11 @@ namespace TrakHound.Servers.DataStorage
                     try
                     {
                         SQLiteConnection.CreateFile(config.SQliteDatabasePath);
-                        Logger.Log("SQLite Database File Created : " + config.SQliteDatabasePath, LogLineType.Notification);
+                        logger.Info("SQLite Database File Created : " + config.SQliteDatabasePath);
                     }
                     catch (Exception ex)
                     {
-                        Logger.Log("Exception :: " + ex.Message, LogLineType.Error);
+                        logger.Error(ex);
                     }
                 }
             }

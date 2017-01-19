@@ -3,15 +3,14 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-
 using TrakHound;
-using TrakHound.Logging;
 using TrakHound.Plugins;
 using TrakHound.Plugins.Client;
 
@@ -19,6 +18,7 @@ namespace TrakHound_Dashboard
 {
     public partial class MainWindow
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private List<IClientPlugin> _plugins;
         /// <summary>
@@ -94,7 +94,7 @@ namespace TrakHound_Dashboard
 
             foreach (var plugin in result)
             {
-                Logger.Log(plugin.Title + " Loaded", LogLineType.Notification);
+                logger.Info(plugin.Title + " Loaded");
             }
 
             return result;
@@ -475,7 +475,7 @@ namespace TrakHound_Dashboard
                 {
                     sendDataInfo.Plugin.GetSentData(sendDataInfo.Data);
                 }
-                catch (Exception ex) { Logger.Log("Plugin Error :: " + ex.Message, LogLineType.Error); }
+                catch (Exception ex) { logger.Error(ex); }
             }
         }
 
