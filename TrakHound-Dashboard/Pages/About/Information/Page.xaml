@@ -1,7 +1,7 @@
 ﻿<!--Copyright (c) 2017 TrakHound Inc., All Rights Reserved.-->
 
 <!--This file is subject to the terms and conditions defined in-->
-<!--file 'LICENSE.txt', which is part of this source code package.-->
+<!--file 'LICENSE', which is part of this source code package.-->
     
 <UserControl x:Class="TrakHound_Dashboard.Pages.About.Information.Page"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -50,7 +50,7 @@
         <Rectangle Height="0.5" Margin="5,10" Fill="{StaticResource Border}" />
 
         <!--Designed By-->
-        <TextBlock Margin="5,0" TextWrapping="Wrap" Text="TrakHound is designed by Feenux, a Manufacturing Software Solutions company." FontSize="12" Foreground="{StaticResource Text}" />
+        <!--<TextBlock Margin="5,0" TextWrapping="Wrap" Text="TrakHound is designed by Feenux, a Manufacturing Software Solutions company." FontSize="12" Foreground="{StaticResource Text}" />-->
 
         <!--Support-->
         <TextBlock Margin="5,10" TextWrapping="Wrap" FontSize="10" Foreground="{StaticResource Text}">
