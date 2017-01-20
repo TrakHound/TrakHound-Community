@@ -362,7 +362,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
 
                     if (CurrentPage != null) LoadPage((IConfigurationPage)CurrentPage);
 
-                    GetProbeData(ConfigurationTable);
+                    LoadAgentSettings(ConfigurationTable);
                 }
             }
 
@@ -483,7 +483,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
 
         private void LoadPages_Finished()
         {
-            GetProbeData(ConfigurationTable);
+            LoadAgentSettings(ConfigurationTable);
         }
 
         private static IConfigurationPage CreatePage(IConfigurationInfo info)
@@ -527,7 +527,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                         int id = (int)data.Data02;
                         string deviceName = (string)data.Data03;
 
-                        GetProbeData(address, id, deviceName);
+                        RunProbe(address, id, deviceName);
                     }
                 }
             }
@@ -661,99 +661,135 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
             }
         }
 
-        private List<MTConnect.Application.Components.DataItem> probeData = new List<MTConnect.Application.Components.DataItem>();
+        private List<MTConnect.MTConnectDevices.DataItem> probeData = new List<MTConnect.MTConnectDevices.DataItem>();
 
-        private MTConnect.Application.Headers.Devices probeHeader;
+        private MTConnect.Headers.MTConnectDevicesHeader probeHeader;
 
-        void GetProbeData(DataTable dt)
-        {
-            LoadAgentSettings(dt);
-        }
+        //void GetProbeData(DataTable dt)
+        //{
+        //    LoadAgentSettings(dt);
+        //}
 
-        void GetProbeData(string address, int port, string deviceName)
-        {
-            RunProbe(address, null, port, deviceName);
-        }
+        //void GetProbeData(string address, int port, string deviceName)
+        //{
+        //    RunProbe(address, port, deviceName);
+        //    //RunProbe(address, null, port, deviceName);
+        //}
 
         void LoadAgentSettings(DataTable dt)
         {
-            string prefix = "/Agent/";
-
-            string ip = DataTable_Functions.GetTableValue(dt, "address", prefix + "Address", "value");
-
-            string p = DataTable_Functions.GetTableValue(dt, "address", prefix + "Port", "value");
-
-            string devicename = DataTable_Functions.GetTableValue(dt, "address", prefix + "DeviceName", "value");
-
-            string proxyAddress = devicename = DataTable_Functions.GetTableValue(dt, "address", prefix + "ProxyAddress", "value");
-            string proxyPort = devicename = DataTable_Functions.GetTableValue(dt, "address", prefix + "ProxyPort", "value");
-
-            int port;
-            int.TryParse(p, out port);
-
-            // Proxy Settings
-            MTConnect.HTTP.ProxySettings proxy = null;
-            if (proxyPort != null)
+            if (dt != null)
             {
-                int proxy_p = -1;
-                if (int.TryParse(proxyPort, out proxy_p))
-                {
-                    proxy = new MTConnect.HTTP.ProxySettings();
-                    proxy.Address = proxyAddress;
-                    proxy.Port = proxy_p;
-                }
-            }
+                string prefix = "/Agent/";
 
-            RunProbe(ip, proxy, port, devicename);
-        }
+                string ip = DataTable_Functions.GetTableValue(dt, "address", prefix + "Address", "value");
 
-        class Probe_Info
-        {
-            public string address;
-            public int port;
-            public string deviceName;
-            public MTConnect.HTTP.ProxySettings proxy;
-        }
+                string p = DataTable_Functions.GetTableValue(dt, "address", prefix + "Port", "value");
 
-        void RunProbe(string address, MTConnect.HTTP.ProxySettings proxy, int port, string deviceName)
-        {
-            var info = new Probe_Info();
-            info.address = address;
-            info.port = port;
-            info.deviceName = deviceName;
-            info.proxy = proxy;
+                string devicename = DataTable_Functions.GetTableValue(dt, "address", prefix + "DeviceName", "value");
 
-            ThreadPool.QueueUserWorkItem(new WaitCallback(RunProbe_Worker), info);
-        }
+                //string proxyAddress = devicename = DataTable_Functions.GetTableValue(dt, "address", prefix + "ProxyAddress", "value");
+                //string proxyPort = devicename = DataTable_Functions.GetTableValue(dt, "address", prefix + "ProxyPort", "value");
 
-        void RunProbe_Worker(object o)
-        {
-            if (o != null)
-            {
-                var info = o as Probe_Info;
-                if (info != null)
-                {
-                    string url = MTConnect.HTTP.GetUrl(info.address, info.port, info.deviceName) + "probe";
+                int port;
+                int.TryParse(p, out port);
 
-                    var returnData = MTConnect.Application.Components.Requests.Get(url, info.proxy, 2000, 1);
-                    if (returnData != null)
-                    {
-                        probeHeader = returnData.Header;
-                        SendProbeHeader(returnData.Header);
+                RunProbe(ip, port, devicename);
 
-                        foreach (var device in returnData.Devices)
-                        {
-                            var dataItems = device.GetAllDataItems();
+                // Proxy Settings
+                //MTConnect.HTTP.ProxySettings proxy = null;
+                //if (proxyPort != null)
+                //{
+                //    int proxy_p = -1;
+                //    if (int.TryParse(proxyPort, out proxy_p))
+                //    {
+                //        proxy = new MTConnect.HTTP.ProxySettings();
+                //        proxy.Address = proxyAddress;
+                //        proxy.Port = proxy_p;
+                //    }
+                //}
 
-                            SendProbeDataItems(dataItems);
-                            probeData = dataItems;
-                        }
-                    }
-                }
+                //RunProbe(ip, proxy, port, devicename);
             }
         }
 
-        private void SendProbeHeader(MTConnect.Application.Headers.Devices header)
+        //class Probe_Info
+        //{
+        //    public string address;
+        //    public int port;
+        //    public string deviceName;
+        //    //public MTConnect.HTTP.ProxySettings proxy;
+        //}
+
+        void RunProbe(string address, int port, string deviceName)
+        {
+            // Create Agent Url
+            var protocol = "http://";
+            var adr = address;
+            if (adr.IndexOf(protocol) >= 0) adr = adr.Substring(protocol.Length);
+            else adr = protocol + adr;
+            var url = adr;
+            if (port > 0 && port != 80) url += ":" + port;
+
+            // Run Probe Request
+            var probe = new MTConnect.Clients.Probe(url, deviceName);
+            probe.Successful += Probe_Successful;
+            probe.ExecuteAsync();
+        }
+
+        private void Probe_Successful(MTConnect.MTConnectDevices.Document document)
+        {
+            probeHeader = document.Header;
+            SendProbeHeader(document.Header);
+
+            foreach (var device in document.Devices)
+            {
+                var dataItems = device.DataItems;
+
+                SendProbeDataItems(dataItems);
+                probeData = dataItems;
+            }
+        }
+
+        //void RunProbe(string address, MTConnect.HTTP.ProxySettings proxy, int port, string deviceName)
+        //{
+        //    var info = new Probe_Info();
+        //    info.address = address;
+        //    info.port = port;
+        //    info.deviceName = deviceName;
+        //    info.proxy = proxy;
+
+        //    ThreadPool.QueueUserWorkItem(new WaitCallback(RunProbe_Worker), info);
+        //}
+
+        //void RunProbe_Worker(object o)
+        //{
+        //    if (o != null)
+        //    {
+        //        var info = o as Probe_Info;
+        //        if (info != null)
+        //        {
+        //            string url = MTConnect.HTTP.GetUrl(info.address, info.port, info.deviceName) + "probe";
+
+        //            var returnData = MTConnect.Application.Components.Requests.Get(url, info.proxy, 2000, 1);
+        //            if (returnData != null)
+        //            {
+        //                probeHeader = returnData.Header;
+        //                SendProbeHeader(returnData.Header);
+
+        //                foreach (var device in returnData.Devices)
+        //                {
+        //                    var dataItems = device.GetAllDataItems();
+
+        //                    SendProbeDataItems(dataItems);
+        //                    probeData = dataItems;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+
+        private void SendProbeHeader(MTConnect.Headers.MTConnectDevicesHeader header)
         {
             var data = new EventData(this);
             data.Id = "MTConnect_Probe_Header";
@@ -782,7 +818,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
             return null;
         }
 
-        private void SendProbeDataItems(List<MTConnect.Application.Components.DataItem> items)
+        private void SendProbeDataItems(List<MTConnect.MTConnectDevices.DataItem> items)
         {
             var data = new EventData(this);
             data.Id = "MTConnect_Probe_DataItems";

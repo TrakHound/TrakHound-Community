@@ -45,17 +45,28 @@
     <StartupObject>TrakHound_Dashboard.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MTConnect.NET, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\MTConnect.NET.dll</HintPath>
+    <Reference Include="MTConnect-NET">
+      <HintPath>..\..\..\MTConnect.NET\src\bin\Release\MTConnect-NET.dll</HintPath>
+    </Reference>
+    <Reference Include="MTConnect-Sniffer, Version=1.1.1.5649, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MTConnect-Sniffer.1.1.1.5649\lib\net40\MTConnect-Sniffer.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.4.1\lib\net40\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net4\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.IPNetwork, Version=2.0.3.0, Culture=neutral, PublicKeyToken=764160545cf0d618, processorArchitecture=MSIL">
+      <HintPath>..\packages\IPNetwork2.2.0.3\lib\net40\System.Net.IPNetwork.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -151,13 +162,13 @@
     <None Include="Pages\DeviceManager\Pages\Cycles\Controls\OverrideLinkItem.xaml.cs">
       <DependentUpon>OverrideLinkItem.xaml</DependentUpon>
     </None>
-    <Compile Include="Pages\DeviceManager\Pages\Cycles\Controls\ProductionTypeItem.xaml.cs">
+    <None Include="Pages\DeviceManager\Pages\Cycles\Controls\ProductionTypeItem.xaml.cs">
       <DependentUpon>ProductionTypeItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\DeviceManager\Pages\Cycles\Info.cs" />
-    <Compile Include="Pages\DeviceManager\Pages\Cycles\Page.xaml.cs">
+    </None>
+    <None Include="Pages\DeviceManager\Pages\Cycles\Info.cs" />
+    <None Include="Pages\DeviceManager\Pages\Cycles\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="Pages\DeviceManager\Pages\Description\Info.cs" />
     <Compile Include="Pages\DeviceManager\Pages\Description\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
@@ -545,14 +556,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <Page Include="Pages\DeviceManager\Pages\Cycles\Controls\ProductionTypeItem.xaml">
+    <None Include="Pages\DeviceManager\Pages\Cycles\Controls\ProductionTypeItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\DeviceManager\Pages\Cycles\Page.xaml">
+    </None>
+    <None Include="Pages\DeviceManager\Pages\Cycles\Page.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
+    </None>
     <Page Include="Pages\DeviceManager\Pages\Description\Page.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

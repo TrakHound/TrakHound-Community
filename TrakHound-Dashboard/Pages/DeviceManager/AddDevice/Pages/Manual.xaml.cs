@@ -4,7 +4,7 @@
 // file 'LICENSE', which is part of this source code package.
 
 using MTConnect;
-using MTConnect.Application.Components;
+using MTConnectDevices = MTConnect.MTConnectDevices;
 using System;
 using System.Threading;
 using System.Windows;
@@ -164,8 +164,6 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
             public string DeviceName { get; set; }
         }
 
-        private Thread testConnectionThread;
-
         private void TestConnection()
         {
             var info = new TestConnectionInfo();
@@ -182,10 +180,20 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
                 ConnectionTestResult = 0;
                 ConnectionTestResultText = null;
 
-                if (testConnectionThread != null) testConnectionThread.Abort();
+                // Create Agent Url
+                var protocol = "http://";
+                var adr = info.Address;
+                if (adr.IndexOf(protocol) >= 0) adr = adr.Substring(protocol.Length);
+                else adr = protocol + adr;
+                var url = adr;
+                if (port > 0 && port != 80) url += ":" + port;
 
-                testConnectionThread = new Thread(new ParameterizedThreadStart(TestConnection_Worker));
-                testConnectionThread.Start(info);
+                // Send Probe Request
+                var probe = new MTConnect.Clients.Probe(url, info.DeviceName);
+                probe.Successful += Probe_Successful;
+                probe.Error += Probe_Error;
+                probe.ConnectionError += Probe_ConnectionError;
+                probe.ExecuteAsync();
             }
             else
             {
@@ -194,56 +202,61 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
             }
         }
 
-        private void TestConnection_Worker(object o)
+        private void Probe_Successful(MTConnectDevices.Document document)
         {
-            if (o != null)
+            Dispatcher.BeginInvoke(new Action(() =>
             {
-                var info = (TestConnectionInfo)o;
-
-                var returnInfo = new TestConnectionReturnInfo();
-
-                string url = HTTP.GetUrl(info.Address, info.Port, info.DeviceName) + "probe";
-
-                ReturnData returnData = Requests.Get(url, 5000, 1);
-
-                if (returnData != null)
-                {
-                    probeDevice = returnData.Devices[0];
-
-                    returnInfo.Success = true;
-                    returnInfo.Message = "MTConnect Probe Successful @ " + url;
-                }
-                else returnInfo.Message = "MTConnect Probe Failed @ " + url;
-
-                Dispatcher.BeginInvoke(new Action<TestConnectionReturnInfo>(TestConnection_GUI), System.Windows.Threading.DispatcherPriority.Background, new object[] { returnInfo });
-            }
+                ConnectionTestResult = 1;
+                ConnectionTestResultText = "MTConnect Probe Successful";
+                ConnectionTestLoading = false;
+            }));
         }
 
-        private class TestConnectionReturnInfo
+        private void Probe_ConnectionError(Exception ex)
         {
-            public bool Success { get; set; }
-            public string Message { get; set; }
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                ConnectionTestResult = -1;
+                ConnectionTestResultText = "Error Connecting to MTConnect Device";
+                ConnectionTestLoading = false;
+            }));
         }
 
-        private void TestConnection_GUI(TestConnectionReturnInfo info)
+        private void Probe_Error(MTConnect.MTConnectError.Document errorDocument)
         {
-            if (info.Success) ConnectionTestResult = 1;
-            else ConnectionTestResult = -1;
-
-            ConnectionTestResultText = info.Message;
-            ConnectionTestLoading = false;
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                ConnectionTestResult = -1;
+                ConnectionTestResultText = "MTConnect Returned an Error";
+                ConnectionTestLoading = false;
+            }));
         }
 
-        private void TestConnectionCancel_Clicked(TrakHound_UI.Button bt)
-        {
-            if (testConnectionThread != null) testConnectionThread.Abort();
+        //private class TestConnectionReturnInfo
+        //{
+        //    public bool Success { get; set; }
+        //    public string Message { get; set; }
+        //}
 
-            ConnectionTestLoading = false;
-        }
+        //private void TestConnection_GUI(TestConnectionReturnInfo info)
+        //{
+        //    if (info.Success) ConnectionTestResult = 1;
+        //    else ConnectionTestResult = -1;
+
+        //    ConnectionTestResultText = info.Message;
+        //    ConnectionTestLoading = false;
+        //}
+
+        //private void TestConnectionCancel_Clicked(TrakHound_UI.Button bt)
+        //{
+        //    if (testConnectionThread != null) testConnectionThread.Abort();
+
+        //    ConnectionTestLoading = false;
+        //}
 
         #endregion
 
-        private Device probeDevice;
+        //private Device probeDevice;
 
         private void AddDevice_Clicked(TrakHound_UI.Button bt)
         {
@@ -282,15 +295,23 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
 
             if (info != null)
             {
-                string url = HTTP.GetUrl(info.Address, info.Port, info.DeviceName) + "probe";
+                // Create Agent Url
+                var protocol = "http://";
+                var adr = info.Address;
+                if (adr.IndexOf(protocol) >= 0) adr = adr.Substring(protocol.Length);
+                else adr = protocol + adr;
+                var url = adr;
+                if (info.Port > 0 && info.Port != 80) url += ":" + info.Port;
 
-                var returnData = Requests.Get(url, 5000, 1);
-                if (returnData != null)
+                // Send Probe Request
+                var probe = new MTConnect.Clients.Probe(url, info.DeviceName);
+                var document = probe.Execute();
+                if (document != null)
                 {
                     var probeData = new Configuration.ProbeData();
                     probeData.Address = info.Address;
                     probeData.Port = info.Port.ToString();
-                    probeData.Device = returnData.Devices[0];
+                    probeData.Device = document.Devices[0];
 
                     config = Configuration.Create(probeData);
 
@@ -303,7 +324,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
                     {
                         success = DeviceConfiguration.Save(config);
                     }
-                }   
+                }
             }
 
             Dispatcher.BeginInvoke(new Action(() =>

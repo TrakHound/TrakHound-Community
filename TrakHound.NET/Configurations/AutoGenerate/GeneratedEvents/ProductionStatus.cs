@@ -4,7 +4,7 @@
 // file 'LICENSE', which is part of this source code package.
 
 using MTConnect;
-using MTConnect.Application.Components;
+using MTConnectDevices = MTConnect.MTConnectDevices;
 using System.Collections.Generic;
 using System.Data;
 
@@ -12,7 +12,7 @@ namespace TrakHound.Configurations.AutoGenerate.GeneratedEvents
 {
     public static class ProductionStatus
     {
-        public static void Add(DataTable table, List<DataItem> dataItems)
+        public static void Add(DataTable table, List<MTConnectDevices.DataItem> dataItems)
         {
             // Add Event
             string eventPrefix = "/GeneratedEvents/Event||01";
@@ -27,7 +27,7 @@ namespace TrakHound.Configurations.AutoGenerate.GeneratedEvents
             DeviceConfiguration.EditTable(table, eventPrefix + "/Default", "Production", "numval||0;");
         }
 
-        private static void AddSetupValue(string prefix, DataTable table, List<DataItem> dataItems)
+        private static void AddSetupValue(string prefix, DataTable table, List<MTConnectDevices.DataItem> dataItems)
         {
             // Only add if there is a Functional Mode tag available
             if (dataItems.Exists(x => x.Category == DataItemCategory.EVENT && x.Type == "FUNCTIONAL_MODE"))
@@ -47,7 +47,7 @@ namespace TrakHound.Configurations.AutoGenerate.GeneratedEvents
             }
         }
 
-        private static void AddTeardownValue(string prefix, DataTable table, List<DataItem> dataItems)
+        private static void AddTeardownValue(string prefix, DataTable table, List<MTConnectDevices.DataItem> dataItems)
         {
             // Only add if there is a Functional Mode tag available
             if (dataItems.Exists(x => x.Category == DataItemCategory.EVENT && x.Type == "FUNCTIONAL_MODE"))
@@ -67,7 +67,7 @@ namespace TrakHound.Configurations.AutoGenerate.GeneratedEvents
             }
         }
 
-        private static void AddMaintenanceValue(string prefix, DataTable table, List<DataItem> dataItems)
+        private static void AddMaintenanceValue(string prefix, DataTable table, List<MTConnectDevices.DataItem> dataItems)
         {
             // Only add if there is a Functional Mode tag available
             if (dataItems.Exists(x => x.Category == DataItemCategory.EVENT && x.Type == "FUNCTIONAL_MODE"))
@@ -87,7 +87,7 @@ namespace TrakHound.Configurations.AutoGenerate.GeneratedEvents
             }
         }
 
-        private static void AddProcessDevelopmentValue(string prefix, DataTable table, List<DataItem> dataItems)
+        private static void AddProcessDevelopmentValue(string prefix, DataTable table, List<MTConnectDevices.DataItem> dataItems)
         {
             // Only add if there is a Functional Mode tag available
             if (dataItems.Exists(x => x.Category == DataItemCategory.EVENT && x.Type == "FUNCTIONAL_MODE"))

@@ -3,7 +3,8 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
-using MTConnect.Application.Components;
+//using MTConnect.Application.Components;
+using MTConnectDevices = MTConnect.MTConnectDevices;
 using System.ComponentModel;
 
 namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice
@@ -12,7 +13,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public DeviceInfo(string address, int port, Device device)
+        public DeviceInfo(string address, int port, MTConnectDevices.Device device)
         {
             Id = TrakHound.Tools.String_Functions.RandomString(20);
             Address = address;
@@ -35,9 +36,9 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice
 
         public string Address { get; set; }
         public int Port { get; set; }
-        public Device Device { get; set; }
+        public MTConnectDevices.Device Device { get; set; }
 
-        public Description DeviceDescription
+        public MTConnectDevices.Description DeviceDescription
         {
             get
             {

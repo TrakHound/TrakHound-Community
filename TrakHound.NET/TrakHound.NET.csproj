@@ -36,8 +36,8 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MTConnect.NET">
-      <HintPath>..\lib\MTConnect.NET.dll</HintPath>
+    <Reference Include="MTConnect-NET">
+      <HintPath>..\..\..\MTConnect.NET\src\bin\Release\MTConnect-NET.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\lib\Newtonsoft.Json.dll</HintPath>
@@ -168,10 +168,10 @@
     <Compile Include="Tables\Names.cs" />
     <None Include="packages.config" />
     <None Include="Tables\Variables.cs" />
-    <Compile Include="Tools\IpNetwork\BigIntegerExt.cs" />
-    <Compile Include="Tools\IpNetwork\IPAddressCollection.cs" />
-    <Compile Include="Tools\IpNetwork\IPNetwork.cs" />
-    <Compile Include="Tools\IpNetwork\IPNetworkCollection.cs" />
+    <None Include="Tools\IpNetwork\BigIntegerExt.cs" />
+    <None Include="Tools\IpNetwork\IPAddressCollection.cs" />
+    <None Include="Tools\IpNetwork\IPNetwork.cs" />
+    <None Include="Tools\IpNetwork\IPNetworkCollection.cs" />
     <Compile Include="Updates\AppInfo.cs" />
     <Compile Include="Updates\UpdateConfiguration.cs" />
     <Compile Include="Servers\DataProcessing\Server.cs" />

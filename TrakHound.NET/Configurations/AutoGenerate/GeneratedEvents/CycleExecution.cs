@@ -4,7 +4,7 @@
 // file 'LICENSE', which is part of this source code package.
 
 using MTConnect;
-using MTConnect.Application.Components;
+using MTConnectDevices = MTConnect.MTConnectDevices;
 using System.Collections.Generic;
 using System.Data;
 
@@ -12,7 +12,7 @@ namespace TrakHound.Configurations.AutoGenerate.GeneratedEvents
 {
     public static class CycleExecution
     {
-        public static void Add(DataTable table, List<DataItem> dataItems)
+        public static void Add(DataTable table, List<MTConnectDevices.DataItem> dataItems)
         {
             // Add Event
             string eventPrefix = "/GeneratedEvents/Event||02";
@@ -26,7 +26,7 @@ namespace TrakHound.Configurations.AutoGenerate.GeneratedEvents
             DeviceConfiguration.EditTable(table, eventPrefix + "/Default", "Stopped", "numval||0;");
         }
 
-        private static void AddProgramStartedValue(string prefix, DataTable table, List<DataItem> dataItems)
+        private static void AddProgramStartedValue(string prefix, DataTable table, List<MTConnectDevices.DataItem> dataItems)
         {
             // Add Value
             string valuePrefix = prefix + "/Value||00";
@@ -44,7 +44,7 @@ namespace TrakHound.Configurations.AutoGenerate.GeneratedEvents
             if (item != null) DeviceConfiguration.EditTable(table, triggerPrefix + "/Trigger||01", null, "id||01;link||" + item.Id + ";link_type||ID;value||ARMED;");
 
             // System
-            item = dataItems.Find(x => x.Category == DataItemCategory.CONDITION && x.Type == "SYSTEM" && x.FullAddress.ToLower().Contains("controller"));
+            item = dataItems.Find(x => x.Category == DataItemCategory.CONDITION && x.Type == "SYSTEM" && x.TypePath.ToLower().Contains("controller"));
             if (item != null) DeviceConfiguration.EditTable(table, triggerPrefix + "/Trigger||02", null, "id||02;link||" + item.Id + ";link_type||ID;modifier||NOT;value||Fault;");
 
             // Controller Mode
@@ -63,7 +63,7 @@ namespace TrakHound.Configurations.AutoGenerate.GeneratedEvents
             DeviceConfiguration.EditTable(table, valuePrefix + "/Result", "Started", "numval||2;");
         }
 
-        private static void AddProgramPausedValue(string prefix, DataTable table, List<DataItem> dataItems)
+        private static void AddProgramPausedValue(string prefix, DataTable table, List<MTConnectDevices.DataItem> dataItems)
         {
             // Add Value
             string valuePrefix = prefix + "/Value||01";
@@ -81,7 +81,7 @@ namespace TrakHound.Configurations.AutoGenerate.GeneratedEvents
             if (item != null) DeviceConfiguration.EditTable(table, triggerPrefix + "/Trigger||01", null, "id||01;link||" + item.Id + ";link_type||ID;value||ARMED;");
 
             // System
-            item = dataItems.Find(x => x.Category == DataItemCategory.CONDITION && x.Type == "SYSTEM" && x.FullAddress.ToLower().Contains("controller"));
+            item = dataItems.Find(x => x.Category == DataItemCategory.CONDITION && x.Type == "SYSTEM" && x.TypePath.ToLower().Contains("controller"));
             if (item != null) DeviceConfiguration.EditTable(table, triggerPrefix + "/Trigger||02", null, "id||02;link||" + item.Id + ";link_type||ID;modifier||NOT;value||Fault;");
 
             // Controller Mode
@@ -107,7 +107,7 @@ namespace TrakHound.Configurations.AutoGenerate.GeneratedEvents
             DeviceConfiguration.EditTable(table, valuePrefix + "/Result", "Paused", "numval||1;");
         }
 
-        private static void AddCaptureItems(string prefix, DataTable table, List<DataItem> dataItems)
+        private static void AddCaptureItems(string prefix, DataTable table, List<MTConnectDevices.DataItem> dataItems)
         {
             string capturePrefix = prefix + "/Capture";
 

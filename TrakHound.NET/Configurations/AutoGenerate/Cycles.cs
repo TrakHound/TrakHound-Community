@@ -4,7 +4,7 @@
 // file 'LICENSE', which is part of this source code package.
 
 using MTConnect;
-using MTConnect.Application.Components;
+using MTConnectDevices = MTConnect.MTConnectDevices;
 using System.Collections.Generic;
 using System.Data;
 
@@ -12,7 +12,7 @@ namespace TrakHound.Configurations.AutoGenerate
 {
     public static class Cycles
     {
-        public static void Add(DataTable table, List<DataItem> dataItems)
+        public static void Add(DataTable table, List<MTConnectDevices.DataItem> dataItems)
         {
             DeviceConfiguration.EditTable(table, "/Cycles/CycleEventName", "cycle_execution", null);
             DeviceConfiguration.EditTable(table, "/Cycles/StoppedEventValue", "Stopped", null);

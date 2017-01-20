@@ -4,7 +4,7 @@
 // file 'LICENSE', which is part of this source code package.
 
 using MTConnect;
-using MTConnect.Application.Components;
+//using MTConnect.Application.Components;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -728,7 +728,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                         deviceInfos.Add(deviceInfo);
                     }
 
-                    TrakHound.API.Devices.Update(currentUser, deviceInfos, false);
+                    Devices.Update(currentUser, deviceInfos, false);
                 }
             }
         }
@@ -1034,15 +1034,23 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
 
                     if (device.Description != null && device.Agent != null)
                     {
-                        string url = HTTP.GetUrl(device.Agent.Address, device.Agent.Port, device.Agent.DeviceName) + "probe";
+                        // Create Agent Url
+                        var protocol = "http://";
+                        var adr = device.Agent.Address;
+                        if (adr.IndexOf(protocol) >= 0) adr = adr.Substring(protocol.Length);
+                        else adr = protocol + adr;
+                        var url = adr;
+                        if (device.Agent.Port > 0 && device.Agent.Port != 80) url += ":" + device.Agent.Port;
 
-                        var returnData = Requests.Get(url, 5000, 1);
-                        if (returnData != null)
+                        // Send Probe Request
+                        var probe = new MTConnect.Clients.Probe(url, device.Agent.DeviceName);
+                        var document = probe.Execute();
+                        if (document != null)
                         {
                             var probeData = new Configuration.ProbeData();
                             probeData.Address = device.Agent.Address;
                             probeData.Port = device.Agent.Port.ToString();
-                            probeData.Device = returnData.Devices[0];
+                            probeData.Device = document.Devices[0];
 
                             // Generate New Configuration
                             var config = Configuration.Create(probeData);
@@ -1068,7 +1076,6 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
                                 DeviceConfiguration.EditTable(table, "/Description/LogoUrl", device.Description.LogoUrl);
 
                                 // Convert DataTable back to DeviceConfiguration object
-                                //var xml = DeviceConfigurationConverter.TableToXML(table);
                                 var xml = DeviceConfiguration.TableToXml(table);
                                 if (xml != null)
                                 {
