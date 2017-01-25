@@ -106,14 +106,14 @@
 
                     <ui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="35" Height="35" Foreground="{StaticResource Spinner}" />
 
-                    <ui:Button Image="/TrakHound-Dashboard;component/Resources/X_01.png" Clicked="TestConnectionCancel_Clicked" ToolTip="Cancel">
+                    <!--<ui:Button Image="/TrakHound-Dashboard;component/Resources/X_01.png" Clicked="TestConnectionCancel_Clicked" ToolTip="Cancel">
                         <ui:Button.Style>
                             <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Accent_Foreground}">
                                 <Setter Property="Height" Value="20"/>
                                 <Setter Property="Width" Value="20"/>
                             </Style>
                         </ui:Button.Style>
-                    </ui:Button>
+                    </ui:Button>-->
 
                 </Grid>
 

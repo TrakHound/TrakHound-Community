@@ -206,6 +206,7 @@ namespace TrakHound_Server.Plugins.TrakHoundCloud
                 {
                     ApiError.ProcessResponse(response, "Update Cloud Data : " + info.Url + " @ " + DateTime.Now.ToLongTimeString());
                 }
+                else logger.Warn("Update Cloud Data Failed");
             }
         }
     }

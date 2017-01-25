@@ -3,7 +3,7 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
-using MTConnect.Application.Components;
+using MTConnectDevices = MTConnect.MTConnectDevices;
 using System.Data;
 
 namespace TrakHound.Configurations.AutoGenerate
@@ -14,7 +14,7 @@ namespace TrakHound.Configurations.AutoGenerate
         {
             public string Address { get; set; }
             public string Port { get; set; }
-            public Device Device { get; set; }
+            public MTConnectDevices.Device Device { get; set; }
         }
 
         public static DeviceConfiguration Create(ProbeData probeData)
@@ -27,7 +27,8 @@ namespace TrakHound.Configurations.AutoGenerate
                 table.Columns.Add("value");
                 table.Columns.Add("attributes");
 
-                var items = probeData.Device.GetAllDataItems();
+                //var items = probeData.Device.GetAllDataItems();
+                var items = probeData.Device.DataItems;
 
                 SetIds(table);
                 SetEnabled(table);

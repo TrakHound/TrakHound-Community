@@ -3,7 +3,7 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
-using MTConnect.Application.Components;
+using MTConnectDevices = MTConnect.MTConnectDevices;
 using System;
 using System.Data;
 
@@ -11,7 +11,7 @@ namespace TrakHound.Configurations.AutoGenerate
 {
     public static class Description
     {
-        public static void Add(DataTable table, Device device)
+        public static void Add(DataTable table, MTConnectDevices.Device device)
         {
             if (device.Description != null)
             {

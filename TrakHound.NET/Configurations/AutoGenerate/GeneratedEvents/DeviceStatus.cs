@@ -4,7 +4,7 @@
 // file 'LICENSE', which is part of this source code package.
 
 using MTConnect;
-using MTConnect.Application.Components;
+using MTConnectDevices = MTConnect.MTConnectDevices;
 using System.Collections.Generic;
 using System.Data;
 
@@ -12,7 +12,7 @@ namespace TrakHound.Configurations.AutoGenerate.GeneratedEvents
 {
     public static class DeviceStatus
     {
-        public static void Add(DataTable table, List<DataItem> dataItems)
+        public static void Add(DataTable table, List<MTConnectDevices.DataItem> dataItems)
         {
             // Add Event
             string eventPrefix = "/GeneratedEvents/Event||00";
@@ -26,7 +26,7 @@ namespace TrakHound.Configurations.AutoGenerate.GeneratedEvents
             DeviceConfiguration.EditTable(table, eventPrefix + "/Default", "Alert", "numval||0;");
         }
 
-        private static void AddActiveValue(string prefix, DataTable table, List<DataItem> dataItems)
+        private static void AddActiveValue(string prefix, DataTable table, List<MTConnectDevices.DataItem> dataItems)
         {
             // Add Value
             string valuePrefix = prefix + "/Value||00";
@@ -56,7 +56,7 @@ namespace TrakHound.Configurations.AutoGenerate.GeneratedEvents
             // Add any Controller/Path Faults
             var items = dataItems.FindAll(x => x.Category == DataItemCategory.CONDITION && 
             (x.Type == "SYSTEM" || x.Type == "LOGIC_PROGRAM" || x.Type == "MOTION_PROGRAM") &&
-            (x.FullAddress.ToLower().Contains("controller") || x.FullAddress.ToLower().Contains("path")));
+            (x.TypePath.ToLower().Contains("controller") || x.TypePath.ToLower().Contains("path")));
             if (items != null)
             {
                 foreach (var item1 in items)
@@ -86,7 +86,7 @@ namespace TrakHound.Configurations.AutoGenerate.GeneratedEvents
             DeviceConfiguration.EditTable(table, valuePrefix + "/Result", "Active", "numval||2;");
         }
 
-        private static void AddIdleValue(string prefix, DataTable table, List<DataItem> dataItems)
+        private static void AddIdleValue(string prefix, DataTable table, List<MTConnectDevices.DataItem> dataItems)
         {
             // Add Value
             string valuePrefix = prefix + "/Value||01";
@@ -114,7 +114,7 @@ namespace TrakHound.Configurations.AutoGenerate.GeneratedEvents
             // Add any Controller/Path Faults
             var items = dataItems.FindAll(x => x.Category == DataItemCategory.CONDITION &&
             (x.Type == "SYSTEM" || x.Type == "LOGIC_PROGRAM" || x.Type == "MOTION_PROGRAM") &&
-            (x.FullAddress.ToLower().Contains("controller") || x.FullAddress.ToLower().Contains("path")));
+            (x.TypePath.ToLower().Contains("controller") || x.TypePath.ToLower().Contains("path")));
             if (items != null)
             {
                 foreach (var item1 in items)

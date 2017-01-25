@@ -3,7 +3,6 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
-using MTConnect.Application.Components;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -27,6 +26,8 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
     /// </summary>
     public partial class AutoDetect : UserControl, IPage
     {
+        private object _lock = new object();
+
         public AutoDetect()
         {
             InitializeComponent();
@@ -366,8 +367,6 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
 
         #region "Find Devices"
 
-        int nodesChecked = 0;
-
         int portRangeStart = 5000;
         int portRangeStop = 5020;
 
@@ -375,22 +374,35 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
 
         List<IPAddress> addressRange;
 
-        ManualResetEvent stop;
-        Network_Functions.PingNodes ping;
+        TrakHound.MTConnectSniffer.Sniffer sniffer;
+
 
         public void FindDevices()
         {
             DevicesLoading = true;
             DevicesAlreadyAdded = 0;
             DevicesNotAdded = 0;
-            NetworkNodesFound = 0;
-            nodesChecked = 0;
             DeviceInfos.Clear();
-            addressRange = null;
-            LogItems.Clear();
 
             pingTimeout = PingTimeout;
+            var addressRange = GetAddressRange();
+            var portRange = GetPortRange();
 
+            ThreadPool.QueueUserWorkItem((o) =>
+            {
+                // Create an MTConnect Sniffer
+                sniffer = new TrakHound.MTConnectSniffer.Sniffer();
+                sniffer.DeviceFound += Sniffer_DeviceFound;
+                sniffer.RequestsCompleted += Sniffer_RequestsCompleted;
+                sniffer.Timeout = pingTimeout;
+                sniffer.AddressRange = addressRange;
+                sniffer.PortRange = portRange;
+                sniffer.Start();
+            });
+        }
+
+        private IPAddress[] GetAddressRange()
+        {
             var hostIp = Network_Functions.GetHostIP();
             var hostSubnet = Network_Functions.GetSubnetMask(hostIp);
 
@@ -412,117 +424,91 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
 
                         if (start != null && end != null)
                         {
-                            AddtoLog(LogType.INFO, "Starting Auto Detect..");
-                            AddtoLog(LogType.INFO, "IP Address Range : From " + start.ToString() + " to " + end.ToString());
-                            AddtoLog(LogType.INFO, "Port Range : From " + portRangeStart.ToString() + " to " + portRangeStop.ToString());
-
                             var range = new Network_Functions.IPAddressRange(start, end);
-
                             addressRange = ips.FindAll(o => range.IsInRange(o));
 
+                            // Set HostIp to LocalHost instead of using network IP
                             int localhostIndex = addressRange.FindIndex(o => o.ToString() == hostIp.ToString());
                             if (localhostIndex >= 0) addressRange[localhostIndex] = IPAddress.Loopback;
+
+                            return addressRange.ToArray();
                         }
                     }
                 }
             }
 
-            portRangeStart = StartPort;
-            portRangeStop = EndPort;
-
-            SearchProgressValue = 0;
-            SearchProgressMaximum = 0;
-
-            stop = new ManualResetEvent(false);
-
-            ThreadPool.QueueUserWorkItem(new WaitCallback(FindDevices_Worker));
+            return null;
         }
 
-        public void FindDevices_Worker(object o)
+        private int[] GetPortRange()
         {
-            ping = new Network_Functions.PingNodes(addressRange, pingTimeout);
-            ping.PingError += Ping_PingError;
-            ping.PingReplied += Ping_PingReplied;
-            ping.Start();
+            var ips = new List<int>();
+
+            int s = StartPort;
+            int e = EndPort;
+            for (var i = s; i < ((e - s) + s); i++) ips.Add(i);
+
+            return ips.ToArray();
         }
 
-        private void Ping_PingError(IPAddress ip, string msg)
+
+        private void Sniffer_RequestsCompleted(long milliseconds)
         {
-            string format = "{0} : Exception : {1}";
-            AddtoLog(LogType.PING, string.Format(format, ip.ToString(), msg));
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                DevicesLoading = false;
+            }));
         }
 
-        private void Ping_PingReplied(IPAddress ip, System.Net.NetworkInformation.PingReply reply)
+        private void Sniffer_DeviceFound(TrakHound.MTConnectSniffer.MTConnectDevice device)
         {
-            string format = "{0} : {1}ms : {2}";
-            AddtoLog(LogType.PING, string.Format(format, ip.ToString(), reply.RoundtripTime, reply.Status.ToString()));
+            // Create Agent Url
+            var protocol = "http://";
+            var adr = device.IpAddress.ToString();
+            if (adr.IndexOf(protocol) >= 0) adr = adr.Substring(protocol.Length);
+            else adr = protocol + adr;
+            var url = adr;
+            if (device.Port > 0 && device.Port != 80) url += ":" + device.Port;
 
-            if (reply.Status == System.Net.NetworkInformation.IPStatus.Success)
+            // Run Probe Request
+            var probe = new MTConnect.Clients.Probe(url, device.DeviceName);
+            probe.Successful += Probe_Successful;
+            probe.UserObject = device;
+            probe.ExecuteAsync();
+        }
+
+        private void Probe_Successful(MTConnect.MTConnectDevices.Document document)
+        {
+            var device = document.UserObject as TrakHound.MTConnectSniffer.MTConnectDevice;
+            if (device != null)
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    NetworkNodesFound++;
-                    SearchProgressMaximum += (portRangeStop - portRangeStart); // Increment number of ports to probe
-
-                }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
-
-                for (var p = portRangeStart; p < ((portRangeStop - portRangeStart) + portRangeStart); p++)
-                {
-                    if (!stop.WaitOne(0, true))
+                    lock (_lock)
                     {
-                        var info = new TestInfo();
-                        info.Address = reply.Address.ToString();
-                        info.Port = p;
+                        if (Devices != null)
+                        {
+                            bool match = false;
 
-                        TestPort(info);
+                            // Check Device List to see if the Device has already been added
+                            match = Devices.ToList().Exists(o =>
+                            o.Agent != null &&
+                            o.Agent.Address == device.IpAddress.ToString() &&
+                            o.Agent.Port == device.Port &&
+                            o.Agent.DeviceName == device.DeviceName);
+
+                            // If Device is not already added then add it
+                            if (!match && document.Devices.Count > 0)
+                            {
+                                DevicesNotAdded++;
+
+                                var info = new DeviceInfo(device.IpAddress.ToString(), device.Port, document.Devices[0]);
+                                DeviceInfos.Add(info);
+                            }
+                            else DevicesAlreadyAdded++;
+                        }
                     }
-                    else break;
-                }
-            } 
-        }
-
-        private class TestInfo
-        {
-            public string Address { get; set; }
-            public int Port { get; set; }
-        }
-
-        private void TestPort(object o)
-        {
-            if (o != null)
-            {
-                var info = (TestInfo)o;
-
-                bool open = Network_Functions.IsPortOpen(info.Address, info.Port, pingTimeout);
-
-                if (!stop.WaitOne(0, true))
-                {
-                    if (open) TestProbe(info.Address, info.Port);
-                    else AddtoLog(LogType.PORT, "Port Closed :: " + info.Port);
-                }
-
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    nodesChecked++;
-
-                    SearchProgressValue++;
-
-                    if (nodesChecked >= NetworkNodesFound * (portRangeStop - portRangeStart))
-                    {
-                        DevicesLoading = false;
-                    }
-
                 }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
-            }
-        }
-
-        private void TestProbe(object o)
-        {
-            var info = (TestInfo)o;
-
-            if (!stop.WaitOne(0, true))
-            {
-                TestProbe(info.Address, info.Port);
             }
         }
 
@@ -547,66 +533,178 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
             }
         }
 
-        private void TestProbe(string address, int port)
-        {
-            string url = "http://" + address + ":" + port;
 
-            var probeReturn = Requests.Get(url, Math.Max(500, pingTimeout), 1);
-            if (probeReturn != null && probeReturn.Devices != null)
-            {
-                AddtoLog(LogType.PROBE, "MTConnect Probe Successful : " + url);
 
-                foreach (var device in probeReturn.Devices)
-                {
-                    if (stop.WaitOne(0, true)) break;
 
-                    if (Devices != null)
-                    {
-                        bool match = false;
+        //public void FindDevices_Worker(object o)
+        //{
+        //    ping = new Network_Functions.PingNodes(addressRange, pingTimeout);
+        //    ping.PingError += Ping_PingError;
+        //    ping.PingReplied += Ping_PingReplied;
+        //    ping.Start();
+        //}
 
-                        // Check Device List to see if the Device has already been added
-                        foreach (var addedDevice in Devices.ToList())
-                        {
-                            if (addedDevice.Agent != null && 
-                                addedDevice.Agent.Address == address &&
-                                addedDevice.Agent.Port == port &&
-                                addedDevice.Agent.DeviceName == device.Name)
-                            {
-                                match = true;
-                                break;
-                            }
-                        }
+        //private void Ping_PingError(IPAddress ip, string msg)
+        //{
+        //    string format = "{0} : Exception : {1}";
+        //    AddtoLog(LogType.PING, string.Format(format, ip.ToString(), msg));
+        //}
 
-                        // If Device is not already added then add it
-                        if (!match)
-                        {
-                            Dispatcher.BeginInvoke(new Action(() =>
-                            {
-                                if (!stop.WaitOne(0, true))
-                                {
-                                    DevicesNotAdded++;
+        //private void Ping_PingReplied(IPAddress ip, System.Net.NetworkInformation.PingReply reply)
+        //{
+        //    string format = "{0} : {1}ms : {2}";
+        //    AddtoLog(LogType.PING, string.Format(format, ip.ToString(), reply.RoundtripTime, reply.Status.ToString()));
 
-                                    var info = new DeviceInfo(address, port, device);
-                                    DeviceInfos.Add(info);
-                                }
-                            }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
-                        }
-                        else
-                        {
-                            Dispatcher.BeginInvoke(new Action(() =>
-                            {
-                                if (!stop.WaitOne(0, true)) DevicesAlreadyAdded++;
+        //    if (reply.Status == System.Net.NetworkInformation.IPStatus.Success)
+        //    {
+        //        Dispatcher.BeginInvoke(new Action(() =>
+        //        {
+        //            NetworkNodesFound++;
+        //            SearchProgressMaximum += (portRangeStop - portRangeStart); // Increment number of ports to probe
 
-                            }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
-                        }
-                    }
-                }
-            }
-            else
-            {
-                AddtoLog(LogType.PROBE, "MTConnect Probe Failed : " + url);
-            }
-        }
+        //        }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
+
+        //        for (var p = portRangeStart; p < ((portRangeStop - portRangeStart) + portRangeStart); p++)
+        //        {
+        //            if (!stop.WaitOne(0, true))
+        //            {
+        //                var info = new TestInfo();
+        //                info.Address = reply.Address.ToString();
+        //                info.Port = p;
+
+        //                TestPort(info);
+        //            }
+        //            else break;
+        //        }
+        //    } 
+        //}
+
+        //private class TestInfo
+        //{
+        //    public string Address { get; set; }
+        //    public int Port { get; set; }
+        //}
+
+        //private void TestPort(object o)
+        //{
+        //    if (o != null)
+        //    {
+        //        var info = (TestInfo)o;
+
+        //        bool open = Network_Functions.IsPortOpen(info.Address, info.Port, pingTimeout);
+
+        //        if (!stop.WaitOne(0, true))
+        //        {
+        //            if (open) TestProbe(info.Address, info.Port);
+        //            else AddtoLog(LogType.PORT, "Port Closed :: " + info.Port);
+        //        }
+
+        //        Dispatcher.BeginInvoke(new Action(() =>
+        //        {
+        //            nodesChecked++;
+
+        //            SearchProgressValue++;
+
+        //            if (nodesChecked >= NetworkNodesFound * (portRangeStop - portRangeStart))
+        //            {
+        //                DevicesLoading = false;
+        //            }
+
+        //        }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
+        //    }
+        //}
+
+        //private void TestProbe(object o)
+        //{
+        //    var info = (TestInfo)o;
+
+        //    if (!stop.WaitOne(0, true))
+        //    {
+        //        TestProbe(info.Address, info.Port);
+        //    }
+        //}
+
+        //private class AgentConfiguration
+        //{
+        //    public string Address { get; set; }
+        //    public int Port { get; set; }
+        //    public string DeviceName { get; set; }
+
+        //    public static AgentConfiguration Read(DeviceConfiguration config)
+        //    {
+        //        var result = new AgentConfiguration();
+        //        result.Address = XML_Functions.GetInnerText(config.Xml, "//Agent/Address");
+
+        //        int port = 80;
+        //        int.TryParse(XML_Functions.GetInnerText(config.Xml, "//Agent/Port"), out port);
+        //        result.Port = port;
+
+        //        result.DeviceName = XML_Functions.GetInnerText(config.Xml, "//Agent/DeviceName");
+
+        //        return result;
+        //    }
+        //}
+
+        //private void TestProbe(string address, int port)
+        //{
+        //    string url = "http://" + address + ":" + port;
+
+        //    var probeReturn = Requests.Get(url, Math.Max(500, pingTimeout), 1);
+        //    if (probeReturn != null && probeReturn.Devices != null)
+        //    {
+        //        AddtoLog(LogType.PROBE, "MTConnect Probe Successful : " + url);
+
+        //        foreach (var device in probeReturn.Devices)
+        //        {
+        //            if (stop.WaitOne(0, true)) break;
+
+        //            if (Devices != null)
+        //            {
+        //                bool match = false;
+
+        //                // Check Device List to see if the Device has already been added
+        //                foreach (var addedDevice in Devices.ToList())
+        //                {
+        //                    if (addedDevice.Agent != null && 
+        //                        addedDevice.Agent.Address == address &&
+        //                        addedDevice.Agent.Port == port &&
+        //                        addedDevice.Agent.DeviceName == device.Name)
+        //                    {
+        //                        match = true;
+        //                        break;
+        //                    }
+        //                }
+
+        //                // If Device is not already added then add it
+        //                if (!match)
+        //                {
+        //                    Dispatcher.BeginInvoke(new Action(() =>
+        //                    {
+        //                        if (!stop.WaitOne(0, true))
+        //                        {
+        //                            DevicesNotAdded++;
+
+        //                            var info = new DeviceInfo(address, port, device);
+        //                            DeviceInfos.Add(info);
+        //                        }
+        //                    }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
+        //                }
+        //                else
+        //                {
+        //                    Dispatcher.BeginInvoke(new Action(() =>
+        //                    {
+        //                        if (!stop.WaitOne(0, true)) DevicesAlreadyAdded++;
+
+        //                    }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
+        //                }
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        AddtoLog(LogType.PROBE, "MTConnect Probe Failed : " + url);
+        //    }
+        //}
 
         #endregion
 
@@ -878,8 +976,6 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
 
         private void Cancel()
         {
-            if (stop != null) stop.Set();
-            if (ping != null) ping.Cancel();
             DevicesLoading = false;
         }
 

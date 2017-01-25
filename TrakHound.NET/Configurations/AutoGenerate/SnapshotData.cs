@@ -4,7 +4,7 @@
 // file 'LICENSE', which is part of this source code package.
 
 using MTConnect;
-using MTConnect.Application.Components;
+using MTConnectDevices = MTConnect.MTConnectDevices;
 using System.Collections.Generic;
 using System.Data;
 
@@ -12,7 +12,7 @@ namespace TrakHound.Configurations.AutoGenerate
 {
     public static class SnapshotData
     {
-        public static void Add(DataTable table, List<DataItem> dataItems)
+        public static void Add(DataTable table, List<MTConnectDevices.DataItem> dataItems)
         {
             DeviceConfiguration.EditTable(table, "/GeneratedData/SnapShotData/Generated||00", null, "id||00;name||Device Status;link||device_status;");
             DeviceConfiguration.EditTable(table, "/GeneratedData/SnapShotData/Generated||01", null, "id||01;name||Production Status;link||production_status;");
@@ -21,7 +21,7 @@ namespace TrakHound.Configurations.AutoGenerate
             int id = 3;
 
             // Feedrate Overrides
-            var items = dataItems.FindAll(x => x.Category == DataItemCategory.EVENT && x.Type == "PATH_FEEDRATE_OVERRIDE" && x.SubType == "PROGRAMMED" && x.FullAddress.ToLower().Contains("controller"));
+            var items = dataItems.FindAll(x => x.Category == DataItemCategory.EVENT && x.Type == "PATH_FEEDRATE_OVERRIDE" && x.SubType == "PROGRAMMED" && x.TypePath.ToLower().Contains("controller"));
             if (items != null)
             {
                 int i = 1;
@@ -35,7 +35,7 @@ namespace TrakHound.Configurations.AutoGenerate
             }
 
             // Rapidrate Overrides
-            items = dataItems.FindAll(x => x.Category == DataItemCategory.EVENT && x.Type == "PATH_FEEDRATE_OVERRIDE" && x.SubType == "RAPID" && x.FullAddress.ToLower().Contains("controller"));
+            items = dataItems.FindAll(x => x.Category == DataItemCategory.EVENT && x.Type == "PATH_FEEDRATE_OVERRIDE" && x.SubType == "RAPID" && x.TypePath.ToLower().Contains("controller"));
             if (items != null)
             {
                 int i = 1;
@@ -49,7 +49,7 @@ namespace TrakHound.Configurations.AutoGenerate
             }
 
             // Spindle Overrides
-            items = dataItems.FindAll(x => x.Category == DataItemCategory.EVENT && x.Type == "ROTARY_VELOCITY_OVERRIDE" && x.FullAddress.ToLower().Contains("rotary"));
+            items = dataItems.FindAll(x => x.Category == DataItemCategory.EVENT && x.Type == "ROTARY_VELOCITY_OVERRIDE" && x.TypePath.ToLower().Contains("rotary"));
             if (items != null)
             {
                 int i = 1;

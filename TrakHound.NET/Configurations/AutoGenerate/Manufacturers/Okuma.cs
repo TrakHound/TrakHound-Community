@@ -4,7 +4,7 @@
 // file 'LICENSE', which is part of this source code package.
 
 using MTConnect;
-using MTConnect.Application.Components;
+using MTConnectDevices = MTConnect.MTConnectDevices;
 using System.Collections.Generic;
 using System.Data;
 
@@ -12,7 +12,7 @@ namespace TrakHound.Configurations.AutoGenerate.Manufacturers
 {
     public static class Okuma
     {
-        public static void Process(DataTable table, Device device)
+        public static void Process(DataTable table, MTConnectDevices.Device device)
         {
             if (device != null && device.Description != null && !string.IsNullOrEmpty(device.Description.Manufacturer))
             {
@@ -20,7 +20,7 @@ namespace TrakHound.Configurations.AutoGenerate.Manufacturers
                 {
                     SetDescription(table);
 
-                    var items = device.GetAllDataItems();
+                    var items = device.DataItems;
 
                     AddTimers(table, items);
                 }
@@ -41,7 +41,7 @@ namespace TrakHound.Configurations.AutoGenerate.Manufacturers
             }
         }
 
-        private static void AddTimers(DataTable table, List<DataItem> dataItems)
+        private static void AddTimers(DataTable table, List<MTConnectDevices.DataItem> dataItems)
         {
             // Run Time
             var item = dataItems.Find(x => x.Category == DataItemCategory.SAMPLE && x.Type == "ACCUMULATED_TIME" && x.SubType == "x:RUNNING_TIME");

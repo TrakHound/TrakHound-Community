@@ -4,7 +4,7 @@
 // file 'LICENSE', which is part of this source code package.
 
 using MTConnect;
-using MTConnect.Application.Components;
+using MTConnectDevices = MTConnect.MTConnectDevices;
 using System.Collections.Generic;
 using System.Data;
 
@@ -12,7 +12,7 @@ namespace TrakHound.Configurations.AutoGenerate.GeneratedEvents
 {
     public static class PartsCount
     {
-        public static void Add(DataTable table, List<DataItem> dataItems)
+        public static void Add(DataTable table, List<MTConnectDevices.DataItem> dataItems)
         {
             int i = 1;
             int e = 3;
@@ -35,7 +35,7 @@ namespace TrakHound.Configurations.AutoGenerate.GeneratedEvents
             }
         }
 
-        private static void AddPartsProducedValue(string prefix, DataTable table, DataItem dataItem)
+        private static void AddPartsProducedValue(string prefix, DataTable table, MTConnectDevices.DataItem dataItem)
         {
             // Add Value
             string valuePrefix = prefix + "/Value||00";
@@ -50,7 +50,7 @@ namespace TrakHound.Configurations.AutoGenerate.GeneratedEvents
             DeviceConfiguration.EditTable(table, valuePrefix + "/Result", "Parts Produced", "numval||1;");
         }
 
-        private static void AddCaptureItems(string prefix, DataTable table, DataItem dataItem)
+        private static void AddCaptureItems(string prefix, DataTable table, MTConnectDevices.DataItem dataItem)
         {
             string capturePrefix = prefix + "/Capture";
 

@@ -3,7 +3,7 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
-using MTConnect.Application.Components;
+using MTConnectDevices = MTConnect.MTConnectDevices;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -162,13 +162,13 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.GeneratedEvents
             }
         }
 
-        private List<DataItem> probeData = new List<DataItem>();
+        private List<MTConnectDevices.DataItem> probeData = new List<MTConnectDevices.DataItem>();
 
         public class CollectedItem : IComparable
         {
             public CollectedItem() { }
 
-            public CollectedItem(DataItem dataItem)
+            public CollectedItem(MTConnectDevices.DataItem dataItem)
             {
                 Id = dataItem.Id;
                 Name = dataItem.Name;
@@ -223,14 +223,14 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.GeneratedEvents
             {
                 if (data.Id.ToLower() == "mtconnect_probe_dataitems")
                 {
-                    var dataItems = (List<DataItem>)data.Data02;
+                    var dataItems = (List<MTConnectDevices.DataItem>)data.Data02;
                     probeData = dataItems;
                     if (Loaded) LoadCollectedItems(dataItems);
                 }
             }
         }
 
-        private void LoadCollectedItems(List<DataItem> dataItems)
+        private void LoadCollectedItems(List<MTConnectDevices.DataItem> dataItems)
         {
             var newItems = new List<CollectedItem>();
 

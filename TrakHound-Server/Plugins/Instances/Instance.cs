@@ -5,6 +5,8 @@
 
 using System;
 using System.Collections.Generic;
+using MTConnectDevices = MTConnect.MTConnectDevices;
+using MTConnectStreams = MTConnect.MTConnectStreams;
 
 namespace TrakHound_Server.Plugins.Instances
 {
@@ -92,7 +94,7 @@ namespace TrakHound_Server.Plugins.Instances
         public DateTime Timestamp { get; set; }
         public long Sequence { get; set; }
 
-        public static List<VariableData> Get(List<MTConnect.Application.Streams.DataItem> dataItems)
+        public static List<VariableData> Get(List<MTConnectStreams.DataItem> dataItems)
         {
             var result = new List<VariableData>();
 
@@ -106,7 +108,7 @@ namespace TrakHound_Server.Plugins.Instances
 
                 if (item.Category == MTConnect.DataItemCategory.CONDITION)
                 {
-                    data.Value = ((MTConnect.Application.Streams.Condition)item).ConditionValue.ToString();
+                    data.Value = ((MTConnectStreams.Condition)item).ConditionValue.ToString();
                 }
                 else data.Value = item.CDATA;
 
@@ -125,7 +127,7 @@ namespace TrakHound_Server.Plugins.Instances
 
     public class CurrentInstance
     {
-        public MTConnect.Application.Streams.ReturnData CurrentData { get; set; }
+        public MTConnectStreams.Document CurrentData { get; set; }
         public Instance Instance { get; set; }
     }
 }

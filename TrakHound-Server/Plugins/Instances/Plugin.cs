@@ -3,14 +3,19 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
+using NLog;
 using TrakHound;
 using TrakHound.Configurations;
 using TrakHound.Plugins.Server;
+using MTConnectDevices = MTConnect.MTConnectDevices;
+using MTConnectStreams = MTConnect.MTConnectStreams;
 
 namespace TrakHound_Server.Plugins.Instances
 {
     public partial class Plugin : IServerPlugin
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
 
         public string Name { get { return "Instances"; } }
 
@@ -29,6 +34,7 @@ namespace TrakHound_Server.Plugins.Instances
 
                         if (data.Data02 == null)
                         {
+                            logger.Trace("MTConnect Probe");
                             SendInstanceData(configuration, null);
                             SendCurrentInstanceData(configuration, null);
                         }
@@ -37,13 +43,15 @@ namespace TrakHound_Server.Plugins.Instances
 
                     case "MTCONNECT_CURRENT":
 
-                        if (data.Data02 != null) Update_Current((MTConnect.Application.Streams.ReturnData)data.Data02);
+                        logger.Trace("MTConnect Current");
+                        if (data.Data02 != null) Update_Current((MTConnectStreams.Document)data.Data02);
 
                         break;
 
                     case "MTCONNECT_SAMPLE":
 
-                        if (data.Data02 != null) Update_Sample((MTConnect.Application.Streams.ReturnData)data.Data02);
+                        logger.Trace("MTConnect Sample");
+                        if (data.Data02 != null) Update_Sample((MTConnectStreams.Document)data.Data02);
 
                         break;
                 }

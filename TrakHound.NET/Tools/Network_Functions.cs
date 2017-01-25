@@ -79,124 +79,124 @@ namespace TrakHound.Tools
             return null;
         }
 
-        public class PingNodes
-        {
-            private int returnedIndexes = 0;
-            private int expectedIndexes = 0;
+        //public class PingNodes
+        //{
+        //    private int returnedIndexes = 0;
+        //    private int expectedIndexes = 0;
 
-            private int timeout = 2000;
+        //    private int timeout = 2000;
 
-            private List<IPAddress> addressRange;
+        //    private List<IPAddress> addressRange;
 
-            public delegate void PingReply_Handler(IPAddress ip, PingReply reply);
-            public event PingReply_Handler PingReplied;
+        //    public delegate void PingReply_Handler(IPAddress ip, PingReply reply);
+        //    public event PingReply_Handler PingReplied;
 
-            public delegate void PingError_Handler(IPAddress ip, string msg);
-            public event PingError_Handler PingError;
+        //    public delegate void PingError_Handler(IPAddress ip, string msg);
+        //    public event PingError_Handler PingError;
 
-            public delegate void Finished_Handler();
-            public event Finished_Handler Finished;
+        //    public delegate void Finished_Handler();
+        //    public event Finished_Handler Finished;
 
-            public PingNodes() { }
+        //    public PingNodes() { }
 
-            public PingNodes(List<IPAddress> _addressRange)
-            {
-                addressRange = _addressRange;
-            }
+        //    public PingNodes(List<IPAddress> _addressRange)
+        //    {
+        //        addressRange = _addressRange;
+        //    }
 
-            public PingNodes(List<IPAddress> _addressRange, int _timeout)
-            {
-                addressRange = _addressRange;
-                timeout = _timeout;
-            }
+        //    public PingNodes(List<IPAddress> _addressRange, int _timeout)
+        //    {
+        //        addressRange = _addressRange;
+        //        timeout = _timeout;
+        //    }
 
-            public PingNodes(int _timeout)
-            {
-                timeout = _timeout;
-            }
+        //    public PingNodes(int _timeout)
+        //    {
+        //        timeout = _timeout;
+        //    }
 
-            public void Start()
-            {
-                returnedIndexes = 0;
-                expectedIndexes = 0;
+        //    public void Start()
+        //    {
+        //        returnedIndexes = 0;
+        //        expectedIndexes = 0;
 
-                var ip = GetHostIP();
-                if (ip != null)
-                {
-                    var hostIp = IPNetwork.Parse(ip.ToString());
-                    var list = addressRange == null ? new System.Net.IPAddressCollection(hostIp).ToList() : addressRange;
-                    if (list.Count > 0)
-                    {
-                        expectedIndexes = list.Count;
+        //        var ip = GetHostIP();
+        //        if (ip != null)
+        //        {
+        //            var hostIp = IPNetwork.Parse(ip.ToString());
+        //            var list = addressRange == null ? new System.Net.IPAddressCollection(hostIp).ToList() : addressRange;
+        //            if (list.Count > 0)
+        //            {
+        //                expectedIndexes = list.Count;
 
-                        for (var x = 0; x <= list.Count - 1; x++)
-                        {
-                            int index = x;
-                            StartPing(list[x], index);
-                        }
-                    }
-                }
-            }
+        //                for (var x = 0; x <= list.Count - 1; x++)
+        //                {
+        //                    int index = x;
+        //                    StartPing(list[x], index);
+        //                }
+        //            }
+        //        }
+        //    }
 
-            public void Cancel()
-            {
-                foreach (var request in queuedPings) request.SendAsyncCancel();
-            }
+        //    public void Cancel()
+        //    {
+        //        foreach (var request in queuedPings) request.SendAsyncCancel();
+        //    }
 
-            private static byte[] GetSubnetBytes(IPAddress ip, IPAddress subnetMask)
-            {
-                var ibytes = ip.GetAddressBytes();
-                var sbytes = subnetMask.GetAddressBytes();
+        //    private static byte[] GetSubnetBytes(IPAddress ip, IPAddress subnetMask)
+        //    {
+        //        var ibytes = ip.GetAddressBytes();
+        //        var sbytes = subnetMask.GetAddressBytes();
 
-                var b = new List<byte>();
+        //        var b = new List<byte>();
 
-                for (var x = 0; x <= sbytes.Length - 1; x++)
-                {
-                    if (sbytes[x] == Convert.ToByte(0)) return b.ToArray();
-                    else b.Add(ibytes[x]);
-                }
+        //        for (var x = 0; x <= sbytes.Length - 1; x++)
+        //        {
+        //            if (sbytes[x] == Convert.ToByte(0)) return b.ToArray();
+        //            else b.Add(ibytes[x]);
+        //        }
 
-                return null;
-            }
+        //        return null;
+        //    }
 
-            public List<Ping> queuedPings = new List<Ping>();
+        //    public List<Ping> queuedPings = new List<Ping>();
 
-            private void StartPing(IPAddress ipAddress, int index)
-            {
-                try
-                {
-                    var ping = new Ping();
-                    ping.PingCompleted += Ping_PingCompleted;
-                    queuedPings.Add(ping);
-                    ping.SendAsync(ipAddress, timeout, ipAddress);
-                }
-                catch (Exception ex)
-                {
-                    PingError?.Invoke(ipAddress, ex.Message);
-                    logger.Error(ex);
-                }  
-            }
+        //    private void StartPing(IPAddress ipAddress, int index)
+        //    {
+        //        try
+        //        {
+        //            var ping = new Ping();
+        //            ping.PingCompleted += Ping_PingCompleted;
+        //            queuedPings.Add(ping);
+        //            ping.SendAsync(ipAddress, timeout, ipAddress);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            PingError?.Invoke(ipAddress, ex.Message);
+        //            logger.Error(ex);
+        //        }  
+        //    }
 
-            private void Ping_PingCompleted(object sender, PingCompletedEventArgs e)
-            {
-                try
-                {
-                    if (!e.Cancelled)
-                    {
-                        if (e.UserState != null) PingReplied?.Invoke((IPAddress)e.UserState, e.Reply);
+        //    private void Ping_PingCompleted(object sender, PingCompletedEventArgs e)
+        //    {
+        //        try
+        //        {
+        //            if (!e.Cancelled)
+        //            {
+        //                if (e.UserState != null) PingReplied?.Invoke((IPAddress)e.UserState, e.Reply);
 
-                        returnedIndexes += 1;
-                        if (returnedIndexes >= expectedIndexes) Finished?.Invoke();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    if (e != null && e.Reply != null && e.Reply.Address != null) PingError?.Invoke(e.Reply.Address, ex.Message);
+        //                returnedIndexes += 1;
+        //                if (returnedIndexes >= expectedIndexes) Finished?.Invoke();
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            if (e != null && e.Reply != null && e.Reply.Address != null) PingError?.Invoke(e.Reply.Address, ex.Message);
 
-                    logger.Error(ex);
-                }
-            }
-        }
+        //            logger.Error(ex);
+        //        }
+        //    }
+        //}
 
         public class IPAddressRange
         {

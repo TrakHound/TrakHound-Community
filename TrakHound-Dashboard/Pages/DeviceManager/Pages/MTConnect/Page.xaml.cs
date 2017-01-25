@@ -4,7 +4,7 @@
 // file 'LICENSE', which is part of this source code package.
 
 using MTConnect;
-using MTConnect.Application.Components;
+using MTConnectDevices = MTConnect.MTConnectDevices;
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -86,7 +86,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.MTConnectConfig
             if (!string.IsNullOrEmpty(ProxyAddress) || !string.IsNullOrEmpty(ProxyPort)) ProxySettings.IsExpanded = true;
             else ProxySettings.IsExpanded = false;
 
-            MTCDeviceList.Clear();
+            //MTCDeviceList.Clear();
 
             ConnectionTestResult = 0;
             ConnectionTestResultText = null;
@@ -243,8 +243,8 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.MTConnectConfig
             var info = new TestConnectionInfo();
             info.Address = Address;
             int port = 0;
-            if (int.TryParse(Port, out port)) { }
-            else port = 80;
+            int.TryParse(Port, out port);
+            if (port <= 0) port = 80;
             info.Port = port;
             info.DeviceName = DeviceName;
 
@@ -254,10 +254,20 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.MTConnectConfig
                 ConnectionTestResult = 0;
                 ConnectionTestResultText = null;
 
-                if (testConnectionThread != null) testConnectionThread.Abort();
+                // Create Agent Url
+                var protocol = "http://";
+                var adr = info.Address;
+                if (adr.IndexOf(protocol) >= 0) adr = adr.Substring(protocol.Length);
+                else adr = protocol + adr;
+                var url = adr;
+                if (port > 0 && port != 80) url += ":" + port;
 
-                testConnectionThread = new Thread(new ParameterizedThreadStart(TestConnection_Worker));
-                testConnectionThread.Start(info);
+                // Send Probe Request
+                var probe = new MTConnect.Clients.Probe(url, info.DeviceName);
+                probe.Successful += Probe_Successful;
+                probe.Error += Probe_Error;
+                probe.ConnectionError += Probe_ConnectionError;
+                probe.ExecuteAsync();
             }
             else
             {
@@ -266,27 +276,34 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.MTConnectConfig
             }
         }
 
-        private void TestConnection_Worker(object o)
+        private void Probe_Successful(MTConnectDevices.Document document)
         {
-            if (o != null)
+            Dispatcher.BeginInvoke(new Action(() =>
             {
-                var info = (TestConnectionInfo)o;
+                ConnectionTestResult = 1;
+                ConnectionTestResultText = "MTConnect Probe Successful";
+                ConnectionTestLoading = false;
+            }));
+        }
 
-                var returnInfo = new TestConnectionReturnInfo();
+        private void Probe_ConnectionError(Exception ex)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                ConnectionTestResult = -1;
+                ConnectionTestResultText = "Error Connecting to MTConnect Device";
+                ConnectionTestLoading = false;
+            }));
+        }
 
-                string url = HTTP.GetUrl(info.Address, info.Port, info.DeviceName) + "probe";
-
-                ReturnData returnData = Requests.Get(url, 5000, 1);
-
-                if (returnData != null)
-                {
-                    returnInfo.Success = true;
-                    returnInfo.Message = "MTConnect Probe Successful @ " + url;
-                }
-                else returnInfo.Message = "MTConnect Probe Failed @ " + url;
-
-                Dispatcher.BeginInvoke(new Action<TestConnectionReturnInfo>(TestConnection_GUI), System.Windows.Threading.DispatcherPriority.Background, new object[] { returnInfo });
-            }
+        private void Probe_Error(MTConnect.MTConnectError.Document errorDocument)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                ConnectionTestResult = -1;
+                ConnectionTestResultText = "MTConnect Returned an Error";
+                ConnectionTestLoading = false;
+            }));
         }
 
         private class TestConnectionReturnInfo
@@ -340,43 +357,43 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.MTConnectConfig
 
         #region "Device List"
 
-        ObservableCollection<RadioButton> mtcdevicelist;
-        public ObservableCollection<RadioButton> MTCDeviceList
-        {
-            get
-            {
-                if (mtcdevicelist == null)
-                    mtcdevicelist = new ObservableCollection<RadioButton>();
-                return mtcdevicelist;
-            }
+        //ObservableCollection<RadioButton> mtcdevicelist;
+        //public ObservableCollection<RadioButton> MTCDeviceList
+        //{
+        //    get
+        //    {
+        //        if (mtcdevicelist == null)
+        //            mtcdevicelist = new ObservableCollection<RadioButton>();
+        //        return mtcdevicelist;
+        //    }
 
-            set
-            {
-                mtcdevicelist = value;
-            }
-        }
+        //    set
+        //    {
+        //        mtcdevicelist = value;
+        //    }
+        //}
 
-        void AddDevices(ReturnData returnData)
-        {
-            MTCDeviceList.Clear();
+        ////void AddDevices(ReturnData returnData)
+        ////{
+        ////    MTCDeviceList.Clear();
 
-            foreach (Device device in returnData.Devices)
-            {
-                RadioButton radio = new RadioButton();
-                radio.Content = device.Name;
-                radio.GroupName = "MTCDevices";
-                radio.Margin = new Thickness(0, 5, 0, 5);
-                radio.Checked += radio_Checked;
+        ////    foreach (Device device in returnData.Devices)
+        ////    {
+        ////        RadioButton radio = new RadioButton();
+        ////        radio.Content = device.Name;
+        ////        radio.GroupName = "MTCDevices";
+        ////        radio.Margin = new Thickness(0, 5, 0, 5);
+        ////        radio.Checked += radio_Checked;
 
-                MTCDeviceList.Add(radio);
-                if (MTCDeviceList.Count == 1) radio.IsChecked = true;
-            }
-        }
+        ////        MTCDeviceList.Add(radio);
+        ////        if (MTCDeviceList.Count == 1) radio.IsChecked = true;
+        ////    }
+        ////}
 
-        void radio_Checked(object sender, RoutedEventArgs e)
-        {
-            DeviceName = ((RadioButton)sender).Content.ToString();
-        }
+        //void radio_Checked(object sender, RoutedEventArgs e)
+        //{
+        //    DeviceName = ((RadioButton)sender).Content.ToString();
+        //}
 
         #endregion
 
@@ -460,13 +477,13 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.MTConnectConfig
             {
                 if (data.Id.ToLower() == "mtconnect_probe_header")
                 {
-                    var header = (MTConnect.Application.Headers.Devices)data.Data02;
+                    var header = (MTConnect.Headers.MTConnectDevicesHeader)data.Data02;
                     LoadProbeHeader(header);
                 }
             }
         }
 
-        private void LoadProbeHeader(MTConnect.Application.Headers.Devices header)
+        private void LoadProbeHeader(MTConnect.Headers.MTConnectDevicesHeader header)
         {
             InstanceId = header.InstanceId.ToString();
             Sender = header.Sender;
