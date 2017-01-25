@@ -3,10 +3,11 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
-using MTConnect.Application.Components;
-using MTConnect.Application.Streams;
+using MTConnectDevices = MTConnect.MTConnectDevices;
+using MTConnectStreams = MTConnect.MTConnectStreams;
 using System;
 using System.Collections.Generic;
+
 
 namespace TrakHound_Server.Plugins.Status
 {
@@ -41,7 +42,7 @@ namespace TrakHound_Server.Plugins.Status
 
         #region "Get (Probe)"
 
-        public static List<StatusInfo> GetList(MTConnect.Application.Components.ReturnData probe)
+        public static List<StatusInfo> GetList(MTConnectDevices.Document probe)
         {
             var result = new List<StatusInfo>();
 
@@ -51,18 +52,18 @@ namespace TrakHound_Server.Plugins.Status
 
                 foreach (var item in device.DataItems) result.Add(ProcessDataItem(item));
 
-                foreach (var component in device.Components)
+                foreach (var component in device.Components.Components)
                 {
                     result.AddRange(ProcessComponent(component));
 
-                    result.AddRange(ProcessSubcomponents(component.Components));
+                    result.AddRange(ProcessSubcomponents(component.SubComponents.Components));
                 }
             }
 
             return result;
         }
 
-        private static List<StatusInfo> ProcessSubcomponents(List<Component> subcomponents)
+        private static List<StatusInfo> ProcessSubcomponents(List<MTConnectDevices.Component> subcomponents)
         {
             var result = new List<StatusInfo>();
 
@@ -70,13 +71,13 @@ namespace TrakHound_Server.Plugins.Status
             {
                 result.AddRange(ProcessComponent(subcomponent));
 
-                result.AddRange(ProcessSubcomponents(subcomponent.Components));
+                result.AddRange(ProcessSubcomponents(subcomponent.SubComponents.Components));
             }
 
             return result;
         }
 
-        private static List<StatusInfo> ProcessComponent(Component component)
+        private static List<StatusInfo> ProcessComponent(MTConnectDevices.Component component)
         {
             var result = new List<StatusInfo>();
 
@@ -85,13 +86,13 @@ namespace TrakHound_Server.Plugins.Status
             return result;
         }
 
-        private static StatusInfo ProcessDataItem(MTConnect.Application.Components.DataItem item)
+        private static StatusInfo ProcessDataItem(MTConnectDevices.DataItem item)
         {
             var info = new StatusInfo();
             info.InfoType = StatusInfoType.MTConnect_Data_Item;
 
             info.Category = item.Category;
-            info.Address = item.FullAddress;
+            info.Address = item.TypePath;
             info.Name = item.Name;
             info.Id = item.Id;
             info.Type = item.Type;
@@ -104,7 +105,7 @@ namespace TrakHound_Server.Plugins.Status
 
         #region "Process (Current)"
 
-        public static void ProcessList(MTConnect.Application.Streams.ReturnData current, List<StatusInfo> infos)
+        public static void ProcessList(MTConnectStreams.Document current, List<StatusInfo> infos)
         {
             if (current.DeviceStreams != null && current.DeviceStreams.Count > 0)
             {
@@ -119,12 +120,12 @@ namespace TrakHound_Server.Plugins.Status
             }
         }
 
-        private static void ProcessComponentStream(ComponentStream componentStream, List<StatusInfo> infos)
+        private static void ProcessComponentStream(MTConnectStreams.ComponentStream componentStream, List<StatusInfo> infos)
         {
             foreach (var item in componentStream.DataItems) ProcessDataItem(item, infos);
         }
 
-        private static void ProcessDataItem(MTConnect.Application.Streams.DataItem item, List<StatusInfo> infos)
+        private static void ProcessDataItem(MTConnectStreams.DataItem item, List<StatusInfo> infos)
         {
             var info = infos.Find(x => x.Id == item.DataItemId);
             if (info != null)
@@ -137,7 +138,7 @@ namespace TrakHound_Server.Plugins.Status
                 if (info.Category == MTConnect.DataItemCategory.CONDITION)
                 {
                     info.PreviousValue2 = info.Value2;
-                    info.Value2 = ((Condition)item).ConditionValue.ToString();
+                    info.Value2 = ((MTConnectStreams.Condition)item).ConditionValue.ToString();
                 }
             }
         }

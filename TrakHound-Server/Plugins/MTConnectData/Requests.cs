@@ -3,14 +3,14 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
-using MTConnect;
-using MTConnect.Application.Headers;
 using NLog;
 using System;
 using System.Threading;
 using TrakHound;
 using TrakHound.API;
 using TrakHound.Configurations;
+using MTConnectDevices = MTConnect.MTConnectDevices;
+using MTConnectStreams = MTConnect.MTConnectStreams;
 
 namespace TrakHound_Server.Plugins.MTConnectData
 {
@@ -33,8 +33,8 @@ namespace TrakHound_Server.Plugins.MTConnectData
 
         private ManualResetEvent stop;
 
-        private MTConnect.Application.Components.ReturnData probeData;
-        private MTConnect.Application.Streams.ReturnData currentData;
+        private MTConnectDevices.Document probeData;
+        private MTConnectStreams.Document currentData;
 
         private void Start(DeviceConfiguration config)
         {
@@ -63,7 +63,7 @@ namespace TrakHound_Server.Plugins.MTConnectData
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    logger.Error(ex);
                 }
             } while (!stop.WaitOne(ac.Heartbeat, true));
 
@@ -76,7 +76,7 @@ namespace TrakHound_Server.Plugins.MTConnectData
 
             started = false;
         }
-        
+
         private void RunRequests(DeviceConfiguration config)
         {
             var ac = config.Agent;
@@ -113,31 +113,40 @@ namespace TrakHound_Server.Plugins.MTConnectData
                         probeData = null;
                         SendAvailability(false, ac.Heartbeat, config);
                     }
-                } else SendAvailability(false, ac.Heartbeat, config);
+                }
+                else SendAvailability(false, ac.Heartbeat, config);
             }
         }
 
 
         #region "MTConnect Requests"
 
-        private MTConnect.Application.Components.ReturnData GetProbe(Data.AgentInfo config)
+        private MTConnectDevices.Document GetProbe(Data.AgentInfo config)
         {
-            MTConnect.Application.Components.ReturnData result = null;
+            MTConnectDevices.Document result = null;
 
             string address = config.Address;
             int port = config.Port;
             string deviceName = config.DeviceName;
 
-            // Set Proxy Settings
-            var proxy = new HTTP.ProxySettings();
-            proxy.Address = config.ProxyAddress;
-            proxy.Port = config.ProxyPort;
+            //// Set Proxy Settings
+            //var proxy = new HTTP.ProxySettings();
+            //proxy.Address = config.ProxyAddress;
+            //proxy.Port = config.ProxyPort;
 
             DateTime requestTimestamp = DateTime.Now;
 
-            string url = HTTP.GetUrl(address, port, deviceName) + "probe";
+            // Create Agent Url
+            var protocol = "http://";
+            var adr = address;
+            if (adr.IndexOf(protocol) >= 0) adr = adr.Substring(protocol.Length);
+            else adr = protocol + adr;
+            var url = adr;
+            if (port > 0 && port != 80) url += ":" + port;
 
-            result = MTConnect.Application.Components.Requests.Get(url, proxy, 2000, 1);
+            // Send Probe Request
+            var probe = new MTConnect.Clients.Probe(url, deviceName);
+            result = probe.Execute();
             if (result != null)
             {
                 if (verbose) logger.Info("Probe Successful : " + url + " @ " + requestTimestamp.ToString("o"));
@@ -150,24 +159,32 @@ namespace TrakHound_Server.Plugins.MTConnectData
             return result;
         }
 
-        private MTConnect.Application.Streams.ReturnData GetCurrent(Data.AgentInfo config)
+        private MTConnectStreams.Document GetCurrent(Data.AgentInfo config)
         {
-            MTConnect.Application.Streams.ReturnData result = null;
+            MTConnectStreams.Document result = null;
 
             string address = config.Address;
             int port = config.Port;
             string deviceName = config.DeviceName;
 
-            // Set Proxy Settings
-            var proxy = new HTTP.ProxySettings();
-            proxy.Address = config.ProxyAddress;
-            proxy.Port = config.ProxyPort;
+            //// Set Proxy Settings
+            //var proxy = new HTTP.ProxySettings();
+            //proxy.Address = config.ProxyAddress;
+            //proxy.Port = config.ProxyPort;
 
             DateTime requestTimestamp = DateTime.Now;
 
-            string url = HTTP.GetUrl(address, port, deviceName) + "current";
+            // Create Agent Url
+            var protocol = "http://";
+            var adr = address;
+            if (adr.IndexOf(protocol) >= 0) adr = adr.Substring(protocol.Length);
+            else adr = protocol + adr;
+            var url = adr;
+            if (port > 0 && port != 80) url += ":" + port;
 
-            result = MTConnect.Application.Streams.Requests.Get(url, proxy, 2000, 1);
+            // Send Probe Request
+            var current = new MTConnect.Clients.Current(url, deviceName);
+            result = current.Execute();
             if (result != null)
             {
                 if (verbose) logger.Info("Current Successful : " + url + " @ " + requestTimestamp.ToString("o") + " : " + result.Header.LastSequence);
@@ -186,7 +203,7 @@ namespace TrakHound_Server.Plugins.MTConnectData
             public long Count { get; set; }
         }
 
-        private SampleInfo GetSampleInfo(Streams header, DeviceConfiguration config)
+        private SampleInfo GetSampleInfo(MTConnect.Headers.MTConnectStreamsHeader header, DeviceConfiguration config)
         {
             var result = new SampleInfo();
 
@@ -228,18 +245,18 @@ namespace TrakHound_Server.Plugins.MTConnectData
             return result;
         }
 
-        private MTConnect.Application.Streams.ReturnData GetSample(Streams header, Data.AgentInfo ac, DeviceConfiguration config)
+        private MTConnectStreams.Document GetSample(MTConnect.Headers.MTConnectStreamsHeader header, Data.AgentInfo ac, DeviceConfiguration config)
         {
-            MTConnect.Application.Streams.ReturnData result = null;
+            MTConnectStreams.Document result = null;
 
             string address = ac.Address;
             int port = ac.Port;
             string deviceName = ac.DeviceName;
 
-            // Set Proxy Settings
-            var proxy = new HTTP.ProxySettings();
-            proxy.Address = ac.ProxyAddress;
-            proxy.Port = ac.ProxyPort;
+            //// Set Proxy Settings
+            //var proxy = new HTTP.ProxySettings();
+            //proxy.Address = ac.ProxyAddress;
+            //proxy.Port = ac.ProxyPort;
 
             SampleInfo info = GetSampleInfo(header, config);
             if (info != null)
@@ -248,9 +265,19 @@ namespace TrakHound_Server.Plugins.MTConnectData
                 {
                     DateTime requestTimestamp = DateTime.Now;
 
-                    string url = HTTP.GetUrl(address, port, deviceName) + "sample?from=" + info.From.ToString() + "&count=" + info.Count.ToString();
+                    // Create Agent Url
+                    var protocol = "http://";
+                    var adr = address;
+                    if (adr.IndexOf(protocol) >= 0) adr = adr.Substring(protocol.Length);
+                    else adr = protocol + adr;
+                    var url = adr;
+                    if (port > 0 && port != 80) url += ":" + port;
 
-                    result = MTConnect.Application.Streams.Requests.Get(url, proxy, ac.Heartbeat / 2, 2);
+                    // Send Probe Request
+                    var sample = new MTConnect.Clients.Sample(url, deviceName);
+                    sample.From = info.From;
+                    sample.Count = info.Count;
+                    result = sample.Execute();
                     if (result != null)
                     {
                         UpdateAgentData(header.InstanceId, info.From + info.Count);
@@ -283,7 +310,7 @@ namespace TrakHound_Server.Plugins.MTConnectData
             SendData?.Invoke(data);
         }
 
-        private void SendProbeData(MTConnect.Application.Components.ReturnData returnData, DeviceConfiguration config)
+        private void SendProbeData(MTConnectDevices.Document returnData, DeviceConfiguration config)
         {
             if (returnData != null && returnData.Header != null)
             {
@@ -303,7 +330,7 @@ namespace TrakHound_Server.Plugins.MTConnectData
             SendData?.Invoke(data);
         }
 
-        private void SendCurrentData(MTConnect.Application.Streams.ReturnData returnData, DeviceConfiguration config)
+        private void SendCurrentData(MTConnectStreams.Document returnData, DeviceConfiguration config)
         {
             var data = new EventData(this);
             data.Id = "MTCONNECT_CURRENT";
@@ -313,7 +340,7 @@ namespace TrakHound_Server.Plugins.MTConnectData
             SendData?.Invoke(data);
         }
 
-        private void SendSampleData(MTConnect.Application.Streams.ReturnData returnData, DeviceConfiguration config)
+        private void SendSampleData(MTConnectStreams.Document returnData, DeviceConfiguration config)
         {
             var data = new EventData(this);
             data.Id = "MTCONNECT_SAMPLE";

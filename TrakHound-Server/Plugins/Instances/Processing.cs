@@ -7,9 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-
 using TrakHound;
 using TrakHound.Configurations;
+using MTConnectStreams = MTConnect.MTConnectStreams;
 
 namespace TrakHound_Server.Plugins.Instances
 {
@@ -18,7 +18,7 @@ namespace TrakHound_Server.Plugins.Instances
 
         private DeviceConfiguration configuration;
 
-        private MTConnect.Application.Streams.ReturnData currentData;
+        private MTConnectStreams.Document currentData;
 
         // Before ProcessInstances()
         private Instance previousInstanceDataOld;
@@ -30,7 +30,7 @@ namespace TrakHound_Server.Plugins.Instances
         private List<Instance> bufferedInstances = new List<Instance>();
 
 
-        public void Update_Current(MTConnect.Application.Streams.ReturnData returnData)
+        public void Update_Current(MTConnectStreams.Document returnData)
         {
             currentData = returnData;
 
@@ -68,7 +68,7 @@ namespace TrakHound_Server.Plugins.Instances
             SendInstanceData(configuration, instances);
         }
 
-        public void Update_Sample(MTConnect.Application.Streams.ReturnData returnData)
+        public void Update_Sample(MTConnectStreams.Document returnData)
         {
             List<Instance> instances = ProcessInstances(currentData, returnData);
 
@@ -99,16 +99,16 @@ namespace TrakHound_Server.Plugins.Instances
         }
 
 
-        private static List<string> GetDataItemIds(MTConnect.Application.Components.ReturnData returnData)
+        private static List<string> GetDataItemIds(MTConnectStreams.Document returnData)
         {
             var result = new List<string>();
 
-            var dataItems = returnData.Devices[0].GetAllDataItems();
+            var dataItems = returnData.DeviceStreams[0].DataItems;
 
             // Conditions -------------------------------------------------------------------------
             foreach (var dataItem in dataItems.FindAll(x => x.Category == MTConnect.DataItemCategory.CONDITION))
             {
-                string name = dataItem.Id.ToUpper();
+                string name = dataItem.DataItemId.ToUpper();
                 if (!result.Contains(name)) result.Add(name);
             }
             // ------------------------------------------------------------------------------------
@@ -116,7 +116,7 @@ namespace TrakHound_Server.Plugins.Instances
             // Events -----------------------------------------------------------------------------
             foreach (var dataItem in dataItems.FindAll(x => x.Category == MTConnect.DataItemCategory.EVENT))
             {
-                string name = dataItem.Id.ToUpper();
+                string name = dataItem.DataItemId.ToUpper();
                 if (!result.Contains(name)) result.Add(name);
             }
             // ------------------------------------------------------------------------------------
@@ -124,7 +124,7 @@ namespace TrakHound_Server.Plugins.Instances
             // Samples ----------------------------------------------------------------------------
             foreach (var dataItem in dataItems.FindAll(x => x.Category == MTConnect.DataItemCategory.SAMPLE))
             {
-                string name = dataItem.Id.ToUpper();
+                string name = dataItem.DataItemId.ToUpper();
                 if (!result.Contains(name)) result.Add(name);
             }
             // ------------------------------------------------------------------------------------
@@ -134,7 +134,7 @@ namespace TrakHound_Server.Plugins.Instances
 
 
         // Process instance table after receiving Sample Data
-        private List<Instance> ProcessInstances(MTConnect.Application.Streams.ReturnData currentData, MTConnect.Application.Streams.ReturnData sampleData)
+        private List<Instance> ProcessInstances(MTConnectStreams.Document currentData, MTConnectStreams.Document sampleData)
         {
             var stpw = new System.Diagnostics.Stopwatch();
             stpw.Start();
@@ -148,7 +148,7 @@ namespace TrakHound_Server.Plugins.Instances
                 if (sampleData.DeviceStreams != null && currentData.DeviceStreams != null)
                 {
                     // Get all of the DataItems from the DeviceStream object
-                    var dataItems = sampleData.DeviceStreams[0].GetAllDataItems();
+                    var dataItems = sampleData.DeviceStreams[0].DataItems;
 
                     // Convert the DataItems to a List of VariableData objects
                     List<VariableData> values = VariableData.Get(dataItems);
@@ -163,7 +163,7 @@ namespace TrakHound_Server.Plugins.Instances
                     // Get List of Variables used
                     IEnumerable<string> usedVariables = values.Select(x => x.Id).Distinct();
 
-                    var currentDataItems = currentData.DeviceStreams[0].GetAllDataItems();
+                    var currentDataItems = currentData.DeviceStreams[0].DataItems;
 
                     foreach (DateTime timestamp in sortedTimestamps.ToList())
                     {
@@ -237,20 +237,20 @@ namespace TrakHound_Server.Plugins.Instances
         }
 
         // Process InstanceData after receiving Current Data
-        public static Instance ProcessInstance(MTConnect.Application.Streams.ReturnData currentData)
+        public static Instance ProcessInstance(MTConnectStreams.Document currentData)
         {
             var result = new Instance(); ;
             result.Timestamp = currentData.Header.CreationTime; // Agent.MTConnect.org only outputs to the nearest second (not fractional seconds), check if issue with Open Source Agent
             result.AgentInstanceId = currentData.Header.InstanceId;
             result.Sequence = currentData.Header.LastSequence;
 
-            var dataItems = currentData.DeviceStreams[0].GetAllDataItems();
+            var dataItems = currentData.DeviceStreams[0].DataItems;
             FillInstanceDataWithCurrentData(new List<string>(), result, dataItems);
 
             return result;
         }
 
-        static void FillInstanceDataWithCurrentData(List<string> usedVariables, Instance data, List<MTConnect.Application.Streams.DataItem> dataItems)
+        static void FillInstanceDataWithCurrentData(List<string> usedVariables, Instance data, List<MTConnectStreams.DataItem> dataItems)
         {
             foreach (var item in dataItems)
             {
@@ -265,7 +265,7 @@ namespace TrakHound_Server.Plugins.Instances
 
                     if (item.Category == MTConnect.DataItemCategory.CONDITION)
                     {
-                        value.Value = ((MTConnect.Application.Streams.Condition)item).ConditionValue.ToString();
+                        value.Value = ((MTConnectStreams.Condition)item).ConditionValue.ToString();
                     }
                     else value.Value = item.CDATA;
 

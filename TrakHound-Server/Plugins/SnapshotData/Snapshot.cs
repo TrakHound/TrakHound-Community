@@ -3,7 +3,7 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
-using MTConnect.Application.Streams;
+using MTConnectStreams = MTConnect.MTConnectStreams;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -56,7 +56,7 @@ namespace TrakHound_Server.Plugins.SnapshotData
         public class ProcessInfo
         {
             public List<Snapshot> PreviousItems { get; set; }
-            public ReturnData CurrentData { get; set; }
+            public MTConnectStreams.Document CurrentData { get; set; }
             public Instance CurrentInstance { get; set; }
         }
 
@@ -98,13 +98,13 @@ namespace TrakHound_Server.Plugins.SnapshotData
             }
         }
 
-        private static bool ProcessCollected(Snapshot snapshot, ReturnData currentData)
+        private static bool ProcessCollected(Snapshot snapshot, MTConnectStreams.Document currentData)
         {
             bool result = false;
 
             if (currentData.DeviceStreams != null)
             {
-                var dataItems = currentData.DeviceStreams[0].GetAllDataItems();
+                var dataItems = currentData.DeviceStreams[0].DataItems;
 
                 bool found = false;
 
@@ -123,7 +123,7 @@ namespace TrakHound_Server.Plugins.SnapshotData
             return result;
         }
 
-        private static bool ProcessCollectedCondtion(Snapshot snapshot, List<DataItem> dataItems)
+        private static bool ProcessCollectedCondtion(Snapshot snapshot, List<MTConnectStreams.DataItem> dataItems)
         {
             bool result = false;
 
@@ -152,7 +152,7 @@ namespace TrakHound_Server.Plugins.SnapshotData
             return result;
         }
 
-        private static bool ProcessCollectedEvent(Snapshot snapshot, List<DataItem> dataItems)
+        private static bool ProcessCollectedEvent(Snapshot snapshot, List<MTConnectStreams.DataItem> dataItems)
         {
             bool result = false;
 
@@ -181,7 +181,7 @@ namespace TrakHound_Server.Plugins.SnapshotData
             return result;
         }
 
-        private static bool ProcessCollectedSample(Snapshot snapshot, List<DataItem> dataItems)
+        private static bool ProcessCollectedSample(Snapshot snapshot, List<MTConnectStreams.DataItem> dataItems)
         {
             bool result = false;
 
@@ -211,7 +211,7 @@ namespace TrakHound_Server.Plugins.SnapshotData
         }
 
 
-        private static void ProcessGenerated(Snapshot snapshot, GeneratedEvents.Configuration gec, Instance currentInstanceData, ReturnData currentData)
+        private static void ProcessGenerated(Snapshot snapshot, GeneratedEvents.Configuration gec, Instance currentInstanceData, MTConnectStreams.Document currentData)
         {
             var e = gec.Events.Find(x => x.Name.ToLower() == snapshot.Link.ToLower());
             if (e != null)
@@ -238,11 +238,11 @@ namespace TrakHound_Server.Plugins.SnapshotData
             }
         }
 
-        private static DateTime GetTimestampFromCurrent(Value value, ReturnData currentData)
+        private static DateTime GetTimestampFromCurrent(Value value, MTConnectStreams.Document currentData)
         {
             var result = DateTime.MinValue;
 
-            var dataItems = currentData.DeviceStreams[0].GetAllDataItems();
+            var dataItems = currentData.DeviceStreams[0].DataItems;
 
             foreach (var trigger in value.Triggers)
             {
@@ -262,11 +262,11 @@ namespace TrakHound_Server.Plugins.SnapshotData
             return result;
         }
 
-        private static DateTime GetTimestampFromTrigger(Trigger trigger, List<DataItem> dataItems)
+        private static DateTime GetTimestampFromTrigger(Trigger trigger, List<MTConnectStreams.DataItem> dataItems)
         {
             var result = DateTime.MinValue;
 
-            DataItem item = dataItems.Find(x => x.DataItemId == trigger.Link);
+            MTConnectStreams.DataItem item = dataItems.Find(x => x.DataItemId == trigger.Link);
 
             if (item != null) if (item.Timestamp > result) result = item.Timestamp;
 

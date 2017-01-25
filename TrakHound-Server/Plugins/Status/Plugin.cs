@@ -10,6 +10,9 @@ using TrakHound.Configurations;
 using TrakHound.Plugins;
 using TrakHound.Plugins.Server;
 
+using MTConnectDevices = MTConnect.MTConnectDevices;
+using MTConnectStreams = MTConnect.MTConnectStreams;
+
 namespace TrakHound_Server.Plugins.Status
 {
     public class Plugin : IServerPlugin
@@ -35,7 +38,7 @@ namespace TrakHound_Server.Plugins.Status
                 {
                     if (data.Data02 != null)
                     {
-                        var infos = StatusInfo.GetList((MTConnect.Application.Components.ReturnData)data.Data02);
+                        var infos = StatusInfo.GetList((MTConnectDevices.Document)data.Data02);
                         if (infos.Count > 0)
                         {
                             statusInfos = infos;
@@ -48,7 +51,7 @@ namespace TrakHound_Server.Plugins.Status
                 }
                 else if (data.Id == "MTCONNECT_CURRENT" && data.Data02 != null)
                 {
-                    StatusInfo.ProcessList((MTConnect.Application.Streams.ReturnData)data.Data02, statusInfos);
+                    StatusInfo.ProcessList((MTConnectStreams.Document)data.Data02, statusInfos);
 
                     SendStatusData(statusInfos);
                 }

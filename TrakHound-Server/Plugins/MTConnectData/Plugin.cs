@@ -24,7 +24,7 @@ namespace TrakHound_Server.Plugins.MTConnectData
                 lastInstanceId = agentData.InstanceId;
                 lastSequenceSampled = agentData.LastSequence;
 
-                System.Console.WriteLine(config.UniqueId + " :: " + agentInstanceId + " : " + lastSequenceSampled);
+                logger.Debug(config.UniqueId + " :: " + agentInstanceId + " : " + lastSequenceSampled);
             }
 
             Start(config);

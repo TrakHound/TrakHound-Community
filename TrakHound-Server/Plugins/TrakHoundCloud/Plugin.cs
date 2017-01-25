@@ -3,6 +3,7 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,8 @@ namespace TrakHound_Server.Plugins.TrakHoundCloud
 
     public class Plugin : IServerPlugin
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public string Name { get { return "TrakHound Cloud"; } }
 
         public static UpdateQueue queue = new UpdateQueue();
@@ -115,6 +118,8 @@ namespace TrakHound_Server.Plugins.TrakHoundCloud
 
                 if (!availability || deviceInfo.Controller == null) deviceInfo.Controller = new Data.ControllerInfo();
                 deviceInfo.Controller.Availability = availability ? "AVAILABLE" : "UNAVAILABLE";
+
+                logger.Trace("Device Availability : " + availability);
             }
         }
 
