@@ -184,14 +184,14 @@
 
                             <ui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="35" Height="35" Foreground="{StaticResource TrakHound_Blue}" />
 
-                            <ui:Button Image="/TrakHound-Dashboard;component/Resources/X_01.png" Clicked="Cancel_Clicked" ToolTip="Cancel">
+                            <!--<ui:Button Image="/TrakHound-Dashboard;component/Resources/X_01.png" Clicked="Cancel_Clicked" ToolTip="Cancel">
                                 <ui:Button.Style>
                                     <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Accent_Foreground}">
                                         <Setter Property="Height" Value="20"/>
                                         <Setter Property="Width" Value="20"/>
                                     </Style>
                                 </ui:Button.Style>
-                            </ui:Button>
+                            </ui:Button>-->
 
                         </Grid>
 
@@ -333,10 +333,10 @@
                     
                 </TextBlock>
 
-                <Rectangle Width="1" Fill="{StaticResource Text}" Margin="10,0"/>
+                <!--<Rectangle Width="1" Fill="{StaticResource Text}" Margin="10,0"/>-->
 
                 <!--Number of Network Nodes Found-->
-                <TextBlock Foreground="{StaticResource Text}" VerticalAlignment="Center">
+                <!--<TextBlock Foreground="{StaticResource Text}" VerticalAlignment="Center">
                     
                     <Run Text="{Binding NetworkNodesFound}" FontWeight="Bold" FontSize="12pt"/>
 
@@ -353,10 +353,10 @@
                         </Run.Style>
                     </Run>
 
-                </TextBlock>
+                </TextBlock>-->
 
                 <!--Search Progress Bar-->
-                <ui:ProgressBar Value="{Binding SearchProgressValue}" Maximum="{Binding SearchProgressMaximum}" Height="10" Foreground="#00ff00" Background="#1000ff00" Margin="20,0" Width="150">
+                <!--<ui:ProgressBar Value="{Binding SearchProgressValue}" Maximum="{Binding SearchProgressMaximum}" Height="10" Foreground="#00ff00" Background="#1000ff00" Margin="20,0" Width="150">
                     <ui:ProgressBar.Style>
                         <Style TargetType="ui:ProgressBar">
                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -368,7 +368,7 @@
                             </Style.Triggers>
                         </Style>
                     </ui:ProgressBar.Style>
-                </ui:ProgressBar>
+                </ui:ProgressBar>-->
 
             </StackPanel>
 
@@ -531,7 +531,7 @@
         </DataGrid>
 
         <!--Details Log-->
-        <StackPanel Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Margin="40,0,0,0">
+        <!--<StackPanel Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Margin="40,0,0,0">
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
 
@@ -562,7 +562,7 @@
 
             </ItemsControl>
 
-        </StackPanel>
+        </StackPanel>-->
  
     </Grid>
 

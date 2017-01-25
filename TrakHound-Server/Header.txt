@@ -3,7 +3,7 @@
     | |  | |__| |  [v]
     | |  |  __  |  
     | |  | |  | |  GPLv3
-    |_|  |_|  |_|  Copyright Feenux LLC 2016
+    |_|  |_|  |_|  Copyright TrakHound Inc. 2017
 
   Open Source CNC Data Acquistion Software
 	  Package using MTConnect
