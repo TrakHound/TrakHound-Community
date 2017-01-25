@@ -93,13 +93,13 @@ namespace TrakHound_Dashboard.Pages.Dashboard.OeeStatus
             {
                 if (data.Data01.GetType() == typeof(TrakHound.API.Users.UserConfiguration))
                 {
-                    ClearRows();
+                    Dispatcher.BeginInvoke(new Action(ClearRows), System.Windows.Threading.DispatcherPriority.Normal, new object[] { });
                 }
             }
 
             if (data != null && data.Id == "USER_LOGOUT")
             {
-                ClearRows();
+                Dispatcher.BeginInvoke(new Action(ClearRows), System.Windows.Threading.DispatcherPriority.Normal, new object[] { });
             }
 
             Update(data);

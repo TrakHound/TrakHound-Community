@@ -117,14 +117,14 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Overview
                 if (data.Data01.GetType() == typeof(UserConfiguration))
                 {
                     userConfiguration = (UserConfiguration)data.Data01;
-                    ClearColumns();
+                    Dispatcher.BeginInvoke(new Action(ClearColumns), System.Windows.Threading.DispatcherPriority.Normal, new object[] { });
                 }
             }
 
             if (data != null && data.Id == "USER_LOGOUT")
             {
                 userConfiguration = null;
-                ClearColumns();
+                Dispatcher.BeginInvoke(new Action(ClearColumns), System.Windows.Threading.DispatcherPriority.Normal, new object[] { });
             }
 
             if (data != null && data.Id == "STATUS_CONTROLLER" && data.Data01 != null && data.Data02 != null && data.Data02.GetType() == typeof(TrakHound.API.Data.ControllerInfo))
