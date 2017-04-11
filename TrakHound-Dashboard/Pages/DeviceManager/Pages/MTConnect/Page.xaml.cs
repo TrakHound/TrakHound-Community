@@ -86,8 +86,6 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.MTConnectConfig
             if (!string.IsNullOrEmpty(ProxyAddress) || !string.IsNullOrEmpty(ProxyPort)) ProxySettings.IsExpanded = true;
             else ProxySettings.IsExpanded = false;
 
-            //MTCDeviceList.Clear();
-
             ConnectionTestResult = 0;
             ConnectionTestResultText = null;
 
@@ -281,7 +279,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.MTConnectConfig
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 ConnectionTestResult = 1;
-                ConnectionTestResultText = "MTConnect Probe Successful";
+                ConnectionTestResultText = "MTConnect Probe Successful @ " + document.Url;
                 ConnectionTestLoading = false;
             }));
         }
@@ -301,7 +299,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.MTConnectConfig
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 ConnectionTestResult = -1;
-                ConnectionTestResultText = "MTConnect Returned an Error";
+                ConnectionTestResultText = "MTConnect Returned an Error @ " + errorDocument.Url;
                 ConnectionTestLoading = false;
             }));
         }

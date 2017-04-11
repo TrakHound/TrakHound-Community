@@ -207,7 +207,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 ConnectionTestResult = 1;
-                ConnectionTestResultText = "MTConnect Probe Successful";
+                ConnectionTestResultText = "MTConnect Probe Successful @ " + document.Url;
                 ConnectionTestLoading = false;
             }));
         }
@@ -227,7 +227,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 ConnectionTestResult = -1;
-                ConnectionTestResultText = "MTConnect Returned an Error";
+                ConnectionTestResultText = "MTConnect Returned an Error @ " + errorDocument.Url;
                 ConnectionTestLoading = false;
             }));
         }

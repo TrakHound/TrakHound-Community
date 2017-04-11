@@ -20,7 +20,7 @@ namespace TrakHound.Configurations.AutoGenerate.Manufacturers
                 {
                     SetDescription(table);
 
-                    var items = device.DataItems;
+                    var items = device.GetDataItems();
 
                     AddTimers(table, items);
                 }

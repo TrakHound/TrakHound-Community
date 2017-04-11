@@ -115,11 +115,9 @@ namespace TrakHound.API
                     string filename = System.IO.Path.ChangeExtension(Id, ".image");
 
                     Path = System.IO.Path.Combine(FileLocations.Storage, filename);
-
-                    image.Save(Path);
+                    if (!File.Exists(Path)) image.Save(Path);
                 }
                 catch (Exception ex) { logger.Error(ex); }
-
             }
 
             public string Id { get; set; }
@@ -132,7 +130,7 @@ namespace TrakHound.API
                     {
                         try
                         {
-                            if (File.Exists(Path)) return System.Drawing.Image.FromFile(Path);
+                            if (File.Exists(Path)) return Image.FromFile(Path);
                         }
                         catch (Exception ex) { logger.Error(ex); }
                     }
@@ -163,17 +161,20 @@ namespace TrakHound.API
                 {
                     foreach (var file in files)
                     {
-                        try
+                        if (File.Exists(file))
                         {
-                            string id = Path.GetFileNameWithoutExtension(file);
-
-                            var img = Image.FromFile(file);
-                            if (img != null)
+                            try
                             {
-                                cachedImages.Add(new CachedImage(id, img));
+                                string id = Path.GetFileNameWithoutExtension(file);
+
+                                var img = Image.FromFile(file);
+                                if (img != null)
+                                {
+                                    cachedImages.Add(new CachedImage(id, img));
+                                }
                             }
-                        }
-                        catch (Exception ex) { logger.Error(ex); }
+                            catch (Exception ex) { logger.Error(ex); }
+                        }                     
                     }
                 }
             }

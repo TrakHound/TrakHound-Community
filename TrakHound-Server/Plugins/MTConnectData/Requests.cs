@@ -67,7 +67,7 @@ namespace TrakHound_Server.Plugins.MTConnectData
                 }
             } while (!stop.WaitOne(ac.Heartbeat, true));
 
-            Console.WriteLine("Requests Worker Stopped");
+            logger.Warn("Requests Worker Stopped");
         }
 
         private void Stop()
@@ -301,7 +301,7 @@ namespace TrakHound_Server.Plugins.MTConnectData
 
         private void SendAgentReset(DeviceConfiguration config)
         {
-            Console.WriteLine(config.UniqueId + " :: Agent Reset");
+            logger.Info(config.UniqueId + " :: Agent Reset");
 
             var data = new EventData(this);
             data.Id = "MTCONNECT_AGENT_RESET";

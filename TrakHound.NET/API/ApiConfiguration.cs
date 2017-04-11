@@ -13,10 +13,9 @@ using System.Xml;
 namespace TrakHound.API
 {
     public class ApiConfiguration
-    {
-       
+    {       
         public const string LOCAL_API_HOST = "http://localhost:8472/api/";
-        public const string CLOUD_API_HOST = "https://TrakHound.com/api/";
+        public const string CLOUD_API_HOST = "https://v1.TrakHound.com/api/";
         public const long DEFAULT_BUFFER_SIZE = 500000; // 5 kB
         public const int DEFAULT_UPDATE_INTERVAL = 5000; // 5 Seconds
         public const int DEFAULT_TIMEOUT = 2000; // 2 Seconds
@@ -151,11 +150,33 @@ namespace TrakHound.API
                             }
                         }
                     }
+
+                    if (result != null)
+                    {
+                        // Update to new Url
+                        result.AuthenticationHost = updateUrl(result.AuthenticationHost);
+                        result.DataHost = updateUrl(result.DataHost);
+                    }
                 }
                 catch (Exception ex) { logger.Error(ex); }
             }
 
             return result;
+        }
+
+        private static string updateUrl(string s)
+        {
+            if (!string.IsNullOrEmpty(s))
+            {
+                var x = s.ToLower();
+                if (x == "http://www.trakhound.com/api/" || x == "http://api.trakhound.com/" || x == "http://trakhound.com/api/" ||
+                    x == "https://www.trakhound.com/api/" || x == "https://api.trakhound.com/" || x == "https://trakhound.com/api/")
+                {
+                    return CLOUD_API_HOST;
+                }
+            }
+
+            return s;
         }
 
         public static void Remove()

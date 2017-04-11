@@ -17,7 +17,6 @@ using TrakHound_Server.Plugins.Status;
 
 namespace TrakHound_Server.Plugins.TrakHoundCloud
 {
-
     public class Plugin : IServerPlugin
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
@@ -118,8 +117,6 @@ namespace TrakHound_Server.Plugins.TrakHoundCloud
 
                 if (!availability || deviceInfo.Controller == null) deviceInfo.Controller = new Data.ControllerInfo();
                 deviceInfo.Controller.Availability = availability ? "AVAILABLE" : "UNAVAILABLE";
-
-                logger.Trace("Device Availability : " + availability);
             }
         }
 
@@ -342,132 +339,266 @@ namespace TrakHound_Server.Plugins.TrakHoundCloud
         {
             if (data.Data02 != null)
             {
-                lock (_lock)
+                var infos = data.Data02 as List<StatusInfo>;
+                if (infos != null)
                 {
-                    if (deviceInfo.Status == null) deviceInfo.Status = new Data.StatusInfo();
-                    if (deviceInfo.Controller == null) deviceInfo.Controller = new Data.ControllerInfo();
-
-                    var infos = (List<StatusInfo>)data.Data02;
-                    StatusInfo info = null;
-
-                    // Availability
-                    info = infos.Find(x => x.Type == "AVAILABILITY");
-                    if (info != null)
+                    lock (_lock)
                     {
-                        deviceInfo.Status.Connected = info.Value1 == "AVAILABLE" ? 1 : 0;
-                        deviceInfo.Controller.Availability = info.Value1;
-                    }
+                        if (deviceInfo.Status == null) deviceInfo.Status = new Data.StatusInfo();
+                        if (deviceInfo.Controller == null) deviceInfo.Controller = new Data.ControllerInfo();
 
-                    // Controller Mode
-                    info = infos.Find(x => x.Type == "CONTROLLER_MODE");
-                    if (info != null) deviceInfo.Controller.ControllerMode = info.Value1;
+                        StatusInfo info = null;
 
-                    // Emergency Stop
-                    info = infos.Find(x => x.Type == "EMERGENCY_STOP");
-                    if (info != null) deviceInfo.Controller.EmergencyStop = info.Value1;
-
-                    // Execution Mode
-                    info = infos.Find(x => x.Type == "EXECUTION");
-                    if (info != null) deviceInfo.Controller.ExecutionMode = info.Value1;
-
-                    // System status
-                    var systemStatusInfos = infos.FindAll(x => x.Category == MTConnect.DataItemCategory.CONDITION &&
-                    x.Type == "SYSTEM" && (x.Address.ToLower().Contains("controller") || x.Address.ToLower().Contains("path")));
-
-                    var logicStatusInfos = infos.FindAll(x => x.Category == MTConnect.DataItemCategory.CONDITION &&
-                    x.Type == "LOGIC_PROGRAM" && (x.Address.ToLower().Contains("controller") || x.Address.ToLower().Contains("path")));
-
-                    var motionStatusInfos = infos.FindAll(x => x.Category == MTConnect.DataItemCategory.CONDITION &&
-                    x.Type == "MOTION_PROGRAM" && (x.Address.ToLower().Contains("controller") || x.Address.ToLower().Contains("path")));
-
-                    MTConnect.ConditionValue systemStatus = MTConnect.ConditionValue.UNAVAILABLE;
-                    string systemMessage = string.Empty;
-
-                    // Check System Type first
-                    foreach (var sInfo in systemStatusInfos)
-                    {
-                        if (sInfo.Value2 != null)
+                        // Availability
+                        info = infos.Find(x => x.Type == "AVAILABILITY");
+                        if (info != null)
                         {
-                            MTConnect.ConditionValue s = MTConnect.ConditionValue.UNAVAILABLE;
+                            deviceInfo.Status.Connected = info.Value1 == "AVAILABLE" ? 1 : 0;
+                            deviceInfo.Controller.Availability = info.Value1;
+                        }
 
-                            switch (sInfo.Value2.ToLower())
-                            {
-                                case "normal": s = MTConnect.ConditionValue.NORMAL; break;
-                                case "warning": s = MTConnect.ConditionValue.WARNING; break;
-                                case "fault": s = MTConnect.ConditionValue.FAULT; break;
-                            }
+                        // Controller Mode
+                        info = infos.Find(x => x.Type == "CONTROLLER_MODE");
+                        if (info != null) deviceInfo.Controller.ControllerMode = info.Value1;
 
-                            if (s > systemStatus)
+                        // Emergency Stop
+                        info = infos.Find(x => x.Type == "EMERGENCY_STOP");
+                        if (info != null) deviceInfo.Controller.EmergencyStop = info.Value1;
+
+                        // Execution Mode
+                        info = infos.Find(x => x.Type == "EXECUTION");
+                        if (info != null) deviceInfo.Controller.ExecutionMode = info.Value1;
+
+                        // System status
+                        var systemStatusInfos = infos.FindAll(x => x.Category == MTConnect.DataItemCategory.CONDITION &&
+                        x.Type == "SYSTEM" && (!string.IsNullOrEmpty(x.Address) && (x.Address.ToLower().Contains("controller") || x.Address.ToLower().Contains("path"))));
+
+                        var logicStatusInfos = infos.FindAll(x => x.Category == MTConnect.DataItemCategory.CONDITION &&
+                        x.Type == "LOGIC_PROGRAM" && (!string.IsNullOrEmpty(x.Address) && (x.Address.ToLower().Contains("controller") || x.Address.ToLower().Contains("path"))));
+
+                        var motionStatusInfos = infos.FindAll(x => x.Category == MTConnect.DataItemCategory.CONDITION &&
+                        x.Type == "MOTION_PROGRAM" && (!string.IsNullOrEmpty(x.Address) && (x.Address.ToLower().Contains("controller") || x.Address.ToLower().Contains("path"))));
+
+                        MTConnect.ConditionValue systemStatus = MTConnect.ConditionValue.UNAVAILABLE;
+                        string systemMessage = string.Empty;
+
+                        // Check System Type first
+                        foreach (var sInfo in systemStatusInfos)
+                        {
+                            if (sInfo.Value2 != null)
                             {
-                                systemStatus = s;
-                                systemMessage = sInfo.Value1;
+                                MTConnect.ConditionValue s = MTConnect.ConditionValue.UNAVAILABLE;
+
+                                switch (sInfo.Value2.ToLower())
+                                {
+                                    case "normal": s = MTConnect.ConditionValue.NORMAL; break;
+                                    case "warning": s = MTConnect.ConditionValue.WARNING; break;
+                                    case "fault": s = MTConnect.ConditionValue.FAULT; break;
+                                }
+
+                                if (s > systemStatus)
+                                {
+                                    systemStatus = s;
+                                    systemMessage = sInfo.Value1;
+                                }
                             }
                         }
-                    }
 
-                    // Check Logic Program Type second
-                    foreach (var sInfo in logicStatusInfos)
-                    {
-                        if (sInfo.Value2 != null)
+                        // Check Logic Program Type second
+                        foreach (var sInfo in logicStatusInfos)
                         {
-                            MTConnect.ConditionValue s = MTConnect.ConditionValue.UNAVAILABLE;
-
-                            switch (sInfo.Value2.ToLower())
+                            if (sInfo.Value2 != null)
                             {
-                                case "normal": s = MTConnect.ConditionValue.NORMAL; break;
-                                case "warning": s = MTConnect.ConditionValue.WARNING; break;
-                                case "fault": s = MTConnect.ConditionValue.FAULT; break;
-                            }
+                                MTConnect.ConditionValue s = MTConnect.ConditionValue.UNAVAILABLE;
 
-                            if (s > systemStatus)
-                            {
-                                systemStatus = s;
-                                systemMessage = sInfo.Value1;
+                                switch (sInfo.Value2.ToLower())
+                                {
+                                    case "normal": s = MTConnect.ConditionValue.NORMAL; break;
+                                    case "warning": s = MTConnect.ConditionValue.WARNING; break;
+                                    case "fault": s = MTConnect.ConditionValue.FAULT; break;
+                                }
+
+                                if (s > systemStatus)
+                                {
+                                    systemStatus = s;
+                                    systemMessage = sInfo.Value1;
+                                }
                             }
                         }
-                    }
 
-                    // Check Motion Program Type third
-                    foreach (var sInfo in motionStatusInfos)
-                    {
-                        if (sInfo.Value2 != null)
+                        // Check Motion Program Type third
+                        foreach (var sInfo in motionStatusInfos)
                         {
-                            MTConnect.ConditionValue s = MTConnect.ConditionValue.UNAVAILABLE;
-
-                            switch (sInfo.Value2.ToLower())
+                            if (sInfo.Value2 != null)
                             {
-                                case "normal": s = MTConnect.ConditionValue.NORMAL; break;
-                                case "warning": s = MTConnect.ConditionValue.WARNING; break;
-                                case "fault": s = MTConnect.ConditionValue.FAULT; break;
-                            }
+                                MTConnect.ConditionValue s = MTConnect.ConditionValue.UNAVAILABLE;
 
-                            if (s > systemStatus)
-                            {
-                                systemStatus = s;
-                                systemMessage = sInfo.Value1;
+                                switch (sInfo.Value2.ToLower())
+                                {
+                                    case "normal": s = MTConnect.ConditionValue.NORMAL; break;
+                                    case "warning": s = MTConnect.ConditionValue.WARNING; break;
+                                    case "fault": s = MTConnect.ConditionValue.FAULT; break;
+                                }
+
+                                if (s > systemStatus)
+                                {
+                                    systemStatus = s;
+                                    systemMessage = sInfo.Value1;
+                                }
                             }
                         }
+
+                        deviceInfo.Controller.SystemStatus = systemStatus.ToString();
+                        deviceInfo.Controller.SystemMessage = systemMessage;
+
+                        // Program Name
+                        info = infos.Find(x => x.Type == "PROGRAM");
+                        if (info != null) deviceInfo.Controller.ProgramName = info.Value1;
+
+                        // Program Block
+                        info = infos.Find(x => x.Type == "BLOCK");
+                        if (info != null) deviceInfo.Controller.ProgramBlock = info.Value1;
+
+                        // Program Line
+                        info = infos.Find(x => x.Type == "LINE");
+                        if (info != null) deviceInfo.Controller.ProgramLine = info.Value1;
+
+                        queue.Add(deviceInfo);
                     }
-
-                    deviceInfo.Controller.SystemStatus = systemStatus.ToString();
-                    deviceInfo.Controller.SystemMessage = systemMessage;
-
-                    // Program Name
-                    info = infos.Find(x => x.Type == "PROGRAM");
-                    if (info != null) deviceInfo.Controller.ProgramName = info.Value1;
-
-                    // Program Block
-                    info = infos.Find(x => x.Type == "BLOCK");
-                    if (info != null) deviceInfo.Controller.ProgramBlock = info.Value1;
-
-                    // Program Line
-                    info = infos.Find(x => x.Type == "LINE");
-                    if (info != null) deviceInfo.Controller.ProgramLine = info.Value1;
-
-                    queue.Add(deviceInfo);
                 }
             }
         }
+
+        //private void UpdateMTConnectStatus(EventData data)
+        //{
+        //    if (data.Data02 != null)
+        //    {
+        //        lock (_lock)
+        //        {
+        //            if (deviceInfo.Status == null) deviceInfo.Status = new Data.StatusInfo();
+        //            if (deviceInfo.Controller == null) deviceInfo.Controller = new Data.ControllerInfo();
+
+        //            var infos = (List<StatusInfo>)data.Data02;
+        //            StatusInfo info = null;
+
+        //            // Availability
+        //            info = infos.Find(x => x.Type == "AVAILABILITY");
+        //            if (info != null)
+        //            {
+        //                deviceInfo.Status.Connected = info.Value1 == "AVAILABLE" ? 1 : 0;
+        //                deviceInfo.Controller.Availability = info.Value1;
+        //            }
+
+        //            // Controller Mode
+        //            info = infos.Find(x => x.Type == "CONTROLLER_MODE");
+        //            if (info != null) deviceInfo.Controller.ControllerMode = info.Value1;
+
+        //            // Emergency Stop
+        //            info = infos.Find(x => x.Type == "EMERGENCY_STOP");
+        //            if (info != null) deviceInfo.Controller.EmergencyStop = info.Value1;
+
+        //            // Execution Mode
+        //            info = infos.Find(x => x.Type == "EXECUTION");
+        //            if (info != null) deviceInfo.Controller.ExecutionMode = info.Value1;
+
+        //            // System status
+        //            var systemStatusInfos = infos.FindAll(x => x.Category == MTConnect.DataItemCategory.CONDITION &&
+        //            x.Type == "SYSTEM" && (x.Address.ToLower().Contains("controller") || x.Address.ToLower().Contains("path")));
+
+        //            var logicStatusInfos = infos.FindAll(x => x.Category == MTConnect.DataItemCategory.CONDITION &&
+        //            x.Type == "LOGIC_PROGRAM" && (x.Address.ToLower().Contains("controller") || x.Address.ToLower().Contains("path")));
+
+        //            var motionStatusInfos = infos.FindAll(x => x.Category == MTConnect.DataItemCategory.CONDITION &&
+        //            x.Type == "MOTION_PROGRAM" && (x.Address.ToLower().Contains("controller") || x.Address.ToLower().Contains("path")));
+
+        //            MTConnect.ConditionValue systemStatus = MTConnect.ConditionValue.UNAVAILABLE;
+        //            string systemMessage = string.Empty;
+
+        //            // Check System Type first
+        //            foreach (var sInfo in systemStatusInfos)
+        //            {
+        //                if (sInfo.Value2 != null)
+        //                {
+        //                    MTConnect.ConditionValue s = MTConnect.ConditionValue.UNAVAILABLE;
+
+        //                    switch (sInfo.Value2.ToLower())
+        //                    {
+        //                        case "normal": s = MTConnect.ConditionValue.NORMAL; break;
+        //                        case "warning": s = MTConnect.ConditionValue.WARNING; break;
+        //                        case "fault": s = MTConnect.ConditionValue.FAULT; break;
+        //                    }
+
+        //                    if (s > systemStatus)
+        //                    {
+        //                        systemStatus = s;
+        //                        systemMessage = sInfo.Value1;
+        //                    }
+        //                }
+        //            }
+
+        //            // Check Logic Program Type second
+        //            foreach (var sInfo in logicStatusInfos)
+        //            {
+        //                if (sInfo.Value2 != null)
+        //                {
+        //                    MTConnect.ConditionValue s = MTConnect.ConditionValue.UNAVAILABLE;
+
+        //                    switch (sInfo.Value2.ToLower())
+        //                    {
+        //                        case "normal": s = MTConnect.ConditionValue.NORMAL; break;
+        //                        case "warning": s = MTConnect.ConditionValue.WARNING; break;
+        //                        case "fault": s = MTConnect.ConditionValue.FAULT; break;
+        //                    }
+
+        //                    if (s > systemStatus)
+        //                    {
+        //                        systemStatus = s;
+        //                        systemMessage = sInfo.Value1;
+        //                    }
+        //                }
+        //            }
+
+        //            // Check Motion Program Type third
+        //            foreach (var sInfo in motionStatusInfos)
+        //            {
+        //                if (sInfo.Value2 != null)
+        //                {
+        //                    MTConnect.ConditionValue s = MTConnect.ConditionValue.UNAVAILABLE;
+
+        //                    switch (sInfo.Value2.ToLower())
+        //                    {
+        //                        case "normal": s = MTConnect.ConditionValue.NORMAL; break;
+        //                        case "warning": s = MTConnect.ConditionValue.WARNING; break;
+        //                        case "fault": s = MTConnect.ConditionValue.FAULT; break;
+        //                    }
+
+        //                    if (s > systemStatus)
+        //                    {
+        //                        systemStatus = s;
+        //                        systemMessage = sInfo.Value1;
+        //                    }
+        //                }
+        //            }
+
+        //            deviceInfo.Controller.SystemStatus = systemStatus.ToString();
+        //            deviceInfo.Controller.SystemMessage = systemMessage;
+
+        //            // Program Name
+        //            info = infos.Find(x => x.Type == "PROGRAM");
+        //            if (info != null) deviceInfo.Controller.ProgramName = info.Value1;
+
+        //            // Program Block
+        //            info = infos.Find(x => x.Type == "BLOCK");
+        //            if (info != null) deviceInfo.Controller.ProgramBlock = info.Value1;
+
+        //            // Program Line
+        //            info = infos.Find(x => x.Type == "LINE");
+        //            if (info != null) deviceInfo.Controller.ProgramLine = info.Value1;
+
+        //            queue.Add(deviceInfo);
+        //        }
+        //    }
+        //}
 
         private void UpdateOee(EventData data)
         {

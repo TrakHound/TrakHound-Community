@@ -71,16 +71,16 @@ namespace TrakHound_UI.Functions
 
         }
 
-        public static Bitmap BitmapImage2Bitmap(BitmapImage bitmapImage)
+        public static Bitmap BitmapImage2Bitmap(BitmapImage img)
         {
-            if (bitmapImage != null)
+            if (img != null)
             {
-                using (MemoryStream outStream = new MemoryStream())
+                using (var stream = new MemoryStream())
                 {
-                    BitmapEncoder enc = new BmpBitmapEncoder();
-                    enc.Frames.Add(BitmapFrame.Create(bitmapImage));
-                    enc.Save(outStream);
-                    System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(outStream);
+                    var enc = new BmpBitmapEncoder();
+                    enc.Frames.Add(BitmapFrame.Create(img));
+                    enc.Save(stream);
+                    var bitmap = new Bitmap(stream);
 
                     return new Bitmap(bitmap);
                 }
@@ -99,7 +99,7 @@ namespace TrakHound_UI.Functions
             dlg.Title = title;
             dlg.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
 
-            Nullable<bool> dialogResult = dlg.ShowDialog();
+            var dialogResult = dlg.ShowDialog();
 
             if (dialogResult == true)
             {
@@ -109,102 +109,121 @@ namespace TrakHound_UI.Functions
             return result;
         }
 
-        public static BitmapImage SourceFromImage(System.Drawing.Image img)
+        public static BitmapImage SourceFromImage(Image img)
         {
-            try
+            if (img != null)
             {
-                using (MemoryStream stream = new MemoryStream())
+                try
                 {
-                    ImageFormat format = ImageFormat.Png;
+                    using (var stream = new MemoryStream())
+                    {
+                        var format = ImageFormat.Png;
+                        img.Save(stream, format);
 
-                    img.Save(stream, format);
-
-                    return ImageFromBuffer(stream.ToArray());
+                        return ImageFromBuffer(stream.ToArray());
+                    }
                 }
+                catch (Exception ex) { }
             }
-            catch (Exception ex) { }
 
             return null;
-
         }
 
-        public static BitmapImage ImageFromBuffer(Byte[] bytes)
+        public static BitmapImage ImageFromBuffer(byte[] bytes)
         {
-            MemoryStream stream = new MemoryStream(bytes);
-            BitmapImage image = new BitmapImage();
-            image.BeginInit();
-            image.StreamSource = stream;
-            image.CacheOption = BitmapCacheOption.OnLoad;
-            image.EndInit();
-            return image;
-        }
-
-        public static Byte[] BufferFromImage(BitmapImage imageSource)
-        {
-            Stream stream = imageSource.StreamSource;
-            Byte[] buffer = null;
-            if (stream != null && stream.Length > 0)
+            if (bytes != null)
             {
-                using (BinaryReader br = new BinaryReader(stream))
+                try
                 {
-                    buffer = br.ReadBytes((Int32)stream.Length);
+                    var stream = new MemoryStream(bytes);
+                    var img = new BitmapImage();
+                    img.BeginInit();
+                    img.StreamSource = stream;
+                    img.CacheOption = BitmapCacheOption.OnLoad;
+                    img.EndInit();
+                    return img;
+                }
+                catch (Exception ex) { }
+            }
+
+            return null;
+        }
+
+        public static byte[] BufferFromImage(BitmapImage img)
+        {
+            if (img != null)
+            {
+                var stream = img.StreamSource;
+                byte[] buffer = null;
+                if (stream != null && stream.Length > 0)
+                {
+                    using (var reader = new BinaryReader(stream))
+                    {
+                        buffer = reader.ReadBytes((int)stream.Length);
+                    }
+                }
+
+                return buffer;
+            }
+
+            return null;
+        }
+
+        public static BitmapImage SetImageSize(ImageSource src, int width)
+        {
+            if (src != null)
+            {
+                var encoder = new PngBitmapEncoder();
+                var stream = new MemoryStream();
+                var img = new BitmapImage();
+                var bmp = src as BitmapSource;
+                if (bmp != null)
+                {
+                    encoder.Frames.Add(BitmapFrame.Create(bmp));
+                    encoder.Save(stream);
+
+                    img.BeginInit();
+                    img.DecodePixelWidth = width;
+                    img.StreamSource = new MemoryStream(stream.ToArray());
+                    img.CacheOption = BitmapCacheOption.OnLoad;
+                    img.EndInit();
+
+                    stream.Close();
+
+                    return img;
+                } 
+            }
+
+            return null;
+        }
+
+        public static BitmapImage SetImageSize(ImageSource src, int width, int height)
+        {
+            if (src != null)
+            {
+                var encoder = new PngBitmapEncoder();
+                var stream = new MemoryStream();
+                var img = new BitmapImage();
+                var bmp = src as BitmapSource;
+                if (bmp != null)
+                {
+                    encoder.Frames.Add(BitmapFrame.Create(bmp));
+                    encoder.Save(stream);
+
+                    img.BeginInit();
+                    if (width > 0) img.DecodePixelWidth = width;
+                    if (height > 0) img.DecodePixelHeight = height;
+                    img.StreamSource = new MemoryStream(stream.ToArray());
+                    img.CacheOption = BitmapCacheOption.OnLoad;
+                    img.EndInit();
+
+                    stream.Close();
+
+                    return img;
                 }
             }
 
-            return buffer;
-        }
-
-        public static BitmapImage SetImageSize(ImageSource Source, int Width)
-        {
-
-            if (Source != null)
-            {
-                PngBitmapEncoder encoder = new PngBitmapEncoder();
-                MemoryStream memoryStream = new MemoryStream();
-                BitmapImage bImg = new BitmapImage();
-
-                encoder.Frames.Add(BitmapFrame.Create(Source as BitmapSource));
-                encoder.Save(memoryStream);
-
-                bImg.BeginInit();
-                bImg.DecodePixelWidth = Width;
-                bImg.StreamSource = new MemoryStream(memoryStream.ToArray());
-                bImg.CacheOption = BitmapCacheOption.OnLoad;
-                bImg.EndInit();
-
-                memoryStream.Close();
-
-                return bImg;
-            }
-            else return null;
-
-        }
-
-        public static BitmapImage SetImageSize(ImageSource Source, int Width, int Height)
-        {
-
-            if (Source != null)
-            {
-                PngBitmapEncoder encoder = new PngBitmapEncoder();
-                MemoryStream memoryStream = new MemoryStream();
-                BitmapImage bImg = new BitmapImage();
-
-                encoder.Frames.Add(BitmapFrame.Create(Source as BitmapSource));
-                encoder.Save(memoryStream);
-
-                bImg.BeginInit();
-                if (Width > 0) bImg.DecodePixelWidth = Width;
-                if (Height > 0) bImg.DecodePixelHeight = Height;
-                bImg.StreamSource = new MemoryStream(memoryStream.ToArray());
-                bImg.CacheOption = BitmapCacheOption.OnLoad;
-                bImg.EndInit();
-
-                memoryStream.Close();
-
-                return bImg;
-            }
-            else return null;
-
+            return null;
         }
 
     }

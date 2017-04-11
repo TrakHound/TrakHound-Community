@@ -34,7 +34,6 @@ namespace TrakHound_Server.Plugins.Instances
 
                         if (data.Data02 == null)
                         {
-                            logger.Trace("MTConnect Probe");
                             SendInstanceData(configuration, null);
                             SendCurrentInstanceData(configuration, null);
                         }
@@ -43,14 +42,12 @@ namespace TrakHound_Server.Plugins.Instances
 
                     case "MTCONNECT_CURRENT":
 
-                        logger.Trace("MTConnect Current");
                         if (data.Data02 != null) Update_Current((MTConnectStreams.Document)data.Data02);
 
                         break;
 
                     case "MTCONNECT_SAMPLE":
 
-                        logger.Trace("MTConnect Sample");
                         if (data.Data02 != null) Update_Sample((MTConnectStreams.Document)data.Data02);
 
                         break;

@@ -136,11 +136,10 @@ namespace TrakHound.Tools
         {
             Image result = null;
 
-            if (path != null)
-                if (File.Exists(path))
-                {
-                    result = Image.FromFile(path);
-                }
+            if (path != null && File.Exists(path))
+            {
+                result = Image.FromFile(path);
+            }
 
             return result;
         }

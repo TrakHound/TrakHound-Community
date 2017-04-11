@@ -27,8 +27,7 @@ namespace TrakHound.Configurations.AutoGenerate
                 table.Columns.Add("value");
                 table.Columns.Add("attributes");
 
-                //var items = probeData.Device.GetAllDataItems();
-                var items = probeData.Device.DataItems;
+                var items = probeData.Device.GetDataItems();
 
                 SetIds(table);
                 SetEnabled(table);

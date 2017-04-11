@@ -61,12 +61,13 @@ namespace TrakHound.Servers.DataStorage
             try
             {
                 listener = new HttpListener();
+                listener.Prefixes.Add("http://localhost:" + PORT + "/api/");
                 listener.Prefixes.Add("http://+:" + PORT + "/api/");
                 listener.Start();
 
                 ThreadPool.QueueUserWorkItem((x) =>
                 {
-                    Console.WriteLine("TrakHound Data Server Started...");
+                    logger.Info("TrakHound Data Server Started...");
 
                     while (listener.IsListening && !stop.WaitOne(10, true))
                     {

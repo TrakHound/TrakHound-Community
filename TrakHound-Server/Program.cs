@@ -69,21 +69,24 @@ namespace TrakHound_Server
             }
             else
             {
-                try
-                {
-                    ServiceBase[] ServicesToRun;
-                    ServicesToRun = new ServiceBase[]
-                    {
-                        new Service1()
-                    };
-                    ServiceBase.Run(ServicesToRun);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("TrakHound Server Error :: Restarting Server in 5 Seconds..");
+                Environment.ExitCode = 1;
+                ServiceBase.Run(new Service1());
 
-                    if (!stop.WaitOne(ERROR_RETRY, true)) Init(args);
-                }
+                //try
+                //{
+                //    ServiceBase[] ServicesToRun;
+                //    ServicesToRun = new ServiceBase[]
+                //    {
+                //        new Service1()
+                //    };
+                //    ServiceBase.Run(ServicesToRun);
+                //}
+                //catch (Exception ex)
+                //{
+                //    Console.WriteLine("TrakHound Server Error :: Restarting Server in 5 Seconds..");
+
+                //    if (!stop.WaitOne(ERROR_RETRY, true)) Init(args);
+                //}
             }
         }
 

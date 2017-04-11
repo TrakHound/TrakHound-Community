@@ -744,7 +744,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager
 
             foreach (var device in document.Devices)
             {
-                var dataItems = device.DataItems;
+                var dataItems = device.GetDataItems();
 
                 SendProbeDataItems(dataItems);
                 probeData = dataItems;

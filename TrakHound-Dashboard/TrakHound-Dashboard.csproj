@@ -32,7 +32,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\bin\Release\</OutputPath>
+    <OutputPath>..\bin\Release\Dashboard\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -45,12 +45,13 @@
     <StartupObject>TrakHound_Dashboard.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MTConnect-NET">
+    <Reference Include="MTConnect-NET, Version=2.2.0.21713, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\MTConnect.NET\src\bin\Release\MTConnect-NET.dll</HintPath>
     </Reference>
-    <Reference Include="MTConnect-Sniffer, Version=1.1.1.5649, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MTConnect-Sniffer.1.1.1.5649\lib\net40\MTConnect-Sniffer.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MTConnect-Sniffer, Version=1.2.0.28737, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\MTConnect-Sniffer\src\bin\Release\MTConnect-Sniffer.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.4.1\lib\net40\NLog.dll</HintPath>
@@ -96,6 +97,9 @@
     <Compile Include="DeviceComparisonTypes.cs" />
     <Compile Include="Pages\Dashboard\Footprint\Controls\DeviceItem.xaml.cs" />
     <Compile Include="Pages\Dashboard\Footprint\Controls\ListItem.xaml.cs" />
+    <None Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Pages\Dashboard\Footprint\Controls\MoveThumb.cs" />
     <Compile Include="Pages\Dashboard\Footprint\Controls\ResizeThumb.cs" />

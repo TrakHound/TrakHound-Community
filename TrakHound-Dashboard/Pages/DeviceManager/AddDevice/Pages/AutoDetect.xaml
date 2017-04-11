@@ -531,7 +531,7 @@
         </DataGrid>
 
         <!--Details Log-->
-        <!--<StackPanel Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Margin="40,0,0,0">
+        <StackPanel Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Margin="40,0,0,0">
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
 
@@ -562,7 +562,7 @@
 
             </ItemsControl>
 
-        </StackPanel>-->
+        </StackPanel>
  
     </Grid>
 

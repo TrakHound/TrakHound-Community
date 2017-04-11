@@ -57,14 +57,14 @@
                     </StackPanel.Resources>
 
                     <!--IP Address-->
-                    <ui:TextBox Text="{Binding Address, Mode=TwoWay}" Title="IP Address" Example="127.0.0.1 or 'agent.mtconnect.org'" TextChanged="TXT_TextChanged">
+                    <ui:TextBox Text="{Binding Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Title="IP Address" Example="127.0.0.1 or 'agent.mtconnect.org'" TextChanged="TXT_TextChanged">
                         <ui:TextBox.HelpText>
                             Enter the IP address or URL of the MTConnect Agent.
                         </ui:TextBox.HelpText>
                     </ui:TextBox>
 
                     <!--Port-->
-                    <ui:TextBox Text="{Binding Port, Mode=TwoWay}" Width="200" HorizontalAlignment="Left" Title="Port" Example="5000" TextChanged="TXT_TextChanged">
+                    <ui:TextBox Text="{Binding Port, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" HorizontalAlignment="Left" Title="Port" Example="5000" TextChanged="TXT_TextChanged">
                         <ui:TextBox.HelpText>
                             Enter the Port of the MTConnect Agent. If the Agent is a URL (ex. www.agent.mtconnect.org) the Port will be 80.
                         If the Port value is left blank the Port will default to 80. 
@@ -72,7 +72,7 @@
                     </ui:TextBox>
 
                     <!--Device Name-->
-                    <ui:TextBox Text="{Binding DeviceName, Mode=TwoWay}" Title="Device Name" Example="VMC-3Axis" TextChanged="TXT_TextChanged">
+                    <ui:TextBox Text="{Binding DeviceName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Title="Device Name" Example="VMC-3Axis" TextChanged="TXT_TextChanged">
                         <ui:TextBox.HelpText>
                             Enter the Device Name from the MTConnect Agent to collect data from. This can be found in the Agent's Probe XML file.
                         </ui:TextBox.HelpText>
