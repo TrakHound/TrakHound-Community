@@ -4,7 +4,7 @@
   Author: Feenux LLC
   -->
   
-![TrakHound Logo] (http://trakhound.com/images/github-header.jpg)
+![TrakHound Logo] (/images/github-header.jpg)
 
 <p align="center">
   <a href="http://www.trakhound.com/">www.TrakHound.com</a>
@@ -37,21 +37,21 @@ Setup is easy using the built in Device Manager where a user can search their en
  <table style="width:100%">
  
   <tr>
-    <td><img src="http://www.trakhound.com/images/download_screenshots/trakhound_community/v1.3/overview_01.png"/></td>
-    <td><img src="http://www.trakhound.com/images/download_screenshots/trakhound_community/v1.3/controllerstatus_01.png"/></td>
-    <td><img src="http://www.trakhound.com/images/download_screenshots/trakhound_community/v1.3/oeetimeline_01.png"/></td>
+    <td><img src="/images/overview.png"/></td>
+    <td><img src="/images/grid.png"/></td>
+    <td><img src="/images/controllerstatus.png"/></td>
   </tr>
   
   <tr>
-    <td><img src="http://www.trakhound.com/images/download_screenshots/trakhound_community/v1.3/oeestatus_01.png"/></td>
-    <td><img src="http://www.trakhound.com/images/download_screenshots/trakhound_community/v1.3/devicestatustimes_01.png"/></td>
-    <td><img src="http://www.trakhound.com/images/download_screenshots/trakhound_community/v1.3/productionstatustimes_01.png"/></td>
+    <td><img src="/images/details.png"/></td>
+    <td><img src="/images/footprint.png"/></td>
+    <td><img src="/images/statustimes.png"/></td>
   </tr>
   
   <tr>
-    <td><img src="http://www.trakhound.com/images/download_screenshots/trakhound_community/v1.3/devicemanager_01.png"/></td>
-    <td><img src="http://www.trakhound.com/images/download_screenshots/trakhound_community/v1.3/autodetect_01.png"/></td>
-    <td><img src="http://www.trakhound.com/images/download_screenshots/trakhound_community/v1.3/edit_description_01.png"/></td>
+    <td><img src="/images/devicemanager.png"/></td>
+    <td><img src="/images/editdescription.png"/></td>
+    <td><img src="/images/autodetect.png"/></td>
   </tr>
  
 </table> 
