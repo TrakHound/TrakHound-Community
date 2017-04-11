@@ -27,7 +27,7 @@ TrakHound Server is constantly being improved upon in order to provide more data
 - We are working on our documenation and if anyone has any good screenshots of the TrakHound dashboards or other screens and would like to contribute then please send those to info@trakhound.com.
 
 
-##About
+## About
 TrakHound is an Open Source MDC software package designed to retrieve and store data from CNC and other PLC driven industrial equipment. Data is retrieved using <a href="http://mtconnect.org">MTConnect®</a>, processed, and then stored in a database. 
 
 Machine Data Collection (MDC) software is used to evaluate shop productivity and identify problem areas. TrakHound provides free dashboards to view current machine status and basic production data so shop supervisors can quickly see which machines are operating normally and which ones are in need of attention. This transparency allows for a smoother workflow through your shop with reduced downtime. 
@@ -57,11 +57,11 @@ Setup is easy using the built in Device Manager where a user can search their en
 </table> 
 
 
-####Basic Setup
+#### Basic Setup
 Below is a diagram showing how a basic setup works. This shows two machines communicating directly with one PC and all data is stored on that PC. This is a good starting point for most users and can be used in scenarios where only one user needs to view data.
 ![Basic Communications Setup] (http://trakhound.com/images/overview_basic_04.png)
 
-##Licensing & Dependencies
+## Licensing & Dependencies
 TrakHound is licensed under the [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html) software license. For more information about open source licensing or purchasing a commercial license please contact us at info@TrakHound.com.
 
 TrakHound uses the following external libraries:
@@ -69,5 +69,5 @@ TrakHound uses the following external libraries:
 - [JSON.NET](http://www.newtonsoft.com/json) by Newtonsoft - [Source Code](https://github.com/JamesNK/Newtonsoft.Json) - [MIT](https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md)
 - [SQLite](https://www.sqlite.org/index.html) - [Source Code](https://www.sqlite.org/download.html) - [Public Domain](https://www.sqlite.org/copyright.html)
 
-##Contributions
+## Contributions
 TrakHound welcomes any comments, reccomendations, pull requests, or any other type of contributions! Please fork and contribute back at any time as this project was created as a tool for the community. If you have any questions please contact us at info@TrakHound.com.
