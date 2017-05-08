@@ -17,6 +17,7 @@
                 <!--Icons-->
                 <ResourceDictionary>
 
+                    <ImageBrush x:Key="Part_IMG" Stretch="Uniform" ImageSource="Resources/Block_01.png"/>
                     <ImageBrush x:Key="Message_IMG" Stretch="Uniform" ImageSource="Resources/Envelope_01.png"/>
                     <ImageBrush x:Key="Power_Large_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Power_01_100px.png"/>
                     <ImageBrush x:Key="Power_IMG" Stretch="Uniform" ImageSource="/TrakHound-Dashboard;component/Resources/Power_01.png"  />

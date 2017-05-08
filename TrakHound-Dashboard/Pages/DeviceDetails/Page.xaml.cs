@@ -63,15 +63,15 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
 
             // Active Hour Segments
             ActiveHourDatas = new List<HourData>();
-            for (var x = 0; x < 24; x++) ActiveHourDatas.Add(new HourData(x, x + 1));
+            for (var x = 0; x < 24; x++) ActiveHourDatas.Add(new HourData(x, x + 1) { ProgressStatus = 3 });
 
             // Idle Hour Segments
             IdleHourDatas = new List<HourData>();
-            for (var x = 0; x < 24; x++) IdleHourDatas.Add(new HourData(x, x + 1));
+            for (var x = 0; x < 24; x++) IdleHourDatas.Add(new HourData(x, x + 1) { ProgressStatus = 2 });
 
             // Alert Hour Segments
             AlertHourDatas = new List<HourData>();
-            for (var x = 0; x < 24; x++) AlertHourDatas.Add(new HourData(x, x + 1));
+            for (var x = 0; x < 24; x++) AlertHourDatas.Add(new HourData(x, x + 1) { ProgressStatus = 1 });
 
 
             // Oee Hour Segments
@@ -572,9 +572,9 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
             {
                 SetValue(OeeProperty, value);
 
-                if (value > OEE_HIGH) OeeStatus = 2;
-                else if (value > OEE_LOW) OeeStatus = 1;
-                else OeeStatus = 0;
+                if (value > OEE_HIGH) OeeStatus = 3;
+                else if (value > OEE_LOW) OeeStatus = 2;
+                else OeeStatus = 1;
             }
         }
 
@@ -655,9 +655,9 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
             {
                 SetValue(AvailabilityProperty, value);
 
-                if (value > OEE_HIGH) AvailabilityStatus = 2;
-                else if (value > OEE_LOW) AvailabilityStatus = 1;
-                else AvailabilityStatus = 0;
+                if (value > OEE_HIGH) AvailabilityStatus = 3;
+                else if (value > OEE_LOW) AvailabilityStatus = 2;
+                else AvailabilityStatus = 1;
             }
         }
 
@@ -738,9 +738,9 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
             {
                 SetValue(PerformanceProperty, value);
 
-                if (value > OEE_HIGH) PerformanceStatus = 2;
-                else if (value > OEE_LOW) PerformanceStatus = 1;
-                else PerformanceStatus = 0;
+                if (value > OEE_HIGH) PerformanceStatus = 3;
+                else if (value > OEE_LOW) PerformanceStatus = 2;
+                else PerformanceStatus = 1;
             }
         }
 
@@ -821,9 +821,9 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
             {
                 SetValue(QualityProperty, value);
 
-                if (value > OEE_HIGH) QualityStatus = 2;
-                else if (value > OEE_LOW) QualityStatus = 1;
-                else QualityStatus = 0;
+                if (value > OEE_HIGH) QualityStatus = 3;
+                else if (value > OEE_LOW) QualityStatus = 2;
+                else QualityStatus = 1;
             }
         }
 
@@ -1076,7 +1076,8 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
                         if (hour.PlannedProductionTime > 0)
                         {
                             match.Value = hour.Active / hour.PlannedProductionTime;
-                            match.Status = 2;
+                            if (hour.Active > hour.Idle && hour.Active > hour.Alert) match.Status = 3;
+                            else match.Status = 0;
                         }
                         else match.Status = -1;
                     }
@@ -1103,7 +1104,8 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
                         if (hour.PlannedProductionTime > 0)
                         {
                             match.Value = hour.Idle / hour.PlannedProductionTime;
-                            match.Status = 1;
+                            if (hour.Idle > hour.Alert && hour.Idle > hour.Active) match.Status = 2;
+                            else match.Status = 0;
                         }
                         else match.Status = -1;
                     }
@@ -1130,7 +1132,8 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
                         if (hour.PlannedProductionTime > 0)
                         {
                             match.Value = hour.Alert / hour.PlannedProductionTime;
-                            match.Status = 0;
+                            if (hour.Alert > hour.Active && hour.Alert > hour.Idle) match.Status = 1;
+                            else match.Status = 0;
                         }
                         else match.Status = -1;
                     }
@@ -1159,9 +1162,9 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
                         {
                             match.Value = hour.Oee;
 
-                            if (match.Value > OEE_HIGH) match.Status = 2;
-                            else if (match.Value > OEE_LOW) match.Status = 1;
-                            else match.Status = 0;
+                            if (match.Value > OEE_HIGH) match.Status = 3;
+                            else if (match.Value > OEE_LOW) match.Status = 2;
+                            else match.Status = 1;
                         }
                         else match.Status = -1;
                     }
@@ -1189,9 +1192,9 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
                         {
                             match.Value = hour.Availability;
 
-                            if (match.Value > OEE_HIGH) match.Status = 2;
-                            else if (match.Value > OEE_LOW) match.Status = 1;
-                            else match.Status = 0;
+                            if (match.Value > OEE_HIGH) match.Status = 3;
+                            else if (match.Value > OEE_LOW) match.Status = 2;
+                            else match.Status = 1;
                         }
                         else match.Status = -1;
                     }
@@ -1219,9 +1222,9 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
                         {
                             match.Value = hour.Performance;
 
-                            if (match.Value > OEE_HIGH) match.Status = 2;
-                            else if (match.Value > OEE_LOW) match.Status = 1;
-                            else match.Status = 0;
+                            if (match.Value > OEE_HIGH) match.Status = 3;
+                            else if (match.Value > OEE_LOW) match.Status = 2;
+                            else match.Status = 1;
                         }
                         else match.Status = -1;
                     }
@@ -1249,9 +1252,9 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
                         {
                             match.Value = hour.Quality;
 
-                            if (match.Value > OEE_HIGH) match.Status = 2;
-                            else if (match.Value > OEE_LOW) match.Status = 1;
-                            else match.Status = 0;
+                            if (match.Value > OEE_HIGH) match.Status = 3;
+                            else if (match.Value > OEE_LOW) match.Status = 2;
+                            else match.Status = 1;
                         }
                         else match.Status = -1;
                     }
@@ -1278,7 +1281,8 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
                         if (hour.PlannedProductionTime > 0)
                         {
                             match.Value = hour.TotalPieces;
-                            match.Status = 3;
+                            if (hour.TotalPieces > 0) match.Status = 3;
+                            else match.Status = 0;
                         }
                         else match.Status = -1;
                     }

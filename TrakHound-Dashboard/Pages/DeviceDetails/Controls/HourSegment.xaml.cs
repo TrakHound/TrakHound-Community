@@ -37,6 +37,5 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails.Controls
 
         public static readonly DependencyProperty ValueFormatProperty =
             DependencyProperty.Register("ValueFormat", typeof(string), typeof(HourSegment), new PropertyMetadata("P0"));
-
     }
 }

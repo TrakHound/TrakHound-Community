@@ -52,6 +52,18 @@ namespace TrakHound_Dashboard.Pages.DeviceDetails
             }
         }
 
+        private int _progressStatus = -1;
+        public int ProgressStatus
+        {
+            get { return _progressStatus; }
+            set
+            {
+                var val = _progressStatus;
+                _progressStatus = value;
+                if (val != _progressStatus) NotifyChanged("ProgressStatus");
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void NotifyChanged(string propertyName)

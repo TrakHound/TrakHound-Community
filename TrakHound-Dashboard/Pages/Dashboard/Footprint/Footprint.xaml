@@ -9,7 +9,7 @@
              xmlns:ui="clr-namespace:TrakHound_UI;assembly=TrakHound-UI"
              
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="600">
+             d:DesignHeight="300" d:DesignWidth="800">
 
     <Grid x:Name="root">
         <Grid.ColumnDefinitions>
@@ -122,7 +122,7 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                
+
                 <TextBlock Text="Device List" Foreground="{Binding Text}" FontSize="12" HorizontalAlignment="Center" Margin="0,10"/>
 
                 <ListBox Grid.Row="2" ItemsSource="{Binding ListItems}" BorderThickness="0,1,0,0" BorderBrush="{StaticResource Border}" PreviewMouseLeftButtonDown="ListItems_MouseDown" PreviewTouchDown="ListBox_PreviewTouchDown"/>
@@ -131,118 +131,180 @@
 
         </Border>
 
-        <!--Layout Canvas-->
         <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-            <Grid>
-                <Grid.Style>
-                    <Style TargetType="Grid">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding DeviceItems.Count}" Value="0">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding EditEnabled}" Value="false">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
+            <!--Toolbar-->
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top">
 
-                <Rectangle Stroke="{StaticResource Text_Light}" StrokeThickness="2" StrokeDashArray="5" SnapsToDevicePixels="True" Margin="60"/>
+                <!--Enter Edit Button-->
+                <ui:Button Text="Edit" Clicked="EnterEditMode_Clicked" Image="/TrakHound-Dashboard;component/Resources/Edit_02.png">
+                    <ui:Button.Style>
+                        <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Transparent_Background}">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding EditEnabled}" Value="true">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ui:Button.Style>
+                </ui:Button>
 
-                <TextBlock Text="Drop Devices onto the canvas then position and size" Foreground="{StaticResource Text_Light}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="200" TextWrapping="Wrap" Margin="0,0,0,20" FontSize="14"/>
+                <!--Exit Edit Button-->
+                <ui:Button Text="Exit Edit Mode" Clicked="ExitEditMode_Clicked" Image="/TrakHound-Dashboard;component/Resources/Back_01.png">
+                    <ui:Button.Style>
+                        <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Accent_Background}">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding EditEnabled}" Value="false">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ui:Button.Style>
+                </ui:Button>
 
-            </Grid>
+                <!--Clear All Button-->
+                <ui:Button Text="Clear All" Clicked="ClearAll_Clicked" Image="/TrakHound-Dashboard;component/Resources/X_01.png" Margin="20,0,0,0">
+                    <ui:Button.Style>
+                        <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Transparent_Background}">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding EditEnabled}" Value="false">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="Red"/>
+                                    <Setter Property="ImageForeground" Value="White"/>
+                                    <Setter Property="TextForeground" Value="White"/>
+                                </Trigger>
+                                <DataTrigger Binding="{Binding DeviceItems.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ui:Button.Style>
+                </ui:Button>
 
-           
-            <!--Shop Layout (Canvas)-->
-            <Canvas x:Name="shopCanvas"
-                AllowDrop="True"
-                Background="Transparent"
-                Drop="ShopCanvas_Drop" />
+                <!--Select Background Image-->
+                <ui:Button Text="Select Background Image..." Clicked="BrowseBackgroundImage_Clicked" Margin="20,0,0,0">
+                    <ui:Button.Style>
+                        <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Transparent_Background}">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </Style>
+                    </ui:Button.Style>
+                </ui:Button>
 
-            <!--No Devices-->
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <StackPanel.Style>
-                    <Style TargetType="StackPanel">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding DeviceItems.Count}" Value="0">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding EditEnabled}" Value="true">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </StackPanel.Style>
+                <!--Clear Background Image-->
+                <ui:Button Text="Clear Background Image" Clicked="ClearBackgroundImage_Clicked" Image="/TrakHound-Dashboard;component/Resources/X_01.png" Margin="20,0,0,0">
+                    <ui:Button.Style>
+                        <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Transparent_Background}">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding BackgroundImage}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="Red"/>
+                                    <Setter Property="ImageForeground" Value="White"/>
+                                    <Setter Property="TextForeground" Value="White"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ui:Button.Style>
+                </ui:Button>
 
-                <TextBlock FontSize="14" Foreground="{StaticResource Text_Light}" TextAlignment="Center" HorizontalAlignment="Center">     
-                No Layout Set Yet <LineBreak/>
-                Click the button below to drag and drop devices onto the layout
-                </TextBlock>
+                <!--Set Background Image Opacity-->
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding BackgroundImage}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
 
-                <ui:Button Text="Edit" Style="{StaticResource Button_Accent_Background}" HorizontalAlignment="Center" Margin="0,20,0,0" Clicked="EnterEditMode_Clicked" Image="/TrakHound-Dashboard;component/Resources/Edit_02.png"/>
+                    <Slider Value="{Binding BackgroundImageOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" Maximum="1" LargeChange="0.1" TickFrequency="0.5" TickPlacement="BottomRight" AutomationProperties.HelpText="Background Image Opacity" Margin="20,0,0,0"/>
+                    <TextBlock Text="{Binding BackgroundImageOpacity, StringFormat=P0}" FontSize="12" Foreground="{StaticResource Text}"/>
+
+                </StackPanel>
 
             </StackPanel>
 
+            <!--Layout Canvas-->
+            <Grid Grid.Row="1">
+
+                <Grid>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DeviceItems.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding EditEnabled}" Value="false">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+
+                    <Rectangle Stroke="{StaticResource Text_Light}" StrokeThickness="2" StrokeDashArray="5" SnapsToDevicePixels="True" Margin="60"/>
+
+                    <TextBlock Text="Drop Devices onto the canvas then position and size" Foreground="{StaticResource Text_Light}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="200" TextWrapping="Wrap" Margin="0,0,0,20" FontSize="14"/>
+
+                </Grid>
+
+
+                <!--Shop Layout (Canvas)-->
+                <Viewbox>
+
+                    <Canvas x:Name="shopCanvas" AllowDrop="True" Drop="ShopCanvas_Drop" Height="1000" Width="1500">
+                        <Canvas.Background>
+                            <ImageBrush ImageSource="{Binding BackgroundImage}" Stretch="Uniform" Opacity="{Binding BackgroundImageOpacity}"/>
+                        </Canvas.Background>
+                        <Canvas.LayoutTransform>
+                            <ScaleTransform ScaleY="1"/>
+                        </Canvas.LayoutTransform>
+                    </Canvas>
+
+                </Viewbox>
+
+                <!--No Devices-->
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DeviceItems.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding EditEnabled}" Value="true">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+
+                    <TextBlock FontSize="14" Foreground="{StaticResource Text_Light}" TextAlignment="Center" HorizontalAlignment="Center">     
+                No Layout Set Yet <LineBreak/>
+                Click the button below to drag and drop devices onto the layout
+                    </TextBlock>
+
+                    <ui:Button Text="Edit" Style="{StaticResource Button_Accent_Background}" HorizontalAlignment="Center" Margin="0,20,0,0" Clicked="EnterEditMode_Clicked" Image="/TrakHound-Dashboard;component/Resources/Edit_02.png"/>
+
+                </StackPanel>
+
+            </Grid>
+
         </Grid>
-
-        <!--Toolbar-->
-        <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top">
-
-            <!--Enter Edit Button-->
-            <ui:Button Text="Edit" Clicked="EnterEditMode_Clicked" Image="/TrakHound-Dashboard;component/Resources/Edit_02.png">
-                <ui:Button.Style>
-                    <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Transparent_Background}">
-                        <Setter Property="Visibility" Value="Visible"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding EditEnabled}" Value="true">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ui:Button.Style>
-            </ui:Button>
-
-            <!--Exit Edit Button-->
-            <ui:Button Text="Exit Edit Mode" Clicked="ExitEditMode_Clicked" Image="/TrakHound-Dashboard;component/Resources/Back_01.png">
-                <ui:Button.Style>
-                    <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Accent_Background}">
-                        <Setter Property="Visibility" Value="Visible"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding EditEnabled}" Value="false">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ui:Button.Style>
-            </ui:Button>
-
-            <!--Clear All Button-->
-            <ui:Button Text="Clear All" Clicked="ClearAll_Clicked" Image="/TrakHound-Dashboard;component/Resources/X_01.png" Margin="20,0,0,0">
-                <ui:Button.Style>
-                    <Style TargetType="ui:Button" BasedOn="{StaticResource Button_Transparent_Background}">
-                        <Setter Property="Visibility" Value="Visible"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding EditEnabled}" Value="false">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Background" Value="Red"/>
-                                <Setter Property="ImageForeground" Value="White"/>
-                                <Setter Property="TextForeground" Value="White"/>
-                            </Trigger>
-                            <DataTrigger Binding="{Binding DeviceItems.Count}" Value="0">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ui:Button.Style>
-            </ui:Button>
-
-        </StackPanel>
 
     </Grid>
 

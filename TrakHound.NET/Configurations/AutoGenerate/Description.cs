@@ -22,12 +22,12 @@ namespace TrakHound.Configurations.AutoGenerate
 
                 if (!string.IsNullOrEmpty(device.Description.Manufacturer))
                 {
-                    string logoUrl = new Uri("http://dev.trakhound.com/api/images/device_images/download?manufacturer=" + device.Description.Manufacturer).ToString();
+                    string logoUrl = new Uri("https://images.trakhound.com/device-image?manufacturer=" + device.Description.Manufacturer).ToString();
                     DeviceConfiguration.EditTable(table, "/Description/LogoUrl", logoUrl, null);
 
                     if (!string.IsNullOrEmpty(device.Description.Model))
                     {
-                        string imageUrl = new Uri("http://dev.trakhound.com/api/images/device_images/download?manufacturer=" + device.Description.Manufacturer + "&model=" + device.Description.Model).ToString();
+                        string imageUrl = new Uri("https://images.trakhound.com/device-image?manufacturer=" + device.Description.Manufacturer + "&model=" + device.Description.Model).ToString();
                         DeviceConfiguration.EditTable(table, "/Description/ImageUrl", imageUrl, null);
                     }
                 }

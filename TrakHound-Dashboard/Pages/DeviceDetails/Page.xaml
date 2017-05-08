@@ -715,11 +715,99 @@
 
             <StackPanel Margin="40">
 
+                <!--Parts Analysis-->
+                <StackPanel Margin="0,20">
+
+                    <!--Section Title-->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+
+                        <!--Image-->
+                        <Grid Height="30" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,10,0">
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="OpacityMask" Value="{StaticResource Part_IMG}" />
+                                    <Setter Property="Background" Value="{StaticResource Text_Light}"/>
+                                </Style>
+                            </Grid.Style>
+                        </Grid>
+
+                        <TextBlock Text="Part Count Analysis" Style="{StaticResource Heading1}" Margin="0"/>
+
+                    </StackPanel>
+
+                    <Rectangle Height="1" Fill="{StaticResource Border}" Margin="0,0,0,20"/>
+
+                    <!--Part Count Statistics-->
+                    <Grid HorizontalAlignment="Left">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!--24 Hour Total-->
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="24 Hour Total" Style="{StaticResource Heading4}"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text=":" Margin="10,0,10,10" Style="{StaticResource Heading4}"/>
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding PartCountTotal, StringFormat=N0}" Style="{StaticResource Heading3}"/>
+
+                        <!--24 Hour Average-->
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="24 Hour Average" Style="{StaticResource Heading4}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text=":" Margin="10,0,10,10" Style="{StaticResource Heading4}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding PartCountAverage, StringFormat=N0}" Style="{StaticResource Heading3}"/>
+
+                        <!--High Hour-->
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="High Hour" Style="{StaticResource Heading4}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Text=":" Margin="10,0,10,10" Style="{StaticResource Heading4}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding PartCountHigh, StringFormat=N0}" Style="{StaticResource Heading3}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="3" Text=":" Margin="10,0,10,10" Style="{StaticResource Heading4}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="4" Text="{Binding PartCountHighTime}" Style="{StaticResource Heading4}"/>
+
+                        <!--Low Hour-->
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Low Hour" Style="{StaticResource Heading4}"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" Text=":" Margin="10,0,10,10" Style="{StaticResource Heading4}"/>
+                        <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding PartCountLow, StringFormat=N0}" Style="{StaticResource Heading3}"/>
+                        <TextBlock Grid.Row="3" Grid.Column="3" Text=":" Margin="10,0,10,10" Style="{StaticResource Heading4}"/>
+                        <TextBlock Grid.Row="3" Grid.Column="4" Text="{Binding PartCountLowTime}" Style="{StaticResource Heading4}"/>
+
+                    </Grid>
+
+                    <Rectangle Height="1" Fill="{StaticResource Border}" Margin="0,20"/>
+
+                    <!--Parts Count Timeline Title-->
+                    <TextBlock Text="Part Count (Last 24 Hours)" Style="{StaticResource Heading3}" HorizontalAlignment="Left"/>
+
+                    <!--Parts Count Timeline Timeline-->
+                    <controls:HourTimeline HourDatas="{Binding PartCountHourDatas}" Margin="0,0,0,20" ValueFormat="N0"/>
+
+                </StackPanel>
+
                 <!--Device Status Analysis-->
                 <StackPanel>
 
                     <!--Section Title-->
-                    <TextBlock Text="Device Status" Style="{StaticResource Heading1}"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+
+                        <!--Image-->
+                        <Grid Height="30" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,10,0">
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}" />
+                                    <Setter Property="Background" Value="{StaticResource Text_Light}"/>
+                                </Style>
+                            </Grid.Style>
+                        </Grid>
+
+                        <TextBlock Text="Device Status" Style="{StaticResource Heading1}" Margin="0"/>
+
+                    </StackPanel>
 
                     <Rectangle Height="1" Fill="{StaticResource Border}" Margin="0,0,0,20"/>
 
@@ -773,21 +861,63 @@
                     </Grid>
 
                     <!--Active Title-->
-                    <TextBlock Text="Active (Last 24 Hours)" Style="{StaticResource Heading3}" HorizontalAlignment="Left"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+
+                        <!--Image-->
+                        <Grid Height="20" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,10,0">
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="OpacityMask" Value="{StaticResource Active_IMG}" />
+                                    <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
+                                </Style>
+                            </Grid.Style>
+                        </Grid>
+
+                        <TextBlock Text="Active (Last 24 Hours)" Style="{StaticResource Heading3}" HorizontalAlignment="Left" Margin="0"/>
+
+                    </StackPanel>
 
                     <!--Active Timeline-->
                     <controls:HourTimeline HourDatas="{Binding ActiveHourDatas}" Margin="0,0,0,20"/>
 
 
                     <!--Idle Title-->
-                    <TextBlock Text="Idle (Last 24 Hours)" Style="{StaticResource Heading3}" HorizontalAlignment="Left"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+
+                        <!--Image-->
+                        <Grid Height="20" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,10,0">
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="OpacityMask" Value="{StaticResource Idle_IMG}" />
+                                    <Setter Property="Background" Value="{StaticResource StatusOrange}"/>
+                                </Style>
+                            </Grid.Style>
+                        </Grid>
+
+                        <TextBlock Text="Idle (Last 24 Hours)" Style="{StaticResource Heading3}" HorizontalAlignment="Left" Margin="0"/>
+
+                    </StackPanel>
 
                     <!--Idle Timeline-->
                     <controls:HourTimeline HourDatas="{Binding IdleHourDatas}" Margin="0,0,0,20"/>
 
 
                     <!--Alert Title-->
-                    <TextBlock Text="Alert (Last 24 Hours)" Style="{StaticResource Heading3}" HorizontalAlignment="Left"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+
+                        <!--Image-->
+                        <Grid Height="20" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,10,0">
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}" />
+                                    <Setter Property="Background" Value="{StaticResource StatusRed}"/>
+                                </Style>
+                            </Grid.Style>
+                        </Grid>
+
+                        <TextBlock Text="Alert (Last 24 Hours)" Style="{StaticResource Heading3}" HorizontalAlignment="Left" Margin="0"/>
+
+                    </StackPanel>
 
                     <!--Alert Timeline-->
                     <controls:HourTimeline HourDatas="{Binding AlertHourDatas}" Margin="0,0,0,0"/>
@@ -820,15 +950,15 @@
                                 <ui:MeterDisplay.Style>
                                     <Style TargetType="ui:MeterDisplay" BasedOn="{StaticResource {x:Type ui:MeterDisplay}}">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding OeeStatus}" Value="0">
+                                            <DataTrigger Binding="{Binding OeeStatus}" Value="1">
                                                 <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusRed}"/>
                                                 <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusRed_Hover}"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding OeeStatus}" Value="1">
+                                            <DataTrigger Binding="{Binding OeeStatus}" Value="2">
                                                 <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusOrange}"/>
                                                 <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusOrange_Hover}"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding OeeStatus}" Value="2">
+                                            <DataTrigger Binding="{Binding OeeStatus}" Value="3">
                                                 <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
                                                 <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
                                             </DataTrigger>
@@ -889,15 +1019,15 @@
                                 <ui:MeterDisplay.Style>
                                     <Style TargetType="ui:MeterDisplay" BasedOn="{StaticResource {x:Type ui:MeterDisplay}}">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding AvailabilityStatus}" Value="0">
+                                            <DataTrigger Binding="{Binding AvailabilityStatus}" Value="1">
                                                 <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusRed}"/>
                                                 <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusRed_Hover}"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding AvailabilityStatus}" Value="1">
+                                            <DataTrigger Binding="{Binding AvailabilityStatus}" Value="2">
                                                 <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusOrange}"/>
                                                 <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusOrange_Hover}"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding AvailabilityStatus}" Value="2">
+                                            <DataTrigger Binding="{Binding AvailabilityStatus}" Value="3">
                                                 <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
                                                 <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
                                             </DataTrigger>
@@ -958,15 +1088,15 @@
                                 <ui:MeterDisplay.Style>
                                     <Style TargetType="ui:MeterDisplay" BasedOn="{StaticResource {x:Type ui:MeterDisplay}}">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding PerformanceStatus}" Value="0">
+                                            <DataTrigger Binding="{Binding PerformanceStatus}" Value="1">
                                                 <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusRed}"/>
                                                 <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusRed_Hover}"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding PerformanceStatus}" Value="1">
+                                            <DataTrigger Binding="{Binding PerformanceStatus}" Value="2">
                                                 <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusOrange}"/>
                                                 <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusOrange_Hover}"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding PerformanceStatus}" Value="2">
+                                            <DataTrigger Binding="{Binding PerformanceStatus}" Value="3">
                                                 <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
                                                 <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
                                             </DataTrigger>
@@ -1027,15 +1157,15 @@
                                 <ui:MeterDisplay.Style>
                                     <Style TargetType="ui:MeterDisplay" BasedOn="{StaticResource {x:Type ui:MeterDisplay}}">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding QualityStatus}" Value="0">
+                                            <DataTrigger Binding="{Binding QualityStatus}" Value="1">
                                                 <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusRed}"/>
                                                 <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusRed_Hover}"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding QualityStatus}" Value="1">
+                                            <DataTrigger Binding="{Binding QualityStatus}" Value="2">
                                                 <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusOrange}"/>
                                                 <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusOrange_Hover}"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding QualityStatus}" Value="2">
+                                            <DataTrigger Binding="{Binding QualityStatus}" Value="3">
                                                 <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
                                                 <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
                                             </DataTrigger>
@@ -1120,66 +1250,6 @@
 
                 </StackPanel>
 
-                <!--Parts Analysis-->
-                <StackPanel Margin="0,20">
-
-                    <!--Section Title-->
-                    <TextBlock Text="Part Count Analysis" Style="{StaticResource Heading1}"/>
-
-                    <Rectangle Height="1" Fill="{StaticResource Border}" Margin="0,0,0,20"/>
-
-                    <!--Part Count Statistics-->
-                    <Grid HorizontalAlignment="Left">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
-
-                        <!--24 Hour Total-->
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="24 Hour Total" Style="{StaticResource Heading4}"/>
-                        <TextBlock Grid.Row="0" Grid.Column="1" Text=":" Margin="10,0,10,10" Style="{StaticResource Heading4}"/>
-                        <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding PartCountTotal, StringFormat=N0}" Style="{StaticResource Heading3}"/>
-
-                        <!--24 Hour Average-->
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="24 Hour Average" Style="{StaticResource Heading4}"/>
-                        <TextBlock Grid.Row="1" Grid.Column="1" Text=":" Margin="10,0,10,10" Style="{StaticResource Heading4}"/>
-                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding PartCountAverage, StringFormat=N0}" Style="{StaticResource Heading3}"/>
-
-                        <!--High Hour-->
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="High Hour" Style="{StaticResource Heading4}"/>
-                        <TextBlock Grid.Row="2" Grid.Column="1" Text=":" Margin="10,0,10,10" Style="{StaticResource Heading4}"/>
-                        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding PartCountHigh, StringFormat=N0}" Style="{StaticResource Heading3}"/>
-                        <TextBlock Grid.Row="2" Grid.Column="3" Text=":" Margin="10,0,10,10" Style="{StaticResource Heading4}"/>
-                        <TextBlock Grid.Row="2" Grid.Column="4" Text="{Binding PartCountHighTime}" Style="{StaticResource Heading4}"/>
-
-                        <!--Low Hour-->
-                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Low Hour" Style="{StaticResource Heading4}"/>
-                        <TextBlock Grid.Row="3" Grid.Column="1" Text=":" Margin="10,0,10,10" Style="{StaticResource Heading4}"/>
-                        <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding PartCountLow, StringFormat=N0}" Style="{StaticResource Heading3}"/>
-                        <TextBlock Grid.Row="3" Grid.Column="3" Text=":" Margin="10,0,10,10" Style="{StaticResource Heading4}"/>
-                        <TextBlock Grid.Row="3" Grid.Column="4" Text="{Binding PartCountLowTime}" Style="{StaticResource Heading4}"/>
-
-                    </Grid>
-
-                    <Rectangle Height="1" Fill="{StaticResource Border}" Margin="0,20"/>
-
-                    <!--Parts Count Timeline Title-->
-                    <TextBlock Text="Part Count (Last 24 Hours)" Style="{StaticResource Heading3}" HorizontalAlignment="Left"/>
-
-                    <!--Parts Count Timeline Timeline-->
-                    <controls:HourTimeline HourDatas="{Binding PartCountHourDatas}" Margin="0,0,0,20" ValueFormat="N0"/>
-
-                </StackPanel>
-
             </StackPanel>
 
         </ScrollViewer>
@@ -1188,6 +1258,7 @@
         <Grid Grid.ColumnSpan="2" Background="{StaticResource Background}">
             <Grid.Style>
                 <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Loading}" Value="false">
                             <DataTrigger.EnterActions>

@@ -13,97 +13,120 @@
     <Border x:Name="root" BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
 
         <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-            <Rectangle>
-                <Rectangle.Style>
-                    <Style TargetType="Rectangle">
-                        <Setter Property="Fill" Value="White"/>
+            <ProgressBar Value="{Binding HourData.Value}" Maximum="1" Height="10" Background="White" BorderThickness="0,0,0,1">
+                <ProgressBar.Style>
+                    <Style TargetType="ProgressBar">
+                        <Setter Property="Foreground" Value="Gray"/>
                         <Style.Triggers>
-
-                            <DataTrigger Binding="{Binding HourData.Status}" Value="2">
-                                <Setter Property="Fill" Value="{StaticResource StatusGreen}"/>
+                            <DataTrigger Binding="{Binding HourData.ProgressStatus}" Value="3">
+                                <Setter Property="Foreground" Value="{StaticResource StatusGreen}"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding HourData.Status}" Value="1">
-                                <Setter Property="Fill" Value="{StaticResource StatusOrange}"/>
+                            <DataTrigger Binding="{Binding HourData.ProgressStatus}" Value="2">
+                                <Setter Property="Foreground" Value="{StaticResource StatusOrange}"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding HourData.Status}" Value="0">
-                                <Setter Property="Fill" Value="{StaticResource StatusRed}"/>
+                            <DataTrigger Binding="{Binding HourData.ProgressStatus}" Value="1">
+                                <Setter Property="Foreground" Value="{StaticResource StatusRed}"/>
                             </DataTrigger>
-
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding HourData.Status}" Value="2"/>
-                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
-                                </MultiDataTrigger.Conditions>
-                                <Setter Property="Fill" Value="{StaticResource StatusGreen_Light}"/>
-                            </MultiDataTrigger>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding HourData.Status}" Value="1"/>
-                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
-                                </MultiDataTrigger.Conditions>
-                                <Setter Property="Fill" Value="{StaticResource StatusOrange_Light}"/>
-                            </MultiDataTrigger>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding HourData.Status}" Value="0"/>
-                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
-                                </MultiDataTrigger.Conditions>
-                                <Setter Property="Fill" Value="{StaticResource StatusRed_Light}"/>
-                            </MultiDataTrigger>
-
-                        </Style.Triggers>
-                    </Style>
-                </Rectangle.Style>
-
-            </Rectangle>
-
-            <ui:NumberDisplay Value="{Binding HourData.Value}" ValueFormat="{Binding ValueFormat}" MaxHeight="20" IsHitTestVisible="False">
-                <ui:NumberDisplay.Style>
-                    <Style TargetType="ui:NumberDisplay">
-                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                        <Setter Property="Foreground" Value="{StaticResource Text}"/>
-                        <Setter Property="Margin" Value="5"/>
-                        <Style.Triggers>
-
-                            <DataTrigger Binding="{Binding HourData.Status}" Value="2">
-                                <Setter Property="Foreground" Value="White"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding HourData.Status}" Value="1">
-                                <Setter Property="Foreground" Value="White"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding HourData.Status}" Value="0">
-                                <Setter Property="Foreground" Value="White"/>
-                            </DataTrigger>
-
-                            <DataTrigger Binding="{Binding HourData.Status}" Value="-1">
+                            <DataTrigger Binding="{Binding HourData.ProgressStatus}" Value="-1">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
-
-                            <!--<DataTrigger Binding="{Binding HourData.Status}" Value="-1">
-                                <Setter Property="Margin" Value="10"/>
-                                <Setter Property="Foreground" Value="{StaticResource Disabled}"/>
-                                <Setter Property="Value" Value="0"/>
-                            </DataTrigger>-->
-
                         </Style.Triggers>
                     </Style>
-                </ui:NumberDisplay.Style>
-            </ui:NumberDisplay>
+                </ProgressBar.Style>
+            </ProgressBar>
 
-            <TextBlock Text="N/A" Foreground="{StaticResource Disabled_Text}" Margin="2" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock.Style>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding HourData.Status}" Value="-1">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
+            <Grid Grid.Row="1">
+
+                <Rectangle>
+                    <Rectangle.Style>
+                        <Style TargetType="Rectangle">
+                            <Setter Property="Fill" Value="White"/>
+                            <Style.Triggers>
+
+                                <DataTrigger Binding="{Binding HourData.Status}" Value="3">
+                                    <Setter Property="Fill" Value="{StaticResource StatusGreen}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding HourData.Status}" Value="2">
+                                    <Setter Property="Fill" Value="{StaticResource StatusOrange}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding HourData.Status}" Value="1">
+                                    <Setter Property="Fill" Value="{StaticResource StatusRed}"/>
+                                </DataTrigger>
+
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding HourData.Status}" Value="3"/>
+                                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Fill" Value="{StaticResource StatusGreen_Light}"/>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding HourData.Status}" Value="2"/>
+                                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Fill" Value="{StaticResource StatusOrange_Light}"/>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding HourData.Status}" Value="1"/>
+                                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Fill" Value="{StaticResource StatusRed_Light}"/>
+                                </MultiDataTrigger>
+
+                            </Style.Triggers>
+                        </Style>
+                    </Rectangle.Style>
+                </Rectangle>
+
+                <ui:NumberDisplay Value="{Binding HourData.Value}" ValueFormat="{Binding ValueFormat}" MaxHeight="20" IsHitTestVisible="False">
+                    <ui:NumberDisplay.Style>
+                        <Style TargetType="ui:NumberDisplay">
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                            <Setter Property="Margin" Value="5"/>
+                            <Style.Triggers>
+
+                                <DataTrigger Binding="{Binding HourData.Status}" Value="3">
+                                    <Setter Property="Foreground" Value="White"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding HourData.Status}" Value="2">
+                                    <Setter Property="Foreground" Value="White"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding HourData.Status}" Value="1">
+                                    <Setter Property="Foreground" Value="White"/>
+                                </DataTrigger>
+
+                                <DataTrigger Binding="{Binding HourData.Status}" Value="-1">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+
+                            </Style.Triggers>
+                        </Style>
+                    </ui:NumberDisplay.Style>
+                </ui:NumberDisplay>
+
+                <TextBlock Text="N/A" Foreground="{StaticResource Disabled_Text}" Margin="2" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding HourData.Status}" Value="-1">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+            </Grid>
 
         </Grid>
         

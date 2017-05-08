@@ -71,7 +71,15 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Footprint
         public event SendData_Handler SendData;
 
 
-        public void Initialize() { }
+        public void Initialize()
+        {
+            var imagePath = Properties.Settings.Default.FootprintBackgroundImagePath;
+            if (!string.IsNullOrEmpty(imagePath))
+            {
+                LoadBackgroundImage(imagePath);
+                BackgroundImageOpacity = Properties.Settings.Default.FootprintBackgroundImageOpacity;
+            }
+        }
 
         public bool Opening() { return true; }
 
@@ -79,7 +87,11 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Footprint
 
         public bool Closing() { return true; }
 
-        public void Closed() { }
+        public void Closed()
+        {
+            Properties.Settings.Default.FootprintBackgroundImagePath = backgroundImagePath;
+            Properties.Settings.Default.FootprintBackgroundImageOpacity = BackgroundImageOpacity;
+        }
 
         public void SetZoom(double zoomPercentage) { }
 
@@ -204,6 +216,28 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Footprint
 
         public static readonly DependencyProperty EditEnabledProperty =
             DependencyProperty.Register("EditEnabled", typeof(bool), typeof(Footprint), new PropertyMetadata(false));
+
+        private string backgroundImagePath;
+
+        public ImageSource BackgroundImage
+        {
+            get { return (ImageSource)GetValue(BackgroundImageProperty); }
+            set { SetValue(BackgroundImageProperty, value); }
+        }
+
+        public static readonly DependencyProperty BackgroundImageProperty =
+            DependencyProperty.Register("BackgroundImage", typeof(ImageSource), typeof(Footprint), new PropertyMetadata(null));
+
+
+        public double BackgroundImageOpacity
+        {
+            get { return (double)GetValue(BackgroundImageOpacityProperty); }
+            set { SetValue(BackgroundImageOpacityProperty, value); }
+        }
+
+        public static readonly DependencyProperty BackgroundImageOpacityProperty =
+            DependencyProperty.Register("BackgroundImageOpacity", typeof(double), typeof(Footprint), new PropertyMetadata(0.5d));
+
 
 
         #region "List Items"
@@ -584,6 +618,61 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Footprint
 
                 ClearDeviceItems();
             }
+        }
+
+        private void BrowseBackgroundImage_Clicked(TrakHound_UI.Button bt)
+        {
+            var imagePath = OpenImageBrowse();
+            if (!string.IsNullOrEmpty(imagePath))
+            {
+                LoadBackgroundImage(imagePath);
+            }
+        }
+
+        private void ClearBackgroundImage_Clicked(TrakHound_UI.Button bt)
+        {
+            BackgroundImage = null;
+        }
+
+        private void LoadBackgroundImage(string imagePath)
+        {
+            if (System.IO.File.Exists(imagePath))
+            {
+                var img = System.Drawing.Image.FromFile(imagePath);
+                if (img != null)
+                {
+                    var imgSource = TrakHound_UI.Functions.Images.SourceFromImage(img);
+                    if (imgSource != null)
+                    {
+                        backgroundImagePath = imagePath;
+                        BackgroundImage = imgSource;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Open a Windows Dialog to select an Image
+        /// </summary>
+        /// <returns></returns>
+        private static string OpenImageBrowse()
+        {
+            string result = null;
+
+            var dialog = new Microsoft.Win32.OpenFileDialog();
+
+            dialog.InitialDirectory = FileLocations.TrakHound;
+            dialog.Multiselect = true;
+            dialog.Title = "Browse for Background Image File";
+            dialog.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
+
+            var dialogResult = dialog.ShowDialog();
+            if (dialogResult == true)
+            {
+                if (dialog.FileName != null) result = dialog.FileName;
+            }
+
+            return result;
         }
     }
 }

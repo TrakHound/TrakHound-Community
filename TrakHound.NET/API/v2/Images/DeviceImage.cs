@@ -19,7 +19,7 @@ namespace TrakHound.API.v2.Images
         {
             var client = new RestClient("https://images.trakhound.com/");
 
-            var request = new RestRequest("device_images", Method.GET);
+            var request = new RestRequest("device-image", Method.GET);
             request.AddParameter("manufacturer", manufacturer);
             if (!string.IsNullOrEmpty(model)) request.AddParameter("model", model);
 

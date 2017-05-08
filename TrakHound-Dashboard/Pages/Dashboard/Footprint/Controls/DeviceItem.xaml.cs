@@ -281,11 +281,11 @@ namespace TrakHound_Dashboard.Pages.Dashboard.Footprint.Controls
                             {
                                 if (result.PixelWidth > result.PixelHeight)
                                 {
-                                    result = TrakHound_UI.Functions.Images.SetImageSize(result, 300);
+                                    result = Images.SetImageSize(result, 300);
                                 }
                                 else
                                 {
-                                    result = TrakHound_UI.Functions.Images.SetImageSize(result, 0, 300);
+                                    result = Images.SetImageSize(result, 0, 300);
                                 }
 
                                 result.Freeze();
