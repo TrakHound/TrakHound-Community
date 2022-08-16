@@ -172,11 +172,34 @@ namespace MTConnect.Clients
 
         private string CreateUri()
         {
-            // Create Uri
-            var uri = new Uri(BaseUrl);
-            if (DeviceName != null) uri = new Uri(uri, DeviceName);
-            uri = new Uri(uri, "current");
-            return uri.ToString();
+            var url = BaseUrl;
+            if (!string.IsNullOrEmpty(DeviceName)) url = CombineUrl(url, DeviceName);
+            url = CombineUrl(url, "current");
+            return url;
+
+            //// Create Uri
+            //var uri = new Uri(BaseUrl);
+            //if (DeviceName != null) uri = new Uri(uri, DeviceName);
+            //uri = new Uri(uri, "current");
+            //return uri.ToString();
+        }
+
+        public static string CombineUrl(string baseUrl, string path)
+        {
+            if (baseUrl == null || baseUrl.Length == 0)
+            {
+                return baseUrl;
+            }
+
+            if (path.Length == 0)
+            {
+                return path;
+            }
+
+            baseUrl = baseUrl.TrimEnd('/', '\\');
+            path = path.TrimStart('/', '\\');
+
+            return $"{baseUrl}/{path}";
         }
 
         //private RestRequest CreateRequest()

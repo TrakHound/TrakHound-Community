@@ -48,25 +48,40 @@ namespace MTConnect.MTConnectDevices
                             {
                                 if (child.NodeType == XmlNodeType.Element)
                                 {
-                                    // Create a new Node with the name of "Component"
-                                    var copy = doc.CreateNode(XmlNodeType.Element, "Component", null);
-
-                                    // Copy Attributes
-                                    foreach (XmlAttribute attribute in child.Attributes)
+                                    try
                                     {
-                                        var attr = doc.CreateAttribute(attribute.Name);
-                                        attr.Value = attribute.Value;
-                                        copy.Attributes.Append(attr);
+                                        // Create a new Node with the name of "Component"
+                                        var copy = doc.CreateNode(XmlNodeType.Element, "Component", null);
+
+                                        // Copy Attributes
+                                        foreach (XmlAttribute attribute in child.Attributes)
+                                        {
+                                            var attr = doc.CreateAttribute(attribute.Name);
+                                            attr.Value = attribute.Value;
+                                            copy.Attributes.Append(attr);
+                                        }
+
+                                        // Copy Text
+                                        copy.InnerText = child.InnerText;
+                                        copy.InnerXml = child.InnerXml;
+
+                                        // Create new Component
+                                        var component = (Component)serializer.Deserialize(new XmlNodeReader(copy));
+                                        component.Type = child.Name;
+                                        Components.Add(component);
                                     }
+                                    catch (InvalidOperationException ex)
+                                    {
 
-                                    // Copy Text
-                                    copy.InnerText = child.InnerText;
-                                    copy.InnerXml = child.InnerXml;
+                                    }
+                                    catch (XmlException ex)
+                                    {
 
-                                    // Create new Component
-                                    var component = (Component)serializer.Deserialize(new XmlNodeReader(copy));
-                                    component.Type = child.Name;
-                                    Components.Add(component);
+                                    }
+                                    catch (Exception ex)
+                                    {
+
+                                    }
                                 }
                             }
                         }

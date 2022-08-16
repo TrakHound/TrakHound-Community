@@ -85,17 +85,39 @@ namespace MTConnect.Clients
             try
             {
                 // Create Uri
-                var uri = new Uri(BaseUrl);
-                uri = new Uri(uri, "probe");
-                if (DeviceName != null) uri = new Uri(uri, DeviceName);
+                //var uri = new Uri(BaseUrl);
+                //uri = new Uri(uri, "probe");
+                //if (DeviceName != null) uri = new Uri(uri, DeviceName);
+
+                var url = BaseUrl;
+                if (!string.IsNullOrEmpty(DeviceName)) url = CombineUrl(url, DeviceName);
+                url = CombineUrl(url, "probe");
 
                 //// Create HTTP Client and Request Data
                 var client = new HttpClient();
-                return ProcessResponse(client.GetStringAsync(uri).Result);
+                return ProcessResponse(client.GetStringAsync(url).Result);
             }
             catch (Exception ex) { }
 
             return null;
+        }
+
+        public static string CombineUrl(string baseUrl, string path)
+        {
+            if (baseUrl == null || baseUrl.Length == 0)
+            {
+                return baseUrl;
+            }
+
+            if (path.Length == 0)
+            {
+                return path;
+            }
+
+            baseUrl = baseUrl.TrimEnd('/', '\\');
+            path = path.TrimStart('/', '\\');
+
+            return $"{baseUrl}/{path}";
         }
 
         /// <summary>
