@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("TrakHound Inc.")]
 [assembly: AssemblyProduct("TrakHound Server")]
-[assembly: AssemblyCopyright("Copyright © 2017 TrakHound Inc., All Rights Reserved")]
+[assembly: AssemblyCopyright("Copyright © 2022 TrakHound Inc., All Rights Reserved")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

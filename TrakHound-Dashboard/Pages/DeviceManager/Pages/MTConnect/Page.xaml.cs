@@ -262,6 +262,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.MTConnectConfig
 
                 // Send Probe Request
                 var probe = new MTConnect.Clients.Probe(url, info.DeviceName);
+                probe.UserObject = url;
                 probe.Successful += Probe_Successful;
                 probe.Error += Probe_Error;
                 probe.ConnectionError += Probe_ConnectionError;
@@ -279,7 +280,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.MTConnectConfig
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 ConnectionTestResult = 1;
-                ConnectionTestResultText = "MTConnect Probe Successful @ " + document.Url;
+                ConnectionTestResultText = "MTConnect Probe Successful @ " + document.UserObject;
                 ConnectionTestLoading = false;
             }));
         }
@@ -299,7 +300,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.Pages.MTConnectConfig
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 ConnectionTestResult = -1;
-                ConnectionTestResultText = "MTConnect Returned an Error @ " + errorDocument.Url;
+                ConnectionTestResultText = "MTConnect Returned an Error @ " + errorDocument.UserObject;
                 ConnectionTestLoading = false;
             }));
         }

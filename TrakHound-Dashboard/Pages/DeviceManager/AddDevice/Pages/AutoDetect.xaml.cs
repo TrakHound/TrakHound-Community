@@ -527,7 +527,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
                 probe.Successful += Probe_Successful;
                 probe.UserObject = device;
                 probe.ExecuteAsync();
-            }        
+            }
         }
 
         private void Probe_Successful(MTConnect.MTConnectDevices.Document document)
@@ -566,7 +566,7 @@ namespace TrakHound_Dashboard.Pages.DeviceManager.AddDevice.Pages
                     }), System.Windows.Threading.DispatcherPriority.Background, new object[] { });
                 }
             }
-            catch (Exception ex) { logger.Error(ex); }         
+            catch (Exception ex) { logger.Error(ex); }
         }
 
         private class AgentConfiguration

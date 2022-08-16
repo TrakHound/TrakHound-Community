@@ -85,7 +85,7 @@
 
                 <TextBlock Text="www.TrakHound.com" FontSize="10" Foreground="#33ffffff"/>
 
-                <TextBlock Text="®2017 TrakHound Inc., All Rights Reserved" FontSize="10" Foreground="#33ffffff"/>
+                <TextBlock Text="®2022 TrakHound Inc., All Rights Reserved" FontSize="10" Foreground="#33ffffff"/>
 
             </StackPanel>
 

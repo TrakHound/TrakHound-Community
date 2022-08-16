@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>MTConnect-Sniffer</id>
+    <version>$version$</version>
+    <title>MTConnect Sniffer</title>
+    <authors>TrakHound</authors>
+    <owners>TrakHound</owners>
+    <iconUrl>http://public.trakhound.com/mtc-sniffer-logo-50px.png</iconUrl>
+    <licenseUrl>https://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>http://github.com/TrakHound/MTConnect-Sniffer</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>.NET library for finding MTConnect® Devices on a network.</description>
+    <copyright>©  2017 TrakHound Inc., All Rights Reserved</copyright>
+    <tags>mtconnect trakhound cnc iiot</tags>
+  </metadata>
+</package>

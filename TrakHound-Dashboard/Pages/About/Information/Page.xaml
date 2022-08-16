@@ -40,7 +40,7 @@
                     <Run Text="Dashboard" FontSize="18"/>
                 </TextBlock>
 
-                <TextBlock Text="© 2017 TrakHound Inc., All Rights Reserved" FontSize="10" Foreground="{StaticResource Text}" />
+                <TextBlock Text="© 2022 TrakHound Inc., All Rights Reserved" FontSize="10" Foreground="{StaticResource Text}" />
 
             </StackPanel>
 
